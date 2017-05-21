@@ -23,7 +23,7 @@
     <name>RPGWizard</name>
     
     <developers>
-		<developer>
+        <developer>
             <id>swordmaster2k</id>
             <name>Joshua Michael Daly</name>
             <timezone>Europe/Dublin</timezone>
@@ -41,7 +41,7 @@
     <modules>
         <module>core</module>
         <module>editor</module>
-		<module>engine</module>
+        <module>engine</module>
     </modules>
     
     <properties>
@@ -64,7 +64,7 @@
         
         <assertj.version>3.5.0</assertj.version>
 		
-		<maven.formatter.version>0.5.2</maven.formatter.version>
+        <maven.formatter.version>0.5.2</maven.formatter.version>
     </properties>
     
     <dependencies>
@@ -163,28 +163,28 @@
                     </execution>
                 </executions>
             </plugin>
-			<plugin>
-			  <groupId>net.revelc.code</groupId>
-			  <artifactId>formatter-maven-plugin</artifactId>
-			  <version>${maven.formatter.version}</version>
-			  <executions>
+            <plugin>
+                <groupId>net.revelc.code</groupId>
+                <artifactId>formatter-maven-plugin</artifactId>
+                <version>${maven.formatter.version}</version>
+                <executions>
                     <execution>
                         <id>format-source</id>
                         <phase>validate</phase>
                         <configuration>
-							<directories>
-								<directory>core/src/main/java</directory>
-								<directory>editor/editor-ui/src/main/java</directory>
-								<directory>editor/pluginsystem/src/main/java</directory>
-								<directory>engine/src/main/java</directory>
-							</directories>
-						</configuration>
+                            <directories>
+                                <directory>core/src/main/java</directory>
+                                <directory>editor/editor-ui/src/main/java</directory>
+                                <directory>editor/pluginsystem/src/main/java</directory>
+                                <directory>engine/src/main/java</directory>
+                            </directories>
+                        </configuration>
                         <goals>
                             <goal>format</goal>
                         </goals>
                     </execution>
-              </executions>
-			</plugin>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 

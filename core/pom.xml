@@ -13,121 +13,121 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-  <modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.rpgwizard</groupId>
-  <artifactId>core</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
-  <name>RPGWizard Core</name>
-  <inceptionYear>2015</inceptionYear>
+    <groupId>org.rpgwizard</groupId>
+    <artifactId>core</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>RPGWizard Core</name>
+    <inceptionYear>2015</inceptionYear>
   
-  <developers>
-	<developer>
-		<id>swordmaster2k</id>
-		<name>Joshua Michael Daly</name>
-		<timezone>Europe/Dublin</timezone>
-	</developer>
-	<developer>
-		<id>chutchinson</id>
-		<name>Chris Hutchinson</name>
-		<timezone>America/Detroit</timezone>
-	</developer>
-  </developers>
+    <developers>
+        <developer>
+            <id>swordmaster2k</id>
+            <name>Joshua Michael Daly</name>
+            <timezone>Europe/Dublin</timezone>
+        </developer>
+        <developer>
+            <id>chutchinson</id>
+            <name>Chris Hutchinson</name>
+            <timezone>America/Detroit</timezone>
+        </developer>
+    </developers>
     
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.resources.sourceEncoding>UTF-8</project.resources.sourceEncoding>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.resources.sourceEncoding>UTF-8</project.resources.sourceEncoding>
     
-    <java.version>1.8</java.version>
-    <maven.compiler.version>3.3</maven.compiler.version>
-    <maven.jar.version>2.6</maven.jar.version>
+        <java.version>1.8</java.version>
+        <maven.compiler.version>3.3</maven.compiler.version>
+        <maven.jar.version>2.6</maven.jar.version>
     
-    <junit.version>4.12</junit.version>
-    <json.version>20141113</json.version>
-    <commons-io.version>2.4</commons-io.version>
+        <junit.version>4.12</junit.version>
+        <json.version>20141113</json.version>
+        <commons-io.version>2.4</commons-io.version>
     
-    <license.plugin.version>2.11</license.plugin.version>
+        <license.plugin.version>2.11</license.plugin.version>
     
-    <slf4j.version>1.7.22</slf4j.version>
-    <logback.version>1.1.8</logback.version>
-  </properties>
+        <slf4j.version>1.7.22</slf4j.version>
+        <logback.version>1.1.8</logback.version>
+    </properties>
     
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>${junit.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.json</groupId>
-      <artifactId>json</artifactId>
-      <version>${json.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <version>${commons-io.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.mycila</groupId>
-      <artifactId>license-maven-plugin</artifactId>
-      <version>${license.plugin.version}</version>
-      <scope>compile</scope>
-    </dependency>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>${json.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.mycila</groupId>
+            <artifactId>license-maven-plugin</artifactId>
+            <version>${license.plugin.version}</version>
+            <scope>compile</scope>
+        </dependency>
     
-    <!-- Logging -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>${slf4j.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
-      <version>${logback.version}</version>
-    </dependency>
-  </dependencies>
+        <!-- Logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+    </dependencies>
     
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>${maven.compiler.version}</version>
-        <configuration>
-          <source>${java.version}</source>
-          <target>${java.version}</target>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>com.mycila</groupId>
-        <artifactId>license-maven-plugin</artifactId>
-        <version>${license.plugin.version}</version>
-        <executions>
-          <execution>
-            <id>format-headers></id>
-            <phase>verify</phase>
-            <configuration>
-              <header>com/mycila/maven/plugin/license/templates/MPL-2.txt</header>
-              <properties>
-                <owner>rpgtoolkit.net</owner>
-                <email>help@rpgtoolkit.net</email>
-              </properties>
-              <excludes>
-                <exclude>src/main/resources/**</exclude>
-                <exclude>src/test/resources/**</exclude>
-                <exclude>licenseheader.txt</exclude>
-              </excludes>
-            </configuration>
-            <goals>
-              <goal>format</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>${license.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>format-headers></id>
+                        <phase>verify</phase>
+                        <configuration>
+                            <header>com/mycila/maven/plugin/license/templates/MPL-2.txt</header>
+                            <properties>
+                                <owner>rpgtoolkit.net</owner>
+                                <email>help@rpgtoolkit.net</email>
+                            </properties>
+                            <excludes>
+                                <exclude>src/main/resources/**</exclude>
+                                <exclude>src/test/resources/**</exclude>
+                                <exclude>licenseheader.txt</exclude>
+                            </excludes>
+                        </configuration>
+                        <goals>
+                            <goal>format</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
     
 </project>

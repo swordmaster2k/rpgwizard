@@ -81,7 +81,7 @@ public class Html5EnginePlugin extends Plugin {
 			String destinationPath = destination.getAbsolutePath();
 
 			// Copy and extract engine zip in destination directory.
-			String engineZipName = "engine-html5.zip";
+			String engineZipName = "engine-rpgwizard.zip";
 			File engineZip = new File(destinationPath + "/" + engineZipName);
 			FileUtils.copyInputStreamToFile(
 					getClass().getResourceAsStream("/" + engineZipName),

@@ -12,12 +12,13 @@
 
     <properties>
         <plugin.id>rpgwizard-engine</plugin.id>
-        <plugin.class>org.rpgwizard.engine.plugin.RPGWizardEnginePlugin</plugin.class>
+        <plugin.class>net.rpgtoolkit.html5.engine.plugin.Html5EnginePlugin</plugin.class>
         <plugin.version>1.0.0</plugin.version>
         <plugin.provider>Joshua Michael Daly</plugin.provider>
         <plugin.dependencies />
         
         <jetty.version>9.4.2.v20170220</jetty.version>
+        <maven.resources.version>3.0.2</maven.resources.version>
     </properties>
     
     <dependencies>
@@ -112,6 +113,30 @@
                         <goals>
                             <goal>single</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven.resources.version}</version>
+                <executions>
+                    <execution>
+                        <id>copy-files-on-build</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>../editor/editor-ui/target/classes/plugins</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.build.directory}</directory>
+                                    <includes>
+                                        <include>engine-${project.version}-jar-with-dependencies.jar</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

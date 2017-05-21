@@ -19,6 +19,7 @@
                 <include>index.html</include>
                 <include>js/</include>
                 <include>css/</include>
+				<include>images/</include>
             </includes>
         </fileSet>
     </fileSets>

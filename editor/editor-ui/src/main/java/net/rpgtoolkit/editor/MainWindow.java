@@ -167,7 +167,7 @@ public class MainWindow extends JFrame implements InternalFrameListener {
 		setLayout(new BorderLayout());
 		add(toolBar, BorderLayout.NORTH);
 		add(parent, BorderLayout.CENTER);
-		add(toolboxPanel, BorderLayout.EAST);
+		add(toolboxPanel, BorderLayout.WEST);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);

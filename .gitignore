@@ -16,10 +16,11 @@ buildNumber.properties
 *.log
 
 # Netbeans
-nbproject/private/
 build/
 nbbuild/
 dist/
 nbdist/
 .nb-gradle/
 nbactions.xml
+/engine/javascript/nbproject/private/
+nbproject/

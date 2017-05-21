@@ -17,6 +17,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import javax.swing.JPanel;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import net.rpgtoolkit.common.assets.AbstractAsset;
 import net.rpgtoolkit.common.assets.AssetDescriptor;
 import net.rpgtoolkit.common.assets.Program;
@@ -75,20 +77,20 @@ public class ProgramEditor extends AssetEditorWindow {
 		textArea.setCaretPosition(0);
 		textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
 		textArea.setCodeFoldingEnabled(true);
-		textArea.addKeyListener(new KeyListener() {
+		textArea.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
-			public void keyTyped(KeyEvent e) {
+			public void insertUpdate(DocumentEvent e) {
 				setNeedSave(true);
 			}
 
 			@Override
-			public void keyPressed(KeyEvent e) {
+			public void removeUpdate(DocumentEvent e) {
 				setNeedSave(true);
 			}
 
 			@Override
-			public void keyReleased(KeyEvent e) {
-
+			public void changedUpdate(DocumentEvent e) {
+				setNeedSave(true);
 			}
 		});
 

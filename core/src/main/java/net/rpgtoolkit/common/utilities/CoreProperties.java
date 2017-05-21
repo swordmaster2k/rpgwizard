@@ -20,6 +20,7 @@ import net.rpgtoolkit.common.assets.Board;
 import net.rpgtoolkit.common.assets.Enemy;
 import net.rpgtoolkit.common.assets.Item;
 import net.rpgtoolkit.common.assets.Player;
+import net.rpgtoolkit.common.assets.Program;
 import net.rpgtoolkit.common.assets.Project;
 import net.rpgtoolkit.common.assets.SpecialMove;
 import net.rpgtoolkit.common.assets.StatusEffect;
@@ -93,6 +94,8 @@ public class CoreProperties {
 			return getFullExtension("toolkit.tileset.extension.default");
 		} else if (type == SpecialMove.class) {
 			return getFullExtension("toolkit.specialmove.extension.default");
+		} else if (type == Program.class) {
+			return getFullExtension("toolkit.program.extension.default");
 		} else {
 			return null;
 		}

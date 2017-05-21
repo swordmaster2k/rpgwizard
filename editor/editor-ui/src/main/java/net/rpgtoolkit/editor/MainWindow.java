@@ -36,6 +36,7 @@ import net.rpgtoolkit.common.assets.Board;
 import net.rpgtoolkit.common.assets.Enemy;
 import net.rpgtoolkit.common.assets.Item;
 import net.rpgtoolkit.common.assets.Player;
+import net.rpgtoolkit.common.assets.Program;
 import net.rpgtoolkit.common.assets.Project;
 import net.rpgtoolkit.common.assets.SpecialMove;
 import net.rpgtoolkit.common.assets.Tile;
@@ -500,6 +501,9 @@ public class MainWindow extends JFrame implements InternalFrameListener {
 		} else if (fileName.endsWith(CoreProperties
 				.getDefaultExtension(Project.class))) {
 			addToolkitEditorWindow(EditorFactory.getEditor(openProject(file)));
+		} else if (fileName.endsWith(CoreProperties
+				.getDefaultExtension(Program.class))) {
+			addToolkitEditorWindow(EditorFactory.getEditor(openProgram(file)));
 		}
 	}
 
@@ -555,6 +559,31 @@ public class MainWindow extends JFrame implements InternalFrameListener {
                 // TODO: clean up directory structure?
             }
         }
+    }
+	public void createNewProgram() {
+		LOGGER.info("Creating new {}.", Program.class.getSimpleName());
+
+		addToolkitEditorWindow(EditorFactory.getEditor(new Program(null)));
+	}
+
+	public Program openProgram(File file) {
+        LOGGER.info("Opening {} file=[{}].", Program.class.getSimpleName(), file);
+
+        try {
+            if (file.canRead()) {
+                Program program;
+
+                AssetHandle handle = AssetManager.getInstance().deserialize(
+                        new AssetDescriptor(file.toURI()));
+                program = (Program) handle.getAsset();
+
+                return program;
+            }
+        } catch (IOException | AssetException ex) {
+            LOGGER.error("Failed to open {} file=[{}].", Program.class.getSimpleName(), file, ex);
+        }
+
+        return null;
     }
 	public void createNewAnimation() {
 		LOGGER.info("Creating new {}.", Animation.class.getSimpleName());

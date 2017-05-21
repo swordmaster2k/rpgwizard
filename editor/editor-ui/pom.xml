@@ -25,6 +25,10 @@
     <packaging>jar</packaging>
     <inceptionYear>2015</inceptionYear>
     <name>RPGWizard Editor (UI)</name>
+    
+    <properties>
+        <rsyntaxtextarea.version>2.6.1</rsyntaxtextarea.version>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -36,6 +40,11 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>pluginsystem</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fifesoft</groupId>
+            <artifactId>rsyntaxtextarea</artifactId>
+            <version>${rsyntaxtextarea.version}</version>
         </dependency>
     </dependencies>
     

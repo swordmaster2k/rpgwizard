@@ -37,7 +37,7 @@ public class UserInterfaceTest extends AssertJSwingJUnitTestCase {
         GenericTypeMatcher<JFrame> matcher = new GenericTypeMatcher<JFrame>(JFrame.class) {
             @Override
             protected boolean isMatching(JFrame frame) {
-                return frame.getTitle() != null && frame.getTitle().startsWith("RPGToolkit") && frame.isShowing();
+                return frame.getTitle() != null && frame.getTitle().startsWith("RPGWizard") && frame.isShowing();
             }
         };
         window = findFrame(matcher).using(robot());

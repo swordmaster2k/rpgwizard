@@ -26,6 +26,7 @@ import net.rpgtoolkit.common.assets.serialization.JsonPlayerSerializer;
 import net.rpgtoolkit.common.assets.serialization.JsonProjectSerializer;
 import net.rpgtoolkit.common.assets.serialization.JsonSpecialMoveSerializer;
 import net.rpgtoolkit.common.assets.serialization.JsonTileSetSerializer;
+import net.rpgtoolkit.common.assets.serialization.TextProgramSerializer;
 import net.rpgtoolkit.common.assets.serialization.legacy.LegacyAnimatedTileSerializer;
 import net.rpgtoolkit.editor.properties.EditorProperties;
 import net.rpgtoolkit.editor.properties.EditorProperty;
@@ -86,6 +87,7 @@ public class Driver {
 		assetManager.registerSerializer(new JsonSpecialMoveSerializer());
 		assetManager.registerSerializer(new JsonEnemySerializer());
 		assetManager.registerSerializer(new JsonItemSerializer());
+		assetManager.registerSerializer(new TextProgramSerializer());
 		assetManager.registerSerializer(new JsonTileSetSerializer());
 	}
 

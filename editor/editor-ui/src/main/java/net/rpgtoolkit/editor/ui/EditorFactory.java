@@ -13,12 +13,14 @@ import net.rpgtoolkit.common.assets.Board;
 import net.rpgtoolkit.common.assets.Enemy;
 import net.rpgtoolkit.common.assets.Item;
 import net.rpgtoolkit.common.assets.Player;
+import net.rpgtoolkit.common.assets.Program;
 import net.rpgtoolkit.common.assets.Project;
 import net.rpgtoolkit.editor.editors.AnimationEditor;
 import net.rpgtoolkit.editor.editors.BoardEditor;
 import net.rpgtoolkit.editor.editors.CharacterEditor;
 import net.rpgtoolkit.editor.editors.EnemyEditor;
 import net.rpgtoolkit.editor.editors.ItemEditor;
+import net.rpgtoolkit.editor.editors.ProgramEditor;
 import net.rpgtoolkit.editor.editors.ProjectEditor;
 
 /**
@@ -50,6 +52,8 @@ public class EditorFactory {
 			return new ItemEditor((Item) asset);
 		} else if (asset instanceof Player) {
 			return new CharacterEditor((Player) asset);
+		} else if (asset instanceof Program) {
+			return new ProgramEditor((Program) asset);
 		} else if (asset instanceof Project) {
 			return new ProjectEditor((Project) asset);
 		}

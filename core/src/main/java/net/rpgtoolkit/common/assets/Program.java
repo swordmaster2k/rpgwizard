@@ -9,10 +9,11 @@ package net.rpgtoolkit.common.assets;
 
 public class Program extends AbstractAsset {
 
-	private StringBuffer programBuffer;
+	private final StringBuffer programBuffer;
 
 	public Program(AssetDescriptor assetDescriptor) {
 		super(assetDescriptor);
+		programBuffer = new StringBuffer();
 	}
 
 	public String getFileName() {
@@ -22,4 +23,10 @@ public class Program extends AbstractAsset {
 	public StringBuffer getProgramBuffer() {
 		return programBuffer;
 	}
+
+	public void update(String code) {
+		programBuffer.delete(0, programBuffer.length());
+		programBuffer.insert(0, code);
+	}
+
 }

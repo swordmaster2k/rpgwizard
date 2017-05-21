@@ -8,6 +8,8 @@
 package net.rpgtoolkit.common.assets.serialization;
 
 import java.awt.Point;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -28,9 +30,11 @@ import net.rpgtoolkit.common.assets.TileSet;
 import net.rpgtoolkit.common.assets.BoardVectorType;
 import net.rpgtoolkit.common.assets.Event;
 import net.rpgtoolkit.common.assets.EventType;
+import net.rpgtoolkit.common.assets.Program;
 import net.rpgtoolkit.common.assets.SpriteSheet;
 import net.rpgtoolkit.common.assets.files.FileAssetHandleResolver;
 import net.rpgtoolkit.common.assets.serialization.legacy.LegacyAnimatedTileSerializer;
+import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -61,6 +65,7 @@ public class AssetSerializerTest {
         assetManager.registerSerializer(new JsonSpecialMoveSerializer());
         assetManager.registerSerializer(new JsonEnemySerializer());
         assetManager.registerSerializer(new JsonItemSerializer());
+        assetManager.registerSerializer(new TextProgramSerializer());
         assetManager.registerSerializer(new JsonTileSetSerializer());
     }
 
@@ -78,7 +83,7 @@ public class AssetSerializerTest {
         asset = AssetSerializerTestHelper.deserializeFile(path, serializer);
         checkProject(asset);
     }
-    
+
     private void checkProject(Project asset) {
         Assert.assertEquals("The Wizard's Tower", asset.getName());
         Assert.assertEquals(640, asset.getResolutionWidth());
@@ -110,14 +115,14 @@ public class AssetSerializerTest {
         Assert.assertEquals(0.2, asset.getFrameRate(), 25);
         Assert.assertEquals(90, asset.getAnimationHeight());
         Assert.assertEquals(55, asset.getAnimationWidth());
-        
+
         SpriteSheet spriteSheet = asset.getSpriteSheet();
         Assert.assertEquals("attack1_north.png", spriteSheet.getFileName());
         Assert.assertEquals(0, spriteSheet.getX());
         Assert.assertEquals(0, spriteSheet.getY());
         Assert.assertEquals(100, spriteSheet.getWidth());
-        Assert.assertEquals(25, spriteSheet.getHeight());  
-        
+        Assert.assertEquals(25, spriteSheet.getHeight());
+
         Assert.assertEquals("hit.wav", asset.getSoundEffect());
     }
 
@@ -168,7 +173,7 @@ public class AssetSerializerTest {
         Assert.assertEquals(1, asset.getStartingPositionX());
         Assert.assertEquals(3, asset.getStartingPositionY());
         Assert.assertEquals(0, asset.getStartingLayer());
-        
+
         Assert.assertEquals("room.prg", asset.getFirstRunProgram());
         Assert.assertEquals("room.wav", asset.getBackgroundMusic());
     }
@@ -249,10 +254,10 @@ public class AssetSerializerTest {
         points.add(new Point(30, 0));
         points.add(new Point(30, 20));
         points.add(new Point(0, 20));
-        
+
         ArrayList<Event> events = new ArrayList<>();
         events.add(new Event(EventType.OVERLAP, "myprogram"));
-        
+
         BoardVector expectedBaseVector = buildBoardVector(BoardVectorType.SOLID, false, "", 0, points, events);
         expectedBaseVector.setPoints(points);
         Assert.assertEquals(expectedBaseVector, asset.getBaseVector());
@@ -314,10 +319,10 @@ public class AssetSerializerTest {
         points.add(new Point(30, 0));
         points.add(new Point(30, 20));
         points.add(new Point(0, 20));
-        
+
         ArrayList<Event> events = new ArrayList<>();
         events.add(new Event(EventType.OVERLAP, "myprogram"));
-        
+
         BoardVector expectedBaseVector = buildBoardVector(BoardVectorType.SOLID, false, "", 0, points, events);
         expectedBaseVector.setPoints(points);
         Assert.assertEquals(expectedBaseVector, asset.getBaseVector());
@@ -373,10 +378,10 @@ public class AssetSerializerTest {
         points.add(new Point(30, 0));
         points.add(new Point(30, 20));
         points.add(new Point(0, 20));
-        
+
         ArrayList<Event> events = new ArrayList<>();
         events.add(new Event(EventType.OVERLAP, "myprogram"));
-        
+
         BoardVector expectedBaseVector = buildBoardVector(BoardVectorType.SOLID, false, "", 0, points, events);
         expectedBaseVector.setPoints(points);
         Assert.assertEquals(expectedBaseVector, asset.getBaseVector());
@@ -391,6 +396,22 @@ public class AssetSerializerTest {
 
         Assert.assertEquals(new Point(0, 47), asset.getBaseVectorOffset());
         Assert.assertEquals(new Point(-3, 42), asset.getActivationVectorOffset());
+    }
+
+    @Test
+    public void testProgramSerializer() throws Exception {
+        String path = AssetSerializerTestHelper.getPath(
+                "Programs/Startup.js");
+        TextProgramSerializer serializer = new TextProgramSerializer();
+
+        // Deserialize original.
+        Program asset = AssetSerializerTestHelper.deserializeFile(path, serializer);
+        checkProgram(asset);
+    }
+
+    private void checkProgram(Program asset) throws IOException {
+        String code = FileUtils.readFileToString(asset.getFile(), "UTF-8");
+        Assert.assertEquals(code, asset.getProgramBuffer().toString());
     }
 
     private void checkMapsEqual(Map<String, String> expected, Map<String, String> actual) {

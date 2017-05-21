@@ -147,7 +147,7 @@ public class MainWindow extends JFrame implements InternalFrameListener {
 		toolboxPanel.add(lowerTabbedPane);
 
 		// Application icon.
-		setIconImage(Icons.getLargeIcon("application").getImage());
+		setIconImage(Icons.getLargeIcon("editor").getImage());
 
 		menuBar = new MainMenuBar(this);
 		toolBar = new MainToolBar();

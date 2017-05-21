@@ -154,8 +154,8 @@ public class EditorFileManager {
 			return new String[]{CoreProperties
 					.getProperty("toolkit.character.extension.default")};
 		} else if (type == Program.class) {
-			return CoreProperties.getProperty(
-					"toolkit.program.extension.default").split(",");
+			return new String[]{CoreProperties
+                                        .getProperty("toolkit.program.extension.default")};
 		} else if (type == Project.class) {
 			return new String[]{CoreProperties
 					.getProperty("toolkit.project.extension.default")};

@@ -15,12 +15,12 @@ import net.rpgtoolkit.editor.editors.sprite.AbstractSpriteModelPanel;
  * @author Joshua Michael Daly
  */
 public class ItemModelPanel extends AbstractSpriteModelPanel {
-  
-  private Item item;
 
-  public ItemModelPanel(Item model) {
-    super(model);
-    item = model;
-  }
+	private Item item;
+
+	public ItemModelPanel(Item model) {
+		super(model);
+		item = model;
+	}
 
 }

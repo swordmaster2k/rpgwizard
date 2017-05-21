@@ -21,32 +21,32 @@ import net.rpgtoolkit.editor.utilities.EditorFileManager;
  */
 public class BrowseAnimationActionListener implements ActionListener {
 
-    private final AbstractSprite sprite;
+	private final AbstractSprite sprite;
 
-    private final AbstractSpriteEditor spriteEditor;
+	private final AbstractSpriteEditor spriteEditor;
 
-    private final JTable animationsTable;
+	private final JTable animationsTable;
 
-    public BrowseAnimationActionListener(AbstractSpriteEditor editor) {
-        spriteEditor = editor;
-        sprite = editor.getSprite();
-        animationsTable = editor.getAnimationsTable();
-    }
+	public BrowseAnimationActionListener(AbstractSpriteEditor editor) {
+		spriteEditor = editor;
+		sprite = editor.getSprite();
+		animationsTable = editor.getAnimationsTable();
+	}
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        int rowIndex = animationsTable.getSelectedRow();
-        if (rowIndex < 0) {
-            return;
-        }
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		int rowIndex = animationsTable.getSelectedRow();
+		if (rowIndex < 0) {
+			return;
+		}
 
-        String path = EditorFileManager.browseByTypeRelative(Animation.class);
-        if (path != null) {
-            String key = (String) animationsTable.getValueAt(rowIndex, 0);
-            sprite.updateAnimation(key, path);
+		String path = EditorFileManager.browseByTypeRelative(Animation.class);
+		if (path != null) {
+			String key = (String) animationsTable.getValueAt(rowIndex, 0);
+			sprite.updateAnimation(key, path);
 
-            spriteEditor.openAnimation(path);
-        }
-    }
+			spriteEditor.openAnimation(path);
+		}
+	}
 
 }

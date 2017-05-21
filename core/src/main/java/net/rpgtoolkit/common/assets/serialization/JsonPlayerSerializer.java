@@ -21,54 +21,57 @@ import org.json.JSONObject;
  */
 public class JsonPlayerSerializer extends AbstractSpriteSerializer {
 
-    @Override
-    public boolean serializable(AssetDescriptor descriptor) {
-        final String ext = Paths.extension(descriptor.getURI());
-        return (ext.endsWith(CoreProperties.getFullExtension("toolkit.character.extension.json")));
-    }
+	@Override
+	public boolean serializable(AssetDescriptor descriptor) {
+		final String ext = Paths.extension(descriptor.getURI());
+		return (ext.endsWith(CoreProperties
+				.getFullExtension("toolkit.character.extension.json")));
+	}
 
-    @Override
-    public boolean deserializable(AssetDescriptor descriptor) {
-        return serializable(descriptor);
-    }
+	@Override
+	public boolean deserializable(AssetDescriptor descriptor) {
+		return serializable(descriptor);
+	}
 
-    @Override
-    protected void load(AssetHandle handle, JSONObject json) throws AssetException {
-        final Player player = super.load(new Player(handle.getDescriptor()), json);
-        
-        player.setLevel(json.getInt("level"));
-        player.setMaxLevel(json.getInt("maxLevel"));
-        player.setExperience(json.getDouble("experience"));
-        player.setMaxExperience(json.getDouble("maxExperience"));
-        player.setHealth(json.getDouble("health"));
-        player.setMaxHealth(json.getDouble("maxHealth"));
-        player.setAttack(json.getDouble("attack"));
-        player.setMaxAttack(json.getDouble("maxAttack"));
-        player.setDefence(json.getDouble("defence"));
-        player.setMaxDefence(json.getDouble("maxDefence"));
-        player.setMagic(json.getDouble("magic"));
-        player.setMaxMagic(json.getDouble("maxMagic"));
+	@Override
+	protected void load(AssetHandle handle, JSONObject json)
+			throws AssetException {
+		final Player player = super.load(new Player(handle.getDescriptor()),
+				json);
 
-        handle.setAsset(player);
-    }
+		player.setLevel(json.getInt("level"));
+		player.setMaxLevel(json.getInt("maxLevel"));
+		player.setExperience(json.getDouble("experience"));
+		player.setMaxExperience(json.getDouble("maxExperience"));
+		player.setHealth(json.getDouble("health"));
+		player.setMaxHealth(json.getDouble("maxHealth"));
+		player.setAttack(json.getDouble("attack"));
+		player.setMaxAttack(json.getDouble("maxAttack"));
+		player.setDefence(json.getDouble("defence"));
+		player.setMaxDefence(json.getDouble("maxDefence"));
+		player.setMagic(json.getDouble("magic"));
+		player.setMaxMagic(json.getDouble("maxMagic"));
 
-    @Override
-    protected void store(AssetHandle handle, JSONObject json)
-            throws AssetException {
-        final Player player = super.store((Player) handle.getAsset(), json);
-        
-        json.put("level", player.getLevel());
-        json.put("maxLevel", player.getMaxLevel());
-        json.put("experience", player.getExperience());
-        json.put("maxExperience", player.getMaxExperience());
-        json.put("health", player.getHealth());
-        json.put("maxHealth", player.getMaxHealth());
-        json.put("attack", player.getAttack());
-        json.put("maxAttack", player.getMaxAttack());
-        json.put("defence", player.getDefence());
-        json.put("maxDefence", player.getMaxDefence());
-        json.put("magic", player.getMagic());
-        json.put("maxMagic", player.getMaxMagic());
-    }
+		handle.setAsset(player);
+	}
+
+	@Override
+	protected void store(AssetHandle handle, JSONObject json)
+			throws AssetException {
+		final Player player = super.store((Player) handle.getAsset(), json);
+
+		json.put("level", player.getLevel());
+		json.put("maxLevel", player.getMaxLevel());
+		json.put("experience", player.getExperience());
+		json.put("maxExperience", player.getMaxExperience());
+		json.put("health", player.getHealth());
+		json.put("maxHealth", player.getMaxHealth());
+		json.put("attack", player.getAttack());
+		json.put("maxAttack", player.getMaxAttack());
+		json.put("defence", player.getDefence());
+		json.put("maxDefence", player.getMaxDefence());
+		json.put("magic", player.getMagic());
+		json.put("maxMagic", player.getMaxMagic());
+	}
 
 }

@@ -14,13 +14,13 @@ import java.io.File;
  * @author Chris Hutchinson
  */
 public interface Asset {
-        
-    File getFile();
-    
-    AssetDescriptor getDescriptor();
-    
-    void setDescriptor(AssetDescriptor assetDescriptor);
-    
-    void reset();
-    
+
+	File getFile();
+
+	AssetDescriptor getDescriptor();
+
+	void setDescriptor(AssetDescriptor assetDescriptor);
+
+	void reset();
+
 }

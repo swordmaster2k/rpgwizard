@@ -17,9 +17,9 @@ import net.rpgtoolkit.editor.utilities.EditorFileManager;
  */
 public class OpenFileAction extends AbstractAction {
 
-  @Override
-  public void actionPerformed(ActionEvent e) {
-    EditorFileManager.openFile();
-  }
-  
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		EditorFileManager.openFile();
+	}
+
 }

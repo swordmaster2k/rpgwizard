@@ -14,11 +14,11 @@ package net.rpgtoolkit.common.assets;
  */
 public class TilePixelOutOfRangeException extends Throwable {
 
-  /**
-   *
-   * @param message
-   */
-  public TilePixelOutOfRangeException(String message) {
-    super(message);
-  }
+	/**
+	 *
+	 * @param message
+	 */
+	public TilePixelOutOfRangeException(String message) {
+		super(message);
+	}
 }

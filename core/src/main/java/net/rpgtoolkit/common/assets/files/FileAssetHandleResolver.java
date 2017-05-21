@@ -16,17 +16,16 @@ import net.rpgtoolkit.common.assets.AssetHandleResolver;
  *
  * @author Chris Hutchinson <chris@cshutchinson.com>
  */
-public class FileAssetHandleResolver
-  implements AssetHandleResolver {
+public class FileAssetHandleResolver implements AssetHandleResolver {
 
-  @Override
-  public boolean resolvable(AssetDescriptor descriptor) {
-    return descriptor.getURI().getScheme().equals("file");
-  }
+	@Override
+	public boolean resolvable(AssetDescriptor descriptor) {
+		return descriptor.getURI().getScheme().equals("file");
+	}
 
-  @Override
-  public AssetHandle resolve(AssetDescriptor descriptor) {
-    return new FileAssetHandle(descriptor);
-  }
+	@Override
+	public AssetHandle resolve(AssetDescriptor descriptor) {
+		return new FileAssetHandle(descriptor);
+	}
 
 }

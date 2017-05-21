@@ -25,22 +25,22 @@ import net.rpgtoolkit.editor.utilities.GuiHelper;
  * @author Joshua Michael Daly
  */
 public class AnimationModelPanel extends AbstractModelPanel {
-  
-  private final JComboBox soundEffectComboBox;
-  private final JLabel soundEffectLabel;
-  
-  private final JSpinner widthSpinner;
-  private final JLabel widthLabel;
-  
-  private final JSpinner heightSpinner;
-  private final JLabel heightLabel;
-  
-  private final JSpinner frameRateSpinner;
-  private final JLabel frameRateLabel;
-  
-  private final Animation animation;
-  
-  public AnimationModelPanel(Animation model) {
+
+	private final JComboBox soundEffectComboBox;
+	private final JLabel soundEffectLabel;
+
+	private final JSpinner widthSpinner;
+	private final JLabel widthLabel;
+
+	private final JSpinner heightSpinner;
+	private final JLabel heightLabel;
+
+	private final JSpinner frameRateSpinner;
+	private final JLabel frameRateLabel;
+
+	private final Animation animation;
+
+	public AnimationModelPanel(Animation model) {
     ///
     /// super
     ///
@@ -138,5 +138,4 @@ public class AnimationModelPanel extends AbstractModelPanel {
   
     layout.setVerticalGroup(verticalGroup);
   }
-
 }

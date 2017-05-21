@@ -19,78 +19,80 @@ import java.util.List;
  */
 public class StatusEffect extends AbstractAsset {
 
-  private String name;
-  private StatusEffectTarget target;
-  private List<StatusEffectAttribute> attributes;
-  private boolean isProgramEnabled;
-  private AssetDescriptor program;
+	private String name;
+	private StatusEffectTarget target;
+	private List<StatusEffectAttribute> attributes;
+	private boolean isProgramEnabled;
+	private AssetDescriptor program;
 
-  public StatusEffect(AssetDescriptor descriptor) {
+	public StatusEffect(AssetDescriptor descriptor) {
     super(descriptor);
     this.attributes = new ArrayList<>();
     this.target = StatusEffectTarget.ANY;
     this.isProgramEnabled = false;
   }
+	public String getName() {
+		return this.name;
+	}
 
-  public String getName() {
-    return this.name;
-  }
+	public void setName(String value) {
+		this.name = value;
+	}
 
-  public void setName(String value) {
-    this.name = value;
-  }
+	public AssetDescriptor getProgram() {
+		return this.program;
+	}
 
-  public AssetDescriptor getProgram() {
-    return this.program;
-  }
+	public void setProgram(AssetDescriptor value) {
+		this.program = value;
+	}
 
-  public void setProgram(AssetDescriptor value) {
-    this.program = value;
-  }
+	public boolean isProgramEnabled() {
+		return this.isProgramEnabled;
+	}
 
-  public boolean isProgramEnabled() {
-    return this.isProgramEnabled;
-  }
+	public void setProgramEnabled(boolean value) {
+		this.isProgramEnabled = value;
+	}
 
-  public void setProgramEnabled(boolean value) {
-    this.isProgramEnabled = value;
-  }
+	/**
+	 * Gets the kind of target(s) the status effect can be applied to.
+	 *
+	 * @return {@see StatusEffectTarget}
+	 */
+	public StatusEffectTarget getTarget() {
+		return this.target;
+	}
 
-  /**
-   * Gets the kind of target(s) the status effect can be applied to.
-   *
-   * @return {@see StatusEffectTarget}
-   */
-  public StatusEffectTarget getTarget() {
-    return this.target;
-  }
+	public void setTarget(StatusEffectTarget value) {
+		this.target = value;
+	}
 
-  public void setTarget(StatusEffectTarget value) {
-    this.target = value;
-  }
+	/**
+	 * Gets the first status effect attribute of the specified kind.
+	 *
+	 * @param kind
+	 *            attribute kind
+	 * @return attribute if kind is present, otherwise null
+	 */
+	public StatusEffectAttribute getAttributeByKind(
+			StatusEffectAttributeKind kind) {
+		for (final StatusEffectAttribute attr : attributes) {
+			if (attr.getKind().equals(kind)) {
+				return attr;
+			}
+		}
+		return null;
+	}
 
-  /**
-   * Gets the first status effect attribute of the specified kind.
-   *
-   * @param kind attribute kind
-   * @return attribute if kind is present, otherwise null
-   */
-  public StatusEffectAttribute getAttributeByKind(StatusEffectAttributeKind kind) {
-    for (final StatusEffectAttribute attr : attributes) {
-      if (attr.getKind().equals(kind)) {
-        return attr;
-      }
-    }
-    return null;
-  }
-
-  /**
-   * Collects all status effect attributes of the specified kind.
-   *
-   * @param kind attribute kind
-   * @return list of attributes.
-   */
-  public List<StatusEffectAttribute> getAttributesByKind(StatusEffectAttributeKind kind) {
+	/**
+	 * Collects all status effect attributes of the specified kind.
+	 *
+	 * @param kind
+	 *            attribute kind
+	 * @return list of attributes.
+	 */
+	public List<StatusEffectAttribute> getAttributesByKind(StatusEffectAttributeKind kind) {
     List<StatusEffectAttribute> attributes = new ArrayList<>();
     for (final StatusEffectAttribute attr : attributes) {
       if (attr.getKind().equals(kind)) {
@@ -99,21 +101,19 @@ public class StatusEffect extends AbstractAsset {
     }
     return attributes;
   }
+	/**
+	 * Returns a collection of attributes applied to a target when the status
+	 * effect is given to a target.
+	 *
+	 * @return collection of attributes
+	 */
+	public List<StatusEffectAttribute> getAttributes() {
+		return this.attributes;
+	}
 
-  /**
-   * Returns a collection of attributes applied to a target when the
-   * status effect is given to a target.
-   *
-   * @return collection of attributes
-   */
-  public List<StatusEffectAttribute> getAttributes() {
-    return this.attributes;
-  }
-
-  public void setAttributes(Collection<StatusEffectAttribute> value) {
-    this.attributes.clear();
-    this.attributes.addAll(value);
-  }
+	public void setAttributes(Collection<StatusEffectAttribute> value) {
+		this.attributes.clear();
+		this.attributes.addAll(value);
+	}
 
 }
-

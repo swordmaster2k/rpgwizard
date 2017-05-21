@@ -9,17 +9,17 @@ package net.rpgtoolkit.common.assets;
 
 public class Program extends AbstractAsset {
 
-  private StringBuffer programBuffer;
+	private StringBuffer programBuffer;
 
-  public Program(AssetDescriptor assetDescriptor) {
-    super(assetDescriptor);
-  }
+	public Program(AssetDescriptor assetDescriptor) {
+		super(assetDescriptor);
+	}
 
-  public String getFileName() {
-    return descriptor.getURI().toString();
-  }
+	public String getFileName() {
+		return descriptor.getURI().toString();
+	}
 
-  public StringBuffer getProgramBuffer() {
-    return programBuffer;
-  }
+	public StringBuffer getProgramBuffer() {
+		return programBuffer;
+	}
 }

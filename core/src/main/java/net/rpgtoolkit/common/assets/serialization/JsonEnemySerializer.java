@@ -21,44 +21,46 @@ import org.json.JSONObject;
  */
 public class JsonEnemySerializer extends AbstractSpriteSerializer {
 
-    @Override
-    public boolean serializable(AssetDescriptor descriptor) {
-        final String ext = Paths.extension(descriptor.getURI());
-        return (ext.endsWith(CoreProperties.getFullExtension("toolkit.enemy.extension.json")));
-    }
+	@Override
+	public boolean serializable(AssetDescriptor descriptor) {
+		final String ext = Paths.extension(descriptor.getURI());
+		return (ext.endsWith(CoreProperties
+				.getFullExtension("toolkit.enemy.extension.json")));
+	}
 
-    @Override
-    public boolean deserializable(AssetDescriptor descriptor) {
-        return serializable(descriptor);
-    }
+	@Override
+	public boolean deserializable(AssetDescriptor descriptor) {
+		return serializable(descriptor);
+	}
 
-    @Override
-    protected void load(AssetHandle handle, JSONObject json) throws AssetException {
-        final Enemy enemy = super.load(new Enemy(handle.getDescriptor()), json);
+	@Override
+	protected void load(AssetHandle handle, JSONObject json)
+			throws AssetException {
+		final Enemy enemy = super.load(new Enemy(handle.getDescriptor()), json);
 
-        enemy.setLevel(json.getInt("level"));
-        enemy.setHealth(json.getDouble("health"));
-        enemy.setAttack(json.getDouble("attack"));
-        enemy.setDefence(json.getDouble("defence"));
-        enemy.setMagic(json.getDouble("magic"));
-        enemy.setExperienceReward(json.getDouble("experienceReward"));
-        enemy.setGoldReward(json.getDouble("goldReward"));
+		enemy.setLevel(json.getInt("level"));
+		enemy.setHealth(json.getDouble("health"));
+		enemy.setAttack(json.getDouble("attack"));
+		enemy.setDefence(json.getDouble("defence"));
+		enemy.setMagic(json.getDouble("magic"));
+		enemy.setExperienceReward(json.getDouble("experienceReward"));
+		enemy.setGoldReward(json.getDouble("goldReward"));
 
-        handle.setAsset(enemy);
-    }
+		handle.setAsset(enemy);
+	}
 
-    @Override
-    protected void store(AssetHandle handle, JSONObject json)
-            throws AssetException {
-        final Enemy enemy = super.store((Enemy) handle.getAsset(), json);
+	@Override
+	protected void store(AssetHandle handle, JSONObject json)
+			throws AssetException {
+		final Enemy enemy = super.store((Enemy) handle.getAsset(), json);
 
-        json.put("level", enemy.getLevel());
-        json.put("health", enemy.getHealth());
-        json.put("attack", enemy.getAttack());
-        json.put("defence", enemy.getDefence());
-        json.put("magic", enemy.getMagic());
-        json.put("experienceReward", enemy.getExperienceReward());
-        json.put("goldReward", enemy.getGoldReward());
-    }
+		json.put("level", enemy.getLevel());
+		json.put("health", enemy.getHealth());
+		json.put("attack", enemy.getAttack());
+		json.put("defence", enemy.getDefence());
+		json.put("magic", enemy.getMagic());
+		json.put("experienceReward", enemy.getExperienceReward());
+		json.put("goldReward", enemy.getGoldReward());
+	}
 
 }

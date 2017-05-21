@@ -20,51 +20,53 @@ import net.rpgtoolkit.common.assets.BoardSprite;
  */
 public class BoardChangedEvent extends EventObject {
 
-    private BoardLayer layer;
-    private BoardSprite boardSprite;
+	private BoardLayer layer;
+	private BoardSprite boardSprite;
 
-    /**
-     * Creates a new event.
-     *
-     * @param board board the event happened on
-     */
-    public BoardChangedEvent(Board board) {
-        super(board);
-    }
+	/**
+	 * Creates a new event.
+	 *
+	 * @param board
+	 *            board the event happened on
+	 */
+	public BoardChangedEvent(Board board) {
+		super(board);
+	}
 
-    /**
-     * Gets the layer that was effected.
-     *
-     * @return effected layer
-     */
-    public BoardLayer getLayer() {
-        return layer;
-    }
+	/**
+	 * Gets the layer that was effected.
+	 *
+	 * @return effected layer
+	 */
+	public BoardLayer getLayer() {
+		return layer;
+	}
 
-    /**
-     * Sets the effected layer.
-     *
-     * @param layer effected layer
-     */
-    public void setLayer(BoardLayer layer) {
-        this.layer = layer;
-    }
+	/**
+	 * Sets the effected layer.
+	 *
+	 * @param layer
+	 *            effected layer
+	 */
+	public void setLayer(BoardLayer layer) {
+		this.layer = layer;
+	}
 
-    /**
-     * Gets the BoardSprite that was added, if any.
-     * 
-     * @return 
-     */
-    public BoardSprite getBoardSprite() {
-        return boardSprite;
-    }
+	/**
+	 * Gets the BoardSprite that was added, if any.
+	 * 
+	 * @return
+	 */
+	public BoardSprite getBoardSprite() {
+		return boardSprite;
+	}
 
-    /**
-     * Sets the BoardSprite that was added.
-     * 
-     * @param boardSprite 
-     */
-    public void setBoardSprite(BoardSprite boardSprite) {
-        this.boardSprite = boardSprite;
-    }
+	/**
+	 * Sets the BoardSprite that was added.
+	 * 
+	 * @param boardSprite
+	 */
+	public void setBoardSprite(BoardSprite boardSprite) {
+		this.boardSprite = boardSprite;
+	}
 }

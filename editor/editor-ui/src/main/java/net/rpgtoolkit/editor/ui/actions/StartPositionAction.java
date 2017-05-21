@@ -19,12 +19,12 @@ import net.rpgtoolkit.editor.MainWindow;
  */
 public class StartPositionAction extends AbstractAction {
 
-  @Override
-  public void actionPerformed(ActionEvent e) {
-    BoardEditor.toggleSelectedOnBoardEditor();
-    
-    StartPositionBrush brush = new StartPositionBrush();
-    MainWindow.getInstance().setCurrentBrush(brush);
-  }
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		BoardEditor.toggleSelectedOnBoardEditor();
+
+		StartPositionBrush brush = new StartPositionBrush();
+		MainWindow.getInstance().setCurrentBrush(brush);
+	}
 
 }

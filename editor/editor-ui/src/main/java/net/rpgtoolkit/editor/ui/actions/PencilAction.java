@@ -20,14 +20,14 @@ import net.rpgtoolkit.editor.MainWindow;
  */
 public class PencilAction extends AbstractAction {
 
-  @Override
-  public void actionPerformed(ActionEvent e) {
-    BoardEditor.toggleSelectedOnBoardEditor();
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		BoardEditor.toggleSelectedOnBoardEditor();
 
-    ShapeBrush brush = new ShapeBrush();
-    brush.setTile(MainWindow.getInstance().getLastSelectedTile());
-    brush.makeRectangleBrush(new Rectangle(0, 0, 1, 1));
-    MainWindow.getInstance().setCurrentBrush(brush);
-  }
+		ShapeBrush brush = new ShapeBrush();
+		brush.setTile(MainWindow.getInstance().getLastSelectedTile());
+		brush.makeRectangleBrush(new Rectangle(0, 0, 1, 1));
+		MainWindow.getInstance().setCurrentBrush(brush);
+	}
 
 }

@@ -27,29 +27,29 @@ import net.rpgtoolkit.editor.editors.character.CharacterModelPanel;
  * @author Joshua Michael Daly
  */
 public final class ModelPanelFactory {
-  
-  private ModelPanelFactory() {
 
-  }
+	private ModelPanelFactory() {
 
-  public static AbstractModelPanel getModelPanel(Object model) {
-    if (model instanceof Board) {
-      return new BoardPanel((Board) model);
-    } else if (model instanceof BoardVector) {
-      return new BoardVectorPanel((BoardVector) model);
-    } else if (model instanceof BoardSprite) {
-      return new BoardSpritePanel((BoardSprite) model);
-    } else if (model instanceof BoardLight) {
+	}
 
-    } else if (model instanceof Animation) {
-      return new AnimationModelPanel((Animation) model);
-    } else if (model instanceof Player) {
-      return new CharacterModelPanel((Player) model);
-    } else if (model instanceof Item) {
-      return new ItemModelPanel((Item) model);
-    }
+	public static AbstractModelPanel getModelPanel(Object model) {
+		if (model instanceof Board) {
+			return new BoardPanel((Board) model);
+		} else if (model instanceof BoardVector) {
+			return new BoardVectorPanel((BoardVector) model);
+		} else if (model instanceof BoardSprite) {
+			return new BoardSpritePanel((BoardSprite) model);
+		} else if (model instanceof BoardLight) {
 
-    return null;
-  }
-  
+		} else if (model instanceof Animation) {
+			return new AnimationModelPanel((Animation) model);
+		} else if (model instanceof Player) {
+			return new CharacterModelPanel((Player) model);
+		} else if (model instanceof Item) {
+			return new ItemModelPanel((Item) model);
+		}
+
+		return null;
+	}
+
 }

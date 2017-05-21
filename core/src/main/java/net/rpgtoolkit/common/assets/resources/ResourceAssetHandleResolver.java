@@ -12,21 +12,21 @@ import net.rpgtoolkit.common.assets.AssetHandle;
 import net.rpgtoolkit.common.assets.AssetHandleResolver;
 
 /**
- * Resolves an asset handle for an asset reachable through the system class loader, and therefore
- * any resource on the classpath.
+ * Resolves an asset handle for an asset reachable through the system class
+ * loader, and therefore any resource on the classpath.
  *
  * @author Chris Hutchinson <chris@cshutchinson.com>
  */
 public class ResourceAssetHandleResolver implements AssetHandleResolver {
 
-  @Override
-  public boolean resolvable(AssetDescriptor descriptor) {
-    return descriptor.getURI().getScheme().equals("res");
-  }
+	@Override
+	public boolean resolvable(AssetDescriptor descriptor) {
+		return descriptor.getURI().getScheme().equals("res");
+	}
 
-  @Override
-  public AssetHandle resolve(AssetDescriptor descriptor) {
-    return new ResourceAssetHandle(descriptor);
-  }
+	@Override
+	public AssetHandle resolve(AssetDescriptor descriptor) {
+		return new ResourceAssetHandle(descriptor);
+	}
 
 }

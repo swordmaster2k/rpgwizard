@@ -11,8 +11,8 @@ import net.rpgtoolkit.common.assets.AssetException;
 
 public class CorruptAssetException extends AssetException {
 
-  public CorruptAssetException(String message) {
-    super(message);
-  }
+	public CorruptAssetException(String message) {
+		super(message);
+	}
 
 }

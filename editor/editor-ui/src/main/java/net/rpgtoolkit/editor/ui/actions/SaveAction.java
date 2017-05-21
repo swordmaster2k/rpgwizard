@@ -22,29 +22,30 @@ import org.slf4j.LoggerFactory;
  * @author Joshua Michael Daly
  */
 public class SaveAction extends AbstractAction {
-  
-  private static final Logger LOGGER = LoggerFactory.getLogger(SaveAction.class);
 
-  @Override
-  public void actionPerformed(ActionEvent e) {
-    MainWindow w = MainWindow.getInstance();
-    JInternalFrame frame = w.getDesktopPane().getSelectedFrame();
-    
-    if (frame != null) {
-      if (frame instanceof AssetEditorWindow) {
-        try {
-          AssetEditorWindow window = (AssetEditorWindow) frame;
-          window.save();
-        } catch (Exception ex) {
-          LOGGER.error("Failed to invoke save for asset frame=[{}]", frame, ex);
-          
-          JOptionPane.showMessageDialog(MainWindow.getInstance(),
-                  "Error saving file!",
-                  "Error on Save",
-                  JOptionPane.ERROR_MESSAGE);
-        }
-      }
-    }
-  }
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(SaveAction.class);
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		MainWindow w = MainWindow.getInstance();
+		JInternalFrame frame = w.getDesktopPane().getSelectedFrame();
+
+		if (frame != null) {
+			if (frame instanceof AssetEditorWindow) {
+				try {
+					AssetEditorWindow window = (AssetEditorWindow) frame;
+					window.save();
+				} catch (Exception ex) {
+					LOGGER.error("Failed to invoke save for asset frame=[{}]",
+							frame, ex);
+
+					JOptionPane.showMessageDialog(MainWindow.getInstance(),
+							"Error saving file!", "Error on Save",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		}
+	}
 
 }

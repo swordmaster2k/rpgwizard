@@ -19,9 +19,11 @@ import net.rpgtoolkit.editor.MainWindow;
  */
 public class ExitAction extends AbstractAction {
 
-  @Override
-  public void actionPerformed(ActionEvent e) {
-      MainWindow.getInstance().dispatchEvent(new WindowEvent(MainWindow.getInstance(), WindowEvent.WINDOW_CLOSING));
-  }
-  
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		MainWindow.getInstance().dispatchEvent(
+				new WindowEvent(MainWindow.getInstance(),
+						WindowEvent.WINDOW_CLOSING));
+	}
+
 }

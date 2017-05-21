@@ -26,72 +26,75 @@ import net.rpgtoolkit.editor.ui.resources.Icons;
  *
  * @author Joshua Michael Daly
  */
-public class ItemEditor extends AbstractSpriteEditor implements InternalFrameListener, SpriteChangeListener {
+public class ItemEditor extends AbstractSpriteEditor
+		implements
+			InternalFrameListener,
+			SpriteChangeListener {
 
-  private final Item item;
+	private final Item item;
 
-  private JTextField itemName;
-  private JTextField itemDescription;
+	private JTextField itemName;
+	private JTextField itemDescription;
 
-  public ItemEditor(Item item) {
-    super("Untitled", item, Icons.getIcon("item"));
+	public ItemEditor(Item item) {
+		super("Untitled", item, Icons.getIcon("item"));
 
-    this.item = item;
-    this.item.addSpriteChangeListener(this);
+		this.item = item;
+		this.item.addSpriteChangeListener(this);
 
-    if (this.item.getDescriptor() == null) {
-      setupNewItem();
-    } else {
-      setTitle(new File(item.getDescriptor().getURI()).getName());
-    }
+		if (this.item.getDescriptor() == null) {
+			setupNewItem();
+		} else {
+			setTitle(new File(item.getDescriptor().getURI()).getName());
+		}
 
-    constructWindow();
-    setVisible(true);
-    pack();
-  }
-  
-  @Override
-  public AbstractAsset getAsset() {
-      return item;
-  }
-  
-  public Item getItem() {
-     return item;
-  }
+		constructWindow();
+		setVisible(true);
+		pack();
+	}
 
-  @Override
-  public void save() throws Exception {
-    // Get the relative portrait path.
-    checkProfileImagePath();
-    
-    item.setName(itemName.getText());
-    item.setDescription(itemDescription.getText());
+	@Override
+	public AbstractAsset getAsset() {
+		return item;
+	}
 
-    save(item);
-  }
+	public Item getItem() {
+		return item;
+	}
 
-  @Override
-  public void saveAs(File file) throws Exception {
-    item.setDescriptor(new AssetDescriptor((file.toURI())));
-    setTitle(file.getName());
-    save();
-  }
-  
-  private void setupNewItem() {
-    String undefined = "Undefined";
-    item.setDescription(undefined);
-  }
+	@Override
+	public void save() throws Exception {
+		// Get the relative portrait path.
+		checkProfileImagePath();
 
-  private void constructWindow() {
-    addInternalFrameListener(this);
+		item.setName(itemName.getText());
+		item.setDescription(itemDescription.getText());
 
-    createStatsPanel();
-    createAnimationsPanel();
+		save(item);
+	}
 
-    build();
-  }
+	@Override
+	public void saveAs(File file) throws Exception {
+		item.setDescriptor(new AssetDescriptor((file.toURI())));
+		setTitle(file.getName());
+		save();
+	}
 
-  private void createStatsPanel() {
+	private void setupNewItem() {
+		String undefined = "Undefined";
+		item.setDescription(undefined);
+	}
+
+	private void constructWindow() {
+		addInternalFrameListener(this);
+
+		createStatsPanel();
+		createAnimationsPanel();
+
+		build();
+	}
+
+	private void createStatsPanel() {
     List<Component> labels = new ArrayList<>();
     labels.add(new JLabel("Name"));
     labels.add(new JLabel("Description"));
@@ -110,9 +113,8 @@ public class ItemEditor extends AbstractSpriteEditor implements InternalFrameLis
 
     buildStatsPanel(labels, inputs);
   }
-
-  private void createAnimationsPanel() {
-    buildAnimationsPanel();
-  }
+	private void createAnimationsPanel() {
+		buildAnimationsPanel();
+	}
 
 }

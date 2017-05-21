@@ -18,13 +18,13 @@ import net.rpgtoolkit.editor.editors.BoardEditor;
  */
 public class ZoomOutAction extends AbstractAction {
 
-  @Override
-  public void actionPerformed(ActionEvent e) {
-    BoardEditor editor = MainWindow.getInstance().getCurrentBoardEditor();
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		BoardEditor editor = MainWindow.getInstance().getCurrentBoardEditor();
 
-    if (editor != null) {
-      editor.zoomOut();
-    }
-  }
+		if (editor != null) {
+			editor.zoomOut();
+		}
+	}
 
 }

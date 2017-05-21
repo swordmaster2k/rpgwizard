@@ -21,32 +21,34 @@ import org.json.JSONObject;
  */
 public class JsonItemSerializer extends AbstractSpriteSerializer {
 
-  @Override
-  public boolean serializable(AssetDescriptor descriptor) {
-    final String ext = Paths.extension(descriptor.getURI());
-    return (ext.endsWith(CoreProperties.getFullExtension("toolkit.item.extension.json")));
-  }
+	@Override
+	public boolean serializable(AssetDescriptor descriptor) {
+		final String ext = Paths.extension(descriptor.getURI());
+		return (ext.endsWith(CoreProperties
+				.getFullExtension("toolkit.item.extension.json")));
+	}
 
-  @Override
-  public boolean deserializable(AssetDescriptor descriptor) {
-    return serializable(descriptor);
-  }
+	@Override
+	public boolean deserializable(AssetDescriptor descriptor) {
+		return serializable(descriptor);
+	}
 
-  @Override
-  protected void load(AssetHandle handle, JSONObject json) throws AssetException {
-    final Item item = super.load(new Item(handle.getDescriptor()), json);
+	@Override
+	protected void load(AssetHandle handle, JSONObject json)
+			throws AssetException {
+		final Item item = super.load(new Item(handle.getDescriptor()), json);
 
-    item.setDescription(json.getString("description"));
+		item.setDescription(json.getString("description"));
 
-    handle.setAsset(item);
-  }
+		handle.setAsset(item);
+	}
 
-  @Override
-  protected void store(AssetHandle handle, JSONObject json)
-          throws AssetException {
-    final Item item = super.store((Item) handle.getAsset(), json);
-    
-    json.put("description", item.getDescription());
-  }
+	@Override
+	protected void store(AssetHandle handle, JSONObject json)
+			throws AssetException {
+		final Item item = super.store((Item) handle.getAsset(), json);
+
+		json.put("description", item.getDescription());
+	}
 
 }

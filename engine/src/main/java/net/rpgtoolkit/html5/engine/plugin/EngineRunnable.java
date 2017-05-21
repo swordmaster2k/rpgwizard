@@ -19,41 +19,39 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
  */
 public class EngineRunnable implements Runnable {
 
-    private final String resourceBase;
-    
-    private Server server;
+	private final String resourceBase;
 
-    public EngineRunnable(String resourceBase) {
-        this.resourceBase = resourceBase;
-    }
+	private Server server;
 
-    public void run() {
-        server = new Server(8080);
-        server.setStopAtShutdown(true);
+	public EngineRunnable(String resourceBase) {
+		this.resourceBase = resourceBase;
+	}
 
-        ResourceHandler resource_handler = new ResourceHandler();
-        resource_handler.setDirectoriesListed(true);
-        resource_handler.setWelcomeFiles(new String[]{"index.html"});
+	public void run() {
+		server = new Server(8080);
+		server.setStopAtShutdown(true);
 
-        resource_handler.setResourceBase(resourceBase);
+		ResourceHandler resource_handler = new ResourceHandler();
+		resource_handler.setDirectoriesListed(true);
+		resource_handler.setWelcomeFiles(new String[]{"index.html"});
 
-        HandlerList handlers = new HandlerList();
-        handlers.setHandlers(new Handler[]{
-            resource_handler,
-            new DefaultHandler()
-        });
-        server.setHandler(handlers);
+		resource_handler.setResourceBase(resourceBase);
 
-        try {
-            server.start();
-            server.join();
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-    
-    public void stop() throws Exception {
-        server.stop();
-    }
+		HandlerList handlers = new HandlerList();
+		handlers.setHandlers(new Handler[]{resource_handler,
+				new DefaultHandler()});
+		server.setHandler(handlers);
+
+		try {
+			server.start();
+			server.join();
+		} catch (Exception ex) {
+			throw new RuntimeException(ex);
+		}
+	}
+
+	public void stop() throws Exception {
+		server.stop();
+	}
 
 }

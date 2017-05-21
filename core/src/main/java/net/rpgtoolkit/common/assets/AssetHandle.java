@@ -16,29 +16,29 @@ import java.nio.channels.WritableByteChannel;
  */
 public abstract class AssetHandle {
 
-  public AssetHandle(AssetDescriptor descriptor) {
-    this.descriptor = descriptor;
-  }
+	public AssetHandle(AssetDescriptor descriptor) {
+		this.descriptor = descriptor;
+	}
 
-  public abstract ReadableByteChannel read() throws IOException;
+	public abstract ReadableByteChannel read() throws IOException;
 
-  public abstract WritableByteChannel write() throws IOException;
+	public abstract WritableByteChannel write() throws IOException;
 
-  public abstract long size() throws IOException;
+	public abstract long size() throws IOException;
 
-  public Asset getAsset() {
-    return this.asset;
-  }
+	public Asset getAsset() {
+		return this.asset;
+	}
 
-  public void setAsset(Asset asset) {
-    this.asset = asset;
-  }
+	public void setAsset(Asset asset) {
+		this.asset = asset;
+	}
 
-  public AssetDescriptor getDescriptor() {
-    return this.descriptor;
-  }
+	public AssetDescriptor getDescriptor() {
+		return this.descriptor;
+	}
 
-  protected final AssetDescriptor descriptor;
-  protected Asset asset;
+	protected final AssetDescriptor descriptor;
+	protected Asset asset;
 
 }

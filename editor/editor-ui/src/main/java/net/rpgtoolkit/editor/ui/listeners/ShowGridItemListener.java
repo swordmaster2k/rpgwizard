@@ -19,18 +19,18 @@ import net.rpgtoolkit.editor.editors.BoardEditor;
  */
 public class ShowGridItemListener implements ItemListener {
 
-  /**
-   *
-   * @param e
-   */
-  @Override
-  public void itemStateChanged(ItemEvent e) {
-    JCheckBoxMenuItem showGridMenuItem = (JCheckBoxMenuItem) e.getItem();
-    BoardEditor editor = MainWindow.getInstance().getCurrentBoardEditor();
-    if (editor != null) {
-      MainWindow.getInstance().setShowGrid(showGridMenuItem.isSelected());
-      editor.getBoardView().repaint();
-    }
-  }
+	/**
+	 *
+	 * @param e
+	 */
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+		JCheckBoxMenuItem showGridMenuItem = (JCheckBoxMenuItem) e.getItem();
+		BoardEditor editor = MainWindow.getInstance().getCurrentBoardEditor();
+		if (editor != null) {
+			MainWindow.getInstance().setShowGrid(showGridMenuItem.isSelected());
+			editor.getBoardView().repaint();
+		}
+	}
 
 }

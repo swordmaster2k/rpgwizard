@@ -14,10 +14,10 @@ package net.rpgtoolkit.common.assets;
  */
 public class AssetException extends Exception {
 
-  // TODO: Consider reason codes for AssetException
+	// TODO: Consider reason codes for AssetException
 
-  public AssetException(String message) {
-    super(message);
-  }
+	public AssetException(String message) {
+		super(message);
+	}
 
 }

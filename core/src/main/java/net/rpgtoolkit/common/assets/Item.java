@@ -8,26 +8,27 @@
 package net.rpgtoolkit.common.assets;
 
 public class Item extends AbstractSprite {
-  
-  private String description;
 
-  public Item(AssetDescriptor descriptor) {
-    super(descriptor);
-    description = "";
-  }
+	private String description;
 
-  /**
-   * @return the description
-   */
-  public String getDescription() {
-    return description;
-  }
+	public Item(AssetDescriptor descriptor) {
+		super(descriptor);
+		description = "";
+	}
 
-  /**
-   * @param description the description to set
-   */
-  public void setDescription(String description) {
-    this.description = description;
-  }
-  
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * @param description
+	 *            the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 }

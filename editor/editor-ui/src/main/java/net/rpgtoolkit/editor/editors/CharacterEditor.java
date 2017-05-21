@@ -32,109 +32,113 @@ import org.slf4j.LoggerFactory;
  * @author Joel Moore
  * @author Joshua Michael Daly
  */
-public class CharacterEditor extends AbstractSpriteEditor implements InternalFrameListener, SpriteChangeListener {
-  
-  private static final Logger LOGGER = LoggerFactory.getLogger(CharacterEditor.class);
+public class CharacterEditor extends AbstractSpriteEditor
+		implements
+			InternalFrameListener,
+			SpriteChangeListener {
 
-  private final Player player;
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(CharacterEditor.class);
 
-  private JTextField name;
-  private IntegerField level;
-  private IntegerField maxLevel;
-  private DoubleField experience;
-  private DoubleField maxExperience;
-  private DoubleField health;
-  private DoubleField maxHealth;
-  private DoubleField attack;
-  private DoubleField maxAttack;
-  private DoubleField defence;
-  private DoubleField maxDefence;
-  private DoubleField magic;
-  private DoubleField maxMagic;
-  
-  public CharacterEditor(Player player) {
-    super(player.getName(), player, Icons.getIcon("character"));
-    
-    this.player = player;
-    this.player.addSpriteChangeListener(this);
+	private final Player player;
 
-    if (this.player.getDescriptor() == null) {
-      setupNewPlayer();
-    } else {
-        setTitle(new File(player.getDescriptor().getURI()).getName());
-    }
+	private JTextField name;
+	private IntegerField level;
+	private IntegerField maxLevel;
+	private DoubleField experience;
+	private DoubleField maxExperience;
+	private DoubleField health;
+	private DoubleField maxHealth;
+	private DoubleField attack;
+	private DoubleField maxAttack;
+	private DoubleField defence;
+	private DoubleField maxDefence;
+	private DoubleField magic;
+	private DoubleField maxMagic;
 
-    constructWindow();
-    setVisible(true);
-    pack();
-  }
-  
-  @Override
-  public AbstractAsset getAsset() {
-      return player;
-  }
+	public CharacterEditor(Player player) {
+		super(player.getName(), player, Icons.getIcon("character"));
 
-  public Player getPlayer() {
-    return player;
-  }
+		this.player = player;
+		this.player.addSpriteChangeListener(this);
 
-  @Override
-  public void save() throws Exception {
-    // Get the relative portrait path.
-    checkProfileImagePath();
+		if (this.player.getDescriptor() == null) {
+			setupNewPlayer();
+		} else {
+			setTitle(new File(player.getDescriptor().getURI()).getName());
+		}
 
-    // Update all player variables from stats panel.
-    player.setName(name.getText());
-    player.setLevel(level.getValue());
-    player.setMaxLevel(maxLevel.getValue());
-    player.setExperience(experience.getValue());
-    player.setMaxExperience(maxExperience.getValue());
-    player.setHealth(health.getValue());
-    player.setMaxHealth(maxHealth.getValue());
-    player.setAttack(attack.getValue());
-    player.setMaxAttack(maxAttack.getValue());
-    player.setDefence(defence.getValue());
-    player.setMaxDefence(maxDefence.getValue());
-    player.setMagic(magic.getValue());
-    player.setMaxMagic(maxMagic.getValue());
+		constructWindow();
+		setVisible(true);
+		pack();
+	}
 
-    // Update all player variables from graphics panel.
-    player.setIdleTimeBeforeStanding(idleTimeoutField.getValue());
-    player.setFrameRate(stepRateField.getValue());
+	@Override
+	public AbstractAsset getAsset() {
+		return player;
+	}
 
-    save(player);
-  }
+	public Player getPlayer() {
+		return player;
+	}
 
-  /**
-   *
-   *
-   * @param file
-   * @throws java.lang.Exception
-   */
-  @Override
-  public void saveAs(File file) throws Exception {
-    player.setDescriptor(new AssetDescriptor(file.toURI()));
-    this.setTitle(file.getName());
-    save();
-  }
+	@Override
+	public void save() throws Exception {
+		// Get the relative portrait path.
+		checkProfileImagePath();
 
-  private void setupNewPlayer() {
-      
-  }
+		// Update all player variables from stats panel.
+		player.setName(name.getText());
+		player.setLevel(level.getValue());
+		player.setMaxLevel(maxLevel.getValue());
+		player.setExperience(experience.getValue());
+		player.setMaxExperience(maxExperience.getValue());
+		player.setHealth(health.getValue());
+		player.setMaxHealth(maxHealth.getValue());
+		player.setAttack(attack.getValue());
+		player.setMaxAttack(maxAttack.getValue());
+		player.setDefence(defence.getValue());
+		player.setMaxDefence(maxDefence.getValue());
+		player.setMagic(magic.getValue());
+		player.setMaxMagic(maxMagic.getValue());
 
-  /**
-   * Builds the Swing interface
-   */
-  private void constructWindow() {
-    addInternalFrameListener(this);
+		// Update all player variables from graphics panel.
+		player.setIdleTimeBeforeStanding(idleTimeoutField.getValue());
+		player.setFrameRate(stepRateField.getValue());
 
-    createStatsPanel();
-    createAnimationsPanel();
-    
-    build();
-  }
-  
-  private void createStatsPanel() {    
+		save(player);
+	}
+
+	/**
+	 *
+	 *
+	 * @param file
+	 * @throws java.lang.Exception
+	 */
+	@Override
+	public void saveAs(File file) throws Exception {
+		player.setDescriptor(new AssetDescriptor(file.toURI()));
+		this.setTitle(file.getName());
+		save();
+	}
+
+	private void setupNewPlayer() {
+
+	}
+
+	/**
+	 * Builds the Swing interface
+	 */
+	private void constructWindow() {
+		addInternalFrameListener(this);
+
+		createStatsPanel();
+		createAnimationsPanel();
+
+		build();
+	}
+
+	private void createStatsPanel() {    
     List<Component> labels = new ArrayList<>();
     labels.add(new JLabel("Name"));
     labels.add(new JLabel("Level"));
@@ -208,9 +212,8 @@ public class CharacterEditor extends AbstractSpriteEditor implements InternalFra
     
     buildStatsPanel(labels, inputs);
   }
-
-  private void createAnimationsPanel() {
-    buildAnimationsPanel();
-  }
+	private void createAnimationsPanel() {
+		buildAnimationsPanel();
+	}
 
 }

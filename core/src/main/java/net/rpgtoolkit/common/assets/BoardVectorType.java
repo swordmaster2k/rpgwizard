@@ -12,7 +12,6 @@ package net.rpgtoolkit.common.assets;
  */
 public enum BoardVectorType {
 
-  PASSABLE,
-  SOLID
-  
+	PASSABLE, SOLID
+
 }

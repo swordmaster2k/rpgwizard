@@ -13,14 +13,13 @@ package net.rpgtoolkit.common.assets;
  *
  * @author Chris Hutchinson
  */
-public abstract class AbstractAssetSerializer
-  implements AssetSerializer {
+public abstract class AbstractAssetSerializer implements AssetSerializer {
 
-  public static final int DEFAULT_PRIORITY = 0;
+	public static final int DEFAULT_PRIORITY = 0;
 
-  @Override
-  public int priority() {
-    return DEFAULT_PRIORITY;   // return standard priority
-  }
+	@Override
+	public int priority() {
+		return DEFAULT_PRIORITY; // return standard priority
+	}
 
 }

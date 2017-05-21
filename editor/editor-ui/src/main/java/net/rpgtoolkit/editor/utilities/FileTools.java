@@ -21,66 +21,70 @@ import net.rpgtoolkit.editor.ui.SingleRootFileSystemView;
  */
 public final class FileTools {
 
-  public static String getExecutionPath(Class clazz) throws URISyntaxException {
-      return new File(clazz.getProtectionDomain()
-                .getCodeSource().getLocation().toURI().getPath())
-                .getAbsolutePath();
-  }
-    
-  public static boolean createDirectoryStructure(String path, String projectName) {
-    boolean result = true;
+	public static String getExecutionPath(Class clazz)
+			throws URISyntaxException {
+		return new File(clazz.getProtectionDomain().getCodeSource()
+				.getLocation().toURI().getPath()).getAbsolutePath();
+	}
 
-    result &= createDirectory(path + File.separator + projectName);
+	public static boolean createDirectoryStructure(String path,
+			String projectName) {
+		boolean result = true;
 
-    for (String directory : CoreProperties.getDirectories()) {
-      result &= createDirectory(path + File.separator + projectName + File.separator + directory);
-    }
+		result &= createDirectory(path + File.separator + projectName);
 
-    return result;
-  }
+		for (String directory : CoreProperties.getDirectories()) {
+			result &= createDirectory(path + File.separator + projectName
+					+ File.separator + directory);
+		}
 
-  private static boolean createDirectory(String path) {
-    File directory = new File(path);
+		return result;
+	}
 
-    if (!directory.exists()) {
-      return directory.mkdirs();
-    } else {
-      return true;
-    }
-  }
+	private static boolean createDirectory(String path) {
+		File directory = new File(path);
 
-  public static File doChoosePath() {
-    JFileChooser fileChooser = new JFileChooser(System.getProperty("user.home"));
-    fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		if (!directory.exists()) {
+			return directory.mkdirs();
+		} else {
+			return true;
+		}
+	}
 
-    if (fileChooser.showOpenDialog(MainWindow.getInstance()) == JFileChooser.APPROVE_OPTION) {
-      return fileChooser.getCurrentDirectory();
-    }
+	public static File doChoosePath() {
+		JFileChooser fileChooser = new JFileChooser(
+				System.getProperty("user.home"));
+		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
-    return null;
-  }
+		if (fileChooser.showOpenDialog(MainWindow.getInstance()) == JFileChooser.APPROVE_OPTION) {
+			return fileChooser.getCurrentDirectory();
+		}
 
-  public static File doChooseFile(String extension, String directory, String type) {
-    if (MainWindow.getInstance().getActiveProject() != null) {
-      File projectPath = new File(
-              System.getProperty("project.path")
-              + File.separator 
-              + directory);
+		return null;
+	}
 
-      if (projectPath.exists()) {
-        JFileChooser fileChooser = new JFileChooser(new SingleRootFileSystemView(projectPath));
-        fileChooser.setAcceptAllFileFilterUsed(false);
+	public static File doChooseFile(String extension, String directory,
+			String type) {
+		if (MainWindow.getInstance().getActiveProject() != null) {
+			File projectPath = new File(System.getProperty("project.path")
+					+ File.separator + directory);
 
-        FileNameExtensionFilter filter = new FileNameExtensionFilter(type, extension);
-        fileChooser.setFileFilter(filter);
+			if (projectPath.exists()) {
+				JFileChooser fileChooser = new JFileChooser(
+						new SingleRootFileSystemView(projectPath));
+				fileChooser.setAcceptAllFileFilterUsed(false);
 
-        if (fileChooser.showOpenDialog(MainWindow.getInstance()) == JFileChooser.APPROVE_OPTION) {
-          return fileChooser.getSelectedFile();
-        }
-      }
-    }
+				FileNameExtensionFilter filter = new FileNameExtensionFilter(
+						type, extension);
+				fileChooser.setFileFilter(filter);
 
-    return null;
-  }
+				if (fileChooser.showOpenDialog(MainWindow.getInstance()) == JFileChooser.APPROVE_OPTION) {
+					return fileChooser.getSelectedFile();
+				}
+			}
+		}
+
+		return null;
+	}
 
 }

@@ -8,12 +8,12 @@
 package net.rpgtoolkit.common.assets;
 
 /**
- *  Basic event to be used in assets that can trigger events.
+ * Basic event to be used in assets that can trigger events.
  * 
  * @author Joshua Michael Daly
  */
 public enum EventType {
-    
-    OVERLAP
-    
+
+	OVERLAP
+
 }

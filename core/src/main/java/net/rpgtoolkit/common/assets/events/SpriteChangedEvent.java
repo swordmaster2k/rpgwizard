@@ -11,14 +11,15 @@ import java.util.EventObject;
 import net.rpgtoolkit.common.assets.AbstractSprite;
 
 /**
- *  An <code>EventObject</code> used to contain information of a change that has happened on a sprite.
+ * An <code>EventObject</code> used to contain information of a change that has
+ * happened on a sprite.
  * 
  * @author Joshua Michael Daly
  */
 public class SpriteChangedEvent extends EventObject {
 
-  public SpriteChangedEvent(AbstractSprite sprite) {
-    super(sprite);
-  }
+	public SpriteChangedEvent(AbstractSprite sprite) {
+		super(sprite);
+	}
 
 }

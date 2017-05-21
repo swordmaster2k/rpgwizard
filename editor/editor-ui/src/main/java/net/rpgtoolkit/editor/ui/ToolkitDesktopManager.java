@@ -18,38 +18,38 @@ import javax.swing.JInternalFrame;
  */
 public class ToolkitDesktopManager extends DefaultDesktopManager {
 
-  public ToolkitDesktopManager() {
-    super();
-  }
+	public ToolkitDesktopManager() {
+		super();
+	}
 
-  @Override
-  public void openFrame(JInternalFrame f) {
-    super.openFrame(f);
-  }
+	@Override
+	public void openFrame(JInternalFrame f) {
+		super.openFrame(f);
+	}
 
-  @Override
-  public void closeFrame(JInternalFrame f) {
-    super.closeFrame(f);
-  }
+	@Override
+	public void closeFrame(JInternalFrame f) {
+		super.closeFrame(f);
+	}
 
-  @Override
-  public void activateFrame(JInternalFrame f) {
-    super.activateFrame(f);
-  }
+	@Override
+	public void activateFrame(JInternalFrame f) {
+		super.activateFrame(f);
+	}
 
-  @Override
-  public void deactivateFrame(JInternalFrame f) {
-    super.deactivateFrame(f);
-  }
+	@Override
+	public void deactivateFrame(JInternalFrame f) {
+		super.deactivateFrame(f);
+	}
 
-  @Override
-  public void maximizeFrame(JInternalFrame f) {
-    super.maximizeFrame(f);
-  }
+	@Override
+	public void maximizeFrame(JInternalFrame f) {
+		super.maximizeFrame(f);
+	}
 
-  @Override
-  public void minimizeFrame(JInternalFrame f) {
-    super.minimizeFrame(f);
-  }
+	@Override
+	public void minimizeFrame(JInternalFrame f) {
+		super.minimizeFrame(f);
+	}
 
 }

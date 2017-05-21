@@ -12,57 +12,58 @@ import java.util.Objects;
 
 public abstract class AbstractAsset implements Asset {
 
-    protected AssetDescriptor descriptor;
+	protected AssetDescriptor descriptor;
 
-    public AbstractAsset(AssetDescriptor descriptor) {
-        this.descriptor = descriptor;
-    }
+	public AbstractAsset(AssetDescriptor descriptor) {
+		this.descriptor = descriptor;
+	}
 
-    @Override
-    public void reset() {}
-    
-    @Override
-    public File getFile() {
-        if (descriptor == null) {
-            return null;
-        }
-        
-        return new File(descriptor.getURI());
-    }
+	@Override
+	public void reset() {
+	}
 
-    @Override
-    public AssetDescriptor getDescriptor() {
-        return this.descriptor;
-    }
-    
-    @Override
-    public void setDescriptor(AssetDescriptor assetDescriptor) {
-      descriptor = assetDescriptor;
-    }
+	@Override
+	public File getFile() {
+		if (descriptor == null) {
+			return null;
+		}
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 43 * hash + Objects.hashCode(this.descriptor);
-        return hash;
-    }
+		return new File(descriptor.getURI());
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final AbstractAsset other = (AbstractAsset) obj;
-        if (!Objects.equals(this.descriptor, other.descriptor)) {
-            return false;
-        }
-        return true;
-    }
-    
+	@Override
+	public AssetDescriptor getDescriptor() {
+		return this.descriptor;
+	}
+
+	@Override
+	public void setDescriptor(AssetDescriptor assetDescriptor) {
+		descriptor = assetDescriptor;
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 7;
+		hash = 43 * hash + Objects.hashCode(this.descriptor);
+		return hash;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final AbstractAsset other = (AbstractAsset) obj;
+		if (!Objects.equals(this.descriptor, other.descriptor)) {
+			return false;
+		}
+		return true;
+	}
+
 }

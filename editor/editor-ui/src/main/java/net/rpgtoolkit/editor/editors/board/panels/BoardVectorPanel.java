@@ -35,35 +35,31 @@ import net.rpgtoolkit.editor.utilities.GuiHelper;
  */
 public class BoardVectorPanel extends BoardModelPanel {
 
-    private final JSpinner layerSpinner;
-    private final JLabel layerLabel;
+	private final JSpinner layerSpinner;
+	private final JLabel layerLabel;
 
-    private final JCheckBox isClosedCheckBox;
-    private final JLabel isClosedLabel;
+	private final JCheckBox isClosedCheckBox;
+	private final JLabel isClosedLabel;
 
-    private final JTextField handleTextField;
-    private final JLabel handleLabel;
+	private final JTextField handleTextField;
+	private final JLabel handleLabel;
 
-    private final JComboBox<String> typeComboBox;
-    private final JLabel typeLabel;
+	private final JComboBox<String> typeComboBox;
+	private final JLabel typeLabel;
 
-    private static final String[] VECTOR_TYPES = {
-        "PASSABLE", "SOLID"
-    };
+	private static final String[] VECTOR_TYPES = {"PASSABLE", "SOLID"};
 
-    private final JComboBox<String> eventComboBox;
-    private final JLabel eventLabel;
+	private final JComboBox<String> eventComboBox;
+	private final JLabel eventLabel;
 
-    private static final String[] EVENT_TYPES = {
-        "OVERLAP"
-    };
+	private static final String[] EVENT_TYPES = {"OVERLAP"};
 
-    private final JComboBox eventProgramComboBox;
-    private final JLabel eventProgramLabel;
+	private final JComboBox eventProgramComboBox;
+	private final JLabel eventProgramLabel;
 
-    private int lastSpinnerLayer; // Used to ensure that the selection is valid.
+	private int lastSpinnerLayer; // Used to ensure that the selection is valid.
 
-    public BoardVectorPanel(BoardVector boardVector) {
+	public BoardVectorPanel(BoardVector boardVector) {
         ///
         /// super
         ///
@@ -238,5 +234,4 @@ public class BoardVectorPanel extends BoardModelPanel {
 
         layout.setVerticalGroup(verticalGroup);
     }
-
 }

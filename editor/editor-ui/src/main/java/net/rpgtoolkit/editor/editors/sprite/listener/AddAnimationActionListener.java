@@ -20,29 +20,27 @@ import net.rpgtoolkit.editor.editors.sprite.AbstractSpriteEditor;
  * @author Joshua Michael Daly
  */
 public class AddAnimationActionListener implements ActionListener {
-  
-  private final AbstractSprite sprite;
-  
-  private final JPanel animationsPanel;
-  
-  public AddAnimationActionListener(AbstractSpriteEditor editor) {
-    sprite = editor.getSprite();
-    animationsPanel = editor.getAnimationsPanel();
-  }
 
-  @Override
-  public void actionPerformed(ActionEvent e) {
-    String key = (String) JOptionPane.showInputDialog(
-            animationsPanel,
-            "Enter the handle for the new animation:",
-            "Add Animation",
-            JOptionPane.PLAIN_MESSAGE);
+	private final AbstractSprite sprite;
 
-    if (key == null || key.isEmpty()) {
-      return;
-    }
-    
-    sprite.addAnimation(key, "");
-  }
+	private final JPanel animationsPanel;
+
+	public AddAnimationActionListener(AbstractSpriteEditor editor) {
+		sprite = editor.getSprite();
+		animationsPanel = editor.getAnimationsPanel();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		String key = (String) JOptionPane.showInputDialog(animationsPanel,
+				"Enter the handle for the new animation:", "Add Animation",
+				JOptionPane.PLAIN_MESSAGE);
+
+		if (key == null || key.isEmpty()) {
+			return;
+		}
+
+		sprite.addAnimation(key, "");
+	}
 
 }

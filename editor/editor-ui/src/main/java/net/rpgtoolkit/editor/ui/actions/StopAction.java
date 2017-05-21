@@ -25,43 +25,48 @@ import ro.fortsoft.pf4j.PluginManager;
  */
 public class StopAction extends AbstractAction {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(StopAction.class);
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(StopAction.class);
 
-    private ProgressMonitor progressMonitor;
-    private SwingWorker worker;
+	private ProgressMonitor progressMonitor;
+	private SwingWorker worker;
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        try {
-            MainWindow instance = MainWindow.getInstance();
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		try {
+			MainWindow instance = MainWindow.getInstance();
 
-            PluginManager pluginManager = MainWindow.getInstance().getPluginManager();
-            List<Engine> engines = pluginManager.getExtensions(Engine.class);
-            // Just use the first available engine for now.
-            if (engines.size() > 0) {
-                progressMonitor = new ProgressMonitor(MainWindow.getInstance(), "Stopping Engine...", "", 0, 100);
-                progressMonitor.setProgress(0);
+			PluginManager pluginManager = MainWindow.getInstance()
+					.getPluginManager();
+			List<Engine> engines = pluginManager.getExtensions(Engine.class);
+			// Just use the first available engine for now.
+			if (engines.size() > 0) {
+				progressMonitor = new ProgressMonitor(MainWindow.getInstance(),
+						"Stopping Engine...", "", 0, 100);
+				progressMonitor.setProgress(0);
 
-                worker = new SwingWorker<Integer, Integer>() {
-                    @Override
-                    protected Integer doInBackground() throws Exception {
-                        engines.get(0).stop(progressMonitor);
+				worker = new SwingWorker<Integer, Integer>() {
+					@Override
+					protected Integer doInBackground() throws Exception {
+						engines.get(0).stop(progressMonitor);
 
-                        return null;
-                    }
+						return null;
+					}
 
-                    @Override
-                    public void done() {
-                        Toolkit.getDefaultToolkit().beep();
-                        instance.getMainToolBar().getRunButton().setEnabled(true);
-                        instance.getMainToolBar().getStopButton().setEnabled(false);
-                    }
-                };
-                worker.execute();
-            }
-        } catch (Exception ex) {
-            LOGGER.error("Failed to stop engine.", ex);
-        }
-    }
+					@Override
+					public void done() {
+						Toolkit.getDefaultToolkit().beep();
+						instance.getMainToolBar().getRunButton()
+								.setEnabled(true);
+						instance.getMainToolBar().getStopButton()
+								.setEnabled(false);
+					}
+				};
+				worker.execute();
+			}
+		} catch (Exception ex) {
+			LOGGER.error("Failed to stop engine.", ex);
+		}
+	}
 
 }

@@ -25,105 +25,105 @@ import net.rpgtoolkit.editor.utilities.TransparentDrawer;
  */
 public class ProfilePanel extends AbstractImagePanel {
 
-  private final Image defaultImage;
+	private final Image defaultImage;
 
-  private Dimension scaledDimension;
+	private Dimension scaledDimension;
 
-  public ProfilePanel() {
-    super(new Dimension(250, 500));
-    setToolTipText("Double click to select an image.");
+	public ProfilePanel() {
+		super(new Dimension(250, 500));
+		setToolTipText("Double click to select an image.");
 
-    defaultImage = Icons.getIcon("image", Icons.Size.LARGE).getImage();
-    scaledDimension = null;
-  }
+		defaultImage = Icons.getIcon("image", Icons.Size.LARGE).getImage();
+		scaledDimension = null;
+	}
 
-  @Override
-  public Dimension getPreferredSize() {
-    return dimension;
-  }
+	@Override
+	public Dimension getPreferredSize() {
+		return dimension;
+	}
 
-  @Override
-  public Dimension getMaximumSize() {
-    return dimension;
-  }
+	@Override
+	public Dimension getMaximumSize() {
+		return dimension;
+	}
 
-  @Override
-  public Dimension getMinimumSize() {
-    return dimension;
-  }
+	@Override
+	public Dimension getMinimumSize() {
+		return dimension;
+	}
 
-  @Override
-  public void paint(Graphics g) {
-    if (scaledDimension == null) {
-      // First call to paint.
-      calculateScaledDimension();
-    }
-    
-    TransparentDrawer.drawTransparentBackground(g, getWidth(), getHeight());
+	@Override
+	public void paint(Graphics g) {
+		if (scaledDimension == null) {
+			// First call to paint.
+			calculateScaledDimension();
+		}
 
-    Image image;
-    if (bufferedImages.size() > 0) {
-      image = bufferedImages.getFirst();
-    } else {
-      image = defaultImage;
-    }
+		TransparentDrawer.drawTransparentBackground(g, getWidth(), getHeight());
 
-    int x = (getWidth() - scaledDimension.width) / 2;
-    int y = (getHeight() - scaledDimension.height) / 2;
-    g.drawImage(image, x, y, scaledDimension.width, scaledDimension.height, this);
+		Image image;
+		if (bufferedImages.size() > 0) {
+			image = bufferedImages.getFirst();
+		} else {
+			image = defaultImage;
+		}
 
-    g.setColor(Color.LIGHT_GRAY);
-    g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
-  }
+		int x = (getWidth() - scaledDimension.width) / 2;
+		int y = (getHeight() - scaledDimension.height) / 2;
+		g.drawImage(image, x, y, scaledDimension.width, scaledDimension.height,
+				this);
 
-  @Override
-  public void mouseClicked(MouseEvent e) {
-    if (e.getClickCount() == 2) {
-      MainWindow mainWindow = MainWindow.getInstance();
-      File imageFile = EditorFileManager.browseLocationBySubdir(
-              EditorFileManager.getGraphicsSubdirectory(),
-              EditorFileManager.getImageFilterDescription(),
-              EditorFileManager.getImageExtensions()
-      );
+		g.setColor(Color.LIGHT_GRAY);
+		g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
+	}
 
-      if (imageFile != null) {
-        if (bufferedImages.size() > 0) {
-          bufferedImages.remove();
-        }
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if (e.getClickCount() == 2) {
+			MainWindow mainWindow = MainWindow.getInstance();
+			File imageFile = EditorFileManager.browseLocationBySubdir(
+					EditorFileManager.getGraphicsSubdirectory(),
+					EditorFileManager.getImageFilterDescription(),
+					EditorFileManager.getImageExtensions());
 
-        addImage(imageFile);
-        calculateScaledDimension();
-        repaint();
-      }
-    }
-  }
+			if (imageFile != null) {
+				if (bufferedImages.size() > 0) {
+					bufferedImages.remove();
+				}
 
-  private void calculateScaledDimension() {
-    Image image;
-    if (bufferedImages.isEmpty()) {
-      image = defaultImage;
-    } else {
-      image = bufferedImages.getFirst();
-    }
-    
-    int originalWidth = image.getWidth(this);
-    int originalHeight = image.getHeight(this);
-    int boundWidth = getWidth();
-    int boundHeight = getHeight();
-    int newWidth = originalWidth;
-    int newHeight = originalHeight;
+				addImage(imageFile);
+				calculateScaledDimension();
+				repaint();
+			}
+		}
+	}
 
-    if (originalWidth > boundWidth) {
-      newWidth = boundWidth;
-      newHeight = (newWidth * originalHeight) / originalWidth;
-    }
+	private void calculateScaledDimension() {
+		Image image;
+		if (bufferedImages.isEmpty()) {
+			image = defaultImage;
+		} else {
+			image = bufferedImages.getFirst();
+		}
 
-    if (newHeight > boundHeight) {
-      newHeight = boundHeight;
-      newWidth = (newHeight * originalWidth) / originalHeight;
-    }
+		int originalWidth = image.getWidth(this);
+		int originalHeight = image.getHeight(this);
+		int boundWidth = getWidth();
+		int boundHeight = getHeight();
+		int newWidth = originalWidth;
+		int newHeight = originalHeight;
 
-    scaledDimension = new Dimension(newWidth, newHeight);
-  }
+		if (originalWidth > boundWidth) {
+			newWidth = boundWidth;
+			newHeight = (newWidth * originalHeight) / originalWidth;
+		}
+
+		if (newHeight > boundHeight) {
+			newHeight = boundHeight;
+			newWidth = (newHeight * originalWidth) / originalHeight;
+		}
+
+		scaledDimension = new Dimension(newWidth, newHeight);
+	}
 
 }

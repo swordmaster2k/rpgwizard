@@ -14,17 +14,18 @@ package net.rpgtoolkit.common;
  */
 public interface Selectable {
 
-  /**
-   * Indicates if this object is selected.
-   * 
-   * @return is this object selected
-   */
-  public boolean isSelected();
+	/**
+	 * Indicates if this object is selected.
+	 * 
+	 * @return is this object selected
+	 */
+	public boolean isSelected();
 
-  /**
-   * Sets this objects selected state.
-   * 
-   * @param state is it selected
-   */
-  public void setSelectedState(boolean state);
+	/**
+	 * Sets this objects selected state.
+	 * 
+	 * @param state
+	 *            is it selected
+	 */
+	public void setSelectedState(boolean state);
 }

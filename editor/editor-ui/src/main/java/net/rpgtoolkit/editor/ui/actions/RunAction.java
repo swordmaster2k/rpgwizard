@@ -29,52 +29,59 @@ import ro.fortsoft.pf4j.PluginManager;
  */
 public class RunAction extends AbstractAction {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RunAction.class);
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(RunAction.class);
 
-    private ProgressMonitor progressMonitor;
-    private SwingWorker worker;
+	private ProgressMonitor progressMonitor;
+	private SwingWorker worker;
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        try {
-            MainWindow instance = MainWindow.getInstance();
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		try {
+			MainWindow instance = MainWindow.getInstance();
 
-            String projectName = instance.getTitle();
+			String projectName = instance.getTitle();
 
-            // Make a temporary copy of the user's project for the engine to use.
-            File projectOriginal = new File(System.getProperty("project.path"));
-            File projectCopy = Files.createTempDir();
-            FileUtils.copyDirectory(projectOriginal, projectCopy);
+			// Make a temporary copy of the user's project for the engine to
+			// use.
+			File projectOriginal = new File(System.getProperty("project.path"));
+			File projectCopy = Files.createTempDir();
+			FileUtils.copyDirectory(projectOriginal, projectCopy);
 
-            PluginManager pluginManager = MainWindow.getInstance().getPluginManager();
-            List<Engine> engines = pluginManager.getExtensions(Engine.class);
+			PluginManager pluginManager = MainWindow.getInstance()
+					.getPluginManager();
+			List<Engine> engines = pluginManager.getExtensions(Engine.class);
 
-            // Just use the first available engine for now.
-            if (engines.size() > 0) {
-                progressMonitor = new ProgressMonitor(MainWindow.getInstance(), "Starting Engine...", "", 0, 100);
-                progressMonitor.setProgress(0);
+			// Just use the first available engine for now.
+			if (engines.size() > 0) {
+				progressMonitor = new ProgressMonitor(MainWindow.getInstance(),
+						"Starting Engine...", "", 0, 100);
+				progressMonitor.setProgress(0);
 
-                worker = new SwingWorker<Integer, Integer>() {
-                    @Override
-                    protected Integer doInBackground() throws Exception {
-                        engines.get(0).run(projectName, projectCopy, progressMonitor);
+				worker = new SwingWorker<Integer, Integer>() {
+					@Override
+					protected Integer doInBackground() throws Exception {
+						engines.get(0).run(projectName, projectCopy,
+								progressMonitor);
 
-                        return null;
-                    }
+						return null;
+					}
 
-                    @Override
-                    public void done() {
-                        Toolkit.getDefaultToolkit().beep();
-                        instance.getMainToolBar().getRunButton().setEnabled(false);
-                        instance.getMainToolBar().getStopButton().setEnabled(true);
-                    }
-                };
-                worker.execute();
-            }
+					@Override
+					public void done() {
+						Toolkit.getDefaultToolkit().beep();
+						instance.getMainToolBar().getRunButton()
+								.setEnabled(false);
+						instance.getMainToolBar().getStopButton()
+								.setEnabled(true);
+					}
+				};
+				worker.execute();
+			}
 
-        } catch (IOException ex) {
-            LOGGER.error("Failed to run engine.", ex);
-        }
-    }
+		} catch (IOException ex) {
+			LOGGER.error("Failed to run engine.", ex);
+		}
+	}
 
 }

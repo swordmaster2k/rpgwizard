@@ -22,35 +22,36 @@ import javax.swing.text.NumberFormatter;
  */
 public class WholeNumberField extends JFormattedTextField {
 
-    /**
-     * Creates a WholeNumberField with the specified value. This will create and
-     * use a Formatter that requires values that are whole numbers: non-negative
-     * (long) integers.
-     *
-     * @param value Initial value for the WholeNumberField
-     */
-    public WholeNumberField(Object value) {
-        super(getWholeNumFormatter());
-        this.setValue(value);
-    }
+	/**
+	 * Creates a WholeNumberField with the specified value. This will create and
+	 * use a Formatter that requires values that are whole numbers: non-negative
+	 * (long) integers.
+	 *
+	 * @param value
+	 *            Initial value for the WholeNumberField
+	 */
+	public WholeNumberField(Object value) {
+		super(getWholeNumFormatter());
+		this.setValue(value);
+	}
 
-    public static NumberFormatter getWholeNumFormatter() {
-        NumberFormatter wholeNumberFormatter = new NumberFormatter(
-                NumberFormat.getIntegerInstance());
-        wholeNumberFormatter.setValueClass(Long.class);
-        wholeNumberFormatter.setMinimum(0L);
-        wholeNumberFormatter.setCommitsOnValidEdit(true);
-        return wholeNumberFormatter;
-    }
-    
-    @Override
-    public Long getValue() {
-        Object val = super.getValue();
-        if(val instanceof Integer) {
-            return Long.valueOf((Integer)val);
-        } else {
-            return (Long)super.getValue();
-        }
-    }
-    
+	public static NumberFormatter getWholeNumFormatter() {
+		NumberFormatter wholeNumberFormatter = new NumberFormatter(
+				NumberFormat.getIntegerInstance());
+		wholeNumberFormatter.setValueClass(Long.class);
+		wholeNumberFormatter.setMinimum(0L);
+		wholeNumberFormatter.setCommitsOnValidEdit(true);
+		return wholeNumberFormatter;
+	}
+
+	@Override
+	public Long getValue() {
+		Object val = super.getValue();
+		if (val instanceof Integer) {
+			return Long.valueOf((Integer) val);
+		} else {
+			return (Long) super.getValue();
+		}
+	}
+
 }

@@ -18,16 +18,16 @@ import net.rpgtoolkit.editor.editors.TileSelectionEvent;
  */
 public interface TileSelectionListener extends EventListener {
 
-  /**
-   *
-   * @param e
-   */
-  public void tileSelected(TileSelectionEvent e);
+	/**
+	 *
+	 * @param e
+	 */
+	public void tileSelected(TileSelectionEvent e);
 
-  /**
-   *
-   * @param e
-   */
-  public void tileRegionSelected(TileRegionSelectionEvent e);
-  
+	/**
+	 *
+	 * @param e
+	 */
+	public void tileRegionSelected(TileRegionSelectionEvent e);
+
 }

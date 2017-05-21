@@ -30,34 +30,32 @@ import net.rpgtoolkit.editor.utilities.GuiHelper;
  */
 public class BoardSpritePanel extends BoardModelPanel {
 
-  private final JComboBox fileComboBox;
-  private final JLabel fileLabel;
+	private final JComboBox fileComboBox;
+	private final JLabel fileLabel;
 
-  private final JComboBox eventProgramComboBox;
-  private final JLabel eventProgramLabel;
+	private final JComboBox eventProgramComboBox;
+	private final JLabel eventProgramLabel;
 
-  private final JComboBox threadComboBox;
-  private final JLabel threadLabel;
+	private final JComboBox threadComboBox;
+	private final JLabel threadLabel;
 
-  private final JSpinner xSpinner;
-  private final JLabel xLabel;
+	private final JSpinner xSpinner;
+	private final JLabel xLabel;
 
-  private final JSpinner ySpinner;
-  private final JLabel yLabel;
+	private final JSpinner ySpinner;
+	private final JLabel yLabel;
 
-  private final JSpinner layerSpinner;
-  private final JLabel layerLabel;
+	private final JSpinner layerSpinner;
+	private final JLabel layerLabel;
 
-  private int lastSpinnerLayer; // Used to ensure that the selection is valid.
+	private int lastSpinnerLayer; // Used to ensure that the selection is valid.
 
-  private final JComboBox eventComboBox;
-  private final JLabel eventLabel;
+	private final JComboBox eventComboBox;
+	private final JLabel eventLabel;
 
-  private static final String[] EVENT_TYPES = {
-    "OVERLAP"
-  };
+	private static final String[] EVENT_TYPES = {"OVERLAP"};
 
-  public BoardSpritePanel(final BoardSprite boardSprite) {
+	public BoardSpritePanel(final BoardSprite boardSprite) {
     ///
     /// super
     ///
@@ -224,5 +222,4 @@ public class BoardSpritePanel extends BoardModelPanel {
 
     layout.setVerticalGroup(verticalGroup);
   }
-  
 }

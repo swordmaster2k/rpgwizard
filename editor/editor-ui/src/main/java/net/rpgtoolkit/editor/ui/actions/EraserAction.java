@@ -21,14 +21,14 @@ import net.rpgtoolkit.editor.editors.board.EraserBrush;
  */
 public class EraserAction extends AbstractAction {
 
-  @Override
-  public void actionPerformed(ActionEvent e) {
-    BoardEditor.toggleSelectedOnBoardEditor();
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		BoardEditor.toggleSelectedOnBoardEditor();
 
-    EraserBrush brush = new EraserBrush();
-    brush.makeRectangleBrush(new Rectangle(0, 0, 1, 1));
-    brush.setTile(new Tile());
-    MainWindow.getInstance().setCurrentBrush(brush);
-  }
+		EraserBrush brush = new EraserBrush();
+		brush.makeRectangleBrush(new Rectangle(0, 0, 1, 1));
+		brush.setTile(new Tile());
+		MainWindow.getInstance().setCurrentBrush(brush);
+	}
 
 }

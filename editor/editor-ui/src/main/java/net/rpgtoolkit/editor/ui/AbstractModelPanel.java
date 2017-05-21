@@ -23,58 +23,58 @@ import javax.swing.SwingConstants;
  */
 public abstract class AbstractModelPanel extends JPanel {
 
-  protected static final int COLUMNS = 10;
+	protected static final int COLUMNS = 10;
 
-  protected Object model;
-  protected Font font;
+	protected Object model;
+	protected Font font;
 
-  protected GroupLayout layout;
-  protected SequentialGroup horizontalGroup;
-  protected SequentialGroup verticalGroup;
+	protected GroupLayout layout;
+	protected SequentialGroup horizontalGroup;
+	protected SequentialGroup verticalGroup;
 
-  public AbstractModelPanel(Object model) {
-    this.model = model;
-    font = new JLabel().getFont();
+	public AbstractModelPanel(Object model) {
+		this.model = model;
+		font = new JLabel().getFont();
 
-    layout = new GroupLayout(this);
-    layout.setAutoCreateGaps(true);
-    layout.setAutoCreateContainerGaps(true);
+		layout = new GroupLayout(this);
+		layout.setAutoCreateGaps(true);
+		layout.setAutoCreateContainerGaps(true);
 
-    horizontalGroup = layout.createSequentialGroup();
-    verticalGroup = layout.createSequentialGroup();
+		horizontalGroup = layout.createSequentialGroup();
+		verticalGroup = layout.createSequentialGroup();
 
-    setLayout(layout);
-  }
+		setLayout(layout);
+	}
 
-  public Object getModel() {
-    return model;
-  }
+	public Object getModel() {
+		return model;
+	}
 
-  public final JLabel getJLabel(String text) {
-    JLabel label = new JLabel(text);
-    label.setVerticalAlignment(SwingConstants.CENTER);
-    label.setFont(font);
-    return label;
-  }
+	public final JLabel getJLabel(String text) {
+		JLabel label = new JLabel(text);
+		label.setVerticalAlignment(SwingConstants.CENTER);
+		label.setFont(font);
+		return label;
+	}
 
-  public final JTextField getJTextField(String text) {
-    JTextField textField = new JTextField(text);
-    textField.setColumns(COLUMNS);
-    textField.setFont(font);
-    return textField;
-  }
+	public final JTextField getJTextField(String text) {
+		JTextField textField = new JTextField(text);
+		textField.setColumns(COLUMNS);
+		textField.setFont(font);
+		return textField;
+	}
 
-  public final JButton getJButton(String text) {
-    JButton button = new JButton(text);
-    button.setFont(font);
-    return button;
-  }
+	public final JButton getJButton(String text) {
+		JButton button = new JButton(text);
+		button.setFont(font);
+		return button;
+	}
 
-  public final JSpinner getJSpinner(Object value) {
-    JSpinner spinner = new JSpinner();
-    spinner.setValue(value);
-    spinner.setFont(font);
-    return spinner;
-  }
+	public final JSpinner getJSpinner(Object value) {
+		JSpinner spinner = new JSpinner();
+		spinner.setValue(value);
+		spinner.setFont(font);
+		return spinner;
+	}
 
 }

@@ -17,20 +17,20 @@ import net.rpgtoolkit.editor.MainWindow;
  */
 public class BoardModelPanel extends AbstractModelPanel {
 
-  public BoardModelPanel(Object model) {
-    super(model);
-  }
-  
-   public BoardEditor getBoardEditor() {
-    return MainWindow.getInstance().getCurrentBoardEditor();
-  }
+	public BoardModelPanel(Object model) {
+		super(model);
+	}
 
-  public void updateCurrentBoardView() {
-    BoardEditor editor = MainWindow.getInstance().getCurrentBoardEditor();
+	public BoardEditor getBoardEditor() {
+		return MainWindow.getInstance().getCurrentBoardEditor();
+	}
 
-    if (editor != null) {
-      editor.getBoardView().repaint();
-    }
-  }
+	public void updateCurrentBoardView() {
+		BoardEditor editor = MainWindow.getInstance().getCurrentBoardEditor();
+
+		if (editor != null) {
+			editor.getBoardView().repaint();
+		}
+	}
 
 }

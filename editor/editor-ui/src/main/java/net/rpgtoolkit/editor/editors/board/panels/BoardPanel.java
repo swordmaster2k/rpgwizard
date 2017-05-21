@@ -29,119 +29,121 @@ import net.rpgtoolkit.editor.utilities.GuiHelper;
  */
 public class BoardPanel extends AbstractModelPanel {
 
-  private final JSpinner widthSpinner;
-  private final JLabel widthLabel;
-  
-  private final JSpinner heightSpinner;
-  private final JLabel heightLabel;
+	private final JSpinner widthSpinner;
+	private final JLabel widthLabel;
 
-  private final JComboBox musicFileComboBox;
-  private final JLabel musicLabel;
+	private final JSpinner heightSpinner;
+	private final JLabel heightLabel;
 
-  private final JComboBox entryProgramComboBox;
-  private final JLabel entryProgramLabel;
+	private final JComboBox musicFileComboBox;
+	private final JLabel musicLabel;
 
-  public BoardPanel(final Board board) {
-    ///
-    /// super
-    ///
-    super(board);
-    ///
-    /// widthSpinner
-    ///
-    widthSpinner = getJSpinner(board.getWidth());
-    widthSpinner.setEnabled(false);
-    widthSpinner.addChangeListener(new ChangeListener() {
+	private final JComboBox entryProgramComboBox;
+	private final JLabel entryProgramLabel;
 
-      @Override
-      public void stateChanged(ChangeEvent e) {
+	public BoardPanel(final Board board) {
+		// /
+		// / super
+		// /
+		super(board);
+		// /
+		// / widthSpinner
+		// /
+		widthSpinner = getJSpinner(board.getWidth());
+		widthSpinner.setEnabled(false);
+		widthSpinner.addChangeListener(new ChangeListener() {
 
-      }
+			@Override
+			public void stateChanged(ChangeEvent e) {
 
-    });
-    ///
-    /// heightSpinner
-    ///
-    heightSpinner = getJSpinner(board.getHeight());
-    heightSpinner.setEnabled(false);
-    heightSpinner.addChangeListener(new ChangeListener() {
+			}
 
-      @Override
-      public void stateChanged(ChangeEvent e) {
+		});
+		// /
+		// / heightSpinner
+		// /
+		heightSpinner = getJSpinner(board.getHeight());
+		heightSpinner.setEnabled(false);
+		heightSpinner.addChangeListener(new ChangeListener() {
 
-      }
+			@Override
+			public void stateChanged(ChangeEvent e) {
 
-    });
-    ///
-    /// musicTextField
-    ///
-    File directory = new File(
-            System.getProperty("project.path")
-            + File.separator
-            + CoreProperties.getProperty("toolkit.directory.media")
-            + File.separator);
-    String[] exts = new String[] {"wav", "mp3"};
-    musicFileComboBox = GuiHelper.getFileListJComboBox(directory, exts, true);
-    musicFileComboBox.setSelectedItem(board.getBackgroundMusic());
-    musicFileComboBox.addActionListener(new ActionListener() {
+			}
 
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        board.setBackgroundMusic((String)musicFileComboBox.getSelectedItem());
-      }
-      
-    });
-    ///
-    /// entryProgramComboBox
-    ///
-    directory = new File(
-            System.getProperty("project.path") 
-            + File.separator
-            + CoreProperties.getProperty("toolkit.directory.program") 
-            + File.separator);
-    exts = new String[] {"program", "js"};
-    entryProgramComboBox = GuiHelper.getFileListJComboBox(directory, exts, true);
-    entryProgramComboBox.setSelectedItem(board.getFirstRunProgram());
-    entryProgramComboBox.addActionListener(new ActionListener() {
+		});
+		// /
+		// / musicTextField
+		// /
+		File directory = new File(System.getProperty("project.path")
+				+ File.separator
+				+ CoreProperties.getProperty("toolkit.directory.media")
+				+ File.separator);
+		String[] exts = new String[]{"wav", "mp3"};
+		musicFileComboBox = GuiHelper.getFileListJComboBox(directory, exts,
+				true);
+		musicFileComboBox.setSelectedItem(board.getBackgroundMusic());
+		musicFileComboBox.addActionListener(new ActionListener() {
 
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        board.setFirstRunProgram((String)entryProgramComboBox.getSelectedItem());
-      }
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				board.setBackgroundMusic((String) musicFileComboBox
+						.getSelectedItem());
+			}
 
-    });
-    ///
-    /// this
-    ///
-    horizontalGroup.addGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(widthLabel = getJLabel("Width"))
-                    .addComponent(heightLabel = getJLabel("Height"))
-                    .addComponent(musicLabel = getJLabel("Music"))
-                    .addComponent(entryProgramLabel = getJLabel("Entry Program")));
-    
-    horizontalGroup.addGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(widthSpinner)
-                    .addComponent(heightSpinner)
-                    .addComponent(musicFileComboBox)
-                    .addComponent(entryProgramComboBox));
-    
-    layout.setHorizontalGroup(horizontalGroup);
-    
-    verticalGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-            .addComponent(widthLabel).addComponent(widthSpinner));
-    
-    verticalGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-            .addComponent(heightLabel).addComponent(heightSpinner));
-    
-    verticalGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-            .addComponent(musicLabel).addComponent(musicFileComboBox));
-    
-    verticalGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-            .addComponent(entryProgramLabel).addComponent(entryProgramComboBox));
-  
-    layout.setVerticalGroup(verticalGroup);
-  }
-  
+		});
+		// /
+		// / entryProgramComboBox
+		// /
+		directory = new File(System.getProperty("project.path")
+				+ File.separator
+				+ CoreProperties.getProperty("toolkit.directory.program")
+				+ File.separator);
+		exts = new String[]{"program", "js"};
+		entryProgramComboBox = GuiHelper.getFileListJComboBox(directory, exts,
+				true);
+		entryProgramComboBox.setSelectedItem(board.getFirstRunProgram());
+		entryProgramComboBox.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				board.setFirstRunProgram((String) entryProgramComboBox
+						.getSelectedItem());
+			}
+
+		});
+		// /
+		// / this
+		// /
+		horizontalGroup.addGroup(layout
+				.createParallelGroup(GroupLayout.Alignment.LEADING)
+				.addComponent(widthLabel = getJLabel("Width"))
+				.addComponent(heightLabel = getJLabel("Height"))
+				.addComponent(musicLabel = getJLabel("Music"))
+				.addComponent(entryProgramLabel = getJLabel("Entry Program")));
+
+		horizontalGroup.addGroup(layout
+				.createParallelGroup(GroupLayout.Alignment.LEADING)
+				.addComponent(widthSpinner).addComponent(heightSpinner)
+				.addComponent(musicFileComboBox)
+				.addComponent(entryProgramComboBox));
+
+		layout.setHorizontalGroup(horizontalGroup);
+
+		verticalGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+				.addComponent(widthLabel).addComponent(widthSpinner));
+
+		verticalGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+				.addComponent(heightLabel).addComponent(heightSpinner));
+
+		verticalGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+				.addComponent(musicLabel).addComponent(musicFileComboBox));
+
+		verticalGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+				.addComponent(entryProgramLabel)
+				.addComponent(entryProgramComboBox));
+
+		layout.setVerticalGroup(verticalGroup);
+	}
+
 }

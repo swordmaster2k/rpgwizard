@@ -18,66 +18,66 @@ import javax.swing.JMenuBar;
  */
 public class MainMenuBar extends JMenuBar {
 
-  private final MainWindow parent;
+	private final MainWindow parent;
 
-  private final FileMenu fileMenu;
-  private final EditMenu editMenu;
-  private final ViewMenu viewMenu;
-  private final RunMenu runMenu;
-  private final ToolsMenu toolsMenu;
-  private final HelpMenu helpMenu;
+	private final FileMenu fileMenu;
+	private final EditMenu editMenu;
+	private final ViewMenu viewMenu;
+	private final RunMenu runMenu;
+	private final ToolsMenu toolsMenu;
+	private final HelpMenu helpMenu;
 
-  public MainMenuBar(MainWindow menuBarParent) {
-    parent = menuBarParent;
+	public MainMenuBar(MainWindow menuBarParent) {
+		parent = menuBarParent;
 
-    fileMenu = new FileMenu();
-    fileMenu.setName("fileMenu");
-    
-    editMenu = new EditMenu();
-    viewMenu = new ViewMenu();
-    runMenu = new RunMenu();
-    toolsMenu = new ToolsMenu();
-    helpMenu = new HelpMenu();
+		fileMenu = new FileMenu();
+		fileMenu.setName("fileMenu");
 
-    add(fileMenu);
-    add(editMenu);
-    add(viewMenu);
-    add(runMenu);
-    add(toolsMenu);
-    add(helpMenu);
-  }
+		editMenu = new EditMenu();
+		viewMenu = new ViewMenu();
+		runMenu = new RunMenu();
+		toolsMenu = new ToolsMenu();
+		helpMenu = new HelpMenu();
 
-  public MainWindow getParentWindow() {
-    return parent;
-  }
+		add(fileMenu);
+		add(editMenu);
+		add(viewMenu);
+		add(runMenu);
+		add(toolsMenu);
+		add(helpMenu);
+	}
 
-  public FileMenu getFileMenu() {
-    return fileMenu;
-  }
+	public MainWindow getParentWindow() {
+		return parent;
+	}
 
-  public EditMenu getEditMenu() {
-    return editMenu;
-  }
+	public FileMenu getFileMenu() {
+		return fileMenu;
+	}
 
-  public ViewMenu getViewMenu() {
-    return viewMenu;
-  }
+	public EditMenu getEditMenu() {
+		return editMenu;
+	}
 
-  public RunMenu getRunMenu() {
-    return runMenu;
-  }
+	public ViewMenu getViewMenu() {
+		return viewMenu;
+	}
 
-  public ToolsMenu getToolsMenu() {
-    return toolsMenu;
-  }
+	public RunMenu getRunMenu() {
+		return runMenu;
+	}
 
-  @Override
-  public HelpMenu getHelpMenu() {
-    return helpMenu;
-  }
+	public ToolsMenu getToolsMenu() {
+		return toolsMenu;
+	}
 
-  public void enableMenus(boolean enable) {
-    fileMenu.doEnableItems();
-  }
+	@Override
+	public HelpMenu getHelpMenu() {
+		return helpMenu;
+	}
+
+	public void enableMenus(boolean enable) {
+		fileMenu.doEnableItems();
+	}
 
 }

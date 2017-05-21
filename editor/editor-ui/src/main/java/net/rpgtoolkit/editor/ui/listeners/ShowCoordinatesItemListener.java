@@ -19,14 +19,16 @@ import net.rpgtoolkit.editor.editors.BoardEditor;
  */
 public class ShowCoordinatesItemListener implements ItemListener {
 
-  @Override
-  public void itemStateChanged(ItemEvent e) {
-    JCheckBoxMenuItem showCoordinatesMenuItem = (JCheckBoxMenuItem) e.getItem();
-    BoardEditor editor = MainWindow.getInstance().getCurrentBoardEditor();
-    if (editor != null) {
-      MainWindow.getInstance().setShowCoordinates(showCoordinatesMenuItem.isSelected());
-      editor.getBoardView().repaint();
-    }
-  }
-  
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+		JCheckBoxMenuItem showCoordinatesMenuItem = (JCheckBoxMenuItem) e
+				.getItem();
+		BoardEditor editor = MainWindow.getInstance().getCurrentBoardEditor();
+		if (editor != null) {
+			MainWindow.getInstance().setShowCoordinates(
+					showCoordinatesMenuItem.isSelected());
+			editor.getBoardView().repaint();
+		}
+	}
+
 }

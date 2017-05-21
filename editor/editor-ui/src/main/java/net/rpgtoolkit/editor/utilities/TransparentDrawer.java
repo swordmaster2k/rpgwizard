@@ -17,14 +17,16 @@ import net.rpgtoolkit.editor.ui.resources.Icons;
  */
 public class TransparentDrawer {
 
-  public static void drawTransparentBackground(Graphics g, int width, int height) {
-    Image tileImage = Icons.getIcon("transparent", Icons.Size.LARGE).getImage();
-    
-    for (int x = 0; x < width; x += tileImage.getWidth(null)) {
-      for (int y = 0; y < height; y += tileImage.getHeight(null)) {
-        g.drawImage(tileImage, x, y, null);
-      }
-    }
-  }
+	public static void drawTransparentBackground(Graphics g, int width,
+			int height) {
+		Image tileImage = Icons.getIcon("transparent", Icons.Size.LARGE)
+				.getImage();
+
+		for (int x = 0; x < width; x += tileImage.getWidth(null)) {
+			for (int y = 0; y < height; y += tileImage.getHeight(null)) {
+				g.drawImage(tileImage, x, y, null);
+			}
+		}
+	}
 
 }

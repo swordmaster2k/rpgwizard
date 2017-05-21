@@ -16,57 +16,57 @@ import java.util.Objects;
  */
 public class Event {
 
-    private EventType type;
-    private String program;
+	private EventType type;
+	private String program;
 
-    public Event(EventType type, String program) {
-        this.type = type;
-        this.program = program;
-    }
+	public Event(EventType type, String program) {
+		this.type = type;
+		this.program = program;
+	}
 
-    public EventType getType() {
-        return type;
-    }
+	public EventType getType() {
+		return type;
+	}
 
-    public void setType(EventType type) {
-        this.type = type;
-    }
+	public void setType(EventType type) {
+		this.type = type;
+	}
 
-    public String getProgram() {
-        return program;
-    }
+	public String getProgram() {
+		return program;
+	}
 
-    public void setProgram(String program) {
-        this.program = program;
-    }
+	public void setProgram(String program) {
+		this.program = program;
+	}
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 29 * hash + Objects.hashCode(this.type);
-        hash = 29 * hash + Objects.hashCode(this.program);
-        return hash;
-    }
+	@Override
+	public int hashCode() {
+		int hash = 7;
+		hash = 29 * hash + Objects.hashCode(this.type);
+		hash = 29 * hash + Objects.hashCode(this.program);
+		return hash;
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Event other = (Event) obj;
-        if (!Objects.equals(this.program, other.program)) {
-            return false;
-        }
-        if (this.type != other.type) {
-            return false;
-        }
-        return true;
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final Event other = (Event) obj;
+		if (!Objects.equals(this.program, other.program)) {
+			return false;
+		}
+		if (this.type != other.type) {
+			return false;
+		}
+		return true;
+	}
 
 }

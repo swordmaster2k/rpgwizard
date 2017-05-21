@@ -16,13 +16,13 @@ import java.util.EventObject;
  */
 public class LayerChangedEvent extends EventObject {
 
-  /**
-   *
-   *
-   * @param layer
-   */
-  public LayerChangedEvent(BoardLayerView layer) {
-    super(layer);
-  }
-  
+	/**
+	 *
+	 *
+	 * @param layer
+	 */
+	public LayerChangedEvent(BoardLayerView layer) {
+		super(layer);
+	}
+
 }

@@ -28,33 +28,33 @@ import net.rpgtoolkit.editor.editors.ProjectEditor;
  * @author Joshua Michael Daly
  */
 public class EditorFactory {
-    
-    private EditorFactory() {
-        
-    }
-    
-    /**
-     * Gets the matching editor for the asset type.
-     * 
-     * @param asset
-     * @return editor for asset
-     */
-    public static AssetEditorWindow getEditor(Asset asset) {
-        if (asset instanceof Animation) {
-            return new AnimationEditor((Animation) asset);
-        } else if (asset instanceof Board) {
-            return new BoardEditor((Board) asset);
-        } else if (asset instanceof Enemy) {
-            return new EnemyEditor((Enemy) asset);
-        } else if (asset instanceof Item) {
-          return new ItemEditor((Item) asset);
-        } else if (asset instanceof Player) {
-          return new CharacterEditor((Player) asset);
-        } else if (asset instanceof Project) {
-          return new ProjectEditor((Project) asset);
-        }
-        
-        return null;
-    }
-    
+
+	private EditorFactory() {
+
+	}
+
+	/**
+	 * Gets the matching editor for the asset type.
+	 * 
+	 * @param asset
+	 * @return editor for asset
+	 */
+	public static AssetEditorWindow getEditor(Asset asset) {
+		if (asset instanceof Animation) {
+			return new AnimationEditor((Animation) asset);
+		} else if (asset instanceof Board) {
+			return new BoardEditor((Board) asset);
+		} else if (asset instanceof Enemy) {
+			return new EnemyEditor((Enemy) asset);
+		} else if (asset instanceof Item) {
+			return new ItemEditor((Item) asset);
+		} else if (asset instanceof Player) {
+			return new CharacterEditor((Player) asset);
+		} else if (asset instanceof Project) {
+			return new ProjectEditor((Project) asset);
+		}
+
+		return null;
+	}
+
 }

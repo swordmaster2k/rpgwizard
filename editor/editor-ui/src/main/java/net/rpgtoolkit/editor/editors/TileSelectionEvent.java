@@ -17,15 +17,15 @@ import net.rpgtoolkit.common.assets.Tile;
  */
 public class TileSelectionEvent extends EventObject {
 
-  private final Tile tile;
+	private final Tile tile;
 
-  public TileSelectionEvent(Object source, Tile tile) {
-    super(source);
-    this.tile = tile;
-  }
+	public TileSelectionEvent(Object source, Tile tile) {
+		super(source);
+		this.tile = tile;
+	}
 
-  public Tile getTile() {
-    return tile;
-  }
-  
+	public Tile getTile() {
+		return tile;
+	}
+
 }

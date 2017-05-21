@@ -16,11 +16,11 @@ import net.rpgtoolkit.editor.editors.sprite.AbstractSpriteModelPanel;
  */
 public class CharacterModelPanel extends AbstractSpriteModelPanel {
 
-  private final Player player;
+	private final Player player;
 
-  public CharacterModelPanel(Player model) {
-    super(model);
-    player = model;
-  }
+	public CharacterModelPanel(Player model) {
+		super(model);
+		player = model;
+	}
 
 }

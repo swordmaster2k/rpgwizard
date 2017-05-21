@@ -15,11 +15,10 @@ import java.util.ArrayList;
  * @author Geoff Wilson
  * @author Joshua Michael Daly
  */
-public class DOSColors
-{
-    private ArrayList<Color> colors;
+public class DOSColors {
+	private ArrayList<Color> colors;
 
-    public DOSColors()
+	public DOSColors()
     {
         colors = new ArrayList<>();
         // 00: black
@@ -55,9 +54,7 @@ public class DOSColors
         // 15: white
         colors.add(new Color(255, 255, 255));
     }
-
-    public Color getColor(int index)
-    {
-        return colors.get(index);
-    }
+	public Color getColor(int index) {
+		return colors.get(index);
+	}
 }

@@ -8,128 +8,129 @@
 package net.rpgtoolkit.common.assets;
 
 public class Player extends AbstractSprite {
-    
-    private int level;
-    private int maxLevel;
-    private double experience;
-    private double maxExperience;
-    private double health;
-    private double maxHealth;
-    private double attack;
-    private double maxAttack;
-    private double defence;
-    private double maxDefence;
-    private double magic;
-    private double maxMagic;
 
-    /**
-     * Opens a player from an existing file
-     *
-     * @param descriptor Character (.tem) file to open
-     */
-    public Player(AssetDescriptor descriptor) {
-        super(descriptor);
-    }
+	private int level;
+	private int maxLevel;
+	private double experience;
+	private double maxExperience;
+	private double health;
+	private double maxHealth;
+	private double attack;
+	private double maxAttack;
+	private double defence;
+	private double maxDefence;
+	private double magic;
+	private double maxMagic;
 
-    public int getLevel() {
-        return level;
-    }
+	/**
+	 * Opens a player from an existing file
+	 *
+	 * @param descriptor
+	 *            Character (.tem) file to open
+	 */
+	public Player(AssetDescriptor descriptor) {
+		super(descriptor);
+	}
 
-    public void setLevel(int level) {
-        this.level = level;
-    }
+	public int getLevel() {
+		return level;
+	}
 
-    public int getMaxLevel() {
-        return maxLevel;
-    }
+	public void setLevel(int level) {
+		this.level = level;
+	}
 
-    public void setMaxLevel(int maxLevel) {
-        this.maxLevel = maxLevel;
-    }
+	public int getMaxLevel() {
+		return maxLevel;
+	}
 
-    public double getExperience() {
-        return experience;
-    }
+	public void setMaxLevel(int maxLevel) {
+		this.maxLevel = maxLevel;
+	}
 
-    public void setExperience(double experience) {
-        this.experience = experience;
-    }
+	public double getExperience() {
+		return experience;
+	}
 
-    public double getMaxExperience() {
-        return maxExperience;
-    }
+	public void setExperience(double experience) {
+		this.experience = experience;
+	}
 
-    public void setMaxExperience(double maxExperience) {
-        this.maxExperience = maxExperience;
-    }
+	public double getMaxExperience() {
+		return maxExperience;
+	}
 
-    public double getHealth() {
-        return health;
-    }
+	public void setMaxExperience(double maxExperience) {
+		this.maxExperience = maxExperience;
+	}
 
-    public void setHealth(double health) {
-        this.health = health;
-    }
+	public double getHealth() {
+		return health;
+	}
 
-    public double getMaxHealth() {
-        return maxHealth;
-    }
+	public void setHealth(double health) {
+		this.health = health;
+	}
 
-    public void setMaxHealth(double maxHealth) {
-        this.maxHealth = maxHealth;
-    }
+	public double getMaxHealth() {
+		return maxHealth;
+	}
 
-    public double getAttack() {
-        return attack;
-    }
+	public void setMaxHealth(double maxHealth) {
+		this.maxHealth = maxHealth;
+	}
 
-    public void setAttack(double attack) {
-        this.attack = attack;
-    }
+	public double getAttack() {
+		return attack;
+	}
 
-    public double getMaxAttack() {
-        return maxAttack;
-    }
+	public void setAttack(double attack) {
+		this.attack = attack;
+	}
 
-    public void setMaxAttack(double maxAttack) {
-        this.maxAttack = maxAttack;
-    }
+	public double getMaxAttack() {
+		return maxAttack;
+	}
 
-    public double getDefence() {
-        return defence;
-    }
+	public void setMaxAttack(double maxAttack) {
+		this.maxAttack = maxAttack;
+	}
 
-    public void setDefence(double defence) {
-        this.defence = defence;
-    }
+	public double getDefence() {
+		return defence;
+	}
 
-    public double getMaxDefence() {
-        return maxDefence;
-    }
+	public void setDefence(double defence) {
+		this.defence = defence;
+	}
 
-    public void setMaxDefence(double maxDefence) {
-        this.maxDefence = maxDefence;
-    }
+	public double getMaxDefence() {
+		return maxDefence;
+	}
 
-    public double getMagic() {
-        return magic;
-    }
+	public void setMaxDefence(double maxDefence) {
+		this.maxDefence = maxDefence;
+	}
 
-    public void setMagic(double magic) {
-        this.magic = magic;
-    }
+	public double getMagic() {
+		return magic;
+	}
 
-    public double getMaxMagic() {
-        return maxMagic;
-    }
+	public void setMagic(double magic) {
+		this.magic = magic;
+	}
 
-    public void setMaxMagic(double maxMagic) {
-        this.maxMagic = maxMagic;
-    }
-    
-    @Override
-    public void reset() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	public double getMaxMagic() {
+		return maxMagic;
+	}
+
+	public void setMaxMagic(double maxMagic) {
+		this.maxMagic = maxMagic;
+	}
+
+	@Override
+	public void reset() {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
 }

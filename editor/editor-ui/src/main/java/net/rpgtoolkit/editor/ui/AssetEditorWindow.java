@@ -19,90 +19,93 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public abstract class AssetEditorWindow extends JInternalFrame {
-  
-  private static final Logger LOGGER = LoggerFactory.getLogger(AssetEditorWindow.class);
-  
-  protected boolean needSave;
 
-  public AssetEditorWindow() {
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(AssetEditorWindow.class);
 
-  }
-  
-  public boolean doesNeedSave() {
-      return needSave;
-  }
-  
-  protected void setNeedSave(boolean needSave) {
-      if (this.needSave == needSave) {
-          return;
-      }
-      
-      this.needSave = needSave;
-      setTitle(getTitle() + "*");
-  }
+	protected boolean needSave;
 
-  public abstract AbstractAsset getAsset();
-  
-  public AssetEditorWindow(String title, boolean resizeable, boolean closeable,
-          boolean maximizable, boolean iconifiable, ImageIcon icon) {
-    super(title, resizeable, closeable, maximizable, iconifiable);
-    setDefaultCloseOperation(JInternalFrame.DO_NOTHING_ON_CLOSE);
-    setFrameIcon(icon);
-  }
+	public AssetEditorWindow() {
 
-  public abstract void save() throws Exception;
-  
-  protected void save(AbstractAsset asset) throws Exception {
-    File original;
-    File backup = null;
-    if (asset.getDescriptor() == null) {
-        if (!selectDescriptor(asset)) {
-            return; // Save was aborted by the user.
-        }
-    } else {
-        // This will throw an exception if it can't make a backup.
-        backup = EditorFileManager.backupFile(new File(asset.getDescriptor().getURI()));
-    }
- 
-    original = new File(asset.getDescriptor().getURI());
-    try {
-      AssetManager.getInstance().serialize(
-              AssetManager.getInstance().getHandle(asset));
-      setTitle(original.getName());
-      needSave = false;
-      setTitle(getTitle().replace("*", ""));
-    } catch (Exception ex) {
-      LOGGER.error("Failed to save asset=[{}].", asset, ex);
-      
-      if (backup != null) {
-        // Existing file that failed during save.
-        FileUtils.copyFile(backup, original);
-        FileUtils.deleteQuietly(backup);
-      } else {
-        // New file that failed during save.
-        asset.setDescriptor(null);
-        FileUtils.deleteQuietly(original);
-      }
-      
-      throw new Exception("Failed to save asset.");
-    }
-    
-    if (backup != null) {
-        FileUtils.deleteQuietly(backup);
-    }
-  }
-  
-  public abstract void saveAs(File file) throws Exception;
-  
-  private boolean selectDescriptor(AbstractAsset asset) {
-      File file = EditorFileManager.saveByType(asset.getClass());
+	}
 
-      if (file == null) {
-          return false;
-      }
+	public boolean doesNeedSave() {
+		return needSave;
+	}
 
-      asset.setDescriptor(new AssetDescriptor(file.toURI()));
-      return true;
-  }
+	protected void setNeedSave(boolean needSave) {
+		if (this.needSave == needSave) {
+			return;
+		}
+
+		this.needSave = needSave;
+		setTitle(getTitle() + "*");
+	}
+
+	public abstract AbstractAsset getAsset();
+
+	public AssetEditorWindow(String title, boolean resizeable,
+			boolean closeable, boolean maximizable, boolean iconifiable,
+			ImageIcon icon) {
+		super(title, resizeable, closeable, maximizable, iconifiable);
+		setDefaultCloseOperation(JInternalFrame.DO_NOTHING_ON_CLOSE);
+		setFrameIcon(icon);
+	}
+
+	public abstract void save() throws Exception;
+
+	protected void save(AbstractAsset asset) throws Exception {
+		File original;
+		File backup = null;
+		if (asset.getDescriptor() == null) {
+			if (!selectDescriptor(asset)) {
+				return; // Save was aborted by the user.
+			}
+		} else {
+			// This will throw an exception if it can't make a backup.
+			backup = EditorFileManager.backupFile(new File(asset
+					.getDescriptor().getURI()));
+		}
+
+		original = new File(asset.getDescriptor().getURI());
+		try {
+			AssetManager.getInstance().serialize(
+					AssetManager.getInstance().getHandle(asset));
+			setTitle(original.getName());
+			needSave = false;
+			setTitle(getTitle().replace("*", ""));
+		} catch (Exception ex) {
+			LOGGER.error("Failed to save asset=[{}].", asset, ex);
+
+			if (backup != null) {
+				// Existing file that failed during save.
+				FileUtils.copyFile(backup, original);
+				FileUtils.deleteQuietly(backup);
+			} else {
+				// New file that failed during save.
+				asset.setDescriptor(null);
+				FileUtils.deleteQuietly(original);
+			}
+
+			throw new Exception("Failed to save asset.");
+		}
+
+		if (backup != null) {
+			FileUtils.deleteQuietly(backup);
+		}
+	}
+
+	public abstract void saveAs(File file) throws Exception;
+
+	private boolean selectDescriptor(AbstractAsset asset) {
+		File file = EditorFileManager.saveByType(asset.getClass());
+
+		if (file == null) {
+			return false;
+		}
+
+		asset.setDescriptor(new AssetDescriptor(file.toURI()));
+		return true;
+	}
 
 }

@@ -20,103 +20,103 @@ import java.util.List;
  */
 public class TileSet extends AbstractAsset {
 
-    private String name;
+	private String name;
 
-    private int tileWidth;
-    private int tileHeight;
+	private int tileWidth;
+	private int tileHeight;
 
-    private List<String> images;
+	private List<String> images;
 
-    private LinkedList<Tile> tiles;
+	private LinkedList<Tile> tiles;
 
-    public TileSet() {
+	public TileSet() {
         super(null);
         images = new ArrayList<>();
         tiles = new LinkedList<>();
     }
-
-    /**
-     * Creates a new TileSet with a descriptor.
-     *
-     * @param descriptor
-     * @param tileWidth
-     * @param tileHeight
-     */
-    public TileSet(AssetDescriptor descriptor, int tileWidth, int tileHeight) {
+	/**
+	 * Creates a new TileSet with a descriptor.
+	 *
+	 * @param descriptor
+	 * @param tileWidth
+	 * @param tileHeight
+	 */
+	public TileSet(AssetDescriptor descriptor, int tileWidth, int tileHeight) {
         super(descriptor);
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
         images = new ArrayList<>();
         tiles = new LinkedList<>();
     }
+	public String getName() {
+		return name;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	/**
+	 * Gets a tile from a specified location in the array.
+	 *
+	 * @param index
+	 *            Index of the array to get the tile from
+	 * @return Tile object representing the tile from the requested index
+	 */
+	public Tile getTile(int index) {
+		return tiles.get(index);
+	}
 
-    /**
-     * Gets a tile from a specified location in the array.
-     *
-     * @param index Index of the array to get the tile from
-     * @return Tile object representing the tile from the requested index
-     */
-    public Tile getTile(int index) {
-        return tiles.get(index);
-    }
+	public int getTileIndex(Tile tile) {
+		return tiles.indexOf(tile);
+	}
 
-    public int getTileIndex(Tile tile) {
-        return tiles.indexOf(tile);
-    }
+	/**
+	 * Returns an array of all the tiles in the tiles
+	 *
+	 * @return Object array of all the tiles in the tiles
+	 */
+	public LinkedList<Tile> getTiles() {
+		return tiles;
+	}
 
-    /**
-     * Returns an array of all the tiles in the tiles
-     *
-     * @return Object array of all the tiles in the tiles
-     */
-    public LinkedList<Tile> getTiles() {
-        return tiles;
-    }
+	public int getTileWidth() {
+		return tileWidth;
+	}
 
-    public int getTileWidth() {
-        return tileWidth;
-    }
+	public void setTileWidth(int tileWidth) {
+		this.tileWidth = tileWidth;
+	}
 
-    public void setTileWidth(int tileWidth) {
-        this.tileWidth = tileWidth;
-    }
+	public int getTileHeight() {
+		return tileHeight;
+	}
 
-    public int getTileHeight() {
-        return tileHeight;
-    }
+	public void setTileHeight(int tileHeight) {
+		this.tileHeight = tileHeight;
+	}
 
-    public void setTileHeight(int tileHeight) {
-        this.tileHeight = tileHeight;
-    }
+	public List<String> getImages() {
+		return images;
+	}
 
-    public List<String> getImages() {
-        return images;
-    }
+	public void setImages(List<String> images) {
+		this.images = images;
+	}
 
-    public void setImages(List<String> images) {
-        this.images = images;
-    }
+	public void setTiles(LinkedList<Tile> tiles) {
+		this.tiles = tiles;
+	}
 
-    public void setTiles(LinkedList<Tile> tiles) {
-        this.tiles = tiles;
-    }
-
-    /**
-     * Adds a new tile to the tiles, it will add the tile at the end of the
-     * array
-     *
-     * @param newTile Tile object to add to the array
-     */
-    public void addTile(Tile newTile) {
-        tiles.add(newTile);
-    }
+	/**
+	 * Adds a new tile to the tiles, it will add the tile at the end of the
+	 * array
+	 *
+	 * @param newTile
+	 *            Tile object to add to the array
+	 */
+	public void addTile(Tile newTile) {
+		tiles.add(newTile);
+	}
 
 }

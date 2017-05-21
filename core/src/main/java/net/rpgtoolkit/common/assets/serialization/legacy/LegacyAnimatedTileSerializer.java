@@ -29,27 +29,28 @@ import net.rpgtoolkit.common.utilities.CoreProperties;
  */
 public class LegacyAnimatedTileSerializer extends AbstractAssetSerializer {
 
-  private static final String HEADER_MAGIC = "RPGTLKIT TILEANIM";
-  private static final int HEADER_VERSION_MAJOR = 2;
-  private static final int HEADER_VERSION_MINOR = 0;
+	private static final String HEADER_MAGIC = "RPGTLKIT TILEANIM";
+	private static final int HEADER_VERSION_MAJOR = 2;
+	private static final int HEADER_VERSION_MINOR = 0;
 
-  @Override
-  public int priority() {
-    return 1; // not our first choice
-  }
+	@Override
+	public int priority() {
+		return 1; // not our first choice
+	}
 
-  @Override
-  public boolean serializable(AssetDescriptor descriptor) {
-    final String ext = Paths.extension(descriptor.getURI().toString());
-    return ext.endsWith(CoreProperties.getFullExtension("toolkit.animatedtile.extension.legacy"));
-  }
+	@Override
+	public boolean serializable(AssetDescriptor descriptor) {
+		final String ext = Paths.extension(descriptor.getURI().toString());
+		return ext.endsWith(CoreProperties
+				.getFullExtension("toolkit.animatedtile.extension.legacy"));
+	}
 
-  @Override
-  public boolean deserializable(AssetDescriptor descriptor) {
-    return this.serializable(descriptor);
-  }
+	@Override
+	public boolean deserializable(AssetDescriptor descriptor) {
+		return this.serializable(descriptor);
+	}
 
-  @Override
+	@Override
   public void serialize(AssetHandle handle) throws IOException, AssetException {
 
     try (final WritableByteChannel channel = handle.write()) {
@@ -80,8 +81,7 @@ public class LegacyAnimatedTileSerializer extends AbstractAssetSerializer {
       }
     }
   }
-
-  @Override
+	@Override
   public void deserialize(AssetHandle handle) throws IOException, AssetException {
 
     try (final ReadableByteChannel channel = handle.read()) {
@@ -117,13 +117,12 @@ public class LegacyAnimatedTileSerializer extends AbstractAssetSerializer {
       handle.setAsset(tile);
     }
   }
-
-  protected void checkVersion(String header, int major, int minor)
-      throws AssetException {
-    if (!HEADER_MAGIC.equals(header)
-        || HEADER_VERSION_MAJOR > major || HEADER_VERSION_MINOR > minor) {
-      throw new AssetException("unsupported file version");
-    }
-  }
+	protected void checkVersion(String header, int major, int minor)
+			throws AssetException {
+		if (!HEADER_MAGIC.equals(header) || HEADER_VERSION_MAJOR > major
+				|| HEADER_VERSION_MINOR > minor) {
+			throw new AssetException("unsupported file version");
+		}
+	}
 
 }

@@ -28,112 +28,115 @@ import net.rpgtoolkit.editor.ui.resources.Icons;
  * @author Joel Moore
  * @author Joshua Michael Daly
  */
-public class EnemyEditor extends AbstractSpriteEditor implements InternalFrameListener {
+public class EnemyEditor extends AbstractSpriteEditor
+		implements
+			InternalFrameListener {
 
-  private final Enemy enemy;
+	private final Enemy enemy;
 
-  private JTextField enemyName;
-  private DoubleField health;
-  private DoubleField attack;
-  private DoubleField defence;
-  private DoubleField magic;
-  private DoubleField experienceReward;
-  private DoubleField goldReward;
+	private JTextField enemyName;
+	private DoubleField health;
+	private DoubleField attack;
+	private DoubleField defence;
+	private DoubleField magic;
+	private DoubleField experienceReward;
+	private DoubleField goldReward;
 
-  /*
-   * *************************************************************************
-   * Public Constructors
-   * *************************************************************************
-   */
+	/*
+	 * *************************************************************************
+	 * Public Constructors
+	 * *************************************************************************
+	 */
 
-  /**
-   * Opens an existing enemy
-   *
-   * @param theEnemy Enemy to edit
-   */
-  public EnemyEditor(Enemy theEnemy) {
-    super("Untitled", theEnemy, Icons.getIcon("enemy"));
+	/**
+	 * Opens an existing enemy
+	 *
+	 * @param theEnemy
+	 *            Enemy to edit
+	 */
+	public EnemyEditor(Enemy theEnemy) {
+		super("Untitled", theEnemy, Icons.getIcon("enemy"));
 
-    enemy = theEnemy;
-    
-    if (enemy.getDescriptor() == null) {
-      setupNewEnemy();
-    } else {
-      setTitle(new File(enemy.getDescriptor().getURI()).getName());
-    }
+		enemy = theEnemy;
 
-    this.constructWindow();
-    this.setVisible(true);
-    pack();
-  }
+		if (enemy.getDescriptor() == null) {
+			setupNewEnemy();
+		} else {
+			setTitle(new File(enemy.getDescriptor().getURI()).getName());
+		}
 
-  /*
-   * *************************************************************************
-   * Public Methods
-   * *************************************************************************
-   */
-  
-  @Override
-  public AbstractAsset getAsset() {
-      return enemy;
-  }
-  
-  @Override
-  public void save() throws Exception {
-    // Get the relative portrait path.
-    checkProfileImagePath();
-    
-    //Update all enemy variables from the stats panel
-    enemy.setName(enemyName.getText());
-    enemy.setHealth(health.getValue());
-    enemy.setAttack(attack.getValue());
-    enemy.setDefence(defence.getValue());
-    enemy.setMagic(magic.getValue());
-    enemy.setExperienceReward(experienceReward.getValue());
-    enemy.setGoldReward(goldReward.getValue());
-    
-    // Update all enemy variables from graphics panel.
-    enemy.setIdleTimeBeforeStanding(idleTimeoutField.getValue());
-    enemy.setFrameRate(stepRateField.getValue());
-    
-    save(enemy);
-  }
+		this.constructWindow();
+		this.setVisible(true);
+		pack();
+	}
 
-  /**
-   *
-   *
-   * @param file
-   * @throws java.lang.Exception
-   */
-  @Override
-  public void saveAs(File file) throws Exception {
-    enemy.setDescriptor(new AssetDescriptor(file.toURI()));
-    this.setTitle(file.getName());
-    save();
-  }
+	/*
+	 * *************************************************************************
+	 * Public Methods
+	 * *************************************************************************
+	 */
 
-  /*
-   * *************************************************************************
-   * Private Methods
-   * *************************************************************************
-   */
-  private void setupNewEnemy() {
-      
-  }
-  
-  /**
-   * Builds the Swing interface
-   */
-  private void constructWindow() {
-    this.addInternalFrameListener(this);
+	@Override
+	public AbstractAsset getAsset() {
+		return enemy;
+	}
 
-    this.createStatsPanel();
-    this.createGraphicsPanel();
-   
-    build();
-  }
+	@Override
+	public void save() throws Exception {
+		// Get the relative portrait path.
+		checkProfileImagePath();
 
-  private void createStatsPanel() {
+		// Update all enemy variables from the stats panel
+		enemy.setName(enemyName.getText());
+		enemy.setHealth(health.getValue());
+		enemy.setAttack(attack.getValue());
+		enemy.setDefence(defence.getValue());
+		enemy.setMagic(magic.getValue());
+		enemy.setExperienceReward(experienceReward.getValue());
+		enemy.setGoldReward(goldReward.getValue());
+
+		// Update all enemy variables from graphics panel.
+		enemy.setIdleTimeBeforeStanding(idleTimeoutField.getValue());
+		enemy.setFrameRate(stepRateField.getValue());
+
+		save(enemy);
+	}
+
+	/**
+	 *
+	 *
+	 * @param file
+	 * @throws java.lang.Exception
+	 */
+	@Override
+	public void saveAs(File file) throws Exception {
+		enemy.setDescriptor(new AssetDescriptor(file.toURI()));
+		this.setTitle(file.getName());
+		save();
+	}
+
+	/*
+	 * *************************************************************************
+	 * Private Methods
+	 * *************************************************************************
+	 */
+	private void setupNewEnemy() {
+
+	}
+
+	/**
+	 * Builds the Swing interface
+	 */
+	private void constructWindow() {
+		this.addInternalFrameListener(this);
+
+		this.createStatsPanel();
+		this.createGraphicsPanel();
+
+		build();
+	}
+
+	private void createStatsPanel() {
     List<Component> labels = new ArrayList<>();
     labels.add(new JLabel("Name"));
     labels.add(new JLabel("Health"));
@@ -178,9 +181,8 @@ public class EnemyEditor extends AbstractSpriteEditor implements InternalFrameLi
     
     buildStatsPanel(labels, inputs);
   }
+	private void createGraphicsPanel() {
+		buildAnimationsPanel();
+	}
 
-  private void createGraphicsPanel() {
-    buildAnimationsPanel();
-  }
-  
 }

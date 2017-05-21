@@ -23,28 +23,29 @@ import net.rpgtoolkit.editor.utilities.EditorFileManager;
  */
 public class OpenProjectAction extends AbstractAction {
 
-  @Override
-  public void actionPerformed(ActionEvent e) {
-    EditorFileManager.getFileChooser().resetChoosableFileFilters();
-    FileNameExtensionFilter filter = new FileNameExtensionFilter(
-            "Toolkit Project", 
-            CoreProperties.getDefaultExtension(Project.class).replace(".", ""));
-    EditorFileManager.getFileChooser().setFileFilter(filter);
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		EditorFileManager.getFileChooser().resetChoosableFileFilters();
+		FileNameExtensionFilter filter = new FileNameExtensionFilter(
+				"Toolkit Project", CoreProperties.getDefaultExtension(
+						Project.class).replace(".", ""));
+		EditorFileManager.getFileChooser().setFileFilter(filter);
 
-    File mainFolder = new File(CoreProperties.getProjectsDirectory());
+		File mainFolder = new File(CoreProperties.getProjectsDirectory());
 
-    if (mainFolder.exists()) {
-      EditorFileManager.getFileChooser().setCurrentDirectory(mainFolder);
-    }
+		if (mainFolder.exists()) {
+			EditorFileManager.getFileChooser().setCurrentDirectory(mainFolder);
+		}
 
-    if (EditorFileManager.getFileChooser().showOpenDialog(MainWindow.getInstance()) == JFileChooser.APPROVE_OPTION) {
-      File file = EditorFileManager.getFileChooser().getSelectedFile();
-      MainWindow mainWindow = MainWindow.getInstance();
-      
-      Project project = mainWindow.openProject(file);
-      mainWindow.setProjectPath(file.getParent());
-      mainWindow.setupProject(project);
-    }
-  }
+		if (EditorFileManager.getFileChooser().showOpenDialog(
+				MainWindow.getInstance()) == JFileChooser.APPROVE_OPTION) {
+			File file = EditorFileManager.getFileChooser().getSelectedFile();
+			MainWindow mainWindow = MainWindow.getInstance();
+
+			Project project = mainWindow.openProject(file);
+			mainWindow.setProjectPath(file.getParent());
+			mainWindow.setupProject(project);
+		}
+	}
 
 }

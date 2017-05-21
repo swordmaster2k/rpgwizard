@@ -43,172 +43,178 @@ import net.rpgtoolkit.editor.utilities.GuiHelper;
  * @author Geoff Wilson
  * @author Joshua Michael Daly
  */
-public class ProjectEditor extends AssetEditorWindow implements InternalFrameListener {
+public class ProjectEditor extends AssetEditorWindow
+		implements
+			InternalFrameListener {
 
-    private final Project project; // Project file we are altering
+	private final Project project; // Project file we are altering
 
-    // Tabs required by the menu
-    private JPanel projectSettingsPanel;
-    private JPanel codePanel;
-    private JPanel graphicsPanel;
+	// Tabs required by the menu
+	private JPanel projectSettingsPanel;
+	private JPanel codePanel;
+	private JPanel graphicsPanel;
 
-    // Components required for saving/loading data
-    private final Border defaultEtchedBorder = BorderFactory.
-            createEtchedBorder(EtchedBorder.LOWERED);
+	// Components required for saving/loading data
+	private final Border defaultEtchedBorder = BorderFactory
+			.createEtchedBorder(EtchedBorder.LOWERED);
 
-    //PROJECT SETTINGS
-    private JTextField projectName;
+	// PROJECT SETTINGS
+	private JTextField projectName;
 
-    // STARTUP SETTINGS
-    private JComboBox initialBoard;
-    private JComboBox initialCharacter;
+	// STARTUP SETTINGS
+	private JComboBox initialBoard;
+	private JComboBox initialCharacter;
 
-    // CODE SETTINGS
-    private JComboBox startupProgram;
-    private JComboBox gameOverProgram;
+	// CODE SETTINGS
+	private JComboBox startupProgram;
+	private JComboBox gameOverProgram;
 
-    // GRAPHICS SETTINGS
-    private JCheckBox fullScreen;
-    private JRadioButton sixByFour;
-    private JRadioButton eightBySix;
-    private JRadioButton tenBySeven;
-    private JRadioButton customRes;
-    private JTextField customResWidth;
-    private JTextField customResHeight;
+	// GRAPHICS SETTINGS
+	private JCheckBox fullScreen;
+	private JRadioButton sixByFour;
+	private JRadioButton eightBySix;
+	private JRadioButton tenBySeven;
+	private JRadioButton customRes;
+	private JTextField customResWidth;
+	private JTextField customResHeight;
 
-    /*
-   * *************************************************************************
-   * Public Constructors
-   * *************************************************************************
-     */
-    /**
-     * Opens an existing project
-     *
-     * @param project Project file to open (.gam)
-     */
-    public ProjectEditor(Project project) {
-        super(project.getName(), true, true, true, true, Icons.getIcon("project"));
+	/*
+	 * *************************************************************************
+	 * Public Constructors
+	 * *************************************************************************
+	 */
+	/**
+	 * Opens an existing project
+	 *
+	 * @param project
+	 *            Project file to open (.gam)
+	 */
+	public ProjectEditor(Project project) {
+		super(project.getName(), true, true, true, true, Icons
+				.getIcon("project"));
 
-        this.project = project;
+		this.project = project;
 
-        setSize(555, 530);
-        constructWindow();
-        setVisible(true);
-    }
+		setSize(555, 530);
+		constructWindow();
+		setVisible(true);
+	}
 
-    /*
-   * *************************************************************************
-   * Public Methods
-   * *************************************************************************
-     */
-    @Override
-    public AbstractAsset getAsset() {
-        return project;
-    }
+	/*
+	 * *************************************************************************
+	 * Public Methods
+	 * *************************************************************************
+	 */
+	@Override
+	public AbstractAsset getAsset() {
+		return project;
+	}
 
-    @Override
-    public void save() throws Exception {
-        if (sixByFour.isSelected()) {
-            project.setResolutionWidth(640);
-            project.setResolutionHeight(480);
-        } else if (eightBySix.isSelected()) {
-            project.setResolutionWidth(800);
-            project.setResolutionHeight(600);
-        } else if (tenBySeven.isSelected()) {
-            project.setResolutionWidth(1024);
-            project.setResolutionHeight(768);
-        } else {
-            project.setResolutionWidth(Integer.parseInt(customResWidth.getText()));
-            project.setResolutionHeight(Integer.parseInt(customResHeight.getText()));
-        }
+	@Override
+	public void save() throws Exception {
+		if (sixByFour.isSelected()) {
+			project.setResolutionWidth(640);
+			project.setResolutionHeight(480);
+		} else if (eightBySix.isSelected()) {
+			project.setResolutionWidth(800);
+			project.setResolutionHeight(600);
+		} else if (tenBySeven.isSelected()) {
+			project.setResolutionWidth(1024);
+			project.setResolutionHeight(768);
+		} else {
+			project.setResolutionWidth(Integer.parseInt(customResWidth
+					.getText()));
+			project.setResolutionHeight(Integer.parseInt(customResHeight
+					.getText()));
+		}
 
-        save(project);
-        setTitle(project.getName());
-    }
+		save(project);
+		setTitle(project.getName());
+	}
 
-    /**
-     *
-     *
-     * @param file
-     * @throws java.lang.Exception
-     */
-    @Override
-    public void saveAs(File file) throws Exception {
-        project.setDescriptor(new AssetDescriptor(file.toURI()));
-        this.setTitle("Editing Project - " + file.getName());
-        save();
-    }
+	/**
+	 *
+	 *
+	 * @param file
+	 * @throws java.lang.Exception
+	 */
+	@Override
+	public void saveAs(File file) throws Exception {
+		project.setDescriptor(new AssetDescriptor(file.toURI()));
+		this.setTitle("Editing Project - " + file.getName());
+		save();
+	}
 
-    public void gracefulClose() {
+	public void gracefulClose() {
 
-    }
+	}
 
-    @Override
-    public void internalFrameOpened(InternalFrameEvent e) {
+	@Override
+	public void internalFrameOpened(InternalFrameEvent e) {
 
-    }
+	}
 
-    @Override
-    public void internalFrameClosing(InternalFrameEvent e) {
+	@Override
+	public void internalFrameClosing(InternalFrameEvent e) {
 
-    }
+	}
 
-    @Override
-    public void internalFrameClosed(InternalFrameEvent e) {
-        this.gracefulClose();
-    }
+	@Override
+	public void internalFrameClosed(InternalFrameEvent e) {
+		this.gracefulClose();
+	}
 
-    @Override
-    public void internalFrameIconified(InternalFrameEvent e) {
+	@Override
+	public void internalFrameIconified(InternalFrameEvent e) {
 
-    }
+	}
 
-    @Override
-    public void internalFrameDeiconified(InternalFrameEvent e) {
+	@Override
+	public void internalFrameDeiconified(InternalFrameEvent e) {
 
-    }
+	}
 
-    @Override
-    public void internalFrameActivated(InternalFrameEvent e) {
+	@Override
+	public void internalFrameActivated(InternalFrameEvent e) {
 
-    }
+	}
 
-    @Override
-    public void internalFrameDeactivated(InternalFrameEvent e) {
+	@Override
+	public void internalFrameDeactivated(InternalFrameEvent e) {
 
-    }
+	}
 
-    /*
-   * *************************************************************************
-   * Private Methods
-   * *************************************************************************
-     */
-    /**
-     * Builds the Swing interface
-     */
-    private void constructWindow() {
-        this.addInternalFrameListener(this);
+	/*
+	 * *************************************************************************
+	 * Private Methods
+	 * *************************************************************************
+	 */
+	/**
+	 * Builds the Swing interface
+	 */
+	private void constructWindow() {
+		this.addInternalFrameListener(this);
 
-        // Builds the components needed to display the Project status.
-        JTabbedPane tabPane = new JTabbedPane();
+		// Builds the components needed to display the Project status.
+		JTabbedPane tabPane = new JTabbedPane();
 
-        this.projectSettingsPanel = new JPanel();
-        this.codePanel = new JPanel();
-        this.graphicsPanel = new JPanel();
+		this.projectSettingsPanel = new JPanel();
+		this.codePanel = new JPanel();
+		this.graphicsPanel = new JPanel();
 
-        this.createProjectSettingsPanel();
-        this.createCodePanel();
-        this.createGraphicsPanel();
+		this.createProjectSettingsPanel();
+		this.createCodePanel();
+		this.createGraphicsPanel();
 
-        tabPane.addTab("Project Settings", this.projectSettingsPanel);
-        tabPane.addTab("RPG Code", this.codePanel);
-        tabPane.addTab("Graphics", this.graphicsPanel);
+		tabPane.addTab("Project Settings", this.projectSettingsPanel);
+		tabPane.addTab("RPG Code", this.codePanel);
+		tabPane.addTab("Graphics", this.graphicsPanel);
 
-        add(tabPane);
-        pack();
-    }
+		add(tabPane);
+		pack();
+	}
 
-    private void createProjectSettingsPanel() {
+	private void createProjectSettingsPanel() {
         // Configure Class scope components
         projectName = new JTextField(project.getName());
         projectName.getDocument().addDocumentListener(new DocumentListener() {
@@ -322,8 +328,7 @@ public class ProjectEditor extends AssetEditorWindow implements InternalFrameLis
                 .addComponent(conditionsPanel)
         );
     }
-
-    private void createCodePanel() {
+	private void createCodePanel() {
         JLabel startupProgramLabel = new JLabel("Startup Program");
         String[] exts = EditorFileManager.getTypeExtensions(Program.class);
         File directory = EditorFileManager.getFullPath(Program.class);
@@ -388,8 +393,7 @@ public class ProjectEditor extends AssetEditorWindow implements InternalFrameLis
         );
 
     }
-
-    private void createGraphicsPanel() {
+	private void createGraphicsPanel() {
         fullScreen = new JCheckBox("Full Screen Mode?");
         fullScreen.setSelected(project.isFullScreen());
         fullScreen.addActionListener((ActionEvent e) -> {
@@ -511,5 +515,4 @@ public class ProjectEditor extends AssetEditorWindow implements InternalFrameLis
                 .addComponent(screenPanel)
         );
     }
-
 }

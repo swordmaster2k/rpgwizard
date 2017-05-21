@@ -17,34 +17,34 @@ import net.rpgtoolkit.editor.ui.AnimatedPanel;
  * @author Joshua Michael Daly
  */
 public class AnimationsTablePanel extends JPanel {
-  
-  private final ProfilePanel profilePanel;
-  
-  public AnimationsTablePanel(ProfilePanel profilePanel) {
-    super(new BorderLayout());
-    this.profilePanel = profilePanel;
-  }
 
-  @Override
-  public Dimension getPreferredSize() {
-    super.getPreferredSize();
-    return calculateDimensions(super.getPreferredSize().width);
-  }
+	private final ProfilePanel profilePanel;
 
-  @Override
-  public Dimension getMaximumSize() {
-    return calculateDimensions(super.getMaximumSize().width);
-  }
+	public AnimationsTablePanel(ProfilePanel profilePanel) {
+		super(new BorderLayout());
+		this.profilePanel = profilePanel;
+	}
 
-  @Override
-  public Dimension getMinimumSize() {
-    return calculateDimensions(super.getMinimumSize().width);
-  }
-  
-  private Dimension calculateDimensions(int width) {
-    int height = profilePanel.getHeight() - AnimatedPanel.DEFAULT_HEIGHT;
-    
-    return new Dimension(width, height);
-  }
+	@Override
+	public Dimension getPreferredSize() {
+		super.getPreferredSize();
+		return calculateDimensions(super.getPreferredSize().width);
+	}
+
+	@Override
+	public Dimension getMaximumSize() {
+		return calculateDimensions(super.getMaximumSize().width);
+	}
+
+	@Override
+	public Dimension getMinimumSize() {
+		return calculateDimensions(super.getMinimumSize().width);
+	}
+
+	private Dimension calculateDimensions(int width) {
+		int height = profilePanel.getHeight() - AnimatedPanel.DEFAULT_HEIGHT;
+
+		return new Dimension(width, height);
+	}
 
 }

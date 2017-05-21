@@ -21,95 +21,92 @@ import net.rpgtoolkit.common.utilities.CoreProperties;
  */
 public class SpriteSheet {
 
-    private final String fileName;
-    private final int x;
-    private final int y;
-    private final int width;
-    private final int height;
+	private final String fileName;
+	private final int x;
+	private final int y;
+	private final int width;
+	private final int height;
 
-    // Non-IO.
-    private BufferedImage image;
-    
-    public SpriteSheet() {
-        fileName = "";
-        x = 0;
-        y = 0;
-        width = 0;
-        height = 0;
-    }
+	// Non-IO.
+	private BufferedImage image;
 
-    public SpriteSheet(String image, int x, int y, int width, int height) {
-        this.fileName = image;
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-    }
+	public SpriteSheet() {
+		fileName = "";
+		x = 0;
+		y = 0;
+		width = 0;
+		height = 0;
+	}
 
-    public String getFileName() {
-        return fileName;
-    }
+	public SpriteSheet(String image, int x, int y, int width, int height) {
+		this.fileName = image;
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+	}
 
-    public int getX() {
-        return x;
-    }
+	public String getFileName() {
+		return fileName;
+	}
 
-    public int getY() {
-        return y;
-    }
+	public int getX() {
+		return x;
+	}
 
-    public int getWidth() {
-        return width;
-    }
+	public int getY() {
+		return y;
+	}
 
-    public int getHeight() {
-        return height;
-    }
-    
-    public BufferedImage getImage() {
-        return image;
-    }
+	public int getWidth() {
+		return width;
+	}
 
-    public BufferedImage loadImage() throws IOException {
-        File file = new File(
-                System.getProperty("project.path")
-                + File.separator
-                + CoreProperties.getProperty("toolkit.directory.bitmap")
-                + File.separator
-                + fileName
-        );
-        image = ImageIO.read(file);
-        
-        return image;
-    }
-    
-    public BufferedImage getFrame(int index, int width, int height) {
-        if (width > image.getWidth()) {
-            width = image.getWidth();
-        }
-        if (height > image.getHeight()) {
-            height = image.getHeight();
-        }
-        
-        int columns = Math.round(image.getWidth() / width);
-        int x1 = (index % columns) * width;
-        int y1 = (Math.round(index / columns)) * height;
-        
-        return image.getSubimage(x1, y1, width, height);
-    }
-    
-    public int getFrameCount(int width, int height) {
-        int columns = Math.round(image.getWidth() / width);
-        int rows = Math.round(image.getHeight() / height);
-        
-        if (columns == 0) {
-            columns = 1;
-        }
-        if (rows == 0) {
-            rows = 1;
-        }
-        
-        return columns * rows;
-    }
+	public int getHeight() {
+		return height;
+	}
+
+	public BufferedImage getImage() {
+		return image;
+	}
+
+	public BufferedImage loadImage() throws IOException {
+		File file = new File(System.getProperty("project.path")
+				+ File.separator
+				+ CoreProperties.getProperty("toolkit.directory.bitmap")
+				+ File.separator + fileName);
+		image = ImageIO.read(file);
+
+		return image;
+	}
+
+	public BufferedImage getFrame(int index, int width, int height) {
+		if (width > image.getWidth()) {
+			width = image.getWidth();
+		}
+		if (height > image.getHeight()) {
+			height = image.getHeight();
+		}
+
+		int columns = Math.round(image.getWidth() / width);
+		int x1 = (index % columns) * width;
+		int y1 = (Math.round(index / columns)) * height;
+
+		return image.getSubimage(x1, y1, width, height);
+	}
+
+	public int getFrameCount(int width, int height) {
+		int columns = Math.round(image.getWidth() / width);
+		int rows = Math.round(image.getHeight() / height);
+
+		if (columns == 0) {
+			columns = 1;
+		}
+		if (rows == 0) {
+			rows = 1;
+		}
+
+		return columns * rows;
+	}
 
 }

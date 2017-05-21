@@ -17,11 +17,11 @@ import net.rpgtoolkit.editor.editors.board.LayerChangedEvent;
  */
 public interface LayerChangeListener extends EventListener {
 
-  /**
-   *
-   *
-   * @param e
-   */
-  public void layerChanged(LayerChangedEvent e);
-  
+	/**
+	 *
+	 *
+	 * @param e
+	 */
+	public void layerChanged(LayerChangedEvent e);
+
 }

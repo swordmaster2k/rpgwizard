@@ -18,37 +18,42 @@ import ro.fortsoft.pf4j.ExtensionPoint;
  */
 public interface Engine extends ExtensionPoint {
 
-    /**
-     * Runs the project located at the specified path. An engine implementation
-     * should take a copy of the project rather than running directly against
-     * what the editor is using. As the engine progresses it should update the
-     * progress of the monitor which will provide UI feedback when needed.
-     *
-     * @param projectName name of the current project
-     * @param projectCopy path to the project copy for engine use
-     * @param progressMonitor for tracking engine startup progress
-     * @throws java.lang.Exception
-     */
-    public void run(String projectName, File projectCopy, ProgressMonitor progressMonitor) throws Exception;
+	/**
+	 * Runs the project located at the specified path. An engine implementation
+	 * should take a copy of the project rather than running directly against
+	 * what the editor is using. As the engine progresses it should update the
+	 * progress of the monitor which will provide UI feedback when needed.
+	 *
+	 * @param projectName
+	 *            name of the current project
+	 * @param projectCopy
+	 *            path to the project copy for engine use
+	 * @param progressMonitor
+	 *            for tracking engine startup progress
+	 * @throws java.lang.Exception
+	 */
+	public void run(String projectName, File projectCopy,
+			ProgressMonitor progressMonitor) throws Exception;
 
-    /**
-     * Requests that the engine instance stop as soon as possible. In this case
-     * there is no need for UI feedback as the caller is also stopping
-     * execution.
-     *
-     * @throws Exception
-     */
-    public void stop() throws Exception;
+	/**
+	 * Requests that the engine instance stop as soon as possible. In this case
+	 * there is no need for UI feedback as the caller is also stopping
+	 * execution.
+	 *
+	 * @throws Exception
+	 */
+	public void stop() throws Exception;
 
-    /**
-     * Requests that the running engine instance stop. It is the responsibility
-     * of the engine to remove the temporary folder created at the run step. As
-     * the engine progresses it should update the progress of the monitor which
-     * will provide UI feedback when needed.
-     *
-     * @param progressMonitor for tracking engine startup progress
-     * @throws java.lang.Exception
-     */
-    public void stop(ProgressMonitor progressMonitor) throws Exception;
+	/**
+	 * Requests that the running engine instance stop. It is the responsibility
+	 * of the engine to remove the temporary folder created at the run step. As
+	 * the engine progresses it should update the progress of the monitor which
+	 * will provide UI feedback when needed.
+	 *
+	 * @param progressMonitor
+	 *            for tracking engine startup progress
+	 * @throws java.lang.Exception
+	 */
+	public void stop(ProgressMonitor progressMonitor) throws Exception;
 
 }

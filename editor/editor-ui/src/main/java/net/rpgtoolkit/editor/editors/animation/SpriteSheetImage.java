@@ -29,120 +29,112 @@ import net.rpgtoolkit.editor.utilities.TransparentDrawer;
  * @author Joshua Michael Daly
  */
 public class SpriteSheetImage extends JPanel implements MouseListener {
-    
-    protected Animation animation;
-    private SpriteSheet spriteSheet;
 
-    protected Dimension dimension;
+	protected Animation animation;
+	private SpriteSheet spriteSheet;
 
-    private boolean entered;
+	protected Dimension dimension;
 
-    public SpriteSheetImage() {
-        animation = null;
-        spriteSheet = null;
-        entered = false;
-        dimension = new Dimension(150, 150);
-        
-        addMouseListener(this);
-    }
+	private boolean entered;
 
-    public SpriteSheetImage(Animation animation, SpriteSheet sheet) {
-        this.animation = animation;
-        spriteSheet = sheet;
-        entered = false;
-        dimension = new Dimension(150, 150);
-        
-        addMouseListener(this);
-    }
+	public SpriteSheetImage() {
+		animation = null;
+		spriteSheet = null;
+		entered = false;
+		dimension = new Dimension(150, 150);
 
-    @Override
-    public Dimension getPreferredSize() {
-        return dimension;
-    }
+		addMouseListener(this);
+	}
 
-    @Override
-    public Dimension getMaximumSize() {
-        return dimension;
-    }
+	public SpriteSheetImage(Animation animation, SpriteSheet sheet) {
+		this.animation = animation;
+		spriteSheet = sheet;
+		entered = false;
+		dimension = new Dimension(150, 150);
 
-    @Override
-    public Dimension getMinimumSize() {
-        return dimension;
-    }
+		addMouseListener(this);
+	}
 
-    @Override
-    public void paint(Graphics g) {
-        TransparentDrawer.drawTransparentBackground(
-                g, dimension.width, dimension.height
-        );
+	@Override
+	public Dimension getPreferredSize() {
+		return dimension;
+	}
 
-        BufferedImage image = spriteSheet.getImage();
-        if (image != null) {
-            g.drawImage(image, 0, 0, null);
-            GuiHelper.drawGrid(
-                    (Graphics2D) g, 
-                    animation.getAnimationWidth(), 
-                    animation.getAnimationHeight(), 
-                    new Rectangle(image.getWidth(), image.getHeight())
-            );
-        }
+	@Override
+	public Dimension getMaximumSize() {
+		return dimension;
+	}
 
-        if (entered) {
-            g.setColor(new Color(0, 0, 255, 64));
-            g.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
-        }
-    }
+	@Override
+	public Dimension getMinimumSize() {
+		return dimension;
+	}
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        if (e.getButton() == MouseEvent.BUTTON1) {
-            File imageFile = EditorFileManager.browseLocationBySubdir(
-                    EditorFileManager.getGraphicsSubdirectory(),
-                    EditorFileManager.getImageFilterDescription(),
-                    EditorFileManager.getImageExtensions()
-            );
+	@Override
+	public void paint(Graphics g) {
+		TransparentDrawer.drawTransparentBackground(g, dimension.width,
+				dimension.height);
 
-            if (imageFile != null) {
-                String remove = EditorFileManager.getGraphicsPath();
-                String path = imageFile.getAbsolutePath().replace(remove, "");
-                
-                spriteSheet = new SpriteSheet(
-                        path, 
-                        0, 0, 
-                        dimension.width, dimension.height
-                );
-                animation.setSpriteSheet(spriteSheet);
-                repaint();
-            }
-        } else if (e.getButton() == MouseEvent.BUTTON2) {
-            animation.removeSpriteSheet();
-        }
-    }
+		BufferedImage image = spriteSheet.getImage();
+		if (image != null) {
+			g.drawImage(image, 0, 0, null);
+			GuiHelper.drawGrid((Graphics2D) g, animation.getAnimationWidth(),
+					animation.getAnimationHeight(),
+					new Rectangle(image.getWidth(), image.getHeight()));
+		}
 
-    @Override
-    public void mousePressed(MouseEvent e) {
-    }
+		if (entered) {
+			g.setColor(new Color(0, 0, 255, 64));
+			g.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
+		}
+	}
 
-    @Override
-    public void mouseReleased(MouseEvent e) {
-    }
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if (e.getButton() == MouseEvent.BUTTON1) {
+			File imageFile = EditorFileManager.browseLocationBySubdir(
+					EditorFileManager.getGraphicsSubdirectory(),
+					EditorFileManager.getImageFilterDescription(),
+					EditorFileManager.getImageExtensions());
 
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        entered = !entered;
-        repaint();
-    }
+			if (imageFile != null) {
+				String remove = EditorFileManager.getGraphicsPath();
+				String path = imageFile.getAbsolutePath().replace(remove, "");
 
-    @Override
-    public void mouseExited(MouseEvent e) {
-        entered = !entered;
-        repaint();
-    }
-    
-    public BufferedImage loadImage() throws IOException {
-        BufferedImage image = spriteSheet.loadImage();
-        dimension = new Dimension(image.getWidth(), image.getHeight());
-        return image;
-    }
+				spriteSheet = new SpriteSheet(path, 0, 0, dimension.width,
+						dimension.height);
+				animation.setSpriteSheet(spriteSheet);
+				repaint();
+			}
+		} else if (e.getButton() == MouseEvent.BUTTON2) {
+			animation.removeSpriteSheet();
+		}
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		entered = !entered;
+		repaint();
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		entered = !entered;
+		repaint();
+	}
+
+	public BufferedImage loadImage() throws IOException {
+		BufferedImage image = spriteSheet.loadImage();
+		dimension = new Dimension(image.getWidth(), image.getHeight());
+		return image;
+	}
 
 }

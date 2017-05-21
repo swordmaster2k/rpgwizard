@@ -22,45 +22,47 @@ import net.rpgtoolkit.editor.editors.sprite.AnimationsTableModel;
  */
 public class RemoveAnimationActionListener implements ActionListener {
 
-    private final AbstractSpriteEditor spriteEditor;
+	private final AbstractSpriteEditor spriteEditor;
 
-    private final AbstractSprite sprite;
+	private final AbstractSprite sprite;
 
-    private final JTable animationsTable;
-    private final AnimationsTableModel animationsTableModel;
+	private final JTable animationsTable;
+	private final AnimationsTableModel animationsTableModel;
 
-    public RemoveAnimationActionListener(AbstractSpriteEditor editor) {
-        spriteEditor = editor;
-        sprite = spriteEditor.getSprite();
-        animationsTable = spriteEditor.getAnimationsTable();
-        animationsTableModel = (AnimationsTableModel) animationsTable.getModel();
-    }
+	public RemoveAnimationActionListener(AbstractSpriteEditor editor) {
+		spriteEditor = editor;
+		sprite = spriteEditor.getSprite();
+		animationsTable = spriteEditor.getAnimationsTable();
+		animationsTableModel = (AnimationsTableModel) animationsTable
+				.getModel();
+	}
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        int rowIndex = animationsTable.getSelectedRow();
-        if (rowIndex < sprite.getAnimations().size()) {
-            String key = (String) animationsTable.getValueAt(rowIndex, 0);
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		int rowIndex = animationsTable.getSelectedRow();
+		if (rowIndex < sprite.getAnimations().size()) {
+			String key = (String) animationsTable.getValueAt(rowIndex, 0);
 
-            try {
-                AnimationEnum.valueOf(key);
-            } catch (IllegalArgumentException ex) {
-                // Not a default can be removed.
-                sprite.removeAnimation(key);
+			try {
+				AnimationEnum.valueOf(key);
+			} catch (IllegalArgumentException ex) {
+				// Not a default can be removed.
+				sprite.removeAnimation(key);
 
-                if (rowIndex > 0) {
-                    if (rowIndex == animationsTableModel.getRowCount()) {
-                        rowIndex--;
-                    }
+				if (rowIndex > 0) {
+					if (rowIndex == animationsTableModel.getRowCount()) {
+						rowIndex--;
+					}
 
-                    animationsTable.scrollRectToVisible(animationsTable.getCellRect(rowIndex, 0, true));
-                }
+					animationsTable.scrollRectToVisible(animationsTable
+							.getCellRect(rowIndex, 0, true));
+				}
 
-                spriteEditor.setSelectedAnim(null);
-                spriteEditor.updateAnimatedPanel();
-            }
-        }
+				spriteEditor.setSelectedAnim(null);
+				spriteEditor.updateAnimatedPanel();
+			}
+		}
 
-    }
+	}
 
 }

@@ -11,32 +11,30 @@ import net.rpgtoolkit.common.assets.events.AnimationChangedEvent;
 import java.util.EventListener;
 
 /**
- * Implementors of this interface will use the contained method definitions to inform their 
- * listeners of new event on a <code>Animation</code>.
+ * Implementors of this interface will use the contained method definitions to
+ * inform their listeners of new event on a <code>Animation</code>.
  * 
  * @author Joshua Michael Daly
  */
-public interface AnimationChangeListener extends EventListener 
-{
-    /**
-     * A general animation changed event.
-     * 
-     * @param e
-     */
-    public void animationChanged(AnimationChangedEvent e);
-    
-    /**
-     * A new frame has been added to the animation.
-     * 
-     * @param e 
-     */
-    public void animationFrameAdded(AnimationChangedEvent e);
-    
-    
-    /**
-     * A layer has been deleted on this animation.
-     * 
-     * @param e 
-     */
-    public void animationFrameRemoved(AnimationChangedEvent e);
+public interface AnimationChangeListener extends EventListener {
+	/**
+	 * A general animation changed event.
+	 * 
+	 * @param e
+	 */
+	public void animationChanged(AnimationChangedEvent e);
+
+	/**
+	 * A new frame has been added to the animation.
+	 * 
+	 * @param e
+	 */
+	public void animationFrameAdded(AnimationChangedEvent e);
+
+	/**
+	 * A layer has been deleted on this animation.
+	 * 
+	 * @param e
+	 */
+	public void animationFrameRemoved(AnimationChangedEvent e);
 }

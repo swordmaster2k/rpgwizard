@@ -19,42 +19,46 @@ import net.rpgtoolkit.editor.editors.sprite.AbstractSpriteEditor;
  * @author Joshua Michael Daly
  */
 public class AnimationListSelectionListener implements ListSelectionListener {
-  
-  private final AbstractSprite sprite;
-  
-  private final AbstractSpriteEditor spriteEditor;
-  
-  private final JTable animationsTable;
-  
-  public AnimationListSelectionListener(AbstractSpriteEditor editor) {
-    spriteEditor = editor;
-    sprite = editor.getSprite();
-    animationsTable = editor.getAnimationsTable();
-  }
 
-  @Override
-  public void valueChanged(ListSelectionEvent e) {
-    if (!e.getValueIsAdjusting()) {
-      int rowIndex = animationsTable.getSelectedRow();
-      if (rowIndex == -1) {
-        spriteEditor.updateAnimatedPanel();
+	private final AbstractSprite sprite;
 
-        spriteEditor.getBrowseButton().setEnabled(false);
-        spriteEditor.getRemoveButton().setEnabled(false);
-      } else {
-        String path = (String) animationsTable.getValueAt(rowIndex, 1);
+	private final AbstractSpriteEditor spriteEditor;
 
-        spriteEditor.openAnimation(path);
-        spriteEditor.getBrowseButton().setEnabled(true);
-        
-        try {
-            AnimationEnum.valueOf((String) animationsTable.getValueAt(rowIndex, 0));
-            spriteEditor.getRemoveButton().setEnabled(false); // Cannot remove default graphics.
-        } catch (IllegalArgumentException ex) {
-            spriteEditor.getRemoveButton().setEnabled(true);
-        }
-      }
-    }
-  }
+	private final JTable animationsTable;
+
+	public AnimationListSelectionListener(AbstractSpriteEditor editor) {
+		spriteEditor = editor;
+		sprite = editor.getSprite();
+		animationsTable = editor.getAnimationsTable();
+	}
+
+	@Override
+	public void valueChanged(ListSelectionEvent e) {
+		if (!e.getValueIsAdjusting()) {
+			int rowIndex = animationsTable.getSelectedRow();
+			if (rowIndex == -1) {
+				spriteEditor.updateAnimatedPanel();
+
+				spriteEditor.getBrowseButton().setEnabled(false);
+				spriteEditor.getRemoveButton().setEnabled(false);
+			} else {
+				String path = (String) animationsTable.getValueAt(rowIndex, 1);
+
+				spriteEditor.openAnimation(path);
+				spriteEditor.getBrowseButton().setEnabled(true);
+
+				try {
+					AnimationEnum.valueOf((String) animationsTable.getValueAt(
+							rowIndex, 0));
+					spriteEditor.getRemoveButton().setEnabled(false); // Cannot
+																		// remove
+																		// default
+																		// graphics.
+				} catch (IllegalArgumentException ex) {
+					spriteEditor.getRemoveButton().setEnabled(true);
+				}
+			}
+		}
+	}
 
 }

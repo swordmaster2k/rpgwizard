@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html manifest="manifest.appcache">
+    <head>
+        <title>The Wizard's Tower</title>
+
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+        <meta charset="utf-8"/>
+
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+
+        <script type="text/javascript">
+            var PATH_PROJECT = "/";
+            var PATH_ANIMATION = PATH_PROJECT + "Animations/";
+            var PATH_BITMAP = PATH_PROJECT + "Graphics/";
+            var PATH_BOARD = PATH_PROJECT + "Boards/";
+            var PATH_CHARACTER = PATH_PROJECT + "Characters/";
+            var PATH_ITEM = PATH_PROJECT + "Items/";
+            var PATH_MEDIA = PATH_PROJECT + "Sounds/";
+            var PATH_PROGRAM = PATH_PROJECT + "Programs/";
+            var PATH_TILESET = PATH_PROJECT + "TileSets/";
+        </script>
+
+        <!-- TODO Replace with minified version when production ready. -->
+        <script src="js/lib/crafty.0.8.0.js"></script>
+
+        <!-- I/O Libraries -->
+        <script src="js/io/keyboard.js"></script>
+
+        <!-- Formats -->
+        <script src="js/formats/project.js"></script>
+        <script src="js/formats/board.js"></script>
+        <script src="js/formats/sprite.js"></script>
+        <script src="js/formats/item.js"></script>
+        <script src="js/formats/character.js"></script>
+        <script src="js/formats/tileset.js"></script>
+        <script src="js/formats/animation.js"></script>
+
+        <!-- Renderers -->
+        <script src="js/renderers/screenRenderer.js"></script>
+        <script src="js/renderers/tilesetRenderer.js"></script>
+
+        <!-- RPGCode API-->
+        <script src="js/rpgcode/rpgcode.js"></script>
+    </head>
+    <body>
+        <!-- Import the engine game logic. -->
+        <script src="js/engine.js"></script>
+
+        <div id="window">
+            <div id="cr-stage" class="screen"></div>
+        </div>
+
+        <!-- TODO: Supply main file here. -->
+        <script type="text/javascript">
+            rpgtoolkit.setup("default.game");
+        </script>
+    </body>
+</html>

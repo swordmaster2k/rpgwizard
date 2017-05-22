@@ -24,3 +24,7 @@ nbdist/
 nbactions.xml
 /engine/javascript/nbproject/private/
 nbproject/
+
+# Node JS
+node_modules/
+out/

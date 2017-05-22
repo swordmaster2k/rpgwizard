@@ -12,14 +12,14 @@
     <includeBaseDirectory>false</includeBaseDirectory>
     <fileSets>
         <fileSet>
-            <directory>javascript</directory>
+            <directory>engine-js</directory>
             <outputDirectory>/</outputDirectory>
             <includes>
                 <include>LICENSE</include>
                 <include>index.html</include>
                 <include>js/</include>
                 <include>css/</include>
-				<include>images/</include>
+                <include>images/</include>
             </includes>
         </fileSet>
     </fileSets>

@@ -1,0 +1,14 @@
+{
+	"templates": {
+		"name": "RPGcode API",
+		"footerText": "RPGWizard 2017",
+		"logo": {
+			"url": "http://d9hhrg4mnvzow.cloudfront.net/package.rpgmakerweb.com/rpgmaker-summer-sale-2015/38a3e100-rpg-maker-logo_0eo02k0en02k000000.png",
+			"width": "132px",
+			"height": "23px"
+		}
+	},
+	"opts": {
+		"template": "node_modules/tui-jsdoc-template"
+	}
+}

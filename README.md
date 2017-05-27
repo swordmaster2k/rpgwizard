@@ -27,7 +27,7 @@ Here at RPGWizard we believe in building a creative and helpful community for ou
 - The primary build tool is Maven 3 with some uses of npm for the engine.
 
 ### Credits
-RPGWizard Editor is an open source project, and is supported by its community. It owes its heritage to the RPGToolkit, from which it was originally forked.
+RPGWizard is an open source project, and is supported by its community. It owes its heritage to the RPGToolkit, from which it was originally forked.
 
 The RPGWizard team is lead by Joshua Michael Daly.
 

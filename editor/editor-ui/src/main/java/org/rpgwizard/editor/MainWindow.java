@@ -35,7 +35,7 @@ import org.rpgwizard.common.assets.AssetManager;
 import org.rpgwizard.common.assets.Board;
 import org.rpgwizard.common.assets.Enemy;
 import org.rpgwizard.common.assets.Item;
-import org.rpgwizard.common.assets.Player;
+import org.rpgwizard.common.assets.Character;
 import org.rpgwizard.common.assets.Program;
 import org.rpgwizard.common.assets.Project;
 import org.rpgwizard.common.assets.SpecialMove;
@@ -489,7 +489,7 @@ public class MainWindow extends JFrame implements InternalFrameListener {
 				.getDefaultExtension(Item.class))) {
 			addToolkitEditorWindow(EditorFactory.getEditor(openItem(file)));
 		} else if (fileName.endsWith(CoreProperties
-				.getDefaultExtension(Player.class))) {
+				.getDefaultExtension(Character.class))) {
 			addToolkitEditorWindow(EditorFactory.getEditor(openCharacter(file)));
 		} else if (fileName.endsWith(CoreProperties
 				.getDefaultExtension(TileSet.class))) {
@@ -741,7 +741,7 @@ public class MainWindow extends JFrame implements InternalFrameListener {
 	public void createNewCharacter() {
 		LOGGER.info("Creating new {}.", Character.class.getSimpleName());
 
-		Player player = new Player(null);
+		Character player = new Character(null);
 		player.setName("Untitled");
 
 		CharacterEditor characterEditor = new CharacterEditor(player);
@@ -760,14 +760,14 @@ public class MainWindow extends JFrame implements InternalFrameListener {
 	 * @param file
 	 * @return
 	 */
-	public Player openCharacter(File file) {
+	public Character openCharacter(File file) {
         LOGGER.info("Opening {} file=[{}].", Character.class.getSimpleName(), file);
 
         try {
             if (file.canRead()) {
                 AssetHandle handle = AssetManager.getInstance().deserialize(
                         new AssetDescriptor(file.toURI()));
-                Player player = (Player) handle.getAsset();
+                Character player = (Character) handle.getAsset();
 
                 return player;
             }

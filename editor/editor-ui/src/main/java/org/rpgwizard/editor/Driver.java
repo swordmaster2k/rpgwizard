@@ -22,7 +22,7 @@ import org.rpgwizard.common.assets.serialization.JsonAnimationSerializer;
 import org.rpgwizard.common.assets.serialization.JsonBoardSerializer;
 import org.rpgwizard.common.assets.serialization.JsonEnemySerializer;
 import org.rpgwizard.common.assets.serialization.JsonItemSerializer;
-import org.rpgwizard.common.assets.serialization.JsonPlayerSerializer;
+import org.rpgwizard.common.assets.serialization.JsonCharacterSerializer;
 import org.rpgwizard.common.assets.serialization.JsonProjectSerializer;
 import org.rpgwizard.common.assets.serialization.JsonSpecialMoveSerializer;
 import org.rpgwizard.common.assets.serialization.JsonTileSetSerializer;
@@ -81,7 +81,7 @@ public class Driver {
 
 		// JSON.
 		assetManager.registerSerializer(new JsonAnimationSerializer());
-		assetManager.registerSerializer(new JsonPlayerSerializer());
+		assetManager.registerSerializer(new JsonCharacterSerializer());
 		assetManager.registerSerializer(new JsonBoardSerializer());
 		assetManager.registerSerializer(new JsonProjectSerializer());
 		assetManager.registerSerializer(new JsonSpecialMoveSerializer());

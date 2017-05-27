@@ -16,7 +16,7 @@ import org.rpgwizard.common.assets.BoardLight;
 import org.rpgwizard.common.assets.BoardSprite;
 import org.rpgwizard.common.assets.BoardVector;
 import org.rpgwizard.common.assets.Item;
-import org.rpgwizard.common.assets.Player;
+import org.rpgwizard.common.assets.Character;
 import org.rpgwizard.editor.editors.ItemModelPanel;
 import org.rpgwizard.editor.editors.animation.AnimationModelPanel;
 import org.rpgwizard.editor.editors.character.CharacterModelPanel;
@@ -43,8 +43,8 @@ public final class ModelPanelFactory {
 
 		} else if (model instanceof Animation) {
 			return new AnimationModelPanel((Animation) model);
-		} else if (model instanceof Player) {
-			return new CharacterModelPanel((Player) model);
+		} else if (model instanceof Character) {
+			return new CharacterModelPanel((Character) model);
 		} else if (model instanceof Item) {
 			return new ItemModelPanel((Item) model);
 		}

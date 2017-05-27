@@ -29,7 +29,7 @@ import javax.swing.event.InternalFrameListener;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.Board;
-import org.rpgwizard.common.assets.Player;
+import org.rpgwizard.common.assets.Character;
 import org.rpgwizard.common.assets.Program;
 import org.rpgwizard.common.assets.Project;
 import org.rpgwizard.editor.ui.AssetEditorWindow;
@@ -269,8 +269,8 @@ public class ProjectEditor extends AssetEditorWindow
         });
 
         JLabel initialCharLabel = new JLabel("Initial Character");
-        exts = EditorFileManager.getTypeExtensions(Player.class);
-        directory = EditorFileManager.getFullPath(Player.class);
+        exts = EditorFileManager.getTypeExtensions(Character.class);
+        directory = EditorFileManager.getFullPath(Character.class);
         initialCharacter = GuiHelper.getFileListJComboBox(directory, exts, true);
         initialCharacter.setSelectedItem(project.getInitialCharacter());
         initialCharacter.addActionListener((ActionEvent e) -> {

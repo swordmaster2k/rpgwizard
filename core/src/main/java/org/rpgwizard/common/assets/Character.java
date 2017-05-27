@@ -7,7 +7,7 @@
  */
 package org.rpgwizard.common.assets;
 
-public class Player extends AbstractSprite {
+public class Character extends AbstractSprite {
 
 	private int level;
 	private int maxLevel;
@@ -28,7 +28,7 @@ public class Player extends AbstractSprite {
 	 * @param descriptor
 	 *            Character (.tem) file to open
 	 */
-	public Player(AssetDescriptor descriptor) {
+	public Character(AssetDescriptor descriptor) {
 		super(descriptor);
 	}
 

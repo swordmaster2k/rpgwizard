@@ -21,7 +21,7 @@ import org.rpgwizard.common.assets.Animation;
 import org.rpgwizard.common.assets.Board;
 import org.rpgwizard.common.assets.Enemy;
 import org.rpgwizard.common.assets.Item;
-import org.rpgwizard.common.assets.Player;
+import org.rpgwizard.common.assets.Character;
 import org.rpgwizard.common.assets.Program;
 import org.rpgwizard.common.assets.Project;
 import org.rpgwizard.common.assets.SpecialMove;
@@ -106,7 +106,7 @@ public class EditorFileManager {
 			return CoreProperties.getProperty("toolkit.directory.enemy");
 		} else if (type == Item.class) {
 			return CoreProperties.getProperty("toolkit.directory.item");
-		} else if (type == Player.class) {
+		} else if (type == Character.class) {
 			return CoreProperties.getProperty("toolkit.directory.character");
 		} else if (type == Program.class) {
 			return CoreProperties.getProperty("toolkit.directory.program");
@@ -135,7 +135,7 @@ public class EditorFileManager {
 			return "Enemies";
 		} else if (type == Item.class) {
 			return "Items";
-		} else if (type == Player.class) {
+		} else if (type == Character.class) {
 			return "Characters";
 		} else if (type == Program.class) {
 			return "Programs";
@@ -174,7 +174,7 @@ public class EditorFileManager {
 		} else if (type == Item.class) {
 			return new String[]{CoreProperties
 					.getProperty("toolkit.item.extension.default")};
-		} else if (type == Player.class) {
+		} else if (type == Character.class) {
 			return new String[]{CoreProperties
 					.getProperty("toolkit.character.extension.default")};
 		} else if (type == Program.class) {

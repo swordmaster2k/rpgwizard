@@ -41,8 +41,8 @@ public class BoardVectorPanel extends BoardModelPanel {
 	private final JCheckBox isClosedCheckBox;
 	private final JLabel isClosedLabel;
 
-	private final JTextField handleTextField;
-	private final JLabel handleLabel;
+	private final JTextField idTextField;
+	private final JLabel idLabel;
 
 	private final JComboBox<String> typeComboBox;
 	private final JLabel typeLabel;
@@ -110,10 +110,10 @@ public class BoardVectorPanel extends BoardModelPanel {
             }
         });
         ///
-        /// handleTextField
+        /// idTextField
         ///
-        handleTextField = getJTextField(((BoardVector) model).getId());
-        handleTextField.addFocusListener(new FocusListener() {
+        idTextField = getJTextField(((BoardVector) model).getId());
+        idTextField.addFocusListener(new FocusListener() {
 
             @Override
             public void focusGained(FocusEvent e) {
@@ -123,8 +123,8 @@ public class BoardVectorPanel extends BoardModelPanel {
             @Override
             public void focusLost(FocusEvent e) {
                 if (!((BoardVector) model).getId().
-                        equals(handleTextField.getText())) {
-                    ((BoardVector) model).setId(handleTextField.getText());
+                        equals(idTextField.getText())) {
+                    ((BoardVector) model).setId(idTextField.getText());
                 }
             }
         });
@@ -196,7 +196,7 @@ public class BoardVectorPanel extends BoardModelPanel {
         ///
         horizontalGroup.addGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(handleLabel = getJLabel("Handle"))
+                        .addComponent(idLabel = getJLabel("ID"))
                         .addComponent(isClosedLabel = getJLabel("Is Closed"))
                         .addComponent(layerLabel = getJLabel("Layer"))
                         .addComponent(typeLabel = getJLabel("Type"))
@@ -205,7 +205,7 @@ public class BoardVectorPanel extends BoardModelPanel {
 
         horizontalGroup.addGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(handleTextField)
+                        .addComponent(idTextField)
                         .addComponent(isClosedCheckBox)
                         .addComponent(layerSpinner)
                         .addComponent(typeComboBox)
@@ -215,7 +215,7 @@ public class BoardVectorPanel extends BoardModelPanel {
         layout.setHorizontalGroup(horizontalGroup);
 
         verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(handleLabel).addComponent(handleTextField));
+                .addComponent(idLabel).addComponent(idTextField));
 
         verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(isClosedLabel).addComponent(isClosedCheckBox));

@@ -13,7 +13,7 @@ import org.rpgwizard.common.assets.serialization.JsonBoardSerializer;
 import org.rpgwizard.common.assets.serialization.JsonAnimationSerializer;
 import org.rpgwizard.common.assets.serialization.TextProgramSerializer;
 import org.rpgwizard.common.assets.serialization.JsonProjectSerializer;
-import org.rpgwizard.common.assets.serialization.JsonPlayerSerializer;
+import org.rpgwizard.common.assets.serialization.JsonCharacterSerializer;
 import org.rpgwizard.common.assets.serialization.JsonTileSetSerializer;
 import org.rpgwizard.common.assets.serialization.JsonSpecialMoveSerializer;
 import java.awt.Point;
@@ -34,7 +34,7 @@ import org.rpgwizard.common.assets.Enemy;
 import org.rpgwizard.common.assets.Project;
 import org.rpgwizard.common.assets.GraphicEnum;
 import org.rpgwizard.common.assets.Item;
-import org.rpgwizard.common.assets.Player;
+import org.rpgwizard.common.assets.Character;
 import org.rpgwizard.common.assets.TileSet;
 import org.rpgwizard.common.assets.BoardVectorType;
 import org.rpgwizard.common.assets.Event;
@@ -68,7 +68,7 @@ public class AssetSerializerTest {
 
         // JSON.
         assetManager.registerSerializer(new JsonAnimationSerializer());
-        assetManager.registerSerializer(new JsonPlayerSerializer());
+        assetManager.registerSerializer(new JsonCharacterSerializer());
         assetManager.registerSerializer(new JsonBoardSerializer());
         assetManager.registerSerializer(new JsonProjectSerializer());
         assetManager.registerSerializer(new JsonSpecialMoveSerializer());
@@ -218,10 +218,10 @@ public class AssetSerializerTest {
     public void testCharacterSerializer() throws Exception {
         String path = AssetSerializerTestHelper.getPath(
                 "Characters/Hero.character");
-        JsonPlayerSerializer serializer = new JsonPlayerSerializer();
+        JsonCharacterSerializer serializer = new JsonCharacterSerializer();
 
         // Deserialize original.
-        Player asset = AssetSerializerTestHelper.deserializeFile(path, serializer);
+        Character asset = AssetSerializerTestHelper.deserializeFile(path, serializer);
         checkPlayer(asset);
 
         // Serialize a temporary version and deserialize it.
@@ -230,7 +230,7 @@ public class AssetSerializerTest {
         checkPlayer(asset);
     }
 
-    private void checkPlayer(Player asset) {
+    private void checkPlayer(Character asset) {
         Assert.assertEquals("Hero", asset.getName());
         Assert.assertEquals(1, asset.getLevel());
         Assert.assertEquals(10, asset.getMaxLevel());

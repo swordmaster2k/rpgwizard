@@ -17,7 +17,7 @@ import javax.swing.event.InternalFrameListener;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.GraphicEnum;
-import org.rpgwizard.common.assets.Player;
+import org.rpgwizard.common.assets.Character;
 import org.rpgwizard.editor.editors.sprite.AbstractSpriteEditor;
 import org.rpgwizard.editor.ui.IntegerField;
 import org.rpgwizard.common.assets.listeners.SpriteChangeListener;
@@ -27,7 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Player Character Editor
+ * Character Character Editor
  *
  * @author Joel Moore
  * @author Joshua Michael Daly
@@ -40,7 +40,7 @@ public class CharacterEditor extends AbstractSpriteEditor
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(CharacterEditor.class);
 
-	private final Player player;
+	private final Character player;
 
 	private JTextField name;
 	private IntegerField level;
@@ -56,7 +56,7 @@ public class CharacterEditor extends AbstractSpriteEditor
 	private DoubleField magic;
 	private DoubleField maxMagic;
 
-	public CharacterEditor(Player player) {
+	public CharacterEditor(Character player) {
 		super(player.getName(), player, Icons.getIcon("character"));
 
 		this.player = player;
@@ -78,7 +78,7 @@ public class CharacterEditor extends AbstractSpriteEditor
 		return player;
 	}
 
-	public Player getPlayer() {
+	public Character getPlayer() {
 		return player;
 	}
 

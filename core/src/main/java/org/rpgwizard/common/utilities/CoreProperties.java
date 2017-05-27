@@ -19,7 +19,7 @@ import org.rpgwizard.common.assets.Animation;
 import org.rpgwizard.common.assets.Board;
 import org.rpgwizard.common.assets.Enemy;
 import org.rpgwizard.common.assets.Item;
-import org.rpgwizard.common.assets.Player;
+import org.rpgwizard.common.assets.Character;
 import org.rpgwizard.common.assets.Program;
 import org.rpgwizard.common.assets.Project;
 import org.rpgwizard.common.assets.SpecialMove;
@@ -84,7 +84,7 @@ public class CoreProperties {
 			return getFullExtension("toolkit.enemy.extension.default");
 		} else if (type == Item.class) {
 			return getFullExtension("toolkit.item.extension.default");
-		} else if (type == Player.class) {
+		} else if (type == Character.class) {
 			return getFullExtension("toolkit.character.extension.default");
 		} else if (type == Project.class) {
 			return getFullExtension("toolkit.project.extension.default");

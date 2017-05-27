@@ -12,7 +12,7 @@ import org.rpgwizard.common.assets.Asset;
 import org.rpgwizard.common.assets.Board;
 import org.rpgwizard.common.assets.Enemy;
 import org.rpgwizard.common.assets.Item;
-import org.rpgwizard.common.assets.Player;
+import org.rpgwizard.common.assets.Character;
 import org.rpgwizard.common.assets.Program;
 import org.rpgwizard.common.assets.Project;
 import org.rpgwizard.editor.editors.AnimationEditor;
@@ -50,8 +50,8 @@ public class EditorFactory {
 			return new EnemyEditor((Enemy) asset);
 		} else if (asset instanceof Item) {
 			return new ItemEditor((Item) asset);
-		} else if (asset instanceof Player) {
-			return new CharacterEditor((Player) asset);
+		} else if (asset instanceof Character) {
+			return new CharacterEditor((Character) asset);
 		} else if (asset instanceof Program) {
 			return new ProgramEditor((Program) asset);
 		} else if (asset instanceof Project) {

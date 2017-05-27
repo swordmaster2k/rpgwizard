@@ -625,10 +625,8 @@ public final class Board extends AbstractAsset implements Selectable {
 	 * Add a new blank layer to this board.
 	 */
 	public void addLayer() {
-		int layerNumber = layers.size() + 1;
-
 		BoardLayer layer = new BoardLayer(this);
-		layer.setName("Untitled Layer " + layerNumber);
+		layer.setName("Untitled Layer " + layers.size());
 		layer.setNumber(layers.size());
 		layers.add(layer);
 

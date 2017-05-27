@@ -7,7 +7,7 @@
  */
 package org.rpgwizard.editor.editors.character;
 
-import org.rpgwizard.common.assets.Player;
+import org.rpgwizard.common.assets.Character;
 import org.rpgwizard.editor.editors.sprite.AbstractSpriteModelPanel;
 
 /**
@@ -16,9 +16,9 @@ import org.rpgwizard.editor.editors.sprite.AbstractSpriteModelPanel;
  */
 public class CharacterModelPanel extends AbstractSpriteModelPanel {
 
-	private final Player player;
+	private final Character player;
 
-	public CharacterModelPanel(Player model) {
+	public CharacterModelPanel(Character model) {
 		super(model);
 		player = model;
 	}

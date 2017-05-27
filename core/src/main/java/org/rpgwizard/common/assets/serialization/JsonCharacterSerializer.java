@@ -10,7 +10,7 @@ package org.rpgwizard.common.assets.serialization;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.AssetException;
 import org.rpgwizard.common.assets.AssetHandle;
-import org.rpgwizard.common.assets.Player;
+import org.rpgwizard.common.assets.Character;
 import org.rpgwizard.common.io.Paths;
 import org.rpgwizard.common.utilities.CoreProperties;
 
@@ -19,7 +19,7 @@ import org.json.JSONObject;
 /**
  * @author Joshua Michael Daly
  */
-public class JsonPlayerSerializer extends AbstractSpriteSerializer {
+public class JsonCharacterSerializer extends AbstractSpriteSerializer {
 
 	@Override
 	public boolean serializable(AssetDescriptor descriptor) {
@@ -36,7 +36,7 @@ public class JsonPlayerSerializer extends AbstractSpriteSerializer {
 	@Override
 	protected void load(AssetHandle handle, JSONObject json)
 			throws AssetException {
-		final Player player = super.load(new Player(handle.getDescriptor()),
+		final Character player = super.load(new Character(handle.getDescriptor()),
 				json);
 
 		player.setLevel(json.getInt("level"));
@@ -58,7 +58,7 @@ public class JsonPlayerSerializer extends AbstractSpriteSerializer {
 	@Override
 	protected void store(AssetHandle handle, JSONObject json)
 			throws AssetException {
-		final Player player = super.store((Player) handle.getAsset(), json);
+		final Character player = super.store((Character) handle.getAsset(), json);
 
 		json.put("level", player.getLevel());
 		json.put("maxLevel", player.getMaxLevel());

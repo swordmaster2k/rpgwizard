@@ -68,24 +68,22 @@ public abstract class AbstractSprite extends AbstractAsset {
 
         name = "Undefined";
 
-        BoardVector base = new BoardVector();
-        base.addPoint(0, 0);
-        base.addPoint(30, 0);
-        base.addPoint(30, 20);
-        base.addPoint(0, 20);
-        base.setClosed(true);
-        baseVector = base;
+        baseVector = new BoardVector();
+        baseVector.addPoint(0, 0);
+        baseVector.addPoint(30, 0);
+        baseVector.addPoint(30, 20);
+        baseVector.addPoint(0, 20);
+        baseVector.setClosed(true);
 
-        BoardVector activation = new BoardVector();
-        activation.addPoint(0, 0);
-        activation.addPoint(30, 0);
-        activation.addPoint(30, 20);
-        activation.addPoint(0, 20);
-        activation.setClosed(true);
-        activationVector = activation;
+        activationVector = new BoardVector();
+        activationVector.addPoint(0, 0);
+        activationVector.addPoint(40, 0);
+        activationVector.addPoint(40, 30);
+        activationVector.addPoint(0, 30);
+        activationVector.setClosed(true);
 
-        baseVectorOffset = new Point(40, 0);
-        activationVectorOffset = new Point(0, 0);
+        baseVectorOffset = new Point(-15, 0);
+        activationVectorOffset = new Point(-20, -5);
     }
 
     public String getName() {

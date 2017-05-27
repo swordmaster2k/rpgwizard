@@ -798,6 +798,10 @@ public class MainWindow extends JFrame implements InternalFrameListener {
 
                 try {
                     File tileSetFile = EditorFileManager.saveByType(TileSet.class);
+                    
+                    if (tileSetFile == null) {
+                        return; // Cancelled by the user.
+                    }
 
                     TileSet tileSet = new TileSet(
                             new AssetDescriptor(tileSetFile.toURI()),

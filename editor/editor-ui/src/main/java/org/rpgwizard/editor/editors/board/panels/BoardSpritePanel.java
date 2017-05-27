@@ -13,7 +13,10 @@ import javax.swing.GroupLayout;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
+import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import org.rpgwizard.common.assets.BoardSprite;
 import org.rpgwizard.common.assets.EventType;
 import org.rpgwizard.common.assets.Item;
@@ -32,6 +35,9 @@ public class BoardSpritePanel extends BoardModelPanel {
 
 	private final JComboBox fileComboBox;
 	private final JLabel fileLabel;
+
+	private final JTextField idField;
+	private final JLabel idLabel;
 
 	private final JComboBox eventProgramComboBox;
 	private final JLabel eventProgramLabel;
@@ -56,170 +62,200 @@ public class BoardSpritePanel extends BoardModelPanel {
 	private static final String[] EVENT_TYPES = {"OVERLAP"};
 
 	public BoardSpritePanel(final BoardSprite boardSprite) {
-    ///
-    /// super
-    ///
-    super(boardSprite);
-    ///
-    /// fileComboBox
-    ///
-    File directory = new File(
-            System.getProperty("project.path")
-            + File.separator
-            + CoreProperties.getProperty("toolkit.directory.item") 
-            + File.separator);
-    String[] exts = EditorFileManager.getTypeExtensions(Item.class);
-    fileComboBox = GuiHelper.getFileListJComboBox(directory, exts, true);
-    fileComboBox.setSelectedItem(boardSprite.getFileName());
-    fileComboBox.addActionListener((ActionEvent e) -> {
-        String fileName = (String) fileComboBox.getSelectedItem();
-        
-        if (fileName == null) {
-            return;
-        }
-        
-        boardSprite.setFileName((String) fileComboBox.getSelectedItem());
-        updateCurrentBoardView();
-    });
-    ///
-    /// activationComboBox
-    ///
-    directory = new File(
-            System.getProperty("project.path") 
-            + File.separator
-            + CoreProperties.getProperty("toolkit.directory.program") 
-            + File.separator);
-    exts = EditorFileManager.getTypeExtensions(Program.class);
-    eventProgramComboBox = GuiHelper.getFileListJComboBox(directory, exts, true);
-    eventProgramComboBox.setSelectedItem(boardSprite.getEventProgram());
-    eventProgramComboBox.addActionListener((ActionEvent e) -> {
-        if (eventProgramComboBox.getSelectedItem() != null) {
-            boardSprite.setEventProgram((String) eventProgramComboBox.getSelectedItem());
-        }
-    });
-    ///
-    /// multiTaskingTextField
-    ///
-    threadComboBox = GuiHelper.getFileListJComboBox(directory, exts, true);
-    threadComboBox.setSelectedItem(boardSprite.getThread());
-    threadComboBox.addActionListener((ActionEvent e) -> {
-        if (threadComboBox.getSelectedItem() != null) {
-            boardSprite.setThread((String) threadComboBox.getSelectedItem());
-        }
-    });
-    ///
-    /// xSpinner
-    ///
-    xSpinner = new JSpinner();
-    xSpinner.setValue(((BoardSprite) model).getX());
-    xSpinner.addChangeListener((ChangeEvent e) -> {
-        BoardSprite sprite = (BoardSprite) model;
+        ///
+        /// super
+        ///
+        super(boardSprite);
+        ///
+        /// fileComboBox
+        ///
+        File directory = new File(
+                System.getProperty("project.path")
+                + File.separator
+                + CoreProperties.getProperty("toolkit.directory.item")
+                + File.separator);
+        String[] exts = EditorFileManager.getTypeExtensions(Item.class);
+        fileComboBox = GuiHelper.getFileListJComboBox(directory, exts, true);
+        fileComboBox.setSelectedItem(boardSprite.getFileName());
+        fileComboBox.addActionListener((ActionEvent e) -> {
+            String fileName = (String) fileComboBox.getSelectedItem();
 
-        if (sprite.getX() != (int) xSpinner.getValue()) {
-            sprite.setX((int) xSpinner.getValue());
+            if (fileName == null) {
+                return;
+            }
+
+            boardSprite.setFileName((String) fileComboBox.getSelectedItem());
             updateCurrentBoardView();
-        }
-    });
-    ///
-    /// ySpinner
-    ///
-    ySpinner = new JSpinner();
-    ySpinner.setValue(((BoardSprite) model).getY());
-    ySpinner.addChangeListener((ChangeEvent e) -> {
-        BoardSprite sprite = (BoardSprite) model;
+        });
+        ///
+        /// idField
+        ///
+        idField = new JTextField();
+        idField.setText(((BoardSprite) model).getId());
+        idField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateSpriteId();
+            }
 
-        if (sprite.getY() != (int) ySpinner.getValue()) {
-            sprite.setY((int) ySpinner.getValue());
-            updateCurrentBoardView();
-        }
-    });
-    ///
-    /// layerSpinner
-    ///
-    layerSpinner = getJSpinner(((BoardSprite) model).getLayer());
-    layerSpinner.addChangeListener((ChangeEvent e) -> {
-        BoardSprite sprite = (BoardSprite) model;
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateSpriteId();
+            }
 
-        BoardLayerView lastLayerView = getBoardEditor().getBoardView().
-                getLayer((int) sprite.getLayer());
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateSpriteId();
+            }
 
-        BoardLayerView newLayerView = getBoardEditor().getBoardView().
-                getLayer((int) layerSpinner.getValue());
+            private void updateSpriteId() {
+                ((BoardSprite) model).setId(idField.getText());
+            }
+        });
+        ///
+        /// activationComboBox
+        ///
+        directory = new File(
+                System.getProperty("project.path")
+                + File.separator
+                + CoreProperties.getProperty("toolkit.directory.program")
+                + File.separator);
+        exts = EditorFileManager.getTypeExtensions(Program.class);
+        eventProgramComboBox = GuiHelper.getFileListJComboBox(directory, exts, true);
+        eventProgramComboBox.setSelectedItem(boardSprite.getEventProgram());
+        eventProgramComboBox.addActionListener((ActionEvent e) -> {
+            if (eventProgramComboBox.getSelectedItem() != null) {
+                boardSprite.setEventProgram((String) eventProgramComboBox.getSelectedItem());
+            }
+        });
+        ///
+        /// multiTaskingTextField
+        ///
+        threadComboBox = GuiHelper.getFileListJComboBox(directory, exts, true);
+        threadComboBox.setSelectedItem(boardSprite.getThread());
+        threadComboBox.addActionListener((ActionEvent e) -> {
+            if (threadComboBox.getSelectedItem() != null) {
+                boardSprite.setThread((String) threadComboBox.getSelectedItem());
+            }
+        });
+        ///
+        /// xSpinner
+        ///
+        xSpinner = new JSpinner();
+        xSpinner.setValue(((BoardSprite) model).getX());
+        xSpinner.addChangeListener((ChangeEvent e) -> {
+            BoardSprite sprite = (BoardSprite) model;
 
-        // Make sure this is a valid move.
-        if (lastLayerView != null && newLayerView != null) {
-            // Do the swap.
-            sprite.setLayer((int) layerSpinner.getValue());
-            newLayerView.getLayer().getSprites().add(sprite);
-            lastLayerView.getLayer().getSprites().remove(sprite);
-            updateCurrentBoardView();
-            
-            // Store new layer selection index.
-            lastSpinnerLayer = (int) layerSpinner.getValue();
-        } else {
-            // Not a valid layer revert selection.
-            layerSpinner.setValue(lastSpinnerLayer);
-        }
-    });
-    ///
-    /// typeComboBox
-    ///
-    eventComboBox = new JComboBox(EVENT_TYPES);
-    eventComboBox.addActionListener((ActionEvent e) -> {
-        String type = (String) eventComboBox.getSelectedItem();
-        if (type.equals(EVENT_TYPES[0])) {
-            boardSprite.setEventType(EventType.OVERLAP);
-        }
-    });
-    ///
-    /// this
-    ///
-    horizontalGroup.addGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addComponent(fileLabel = getJLabel("Item File"))
-            .addComponent(xLabel = getJLabel("X"))
-            .addComponent(yLabel = getJLabel("Y"))
-            .addComponent(layerLabel = getJLabel("Layer"))
-            .addComponent(eventLabel = getJLabel("Event"))
-            .addComponent(eventProgramLabel = getJLabel("Event Program"))
-            .addComponent(threadLabel = getJLabel("Thread")));
+            if (sprite.getX() != (int) xSpinner.getValue()) {
+                sprite.setX((int) xSpinner.getValue());
+                updateCurrentBoardView();
+            }
+        });
+        ///
+        /// ySpinner
+        ///
+        ySpinner = new JSpinner();
+        ySpinner.setValue(((BoardSprite) model).getY());
+        ySpinner.addChangeListener((ChangeEvent e) -> {
+            BoardSprite sprite = (BoardSprite) model;
 
-    horizontalGroup.addGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addComponent(fileComboBox)
-            .addComponent(xSpinner)
-            .addComponent(ySpinner)
-            .addComponent(layerSpinner)
-            .addComponent(eventComboBox)
-            .addComponent(eventProgramComboBox)
-            .addComponent(threadComboBox));
+            if (sprite.getY() != (int) ySpinner.getValue()) {
+                sprite.setY((int) ySpinner.getValue());
+                updateCurrentBoardView();
+            }
+        });
+        ///
+        /// layerSpinner
+        ///
+        layerSpinner = getJSpinner(((BoardSprite) model).getLayer());
+        layerSpinner.addChangeListener((ChangeEvent e) -> {
+            BoardSprite sprite = (BoardSprite) model;
 
-    layout.setHorizontalGroup(horizontalGroup);
+            BoardLayerView lastLayerView = getBoardEditor().getBoardView().
+                    getLayer((int) sprite.getLayer());
 
-    verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-            .addComponent(fileLabel).addComponent(fileComboBox));
+            BoardLayerView newLayerView = getBoardEditor().getBoardView().
+                    getLayer((int) layerSpinner.getValue());
 
-    verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-            .addComponent(xLabel).addComponent(xSpinner));
+            // Make sure this is a valid move.
+            if (lastLayerView != null && newLayerView != null) {
+                // Do the swap.
+                sprite.setLayer((int) layerSpinner.getValue());
+                newLayerView.getLayer().getSprites().add(sprite);
+                lastLayerView.getLayer().getSprites().remove(sprite);
+                updateCurrentBoardView();
 
-    verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-            .addComponent(yLabel).addComponent(ySpinner));
+                // Store new layer selection index.
+                lastSpinnerLayer = (int) layerSpinner.getValue();
+            } else {
+                // Not a valid layer revert selection.
+                layerSpinner.setValue(lastSpinnerLayer);
+            }
+        });
+        ///
+        /// typeComboBox
+        ///
+        eventComboBox = new JComboBox(EVENT_TYPES);
+        eventComboBox.addActionListener((ActionEvent e) -> {
+            String type = (String) eventComboBox.getSelectedItem();
+            if (type.equals(EVENT_TYPES[0])) {
+                boardSprite.setEventType(EventType.OVERLAP);
+            }
+        });
+        ///
+        /// this
+        ///
+        horizontalGroup.addGroup(
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(fileLabel = getJLabel("Item File"))
+                        .addComponent(idLabel = getJLabel("ID"))
+                        .addComponent(xLabel = getJLabel("X"))
+                        .addComponent(yLabel = getJLabel("Y"))
+                        .addComponent(layerLabel = getJLabel("Layer"))
+                        .addComponent(eventLabel = getJLabel("Event"))
+                        .addComponent(eventProgramLabel = getJLabel("Event Program"))
+                        .addComponent(threadLabel = getJLabel("Thread")));
 
-    verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-            .addComponent(yLabel).addComponent(ySpinner));
+        horizontalGroup.addGroup(
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(fileComboBox)
+                        .addComponent(idField)
+                        .addComponent(xSpinner)
+                        .addComponent(ySpinner)
+                        .addComponent(layerSpinner)
+                        .addComponent(eventComboBox)
+                        .addComponent(eventProgramComboBox)
+                        .addComponent(threadComboBox));
 
-    verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-            .addComponent(layerLabel).addComponent(layerSpinner));
+        layout.setHorizontalGroup(horizontalGroup);
 
-    verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-            .addComponent(eventLabel).addComponent(eventComboBox));
-    
-    verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-            .addComponent(eventProgramLabel).addComponent(eventProgramComboBox));
+        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(fileLabel).addComponent(fileComboBox));
 
-    verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-            .addComponent(threadLabel).addComponent(threadComboBox));
+        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(idLabel).addComponent(idField));
 
-    layout.setVerticalGroup(verticalGroup);
-  }
+        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(xLabel).addComponent(xSpinner));
+
+        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(yLabel).addComponent(ySpinner));
+
+        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(yLabel).addComponent(ySpinner));
+
+        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(layerLabel).addComponent(layerSpinner));
+
+        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(eventLabel).addComponent(eventComboBox));
+
+        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(eventProgramLabel).addComponent(eventProgramComboBox));
+
+        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(threadLabel).addComponent(threadComboBox));
+
+        layout.setVerticalGroup(verticalGroup);
+    }
 }

@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package net.rpgtoolkit.common.assets.serialization;
+package org.rpgwizard.common.assets.serialization;
 
 import org.rpgwizard.common.assets.serialization.JsonEnemySerializer;
 import org.rpgwizard.common.assets.serialization.JsonItemSerializer;
@@ -161,6 +161,7 @@ public class AssetSerializerTest {
 
         Assert.assertTrue(asset.getLayers().get(0).getSprites().size() == 1);
         BoardSprite sprite = asset.getLayers().get(0).getSprites().get(0);
+        Assert.assertEquals("block1", sprite.getId());
         Assert.assertEquals("Block.item", sprite.getFileName());
         Assert.assertEquals(1, sprite.getX());
         Assert.assertEquals(2, sprite.getY());
@@ -174,7 +175,7 @@ public class AssetSerializerTest {
 
         Assert.assertTrue(layer.getVectors().size() == 1);
         BoardVector vector = layer.getVectors().get(0);
-        Assert.assertEquals("walls", vector.getHandle());
+        Assert.assertEquals("walls", vector.getId());
         Assert.assertEquals(2, vector.getPoints().size());
         Assert.assertEquals(true, vector.isClosed());
         Assert.assertEquals(BoardVectorType.SOLID, vector.getType());
@@ -432,7 +433,7 @@ public class AssetSerializerTest {
         BoardVector boardVector = new BoardVector();
         boardVector.setType(type);
         boardVector.setIsClosed(isClosed);
-        boardVector.setHandle(handle);
+        boardVector.setId(handle);
         boardVector.setLayer(layer);
         boardVector.setPoints(points);
         boardVector.setEvents(events);

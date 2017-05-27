@@ -147,7 +147,9 @@ ScreenRenderer.prototype.sortSprites = function (layer, player) {
         layerSprites.push(player);
     }
 
-    this.board.sprites.forEach(function (entity) {
+    var board = this.board;
+    Object.keys(this.board.sprites).forEach(function (key) {
+        var entity = board.sprites[key];
         var sprite = entity.sprite;
         var item = sprite.item;
         if (layer === sprite.layer && item.renderReady) {

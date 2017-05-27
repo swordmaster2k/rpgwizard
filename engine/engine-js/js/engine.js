@@ -302,6 +302,7 @@ RPGToolkit.prototype.loadBoard = function (board) {
     /*
      * Setup board sprites.
      */
+    var sprites = {};
     var len = board.sprites.length;
     for (var i = 0; i < len; i++) {
         var sprite = board.sprites[i];
@@ -311,8 +312,11 @@ RPGToolkit.prototype.loadBoard = function (board) {
         sprite.layer = sprite.startingPosition.layer;
         sprite.collisionPoints = sprite.item.collisionPoints;
         var boardSprite = this.loadSprite(sprite);
-        board.sprites[i] = boardSprite;
+        sprites[sprite.id] = boardSprite;
     }
+    
+    // Change board sprites to an object set.
+    board.sprites = sprites;
 
     /*
      * Play background music.

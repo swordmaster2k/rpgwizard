@@ -82,13 +82,13 @@ RPGcode.prototype._animateGeneric = function (generic, resetGraphics, callback) 
  * available for the sprite.
  * 
  * @example
- * var spriteId = 5;
+ * var spriteId = "mysprite";
  * var animationId = "DANCE";
  * rpgcode.animateSprite(spriteId, animationId, function() {
  *  rpgcode.log("Finished dancing");
  * });
  * 
- * @param {Number} spriteId The index of the sprite on the board to animate.
+ * @param {String} spriteId The ID set for the sprite as it appears in the editor.
  * @param {String} animationId The requested animation to play for the item.
  * @param {Callback} callback If defined, the function to invoke at the end of the animation.
  */
@@ -250,20 +250,14 @@ RPGcode.prototype.destroyCanvas = function (canvasId) {
  * Destroys a particular item instance and removes it from the engine.
  * 
  * @example
- * // Destroys any items that were hit with the raycast.
- * var hits = rpgcode.fireRaycast({_x: location.x, _y: location.y}, vector, 320);
- * hits.forEach(function (hit) {
- *  rpgcode.destroySprite(hit.obj.getId());
- * });
+ * rpgcode.destroySprite("evil-eye-1");
  * 
- * @param {Number} spriteId The index of the item on the board to animate.
+ * @param {String} spriteId The ID set for the sprite as it appears in the editor.
  */
 RPGcode.prototype.destroySprite = function (spriteId) {
-    var index = rpgcode._convertCraftyId(spriteId);
-
-    if (index > -1) {
-        rpgtoolkit.craftyBoard.board.sprites[index].destroy();
-        rpgtoolkit.craftyBoard.board.sprites.splice(index, 1);
+    if (rpgtoolkit.craftyBoard.board.sprites.hasOwnProperty(spriteId)) {
+        rpgtoolkit.craftyBoard.board.sprites[spriteId].destroy();
+        delete rpgtoolkit.craftyBoard.board.sprites[spriteId];
         Crafty.trigger("Invalidate");
     }
 };
@@ -641,13 +635,13 @@ RPGcode.prototype.playSound = function (file, loop) {
  * Moves the sprite by the requested number of pixels in the given direction.
  * 
  * @example
- * // Move sprite 5 in the north direction by 50 pixels.
- * var spriteId = 5;
+ * // Move the sprite with id "mysprite" in the north direction by 50 pixels.
+ * var spriteId = "mysprite";
  * var direction = "NORTH";
  * var distancePx = 50;
  * rpgcode.moveSprite(spriteId, direction, distancePx);
  * 
- * @param {Number} spriteId The ID of item on the board to push.
+ * @param {String} spriteId The ID set for the sprite as it appears in the editor.
  * @param {String} direction The direction to push the item in e.g. NORTH, SOUTH, EAST, WEST.
  * @param {Number} distance Number of pixels to move.
  */
@@ -661,9 +655,8 @@ RPGcode.prototype.moveSprite = function (spriteId, direction, distance) {
             Crafty.trigger("Invalidate");
             break;
         default:
-            var index = rpgcode._convertCraftyId(spriteId);
-            if (index > -1) {
-                var entity = rpgtoolkit.craftyBoard.board.sprites[index];
+            if (rpgtoolkit.craftyBoard.board.sprites.hasOwnProperty(spriteId)) {
+                var entity = rpgtoolkit.craftyBoard.board.sprites[spriteId];
                 entity.move(direction, distance);
                 Crafty.trigger("Invalidate");
             }
@@ -695,13 +688,13 @@ RPGcode.prototype.moveCharacter = function (characterId, direction, distance) {
  * 
  * @example
  * // Move towards (100, 150) for 50 milliseconds, this will animate the sprite.
- * var spriteId = 5;
+ * var spriteId = "mysprite";
  * var x = 100;
  * var y = 150;
  * var delay = 50;
  * rpgcode.moveSpriteTo(spriteId, x, y, delay);
  * 
- * @param {Number} spriteId The ID of item on the board to push.
+ * @param {String} spriteId The ID set for the sprite as it appears in the editor.
  * @param {Number} x A pixel coordinate.
  * @param {Number} y A pixel coordinate.
  * @param {Number} duration Time taken for the movement to complete (milliseconds).
@@ -712,9 +705,8 @@ RPGcode.prototype.moveSpriteTo = function (spriteId, x, y, duration) {
             rpgcode.source.tween({x: x, y: y}, duration);
             break;
         default:
-            var index = rpgcode._convertCraftyId(spriteId);
-            if (index > -1) {
-                var entity = rpgtoolkit.craftyBoard.board.sprites[index];
+            if (rpgtoolkit.craftyBoard.board.sprites.hasOwnProperty(spriteId)) {
+                var entity = rpgtoolkit.craftyBoard.board.sprites[spriteId];
                 entity.tween({x: x, y: y}, duration);
             }
     }
@@ -972,14 +964,14 @@ RPGcode.prototype.setDialogGraphics = function (profileImage, backgroundImage) {
  * 
  * @example
  * // Place a sprite at the tile coordinates (10, 10, 1).
- * var spriteId = 5;
+ * var spriteId = "mysprite";
  * var x = 10;
  * var y = 10;
  * var layer = 1;
  * var inTiles = true;
  * rpgcode.setSpriteLocation(spriteId, x, y, layer, inTiles);
  * 
- * @param {Number} spriteId The id of the sprite on the board to move.
+ * @param {String} spriteId The ID set for the sprite as it appears in the editor.
  * @param {Number} x In pixels by default.
  * @param {Number} y In pixels by default.
  * @param {Number} layer Target layer to put the sprite on.
@@ -1004,17 +996,17 @@ RPGcode.prototype.setSpriteLocation = function (spriteId, x, y, layer, inTiles) 
  * Sets the sprite's current stance, uses the first frame in the animation.
  * 
  * @example
- * // Set the sprite with ID 5 to its idle stance.
- * var spriteId = 5;
+ * // Set the sprite with ID "mysprite" to its idle stance.
+ * var spriteId = "mysprite";
  * var stanceId = "IDLE";
  * rpgcode.setSpriteStance(spriteId, stanceId);
  * 
- * @param {Number} itemId The index of the sprite on the board.
+ * @param {String} spriteId The ID set for the sprite as it appears in the editor.
  * @param {String} stanceId The stanceId (animationId) to use.
  */
-RPGcode.prototype.setSpriteStance = function (itemId, stanceId) {
-    var entity = rpgtoolkit.craftyBoard.board.sprites[itemId];
-    if (entity) {
+RPGcode.prototype.setSpriteStance = function (spriteId, stanceId) {
+    if (rpgtoolkit.craftyBoard.board.sprites.hasOwnProperty(spriteId)) {
+        var entity = rpgtoolkit.craftyBoard.board.sprites[spriteId];
         entity.sprite.item.changeGraphics(stanceId);
     }
 };

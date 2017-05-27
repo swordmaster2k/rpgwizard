@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.rpgwizard.common.Selectable;
@@ -26,17 +27,15 @@ public class BoardSprite implements Cloneable, Selectable {
 	private Item spriteFile; // Item filename
 	private String fileName;
 
+	private String id;
 	private int x;
 	private int y;
 	private int layer;
-
 	private EventType eventType; // Defines how the sprite is activated
 	private String eventProgram; // Override activation program
-
 	private String thread; // Override multitask program
 
 	private boolean selected;
-
 	private BufferedImage southImage;
 
 	/**
@@ -45,6 +44,8 @@ public class BoardSprite implements Cloneable, Selectable {
 	public BoardSprite() {
 		super();
 
+		fileName = "";
+		id = UUID.randomUUID().toString();
 		x = 0;
 		y = 0;
 		layer = 0;
@@ -60,6 +61,14 @@ public class BoardSprite implements Cloneable, Selectable {
 	 */
 	public String getFileName() {
 		return fileName;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	/**
@@ -259,6 +268,9 @@ public class BoardSprite implements Cloneable, Selectable {
 			return false;
 		}
 		final BoardSprite other = (BoardSprite) obj;
+		if (!this.id.equals(other.id)) {
+			return false;
+		}
 		if (this.x != other.x) {
 			return false;
 		}

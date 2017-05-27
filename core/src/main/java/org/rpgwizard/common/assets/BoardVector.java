@@ -24,7 +24,7 @@ import org.rpgwizard.common.Selectable;
  */
 public class BoardVector implements Cloneable, Selectable {
 
-	private String handle;
+	private String id;
 	private BoardVectorType type;
 	private ArrayList<Point> points;
 	private boolean isClosed;
@@ -39,7 +39,7 @@ public class BoardVector implements Cloneable, Selectable {
      *
      */
 	public BoardVector() {
-        handle = "";
+        id = "";
         type = BoardVectorType.SOLID;
         isClosed = false;
         points = new ArrayList<>();
@@ -104,8 +104,8 @@ public class BoardVector implements Cloneable, Selectable {
 	 *
 	 * @return
 	 */
-	public String getHandle() {
-		return (handle);
+	public String getId() {
+		return (id);
 	}
 
 	/**
@@ -156,10 +156,10 @@ public class BoardVector implements Cloneable, Selectable {
 
 	/**
 	 *
-	 * @param handle
+	 * @param id
 	 */
-	public void setHandle(String handle) {
-		this.handle = handle;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	/**
@@ -239,7 +239,7 @@ public class BoardVector implements Cloneable, Selectable {
 
 		BoardVector clone = new BoardVector();
 		clone.layer = layer;
-		clone.handle = handle;
+		clone.id = id;
 		clone.isClosed = isClosed;
 		clone.points = (ArrayList<Point>) points.clone();
 		clone.polygon = polygon;
@@ -252,7 +252,7 @@ public class BoardVector implements Cloneable, Selectable {
 	@Override
 	public int hashCode() {
 		int hash = 3;
-		hash = 79 * hash + Objects.hashCode(this.handle);
+		hash = 79 * hash + Objects.hashCode(this.id);
 		hash = 79 * hash + Objects.hashCode(this.type);
 		hash = 79 * hash + Objects.hashCode(this.points);
 		hash = 79 * hash + (this.isClosed ? 1 : 0);
@@ -284,7 +284,7 @@ public class BoardVector implements Cloneable, Selectable {
 		if (this.selected != other.selected) {
 			return false;
 		}
-		if (!Objects.equals(this.handle, other.handle)) {
+		if (!Objects.equals(this.id, other.id)) {
 			return false;
 		}
 		if (this.type != other.type) {

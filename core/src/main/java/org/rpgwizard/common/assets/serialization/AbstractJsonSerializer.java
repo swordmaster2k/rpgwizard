@@ -149,7 +149,7 @@ public abstract class AbstractJsonSerializer extends AbstractAssetSerializer {
 			points.put(pt);
 		}
 
-		v.put("handle", vector.getHandle());
+		v.put("id", vector.getId());
 		v.put("points", points);
 		v.put("isClosed", vector.isClosed());
 		v.put("type", vector.getType());
@@ -178,7 +178,7 @@ public abstract class AbstractJsonSerializer extends AbstractAssetSerializer {
     }
 	protected BoardVector deserializeBoardVector(JSONObject object) {
 		BoardVector vector = new BoardVector();
-		vector.setHandle(object.getString("handle"));
+		vector.setId(object.getString("id"));
 		vector.setPoints(getPoints(object.getJSONArray("points")));
 		vector.setClosed(object.getBoolean("isClosed"));
 		vector.setType(BoardVectorType.valueOf(object.getString("type")));

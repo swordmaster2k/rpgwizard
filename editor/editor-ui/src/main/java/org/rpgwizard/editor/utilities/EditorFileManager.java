@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.JFileChooser;
+import static javax.swing.JFileChooser.SAVE_DIALOG;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.Animation;
@@ -29,7 +31,6 @@ import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.ui.SingleRootFileSystemView;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 
 /**
  *
@@ -38,7 +39,30 @@ import org.apache.commons.io.FilenameUtils;
 public class EditorFileManager {
 
 	private static JFileChooser FILE_CHOOSER = new JFileChooser(
-			CoreProperties.getProjectsDirectory());
+			CoreProperties.getProjectsDirectory()) {
+		@Override
+		public void approveSelection() {
+			File f = getSelectedFile();
+			if (f.exists() && getDialogType() == SAVE_DIALOG) {
+				int result = JOptionPane.showConfirmDialog(this,
+						"The file exists, overwrite?", "Existing file",
+						JOptionPane.YES_NO_CANCEL_OPTION);
+				switch (result) {
+					case JOptionPane.YES_OPTION :
+						super.approveSelection();
+						return;
+					case JOptionPane.NO_OPTION :
+						return;
+					case JOptionPane.CLOSED_OPTION :
+						return;
+					case JOptionPane.CANCEL_OPTION :
+						cancelSelection();
+						return;
+				}
+			}
+			super.approveSelection();
+		}
+	};
 
 	public static JFileChooser getFileChooser() {
 		return FILE_CHOOSER;
@@ -373,6 +397,8 @@ public class EditorFileManager {
 		File path = setFileChooserSubdirAndFilters(subdirectory, description,
 				extensions);
 
+		setSuggestedFile(extensions[0]);
+
 		if (FILE_CHOOSER.showSaveDialog(MainWindow.getInstance()) == JFileChooser.APPROVE_OPTION) {
 			if (validateFileChoice(path, extensions)) {
 				return FILE_CHOOSER.getSelectedFile();
@@ -450,4 +476,10 @@ public class EditorFileManager {
 
         return valid;
     }
+	private static void setSuggestedFile(String ext) {
+		// Set the suggested file name to use.
+		String filePath = "untitled." + ext;
+		FILE_CHOOSER.setSelectedFile(new File(filePath));
+	}
+
 }

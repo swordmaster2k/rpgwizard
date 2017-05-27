@@ -23,15 +23,15 @@ public final class FileTools {
 
 	public static String getExecutionPath(Class clazz)
 			throws URISyntaxException {
-            String executionPath = System.getProperty("org.rpgwizard.execution.path");
-            
-            if (executionPath == null) {
-                System.setProperty("org.rpgwizard.execution.path", 
-                        new File(clazz.getProtectionDomain().getCodeSource()
-				.getLocation().toURI().getPath()).getAbsolutePath());
-            }
-            
-            
+		String executionPath = System
+				.getProperty("org.rpgwizard.execution.path");
+
+		if (executionPath == null) {
+			System.setProperty("org.rpgwizard.execution.path", new File(clazz
+					.getProtectionDomain().getCodeSource().getLocation()
+					.toURI().getPath()).getAbsolutePath());
+		}
+
 		return System.getProperty("org.rpgwizard.execution.path");
 	}
 

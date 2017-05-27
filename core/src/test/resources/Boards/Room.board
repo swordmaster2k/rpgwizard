@@ -12,6 +12,7 @@
    ],
    "sprites":[
       {
+         "id": "block1",
          "name":"Block.item",
          "startingPosition":{
             "x":1,
@@ -43,7 +44,7 @@
          ],
          "vectors":[
             {
-               "handle":"walls",
+               "id":"walls",
                "type":"SOLID",
                "points":[
                   {

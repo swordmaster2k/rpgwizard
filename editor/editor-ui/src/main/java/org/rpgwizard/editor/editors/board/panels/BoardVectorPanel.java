@@ -112,7 +112,7 @@ public class BoardVectorPanel extends BoardModelPanel {
         ///
         /// handleTextField
         ///
-        handleTextField = getJTextField(((BoardVector) model).getHandle());
+        handleTextField = getJTextField(((BoardVector) model).getId());
         handleTextField.addFocusListener(new FocusListener() {
 
             @Override
@@ -122,9 +122,9 @@ public class BoardVectorPanel extends BoardModelPanel {
 
             @Override
             public void focusLost(FocusEvent e) {
-                if (!((BoardVector) model).getHandle().
+                if (!((BoardVector) model).getId().
                         equals(handleTextField.getText())) {
-                    ((BoardVector) model).setHandle(handleTextField.getText());
+                    ((BoardVector) model).setId(handleTextField.getText());
                 }
             }
         });

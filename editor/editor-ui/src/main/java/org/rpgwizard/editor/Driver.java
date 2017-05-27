@@ -39,9 +39,9 @@ import ro.fortsoft.pf4j.PluginManager;
 
 public class Driver {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Driver.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(Driver.class);
 
-    private static void redirectUncaughtExceptions() {
+	private static void redirectUncaughtExceptions() {
         try {
             Thread.setDefaultUncaughtExceptionHandler((Thread t, Throwable e) -> {
                 LOGGER.error("Uncaught Exception detected in thread {}", t, e);
@@ -50,67 +50,66 @@ public class Driver {
             LOGGER.error("Could not set the Default Uncaught Exception Handler", e);
         }
     }
+	private static void logSystemInfo() {
+		LOGGER.info("---------------------------- System Info ----------------------------");
+		LOGGER.info("Operating System: {}", System.getProperty("os.name"));
+		LOGGER.info("System Architecture: {}", System.getProperty("os.arch"));
+		LOGGER.info("Available Processors (cores): {}", Runtime.getRuntime()
+				.availableProcessors());
+		LOGGER.info("Free Memory (bytes): {}", Runtime.getRuntime()
+				.freeMemory());
+		LOGGER.info("Total Memory (bytes): {}", Runtime.getRuntime()
+				.totalMemory());
+		LOGGER.info("Max Memory (bytes): {}", Runtime.getRuntime().maxMemory());
+		LOGGER.info("---------------------------------------------------------------------");
+	}
 
-    private static void logSystemInfo() {
-        LOGGER.info("---------------------------- System Info ----------------------------");
-        LOGGER.info("Operating System: {}", System.getProperty("os.name"));
-        LOGGER.info("System Architecture: {}", System.getProperty("os.arch"));
-        LOGGER.info("Available Processors (cores): {}", Runtime.getRuntime()
-                .availableProcessors());
-        LOGGER.info("Free Memory (bytes): {}", Runtime.getRuntime()
-                .freeMemory());
-        LOGGER.info("Total Memory (bytes): {}", Runtime.getRuntime()
-                .totalMemory());
-        LOGGER.info("Max Memory (bytes): {}", Runtime.getRuntime().maxMemory());
-        LOGGER.info("---------------------------------------------------------------------");
-    }
+	private static void registerResolvers() {
+		LOGGER.debug("Registering asset resolvers.");
 
-    private static void registerResolvers() {
-        LOGGER.debug("Registering asset resolvers.");
+		AssetManager.getInstance().registerResolver(
+				new FileAssetHandleResolver());
+	}
 
-        AssetManager.getInstance().registerResolver(
-                new FileAssetHandleResolver());
-    }
+	private static void registerSerializers() {
+		LOGGER.debug("Registering asset serializers.");
 
-    private static void registerSerializers() {
-        LOGGER.debug("Registering asset serializers.");
+		AssetManager assetManager = AssetManager.getInstance();
 
-        AssetManager assetManager = AssetManager.getInstance();
+		// Legacy.
+		assetManager.registerSerializer(new LegacyAnimatedTileSerializer());
 
-        // Legacy.
-        assetManager.registerSerializer(new LegacyAnimatedTileSerializer());
+		// JSON.
+		assetManager.registerSerializer(new JsonAnimationSerializer());
+		assetManager.registerSerializer(new JsonPlayerSerializer());
+		assetManager.registerSerializer(new JsonBoardSerializer());
+		assetManager.registerSerializer(new JsonProjectSerializer());
+		assetManager.registerSerializer(new JsonSpecialMoveSerializer());
+		assetManager.registerSerializer(new JsonEnemySerializer());
+		assetManager.registerSerializer(new JsonItemSerializer());
+		assetManager.registerSerializer(new TextProgramSerializer());
+		assetManager.registerSerializer(new JsonTileSetSerializer());
+	}
 
-        // JSON.
-        assetManager.registerSerializer(new JsonAnimationSerializer());
-        assetManager.registerSerializer(new JsonPlayerSerializer());
-        assetManager.registerSerializer(new JsonBoardSerializer());
-        assetManager.registerSerializer(new JsonProjectSerializer());
-        assetManager.registerSerializer(new JsonSpecialMoveSerializer());
-        assetManager.registerSerializer(new JsonEnemySerializer());
-        assetManager.registerSerializer(new JsonItemSerializer());
-        assetManager.registerSerializer(new TextProgramSerializer());
-        assetManager.registerSerializer(new JsonTileSetSerializer());
-    }
+	private static PluginManager registerPlugins() throws URISyntaxException {
+		String path = FileTools.getExecutionPath(Driver.class);
 
-    private static PluginManager registerPlugins() throws URISyntaxException {
-        String path = FileTools.getExecutionPath(Driver.class);
+		path += File.separator
+				+ EditorProperties
+						.getProperty(EditorProperty.EDITOR_PLUGINS_DIRECOTRY)
+				+ File.separator;
 
-        path += File.separator
-                + EditorProperties
-                        .getProperty(EditorProperty.EDITOR_PLUGINS_DIRECOTRY)
-                + File.separator;
+		System.setProperty("pf4j.pluginsDir", path);
+		LOGGER.info(System.getProperty("pf4j.pluginsDir"));
 
-        System.setProperty("pf4j.pluginsDir", path);
-        LOGGER.info(System.getProperty("pf4j.pluginsDir"));
+		PluginManager pluginManager = new JarPluginManager();
+		pluginManager.loadPlugins();
+		pluginManager.startPlugins();
 
-        PluginManager pluginManager = new JarPluginManager();
-        pluginManager.loadPlugins();
-        pluginManager.startPlugins();
+		return pluginManager;
+	}
 
-        return pluginManager;
-    }
-
-    public static void main(String[] args) {
+	public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             try {
                 LOGGER.info("Starting the RPGToolkit Editor...");

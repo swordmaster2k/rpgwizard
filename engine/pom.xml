@@ -12,7 +12,7 @@
 
     <properties>
         <plugin.id>rpgwizard-engine</plugin.id>
-        <plugin.class>net.rpgtoolkit.html5.engine.plugin.Html5EnginePlugin</plugin.class>
+        <plugin.class>org.rpgwizard.html5.engine.plugin.Html5EnginePlugin</plugin.class>
         <plugin.version>1.0.0</plugin.version>
         <plugin.provider>Joshua Michael Daly</plugin.provider>
         <plugin.dependencies />

@@ -28,3 +28,6 @@ nbproject/
 # Node JS
 node_modules/
 out/
+*.zip
+*.jar
+*.exe

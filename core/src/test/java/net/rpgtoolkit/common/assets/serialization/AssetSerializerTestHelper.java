@@ -7,12 +7,12 @@
  */
 package net.rpgtoolkit.common.assets.serialization;
 
-import net.rpgtoolkit.common.assets.Asset;
-import net.rpgtoolkit.common.assets.AssetDescriptor;
-import net.rpgtoolkit.common.assets.AssetException;
-import net.rpgtoolkit.common.assets.AssetHandle;
-import net.rpgtoolkit.common.assets.AssetSerializer;
-import net.rpgtoolkit.common.assets.files.FileAssetHandle;
+import org.rpgwizard.common.assets.Asset;
+import org.rpgwizard.common.assets.AssetDescriptor;
+import org.rpgwizard.common.assets.AssetException;
+import org.rpgwizard.common.assets.AssetHandle;
+import org.rpgwizard.common.assets.AssetSerializer;
+import org.rpgwizard.common.assets.files.FileAssetHandle;
 
 import java.io.File;
 import java.io.IOException;

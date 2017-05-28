@@ -132,7 +132,7 @@ public class MainWindow extends JFrame implements InternalFrameListener {
 		// this.projectPanel = new ProjectPanel();
 		tileSetPanel = new TileSetTabbedPane();
 		upperTabbedPane = new JTabbedPane();
-		// this.upperTabbedPane.addTab("Project", this.projectPanel); // TOOD:
+		// this.upperTabbedPane.addTab("Project", this.projectPanel); // TODO:
 		// TK 4.1.0
 		upperTabbedPane.addTab("Tileset", tileSetPanel);
 
@@ -533,12 +533,10 @@ public class MainWindow extends JFrame implements InternalFrameListener {
             projectName = FilenameUtils.removeExtension(projectName);
 
             boolean result = FileTools.createDirectoryStructure(
-                    CoreProperties.getProjectsDirectory(), projectName);
+                    FileTools.getProjectsDirectory(), projectName);
 
             if (result) {
-                String fileName = System.getProperty("user.home")
-                        + File.separator
-                        + CoreProperties.getProperty("toolkit.directory.projects")
+                String fileName = FileTools.getProjectsDirectory()
                         + File.separator
                         + projectName
                         + File.separator

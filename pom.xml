@@ -62,6 +62,7 @@
         <assertj.version>3.5.0</assertj.version>
         <maven.formatter.version>0.5.2</maven.formatter.version>
         <maven.resources.version>3.0.2</maven.resources.version>
+        <maven.clean.version>3.0.0</maven.clean.version>
     </properties>
 
     <dependencies>
@@ -176,6 +177,21 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>${maven.clean.version}</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>distribution/builds/</directory>
+                            <includes>
+                                <include>**/*</include>
+                            </includes>
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>
+                    </filesets>
+                </configuration>
             </plugin>
         </plugins>
     </build>

@@ -64,11 +64,6 @@ public class CoreProperties {
 		return "." + INSTANCE.properties.getProperty(key);
 	}
 
-	public static String getProjectsDirectory() {
-		return System.getProperty("user.home") + File.separator
-				+ INSTANCE.properties.getProperty("toolkit.directory.projects");
-	}
-
 	public static String[] getDirectories() {
 		return INSTANCE.directories;
 	}

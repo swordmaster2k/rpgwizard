@@ -9,7 +9,7 @@
   </appender>
 
   <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>RPGToolkitEditor.log</file>
+    <file>logs/RPGToolkitEditor.log</file>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
       <!-- daily rollover -->
       <fileNamePattern>RPGToolkitEditor.log.%d{yyyy-MM-dd}.log</fileNamePattern>

@@ -14,12 +14,27 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.ui.SingleRootFileSystemView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Joshua Michael Daly
  */
 public final class FileTools {
+
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(FileTools.class);
+
+	public static String getProjectsDirectory() {
+		try {
+			return getExecutionPath(FileTools.class) + File.separator
+					+ CoreProperties.getProperty("toolkit.directory.projects");
+		} catch (URISyntaxException ex) {
+			LOGGER.error("Could not find projects file directory under exectuion path!");
+			return System.getProperty("user.home");
+		}
+	}
 
 	public static String getExecutionPath(Class clazz)
 			throws URISyntaxException {

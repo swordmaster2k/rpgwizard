@@ -16,6 +16,7 @@ import org.rpgwizard.common.assets.Project;
 import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.utilities.EditorFileManager;
+import org.rpgwizard.editor.utilities.FileTools;
 
 /**
  *
@@ -31,7 +32,7 @@ public class OpenProjectAction extends AbstractAction {
 						Project.class).replace(".", ""));
 		EditorFileManager.getFileChooser().setFileFilter(filter);
 
-		File mainFolder = new File(CoreProperties.getProjectsDirectory());
+		File mainFolder = new File(FileTools.getProjectsDirectory());
 
 		if (mainFolder.exists()) {
 			EditorFileManager.getFileChooser().setCurrentDirectory(mainFolder);

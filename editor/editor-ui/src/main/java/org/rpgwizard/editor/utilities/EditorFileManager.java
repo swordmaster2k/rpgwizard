@@ -39,7 +39,7 @@ import org.apache.commons.io.FileUtils;
 public class EditorFileManager {
 
 	private static JFileChooser FILE_CHOOSER = new JFileChooser(
-			CoreProperties.getProjectsDirectory()) {
+			FileTools.getProjectsDirectory()) {
 		@Override
 		public void approveSelection() {
 			File f = getSelectedFile();

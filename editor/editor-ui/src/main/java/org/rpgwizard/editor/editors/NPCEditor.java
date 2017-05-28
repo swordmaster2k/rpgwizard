@@ -17,7 +17,7 @@ import javax.swing.event.InternalFrameListener;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.GraphicEnum;
-import org.rpgwizard.common.assets.Item;
+import org.rpgwizard.common.assets.NPC;
 import org.rpgwizard.common.assets.listeners.SpriteChangeListener;
 import org.rpgwizard.editor.editors.sprite.AbstractSpriteEditor;
 import org.rpgwizard.editor.ui.resources.Icons;
@@ -26,26 +26,26 @@ import org.rpgwizard.editor.ui.resources.Icons;
  *
  * @author Joshua Michael Daly
  */
-public class ItemEditor extends AbstractSpriteEditor
+public class NPCEditor extends AbstractSpriteEditor
 		implements
 			InternalFrameListener,
 			SpriteChangeListener {
 
-	private final Item item;
+	private final NPC npc;
 
-	private JTextField itemName;
-	private JTextField itemDescription;
+	private JTextField npcName;
+	private JTextField npcDescription;
 
-	public ItemEditor(Item item) {
-		super("Untitled", item, Icons.getIcon("item"));
+	public NPCEditor(NPC npc) {
+		super("Untitled", npc, Icons.getIcon("npc"));
 
-		this.item = item;
-		this.item.addSpriteChangeListener(this);
+		this.npc = npc;
+		this.npc.addSpriteChangeListener(this);
 
-		if (this.item.getDescriptor() == null) {
-			setupNewItem();
+		if (this.npc.getDescriptor() == null) {
+			setupNewNPC();
 		} else {
-			setTitle(new File(item.getDescriptor().getURI()).getName());
+			setTitle(new File(npc.getDescriptor().getURI()).getName());
 		}
 
 		constructWindow();
@@ -55,11 +55,11 @@ public class ItemEditor extends AbstractSpriteEditor
 
 	@Override
 	public AbstractAsset getAsset() {
-		return item;
+		return npc;
 	}
 
-	public Item getItem() {
-		return item;
+	public NPC getNPC() {
+		return npc;
 	}
 
 	@Override
@@ -67,22 +67,22 @@ public class ItemEditor extends AbstractSpriteEditor
 		// Get the relative portrait path.
 		checkProfileImagePath();
 
-		item.setName(itemName.getText());
-		item.setDescription(itemDescription.getText());
+		npc.setName(npcName.getText());
+		npc.setDescription(npcDescription.getText());
 
-		save(item);
+		save(npc);
 	}
 
 	@Override
 	public void saveAs(File file) throws Exception {
-		item.setDescriptor(new AssetDescriptor((file.toURI())));
+		npc.setDescriptor(new AssetDescriptor((file.toURI())));
 		setTitle(file.getName());
 		save();
 	}
 
-	private void setupNewItem() {
+	private void setupNewNPC() {
 		String undefined = "Undefined";
-		item.setDescription(undefined);
+		npc.setDescription(undefined);
 	}
 
 	private void constructWindow() {
@@ -99,17 +99,17 @@ public class ItemEditor extends AbstractSpriteEditor
     labels.add(new JLabel("Name"));
     labels.add(new JLabel("Description"));
 
-    itemName = new JTextField(item.getName());
-    itemName.setColumns(DEFAULT_INPUT_COLUMNS);
+    npcName = new JTextField(npc.getName());
+    npcName.setColumns(DEFAULT_INPUT_COLUMNS);
 
-    itemDescription = new JTextField(item.getDescription());
-    itemDescription.setColumns(DEFAULT_INPUT_COLUMNS);
+    npcDescription = new JTextField(npc.getDescription());
+    npcDescription.setColumns(DEFAULT_INPUT_COLUMNS);
 
     List<Component> inputs = new ArrayList<>();
-    inputs.add(itemName);
-    inputs.add(itemDescription);
+    inputs.add(npcName);
+    inputs.add(npcDescription);
 
-    profileImagePath = item.getGraphics().get(GraphicEnum.PROFILE.toString());
+    profileImagePath = npc.getGraphics().get(GraphicEnum.PROFILE.toString());
 
     buildStatsPanel(labels, inputs);
   }

@@ -10,7 +10,7 @@ package org.rpgwizard.common.assets.serialization;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.AssetException;
 import org.rpgwizard.common.assets.AssetHandle;
-import org.rpgwizard.common.assets.Item;
+import org.rpgwizard.common.assets.NPC;
 import org.rpgwizard.common.io.Paths;
 import org.rpgwizard.common.utilities.CoreProperties;
 
@@ -19,13 +19,13 @@ import org.json.JSONObject;
 /**
  * @author Joshua Michael Daly
  */
-public class JsonItemSerializer extends AbstractSpriteSerializer {
+public class JsonNPCSerializer extends AbstractSpriteSerializer {
 
 	@Override
 	public boolean serializable(AssetDescriptor descriptor) {
 		final String ext = Paths.extension(descriptor.getURI());
 		return (ext.endsWith(CoreProperties
-				.getFullExtension("toolkit.item.extension.json")));
+				.getFullExtension("toolkit.npc.extension.json")));
 	}
 
 	@Override
@@ -36,19 +36,19 @@ public class JsonItemSerializer extends AbstractSpriteSerializer {
 	@Override
 	protected void load(AssetHandle handle, JSONObject json)
 			throws AssetException {
-		final Item item = super.load(new Item(handle.getDescriptor()), json);
+		final NPC npc = super.load(new NPC(handle.getDescriptor()), json);
 
-		item.setDescription(json.getString("description"));
+		npc.setDescription(json.getString("description"));
 
-		handle.setAsset(item);
+		handle.setAsset(npc);
 	}
 
 	@Override
 	protected void store(AssetHandle handle, JSONObject json)
 			throws AssetException {
-		final Item item = super.store((Item) handle.getAsset(), json);
+		final NPC npc = super.store((NPC) handle.getAsset(), json);
 
-		json.put("description", item.getDescription());
+		json.put("description", npc.getDescription());
 	}
 
 }

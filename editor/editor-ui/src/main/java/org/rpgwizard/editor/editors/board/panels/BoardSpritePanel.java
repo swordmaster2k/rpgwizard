@@ -19,7 +19,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import org.rpgwizard.common.assets.BoardSprite;
 import org.rpgwizard.common.assets.EventType;
-import org.rpgwizard.common.assets.Item;
+import org.rpgwizard.common.assets.NPC;
 import org.rpgwizard.common.assets.Program;
 import org.rpgwizard.editor.editors.board.BoardLayerView;
 import org.rpgwizard.common.utilities.CoreProperties;
@@ -72,9 +72,9 @@ public class BoardSpritePanel extends BoardModelPanel {
         File directory = new File(
                 System.getProperty("project.path")
                 + File.separator
-                + CoreProperties.getProperty("toolkit.directory.item")
+                + CoreProperties.getProperty("toolkit.directory.npc")
                 + File.separator);
-        String[] exts = EditorFileManager.getTypeExtensions(Item.class);
+        String[] exts = EditorFileManager.getTypeExtensions(NPC.class);
         fileComboBox = GuiHelper.getFileListJComboBox(directory, exts, true);
         fileComboBox.setSelectedItem(boardSprite.getFileName());
         fileComboBox.addActionListener((ActionEvent e) -> {
@@ -207,7 +207,7 @@ public class BoardSpritePanel extends BoardModelPanel {
         ///
         horizontalGroup.addGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(fileLabel = getJLabel("Item File"))
+                        .addComponent(fileLabel = getJLabel("Sprite File"))
                         .addComponent(idLabel = getJLabel("ID"))
                         .addComponent(xLabel = getJLabel("X"))
                         .addComponent(yLabel = getJLabel("Y"))

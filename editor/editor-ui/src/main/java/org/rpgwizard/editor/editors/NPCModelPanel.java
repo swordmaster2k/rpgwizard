@@ -7,20 +7,20 @@
  */
 package org.rpgwizard.editor.editors;
 
-import org.rpgwizard.common.assets.Item;
+import org.rpgwizard.common.assets.NPC;
 import org.rpgwizard.editor.editors.sprite.AbstractSpriteModelPanel;
 
 /**
  *
  * @author Joshua Michael Daly
  */
-public class ItemModelPanel extends AbstractSpriteModelPanel {
+public class NPCModelPanel extends AbstractSpriteModelPanel {
 
-	private Item item;
+	private final NPC npc;
 
-	public ItemModelPanel(Item model) {
+	public NPCModelPanel(NPC model) {
 		super(model);
-		item = model;
+		npc = model;
 	}
 
 }

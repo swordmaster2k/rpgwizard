@@ -326,7 +326,7 @@ Sprite.prototype.checkCollisions = function (collision, entity) {
     }
 
     switch (object.vectorType) {
-        case "ITEM":
+        case "NPC":
             entity.x += collision.normal.x;
             entity.y += collision.normal.y;
             entity.resetHitChecks();

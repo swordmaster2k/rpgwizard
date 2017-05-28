@@ -20,7 +20,7 @@ import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.Animation;
 import org.rpgwizard.common.assets.Board;
 import org.rpgwizard.common.assets.Enemy;
-import org.rpgwizard.common.assets.Item;
+import org.rpgwizard.common.assets.NPC;
 import org.rpgwizard.common.assets.Character;
 import org.rpgwizard.common.assets.Program;
 import org.rpgwizard.common.assets.Project;
@@ -93,19 +93,19 @@ public class EditorFileManager {
 
 	public static String getGraphicsPath() {
 		return System.getProperty("project.path") + File.separator
-				+ CoreProperties.getProperty("toolkit.directory.bitmap")
+				+ CoreProperties.getProperty("toolkit.directory.graphics")
 				+ File.separator;
 	}
 
 	public static String getTypeSubdirectory(Class<? extends AbstractAsset> type) {
 		if (type == Animation.class) {
-			return CoreProperties.getProperty("toolkit.directory.misc");
+			return CoreProperties.getProperty("toolkit.directory.animations");
 		} else if (type == Board.class) {
 			return CoreProperties.getProperty("toolkit.directory.board");
 		} else if (type == Enemy.class) {
 			return CoreProperties.getProperty("toolkit.directory.enemy");
-		} else if (type == Item.class) {
-			return CoreProperties.getProperty("toolkit.directory.item");
+		} else if (type == NPC.class) {
+			return CoreProperties.getProperty("toolkit.directory.npc");
 		} else if (type == Character.class) {
 			return CoreProperties.getProperty("toolkit.directory.character");
 		} else if (type == Program.class) {
@@ -122,7 +122,7 @@ public class EditorFileManager {
 	}
 
 	public static String getGraphicsSubdirectory() {
-		return CoreProperties.getProperty("toolkit.directory.bitmap");
+		return CoreProperties.getProperty("toolkit.directory.graphics");
 	}
 
 	public static String getTypeFilterDescription(
@@ -133,8 +133,8 @@ public class EditorFileManager {
 			return "Boards";
 		} else if (type == Enemy.class) {
 			return "Enemies";
-		} else if (type == Item.class) {
-			return "Items";
+		} else if (type == NPC.class) {
+			return "NPCs";
 		} else if (type == Character.class) {
 			return "Characters";
 		} else if (type == Program.class) {
@@ -171,9 +171,9 @@ public class EditorFileManager {
 		} else if (type == Enemy.class) {
 			return new String[]{CoreProperties
 					.getProperty("toolkit.enemy.extension.default")};
-		} else if (type == Item.class) {
+		} else if (type == NPC.class) {
 			return new String[]{CoreProperties
-					.getProperty("toolkit.item.extension.default")};
+					.getProperty("toolkit.npc.extension.default")};
 		} else if (type == Character.class) {
 			return new String[]{CoreProperties
 					.getProperty("toolkit.character.extension.default")};

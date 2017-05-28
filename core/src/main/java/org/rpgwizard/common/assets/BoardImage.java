@@ -57,7 +57,7 @@ public class BoardImage implements Cloneable {
 						System.getProperty("project.path")
 								+ File.separator
 								+ CoreProperties
-										.getProperty("toolkit.directory.bitmap")
+										.getProperty("toolkit.directory.graphics")
 								+ File.separator + fileName);
 				image = ImageIO.read(fis);
 			}

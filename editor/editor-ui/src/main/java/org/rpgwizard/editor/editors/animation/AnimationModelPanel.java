@@ -55,7 +55,7 @@ public class AnimationModelPanel extends AbstractModelPanel {
     File directory = new File(
             System.getProperty("project.path") 
             + File.separator
-            + CoreProperties.getProperty("toolkit.directory.media") 
+            + CoreProperties.getProperty("toolkit.directory.sounds") 
             + File.separator);
     String[] exts = new String[] {"wav", "mp3"};
     soundEffectComboBox = GuiHelper.getFileListJComboBox(directory, exts, true);

@@ -96,16 +96,16 @@ RPGcode.prototype._animateGeneric = function (generic, resetGraphics, callback) 
  * });
  * 
  * @param {String} spriteId The ID set for the sprite as it appears in the editor.
- * @param {String} animationId The requested animation to play for the item.
+ * @param {String} animationId The requested animation to play for the sprite.
  * @param {Callback} callback If defined, the function to invoke at the end of the animation.
  */
 RPGcode.prototype.animateSprite = function (spriteId, animationId, callback) {
     var entity = rpgtoolkit.craftyBoard.board.sprites[spriteId];
     if (entity) {
-        var item = entity.sprite.item;
-        var resetGraphics = item.spriteGraphics.active;
+        var npc = entity.sprite.npc;
+        var resetGraphics = npc.spriteGraphics.active;
         rpgcode.setSpriteStance(spriteId, animationId);
-        rpgcode._animateGeneric(item, resetGraphics, callback);
+        rpgcode._animateGeneric(npc, resetGraphics, callback);
     }
 };
 
@@ -254,7 +254,7 @@ RPGcode.prototype.destroyCanvas = function (canvasId) {
 };
 
 /**
- * Destroys a particular item instance and removes it from the engine.
+ * Destroys a particular sprite instance and removes it from the engine.
  * 
  * @example
  * rpgcode.destroySprite("evil-eye-1");
@@ -649,7 +649,7 @@ RPGcode.prototype.playSound = function (file, loop) {
  * rpgcode.moveSprite(spriteId, direction, distancePx);
  * 
  * @param {String} spriteId The ID set for the sprite as it appears in the editor.
- * @param {String} direction The direction to push the item in e.g. NORTH, SOUTH, EAST, WEST.
+ * @param {String} direction The direction to push the sprite in e.g. NORTH, SOUTH, EAST, WEST.
  * @param {Number} distance Number of pixels to move.
  */
 RPGcode.prototype.moveSprite = function (spriteId, direction, distance) {
@@ -967,7 +967,7 @@ RPGcode.prototype.setDialogGraphics = function (profileImage, backgroundImage) {
 };
 
 /**
- * Sets the location of the item.
+ * Sets the location of the sprite.
  * 
  * @example
  * // Place a sprite at the tile coordinates (10, 10, 1).
@@ -990,11 +990,11 @@ RPGcode.prototype.setSpriteLocation = function (spriteId, x, y, layer, inTiles) 
         y *= rpgtoolkit.tileSize;
     }
 
-    var item = rpgtoolkit.craftyBoard.board.sprites[spriteId];
-    if (item) {
-        item.x = x;
-        item.y = y;
-        item.layer = layer;
+    var npc = rpgtoolkit.craftyBoard.board.sprites[spriteId];
+    if (npc) {
+        npc.x = x;
+        npc.y = y;
+        npc.layer = layer;
         Crafty.trigger("Invalidate");
     }
 };
@@ -1014,7 +1014,7 @@ RPGcode.prototype.setSpriteLocation = function (spriteId, x, y, layer, inTiles) 
 RPGcode.prototype.setSpriteStance = function (spriteId, stanceId) {
     if (rpgtoolkit.craftyBoard.board.sprites.hasOwnProperty(spriteId)) {
         var entity = rpgtoolkit.craftyBoard.board.sprites[spriteId];
-        entity.sprite.item.changeGraphics(stanceId);
+        entity.sprite.npc.changeGraphics(stanceId);
     }
 };
 
@@ -1032,7 +1032,7 @@ RPGcode.prototype.setSpriteStance = function (spriteId, stanceId) {
  * @param {String} characterId The identifier associated with character to move.
  * @param {Number} x In pixels by default.
  * @param {Number} y In pixels by default.
- * @param {Number} layer Target layer to put the item on.
+ * @param {Number} layer Target layer to put the character on.
  * @param {Boolean} isTiles Is (x, y) in tile coordinates, defaults to pixels.
  */
 RPGcode.prototype.setCharacterLocation = function (characterId, x, y, layer, isTiles) {
@@ -1057,7 +1057,7 @@ RPGcode.prototype.setCharacterLocation = function (characterId, x, y, layer, isT
  * var stanceId = "IDLE";
  * rpgcode.setCharacterStance(characterId, stanceId); 
  * 
- * @param {String} characterId The index of the item on the board.
+ * @param {String} characterId The index of the character on the board.
  * @param {String} stanceId The stanceId (animationId) to use.
  */
 RPGcode.prototype.setCharacterStance = function (characterId, stanceId) {

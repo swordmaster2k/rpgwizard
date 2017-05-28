@@ -7,11 +7,11 @@
  */
 package org.rpgwizard.common.assets;
 
-public class Item extends AbstractSprite {
+public class NPC extends AbstractSprite {
 
 	private String description;
 
-	public Item(AssetDescriptor descriptor) {
+	public NPC(AssetDescriptor descriptor) {
 		super(descriptor);
 		description = "";
 	}

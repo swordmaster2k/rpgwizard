@@ -15,9 +15,9 @@ import org.rpgwizard.common.assets.Board;
 import org.rpgwizard.common.assets.BoardLight;
 import org.rpgwizard.common.assets.BoardSprite;
 import org.rpgwizard.common.assets.BoardVector;
-import org.rpgwizard.common.assets.Item;
+import org.rpgwizard.common.assets.NPC;
 import org.rpgwizard.common.assets.Character;
-import org.rpgwizard.editor.editors.ItemModelPanel;
+import org.rpgwizard.editor.editors.NPCModelPanel;
 import org.rpgwizard.editor.editors.animation.AnimationModelPanel;
 import org.rpgwizard.editor.editors.character.CharacterModelPanel;
 
@@ -45,8 +45,8 @@ public final class ModelPanelFactory {
 			return new AnimationModelPanel((Animation) model);
 		} else if (model instanceof Character) {
 			return new CharacterModelPanel((Character) model);
-		} else if (model instanceof Item) {
-			return new ItemModelPanel((Item) model);
+		} else if (model instanceof NPC) {
+			return new NPCModelPanel((NPC) model);
 		}
 
 		return null;

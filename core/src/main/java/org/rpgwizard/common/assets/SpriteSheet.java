@@ -73,7 +73,7 @@ public class SpriteSheet {
 	public BufferedImage loadImage() throws IOException {
 		File file = new File(System.getProperty("project.path")
 				+ File.separator
-				+ CoreProperties.getProperty("toolkit.directory.bitmap")
+				+ CoreProperties.getProperty("toolkit.directory.graphics")
 				+ File.separator + fileName);
 		image = ImageIO.read(file);
 

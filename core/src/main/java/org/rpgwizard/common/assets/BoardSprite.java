@@ -24,7 +24,7 @@ import org.rpgwizard.common.utilities.CoreProperties;
  */
 public class BoardSprite implements Cloneable, Selectable {
 
-	private Item spriteFile; // Item filename
+	private NPC spriteFile; // NPC filename
 	private String fileName;
 
 	private String id;
@@ -107,16 +107,16 @@ public class BoardSprite implements Cloneable, Selectable {
 	 *
 	 * @return
 	 */
-	public Item getSpriteFile() {
+	public NPC getSpriteFile() {
 		return spriteFile;
 	}
 
 	/**
 	 *
-	 * @param item
+	 * @param npc
 	 */
-	public void setSpriteFile(Item item) {
-		spriteFile = item;
+	public void setSpriteFile(NPC npc) {
+		this.spriteFile = npc;
 	}
 
 	/**
@@ -156,7 +156,7 @@ public class BoardSprite implements Cloneable, Selectable {
             File file = new File(
                     System.getProperty("project.path")
                     + File.separator
-                    + CoreProperties.getProperty("toolkit.directory.item"),
+                    + CoreProperties.getProperty("toolkit.directory.npc"),
                     fileName);
 
             AssetHandle handle;
@@ -164,15 +164,15 @@ public class BoardSprite implements Cloneable, Selectable {
                 handle = AssetManager.getInstance().deserialize(
                         new AssetDescriptor(file.toURI()));
 
-                Item item = (Item) handle.getAsset();
-                spriteFile = item;
+                NPC npc = (NPC) handle.getAsset();
+                spriteFile = npc;
 
-                String southAnimation = item.animations.get(AnimationEnum.SOUTH.toString());
+                String southAnimation = npc.animations.get(AnimationEnum.SOUTH.toString());
                 if (!southAnimation.isEmpty()) {
                     file = new File(
                             System.getProperty("project.path")
                             + File.separator
-                            + CoreProperties.getProperty("toolkit.directory.misc"),
+                            + CoreProperties.getProperty("toolkit.directory.animations"),
                             southAnimation
                     );
 

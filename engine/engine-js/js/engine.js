@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-/* global PATH_BITMAP, PATH_MEDIA, PATH_PROGRAM, PATH_BOARD, PATH_CHARACTER, PATH_ITEM, jailed, rpgcode, PATH_TILESET */
+/* global PATH_BITMAP, PATH_MEDIA, PATH_PROGRAM, PATH_BOARD, PATH_CHARACTER, PATH_NPC, jailed, rpgcode, PATH_TILESET */
 
 var rpgtoolkit = new RPGToolkit();
 
@@ -313,11 +313,11 @@ RPGToolkit.prototype.loadBoard = function (board) {
     var len = board.sprites.length;
     for (var i = 0; i < len; i++) {
         var sprite = board.sprites[i];
-        sprite.item = new Item(PATH_ITEM + sprite.name);
+        sprite.npc = new NPC(PATH_NPC + sprite.name);
         sprite.x = sprite.startingPosition.x;
         sprite.y = sprite.startingPosition.y;
         sprite.layer = sprite.startingPosition.layer;
-        sprite.collisionPoints = sprite.item.collisionPoints;
+        sprite.collisionPoints = sprite.npc.collisionPoints;
         var boardSprite = this.loadSprite(sprite);
         sprites[sprite.id] = boardSprite;
     }
@@ -416,18 +416,18 @@ RPGToolkit.prototype.loadCharacter = function (character) {
 RPGToolkit.prototype.loadSprite = function (sprite) {
     console.info("Loading sprite=[%s]", JSON.stringify(sprite));
 
-    // TODO: width and height of item must contain the collision polygon.
+    // TODO: width and height of npc must contain the collision polygon.
     if (sprite.thread) {
         sprite.thread = this.openProgram(PATH_PROGRAM + sprite.thread);
     }
     var entity = Crafty.e("BaseVector")
             .BaseVector(
-                    new Crafty.polygon(sprite.item.collisionPoints),
+                    new Crafty.polygon(sprite.npc.collisionPoints),
                     function (hitData) {
-                        sprite.item.hitOnCollision(hitData, entity);
+                        sprite.npc.hitOnCollision(hitData, entity);
                     },
                     function (hitData) {
-                        sprite.item.hitOffCollision(hitData, entity);
+                        sprite.npc.hitOffCollision(hitData, entity);
                     }
             );
     var activationVector = Crafty.e("2D, Canvas, ActivationVector")
@@ -436,12 +436,12 @@ RPGToolkit.prototype.loadSprite = function (sprite) {
                 y: sprite.y,
                 sprite: sprite})
             .ActivationVector(
-                    new Crafty.polygon(sprite.item.activationPoints),
+                    new Crafty.polygon(sprite.npc.activationPoints),
                     function (hitData) {
-                        sprite.item.hitOnActivation(hitData, entity);
+                        sprite.npc.hitOnActivation(hitData, entity);
                     },
                     function (hitData) {
-                        sprite.item.hitOffActivation(hitData, entity);
+                        sprite.npc.hitOffActivation(hitData, entity);
                     }
             );
     Crafty.c("BoardSprite", {
@@ -452,7 +452,7 @@ RPGToolkit.prototype.loadSprite = function (sprite) {
         layer: sprite.layer,
         width: 150,
         height: 150,
-        vectorType: "ITEM",
+        vectorType: "NPC",
         sprite: sprite,
         events: sprite.events,
         activationVector: activationVector,
@@ -464,12 +464,12 @@ RPGToolkit.prototype.loadSprite = function (sprite) {
                 this.activationVector.x = entity.x;
                 this.activationVector.y = entity.y;
 
-                this.sprite.item.animate(this.dt);
+                this.sprite.npc.animate(this.dt);
             });
             this.bind("EnterFrame", function (event) {
                 this.dt = event.dt / 1000;
 
-                if (this.sprite.thread && this.sprite.item.renderReady) {
+                if (this.sprite.thread && this.sprite.npc.renderReady) {
                     this.sprite.thread.apply(this);
                 }
             });
@@ -477,8 +477,8 @@ RPGToolkit.prototype.loadSprite = function (sprite) {
     });
     entity.addComponent("BoardSprite");
 
-    var assets = sprite.item.load();
-    this.queueCraftyAssets(assets, sprite.item);
+    var assets = sprite.npc.load();
+    this.queueCraftyAssets(assets, sprite.npc);
 
     return entity;
 };

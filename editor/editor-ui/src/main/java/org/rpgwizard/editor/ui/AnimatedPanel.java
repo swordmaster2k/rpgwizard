@@ -224,7 +224,7 @@ public class AnimatedPanel extends AbstractImagePanel
 
 		if (!animation.getSoundEffect().isEmpty()) {
 			String path = System.getProperty("project.path") + File.separator
-					+ CoreProperties.getProperty("toolkit.directory.media")
+					+ CoreProperties.getProperty("toolkit.directory.sounds")
 					+ File.separator + animation.getSoundEffect();
 		}
 	}

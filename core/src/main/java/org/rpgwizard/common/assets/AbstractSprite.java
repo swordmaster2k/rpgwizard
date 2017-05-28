@@ -9,7 +9,6 @@ package org.rpgwizard.common.assets;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -19,7 +18,7 @@ import org.rpgwizard.common.assets.listeners.SpriteChangeListener;
 
 /**
  * A common abstract class for all sprite like assets to inherit
- * (Player/Character, Enemy, Item).
+ * (Character, Enemy, NPC).
  *
  * @author Joshua Michael Daly
  */

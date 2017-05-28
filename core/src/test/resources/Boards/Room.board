@@ -13,7 +13,7 @@
    "sprites":[
       {
          "id": "block1",
-         "name":"Block.item",
+         "name":"Block.npc",
          "startingPosition":{
             "x":1,
             "y":2,

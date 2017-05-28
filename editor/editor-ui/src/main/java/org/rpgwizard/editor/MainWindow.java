@@ -34,7 +34,7 @@ import org.rpgwizard.common.assets.AssetHandle;
 import org.rpgwizard.common.assets.AssetManager;
 import org.rpgwizard.common.assets.Board;
 import org.rpgwizard.common.assets.Enemy;
-import org.rpgwizard.common.assets.Item;
+import org.rpgwizard.common.assets.NPC;
 import org.rpgwizard.common.assets.Character;
 import org.rpgwizard.common.assets.Program;
 import org.rpgwizard.common.assets.Project;
@@ -54,7 +54,7 @@ import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.common.utilities.TileSetCache;
 import org.rpgwizard.editor.editors.CharacterEditor;
 import org.rpgwizard.editor.editors.EnemyEditor;
-import org.rpgwizard.editor.editors.ItemEditor;
+import org.rpgwizard.editor.editors.NPCEditor;
 import org.rpgwizard.editor.editors.tileset.NewTilesetDialog;
 import org.rpgwizard.editor.properties.EditorProperties;
 import org.rpgwizard.editor.properties.EditorProperty;
@@ -403,9 +403,9 @@ public class MainWindow extends JFrame implements InternalFrameListener {
 		} else if (window instanceof CharacterEditor) {
 			CharacterEditor editor = (CharacterEditor) window;
 			propertiesPanel.setModel(editor.getPlayer());
-		} else if (window instanceof ItemEditor) {
-			ItemEditor editor = (ItemEditor) window;
-			propertiesPanel.setModel(editor.getItem());
+		} else if (window instanceof NPCEditor) {
+			NPCEditor editor = (NPCEditor) window;
+			propertiesPanel.setModel(editor.getNPC());
 		}
 	}
 
@@ -448,10 +448,10 @@ public class MainWindow extends JFrame implements InternalFrameListener {
 			if (propertiesPanel.getModel() == editor.getPlayer()) {
 				propertiesPanel.setModel(null);
 			}
-		} else if (frame instanceof ItemEditor) {
-			ItemEditor editor = (ItemEditor) frame;
+		} else if (frame instanceof NPCEditor) {
+			NPCEditor editor = (NPCEditor) frame;
 
-			if (propertiesPanel.getModel() == editor.getItem()) {
+			if (propertiesPanel.getModel() == editor.getNPC()) {
 				propertiesPanel.setModel(null);
 			}
 		}
@@ -486,8 +486,8 @@ public class MainWindow extends JFrame implements InternalFrameListener {
 				.getDefaultExtension(Enemy.class))) {
 			addToolkitEditorWindow(EditorFactory.getEditor(openEnemy(file)));
 		} else if (fileName.endsWith(CoreProperties
-				.getDefaultExtension(Item.class))) {
-			addToolkitEditorWindow(EditorFactory.getEditor(openItem(file)));
+				.getDefaultExtension(NPC.class))) {
+			addToolkitEditorWindow(EditorFactory.getEditor(openNPC(file)));
 		} else if (fileName.endsWith(CoreProperties
 				.getDefaultExtension(Character.class))) {
 			addToolkitEditorWindow(EditorFactory.getEditor(openCharacter(file)));
@@ -706,34 +706,34 @@ public class MainWindow extends JFrame implements InternalFrameListener {
 
         return null;
     }
-	public void createNewItem() {
-		LOGGER.info("Creating new {}.", Item.class.getSimpleName());
+	public void createNewNPC() {
+		LOGGER.info("Creating new {}.", NPC.class.getSimpleName());
 
-		Item item = new Item(null);
-		item.setName("Untitled");
+		NPC npc = new NPC(null);
+		npc.setName("Untitled");
 
-		ItemEditor itemEditor = new ItemEditor(item);
-		itemEditor.addInternalFrameListener(this);
-		itemEditor.setVisible(true);
-		itemEditor.toFront();
+		NPCEditor npcEditor = new NPCEditor(npc);
+		npcEditor.addInternalFrameListener(this);
+		npcEditor.setVisible(true);
+		npcEditor.toFront();
 
-		desktopPane.add(itemEditor);
-		selectToolkitWindow(itemEditor);
+		desktopPane.add(npcEditor);
+		selectToolkitWindow(npcEditor);
 	}
 
-	public Item openItem(File file) {
-        LOGGER.info("Opening {} file=[{}].", Item.class.getSimpleName(), file);
+	public NPC openNPC(File file) {
+        LOGGER.info("Opening {} file=[{}].", NPC.class.getSimpleName(), file);
 
         try {
             if (file.canRead()) {
                 AssetHandle handle = AssetManager.getInstance().deserialize(
                         new AssetDescriptor(file.toURI()));
-                Item item = (Item) handle.getAsset();
+                NPC npc = (NPC) handle.getAsset();
 
-                return item;
+                return npc;
             }
         } catch (IOException | AssetException ex) {
-            LOGGER.error("Failed to open {} file=[{}].", Item.class.getSimpleName(), file, ex);
+            LOGGER.error("Failed to open {} file=[{}].", NPC.class.getSimpleName(), file, ex);
         }
 
         return null;
@@ -788,7 +788,7 @@ public class MainWindow extends JFrame implements InternalFrameListener {
             int tileWidth = dialog.getValue()[0];
             int tileHeight = dialog.getValue()[1];
 
-            String path = CoreProperties.getProperty("toolkit.directory.bitmap");
+            String path = CoreProperties.getProperty("toolkit.directory.graphics");
             String description = "Image Files";
             String[] extensions = EditorFileManager.getImageExtensions();
             EditorFileManager.setFileChooserSubdirAndFilters(path, description, extensions);

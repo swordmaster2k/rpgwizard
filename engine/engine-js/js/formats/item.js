@@ -7,11 +7,11 @@
  */
 /* global Sprite */
 
-Item.prototype = Object.create(Sprite.prototype);
-Item.prototype.constructor = Item;
+NPC.prototype = Object.create(Sprite.prototype);
+NPC.prototype.constructor = NPC;
 
-function Item(filename) {
-    console.info("Loading Item filename=[%s]", filename);
+function NPC(filename) {
+    console.info("Loading NPC filename=[%s]", filename);
     Sprite.call(this);
 
     // TODO: Make the changes here that chrome suggests.
@@ -20,37 +20,37 @@ function Item(filename) {
     req.overrideMimeType("text/plain; charset=x-user-defined");
     req.send(null);
 
-    var item = JSON.parse(req.responseText);
-    for (var property in item) {
-        this[property] = item[property];
+    var npc = JSON.parse(req.responseText);
+    for (var property in npc) {
+        this[property] = npc[property];
     }
 
     this.calculateCollisionPoints();
     this.calculateActivationPoints();
 }
 
-Item.prototype.hitOnCollision = function (hitData, entity) {
+NPC.prototype.hitOnCollision = function (hitData, entity) {
     this.checkCollisions(hitData[0], entity);
 };
 
-Item.prototype.hitOffCollision = function (hitData, entity) {
+NPC.prototype.hitOffCollision = function (hitData, entity) {
     // Not used yet.
 };
 
-Item.prototype.hitOnActivation = function (hitData, entity) {
+NPC.prototype.hitOnActivation = function (hitData, entity) {
     this.checkActivations(hitData[0], entity);
 };
 
-Item.prototype.hitOffActivation = function (hitData, entity) {
+NPC.prototype.hitOffActivation = function (hitData, entity) {
     // Not used yet.
 };
 
-Item.prototype.checkCollisions = function (collision, entity) {
-    console.debug("Checking collisions for Item name=[%s]", this.name);
+NPC.prototype.checkCollisions = function (collision, entity) {
+    console.debug("Checking collisions for NPC name=[%s]", this.name);
 
     var object = collision.obj;
     switch (object.vectorType) {
-        case "ITEM":
+        case "NPC":
             entity.x += collision.normal.x;
             entity.y += collision.normal.y;
             entity.resetHitChecks();
@@ -63,6 +63,6 @@ Item.prototype.checkCollisions = function (collision, entity) {
     }
 };
 
-Item.prototype.checkActivations = function (collisions, entity) {
+NPC.prototype.checkActivations = function (collisions, entity) {
     // Not used yet.
 };

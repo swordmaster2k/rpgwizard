@@ -11,14 +11,14 @@ package org.rpgwizard.common.assets;
  *
  * @author Chris Hutchinson <chris@cshutchinson.com>
  */
-public enum ItemWalkDirection {
+public enum NPCWalkDirection {
 
 	NORTH(0), SOUTH(1), EAST(2), WEST(3), NORTH_WEST(4), NORTH_EAST(5), SOUTH_WEST(
 			6), SOUTH_EAST(7);
 
 	private final int value;
 
-	private ItemWalkDirection(int value) {
+	private NPCWalkDirection(int value) {
 		this.value = value;
 	}
 

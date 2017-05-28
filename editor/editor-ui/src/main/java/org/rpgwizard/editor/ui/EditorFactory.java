@@ -11,7 +11,7 @@ import org.rpgwizard.common.assets.Animation;
 import org.rpgwizard.common.assets.Asset;
 import org.rpgwizard.common.assets.Board;
 import org.rpgwizard.common.assets.Enemy;
-import org.rpgwizard.common.assets.Item;
+import org.rpgwizard.common.assets.NPC;
 import org.rpgwizard.common.assets.Character;
 import org.rpgwizard.common.assets.Program;
 import org.rpgwizard.common.assets.Project;
@@ -19,7 +19,7 @@ import org.rpgwizard.editor.editors.AnimationEditor;
 import org.rpgwizard.editor.editors.BoardEditor;
 import org.rpgwizard.editor.editors.CharacterEditor;
 import org.rpgwizard.editor.editors.EnemyEditor;
-import org.rpgwizard.editor.editors.ItemEditor;
+import org.rpgwizard.editor.editors.NPCEditor;
 import org.rpgwizard.editor.editors.ProgramEditor;
 import org.rpgwizard.editor.editors.ProjectEditor;
 
@@ -48,8 +48,8 @@ public class EditorFactory {
 			return new BoardEditor((Board) asset);
 		} else if (asset instanceof Enemy) {
 			return new EnemyEditor((Enemy) asset);
-		} else if (asset instanceof Item) {
-			return new ItemEditor((Item) asset);
+		} else if (asset instanceof NPC) {
+			return new NPCEditor((NPC) asset);
 		} else if (asset instanceof Character) {
 			return new CharacterEditor((Character) asset);
 		} else if (asset instanceof Program) {

@@ -8,7 +8,7 @@
 package org.rpgwizard.common.assets.serialization;
 
 import org.rpgwizard.common.assets.serialization.JsonEnemySerializer;
-import org.rpgwizard.common.assets.serialization.JsonItemSerializer;
+import org.rpgwizard.common.assets.serialization.JsonNPCSerializer;
 import org.rpgwizard.common.assets.serialization.JsonBoardSerializer;
 import org.rpgwizard.common.assets.serialization.JsonAnimationSerializer;
 import org.rpgwizard.common.assets.serialization.TextProgramSerializer;
@@ -33,7 +33,7 @@ import org.rpgwizard.common.assets.BoardVector;
 import org.rpgwizard.common.assets.Enemy;
 import org.rpgwizard.common.assets.Project;
 import org.rpgwizard.common.assets.GraphicEnum;
-import org.rpgwizard.common.assets.Item;
+import org.rpgwizard.common.assets.NPC;
 import org.rpgwizard.common.assets.Character;
 import org.rpgwizard.common.assets.TileSet;
 import org.rpgwizard.common.assets.BoardVectorType;
@@ -73,7 +73,7 @@ public class AssetSerializerTest {
         assetManager.registerSerializer(new JsonProjectSerializer());
         assetManager.registerSerializer(new JsonSpecialMoveSerializer());
         assetManager.registerSerializer(new JsonEnemySerializer());
-        assetManager.registerSerializer(new JsonItemSerializer());
+        assetManager.registerSerializer(new JsonNPCSerializer());
         assetManager.registerSerializer(new TextProgramSerializer());
         assetManager.registerSerializer(new JsonTileSetSerializer());
     }
@@ -162,7 +162,7 @@ public class AssetSerializerTest {
         Assert.assertTrue(asset.getLayers().get(0).getSprites().size() == 1);
         BoardSprite sprite = asset.getLayers().get(0).getSprites().get(0);
         Assert.assertEquals("block1", sprite.getId());
-        Assert.assertEquals("Block.item", sprite.getFileName());
+        Assert.assertEquals("Block.npc", sprite.getFileName());
         Assert.assertEquals(1, sprite.getX());
         Assert.assertEquals(2, sprite.getY());
         Assert.assertEquals(0, sprite.getLayer());
@@ -350,22 +350,22 @@ public class AssetSerializerTest {
     }
 
     @Test
-    public void testItemSerializer() throws Exception {
+    public void testNPCSerializer() throws Exception {
         String path = AssetSerializerTestHelper.getPath(
-                "Items/Block.item");
-        JsonItemSerializer serializer = new JsonItemSerializer();
+                "NPCs/Block.npc");
+        JsonNPCSerializer serializer = new JsonNPCSerializer();
 
         // Deserialize original.
-        Item asset = AssetSerializerTestHelper.deserializeFile(path, serializer);
-        checkItem(asset);
+        NPC asset = AssetSerializerTestHelper.deserializeFile(path, serializer);
+        checkNPC(asset);
 
         // Serialize a temporary version and deserialize it.
         path = AssetSerializerTestHelper.serialize(asset, serializer);
         asset = AssetSerializerTestHelper.deserializeFile(path, serializer);
-        checkItem(asset);
+        checkNPC(asset);
     }
 
-    private void checkItem(Item asset) {
+    private void checkNPC(NPC asset) {
         Assert.assertEquals("Block", asset.getName());
         Assert.assertEquals("A pushable block.", asset.getDescription());
         Assert.assertEquals(0, asset.getFrameRate(), 0);

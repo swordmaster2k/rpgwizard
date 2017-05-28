@@ -11,7 +11,6 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.logging.Level;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -112,7 +111,7 @@ public class Driver {
 	public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             try {
-                LOGGER.info("Starting the RPGToolkit Editor...");
+                LOGGER.info("Starting the RPGWizard Editor...");
                 redirectUncaughtExceptions();
 
                 logSystemInfo();

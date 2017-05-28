@@ -1,13 +1,27 @@
 <?xml version="1.0"?>
+<!--
+
+    Copyright (c) 2017, rpgtoolkit.net <help@rpgtoolkit.net>
+
+    This Source Code Form is subject to the terms of the Mozilla Public
+    License, v. 2.0. If a copy of the MPL was not distributed with this
+    file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    
+
+    <parent>
+        <groupId>org.rpgwizard</groupId>
+        <artifactId>rpgwizard</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
     <groupId>org.rpgwizard</groupId>
     <artifactId>engine</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    
+
     <name>RPGWizard Engine</name>
 
     <properties>
@@ -16,11 +30,10 @@
         <plugin.version>1.0.0</plugin.version>
         <plugin.provider>Joshua Michael Daly</plugin.provider>
         <plugin.dependencies />
-        
+
         <jetty.version>9.4.2.v20170220</jetty.version>
-        <maven.resources.version>3.0.2</maven.resources.version>
     </properties>
-    
+
     <dependencies>
         <dependency>
             <groupId>org.rpgwizard</groupId>
@@ -121,13 +134,31 @@
                 <version>${maven.resources.version}</version>
                 <executions>
                     <execution>
-                        <id>copy-files-on-build</id>
+                        <id>editor-debug-copy</id>
                         <phase>install</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
                             <outputDirectory>../editor/editor-ui/target/classes/plugins</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.build.directory}</directory>
+                                    <includes>
+                                        <include>engine-${project.version}-jar-with-dependencies.jar</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>distribution-copy</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>../distribution/builds/plugins</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>${project.build.directory}</directory>

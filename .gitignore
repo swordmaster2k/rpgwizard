@@ -32,3 +32,6 @@ out/
 *.jar
 *.exe
 engine/src/main/resources/engine-rpgwizard.zip
+
+# Distribution
+distribution/builds/

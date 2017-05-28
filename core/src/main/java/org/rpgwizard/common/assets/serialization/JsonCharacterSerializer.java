@@ -36,8 +36,8 @@ public class JsonCharacterSerializer extends AbstractSpriteSerializer {
 	@Override
 	protected void load(AssetHandle handle, JSONObject json)
 			throws AssetException {
-		final Character player = super.load(new Character(handle.getDescriptor()),
-				json);
+		final Character player = super.load(
+				new Character(handle.getDescriptor()), json);
 
 		player.setLevel(json.getInt("level"));
 		player.setMaxLevel(json.getInt("maxLevel"));
@@ -58,7 +58,8 @@ public class JsonCharacterSerializer extends AbstractSpriteSerializer {
 	@Override
 	protected void store(AssetHandle handle, JSONObject json)
 			throws AssetException {
-		final Character player = super.store((Character) handle.getAsset(), json);
+		final Character player = super.store((Character) handle.getAsset(),
+				json);
 
 		json.put("level", player.getLevel());
 		json.put("maxLevel", player.getMaxLevel());

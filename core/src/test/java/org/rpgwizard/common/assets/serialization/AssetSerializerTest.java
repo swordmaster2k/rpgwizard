@@ -208,10 +208,7 @@ public class AssetSerializerTest {
         Assert.assertEquals("Default", asset.getName());
         Assert.assertEquals(32, asset.getTileWidth());
         Assert.assertEquals(32, asset.getTileHeight());
-        Assert.assertEquals(Arrays.asList(
-                "source1.png",
-                "source2.jpg",
-                "source3.gif"), asset.getImages());
+        Assert.assertEquals("source1.png", asset.getImage());
     }
 
     @Test

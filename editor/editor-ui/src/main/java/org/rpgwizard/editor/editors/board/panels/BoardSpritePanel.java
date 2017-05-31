@@ -23,6 +23,7 @@ import org.rpgwizard.common.assets.NPC;
 import org.rpgwizard.common.assets.Program;
 import org.rpgwizard.editor.editors.board.BoardLayerView;
 import org.rpgwizard.common.utilities.CoreProperties;
+import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.rpgwizard.editor.utilities.GuiHelper;
 
@@ -86,6 +87,8 @@ public class BoardSpritePanel extends BoardModelPanel {
 
             boardSprite.setFileName((String) fileComboBox.getSelectedItem());
             updateCurrentBoardView();
+            
+            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
         });
         ///
         /// idField
@@ -96,20 +99,24 @@ public class BoardSpritePanel extends BoardModelPanel {
             @Override
             public void changedUpdate(DocumentEvent e) {
                 updateSpriteId();
+                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
                 updateSpriteId();
+                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
             }
 
             @Override
             public void insertUpdate(DocumentEvent e) {
                 updateSpriteId();
+                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
             }
 
             private void updateSpriteId() {
                 ((BoardSprite) model).setId(idField.getText());
+                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
             }
         });
         ///
@@ -126,6 +133,7 @@ public class BoardSpritePanel extends BoardModelPanel {
         eventProgramComboBox.addActionListener((ActionEvent e) -> {
             if (eventProgramComboBox.getSelectedItem() != null) {
                 boardSprite.setEventProgram((String) eventProgramComboBox.getSelectedItem());
+                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
             }
         });
         ///
@@ -136,6 +144,7 @@ public class BoardSpritePanel extends BoardModelPanel {
         threadComboBox.addActionListener((ActionEvent e) -> {
             if (threadComboBox.getSelectedItem() != null) {
                 boardSprite.setThread((String) threadComboBox.getSelectedItem());
+                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
             }
         });
         ///
@@ -149,6 +158,7 @@ public class BoardSpritePanel extends BoardModelPanel {
             if (sprite.getX() != (int) xSpinner.getValue()) {
                 sprite.setX((int) xSpinner.getValue());
                 updateCurrentBoardView();
+                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
             }
         });
         ///
@@ -162,6 +172,7 @@ public class BoardSpritePanel extends BoardModelPanel {
             if (sprite.getY() != (int) ySpinner.getValue()) {
                 sprite.setY((int) ySpinner.getValue());
                 updateCurrentBoardView();
+                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
             }
         });
         ///
@@ -187,6 +198,8 @@ public class BoardSpritePanel extends BoardModelPanel {
 
                 // Store new layer selection index.
                 lastSpinnerLayer = (int) layerSpinner.getValue();
+                
+                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
             } else {
                 // Not a valid layer revert selection.
                 layerSpinner.setValue(lastSpinnerLayer);
@@ -200,6 +213,7 @@ public class BoardSpritePanel extends BoardModelPanel {
             String type = (String) eventComboBox.getSelectedItem();
             if (type.equals(EVENT_TYPES[0])) {
                 boardSprite.setEventType(EventType.OVERLAP);
+                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
             }
         });
         ///

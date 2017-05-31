@@ -20,6 +20,7 @@ import org.rpgwizard.editor.ui.actions.NewProjectAction;
 import org.rpgwizard.editor.ui.actions.OpenFileAction;
 import org.rpgwizard.editor.ui.actions.OpenProjectAction;
 import org.rpgwizard.editor.ui.actions.SaveAction;
+import org.rpgwizard.editor.ui.actions.SaveAllAction;
 import org.rpgwizard.editor.ui.resources.Icons;
 
 /**
@@ -138,6 +139,7 @@ public final class FileMenu extends JMenu implements ActionListener {
 		newProgramMenuItem.setEnabled(true);
 		newTilesetMenuItem.setEnabled(true);
 		saveMenuItem.setEnabled(true);
+                saveAllMenuItem.setEnabled(true);
 	}
 
 	/**
@@ -283,7 +285,9 @@ public final class FileMenu extends JMenu implements ActionListener {
 	}
 
 	private void configureSaveAllMenuItem() {
-		saveAllMenuItem = new JMenuItem("Save All");
+		saveAllMenuItem = new JMenuItem();
+                saveAllMenuItem.setAction(new SaveAllAction());
+                saveAllMenuItem.setText("Save All");
 		saveAllMenuItem.setIcon(Icons.getSmallIcon("save-all"));
 		saveAllMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
 				ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));

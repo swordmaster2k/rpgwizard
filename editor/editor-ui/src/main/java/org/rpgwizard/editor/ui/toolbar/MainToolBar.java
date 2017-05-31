@@ -23,6 +23,7 @@ import org.rpgwizard.editor.ui.actions.OpenFileAction;
 import org.rpgwizard.editor.ui.actions.PencilAction;
 import org.rpgwizard.editor.ui.actions.RunAction;
 import org.rpgwizard.editor.ui.actions.SaveAction;
+import org.rpgwizard.editor.ui.actions.SaveAllAction;
 import org.rpgwizard.editor.ui.actions.SelectionAction;
 import org.rpgwizard.editor.ui.actions.SpriteAction;
 import org.rpgwizard.editor.ui.actions.StartPositionAction;
@@ -105,10 +106,10 @@ public class MainToolBar extends JToolBar {
 				.getProperty(EditorProperty.EDITOR_UI_TOOLTIP_SAVE));
 
 		saveAllButton = new EditorButton();
+                saveAllButton.setAction(new SaveAllAction());
 		saveAllButton.setIcon(Icons.getSmallIcon("save-all"));
 		saveAllButton.setToolTipText(EditorProperties
 				.getProperty(EditorProperty.EDITOR_UI_TOOLTIP_SAVE_ALL));
-		saveAllButton.setEnabled(false);
 
 		cutButton = new EditorButton();
 		cutButton.setIcon(Icons.getSmallIcon("cut"));
@@ -378,7 +379,7 @@ public class MainToolBar extends JToolBar {
 		// newButton.setEnabled(enable);
 		openButton.setEnabled(enable);
 		saveButton.setEnabled(enable);
-		// saveAllButton.setEnabled(enable);
+                saveAllButton.setEnabled(enable);
 		// cutButton.setEnabled(enable);
 		// copyButton.setEnabled(enable);
 		// pasteButton.setEnabled(enable);

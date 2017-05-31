@@ -225,11 +225,13 @@ public class ProjectEditor extends AssetEditorWindow
             @Override
             public void insertUpdate(DocumentEvent e) {
                 project.setName(projectName.getText());
+                setNeedSave(true);
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
                 project.setName(projectName.getText());
+                setNeedSave(true);
             }
         });
 
@@ -265,6 +267,7 @@ public class ProjectEditor extends AssetEditorWindow
         initialBoard.addActionListener((ActionEvent e) -> {
             if (initialBoard.getSelectedItem() != null) {
                 project.setInitialBoard((String) initialBoard.getSelectedItem());
+                setNeedSave(true);
             }
         });
 
@@ -276,6 +279,7 @@ public class ProjectEditor extends AssetEditorWindow
         initialCharacter.addActionListener((ActionEvent e) -> {
             if (initialCharacter.getSelectedItem() != null) {
                 project.setInitialCharacter((String) initialCharacter.getSelectedItem());
+                setNeedSave(true);
             }
         });
 
@@ -337,6 +341,7 @@ public class ProjectEditor extends AssetEditorWindow
         startupProgram.addActionListener((ActionEvent e) -> {
             if (startupProgram.getSelectedItem() != null) {
                 project.setStartupProgram((String) startupProgram.getSelectedItem());
+                setNeedSave(true);
             }
         });
 
@@ -346,6 +351,7 @@ public class ProjectEditor extends AssetEditorWindow
         gameOverProgram.addActionListener((ActionEvent e) -> {
             if (gameOverProgram.getSelectedItem() != null) {
                 project.setGameOverProgram((String) gameOverProgram.getSelectedItem());
+                setNeedSave(true);
             }
         });
 

@@ -42,7 +42,7 @@ public class JsonTileSetSerializer extends AbstractJsonSerializer {
 				json.optInt("tileWidth"), json.optInt("tileHeight"));
 
 		tileSet.setName(json.optString("name"));
-		tileSet.setImages(getStringArrayList(json.getJSONArray("images")));
+		tileSet.setImage(json.optString("image"));
 
 		handle.setAsset(tileSet);
 	}
@@ -57,12 +57,7 @@ public class JsonTileSetSerializer extends AbstractJsonSerializer {
 		json.put("name", tileSet.getName());
 		json.put("tileWidth", tileSet.getTileWidth());
 		json.put("tileHeight", tileSet.getTileHeight());
-
-		List<String> images = new ArrayList();
-		for (String image : tileSet.getImages()) {
-			images.add(serializePath(image));
-		}
-		json.put("images", images);
+		json.put("image", serializePath(tileSet.getImage()));
 	}
 
 }

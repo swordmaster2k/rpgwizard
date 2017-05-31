@@ -20,6 +20,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import org.rpgwizard.common.assets.Board;
 import org.rpgwizard.common.utilities.CoreProperties;
+import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.utilities.GuiHelper;
 
 /**
@@ -55,7 +56,7 @@ public class BoardPanel extends AbstractModelPanel {
 
 			@Override
 			public void stateChanged(ChangeEvent e) {
-
+                            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
 			}
 
 		});
@@ -68,7 +69,7 @@ public class BoardPanel extends AbstractModelPanel {
 
 			@Override
 			public void stateChanged(ChangeEvent e) {
-
+                            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
 			}
 
 		});
@@ -89,6 +90,7 @@ public class BoardPanel extends AbstractModelPanel {
 			public void actionPerformed(ActionEvent e) {
 				board.setBackgroundMusic((String) musicFileComboBox
 						.getSelectedItem());
+                                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
 			}
 
 		});
@@ -109,6 +111,7 @@ public class BoardPanel extends AbstractModelPanel {
 			public void actionPerformed(ActionEvent e) {
 				board.setFirstRunProgram((String) entryProgramComboBox
 						.getSelectedItem());
+                                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
 			}
 
 		});

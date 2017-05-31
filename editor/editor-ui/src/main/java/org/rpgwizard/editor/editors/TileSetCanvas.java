@@ -40,8 +40,6 @@ import org.rpgwizard.editor.utilities.GuiHelper;
  */
 public final class TileSetCanvas extends JPanel implements Scrollable {
 
-    private static final int DEFAULT_WIDTH = 352;
-
     private int tilesPerRow;
     private final int maxTilesPerRow;
 
@@ -63,11 +61,11 @@ public final class TileSetCanvas extends JPanel implements Scrollable {
 
         this.tileSet = tileSet;
 
-        tilesPerRow = DEFAULT_WIDTH / tileSet.getTileWidth();
+        int width = tileSet.getBufferedImage().getWidth();
+        tilesPerRow = width / tileSet.getTileWidth();
         maxTilesPerRow = tileSet.getTiles().size();
-
-        int width = DEFAULT_WIDTH;
         int height = tileSet.getTileHeight() * (int) (Math.ceil(tileSet.getTiles().size() / (double) tilesPerRow));
+        
         init(width, height);
 
         Action increaseTilesAction = new AbstractAction() {
@@ -385,7 +383,6 @@ public final class TileSetCanvas extends JPanel implements Scrollable {
             height = 32;
         }
         bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-
     }
 
     private class TileSetMouseAdapter extends MouseAdapter {

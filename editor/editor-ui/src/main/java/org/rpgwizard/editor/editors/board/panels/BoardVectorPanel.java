@@ -26,6 +26,7 @@ import org.rpgwizard.common.assets.BoardVector;
 import org.rpgwizard.common.assets.BoardVectorType;
 import org.rpgwizard.common.assets.Event;
 import org.rpgwizard.common.utilities.CoreProperties;
+import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.utilities.GuiHelper;
 
 /**
@@ -87,6 +88,8 @@ public class BoardVectorPanel extends BoardModelPanel {
 
                     // Store new layer selection index.
                     lastSpinnerLayer = (int) layerSpinner.getValue();
+                    
+                    MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
                 } else {
                     // Not a valid layer revert selection.
                     layerSpinner.setValue(lastSpinnerLayer);
@@ -107,6 +110,7 @@ public class BoardVectorPanel extends BoardModelPanel {
             public void actionPerformed(ActionEvent e) {
                 ((BoardVector) model).setClosed(isClosedCheckBox.isSelected());
                 updateCurrentBoardView();
+                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
             }
         });
         ///
@@ -125,6 +129,7 @@ public class BoardVectorPanel extends BoardModelPanel {
                 if (!((BoardVector) model).getId().
                         equals(idTextField.getText())) {
                     ((BoardVector) model).setId(idTextField.getText());
+                    MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
                 }
             }
         });
@@ -156,6 +161,7 @@ public class BoardVectorPanel extends BoardModelPanel {
                 }
 
                 updateCurrentBoardView();
+                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
             }
         });
         ///
@@ -188,6 +194,7 @@ public class BoardVectorPanel extends BoardModelPanel {
                     event.setProgram((String) eventProgramComboBox.getSelectedItem());
                 }
                 ((BoardVector) model).getEvents().set(0, event);
+                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
             }
 
         });

@@ -25,7 +25,7 @@ function TileSet(filename) {
 TileSet.prototype.setReady = function () {
     console.info("Setting ready TileSet name=[%s]", this.name);
     
-    this.img = Crafty.assets[Crafty.__paths.images + this.images[0]];
+    this.img = Crafty.assets[Crafty.__paths.images + this.image];
 
     this.tileRows = Math.floor(this.img.height / this.tileHeight);
     this.tileColumns = Math.floor(this.img.width / this.tileWidth);

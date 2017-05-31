@@ -207,7 +207,7 @@ public class Animation extends AbstractAsset {
     private void init() {
         animationWidth = 50;
         animationHeight = 50;
-        frameRate = 25;
+        frameRate = 2;
         spriteSheet = new SpriteSheet();
         soundEffect = "";
     }

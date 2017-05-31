@@ -12,7 +12,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.List;
 import javax.imageio.ImageIO;
 import org.rpgwizard.common.assets.Tile;
 import org.rpgwizard.common.assets.TileSet;
@@ -27,15 +26,14 @@ public class TileSetUtil {
 	public static TileSet load(TileSet tileSet) throws IOException {
         int tileWidth = tileSet.getTileWidth();
         int tileHeight = tileSet.getTileHeight();
-        List<String> images = tileSet.getImages();
-        for (String image : images) {
-            String subdir = EditorFileManager.getGraphicsSubdirectory();
-            File file = EditorFileManager.getPath(subdir + File.separator + image);
+        String image = tileSet.getImage();
+        String subdir = EditorFileManager.getGraphicsSubdirectory();
+        File file = EditorFileManager.getPath(subdir + File.separator + image);
 
-            try (FileInputStream fis = new FileInputStream(file)) {
-                BufferedImage source = ImageIO.read(fis);
-                tileSet = loadImageIntoTileSet(tileSet, source, tileWidth, tileHeight);
-            }
+        try (FileInputStream fis = new FileInputStream(file)) {
+            BufferedImage source = ImageIO.read(fis);
+            tileSet = loadImageIntoTileSet(tileSet, source, tileWidth, tileHeight);
+            tileSet.setBufferedImage(source);
         }
 
         return tileSet;

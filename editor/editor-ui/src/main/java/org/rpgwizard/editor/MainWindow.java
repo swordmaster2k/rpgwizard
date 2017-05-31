@@ -16,6 +16,7 @@ import java.awt.Rectangle;
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JDesktopPane;
@@ -273,6 +274,10 @@ public class MainWindow extends JFrame implements InternalFrameListener {
 	public void setPluginManager(PluginManager pluginManager) {
 		this.pluginManager = pluginManager;
 	}
+        
+        public Collection<AssetEditorWindow> getOpenEditors() {
+            return editorMap.values();
+        }
 
 	public void updateEditorMap(File previous, File current,
 			AssetEditorWindow editor) {
@@ -811,7 +816,7 @@ public class MainWindow extends JFrame implements InternalFrameListener {
 
                     String remove = EditorFileManager.getGraphicsPath();
                     String imagePath = file.getAbsolutePath().replace(remove, "");
-                    tileSet.getImages().add(imagePath);
+                    tileSet.setImage(imagePath);
 
                     AssetManager.getInstance().serialize(
                             AssetManager.getInstance().getHandle(tileSet));

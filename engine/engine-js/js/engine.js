@@ -279,7 +279,7 @@ RPGToolkit.prototype.loadBoard = function (board) {
     craftyBoard.board.tileSets.forEach(function (file) {
         var tileSet = new TileSet(PATH_TILESET + file);
         rpgtoolkit.tilesets[tileSet.name] = tileSet;
-        rpgtoolkit.queueCraftyAssets({"images": tileSet.images}, tileSet);
+        rpgtoolkit.queueCraftyAssets({"images": [tileSet.image]}, tileSet);
     });
 
     for (var layer = 0; layer < board.layers.length; layer++) {

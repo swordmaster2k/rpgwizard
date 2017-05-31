@@ -33,7 +33,7 @@ public abstract class AssetEditorWindow extends JInternalFrame {
 		return needSave;
 	}
 
-	protected void setNeedSave(boolean needSave) {
+	public void setNeedSave(boolean needSave) {
 		if (this.needSave == needSave) {
 			return;
 		}

@@ -3,9 +3,5 @@
     "name": "Default",
     "tileWidth": 32,
     "tileHeight": 32,
-    "images": [
-        "source1.png",
-        "source2.jpg",
-        "source3.gif"
-    ]
+    "image": "source1.png"
 }

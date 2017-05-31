@@ -7,6 +7,7 @@
  */
 package org.rpgwizard.common.assets;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,13 +26,14 @@ public class TileSet extends AbstractAsset {
 	private int tileWidth;
 	private int tileHeight;
 
-	private List<String> images;
+	private String image;
+	private BufferedImage bufferedImage;
 
 	private LinkedList<Tile> tiles;
 
 	public TileSet() {
         super(null);
-        images = new ArrayList<>();
+        image = null;
         tiles = new LinkedList<>();
     }
 	/**
@@ -45,7 +47,7 @@ public class TileSet extends AbstractAsset {
         super(descriptor);
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
-        images = new ArrayList<>();
+        image = null;
         tiles = new LinkedList<>();
     }
 	public String getName() {
@@ -96,12 +98,20 @@ public class TileSet extends AbstractAsset {
 		this.tileHeight = tileHeight;
 	}
 
-	public List<String> getImages() {
-		return images;
+	public String getImage() {
+		return image;
 	}
 
-	public void setImages(List<String> images) {
-		this.images = images;
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public BufferedImage getBufferedImage() {
+		return bufferedImage;
+	}
+
+	public void setBufferedImage(BufferedImage bufferedImage) {
+		this.bufferedImage = bufferedImage;
 	}
 
 	public void setTiles(LinkedList<Tile> tiles) {

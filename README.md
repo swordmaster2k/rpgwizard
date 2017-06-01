@@ -1,4 +1,4 @@
-# RPGWizard [![Travis Build Status](https://travis-ci.org/craftyjs/Crafty.svg?branch=develop)](https://travis-ci.org/craftyjs/Crafty) [![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
+# RPGWizard [![Travis Build Status](https://api.travis-ci.org/swordmaster2k/rpgwizard.svg?branch=develop)](https://travis-ci.org/swordmaster2k/rpgwizard) [![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
 
 ====================================
 

@@ -7,5 +7,4 @@ cache:
   - "$HOME/.m2"
 install: true
 script: 
-- mvn dependency:go-offline
-- mvn -o clean verify
+- mvn clean verify -DskipTests=true

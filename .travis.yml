@@ -7,4 +7,4 @@ cache:
   - "$HOME/.m2"
 install: true
 script: 
-- mvn clean install -U -DskipTests=true
+- mvn clean install -DskipTests=true

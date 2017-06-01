@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-/* global rpgtoolkit */
+/* global rpgwizard */
 
 function Board(filename) {
     console.info("Loading Board filename=[%s]", filename);
@@ -54,7 +54,7 @@ Board.prototype.generateLayerCache = function () {
                 }
 
                 var tileSet = board.tileSets[tileSetIndex];
-                var renderer = new TilesetRenderer(rpgtoolkit.tilesets[tileSet]);
+                var renderer = new TilesetRenderer(rpgwizard.tilesets[tileSet]);
 
                 // Render tile to board canvas
                 renderer.renderTile(

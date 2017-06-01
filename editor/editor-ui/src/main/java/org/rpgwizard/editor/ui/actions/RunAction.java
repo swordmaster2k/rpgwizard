@@ -39,8 +39,8 @@ public class RunAction extends AbstractAction {
 	public void actionPerformed(ActionEvent e) {
 		try {
 			MainWindow instance = MainWindow.getInstance();
-                        instance.getMainToolBar().getSaveAllButton().doClick();
-                        
+			instance.getMainToolBar().getSaveAllButton().doClick();
+
 			String projectName = instance.getTitle();
 
 			// Make a temporary copy of the user's project for the engine to

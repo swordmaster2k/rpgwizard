@@ -56,7 +56,8 @@ public class BoardPanel extends AbstractModelPanel {
 
 			@Override
 			public void stateChanged(ChangeEvent e) {
-                            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+				MainWindow.getInstance().getCurrentBoardEditor()
+						.setNeedSave(true);
 			}
 
 		});
@@ -69,7 +70,8 @@ public class BoardPanel extends AbstractModelPanel {
 
 			@Override
 			public void stateChanged(ChangeEvent e) {
-                            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+				MainWindow.getInstance().getCurrentBoardEditor()
+						.setNeedSave(true);
 			}
 
 		});
@@ -90,7 +92,8 @@ public class BoardPanel extends AbstractModelPanel {
 			public void actionPerformed(ActionEvent e) {
 				board.setBackgroundMusic((String) musicFileComboBox
 						.getSelectedItem());
-                                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+				MainWindow.getInstance().getCurrentBoardEditor()
+						.setNeedSave(true);
 			}
 
 		});
@@ -111,7 +114,8 @@ public class BoardPanel extends AbstractModelPanel {
 			public void actionPerformed(ActionEvent e) {
 				board.setFirstRunProgram((String) entryProgramComboBox
 						.getSelectedItem());
-                                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+				MainWindow.getInstance().getCurrentBoardEditor()
+						.setNeedSave(true);
 			}
 
 		});

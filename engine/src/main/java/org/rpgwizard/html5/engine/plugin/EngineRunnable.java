@@ -27,19 +27,19 @@ public class EngineRunnable implements Runnable {
 		this.resourceBase = resourceBase;
 	}
 
+	@Override
 	public void run() {
 		server = new Server(8080);
 		server.setStopAtShutdown(true);
 
-		ResourceHandler resource_handler = new ResourceHandler();
-		resource_handler.setDirectoriesListed(true);
-		resource_handler.setWelcomeFiles(new String[]{"index.html"});
-
-		resource_handler.setResourceBase(resourceBase);
+		ResourceHandler resourceHandler = new ResourceHandler();
+		resourceHandler.setDirectoriesListed(true);
+		resourceHandler.setWelcomeFiles(new String[]{"index.html"});
+		resourceHandler.setCacheControl("no-store,no-cache,must-revalidate");
+		resourceHandler.setResourceBase(resourceBase);
 
 		HandlerList handlers = new HandlerList();
-		handlers.setHandlers(new Handler[]{resource_handler,
-				new DefaultHandler()});
+		handlers.setHandlers(new Handler[]{resourceHandler});
 		server.setHandler(handlers);
 
 		try {

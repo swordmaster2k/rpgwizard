@@ -5,20 +5,20 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-/* global rpgtoolkit */
+/* global rpgwizard */
 
 function Keyboard() {
     this.downHandlers = {};
     this.upHandlers = {};
     this.entity = Crafty.e()
             .bind("KeyDown", function (e) {
-                var handler = rpgtoolkit.keyboardHandler.downHandlers[e.keyCode];
+                var handler = rpgwizard.keyboardHandler.downHandlers[e.keyCode];
                 if (handler) {
                     handler();
                 }
             })
             .bind("KeyUp", function (e) {
-                var handler = rpgtoolkit.keyboardHandler.upHandlers[e.keyCode];
+                var handler = rpgwizard.keyboardHandler.upHandlers[e.keyCode];
                 if (handler) {
                     handler();
                 }
@@ -35,36 +35,36 @@ function Keyboard() {
             var move = this.__move;
 
             this.bind("EnterFrame", function () {
-                if (!rpgtoolkit.controlEnabled) {
+                if (!rpgwizard.controlEnabled) {
                     return;
                 }
 
                 // Move the player in a direction depending on the booleans
                 // Only move the player in one direction at a time (up/down/left/right)
                 if (move.right) {
-                    if (rpgtoolkit.craftyCharacter.character.direction !== this.character.DirectionEnum.EAST) {
-                        rpgtoolkit.craftyCharacter.character.direction = this.character.DirectionEnum.EAST;
+                    if (rpgwizard.craftyCharacter.character.direction !== this.character.DirectionEnum.EAST) {
+                        rpgwizard.craftyCharacter.character.direction = this.character.DirectionEnum.EAST;
                         this.character.changeGraphics(this.character.direction);
                     }
                     this.x += this._speed;
                     Crafty.trigger("Moved", {});
                 } else if (move.left) {
-                    if (rpgtoolkit.craftyCharacter.character.direction !== this.character.DirectionEnum.WEST) {
-                        rpgtoolkit.craftyCharacter.character.direction = this.character.DirectionEnum.WEST;
+                    if (rpgwizard.craftyCharacter.character.direction !== this.character.DirectionEnum.WEST) {
+                        rpgwizard.craftyCharacter.character.direction = this.character.DirectionEnum.WEST;
                         this.character.changeGraphics(this.character.direction);
                     }
                     this.x -= this._speed;
                     Crafty.trigger("Moved", {});
                 } else if (move.up) {
-                    if (rpgtoolkit.craftyCharacter.character.direction !== this.character.DirectionEnum.NORTH) {
-                        rpgtoolkit.craftyCharacter.character.direction = this.character.DirectionEnum.NORTH;
+                    if (rpgwizard.craftyCharacter.character.direction !== this.character.DirectionEnum.NORTH) {
+                        rpgwizard.craftyCharacter.character.direction = this.character.DirectionEnum.NORTH;
                         this.character.changeGraphics(this.character.direction);
                     }
                     this.y -= this._speed;
                     Crafty.trigger("Moved", {});
                 } else if (move.down) {
-                    if (rpgtoolkit.craftyCharacter.character.direction !== this.character.DirectionEnum.SOUTH) {
-                        rpgtoolkit.craftyCharacter.character.direction = this.character.DirectionEnum.SOUTH;
+                    if (rpgwizard.craftyCharacter.character.direction !== this.character.DirectionEnum.SOUTH) {
+                        rpgwizard.craftyCharacter.character.direction = this.character.DirectionEnum.SOUTH;
                         this.character.changeGraphics(this.character.direction);
                     }
                     this.y += this._speed;

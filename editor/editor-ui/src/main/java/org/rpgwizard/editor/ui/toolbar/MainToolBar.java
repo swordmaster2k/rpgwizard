@@ -106,7 +106,7 @@ public class MainToolBar extends JToolBar {
 				.getProperty(EditorProperty.EDITOR_UI_TOOLTIP_SAVE));
 
 		saveAllButton = new EditorButton();
-                saveAllButton.setAction(new SaveAllAction());
+		saveAllButton.setAction(new SaveAllAction());
 		saveAllButton.setIcon(Icons.getSmallIcon("save-all"));
 		saveAllButton.setToolTipText(EditorProperties
 				.getProperty(EditorProperty.EDITOR_UI_TOOLTIP_SAVE_ALL));
@@ -379,7 +379,7 @@ public class MainToolBar extends JToolBar {
 		// newButton.setEnabled(enable);
 		openButton.setEnabled(enable);
 		saveButton.setEnabled(enable);
-                saveAllButton.setEnabled(enable);
+		saveAllButton.setEnabled(enable);
 		// cutButton.setEnabled(enable);
 		// copyButton.setEnabled(enable);
 		// pasteButton.setEnabled(enable);

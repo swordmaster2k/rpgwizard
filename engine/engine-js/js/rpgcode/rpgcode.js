@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-/* global rpgtoolkit, rpgcode, PATH_PROGRAM */
+/* global rpgwizard, rpgcode, PATH_PROGRAM */
 
 var rpgcode = null; // Setup inside of the engine.
 
@@ -25,7 +25,7 @@ function RPGcode() {
     this.runTimePrograms = [];
 
     this.canvases = {"renderNowCanvas": {
-            canvas: rpgtoolkit.screen.renderNowCanvas,
+            canvas: rpgwizard.screen.renderNowCanvas,
             render: false
         }
     };
@@ -100,7 +100,7 @@ RPGcode.prototype._animateGeneric = function (generic, resetGraphics, callback) 
  * @param {Callback} callback If defined, the function to invoke at the end of the animation.
  */
 RPGcode.prototype.animateSprite = function (spriteId, animationId, callback) {
-    var entity = rpgtoolkit.craftyBoard.board.sprites[spriteId];
+    var entity = rpgwizard.craftyBoard.board.sprites[spriteId];
     if (entity) {
         var npc = entity.sprite.npc;
         var resetGraphics = npc.spriteGraphics.active;
@@ -128,7 +128,7 @@ RPGcode.prototype.animateSprite = function (spriteId, animationId, callback) {
  */
 RPGcode.prototype.animateCharacter = function (characterId, animationId, callback) {
     // TODO: characterId will be unused until parties with multiple characters are supported.
-    var character = rpgtoolkit.craftyCharacter.character;
+    var character = rpgwizard.craftyCharacter.character;
     var resetGraphics = character.spriteGraphics.active;
     rpgcode.setCharacterStance(characterId, animationId);
     rpgcode._animateGeneric(character, resetGraphics, callback);
@@ -184,7 +184,7 @@ RPGcode.prototype.clearDialog = function () {
 };
 
 RPGcode.prototype._convertCraftyId = function (craftyId) {
-    return rpgtoolkit.craftyBoard.board.sprites.findIndex(function (entity) {
+    return rpgwizard.craftyBoard.board.sprites.findIndex(function (entity) {
         return entity.getId() === craftyId;
     });
 };
@@ -262,9 +262,9 @@ RPGcode.prototype.destroyCanvas = function (canvasId) {
  * @param {String} spriteId The ID set for the sprite as it appears in the editor.
  */
 RPGcode.prototype.destroySprite = function (spriteId) {
-    if (rpgtoolkit.craftyBoard.board.sprites.hasOwnProperty(spriteId)) {
-        rpgtoolkit.craftyBoard.board.sprites[spriteId].destroy();
-        delete rpgtoolkit.craftyBoard.board.sprites[spriteId];
+    if (rpgwizard.craftyBoard.board.sprites.hasOwnProperty(spriteId)) {
+        rpgwizard.craftyBoard.board.sprites[spriteId].destroy();
+        delete rpgwizard.craftyBoard.board.sprites[spriteId];
         Crafty.trigger("Invalidate");
     }
 };
@@ -373,9 +373,9 @@ RPGcode.prototype.drawText = function (x, y, text, canvasId) {
  */
 RPGcode.prototype.endProgram = function (nextProgram) {
     if (nextProgram) {
-        rpgtoolkit.endProgram(nextProgram);
+        rpgwizard.endProgram(nextProgram);
     } else {
-        rpgtoolkit.endProgram();
+        rpgwizard.endProgram();
     }
 };
 
@@ -453,7 +453,7 @@ RPGcode.prototype.fireRaycast = function (origin, direction, maxDistance, comp, 
  * @returns {String} Name of the current board.
  */
 RPGcode.prototype.getBoardName = function () {
-    return rpgtoolkit.craftyBoard.board.name;
+    return rpgwizard.craftyBoard.board.name;
 };
 
 /**
@@ -480,7 +480,7 @@ RPGcode.prototype.getGlobal = function (id) {
  * @returns {Object} Active character.
  */
 RPGcode.prototype.getCharacter = function () {
-    return rpgtoolkit.craftyCharacter.character;
+    return rpgwizard.craftyCharacter.character;
 };
 
 /**
@@ -492,7 +492,7 @@ RPGcode.prototype.getCharacter = function () {
  * @returns {String} A NORTH, SOUTH, EAST, or WEST value.
  */
 RPGcode.prototype.getCharacterDirection = function () {
-    var direction = rpgtoolkit.craftyCharacter.character.direction;
+    var direction = rpgwizard.craftyCharacter.character.direction;
 
     // User friendly rewrite of Crafty constants.
     switch (direction) {
@@ -524,12 +524,12 @@ RPGcode.prototype.getCharacterDirection = function () {
  * @returns {Object} An object containing the characters location in the form {x, y, z}.
  */
 RPGcode.prototype.getCharacterLocation = function (inTiles) {
-    var instance = rpgtoolkit.craftyCharacter;
+    var instance = rpgwizard.craftyCharacter;
 
     if (inTiles) {
         return {
-            x: instance.x / rpgtoolkit.craftyBoard.board.tileWidth,
-            y: instance.y / rpgtoolkit.craftyBoard.board.tileHeight,
+            x: instance.x / rpgwizard.craftyBoard.board.tileWidth,
+            y: instance.y / rpgwizard.craftyBoard.board.tileHeight,
             layer: instance.character.layer
         };
     } else {
@@ -566,7 +566,7 @@ RPGcode.prototype.getRandom = function (min, max) {
  * @returns {Object} An object with the attributes inProgram (boolean) and the filename of the current running program, if any.
  */
 RPGcode.prototype.getRunningProgram = function () {
-    return {inProgram: rpgtoolkit.inProgram, currentProgram: rpgtoolkit.currentProgram};
+    return {inProgram: rpgwizard.inProgram, currentProgram: rpgwizard.currentProgram};
 };
 
 /**
@@ -662,8 +662,8 @@ RPGcode.prototype.moveSprite = function (spriteId, direction, distance) {
             Crafty.trigger("Invalidate");
             break;
         default:
-            if (rpgtoolkit.craftyBoard.board.sprites.hasOwnProperty(spriteId)) {
-                var entity = rpgtoolkit.craftyBoard.board.sprites[spriteId];
+            if (rpgwizard.craftyBoard.board.sprites.hasOwnProperty(spriteId)) {
+                var entity = rpgwizard.craftyBoard.board.sprites[spriteId];
                 entity.move(direction, distance);
                 Crafty.trigger("Invalidate");
             }
@@ -684,7 +684,7 @@ RPGcode.prototype.moveSprite = function (spriteId, direction, distance) {
 RPGcode.prototype.moveCharacter = function (characterId, direction, distance) {
     // TODO: characterId is unused until multiple party members are supported.
 
-    rpgtoolkit.craftyCharacter.move(direction, distance);
+    rpgwizard.craftyCharacter.move(direction, distance);
 };
 
 /**
@@ -712,8 +712,8 @@ RPGcode.prototype.moveSpriteTo = function (spriteId, x, y, duration) {
             rpgcode.source.tween({x: x, y: y}, duration);
             break;
         default:
-            if (rpgtoolkit.craftyBoard.board.sprites.hasOwnProperty(spriteId)) {
-                var entity = rpgtoolkit.craftyBoard.board.sprites[spriteId];
+            if (rpgwizard.craftyBoard.board.sprites.hasOwnProperty(spriteId)) {
+                var entity = rpgwizard.craftyBoard.board.sprites[spriteId];
                 entity.tween({x: x, y: y}, duration);
             }
     }
@@ -737,9 +737,9 @@ RPGcode.prototype.moveSpriteTo = function (spriteId, x, y, duration) {
  */
 RPGcode.prototype.registerKeyDown = function (key, callback, globalScope) {
     if (globalScope) {
-        rpgtoolkit.keyDownHandlers[Crafty.keys[key]] = callback;
+        rpgwizard.keyDownHandlers[Crafty.keys[key]] = callback;
     } else {
-        rpgtoolkit.keyboardHandler.downHandlers[Crafty.keys[key]] = callback;
+        rpgwizard.keyboardHandler.downHandlers[Crafty.keys[key]] = callback;
     }
 };
 
@@ -761,9 +761,9 @@ RPGcode.prototype.registerKeyDown = function (key, callback, globalScope) {
  */
 RPGcode.prototype.registerKeyUp = function (key, callback, globalScope) {
     if (globalScope) {
-        rpgtoolkit.keyUpHandlers[Crafty.keys[key]] = callback;
+        rpgwizard.keyUpHandlers[Crafty.keys[key]] = callback;
     } else {
-        rpgtoolkit.keyboardHandler.upHandlers[Crafty.keys[key]] = callback;
+        rpgwizard.keyboardHandler.upHandlers[Crafty.keys[key]] = callback;
     }
 };
 
@@ -831,8 +831,8 @@ RPGcode.prototype.renderNow = function (canvasId) {
  * @param {Number} tileIndex The index of the tile in the replacement set.
  */
 RPGcode.prototype.replaceTile = function (tileX, tileY, layer, tileSet, tileIndex) {
-    var tile = rpgtoolkit.tilesets[tileSet].getTile(tileIndex);
-    rpgtoolkit.craftyBoard.board.replaceTile(tileX, tileY, layer, tile);
+    var tile = rpgwizard.tilesets[tileSet].getTile(tileIndex);
+    rpgwizard.craftyBoard.board.replaceTile(tileX, tileY, layer, tile);
 };
 
 /**
@@ -847,7 +847,7 @@ RPGcode.prototype.replaceTile = function (tileX, tileY, layer, tileSet, tileInde
  * @param {Number} layer The layer the tile is on.
  */
 RPGcode.prototype.removeTile = function (tileX, tileY, layer) {
-    rpgtoolkit.craftyBoard.board.removeTile(tileX, tileY, layer);
+    rpgwizard.craftyBoard.board.removeTile(tileX, tileY, layer);
 };
 
 /**
@@ -869,7 +869,7 @@ RPGcode.prototype.restart = function () {
  * @param {String} filename
  */
 RPGcode.prototype.runProgram = function (filename) {
-    rpgtoolkit.runProgram(PATH_PROGRAM + filename, rpgcode, null);
+    rpgwizard.runProgram(PATH_PROGRAM + filename, rpgcode, null);
 };
 
 /**
@@ -883,7 +883,7 @@ RPGcode.prototype.runProgram = function (filename) {
  * @param {Number} tileY The y position to place the character at, in tiles.
  */
 RPGcode.prototype.sendToBoard = function (boardName, tileX, tileY) {
-    rpgtoolkit.switchBoard(boardName, tileX, tileY);
+    rpgwizard.switchBoard(boardName, tileX, tileY);
 };
 
 /**
@@ -986,11 +986,11 @@ RPGcode.prototype.setDialogGraphics = function (profileImage, backgroundImage) {
  */
 RPGcode.prototype.setSpriteLocation = function (spriteId, x, y, layer, inTiles) {
     if (inTiles) {
-        x *= rpgtoolkit.tileSize;
-        y *= rpgtoolkit.tileSize;
+        x *= rpgwizard.tileSize;
+        y *= rpgwizard.tileSize;
     }
 
-    var npc = rpgtoolkit.craftyBoard.board.sprites[spriteId];
+    var npc = rpgwizard.craftyBoard.board.sprites[spriteId];
     if (npc) {
         npc.x = x;
         npc.y = y;
@@ -1012,8 +1012,8 @@ RPGcode.prototype.setSpriteLocation = function (spriteId, x, y, layer, inTiles) 
  * @param {String} stanceId The stanceId (animationId) to use.
  */
 RPGcode.prototype.setSpriteStance = function (spriteId, stanceId) {
-    if (rpgtoolkit.craftyBoard.board.sprites.hasOwnProperty(spriteId)) {
-        var entity = rpgtoolkit.craftyBoard.board.sprites[spriteId];
+    if (rpgwizard.craftyBoard.board.sprites.hasOwnProperty(spriteId)) {
+        var entity = rpgwizard.craftyBoard.board.sprites[spriteId];
         entity.sprite.npc.changeGraphics(stanceId);
     }
 };
@@ -1037,15 +1037,15 @@ RPGcode.prototype.setSpriteStance = function (spriteId, stanceId) {
  */
 RPGcode.prototype.setCharacterLocation = function (characterId, x, y, layer, isTiles) {
     if (isTiles) {
-        x *= rpgtoolkit.tileSize;
-        y *= rpgtoolkit.tileSize;
+        x *= rpgwizard.tileSize;
+        y *= rpgwizard.tileSize;
     }
 
     // TODO: characterId will be unused until parties with multiple characters 
     // are supported.
-    rpgtoolkit.craftyCharacter.x = x;
-    rpgtoolkit.craftyCharacter.y = y;
-    rpgtoolkit.craftyCharacter.character.layer = layer;
+    rpgwizard.craftyCharacter.x = x;
+    rpgwizard.craftyCharacter.y = y;
+    rpgwizard.craftyCharacter.character.layer = layer;
 };
 
 /**
@@ -1063,7 +1063,7 @@ RPGcode.prototype.setCharacterLocation = function (characterId, x, y, layer, isT
 RPGcode.prototype.setCharacterStance = function (characterId, stanceId) {
     // TODO: characterId will be unused until parties with multiple characters 
     // are supported.
-    rpgtoolkit.craftyCharacter.character.changeGraphics(stanceId);
+    rpgwizard.craftyCharacter.character.changeGraphics(stanceId);
     Crafty.trigger("Invalidate");
 };
 
@@ -1120,9 +1120,9 @@ RPGcode.prototype.stopSound = function (file) {
  */
 RPGcode.prototype.unregisterKeyDown = function (key, globalScope) {
     if (globalScope) {
-        delete rpgtoolkit.keyDownHandlers[Crafty.keys[key]];
+        delete rpgwizard.keyDownHandlers[Crafty.keys[key]];
     } else {
-        delete rpgtoolkit.keyboardHandler.downHandlers[Crafty.keys[key]];
+        delete rpgwizard.keyboardHandler.downHandlers[Crafty.keys[key]];
     }
 };
 
@@ -1137,8 +1137,8 @@ RPGcode.prototype.unregisterKeyDown = function (key, globalScope) {
  */
 RPGcode.prototype.unregisterKeyUp = function (key, globalScope) {
     if (globalScope) {
-        delete rpgtoolkit.keyUpHandlers[Crafty.keys[key]];
+        delete rpgwizard.keyUpHandlers[Crafty.keys[key]];
     } else {
-        delete rpgtoolkit.keyboardHandler.upHandlers[Crafty.keys[key]];
+        delete rpgwizard.keyboardHandler.upHandlers[Crafty.keys[key]];
     }
 };

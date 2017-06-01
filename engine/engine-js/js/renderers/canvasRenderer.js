@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-/* global rpgtoolkit */
+/* global rpgwizard */
 
 function CanvasRenderer() {
   this.renderNowCanvas = document.createElement("canvas");
@@ -17,7 +17,7 @@ CanvasRenderer.prototype.render = function (context) {
   var x = -Crafty.viewport._x;
   var y = -Crafty.viewport._y;
   
-  var canvases = rpgtoolkit.rpgcodeApi.canvases;
+  var canvases = rpgwizard.rpgcodeApi.canvases;
   for (var property in canvases) {
     if (canvases.hasOwnProperty(property)) {
       var element = canvases[property];

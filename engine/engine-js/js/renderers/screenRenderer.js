@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-/* global rpgtoolkit, rpgcode */
+/* global rpgwizard, rpgcode */
 
 function ScreenRenderer() {
     this.renderNowCanvas = document.createElement("canvas");
@@ -26,12 +26,12 @@ ScreenRenderer.prototype.render = function (context) {
     }
 
     // Shorthand reference.
-    var character = rpgtoolkit.craftyCharacter.character;
-    character.x = rpgtoolkit.craftyCharacter.x;
-    character.y = rpgtoolkit.craftyCharacter.y;
+    var character = rpgwizard.craftyCharacter.character;
+    character.x = rpgwizard.craftyCharacter.x;
+    character.y = rpgwizard.craftyCharacter.y;
 
-    if (rpgtoolkit.craftyBoard.show) {
-        this.board = rpgtoolkit.craftyBoard.board;
+    if (rpgwizard.craftyBoard.show) {
+        this.board = rpgwizard.craftyBoard.board;
 
         // Draw a black background.  
         context.fillStyle = "#000000";
@@ -65,7 +65,7 @@ ScreenRenderer.prototype.render = function (context) {
                         context.drawImage(frame, x, y);
                     }
 
-                    if (rpgtoolkit.showVectors) {
+                    if (rpgwizard.showVectors) {
                         // Draw collision ploygon.
                         var x, y, moved = false;
                         var points = sprite.collisionPoints;
@@ -107,7 +107,7 @@ ScreenRenderer.prototype.render = function (context) {
                 }
             });
 
-            if (rpgtoolkit.showVectors) {
+            if (rpgwizard.showVectors) {
                 /*
                  * (Optional) Render Vectors.
                  */

@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-/* global rpgtoolkit, PATH_ANIMATION, PATH_PROGRAM */
+/* global rpgwizard, PATH_ANIMATION, PATH_PROGRAM */
 
 function Sprite() {
     this.x = 0;
@@ -355,7 +355,7 @@ Sprite.prototype.checkActivations = function (collisions, entity) {
         var events = object.events;
         events.forEach(function (event) {
             if (event.program) {
-                rpgtoolkit.runProgram(PATH_PROGRAM.concat(event.program), object);
+                rpgwizard.runProgram(PATH_PROGRAM.concat(event.program), object);
             }
         });
     });

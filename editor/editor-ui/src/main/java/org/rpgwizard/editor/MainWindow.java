@@ -274,10 +274,10 @@ public class MainWindow extends JFrame implements InternalFrameListener {
 	public void setPluginManager(PluginManager pluginManager) {
 		this.pluginManager = pluginManager;
 	}
-        
-        public Collection<AssetEditorWindow> getOpenEditors() {
-            return editorMap.values();
-        }
+
+	public Collection<AssetEditorWindow> getOpenEditors() {
+		return editorMap.values();
+	}
 
 	public void updateEditorMap(File previous, File current,
 			AssetEditorWindow editor) {

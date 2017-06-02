@@ -13,12 +13,14 @@
 package org.rpgwizard.editor.editors;
 
 import java.awt.BorderLayout;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.File;
+import java.io.IOException;
 import javax.swing.JPanel;
+import javax.swing.ToolTipManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import org.fife.rsta.ac.LanguageSupportFactory;
+import org.fife.rsta.ac.js.JavaScriptLanguageSupport;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.Program;
@@ -27,6 +29,8 @@ import org.rpgwizard.editor.ui.resources.Icons;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Built in program editor for JavaScript files used in the engine.
@@ -34,6 +38,9 @@ import org.fife.ui.rtextarea.RTextScrollPane;
  * @author Joshua Michael Daly
  */
 public class ProgramEditor extends AssetEditorWindow {
+
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(ProgramEditor.class);
 
 	private final Program program;
 
@@ -72,11 +79,26 @@ public class ProgramEditor extends AssetEditorWindow {
 	private void init(Program program, String fileName) {
 		JPanel panel = new JPanel(new BorderLayout());
 
+		LanguageSupportFactory languageFactory = LanguageSupportFactory.get();
+		JavaScriptLanguageSupport languageSupport = (JavaScriptLanguageSupport) languageFactory
+				.getSupportFor(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
+
+		try {
+			languageSupport.getJarManager().addCurrentJreClassFileSource();
+		} catch (IOException ex) {
+			LOGGER.error("Failed to load language support!", ex);
+		}
+
 		String code = program.getProgramBuffer().toString();
 		textArea = new RSyntaxTextArea(code, 30, 120);
+		LanguageSupportFactory.get().register(textArea);
 		textArea.setCaretPosition(0);
-		textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
+		textArea.requestFocusInWindow();
+		textArea.setMarkOccurrences(true);
 		textArea.setCodeFoldingEnabled(true);
+		textArea.setTabsEmulated(true);
+		textArea.setTabSize(3);
+		textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
 		textArea.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
 			public void insertUpdate(DocumentEvent e) {
@@ -93,6 +115,7 @@ public class ProgramEditor extends AssetEditorWindow {
 				setNeedSave(true);
 			}
 		});
+		ToolTipManager.sharedInstance().registerComponent(textArea);
 
 		RTextScrollPane scrollPane = new RTextScrollPane(textArea);
 		panel.add(scrollPane);
@@ -101,6 +124,10 @@ public class ProgramEditor extends AssetEditorWindow {
 		setTitle(fileName);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		pack();
+	}
+
+	public void cleanUp() {
+		LanguageSupportFactory.get().unregister(textArea);
 	}
 
 }

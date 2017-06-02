@@ -72,6 +72,7 @@ import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.rpgwizard.editor.utilities.FileTools;
 import org.rpgwizard.editor.editors.tileset.TileSetUtil;
 import org.apache.commons.io.FilenameUtils;
+import org.rpgwizard.editor.editors.ProgramEditor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ro.fortsoft.pf4j.PluginManager;
@@ -356,6 +357,8 @@ public class MainWindow extends JFrame implements InternalFrameListener {
 			} catch (Exception ex) {
 				LOGGER.error("Failed to close window=[{}].", window, ex);
 			}
+		} else if (window instanceof ProgramEditor) {
+			((ProgramEditor) window).cleanUp();
 		} else {
 			window.dispose();
 		}

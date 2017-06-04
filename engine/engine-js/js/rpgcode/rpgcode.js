@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, rpgtoolkit.net <help@rpgtoolkit.net>
+ * Copyright (c) 2017, rpgwizard.org, some files forked from rpgtoolkit.net <info@rpgwizard.org>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -1085,7 +1085,6 @@ RPGcode.prototype.showDialog = function (dialog) {
         rpgcode.setImage(dialogWindow.profile, 0, 0, 100, 100);
         rpgcode.setImage(dialogWindow.background, 100, 0, 540, 100);
         dialogWindow.visible = true;
-
     }
 
     dialogWindow.lineY += parseInt(rpgcode.font);

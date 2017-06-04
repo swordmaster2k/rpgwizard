@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, rpgtoolkit.net <help@rpgtoolkit.net>
+ * Copyright (c) 2017, rpgwizard.org, some files forked from rpgtoolkit.net <info@rpgwizard.org>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -229,27 +229,35 @@ Sprite.prototype.changeGraphics = function (direction) {
     this.spriteGraphics.frameIndex = 0;
 
     switch (direction) {
+        case "NORTH":
         case this.DirectionEnum.NORTH:
             this.spriteGraphics.active = this.spriteGraphics.north;
             break;
+        case "SOUTH":
         case this.DirectionEnum.SOUTH:
             this.spriteGraphics.active = this.spriteGraphics.south;
             break;
+        case "EAST":
         case this.DirectionEnum.EAST:
             this.spriteGraphics.active = this.spriteGraphics.east;
             break;
+        case "WEST":
         case this.DirectionEnum.WEST:
             this.spriteGraphics.active = this.spriteGraphics.west;
             break;
+        case "NORTH_EAST":
         case this.DirectionEnum.NORTH_EAST:
             this.spriteGraphics.active = this.grapics.northEast;
             break;
+        case "NORTH_WEST":
         case this.DirectionEnum.NORTH_WEST:
             this.spriteGraphics.active = this.spriteGraphics.northWest;
             break;
+        case "SOUTH_EAST":
         case this.DirectionEnum.SOUTH_EAST:
             this.spriteGraphics.active = this.spriteGraphics.southEast;
             break;
+        case "SOUTH_WEST":
         case this.DirectionEnum.SOUTH_WEST:
             this.spriteGraphics.active = this.spriteGraphics.southWest;
             break;

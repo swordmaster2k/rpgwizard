@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -353,12 +354,14 @@ public class MainWindow extends JFrame implements InternalFrameListener {
 						window.dispose();
 						break;
 					case 2 :
+						break;
 				}
 			} catch (Exception ex) {
 				LOGGER.error("Failed to close window=[{}].", window, ex);
 			}
 		} else if (window instanceof ProgramEditor) {
 			((ProgramEditor) window).cleanUp();
+			window.dispose();
 		} else {
 			window.dispose();
 		}
@@ -480,6 +483,13 @@ public class MainWindow extends JFrame implements InternalFrameListener {
 
 	public void openAssetEditor(File file) {
 		if (editorMap.containsKey(file)) {
+			try {
+				editorMap.get(file).setSelected(true);
+			} catch (PropertyVetoException ex) {
+				LOGGER.error(
+						"Could not bring to front assetEditor=[{}], ex=[{}]",
+						file, ex);
+			}
 			return;
 		}
 

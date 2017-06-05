@@ -284,14 +284,11 @@ public class AnimatedPanel extends AbstractImagePanel
 					x + vector.getPointX(i + 1) + xOffset,
 					y + vector.getPointY(i + 1) + yOffset);
 		}
-
-		if (vector.isClosed()) {
-			// Draw the final lines
-			g.drawLine(x + vector.getPointX(count - 1) + xOffset,
-					y + vector.getPointY(count - 1) + yOffset,
-					x + vector.getPointX(0) + xOffset, y + vector.getPointY(0)
-							+ yOffset);
-		}
+		// Draw the final lines
+		g.drawLine(x + vector.getPointX(count - 1) + xOffset,
+				y + vector.getPointY(count - 1) + yOffset,
+				x + vector.getPointX(0) + xOffset, y + vector.getPointY(0)
+						+ yOffset);
 	}
 
 }

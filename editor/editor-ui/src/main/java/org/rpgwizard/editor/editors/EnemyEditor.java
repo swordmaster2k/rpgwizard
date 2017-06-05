@@ -18,6 +18,7 @@ import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.Enemy;
 import org.rpgwizard.common.assets.GraphicEnum;
+import org.rpgwizard.common.assets.listeners.SpriteChangeListener;
 import org.rpgwizard.editor.editors.sprite.AbstractSpriteEditor;
 import org.rpgwizard.editor.ui.DoubleField;
 import org.rpgwizard.editor.ui.resources.Icons;
@@ -30,7 +31,8 @@ import org.rpgwizard.editor.ui.resources.Icons;
  */
 public class EnemyEditor extends AbstractSpriteEditor
 		implements
-			InternalFrameListener {
+			InternalFrameListener,
+			SpriteChangeListener {
 
 	private final Enemy enemy;
 
@@ -58,6 +60,7 @@ public class EnemyEditor extends AbstractSpriteEditor
 		super("Untitled", theEnemy, Icons.getIcon("enemy"));
 
 		enemy = theEnemy;
+		enemy.addSpriteChangeListener(this);
 
 		if (enemy.getDescriptor() == null) {
 			setupNewEnemy();
@@ -78,6 +81,10 @@ public class EnemyEditor extends AbstractSpriteEditor
 
 	@Override
 	public AbstractAsset getAsset() {
+		return enemy;
+	}
+
+	public Enemy getEnemy() {
 		return enemy;
 	}
 

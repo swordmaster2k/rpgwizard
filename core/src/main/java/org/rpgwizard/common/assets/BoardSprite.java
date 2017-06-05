@@ -14,6 +14,7 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.io.FilenameUtils;
 import org.rpgwizard.common.Selectable;
 import org.rpgwizard.common.utilities.CoreProperties;
 
@@ -24,7 +25,7 @@ import org.rpgwizard.common.utilities.CoreProperties;
  */
 public class BoardSprite implements Cloneable, Selectable {
 
-	private NPC spriteFile; // NPC filename
+	private AbstractSprite sprite;
 	private String fileName;
 
 	private String id;
@@ -107,16 +108,16 @@ public class BoardSprite implements Cloneable, Selectable {
 	 *
 	 * @return
 	 */
-	public NPC getSpriteFile() {
-		return spriteFile;
+	public AbstractSprite getSprite() {
+		return sprite;
 	}
 
 	/**
 	 *
-	 * @param npc
+	 * @param sprite
 	 */
-	public void setSpriteFile(NPC npc) {
-		this.spriteFile = npc;
+	public void setSprite(AbstractSprite sprite) {
+		this.sprite = sprite;
 	}
 
 	/**
@@ -148,52 +149,10 @@ public class BoardSprite implements Cloneable, Selectable {
 	 * @param fileName
 	 */
 	public void setFileName(String fileName) {
-        this.fileName = fileName;
+		this.fileName = fileName;
+		southImage = prepareSprite();
+	}
 
-        // TODO: This is should not be in here!
-        BufferedImage image = null;
-        if (!fileName.isEmpty()) {
-            File file = new File(
-                    System.getProperty("project.path")
-                    + File.separator
-                    + CoreProperties.getProperty("toolkit.directory.npc"),
-                    fileName);
-
-            AssetHandle handle;
-            try {
-                handle = AssetManager.getInstance().deserialize(
-                        new AssetDescriptor(file.toURI()));
-
-                NPC npc = (NPC) handle.getAsset();
-                spriteFile = npc;
-
-                String southAnimation = npc.animations.get(AnimationEnum.SOUTH.toString());
-                if (!southAnimation.isEmpty()) {
-                    file = new File(
-                            System.getProperty("project.path")
-                            + File.separator
-                            + CoreProperties.getProperty("toolkit.directory.animations"),
-                            southAnimation
-                    );
-
-                    handle = AssetManager.getInstance().deserialize(
-                            new AssetDescriptor(file.toURI()));
-                    Animation animation = (Animation) handle.getAsset();
-
-                    if (animation != null) {
-                        if (!animation.getSpriteSheet().getFileName().isEmpty()) {
-                            animation.getSpriteSheet().loadImage();
-                            image = animation.getFrame(0);
-                        }
-                    }
-                }
-            } catch (IOException | AssetException ex) {
-                Logger.getLogger(BoardSprite.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
-        southImage = image;
-    }
 	/**
 	 *
 	 * @param x
@@ -313,7 +272,7 @@ public class BoardSprite implements Cloneable, Selectable {
 		clone.eventType = eventType;
 		clone.layer = layer;
 		clone.thread = thread;
-		clone.spriteFile = spriteFile;
+		clone.sprite = sprite;
 		clone.fileName = fileName;
 		clone.x = x;
 		clone.y = y;
@@ -322,4 +281,57 @@ public class BoardSprite implements Cloneable, Selectable {
 		return clone;
 	}
 
+	private BufferedImage prepareSprite() {
+        // TODO: This is should not be in here!
+        BufferedImage image = null;
+        if (!fileName.isEmpty()) {
+            File file;
+            if (FilenameUtils.getExtension(fileName).equals(CoreProperties.getProperty("toolkit.enemy.extension.default"))) {
+                file = new File(System.getProperty("project.path")
+                        + File.separator
+                        + CoreProperties.getProperty("toolkit.directory.enemy")
+                        + File.separator
+                        + fileName);
+            } else {
+                file = new File(System.getProperty("project.path")
+                        + File.separator
+                        + CoreProperties.getProperty("toolkit.directory.npc")
+                        + File.separator
+                        + fileName);
+            }
+
+            AssetHandle handle;
+            try {
+                handle = AssetManager.getInstance().deserialize(
+                        new AssetDescriptor(file.toURI()));
+
+                sprite = (AbstractSprite) handle.getAsset();
+
+                String southAnimation = sprite.animations.get(AnimationEnum.SOUTH.toString());
+                if (!southAnimation.isEmpty()) {
+                    file = new File(
+                            System.getProperty("project.path")
+                            + File.separator
+                            + CoreProperties.getProperty("toolkit.directory.animations"),
+                            southAnimation
+                    );
+
+                    handle = AssetManager.getInstance().deserialize(
+                            new AssetDescriptor(file.toURI()));
+                    Animation animation = (Animation) handle.getAsset();
+
+                    if (animation != null) {
+                        if (!animation.getSpriteSheet().getFileName().isEmpty()) {
+                            animation.getSpriteSheet().loadImage();
+                            image = animation.getFrame(0);
+                        }
+                    }
+                }
+            } catch (IOException | AssetException ex) {
+                Logger.getLogger(BoardSprite.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        return image;
+    }
 }

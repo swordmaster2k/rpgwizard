@@ -50,6 +50,7 @@ NPC.prototype.checkCollisions = function (collision, entity) {
 
     var object = collision.obj;
     switch (object.vectorType) {
+        case "ENEMY":
         case "NPC":
             entity.x += collision.normal.x;
             entity.y += collision.normal.y;

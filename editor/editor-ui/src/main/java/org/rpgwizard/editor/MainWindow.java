@@ -417,6 +417,9 @@ public class MainWindow extends JFrame implements InternalFrameListener {
 		} else if (window instanceof NPCEditor) {
 			NPCEditor editor = (NPCEditor) window;
 			propertiesPanel.setModel(editor.getNPC());
+		} else if (window instanceof EnemyEditor) {
+			EnemyEditor editor = (EnemyEditor) window;
+			propertiesPanel.setModel(editor.getEnemy());
 		}
 	}
 

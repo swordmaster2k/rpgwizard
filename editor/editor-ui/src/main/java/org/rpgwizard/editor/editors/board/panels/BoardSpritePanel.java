@@ -17,7 +17,9 @@ import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import org.apache.commons.lang3.ArrayUtils;
 import org.rpgwizard.common.assets.BoardSprite;
+import org.rpgwizard.common.assets.Enemy;
 import org.rpgwizard.common.assets.EventType;
 import org.rpgwizard.common.assets.NPC;
 import org.rpgwizard.common.assets.Program;
@@ -72,10 +74,11 @@ public class BoardSpritePanel extends BoardModelPanel {
         ///
         File directory = new File(
                 System.getProperty("project.path")
-                + File.separator
-                + CoreProperties.getProperty("toolkit.directory.npc")
                 + File.separator);
-        String[] exts = EditorFileManager.getTypeExtensions(NPC.class);
+        String[] exts = (String[])ArrayUtils.addAll(
+                EditorFileManager.getTypeExtensions(NPC.class), 
+                EditorFileManager.getTypeExtensions(Enemy.class)
+        );
         fileComboBox = GuiHelper.getFileListJComboBox(directory, exts, true);
         fileComboBox.setSelectedItem(boardSprite.getFileName());
         fileComboBox.addActionListener((ActionEvent e) -> {

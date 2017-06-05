@@ -63,8 +63,8 @@ function animate() {
 }
 
 function part4() {
-    rpgcode.replaceTile(11, 10, 0, "tileset1.tileset", 81);
-    rpgcode.replaceTile(12, 10, 0, "tileset1.tileset", 82);
+    rpgcode.replaceTile(11, 10, 0, "tower.tileset", 49);
+    rpgcode.replaceTile(12, 10, 0, "tower.tileset", 50);
     rpgcode.removeTile(11, 9, 1);
     rpgcode.removeTile(12, 9, 1);
 

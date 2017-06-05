@@ -427,18 +427,29 @@ RPGcode.prototype.fillRect = function (x, y, width, height, canvasId) {
  * @returns {unresolved} an array of raycast-results that may be empty, if no intersection has been found. Otherwise, each raycast-result looks like {obj: Entity, distance: Number, x: Number, y: Number}, describing which obj entity has intersected the ray at intersection point x,y, distance px away from origin.
  */
 RPGcode.prototype.fireRaycast = function (origin, direction, maxDistance, comp, sort) {
-    var results;
+    var hits;
+    var results = {npcs: [], enemies: []};
 
     direction = new Crafty.math.Vector2D(direction.x, direction.y).normalize();
     if (maxDistance && comp && sort) {
-        results = Crafty.raycast(origin, direction, maxDistance, comp, sort);
+        hits = Crafty.raycast(origin, direction, maxDistance, comp, sort);
     } else if (maxDistance && comp) {
-        results = Crafty.raycast(origin, direction, maxDistance, comp);
+        hits = Crafty.raycast(origin, direction, maxDistance, comp);
     } else if (maxDistance) {
-        results = Crafty.raycast(origin, direction, maxDistance, "Raycastable");
+        hits = Crafty.raycast(origin, direction, maxDistance, "Raycastable");
     } else {
-        results = Crafty.raycast(origin, direction, -1, "Raycastable");
+        hits = Crafty.raycast(origin, direction, -1, "Raycastable");
     }
+
+    hits.forEach(function (hit) {
+        if (hit.obj.sprite) {
+            if (hit.obj.sprite.npc) {
+                results.npcs.push(hit.obj.sprite);
+            } else if (hit.obj.sprite.enemy) {
+                results.enemies.push(hit.obj.sprite);
+            }
+        }
+    });
 
     return results;
 };

@@ -158,12 +158,12 @@ ScreenRenderer.prototype.sortSprites = function (layer, player) {
     Object.keys(this.board.sprites).forEach(function (key) {
         var entity = board.sprites[key];
         var sprite = entity.sprite;
-        var npc = sprite.npc;
-        if (layer === sprite.layer && npc.renderReady) {
-            sprite.npc.x = entity.x;
-            sprite.npc.y = entity.y;
-            sprite.npc.layer = entity.layer;
-            layerSprites.push(sprite.npc);
+        var asset = sprite.enemy !== undefined ? sprite.enemy : sprite.npc;
+        if (layer === sprite.layer && asset.renderReady) {
+            asset.x = entity.x;
+            asset.y = entity.y;
+            asset.layer = entity.layer;
+            layerSprites.push(asset);
         }
     });
 

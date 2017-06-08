@@ -7,20 +7,9 @@
  */
 package org.rpgwizard.common.assets.serialization;
 
-import org.rpgwizard.common.assets.serialization.JsonEnemySerializer;
-import org.rpgwizard.common.assets.serialization.JsonNPCSerializer;
-import org.rpgwizard.common.assets.serialization.JsonBoardSerializer;
-import org.rpgwizard.common.assets.serialization.JsonAnimationSerializer;
-import org.rpgwizard.common.assets.serialization.TextProgramSerializer;
-import org.rpgwizard.common.assets.serialization.JsonProjectSerializer;
-import org.rpgwizard.common.assets.serialization.JsonCharacterSerializer;
-import org.rpgwizard.common.assets.serialization.JsonTileSetSerializer;
-import org.rpgwizard.common.assets.serialization.JsonSpecialMoveSerializer;
 import java.awt.Point;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.rpgwizard.common.assets.Animation;
@@ -42,7 +31,6 @@ import org.rpgwizard.common.assets.EventType;
 import org.rpgwizard.common.assets.Program;
 import org.rpgwizard.common.assets.SpriteSheet;
 import org.rpgwizard.common.assets.files.FileAssetHandleResolver;
-import org.rpgwizard.common.assets.serialization.legacy.LegacyAnimatedTileSerializer;
 import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -62,9 +50,6 @@ public class AssetSerializerTest {
         AssetManager assetManager = AssetManager.getInstance();
 
         assetManager.registerResolver(new FileAssetHandleResolver());
-
-        // Legacy.
-        assetManager.registerSerializer(new LegacyAnimatedTileSerializer());
 
         // JSON.
         assetManager.registerSerializer(new JsonAnimationSerializer());

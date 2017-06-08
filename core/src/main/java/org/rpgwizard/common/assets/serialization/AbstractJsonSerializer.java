@@ -213,7 +213,7 @@ public abstract class AbstractJsonSerializer extends AbstractAssetSerializer {
 		for (final Event event : vector.getEvents()) {
 			final JSONObject evt = new JSONObject();
 			evt.put("type", event.getType().name().toLowerCase());
-			evt.put("program", event.getProgram());
+			evt.put("program", serializePath(event.getProgram()));
 			events.put(evt);
 		}
 		v.put("events", events);

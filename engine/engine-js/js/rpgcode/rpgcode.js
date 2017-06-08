@@ -414,28 +414,33 @@ RPGcode.prototype.fillRect = function (x, y, width, height, canvasId) {
  * Fires a ray from its origin in the direction and report entities that intersect 
  * with it, given the parameter constraints.
  *
- * Raycasting only reports entities, that have the Collision component applied to them.
+ * This will return any NPCs and Enemies board sprites caught in the path of the 
+ * raycast enclosing them inside an object.
  * 
- * See: 
- *  http://craftyjs.com/api/Crafty-raycast.html
+ * @example
+ * var hits = rpgcode.fireRaycast({
+ *     _x: location.x,
+ *     _y: location.y
+ *  }, vector, 13);
+ *  hits["enemies"].forEach(function(sprite) {
+ *      rpgcode.log(sprite.enemy);
+ *  });
+ *  hits["npcs"].forEach(function(sprite) {
+ *      rpgcode.log(sprite.npc);
+ *  });
+ *  rpgcode.endProgram();
  * 
  * @param {type} origin The point of origin from which the ray will be cast. The object must contain the properties _x and _y
  * @param {type} direction The direction the ray will be cast. It must be normalized. The object must contain the properties x and y.
  * @param {type} maxDistance The maximum distance up to which intersections will be found. This is an optional parameter defaulting to Infinity. If it's Infinity find all intersections. If it's negative find only first intersection (if there is one). If it's positive find all intersections up to that distance.
- * @param {type} comp Check for intersection with entities that have this component applied to them. This is an optional parameter that is disabled by default.
- * @param {type} sort Whether to sort the returned array by increasing distance. May be disabled to slightly improve performance if sorted results are not needed. Defaults to true.
- * @returns {unresolved} an array of raycast-results that may be empty, if no intersection has been found. Otherwise, each raycast-result looks like {obj: Entity, distance: Number, x: Number, y: Number}, describing which obj entity has intersected the ray at intersection point x,y, distance px away from origin.
+ * @returns {Object} An object containing all of the NPCs and Enemies in the path of the raycast. 
  */
-RPGcode.prototype.fireRaycast = function (origin, direction, maxDistance, comp, sort) {
+RPGcode.prototype.fireRaycast = function (origin, direction, maxDistance) {
     var hits;
     var results = {npcs: [], enemies: []};
 
     direction = new Crafty.math.Vector2D(direction.x, direction.y).normalize();
-    if (maxDistance && comp && sort) {
-        hits = Crafty.raycast(origin, direction, maxDistance, comp, sort);
-    } else if (maxDistance && comp) {
-        hits = Crafty.raycast(origin, direction, maxDistance, comp);
-    } else if (maxDistance) {
+    if (maxDistance) {
         hits = Crafty.raycast(origin, direction, maxDistance, "Raycastable");
     } else {
         hits = Crafty.raycast(origin, direction, -1, "Raycastable");

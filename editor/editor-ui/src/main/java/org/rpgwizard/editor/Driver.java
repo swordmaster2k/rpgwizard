@@ -75,9 +75,6 @@ public class Driver {
 
 		AssetManager assetManager = AssetManager.getInstance();
 
-		// Legacy.
-		assetManager.registerSerializer(new LegacyAnimatedTileSerializer());
-
 		// JSON.
 		assetManager.registerSerializer(new JsonAnimationSerializer());
 		assetManager.registerSerializer(new JsonCharacterSerializer());

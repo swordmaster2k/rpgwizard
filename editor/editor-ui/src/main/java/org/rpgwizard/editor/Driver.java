@@ -26,7 +26,6 @@ import org.rpgwizard.common.assets.serialization.JsonProjectSerializer;
 import org.rpgwizard.common.assets.serialization.JsonSpecialMoveSerializer;
 import org.rpgwizard.common.assets.serialization.JsonTileSetSerializer;
 import org.rpgwizard.common.assets.serialization.TextProgramSerializer;
-import org.rpgwizard.common.assets.serialization.legacy.LegacyAnimatedTileSerializer;
 import org.rpgwizard.editor.properties.EditorProperties;
 import org.rpgwizard.editor.properties.EditorProperty;
 import org.rpgwizard.editor.utilities.FileTools;

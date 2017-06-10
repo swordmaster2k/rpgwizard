@@ -29,18 +29,40 @@ function Character(filename) {
     this.calculateActivationPoints();
 }
 
-Character.prototype.hitOnCollision = function(hitData, entity) {
+Character.prototype.hitOnCollision = function (hitData, entity) {
     this.checkCollisions(hitData[0], entity);
 };
 
-Character.prototype.hitOffCollision = function(hitData, entity) {
+Character.prototype.hitOffCollision = function (hitData, entity) {
     // Not used yet.
 };
 
-Character.prototype.hitOnActivation = function(hitData, entity) {
+Character.prototype.hitOnActivation = function (hitData, entity) {
     this.checkActivations(hitData, entity);
 };
 
-Character.prototype.hitOffActivation = function(hitData, entity) {
+Character.prototype.hitOffActivation = function (hitData, entity) {
     // Not used yet.
+};
+
+Character.prototype.checkCollisions = function (collision, entity) {
+    console.debug("Checking collisions for Character name=[%s]", this.name);
+
+    var object = collision.obj;
+
+    if (object.layer !== this.layer) {
+        return;
+    }
+
+    switch (object.vectorType) {
+        case "ENEMY":
+        case "NPC":
+        case "SOLID":
+            entity.x -= collision.overlap * collision.normal.x;
+            entity.y -= collision.overlap * collision.normal.y;
+            entity.resetHitChecks();
+            break;
+        case "PASSABLE":
+            break;
+    }
 };

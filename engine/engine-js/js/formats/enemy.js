@@ -46,20 +46,24 @@ Enemy.prototype.hitOffActivation = function (hitData, entity) {
 };
 
 Enemy.prototype.checkCollisions = function (collision, entity) {
-    console.debug("Checking collisions for NPC name=[%s]", this.name);
+    console.debug("Checking collisions for Enemy name=[%s]", this.name);
 
     var object = collision.obj;
+
+    if (object.layer !== this.layer) {
+        return;
+    }
+
     switch (object.vectorType) {
         case "ENEMY":
         case "NPC":
-            entity.x += collision.normal.x;
-            entity.y += collision.normal.y;
+        case "SOLID":
+            entity.cancelTween({x: true, y: true});
+            entity.x -= collision.overlap * collision.normal.x;
+            entity.y -= collision.overlap * collision.normal.y;
             entity.resetHitChecks();
             break;
-        case "SOLID":
-            entity.x += collision.normal.x;
-            entity.y += collision.normal.y;
-            entity.resetHitChecks();
+        case "PASSABLE":
             break;
     }
 };

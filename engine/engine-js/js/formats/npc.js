@@ -57,6 +57,7 @@ NPC.prototype.checkCollisions = function (collision, entity) {
             entity.resetHitChecks();
             break;
         case "SOLID":
+            entity.cancelTween({x: true, y: true});
             entity.x += collision.normal.x;
             entity.y += collision.normal.y;
             entity.resetHitChecks();

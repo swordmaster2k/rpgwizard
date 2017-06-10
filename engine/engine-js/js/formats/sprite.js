@@ -336,13 +336,10 @@ Sprite.prototype.checkCollisions = function (collision, entity) {
     switch (object.vectorType) {
         case "ENEMY":
         case "NPC":
-            entity.x += collision.normal.x;
-            entity.y += collision.normal.y;
-            entity.resetHitChecks();
-            break;
         case "SOLID":
-            entity.x += collision.normal.x;
-            entity.y += collision.normal.y;
+            entity.cancelTween({x: true, y: true});
+            entity.x -= collision.overlap * collision.normal.x;
+            entity.y -= collision.overlap * collision.normal.y;
             entity.resetHitChecks();
             break;
         case "PASSABLE":

@@ -180,7 +180,7 @@ public class BoardVectorPanel extends BoardModelPanel {
                 + CoreProperties.getProperty("toolkit.directory.program")
                 + File.separator);
         String[] exts = new String[]{"program", "js"};
-        eventProgramComboBox = GuiHelper.getFileListJComboBox(directory, exts, true);
+        eventProgramComboBox = GuiHelper.getFileListJComboBox(new File[]{directory}, exts, true);
         eventProgramComboBox.setSelectedItem(((BoardVector) model).getEvents().get(0).getProgram());
         eventProgramComboBox.addActionListener(new ActionListener() {
 

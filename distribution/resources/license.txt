@@ -382,9 +382,12 @@ Exhibit B - "Incompatible With Secondary Licenses" Notice
   
  Attributions
 ---------------------------------------------------------
-  
-  Some icons by Yusuke Kamiyamane. Licensed under a Creative Commons 
-  Attribution 3.0 License.
-  
-  Application icon by Chris Hutchinson. Licensed under a 
-  Creative Commons Attribution 4.0 License.
+
+  Special thanks to Paul Bate (a.k.a grindalf) for providing the demo 
+  game "The Wizard's Tower" and its assets for public redistribution.
+
+  Some icons by: 
+	* Yusuke Kamiyamane. Licensed under a Creative Commons 
+	  Attribution 3.0 License.
+
+	* Icons8. Licensed under a Creative Commons Attribution-NoDerivs 3.0 Unported.

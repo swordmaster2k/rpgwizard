@@ -79,8 +79,8 @@ public class SpriteSheetImage extends JPanel implements MouseListener {
 		if (image != null) {
 			g.drawImage(image, 0, 0, null);
 			GuiHelper.drawGrid((Graphics2D) g, animation.getAnimationWidth(),
-					animation.getAnimationHeight(),
-					new Rectangle(image.getWidth(), image.getHeight()));
+					animation.getAnimationHeight(), new Rectangle(
+							dimension.width, dimension.height));
 		}
 
 		if (entered) {
@@ -133,7 +133,7 @@ public class SpriteSheetImage extends JPanel implements MouseListener {
 
 	public BufferedImage loadImage() throws IOException {
 		BufferedImage image = spriteSheet.loadImage();
-		dimension = new Dimension(image.getWidth(), image.getHeight());
+		dimension = new Dimension(image.getWidth() + 1, image.getHeight() + 1);
 		return image;
 	}
 

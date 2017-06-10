@@ -72,14 +72,17 @@ public class BoardSpritePanel extends BoardModelPanel {
         ///
         /// fileComboBox
         ///
-        File directory = new File(
-                System.getProperty("project.path")
-                + File.separator);
-        String[] exts = (String[])ArrayUtils.addAll(
-                EditorFileManager.getTypeExtensions(NPC.class), 
+        String[] exts = (String[]) ArrayUtils.addAll(
+                EditorFileManager.getTypeExtensions(NPC.class),
                 EditorFileManager.getTypeExtensions(Enemy.class)
         );
-        fileComboBox = GuiHelper.getFileListJComboBox(directory, exts, true);
+        fileComboBox = GuiHelper.getFileListJComboBox(
+                new File[]{
+                    EditorFileManager.getFullPath(Enemy.class),
+                    EditorFileManager.getFullPath(NPC.class)
+                }, 
+                exts, true
+        );
         fileComboBox.setSelectedItem(boardSprite.getFileName());
         fileComboBox.addActionListener((ActionEvent e) -> {
             String fileName = (String) fileComboBox.getSelectedItem();
@@ -90,7 +93,7 @@ public class BoardSpritePanel extends BoardModelPanel {
 
             boardSprite.setFileName((String) fileComboBox.getSelectedItem());
             updateCurrentBoardView();
-            
+
             MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
         });
         ///
@@ -125,13 +128,8 @@ public class BoardSpritePanel extends BoardModelPanel {
         ///
         /// activationComboBox
         ///
-        directory = new File(
-                System.getProperty("project.path")
-                + File.separator
-                + CoreProperties.getProperty("toolkit.directory.program")
-                + File.separator);
         exts = EditorFileManager.getTypeExtensions(Program.class);
-        eventProgramComboBox = GuiHelper.getFileListJComboBox(directory, exts, true);
+        eventProgramComboBox = GuiHelper.getFileListJComboBox(new File[]{EditorFileManager.getFullPath(Program.class)}, exts, true);
         eventProgramComboBox.setSelectedItem(boardSprite.getEventProgram());
         eventProgramComboBox.addActionListener((ActionEvent e) -> {
             if (eventProgramComboBox.getSelectedItem() != null) {
@@ -142,7 +140,7 @@ public class BoardSpritePanel extends BoardModelPanel {
         ///
         /// multiTaskingTextField
         ///
-        threadComboBox = GuiHelper.getFileListJComboBox(directory, exts, true);
+        threadComboBox = GuiHelper.getFileListJComboBox(new File[]{EditorFileManager.getFullPath(Program.class)}, exts, true);
         threadComboBox.setSelectedItem(boardSprite.getThread());
         threadComboBox.addActionListener((ActionEvent e) -> {
             if (threadComboBox.getSelectedItem() != null) {
@@ -201,7 +199,7 @@ public class BoardSpritePanel extends BoardModelPanel {
 
                 // Store new layer selection index.
                 lastSpinnerLayer = (int) layerSpinner.getValue();
-                
+
                 MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
             } else {
                 // Not a valid layer revert selection.

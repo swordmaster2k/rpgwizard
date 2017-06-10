@@ -164,19 +164,21 @@ public abstract class GuiHelper {
 	}
 
 	/**
-	 * Gets a list of all the documents under a directory with the required
-	 * extensions. For use with JComboBoxes.
+	 * Gets a list of all the documents under the given directories with the
+	 * required extensions. For use with JComboBoxes.
 	 *
-	 * @param rootDirectory
+	 * @param rootDirectories
 	 * @param extensions
 	 * @param recursive
 	 * @return
 	 */
-	public static JComboBox getFileListJComboBox(File rootDirectory,
+	public static JComboBox getFileListJComboBox(File[] rootDirectories,
 			String[] extensions, boolean recursive) {
 		JComboBox comboBox = new JComboBox();
-		comboBox.addPopupMenuListener(new PopupListFilesListener(rootDirectory,
-				extensions, recursive, comboBox));
+
+		comboBox.addPopupMenuListener(new PopupListFilesListener(
+				rootDirectories, extensions, recursive, comboBox));
+
 		comboBox.setPrototypeDisplayValue("*****************");
 		comboBox.insertItemAt("", 0);
 		return comboBox;
@@ -199,18 +201,14 @@ public abstract class GuiHelper {
 
 		g2d.setColor(Color.BLACK);
 
-		for (int x = startX; x <= endX; x += tileWidth) {
+		for (int x = startX; x < endX; x += tileWidth) {
 			g2d.drawLine(x, clipRectangle.y, x, clipRectangle.y
 					+ clipRectangle.height - 1);
 		}
-		for (int y = startY; y <= endY; y += tileHeight) {
+		for (int y = startY; y < endY; y += tileHeight) {
 			g2d.drawLine(clipRectangle.x, y, clipRectangle.x
 					+ clipRectangle.width - 1, y);
 		}
-
-		// Draw the final lines.
-		g2d.drawLine(0, endY, endX, endY);
-		g2d.drawLine(endX, 0, endX, endY);
 	}
 
 	public static int[] ensureVectorVisible(Board board, int x1, int y1,

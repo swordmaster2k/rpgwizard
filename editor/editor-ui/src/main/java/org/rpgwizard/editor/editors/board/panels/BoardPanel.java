@@ -83,8 +83,8 @@ public class BoardPanel extends AbstractModelPanel {
 				+ CoreProperties.getProperty("toolkit.directory.sounds")
 				+ File.separator);
 		String[] exts = new String[]{"wav", "mp3"};
-		musicFileComboBox = GuiHelper.getFileListJComboBox(directory, exts,
-				true);
+		musicFileComboBox = GuiHelper.getFileListJComboBox(
+				new File[]{directory}, exts, true);
 		musicFileComboBox.setSelectedItem(board.getBackgroundMusic());
 		musicFileComboBox.addActionListener(new ActionListener() {
 
@@ -105,8 +105,8 @@ public class BoardPanel extends AbstractModelPanel {
 				+ CoreProperties.getProperty("toolkit.directory.program")
 				+ File.separator);
 		exts = new String[]{"program", "js"};
-		entryProgramComboBox = GuiHelper.getFileListJComboBox(directory, exts,
-				true);
+		entryProgramComboBox = GuiHelper.getFileListJComboBox(
+				new File[]{directory}, exts, true);
 		entryProgramComboBox.setSelectedItem(board.getFirstRunProgram());
 		entryProgramComboBox.addActionListener(new ActionListener() {
 

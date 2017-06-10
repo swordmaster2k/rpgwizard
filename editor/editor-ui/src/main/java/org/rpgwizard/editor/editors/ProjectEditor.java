@@ -262,7 +262,7 @@ public class ProjectEditor extends AssetEditorWindow
         JLabel initialBoardLabel = new JLabel("Initial Board");
         String[] exts = EditorFileManager.getTypeExtensions(Board.class);
         File directory = EditorFileManager.getFullPath(Board.class);
-        initialBoard = GuiHelper.getFileListJComboBox(directory, exts, true);
+        initialBoard = GuiHelper.getFileListJComboBox(new File[]{directory}, exts, true);
         initialBoard.setSelectedItem(project.getInitialBoard());
         initialBoard.addActionListener((ActionEvent e) -> {
             if (initialBoard.getSelectedItem() != null) {
@@ -274,7 +274,7 @@ public class ProjectEditor extends AssetEditorWindow
         JLabel initialCharLabel = new JLabel("Initial Character");
         exts = EditorFileManager.getTypeExtensions(Character.class);
         directory = EditorFileManager.getFullPath(Character.class);
-        initialCharacter = GuiHelper.getFileListJComboBox(directory, exts, true);
+        initialCharacter = GuiHelper.getFileListJComboBox(new File[]{directory}, exts, true);
         initialCharacter.setSelectedItem(project.getInitialCharacter());
         initialCharacter.addActionListener((ActionEvent e) -> {
             if (initialCharacter.getSelectedItem() != null) {
@@ -336,7 +336,7 @@ public class ProjectEditor extends AssetEditorWindow
         JLabel startupProgramLabel = new JLabel("Startup Program");
         String[] exts = EditorFileManager.getTypeExtensions(Program.class);
         File directory = EditorFileManager.getFullPath(Program.class);
-        startupProgram = GuiHelper.getFileListJComboBox(directory, exts, true);
+        startupProgram = GuiHelper.getFileListJComboBox(new File[]{directory}, exts, true);
         startupProgram.setSelectedItem(project.getStartupProgram());
         startupProgram.addActionListener((ActionEvent e) -> {
             if (startupProgram.getSelectedItem() != null) {
@@ -346,7 +346,7 @@ public class ProjectEditor extends AssetEditorWindow
         });
 
         JLabel gameOverProgramLabel = new JLabel("Game Over Program");
-        gameOverProgram = GuiHelper.getFileListJComboBox(directory, exts, true);
+        gameOverProgram = GuiHelper.getFileListJComboBox(new File[]{directory}, exts, true);
         gameOverProgram.setSelectedItem(project.getGameOverProgram());
         gameOverProgram.addActionListener((ActionEvent e) -> {
             if (gameOverProgram.getSelectedItem() != null) {

@@ -54,7 +54,7 @@ function RPGWizard() {
     // Custom crafty components.
     Crafty.c("BaseVector", {
         BaseVector: function (polygon, hiton, hitoff) {
-            this.requires("Collision, BASE, Raycastable");
+            this.requires("Collision, BASE");
             this.collision(polygon);
             this.checkHits("SOLID, BASE");
             this.bind("HitOn", hiton);

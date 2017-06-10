@@ -12,7 +12,6 @@ import java.util.Collection;
 import javax.swing.JComboBox;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
-import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.apache.commons.io.FileUtils;
 
 /**
@@ -21,14 +20,14 @@ import org.apache.commons.io.FileUtils;
  */
 public class PopupListFilesListener implements PopupMenuListener {
 
-	private final File rootDirectory;
+	private final File[] rootDirectories;
 	private final String[] extension;
 	private final boolean recursive;
 	private final JComboBox comboBox;
 
-	public PopupListFilesListener(File directory, String[] exts,
+	public PopupListFilesListener(File[] directories, String[] exts,
 			boolean isRecursive, JComboBox model) {
-		rootDirectory = directory;
+		rootDirectories = directories;
 		extension = exts;
 		recursive = isRecursive;
 		comboBox = model;
@@ -54,16 +53,19 @@ public class PopupListFilesListener implements PopupMenuListener {
 	}
 
 	private void populate() {
-		Collection<File> files = FileUtils.listFiles(rootDirectory, extension,
-				recursive);
+		for (File rootDirectory : rootDirectories) {
+			Collection<File> files = FileUtils.listFiles(rootDirectory,
+					extension, recursive);
 
-		for (File file : files) {
-			String path = file.getAbsolutePath();
-			path = path.replace(rootDirectory.getAbsolutePath()
-					+ File.separator, "");
+			for (File file : files) {
+				String path = file.getAbsolutePath();
+				path = path.replace(rootDirectory.getAbsolutePath()
+						+ File.separator, "");
 
-			comboBox.addItem(path);
+				comboBox.addItem(path);
+			}
 		}
+
 	}
 
 }

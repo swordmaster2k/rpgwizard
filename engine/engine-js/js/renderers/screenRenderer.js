@@ -13,11 +13,13 @@ function ScreenRenderer() {
     this.renderNowCanvas.height = Crafty.viewport._height;
 }
 
-ScreenRenderer.prototype.render = function (context) {
-    var x = -Crafty.viewport._x;
-    var y = -Crafty.viewport._y;
-    var width = Crafty.viewport._width;
-    var height = Crafty.viewport._height;
+ScreenRenderer.prototype.renderBoard = function (context) {
+    var xShift = rpgwizard.craftyBoard.xShift;
+    var yShift = rpgwizard.craftyBoard.yShift;
+    var x = rpgwizard.craftyBoard.x + xShift;
+    var y = rpgwizard.craftyBoard.y + yShift;
+    var width = rpgwizard.craftyBoard.width;
+    var height = rpgwizard.craftyBoard.height;
 
     if (/Edge/.test(navigator.userAgent)) {
         // Handle Edge bug when drawing up to the bounds of a canvas.
@@ -46,7 +48,7 @@ ScreenRenderer.prototype.render = function (context) {
             /*
              * Render this layer. 
              */
-            context.drawImage(this.board.layerCache[i], x, y, width, height, x, y, width, height);
+            context.drawImage(this.board.layerCache[i], 0, 0, width, height, x, y, width, height);
 
             /*
              * Sort sprites for depth.
@@ -60,8 +62,8 @@ ScreenRenderer.prototype.render = function (context) {
                 if (sprite.layer === i) {
                     var frame = sprite.getActiveFrame();
                     if (frame) {
-                        var x = parseInt(sprite.x - (frame.width / 2));
-                        var y = parseInt(sprite.y - (frame.height / 2));
+                        var x = parseInt(sprite.x - (frame.width / 2) + xShift);
+                        var y = parseInt(sprite.y - (frame.height / 2) + yShift);
                         context.drawImage(frame, x, y);
                     }
 
@@ -76,10 +78,10 @@ ScreenRenderer.prototype.render = function (context) {
                             x = sprite.x + points[j];
                             y = sprite.y + points[j + 1];
                             if (!moved) {
-                                context.moveTo(x, y);
+                                context.moveTo(x + xShift, y + yShift);
                                 moved = true;
                             } else {
-                                context.lineTo(x, y);
+                                context.lineTo(x + xShift, y + yShift);
                             }
                         }
                         context.closePath();
@@ -95,10 +97,10 @@ ScreenRenderer.prototype.render = function (context) {
                             x = sprite.x + points[j];
                             y = sprite.y + points[j + 1];
                             if (!moved) {
-                                context.moveTo(x, y);
+                                context.moveTo(x + xShift, y + yShift);
                                 moved = true;
                             } else {
-                                context.lineTo(x, y);
+                                context.lineTo(x + xShift, y + yShift);
                             }
                         }
                         context.closePath();
@@ -122,10 +124,10 @@ ScreenRenderer.prototype.render = function (context) {
                     context.beginPath();
                     vector.points.forEach(function (point) {
                         if (!haveMoved) {
-                            context.moveTo(point.x, point.y);
+                            context.moveTo(point.x + xShift, point.y + yShift);
                             haveMoved = true;
                         } else {
-                            context.lineTo(point.x, point.y);
+                            context.lineTo(point.x + xShift, point.y + yShift);
                         }
                     }, this);
                     context.stroke();
@@ -142,7 +144,7 @@ ScreenRenderer.prototype.render = function (context) {
         if (canvases.hasOwnProperty(property)) {
             var element = canvases[property];
             if (element.render) {
-                context.drawImage(element.canvas, x, y);
+                context.drawImage(element.canvas, -Crafty.viewport._x + element.x, -Crafty.viewport._y + element.y);
             }
         }
     }

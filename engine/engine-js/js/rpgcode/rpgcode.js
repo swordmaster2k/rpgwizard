@@ -24,9 +24,12 @@ function RPGcode() {
     // An array of programs that will be run each frame.
     this.runTimePrograms = [];
 
-    this.canvases = {"renderNowCanvas": {
+    this.canvases = {
+        "renderNowCanvas": {
             canvas: rpgwizard.screen.renderNowCanvas,
-            render: false
+            render: false,
+            x: 0,
+            y: 0
         }
     };
 
@@ -36,26 +39,20 @@ function RPGcode() {
     this.rgba = {r: 255, g: 255, b: 255, a: 1.0};
     this.font = "14px Arial";
 
+    this.dialogPosition = {
+        NORTH: "NORTH",
+        SOUTH: "SOUTH"
+    };
+
     this.dialogWindow = {
         visible: false,
         profile: null,
         background: null,
-        lineY: 5
+        paddingX: 5,
+        paddingY: 5,
+        position: "SOUTH"
     };
 }
-
-RPGcode.prototype.addRunTimeProgram = function (filename) {
-    this.runTimePrograms.push(filename);
-    this.runTimePrograms = Array.from(new Set(this.runTimePrograms));
-};
-
-RPGcode.prototype.removeRunTimeProgram = function (filename) {
-    var index = this.runTimePrograms.indexOf(filename);
-
-    if (index > -1) {
-        this.runTimePrograms.splice(index, 1);
-    }
-};
 
 RPGcode.prototype._animateGeneric = function (generic, resetGraphics, callback) {
     var activeGraphics = generic.spriteGraphics.active;
@@ -84,6 +81,40 @@ RPGcode.prototype._animateGeneric = function (generic, resetGraphics, callback) 
     }
 };
 
+RPGcode.prototype._convertCraftyId = function (craftyId) {
+    return rpgwizard.craftyBoard.board.sprites.findIndex(function (entity) {
+        return entity.getId() === craftyId;
+    });
+};
+
+RPGcode.prototype._getSpriteType = function (spriteId) {
+    var entity = rpgwizard.craftyBoard.board.sprites[spriteId];
+    if (entity) {
+        if (entity.sprite.enemy) {
+            return entity.sprite.enemy;
+        } else if (entity.sprite.npc) {
+            return entity.sprite.npc;
+        }
+    }
+    return null;
+};
+
+/**
+ * Adds a program that will be called at run time for each game frame. You 
+ * should avoid doing any lengthy operations with these programs to save
+ * freezing the browser window.
+ * 
+ * @example
+ * rpgcode.addRunTimeProgram("UI/HUD.js");
+ * 
+ * @param {type} filename
+ * @returns {undefined}
+ */
+RPGcode.prototype.addRunTimeProgram = function (filename) {
+    this.runTimePrograms.push(filename);
+    this.runTimePrograms = Array.from(new Set(this.runTimePrograms));
+};
+
 /**
  * Animates the sprite using the requested animation. The animationId must be 
  * available for the sprite.
@@ -100,12 +131,13 @@ RPGcode.prototype._animateGeneric = function (generic, resetGraphics, callback) 
  * @param {Callback} callback If defined, the function to invoke at the end of the animation.
  */
 RPGcode.prototype.animateSprite = function (spriteId, animationId, callback) {
-    var entity = rpgwizard.craftyBoard.board.sprites[spriteId];
-    if (entity) {
-        var npc = entity.sprite.npc;
-        var resetGraphics = npc.spriteGraphics.active;
+    var type = rpgcode._getSpriteType(spriteId);
+    if (type) {
+        var resetGraphics = type.spriteGraphics.active;
         rpgcode.setSpriteStance(spriteId, animationId);
-        rpgcode._animateGeneric(npc, resetGraphics, callback);
+        rpgcode._animateGeneric(type, resetGraphics, callback);
+    } else {
+        // Provide error feedback.
     }
 };
 
@@ -179,15 +211,11 @@ RPGcode.prototype.clearCanvas = function (canvasId) {
  */
 RPGcode.prototype.clearDialog = function () {
     rpgcode.dialogWindow.visible = false;
-    rpgcode.dialogWindow.lineY = 5;
+    rpgcode.dialogWindow.paddingY = 5;
     rpgcode.clearCanvas("renderNowCanvas");
 };
 
-RPGcode.prototype._convertCraftyId = function (craftyId) {
-    return rpgwizard.craftyBoard.board.sprites.findIndex(function (entity) {
-        return entity.getId() === craftyId;
-    });
-};
+
 
 /**
  * Creates a canvas with the specified width, height, and ID. This canvas will not
@@ -208,7 +236,12 @@ RPGcode.prototype.createCanvas = function (width, height, canvasId) {
     var canvas = document.createElement("canvas");
     canvas.width = width;
     canvas.height = height;
-    rpgcode.canvases[canvasId] = {canvas: canvas, render: false};
+    rpgcode.canvases[canvasId] = {
+        canvas: canvas,
+        render: false,
+        x: 0,
+        y: 0
+    };
 };
 
 /**
@@ -473,17 +506,22 @@ RPGcode.prototype.getBoardName = function () {
 };
 
 /**
- * Gets the value of global variable.
+ * Gets the angle between two points in radians.
  * 
  * @example
- * var swordActive = rpgcode.getGlobal("swordActive");
- * rpgcode.log(swordActive);
+ * // Get the angle in radians between two points.
+ * var angle = rpgcode.getAngleBetweenPoints(location.x, location.y, this.x, this.y);
  * 
- * @param {String} id The ID associated with the global variable.
- * @returns {Object} Value of the requested global.
+ * @param {Number} x1
+ * @param {Number} y1
+ * @param {Number} x2
+ * @param {Number} y2
+ * @returns {Number} The angle between the points in radians.
  */
-RPGcode.prototype.getGlobal = function (id) {
-    return rpgcode.globals[id];
+RPGcode.prototype.getAngleBetweenPoints = function (x1, y1, x2, y2) {
+    var dx = x1 - x2;
+    var dy = y1 - y2;
+    return Math.atan2(dy, dx);
 };
 
 /**
@@ -558,6 +596,39 @@ RPGcode.prototype.getCharacterLocation = function (inTiles) {
 };
 
 /**
+ * Gets the straight line distance between two points in pixels.
+ * 
+ * @example
+ * // Get the distance between two points in pixels.
+ * var distance = rpgcode.getDistanceBetweenPoints(location.x, location.y, this.x, this.y);
+ * 
+ * @param {Number} x1
+ * @param {Number} y1
+ * @param {Number} x2
+ * @param {Number} y2
+ * @returns {Number} The distance in pixels.
+ */
+RPGcode.prototype.getDistanceBetweenPoints = function (x1, y1, x2, y2) {
+    var a = x1 - x2;
+    var b = y1 - y2;
+    return Math.sqrt(a * a + b * b); // Simple Pythagora's theorem.
+};
+
+/**
+ * Gets the value of global variable.
+ * 
+ * @example
+ * var swordActive = rpgcode.getGlobal("swordActive");
+ * rpgcode.log(swordActive);
+ * 
+ * @param {String} id The ID associated with the global variable.
+ * @returns {Object} Value of the requested global.
+ */
+RPGcode.prototype.getGlobal = function (id) {
+    return rpgcode.globals[id];
+};
+
+/**
  * Gets a random number between the min and max inclusive.
  * 
  * @example 
@@ -583,6 +654,86 @@ RPGcode.prototype.getRandom = function (min, max) {
  */
 RPGcode.prototype.getRunningProgram = function () {
     return {inProgram: rpgwizard.inProgram, currentProgram: rpgwizard.currentProgram};
+};
+
+/**
+ * Hits the character dealing the requested damage while playing the corresponding
+ * animation. Optionally a callback can be invoked when the hit animation
+ * has finished playing.
+ * 
+ * @example
+ * // Without a callback.
+ * rpgcode.hitCharacter("Hero", 1, "DEFEND");
+ * 
+ * // With a callback.
+ * rpgcode.hitCharacter("Hero", 1, "DEFEND", function() {
+ *  // The animation has ended, do something.
+ * });
+ * 
+ * @param {String} characterId ID of the character.
+ * @param {Number} damage Amount of health to take away.
+ * @param {String} animationId Animation to play while the character is hit.
+ * @param {Callback} callback An optional function to invoke when the animation has ended.
+ */
+RPGcode.prototype.hitCharacter = function (characterId, damage, animationId, callback) {
+    // characterId unused until multi-character parties are supported.
+    rpgwizard.controlEnabled = false;
+    var character = rpgwizard.craftyCharacter.character;
+    character.health -= damage;
+    character.isHit = true;
+    rpgcode.animateCharacter(characterId, animationId, function () {
+        character.isHit = false;
+        rpgwizard.controlEnabled = true;
+        if (callback) {
+            callback();
+        }
+    });
+};
+
+/**
+ * Hits the enemy dealing the requested damage while playing the corresponding
+ * animation. Optionally a callback can be invoked when the hit animation
+ * has finished playing.
+ * 
+  * @example
+ * // Without a callback.
+ * rpgcode.hitEnemy("rat-1", 1, "DEFEND");
+ * 
+ * // With a callback.
+ * rpgcode.hitEnemy("rat-1", 1, "DEFEND", function() {
+ *  // The animation has ended, do something.
+ * });
+ * 
+ * @param {String} spriteId ID of the BoardSprite that represents the enemy.
+ * @param {Number} damage Amount of health to take away.
+ * @param {String} animationId Animation to play while the enemy is hit.
+ * @param {Callback} callback An optional function to invoke when the animation has ended.
+ * @returns {undefined}
+ */
+RPGcode.prototype.hitEnemy = function (spriteId, damage, animationId, callback) {
+    var enemy = rpgcode._getSpriteType(spriteId);
+    if (enemy) {
+        enemy.health -= damage;
+        enemy.isHit = true;
+        rpgcode.animateSprite(spriteId, animationId, function () {
+            enemy.isHit = false;
+            if (callback) {
+                callback();
+            }
+        });
+    } else {
+        // Provide error feedback.
+    }
+};
+
+/**
+ * Returns a true/false value indicating whether standard movement controls
+ * are currently enabled in the engine.
+ * 
+ * @returns {Boolean}
+ */
+RPGcode.prototype.isControlEnabled = function () {
+    return rpgwizard.controlEnabled;
 };
 
 /**
@@ -803,6 +954,18 @@ RPGcode.prototype.removeAssets = function (assets) {
 };
 
 /**
+ * Removes a globally scoped variable from the engine.
+ * 
+ * @param {String} id
+ * @returns {undefined}
+ */
+RPGcode.prototype.removeGlobal = function (id) {
+    if (rpgcode.globals[id]) {
+        delete rpgcode.globals[id];
+    }
+};
+
+/**
  * Renders the specified canvas, if none then the "renderNowCanvas" is shown.
  * 
  * @example
@@ -852,6 +1015,24 @@ RPGcode.prototype.replaceTile = function (tileX, tileY, layer, tileSet, tileInde
 };
 
 /**
+ * Removes a run time program from the engine, if the program is currently
+ * executing it will be allowed to finish first.
+ * 
+ * @example
+ * rpgcode.removeRunTimeProgram("UI/HUD.js");
+ * 
+ * @param {type} filename
+ * @returns {undefined}
+ */
+RPGcode.prototype.removeRunTimeProgram = function (filename) {
+    var index = this.runTimePrograms.indexOf(filename);
+
+    if (index > -1) {
+        this.runTimePrograms.splice(index, 1);
+    }
+};
+
+/**
  * Removes the specified tile from the board.
  * 
  * @example
@@ -886,6 +1067,33 @@ RPGcode.prototype.restart = function () {
  */
 RPGcode.prototype.runProgram = function (filename) {
     rpgwizard.runProgram(PATH_PROGRAM + filename, rpgcode, null);
+};
+
+/**
+ * Sets the position of a canvas relative to its parent.
+ * 
+ * @example
+ * // Create a canvas and draw a red rectangle on it.
+ * var canvas = "myCanvas";
+ * rpgcode.createCanvas(640, 480, canvas);
+ * rpgcode.setColor(255, 0, 0, 0);
+ * rpgcode.fillRect(0, 0, 100, 100, canvas);
+ * rpgcode.renderNow(canvas);
+ * 
+ * // Now move it to a new position relative to its parent.
+ * rpgcode.setCanvasPosition(100, 100, canvas);
+ * 
+ * @param {type} x
+ * @param {type} y
+ * @param {type} canvasId
+ * @returns {undefined}
+ */
+RPGcode.prototype.setCanvasPosition = function (x, y, canvasId) {
+    var rpgcodeCanvas = rpgcode.canvases[canvasId];
+    if (rpgcodeCanvas) {
+        rpgcodeCanvas.x = x;
+        rpgcodeCanvas.y = y;
+    }
 };
 
 /**
@@ -983,6 +1191,68 @@ RPGcode.prototype.setDialogGraphics = function (profileImage, backgroundImage) {
 };
 
 /**
+ * Sets the padding from the top left corner of the dialog window for
+ * the x and/or y values. This can be used to prevent text from overlapping
+ * the start or end of the dialog window graphics. The default padding value
+ * is 5px for both x and y.
+ * 
+ * @example
+ * // Set just the x padding value.
+ * rpgcode.setDialogPadding({x: 10});
+ * 
+ * // Set just the y padding value.
+ * rpgcode.setDialogPadding({y: 10});
+ * 
+ * // Set both.
+ * rpgcode.setDialogPadding({x: 10, y: 10});
+ * 
+ * @param {Object} padding An object containing x and/or y padding values in pixels.
+ * @returns {undefined}
+ */
+RPGcode.prototype.setDialogPadding = function (padding) {
+    if (padding) {
+        if (padding.x) {
+            rpgcode.dialogWindow.paddingX = padding.x;
+        }
+        if (padding.y) {
+            rpgcode.dialogWindow.paddingY = padding.y;
+        }
+    } else {
+        // Provide error feedback.
+    }
+};
+
+/**
+ * Sets the position of the dialog window for the next call to showDialog.
+ * The dialog window can either appear at the top of the screen i.e. "NORTH", or
+ * the bottom of the screen i.e. "SOUTH". The default position is "SOUTH".
+ * 
+ * @example
+ * rpgcode.setDialogPosition(rpgcode.dialogPosition.NORTH);
+ * rpgcode.showDialog("Hello north!");
+ * 
+ * rpgcode.delay(5000, function() {
+ *  rpgcode.clearDialog();
+ *  rpcode.setDialogPosition(rpgcode.dialogPosition.SOUTH);
+ *  rpgcode.showDialog("Hello south!");
+ * });
+ * 
+ * @param {String} position Either NORTH (top of screen) or SOUTH (bottom of screen).
+ * @returns {undefined}
+ */
+RPGcode.prototype.setDialogPosition = function (position) {
+    if (position) {
+        if (position === rpgcode.dialogPosition.NORTH || position === rpgcode.dialogPosition.SOUTH) {
+            rpgcode.dialogWindow.position = position;
+        } else {
+            // Provide error feedback.    
+        }
+    } else {
+        // Provide error feedback.
+    }
+};
+
+/**
  * Sets the location of the sprite.
  * 
  * @example
@@ -1006,11 +1276,11 @@ RPGcode.prototype.setSpriteLocation = function (spriteId, x, y, layer, inTiles) 
         y *= rpgwizard.tileSize;
     }
 
-    var npc = rpgwizard.craftyBoard.board.sprites[spriteId];
-    if (npc) {
-        npc.x = x;
-        npc.y = y;
-        npc.layer = layer;
+    var entity = rpgwizard.craftyBoard.board.sprites[spriteId];
+    if (entity) {
+        entity.x = x;
+        entity.y = y;
+        entity.layer = layer;
         Crafty.trigger("Invalidate");
     }
 };
@@ -1029,8 +1299,10 @@ RPGcode.prototype.setSpriteLocation = function (spriteId, x, y, layer, inTiles) 
  */
 RPGcode.prototype.setSpriteStance = function (spriteId, stanceId) {
     if (rpgwizard.craftyBoard.board.sprites.hasOwnProperty(spriteId)) {
-        var entity = rpgwizard.craftyBoard.board.sprites[spriteId];
-        entity.sprite.npc.changeGraphics(stanceId);
+        var type = rpgcode._getSpriteType(spriteId);
+        if (type) {
+            type.changeGraphics(stanceId);
+        }
     }
 };
 
@@ -1098,13 +1370,25 @@ RPGcode.prototype.showDialog = function (dialog) {
     var dialogWindow = rpgcode.dialogWindow;
 
     if (!dialogWindow.visible) {
-        rpgcode.setImage(dialogWindow.profile, 0, 0, 100, 100);
-        rpgcode.setImage(dialogWindow.background, 100, 0, 540, 100);
+        var x1, y1, x2, y2;
+        if (dialogWindow.position === rpgcode.dialogPosition.NORTH) {
+            // Draw from the top left.
+            x1 = y1 = y2 = 0;
+            x2 = 100;
+        } else {
+            // Draw from the bottom left.
+            x1 = 0;
+            y1 = Crafty.viewport.height - 100;
+            x2 = 100;
+            y2 = y1;
+        }
+        rpgcode.setImage(dialogWindow.profile, x1, y1, 100, 100);
+        rpgcode.setImage(dialogWindow.background, x2, y2, 540, 100);
         dialogWindow.visible = true;
     }
 
-    dialogWindow.lineY += parseInt(rpgcode.font);
-    rpgcode.drawText(105, dialogWindow.lineY, dialog);
+    dialogWindow.paddingY += parseInt(rpgcode.font);
+    rpgcode.drawText(dialogWindow.paddingX + x2, dialogWindow.paddingY + y1, dialog);
     rpgcode.renderNow();
 };
 

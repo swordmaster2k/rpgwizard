@@ -23,6 +23,7 @@ function RPGWizard() {
     // Game entities.
     this.craftyBoard = {};
     this.craftyCharacter = {};
+    this.craftyRPGcodeScreen = {};
 
     // TileSets.
     this.tilesets = {};
@@ -92,9 +93,11 @@ RPGWizard.prototype.setup = function (filename) {
 
     // Setup run time keys.
     this.keyboardHandler = new Keyboard();
-    this.keyboardHandler.downHandlers[this.project.menuKey] = function () {
-        rpgwizard.runProgram(PATH_PROGRAM + this.project.menuPlugin, {});
-    };
+    if (this.project.menuKey) {
+        this.keyboardHandler.downHandlers[this.project.menuKey] = function () {
+            rpgwizard.runProgram(PATH_PROGRAM + this.project.menuPlugin, {});
+        };
+    }
 
     // Setup the drawing canvas (game screen).
     this.screen = new ScreenRenderer();
@@ -242,13 +245,26 @@ RPGWizard.prototype.createCraftyBoard = function (board) {
 
     var width = board.width * board.tileWidth;
     var height = board.height * board.tileHeight;
+    var xShift = 0;
+    var yShift = 0;
+    if (width < Crafty.viewport._width) {
+        xShift = (Crafty.viewport._width - width) / 2;
+        width = Crafty.viewport._width;
+    }
+    if (height < Crafty.viewport._height) {
+        yShift = (Crafty.viewport._height - height) / 2;
+        height = Crafty.viewport._height;
+    }
+    
     Crafty.c("Board", {
         ready: true,
         width: width,
         height: height,
+        xShift: xShift,
+        yShift: yShift,
         init: function () {
             this.addComponent("2D, Canvas");
-            this.attr({x: 0, y: 0, w: width, h: height, board: board, show: false});
+            this.attr({x: 0, y: 0, w: width, h: height, z: 0, board: board, show: false});
             this.bind("EnterFrame", function () {
                 this.trigger("Invalidate");
             });
@@ -260,7 +276,7 @@ RPGWizard.prototype.createCraftyBoard = function (board) {
                         program();
                     });
 
-                    rpgwizard.screen.render(e.ctx);
+                    rpgwizard.screen.renderBoard(e.ctx);
                 }
             });
         }
@@ -325,7 +341,7 @@ RPGWizard.prototype.loadBoard = function (board) {
         sprite.x = sprite.startingPosition.x;
         sprite.y = sprite.startingPosition.y;
         sprite.layer = sprite.startingPosition.layer;
-        
+
 
         var boardSprite = this.loadSprite(sprite);
         sprites[sprite.id] = boardSprite;
@@ -394,7 +410,8 @@ RPGWizard.prototype.loadCharacter = function (character) {
                 x: character.x,
                 y: character.y,
                 character: character,
-                activationVector: activationVector
+                activationVector: activationVector,
+                vectorType: "CHARACTER"
             })
             .CustomControls(1)
             .BaseVector(

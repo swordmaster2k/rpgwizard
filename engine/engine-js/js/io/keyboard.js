@@ -12,13 +12,13 @@ function Keyboard() {
     this.upHandlers = {};
     this.entity = Crafty.e()
             .bind("KeyDown", function (e) {
-                var handler = rpgwizard.keyboardHandler.downHandlers[e.keyCode];
+                var handler = rpgwizard.keyboardHandler.downHandlers[e.key];
                 if (handler) {
                     handler();
                 }
             })
             .bind("KeyUp", function (e) {
-                var handler = rpgwizard.keyboardHandler.upHandlers[e.keyCode];
+                var handler = rpgwizard.keyboardHandler.upHandlers[e.key];
                 if (handler) {
                     handler();
                 }
@@ -72,28 +72,28 @@ function Keyboard() {
                 }
             }).bind("KeyDown", function (e) {
                 // If keys are down, set the direction
-                if (e.keyCode === Crafty.keys.RIGHT_ARROW || e.keyCode === Crafty.keys.D) {
+                if (e.key === Crafty.keys.RIGHT_ARROW || e.key === Crafty.keys.D) {
                     move.right = true;
                     move.left = move.up = move.down = false;
-                } else if (e.keyCode === Crafty.keys.LEFT_ARROW || e.keyCode === Crafty.keys.A) {
+                } else if (e.key === Crafty.keys.LEFT_ARROW || e.key === Crafty.keys.A) {
                     move.left = true;
                     move.right = move.up = move.down = false;
-                } else if (e.keyCode === Crafty.keys.UP_ARROW || e.keyCode === Crafty.keys.W) {
+                } else if (e.key === Crafty.keys.UP_ARROW || e.key === Crafty.keys.W) {
                     move.up = true;
                     move.right = move.left = move.down = false;
-                } else if (e.keyCode === Crafty.keys.DOWN_ARROW || e.keyCode === Crafty.keys.S) {
+                } else if (e.key === Crafty.keys.DOWN_ARROW || e.key === Crafty.keys.S) {
                     move.down = true;
                     move.right = move.left = move.up = false;
                 }
             }).bind("KeyUp", function (e) {
                 // If key is released, stop moving
-                if (e.keyCode === Crafty.keys.RIGHT_ARROW || e.keyCode === Crafty.keys.D) {
+                if (e.key === Crafty.keys.RIGHT_ARROW || e.key === Crafty.keys.D) {
                     move.right = false;
-                } else if (e.keyCode === Crafty.keys.LEFT_ARROW || e.keyCode === Crafty.keys.A) {
+                } else if (e.key === Crafty.keys.LEFT_ARROW || e.key === Crafty.keys.A) {
                     move.left = false;
-                } else if (e.keyCode === Crafty.keys.UP_ARROW || e.keyCode === Crafty.keys.W) {
+                } else if (e.key === Crafty.keys.UP_ARROW || e.key === Crafty.keys.W) {
                     move.up = false;
-                } else if (e.keyCode === Crafty.keys.DOWN_ARROW || e.keyCode === Crafty.keys.S) {
+                } else if (e.key === Crafty.keys.DOWN_ARROW || e.key === Crafty.keys.S) {
                     move.down = false;
                 }
             });

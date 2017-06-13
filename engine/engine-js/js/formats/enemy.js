@@ -55,6 +55,7 @@ Enemy.prototype.checkCollisions = function (collision, entity) {
     }
 
     switch (object.vectorType) {
+        case "CHARACTER":
         case "ENEMY":
         case "NPC":
         case "SOLID":

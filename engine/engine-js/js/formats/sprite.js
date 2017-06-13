@@ -43,6 +43,7 @@ function Sprite() {
 
         }
     };
+    this.isHit = false;
 }
 
 Sprite.prototype.DirectionEnum = {
@@ -334,6 +335,7 @@ Sprite.prototype.checkCollisions = function (collision, entity) {
     }
 
     switch (object.vectorType) {
+        case "CHARACTER":
         case "ENEMY":
         case "NPC":
         case "SOLID":

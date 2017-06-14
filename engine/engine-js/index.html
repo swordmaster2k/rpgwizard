@@ -62,8 +62,15 @@
             <div id="cr-stage" class="screen"></div>
         </div>
 
-        <!-- TODO: Supply main file here. -->
         <script type="text/javascript">
+            // Default error handler.
+            window.onerror = function (msg, url, linenumber) {
+                alert("Error message: " + msg + "\n\n"
+                        + "URL: " + url + "\n\n"
+                        + "Line Number: " + linenumber);
+                return true;
+            };
+
             rpgwizard.setup("default.game");
         </script>
     </body>

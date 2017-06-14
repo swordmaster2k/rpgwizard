@@ -135,7 +135,9 @@ ScreenRenderer.prototype.renderBoard = function (context) {
             }
         }
     }
+};
 
+ScreenRenderer.prototype.renderUI = function (context) {
     /*
      * Render rpgcode canvases.
      */
@@ -144,7 +146,7 @@ ScreenRenderer.prototype.renderBoard = function (context) {
         if (canvases.hasOwnProperty(property)) {
             var element = canvases[property];
             if (element.render) {
-                context.drawImage(element.canvas, -Crafty.viewport._x + element.x, -Crafty.viewport._y + element.y);
+                context.drawImage(element.canvas, element.x, element.y);
             }
         }
     }

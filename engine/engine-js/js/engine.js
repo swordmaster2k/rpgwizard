@@ -105,25 +105,40 @@ RPGWizard.prototype.setup = function (filename) {
     // Setup the RPGcode rutime.
     rpgcode = new RPGcode();
 
-    // Load the initial character and board.
-    this.loadCharacter(new Character(PATH_CHARACTER + this.project.initialCharacter));
-    this.loadBoard(new Board(PATH_BOARD + this.project.initialBoard));
-
-    // Setup up the Character's starting position.
-    this.craftyCharacter.character.x = this.craftyBoard.board.startingPosition["x"];
-    this.craftyCharacter.character.y = this.craftyBoard.board.startingPosition["y"];
-    this.craftyCharacter.character.layer = this.craftyBoard.board.startingPosition["layer"];
-    this.craftyCharacter.x = this.craftyCharacter.character.x;
-    this.craftyCharacter.y = this.craftyCharacter.character.y;
-    this.craftyCharacter.activationVector.x = this.craftyCharacter.x;
-    this.craftyCharacter.activationVector.y = this.craftyCharacter.y;
-
-    Crafty.viewport.follow(this.craftyCharacter, 0, 0);
-
     // Disable controls until everything is ready.
     this.controlEnabled = false;
 
-    this.loadCraftyAssets(this.loadScene);
+    // Create the UI layer for RPGcode.
+    this.createUILayer();
+
+    // Select the startup mode.
+    if (this.project.initialCharacter && this.project.initialBoard) {
+        // Load the initial character and board.
+        this.loadCharacter(new Character(PATH_CHARACTER + this.project.initialCharacter));
+        this.loadBoard(new Board(PATH_BOARD + this.project.initialBoard));
+
+        // Setup up the Character's starting position.
+        this.craftyCharacter.character.x = this.craftyBoard.board.startingPosition["x"];
+        this.craftyCharacter.character.y = this.craftyBoard.board.startingPosition["y"];
+        this.craftyCharacter.character.layer = this.craftyBoard.board.startingPosition["layer"];
+        this.craftyCharacter.x = this.craftyCharacter.character.x;
+        this.craftyCharacter.y = this.craftyCharacter.character.y;
+        this.craftyCharacter.activationVector.x = this.craftyCharacter.x;
+        this.craftyCharacter.activationVector.y = this.craftyCharacter.y;
+
+        // Setup the viewport to smoothly follow the player object
+        Crafty.viewport.follow(this.craftyCharacter, 0, 0);
+        //Crafty.viewport.clampToEntities = false;
+
+        this.loadCraftyAssets(this.loadScene);
+    } else if (this.project.startupProgram) {
+        rpgwizard.runProgram(
+                PATH_PROGRAM + rpgwizard.project.startupProgram,
+                {});
+    } else {
+        throw "No setup paramets provided, please specifiy an Initial Character" +
+                " and Initial Board, or alternatively a Startup program!";
+    }
 };
 
 RPGWizard.prototype.loadScene = function (e) {
@@ -136,7 +151,8 @@ RPGWizard.prototype.loadScene = function (e) {
     } else {
         // Run the startup program before the game logic loop.
         if (rpgwizard.project.startupProgram && rpgwizard.firstScene) {
-            rpgwizard.runProgram(PATH_PROGRAM + rpgwizard.project.startupProgram,
+            rpgwizard.runProgram(
+                    PATH_PROGRAM + rpgwizard.project.startupProgram,
                     {},
                     rpgwizard.startScene);
         } else {
@@ -240,6 +256,26 @@ RPGWizard.prototype.loadCraftyAssets = function (callback) {
     );
 };
 
+RPGWizard.prototype.createUILayer = function () {
+    // Define a UI layer that is completely static and sits above the other layers
+    Crafty.createLayer("UI", "Canvas", {
+        xResponse: 0, yResponse: 0, scaleResponse: 0, z: 50
+    });
+
+    Crafty.e("2D, UI")
+            .attr({x: 0, y: 0, w: Crafty.viewport._width, h: Crafty.viewport._height, ready: true})
+            .bind("EnterFrame", function () {
+                // TODO: define custom event e.g. InvalidateUI and only trigger
+                // it when something has been changed via RPGcode.
+                this.trigger("Invalidate");
+            })
+            .bind("Draw", function (e) {
+                if (e.ctx) {
+                    rpgwizard.screen.renderUI(e.ctx);
+                }
+            });
+};
+
 RPGWizard.prototype.createCraftyBoard = function (board) {
     console.debug("Creating Crafty board=[%s]", JSON.stringify(board));
 
@@ -255,7 +291,7 @@ RPGWizard.prototype.createCraftyBoard = function (board) {
         yShift = (Crafty.viewport._height - height) / 2;
         height = Crafty.viewport._height;
     }
-    
+
     Crafty.c("Board", {
         ready: true,
         width: width,

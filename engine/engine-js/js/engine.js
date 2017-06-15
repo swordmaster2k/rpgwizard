@@ -31,12 +31,20 @@ function RPGWizard() {
 
     // Program cache, stores programs as Function objects.
     this.programCache = {};
+    this.endProgramCallback = null;
 
     // Used to store state when runProgram is called.
     this.keyboardHandler = {};
-    this.endProgramCallback = null;
     this.keyDownHandlers = null;
     this.keyUpHandlers = null;
+
+    // Used to store state when runProgram is called.
+    this.mouseHandler = {};
+    this.mouseDownHandler = null;
+    this.mouseUpHandler = null;
+    this.mouseClickHandler = null;
+    this.mouseDoubleClickHandler = null;
+    this.mouseMoveHandler = null;
 
     // Custom movement parameters.
     this.controlEnabled = false;
@@ -98,6 +106,9 @@ RPGWizard.prototype.setup = function (filename) {
             rpgwizard.runProgram(PATH_PROGRAM + this.project.menuPlugin, {});
         };
     }
+
+    // Setup the mouse handler.
+    this.mouseHandler = new Mouse();
 
     // Setup the drawing canvas (game screen).
     this.screen = new ScreenRenderer();
@@ -262,7 +273,7 @@ RPGWizard.prototype.createUILayer = function () {
         xResponse: 0, yResponse: 0, scaleResponse: 0, z: 50
     });
 
-    Crafty.e("2D, UI")
+    Crafty.e("2D, UI, Mouse")
             .attr({x: 0, y: 0, w: Crafty.viewport._width, h: Crafty.viewport._height, ready: true})
             .bind("EnterFrame", function () {
                 // TODO: define custom event e.g. InvalidateUI and only trigger
@@ -272,6 +283,31 @@ RPGWizard.prototype.createUILayer = function () {
             .bind("Draw", function (e) {
                 if (e.ctx) {
                     rpgwizard.screen.renderUI(e.ctx);
+                }
+            })
+            .bind("MouseDown", function (e) {
+                if (rpgwizard.mouseHandler.mouseDownHandler) {
+                    rpgwizard.mouseHandler.mouseDownHandler(e);
+                }
+            })
+            .bind("MouseUp", function (e) {
+                if (rpgwizard.mouseHandler.mouseUpHandler) {
+                    rpgwizard.mouseHandler.mouseUpHandler(e);
+                }
+            })
+            .bind("Click", function (e) {
+                if (rpgwizard.mouseHandler.mouseClickHandler) {
+                    rpgwizard.mouseHandler.mouseClickHandler(e);
+                }
+            })
+            .bind("DoubleClick", function (e) {
+                if (rpgwizard.mouseHandler.mouseDoubleClickHandler) {
+                    rpgwizard.mouseHandler.mouseDoubleClickHandler(e);
+                }
+            })
+            .bind("MouseMove", function (e) {
+                if (rpgwizard.mouseHandler.mouseMoveHandler) {
+                    rpgwizard.mouseHandler.mouseMoveHandler(e);
                 }
             });
 };
@@ -575,12 +611,21 @@ RPGWizard.prototype.runProgram = function (filename, source, callback) {
 
     rpgwizard.controlEnabled = false;
 
-    // Store endProgram callback and runtime key handlers.
+    // Store endProgram callback.
     rpgwizard.endProgramCallback = callback;
+
+    // Store the runtime key handlers.
     rpgwizard.keyDownHandlers = rpgwizard.keyboardHandler.downHandlers;
     rpgwizard.keyUpHandlers = rpgwizard.keyboardHandler.upHandlers;
     rpgwizard.keyboardHandler.downHandlers = {};
     rpgwizard.keyboardHandler.upHandlers = {};
+
+    // Store the runtime mouse handlers.
+    rpgwizard.mouseDownHandler = rpgwizard.mouseHandler.mouseDownHandler;
+    rpgwizard.mouseUpHandler = rpgwizard.mouseHandler.mouseUpHandler;
+    rpgwizard.mouseClickHandler = rpgwizard.mouseHandler.mouseClickHandler;
+    rpgwizard.mouseDoubleClickHandler = rpgwizard.mouseHandler.mouseDoubleClickHandler;
+    rpgwizard.mouseMoveHandler = rpgwizard.mouseHandler.mouseMoveHandler;
 
     var program = rpgwizard.openProgram(filename);
     program();
@@ -598,8 +643,17 @@ RPGWizard.prototype.endProgram = function (nextProgram) {
             rpgwizard.endProgramCallback = null;
         }
 
+        // Restore keyboard handlers.
         rpgwizard.keyboardHandler.downHandlers = rpgwizard.keyDownHandlers;
         rpgwizard.keyboardHandler.upHandlers = rpgwizard.keyUpHandlers;
+
+        // Restore mouse handlers.
+        rpgwizard.mouseHandler.mouseDownHandler = rpgwizard.mouseDownHandler;
+        rpgwizard.mouseHandler.mouseUpHandler = rpgwizard.mouseUpHandler;
+        rpgwizard.mouseHandler.mouseClickHandler = rpgwizard.mouseClickHandler;
+        rpgwizard.mouseHandler.mouseDoubleClickHandler = rpgwizard.mouseDoubleClickHandler;
+        rpgwizard.mouseHandler.mouseMoveHandler = rpgwizard.mouseMoveHandler;
+
         rpgwizard.inProgram = false;
         rpgwizard.currentProgram = null;
         rpgwizard.controlEnabled = true;

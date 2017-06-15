@@ -935,6 +935,148 @@ RPGcode.prototype.registerKeyUp = function (key, callback, globalScope) {
 };
 
 /**
+ * Registers a mouse down event callback, when the mouse is pressed down the supplied 
+ * callback function will be called and provided with the current mouse state.
+ *    
+ * The callback function will continue to be invoked for every mouse move event 
+ * until it is unregistered.
+ * 
+ * @example
+ * rpgcode.registerMouseDown(function(e) {
+ *  // Log the x and y coordinates of the mouse.
+ *  rpgcode.log(e.realX);
+ *  rpgcode.log(e.realY);
+ *  
+ *  // Log the mouse button that has been pressed down.
+ *  rpgcode.log(e.mouseButton); // LEFT: 0, MIDDLE: 1, RIGHT: 2
+ * });
+ * 
+ * @param {Callback} callback The callback function to invoke when the event fires.
+ * @param {Boolean} globalScope Is this for use outside of the program itself? 
+ * @returns {undefined}
+ */
+RPGcode.prototype.registerMouseDown = function(callback, globalScope) {
+    if (globalScope) {
+        rpgwizard.mouseDownHandler = callback;
+    } else {
+        rpgwizard.mouseHandler.mouseDownHandler = callback;
+    }
+};
+
+/**
+ * Registers a mouse move event callback, when the mouse is moved the supplied 
+ * callback function will be called and provided with the current mouse state.
+ *    
+ * The callback function will continue to be invoked for every mouse move event 
+ * until it is unregistered.
+ * 
+ * @example
+ * rpgcode.registerMouseUp(function(e) {
+ *  // Log the x and y coordinates of the mouse.
+ *  rpgcode.log(e.realX);
+ *  rpgcode.log(e.realY);
+ *  
+ *  // Log the mouse button that has been released.
+ *  rpgcode.log(e.mouseButton); // LEFT: 0, MIDDLE: 1, RIGHT: 2
+ * });
+ * 
+ * @param {Callback} callback The callback function to invoke when the event fires.
+ * @param {Boolean} globalScope Is this for use outside of the program itself? 
+ * @returns {undefined}
+ */
+RPGcode.prototype.registerMouseUp = function(callback, globalScope) {
+    if (globalScope) {
+        rpgwizard.mouseUpHandler = callback;
+    } else {
+        rpgwizard.mouseHandler.mouseUpHandler = callback;
+    }
+};
+
+/**
+ * Registers a mouse move event callback, when the mouse is moved the supplied 
+ * callback function will be called and provided with the current mouse state.
+ *    
+ * The callback function will continue to be invoked for every mouse move event 
+ * until it is unregistered.
+ * 
+ * @example
+ * rpgcode.registerMouseClick(function(e) {
+ *  // Log the x and y coordinates of the mouse.
+ *  rpgcode.log(e.realX);
+ *  rpgcode.log(e.realY);
+ *  
+ *  // Log the mouse button that has been clicked.
+ *  rpgcode.log(e.mouseButton); // LEFT: 0, MIDDLE: 1, RIGHT: 2
+ * });
+ * 
+ * @param {Callback} callback The callback function to invoke when the event fires.
+ * @param {Boolean} globalScope Is this for use outside of the program itself? 
+ * @returns {undefined}
+ */
+RPGcode.prototype.registerMouseClick = function(callback, globalScope) {
+    if (globalScope) {
+        rpgwizard.mouseClickHandler = callback;
+    } else {
+        rpgwizard.mouseHandler.mouseClickHandler = callback;
+    }
+};
+
+/**
+ * Registers a mouse move event callback, when the mouse is moved the supplied 
+ * callback function will be called and provided with the current mouse state.
+ *    
+ * The callback function will continue to be invoked for every mouse move event 
+ * until it is unregistered.
+ * 
+ * @example
+ * rpgcode.registerMouseDoubleClick(function(e) {
+ *  // Log the x and y coordinates of the mouse.
+ *  rpgcode.log(e.realX);
+ *  rpgcode.log(e.realY);
+ *  
+ *  // Log the mouse button that has been double clicked.
+ *  rpgcode.log(e.mouseButton); // LEFT: 0, MIDDLE: 1, RIGHT: 2
+ * });
+ * 
+ * @param {Callback} callback The callback function to invoke when the event fires.
+ * @param {Boolean} globalScope Is this for use outside of the program itself? 
+ * @returns {undefined}
+ */
+RPGcode.prototype.registerMouseDoubleClick = function(callback, globalScope) {
+    if (globalScope) {
+        rpgwizard.mouseDoubleClickHandler = callback;
+    } else {
+        rpgwizard.mouseHandler.mouseDoubleClickHandler = callback;
+    }
+};
+
+/**
+ * Registers a mouse move event callback, when the mouse is moved the supplied 
+ * callback function will be called and provided with the current mouse state.
+ *    
+ * The callback function will continue to be invoked for every mouse move event 
+ * until it is unregistered.
+ * 
+ * @example
+ * rpgcode.registerMouseMove(function(e) {
+ *  // Log the x and y coordinates of the mouse.
+ *  rpgcode.log(e.realX);
+ *  rpgcode.log(e.realY);
+ * });
+ * 
+ * @param {Callback} callback The callback function to invoke when the event fires.
+ * @param {Boolean} globalScope Is this for use outside of the program itself? 
+ * @returns {undefined}
+ */
+RPGcode.prototype.registerMouseMove = function(callback, globalScope) {
+    if (globalScope) {
+        rpgwizard.mouseMoveHandler = callback;
+    } else {
+        rpgwizard.mouseHandler.mouseMoveHandler = callback;
+    }
+};
+
+/**
  * Removes assets from the engine and frees up the memory allocated to them.
  * 
  * @example
@@ -1432,12 +1574,117 @@ RPGcode.prototype.unregisterKeyDown = function (key, globalScope) {
  * rpgcode.unregisterKeyUp("ENTER");
  * 
  * @param {String} key The key associated with the listener.
- * @param {Boolean} globalScope Is this a global scope key up handler;
+ * @param {Boolean} globalScope Is this a global scope key up handler.
  */
 RPGcode.prototype.unregisterKeyUp = function (key, globalScope) {
     if (globalScope) {
         delete rpgwizard.keyUpHandlers[Crafty.keys[key]];
     } else {
         delete rpgwizard.keyboardHandler.upHandlers[Crafty.keys[key]];
+    }
+};
+
+/**
+ * Removes a previously registered mouse down handler.
+ * 
+ * @example
+ * // Removes the mouse down handler local to this program.
+ * rpgcode.unregisterMouseDown();
+ * 
+ * // Removes the global engine mouse down handler.
+ * rpgcode.unregisterMouseDown(true);
+ * 
+ * @param {Boolean} globalScope Is this a global scope mouse handler.
+ * @returns {undefined}
+ */
+RPGcode.prototype.unregisterMouseDown = function(globalScope) {
+    if (globalScope) {
+        rpgwizard.mouseDownHandler = null;
+    } else {
+        rpgwizard.mouseHandler.mouseDownHandler = null;
+    }
+};
+
+/**
+ * Removes a previously registered mouse up handler.
+ * 
+ * @example
+ * // Removes the mouse up handler local to this program.
+ * rpgcode.unregisterMouseUp();
+ * 
+ * // Removes the global engine mouse move handler.
+ * rpgcode.unregisterMouseUp(true);
+ * 
+ * @param {Boolean} globalScope Is this a global scope mouse handler.
+ * @returns {undefined}
+ */
+RPGcode.prototype.unregisterMouseUp = function(globalScope) {
+    if (globalScope) {
+        rpgwizard.mouseUpHandler = null;
+    } else {
+        rpgwizard.mouseHandler.mouseUpHandler = null;
+    }
+};
+
+/**
+ * Removes a previously registered mouse click handler.
+ * 
+ * @example
+ * // Removes the mouse click handler local to this program.
+ * rpgcode.unregisterMouseClick();
+ * 
+ * // Removes the global engine mouse click handler.
+ * rpgcode.unregisterMouseClick(true);
+ * 
+ * @param {Boolean} globalScope Is this a global scope mouse handler.
+ * @returns {undefined}
+ */
+RPGcode.prototype.unregisterMouseClick = function(globalScope) {
+    if (globalScope) {
+        rpgwizard.mouseClickHandler = null;
+    } else {
+        rpgwizard.mouseHandler.mouseClickHandler = null;
+    }
+};
+
+/**
+ * Removes a previously registered mouse double click handler.
+ * 
+ * @example
+ * // Removes the mouse double click handler local to this program.
+ * rpgcode.unregisterMouseDoubleClick();
+ * 
+ * // Removes the global engine mouse double click handler.
+ * rpgcode.unregisterMouseDoubleClick(true);
+ * 
+ * @param {Boolean} globalScope Is this a global scope mouse handler.
+ * @returns {undefined}
+ */
+RPGcode.prototype.unregisterMouseDoubleClick = function(globalScope) {
+    if (globalScope) {
+        rpgwizard.mouseDoubleClickHandler = null;
+    } else {
+        rpgwizard.mouseHandler.mouseDoubleClickHandler = null;
+    }
+};
+
+/**
+ * Removes a previously registered mouse move handler.
+ * 
+ * @example
+ * // Removes the mouse move handler local to this program.
+ * rpgcode.unregisterMouseMove();
+ * 
+ * // Removes the global engine mouse move handler.
+ * rpgcode.unregisterMouseMove(true);
+ * 
+ * @param {Boolean} globalScope Is this a global scope mouse handler.
+ * @returns {undefined}
+ */
+RPGcode.prototype.unregisterMouseMove = function(globalScope) {
+    if (globalScope) {
+        rpgwizard.mouseMoveHandler = null;
+    } else {
+        rpgwizard.mouseHandler.mouseMoveHandler = null;
     }
 };

@@ -13,6 +13,7 @@ import javax.swing.JComboBox;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 /**
  *
@@ -62,7 +63,7 @@ public class PopupListFilesListener implements PopupMenuListener {
 				path = path.replace(rootDirectory.getAbsolutePath()
 						+ File.separator, "");
 
-				comboBox.addItem(path);
+				comboBox.addItem(FilenameUtils.separatorsToUnix(path));
 			}
 		}
 

@@ -568,28 +568,38 @@ RPGcode.prototype.getCharacterDirection = function () {
 };
 
 /**
- * Gets the character's current location.
+ * Gets the character's current location, optionally including the visual offset
+ * that happens when boards are smaller than the viewport dimensions.
  * 
  * @example
  * var location = rpgcode.getCharacterLocation();
  * rpgcode.log(location);
  * 
  * @param {Boolean} inTiles Should the location be in tiles, otherwise pixels.
+ * @param {Boolean} includeOffset Should the location include the visual board offset.
  * @returns {Object} An object containing the characters location in the form {x, y, z}.
  */
-RPGcode.prototype.getCharacterLocation = function (inTiles) {
+RPGcode.prototype.getCharacterLocation = function (inTiles, includeOffset) {
     var instance = rpgwizard.craftyCharacter;
+
+    if (includeOffset) {
+        var x = instance.x + rpgwizard.craftyBoard.xShift;
+        var y = instance.y + rpgwizard.craftyBoard.yShift;
+    } else {
+        var x = instance.x;
+        var y = instance.y;
+    }
 
     if (inTiles) {
         return {
-            x: instance.x / rpgwizard.craftyBoard.board.tileWidth,
-            y: instance.y / rpgwizard.craftyBoard.board.tileHeight,
+            x: x / rpgwizard.craftyBoard.board.tileWidth,
+            y: y / rpgwizard.craftyBoard.board.tileHeight,
             layer: instance.character.layer
         };
     } else {
         return {
-            x: instance.x,
-            y: instance.y,
+            x: x,
+            y: y,
             layer: instance.character.layer
         };
     }
@@ -629,6 +639,23 @@ RPGcode.prototype.getGlobal = function (id) {
 };
 
 /**
+ * Gets the image object if it has been loaded into the engine already, otherwise
+ * it returns undefined.
+ * 
+ * @example
+ * // Set the image on the smaller canvas.
+ * var image = rpgcode.getImage("life.png");
+ * rpgcode.log(image.width);
+ * rpgcode.log(image.height);
+ * 
+ * @param {String} fileName The relative path to the image.
+ * @returns {Object} Image object or undefined if none available.
+ */
+RPGcode.prototype.getImage = function (fileName) {
+    return Crafty.asset(Crafty.__paths.images + fileName);
+};
+
+/**
  * Gets a random number between the min and max inclusive.
  * 
  * @example 
@@ -654,6 +681,32 @@ RPGcode.prototype.getRandom = function (min, max) {
  */
 RPGcode.prototype.getRunningProgram = function () {
     return {inProgram: rpgwizard.inProgram, currentProgram: rpgwizard.currentProgram};
+};
+
+/**
+ * Gets the viewport object, this is useful for calculating the position of 
+ * characters or sprites on the board relative to the RPGcode screen.
+ * 
+ * The viewport contains the (x, y) values of the upper left corner of screen
+ * relative to a board's (x, y). It also returns the width and height of the
+ * viewport.
+ * 
+ * @example
+ * var viewport = rpgcode.getViewport();
+ * rpgcode.log(viewport.x);
+ * rpgcode.log(viewport.y);
+ * rpgcode.log(viewport.width);
+ * rpgcode.log(viewport.height);
+ * 
+ * @returns {Object}
+ */
+RPGcode.prototype.getViewport = function () {
+    return {
+        x: -Crafty.viewport.x,
+        y: -Crafty.viewport.y,
+        width: Crafty.viewport.width,
+        height: Crafty.viewport.height
+    };
 };
 
 /**
@@ -695,7 +748,7 @@ RPGcode.prototype.hitCharacter = function (characterId, damage, animationId, cal
  * animation. Optionally a callback can be invoked when the hit animation
  * has finished playing.
  * 
-  * @example
+ * @example
  * // Without a callback.
  * rpgcode.hitEnemy("rat-1", 1, "DEFEND");
  * 
@@ -955,7 +1008,7 @@ RPGcode.prototype.registerKeyUp = function (key, callback, globalScope) {
  * @param {Boolean} globalScope Is this for use outside of the program itself? 
  * @returns {undefined}
  */
-RPGcode.prototype.registerMouseDown = function(callback, globalScope) {
+RPGcode.prototype.registerMouseDown = function (callback, globalScope) {
     if (globalScope) {
         rpgwizard.mouseDownHandler = callback;
     } else {
@@ -984,7 +1037,7 @@ RPGcode.prototype.registerMouseDown = function(callback, globalScope) {
  * @param {Boolean} globalScope Is this for use outside of the program itself? 
  * @returns {undefined}
  */
-RPGcode.prototype.registerMouseUp = function(callback, globalScope) {
+RPGcode.prototype.registerMouseUp = function (callback, globalScope) {
     if (globalScope) {
         rpgwizard.mouseUpHandler = callback;
     } else {
@@ -1013,7 +1066,7 @@ RPGcode.prototype.registerMouseUp = function(callback, globalScope) {
  * @param {Boolean} globalScope Is this for use outside of the program itself? 
  * @returns {undefined}
  */
-RPGcode.prototype.registerMouseClick = function(callback, globalScope) {
+RPGcode.prototype.registerMouseClick = function (callback, globalScope) {
     if (globalScope) {
         rpgwizard.mouseClickHandler = callback;
     } else {
@@ -1042,7 +1095,7 @@ RPGcode.prototype.registerMouseClick = function(callback, globalScope) {
  * @param {Boolean} globalScope Is this for use outside of the program itself? 
  * @returns {undefined}
  */
-RPGcode.prototype.registerMouseDoubleClick = function(callback, globalScope) {
+RPGcode.prototype.registerMouseDoubleClick = function (callback, globalScope) {
     if (globalScope) {
         rpgwizard.mouseDoubleClickHandler = callback;
     } else {
@@ -1068,7 +1121,7 @@ RPGcode.prototype.registerMouseDoubleClick = function(callback, globalScope) {
  * @param {Boolean} globalScope Is this for use outside of the program itself? 
  * @returns {undefined}
  */
-RPGcode.prototype.registerMouseMove = function(callback, globalScope) {
+RPGcode.prototype.registerMouseMove = function (callback, globalScope) {
     if (globalScope) {
         rpgwizard.mouseMoveHandler = callback;
     } else {
@@ -1597,7 +1650,7 @@ RPGcode.prototype.unregisterKeyUp = function (key, globalScope) {
  * @param {Boolean} globalScope Is this a global scope mouse handler.
  * @returns {undefined}
  */
-RPGcode.prototype.unregisterMouseDown = function(globalScope) {
+RPGcode.prototype.unregisterMouseDown = function (globalScope) {
     if (globalScope) {
         rpgwizard.mouseDownHandler = null;
     } else {
@@ -1618,7 +1671,7 @@ RPGcode.prototype.unregisterMouseDown = function(globalScope) {
  * @param {Boolean} globalScope Is this a global scope mouse handler.
  * @returns {undefined}
  */
-RPGcode.prototype.unregisterMouseUp = function(globalScope) {
+RPGcode.prototype.unregisterMouseUp = function (globalScope) {
     if (globalScope) {
         rpgwizard.mouseUpHandler = null;
     } else {
@@ -1639,7 +1692,7 @@ RPGcode.prototype.unregisterMouseUp = function(globalScope) {
  * @param {Boolean} globalScope Is this a global scope mouse handler.
  * @returns {undefined}
  */
-RPGcode.prototype.unregisterMouseClick = function(globalScope) {
+RPGcode.prototype.unregisterMouseClick = function (globalScope) {
     if (globalScope) {
         rpgwizard.mouseClickHandler = null;
     } else {
@@ -1660,7 +1713,7 @@ RPGcode.prototype.unregisterMouseClick = function(globalScope) {
  * @param {Boolean} globalScope Is this a global scope mouse handler.
  * @returns {undefined}
  */
-RPGcode.prototype.unregisterMouseDoubleClick = function(globalScope) {
+RPGcode.prototype.unregisterMouseDoubleClick = function (globalScope) {
     if (globalScope) {
         rpgwizard.mouseDoubleClickHandler = null;
     } else {
@@ -1681,7 +1734,7 @@ RPGcode.prototype.unregisterMouseDoubleClick = function(globalScope) {
  * @param {Boolean} globalScope Is this a global scope mouse handler.
  * @returns {undefined}
  */
-RPGcode.prototype.unregisterMouseMove = function(globalScope) {
+RPGcode.prototype.unregisterMouseMove = function (globalScope) {
     if (globalScope) {
         rpgwizard.mouseMoveHandler = null;
     } else {

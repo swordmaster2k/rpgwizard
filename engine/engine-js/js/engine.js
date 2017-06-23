@@ -602,7 +602,7 @@ RPGWizard.prototype.openProgram = function (filename) {
     return program;
 };
 
-RPGWizard.prototype.runProgram = function (filename, source, callback) {
+RPGWizard.prototype.runProgram = function (filename, source, callback, chained) {
     console.info("Running program=[%s]", filename);
 
     rpgwizard.inProgram = true;
@@ -615,17 +615,31 @@ RPGWizard.prototype.runProgram = function (filename, source, callback) {
     rpgwizard.endProgramCallback = callback;
 
     // Store the runtime key handlers.
-    rpgwizard.keyDownHandlers = rpgwizard.keyboardHandler.downHandlers;
-    rpgwizard.keyUpHandlers = rpgwizard.keyboardHandler.upHandlers;
+    if (!chained) {
+        rpgwizard.keyDownHandlers = rpgwizard.keyboardHandler.downHandlers;
+        rpgwizard.keyUpHandlers = rpgwizard.keyboardHandler.upHandlers;
+    }
+    
+    // Wipe previous keyboard handlers.
     rpgwizard.keyboardHandler.downHandlers = {};
     rpgwizard.keyboardHandler.upHandlers = {};
 
     // Store the runtime mouse handlers.
-    rpgwizard.mouseDownHandler = rpgwizard.mouseHandler.mouseDownHandler;
-    rpgwizard.mouseUpHandler = rpgwizard.mouseHandler.mouseUpHandler;
-    rpgwizard.mouseClickHandler = rpgwizard.mouseHandler.mouseClickHandler;
-    rpgwizard.mouseDoubleClickHandler = rpgwizard.mouseHandler.mouseDoubleClickHandler;
-    rpgwizard.mouseMoveHandler = rpgwizard.mouseHandler.mouseMoveHandler;
+    if (!chained) {
+        rpgwizard.mouseDownHandler = rpgwizard.mouseHandler.mouseDownHandler;
+        rpgwizard.mouseUpHandler = rpgwizard.mouseHandler.mouseUpHandler;
+        rpgwizard.mouseClickHandler = rpgwizard.mouseHandler.mouseClickHandler;
+        rpgwizard.mouseDoubleClickHandler = rpgwizard.mouseHandler.mouseDoubleClickHandler;
+        rpgwizard.mouseMoveHandler = rpgwizard.mouseHandler.mouseMoveHandler;
+    }
+    
+    // Wipe previous mouse handlers.
+    rpgwizard.mouseHandler.mouseDownHandler = null;
+    rpgwizard.mouseHandler.mouseUpHandler = null;
+    rpgwizard.mouseHandler.mouseClickHandler = null;
+    rpgwizard.mouseHandler.mouseDoubleClickHandler = null;
+    rpgwizard.mouseHandler.mouseMoveHandler = null;
+
 
     var program = rpgwizard.openProgram(filename);
     program();
@@ -635,8 +649,12 @@ RPGWizard.prototype.endProgram = function (nextProgram) {
     console.info("Ending current program, nextProgram=[%s]", nextProgram);
 
     if (nextProgram) {
-        rpgwizard.runProgram(PATH_PROGRAM + nextProgram, rpgcode.source,
-                rpgwizard.endProgramCallback);
+        rpgwizard.runProgram(
+                PATH_PROGRAM + nextProgram, 
+                rpgcode.source,
+                rpgwizard.endProgramCallback,
+                true
+        );
     } else {
         if (rpgwizard.endProgramCallback) {
             rpgwizard.endProgramCallback();

@@ -42,7 +42,6 @@ import javax.swing.table.TableRowSorter;
 import org.rpgwizard.common.assets.Animation;
 import org.rpgwizard.common.assets.AbstractSprite;
 import org.rpgwizard.common.assets.GraphicEnum;
-import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.common.assets.events.SpriteChangedEvent;
 import org.rpgwizard.common.assets.listeners.SpriteChangeListener;
 import org.rpgwizard.editor.editors.sprite.listener.AddAnimationActionListener;
@@ -86,7 +85,7 @@ public abstract class AbstractSpriteEditor extends AssetEditorWindow
 
 	// Stats Panel.
 	protected final JPanel statsPanel;
-	protected final ProfilePanel profilePanel;
+	protected final ImagePanel profilePanel;
 	protected final JPanel statsEditPanel;
 	protected String profileImagePath;
 
@@ -114,7 +113,7 @@ public abstract class AbstractSpriteEditor extends AssetEditorWindow
 		statsPanel = new JPanel();
 		animationsPanel = new JPanel();
 
-		profilePanel = new ProfilePanel();
+		profilePanel = new ImagePanel();
 		statsEditPanel = new JPanel();
 
 		defaultEtchedBorder = BorderFactory
@@ -125,7 +124,7 @@ public abstract class AbstractSpriteEditor extends AssetEditorWindow
 		return sprite;
 	}
 
-	public ProfilePanel getProfilePanel() {
+	public ImagePanel getProfilePanel() {
 		return profilePanel;
 	}
 

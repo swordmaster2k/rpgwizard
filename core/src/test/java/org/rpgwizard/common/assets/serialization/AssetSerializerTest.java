@@ -35,6 +35,7 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.rpgwizard.common.assets.Item;
 
 /**
  * Some pretty basic checks to ensure the file serializers work.
@@ -399,6 +400,33 @@ public class AssetSerializerTest {
         // Deserialize original.
         Program asset = AssetSerializerTestHelper.deserializeFile(path, serializer);
         checkProgram(asset);
+    }
+
+    @Test
+    public void testItemSerializier() throws Exception {
+        String path = AssetSerializerTestHelper.getPath(
+                "Items/sword.item");
+        JsonItemSerializer serializer = new JsonItemSerializer();
+
+        // Deserialize original.
+        Item asset = AssetSerializerTestHelper.deserializeFile(path, serializer);
+        checkItem(asset);
+
+        // Serialize a temporary version and deserialize it.
+        path = AssetSerializerTestHelper.serialize(asset, serializer);
+        asset = AssetSerializerTestHelper.deserializeFile(path, serializer);
+        checkItem(asset);
+    }
+
+    private void checkItem(Item asset) {
+        Assert.assertEquals("Sword", asset.getName());
+        Assert.assertEquals("Sword/sword_icon.png", asset.getIcon());
+        Assert.assertEquals("The sword of evil's bane.", asset.getDescription());
+        Assert.assertEquals(100, asset.getPrice());
+        Assert.assertEquals(0.0, asset.getHealthEffect(), 0.0);
+        Assert.assertEquals(100.0, asset.getAttackEffect(), 0.0);
+        Assert.assertEquals(0.0, asset.getDefenceEffect(), 0.0);
+        Assert.assertEquals(0.0, asset.getMagicEffect(), 0.0);
     }
 
     private void checkProgram(Program asset) throws IOException {

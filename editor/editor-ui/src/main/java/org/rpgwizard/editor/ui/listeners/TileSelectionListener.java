@@ -8,8 +8,8 @@
 package org.rpgwizard.editor.ui.listeners;
 
 import java.util.EventListener;
-import org.rpgwizard.editor.editors.TileRegionSelectionEvent;
-import org.rpgwizard.editor.editors.TileSelectionEvent;
+import org.rpgwizard.editor.editors.tileset.TileRegionSelectionEvent;
+import org.rpgwizard.editor.editors.tileset.TileSelectionEvent;
 
 /**
  *

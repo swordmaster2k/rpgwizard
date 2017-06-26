@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package org.rpgwizard.editor.editors;
+package org.rpgwizard.editor.editors.npc;
 
 import org.rpgwizard.common.assets.NPC;
 import org.rpgwizard.editor.editors.sprite.AbstractSpriteModelPanel;

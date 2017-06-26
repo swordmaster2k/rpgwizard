@@ -11,6 +11,7 @@ import java.awt.Component;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.event.InternalFrameListener;
@@ -95,26 +96,34 @@ public class NPCEditor extends AbstractSpriteEditor
 	}
 
 	private void createStatsPanel() {
-    List<Component> labels = new ArrayList<>();
-    labels.add(new JLabel("Name"));
-    labels.add(new JLabel("Description"));
+        List<Component> labels = new ArrayList<>();
+        labels.add(new JLabel("Name"));
+        labels.add(new JLabel("Description"));
 
-    npcName = new JTextField(npc.getName());
-    npcName.setColumns(DEFAULT_INPUT_COLUMNS);
+        npcName = new JTextField(npc.getName());
+        npcName.setColumns(DEFAULT_INPUT_COLUMNS);
 
-    npcDescription = new JTextField(npc.getDescription());
-    npcDescription.setColumns(DEFAULT_INPUT_COLUMNS);
+        npcDescription = new JTextField(npc.getDescription());
+        npcDescription.setColumns(DEFAULT_INPUT_COLUMNS);
 
-    List<Component> inputs = new ArrayList<>();
-    inputs.add(npcName);
-    inputs.add(npcDescription);
+        List<Component> inputs = new ArrayList<>();
+        inputs.add(npcName);
+        inputs.add(npcDescription);
 
-    profileImagePath = npc.getGraphics().get(GraphicEnum.PROFILE.toString());
+        profileImagePath = npc.getGraphics().get(GraphicEnum.PROFILE.toString());
 
-    buildStatsPanel(labels, inputs);
-  }
+        buildStatsPanel(labels, inputs);
+    }
 	private void createAnimationsPanel() {
 		buildAnimationsPanel();
+	}
+
+	public static void main(String[] args) {
+		JFrame frame = new JFrame("Test InternalJFrame");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.add(new NPCEditor(null));
+		frame.setSize(440, 360);
+		frame.setVisible(true);
 	}
 
 }

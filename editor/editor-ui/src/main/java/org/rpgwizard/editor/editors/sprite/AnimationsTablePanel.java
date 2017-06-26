@@ -18,9 +18,9 @@ import org.rpgwizard.editor.ui.AnimatedPanel;
  */
 public class AnimationsTablePanel extends JPanel {
 
-	private final ProfilePanel profilePanel;
+	private final ImagePanel profilePanel;
 
-	public AnimationsTablePanel(ProfilePanel profilePanel) {
+	public AnimationsTablePanel(ImagePanel profilePanel) {
 		super(new BorderLayout());
 		this.profilePanel = profilePanel;
 	}

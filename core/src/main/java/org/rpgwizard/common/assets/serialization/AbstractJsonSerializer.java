@@ -44,7 +44,7 @@ import org.json.JSONObject;
 public abstract class AbstractJsonSerializer extends AbstractAssetSerializer {
 
 	public static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
-	public static final double FILE_FORMAT_VERSION = 4.0;
+	public static final double FILE_FORMAT_VERSION = 1.1;
 
 	@Override
     public void serialize(AssetHandle handle)
@@ -251,12 +251,25 @@ public abstract class AbstractJsonSerializer extends AbstractAssetSerializer {
 		return new Point(object.getInt("x"), object.getInt("y"));
 	}
 
-	protected LinkedHashMap<String, String> deserializeMap(JSONObject object) {
+	protected LinkedHashMap<String, String> deserializeStringMap(
+			JSONObject object) {
 		LinkedHashMap<String, String> map = new LinkedHashMap();
 		Iterator keys = object.keys();
 		while (keys.hasNext()) {
 			String key = (String) keys.next();
 			map.put(key, object.getString(key));
+		}
+
+		return map;
+	}
+
+	protected LinkedHashMap<String, Integer> deserializeIntegerMap(
+			JSONObject object) {
+		LinkedHashMap<String, Integer> map = new LinkedHashMap();
+		Iterator keys = object.keys();
+		while (keys.hasNext()) {
+			String key = (String) keys.next();
+			map.put(key, object.getInt(key));
 		}
 
 		return map;

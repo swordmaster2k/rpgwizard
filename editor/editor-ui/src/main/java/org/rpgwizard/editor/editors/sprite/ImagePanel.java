@@ -23,17 +23,33 @@ import org.rpgwizard.editor.utilities.TransparentDrawer;
  *
  * @author Joshua Michael Daly
  */
-public class ProfilePanel extends AbstractImagePanel {
+public class ImagePanel extends AbstractImagePanel {
 
 	private final Image defaultImage;
 
 	private Dimension scaledDimension;
 
-	public ProfilePanel() {
+	public ImagePanel() {
 		super(new Dimension(250, 500));
 		setToolTipText("Double click to select an image.");
 
 		defaultImage = Icons.getIcon("image", Icons.Size.LARGE).getImage();
+		scaledDimension = null;
+	}
+
+	public ImagePanel(Dimension dimension) {
+		super(dimension);
+		setToolTipText("Double click to select an image.");
+
+		defaultImage = Icons.getIcon("image", Icons.Size.LARGE).getImage();
+		scaledDimension = null;
+	}
+
+	public ImagePanel(Dimension dimension, Image image) {
+		super(dimension);
+		setToolTipText("Double click to select an image.");
+
+		defaultImage = image;
 		scaledDimension = null;
 	}
 

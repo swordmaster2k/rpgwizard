@@ -7,7 +7,9 @@
  */
 package org.rpgwizard.editor.utilities;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -18,6 +20,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
@@ -27,6 +30,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import org.rpgwizard.common.assets.Board;
 import org.rpgwizard.editor.ui.listeners.PopupListFilesListener;
 
@@ -229,6 +233,58 @@ public abstract class GuiHelper {
 		}
 
 		return new int[]{x1, y1, x2, y2};
+	}
+
+	public static void buildEditPanelPair(JPanel parent, JPanel child,
+			List<Component> labels, List<Component> inputs) {
+		// Create Layout for top level panel
+		GroupLayout layout = GuiHelper.createGroupLayout(parent);
+
+		// Create Layouts for second level panels
+		GroupLayout generalLayout = GuiHelper.createGroupLayout(child);
+
+		GroupLayout.ParallelGroup horizontalParallelGroup = generalLayout
+				.createParallelGroup();
+		GroupLayout.SequentialGroup sequentialGroup;
+		int length = labels.size();
+		for (int i = 0; i < length; i++) {
+			sequentialGroup = generalLayout.createSequentialGroup();
+			sequentialGroup.addComponent(labels.get(i));
+			sequentialGroup.addComponent(inputs.get(i));
+
+			generalLayout.setHorizontalGroup(horizontalParallelGroup
+					.addGroup(sequentialGroup));
+		}
+
+		GroupLayout.SequentialGroup verticalSequentialGroup = generalLayout
+				.createSequentialGroup();
+		GroupLayout.ParallelGroup parallelGroup;
+		for (int i = 0; i < length; i++) {
+			parallelGroup = generalLayout.createParallelGroup();
+			parallelGroup.addComponent(labels.get(i));
+			parallelGroup.addComponent(inputs.get(i));
+			generalLayout.setVerticalGroup(verticalSequentialGroup
+					.addGroup(parallelGroup));
+		}
+
+		generalLayout.linkSize(SwingConstants.HORIZONTAL,
+				labels.toArray(new Component[labels.size()]));
+
+		generalLayout.linkSize(SwingConstants.VERTICAL,
+				labels.toArray(new Component[inputs.size()]));
+
+		JPanel configPanel = new JPanel(new BorderLayout());
+		configPanel.add(child, BorderLayout.NORTH);
+
+		// Configure STATS PANEL layout
+		layout.setHorizontalGroup(layout.createSequentialGroup().addComponent(
+				configPanel));
+
+		layout.linkSize(SwingConstants.VERTICAL, configPanel);
+
+		layout.setVerticalGroup(layout.createSequentialGroup().addGroup(
+				layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+						.addComponent(configPanel)));
 	}
 
 }

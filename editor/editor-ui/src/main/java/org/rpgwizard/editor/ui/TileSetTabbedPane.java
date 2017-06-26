@@ -18,7 +18,7 @@ import javax.swing.JViewport;
 import javax.swing.event.ChangeEvent;
 import org.rpgwizard.common.assets.TileSet;
 import org.rpgwizard.common.utilities.CoreProperties;
-import org.rpgwizard.editor.editors.TileSetCanvas;
+import org.rpgwizard.editor.editors.tileset.TileSetCanvas;
 
 /**
  *

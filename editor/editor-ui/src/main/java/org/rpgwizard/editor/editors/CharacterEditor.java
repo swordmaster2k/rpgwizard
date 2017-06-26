@@ -11,6 +11,7 @@ import java.awt.Component;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.event.InternalFrameListener;
@@ -57,7 +58,7 @@ public class CharacterEditor extends AbstractSpriteEditor
 	private DoubleField maxMagic;
 
 	public CharacterEditor(Character player) {
-		super(player.getName(), player, Icons.getIcon("character"));
+		super("Untitled", player, Icons.getIcon("character"));
 
 		this.player = player;
 		this.player.addSpriteChangeListener(this);
@@ -138,82 +139,90 @@ public class CharacterEditor extends AbstractSpriteEditor
 		build();
 	}
 
-	private void createStatsPanel() {    
-    List<Component> labels = new ArrayList<>();
-    labels.add(new JLabel("Name"));
-    labels.add(new JLabel("Level"));
-    labels.add(new JLabel("Max Level"));
-    labels.add(new JLabel("Experience"));
-    labels.add(new JLabel("Max Experience"));
-    labels.add(new JLabel("Health"));
-    labels.add(new JLabel("Max Health"));
-    labels.add(new JLabel("Attack"));
-    labels.add(new JLabel("Max Attack"));
-    labels.add(new JLabel("Defence"));
-    labels.add(new JLabel("Max Defence"));
-    labels.add(new JLabel("Magic"));
-    labels.add(new JLabel("Max Magic"));
-    
-    name = new JTextField(player.getName());
-    name.setColumns(DEFAULT_INPUT_COLUMNS);
-    
-    level = new IntegerField(player.getLevel());
-    level.setColumns(DEFAULT_INPUT_COLUMNS);
-    
-    maxLevel = new IntegerField(player.getMaxLevel());
-    maxLevel.setColumns(DEFAULT_INPUT_COLUMNS);
-    
-    experience = new DoubleField(player.getMaxExperience());
-    experience.setColumns(DEFAULT_INPUT_COLUMNS);
-    
-    maxExperience = new DoubleField(player.getMaxExperience());
-    maxExperience.setColumns(DEFAULT_INPUT_COLUMNS);
-    
-    health = new DoubleField(player.getHealth());
-    health.setColumns(DEFAULT_INPUT_COLUMNS);
-    
-    maxHealth = new DoubleField(player.getMaxHealth());
-    maxHealth.setColumns(DEFAULT_INPUT_COLUMNS);
-    
-    attack = new DoubleField(player.getAttack());
-    attack.setColumns(DEFAULT_INPUT_COLUMNS);
-    
-    maxAttack = new DoubleField(player.getMaxAttack());
-    maxAttack.setColumns(DEFAULT_INPUT_COLUMNS);
-    
-    defence = new DoubleField(player.getDefence());
-    defence.setColumns(DEFAULT_INPUT_COLUMNS);
-    
-    maxDefence = new DoubleField(player.getMaxDefence());
-    maxDefence.setColumns(DEFAULT_INPUT_COLUMNS);
-    
-    magic = new DoubleField(player.getMagic());
-    magic.setColumns(DEFAULT_INPUT_COLUMNS);
-    
-    maxMagic = new DoubleField(player.getMaxMagic());
-    maxMagic.setColumns(DEFAULT_INPUT_COLUMNS);
-    
-    List<Component> inputs = new ArrayList<>();
-    inputs.add(name);
-    inputs.add(level);
-    inputs.add(maxLevel);
-    inputs.add(experience);
-    inputs.add(maxExperience);
-    inputs.add(health);
-    inputs.add(maxHealth);
-    inputs.add(attack);
-    inputs.add(maxAttack);
-    inputs.add(defence);
-    inputs.add(maxDefence);
-    inputs.add(magic);
-    inputs.add(maxMagic);
-    
-    profileImagePath = player.getGraphics().get(GraphicEnum.PROFILE.toString());
-    
-    buildStatsPanel(labels, inputs);
-  }
+	private void createStatsPanel() {
+        List<Component> labels = new ArrayList<>();
+        labels.add(new JLabel("Name"));
+        labels.add(new JLabel("Level"));
+        labels.add(new JLabel("Max Level"));
+        labels.add(new JLabel("Experience"));
+        labels.add(new JLabel("Max Experience"));
+        labels.add(new JLabel("Health"));
+        labels.add(new JLabel("Max Health"));
+        labels.add(new JLabel("Attack"));
+        labels.add(new JLabel("Max Attack"));
+        labels.add(new JLabel("Defence"));
+        labels.add(new JLabel("Max Defence"));
+        labels.add(new JLabel("Magic"));
+        labels.add(new JLabel("Max Magic"));
+
+        name = new JTextField(player.getName());
+        name.setColumns(DEFAULT_INPUT_COLUMNS);
+
+        level = new IntegerField(player.getLevel());
+        level.setColumns(DEFAULT_INPUT_COLUMNS);
+
+        maxLevel = new IntegerField(player.getMaxLevel());
+        maxLevel.setColumns(DEFAULT_INPUT_COLUMNS);
+
+        experience = new DoubleField(player.getMaxExperience());
+        experience.setColumns(DEFAULT_INPUT_COLUMNS);
+
+        maxExperience = new DoubleField(player.getMaxExperience());
+        maxExperience.setColumns(DEFAULT_INPUT_COLUMNS);
+
+        health = new DoubleField(player.getHealth());
+        health.setColumns(DEFAULT_INPUT_COLUMNS);
+
+        maxHealth = new DoubleField(player.getMaxHealth());
+        maxHealth.setColumns(DEFAULT_INPUT_COLUMNS);
+
+        attack = new DoubleField(player.getAttack());
+        attack.setColumns(DEFAULT_INPUT_COLUMNS);
+
+        maxAttack = new DoubleField(player.getMaxAttack());
+        maxAttack.setColumns(DEFAULT_INPUT_COLUMNS);
+
+        defence = new DoubleField(player.getDefence());
+        defence.setColumns(DEFAULT_INPUT_COLUMNS);
+
+        maxDefence = new DoubleField(player.getMaxDefence());
+        maxDefence.setColumns(DEFAULT_INPUT_COLUMNS);
+
+        magic = new DoubleField(player.getMagic());
+        magic.setColumns(DEFAULT_INPUT_COLUMNS);
+
+        maxMagic = new DoubleField(player.getMaxMagic());
+        maxMagic.setColumns(DEFAULT_INPUT_COLUMNS);
+
+        List<Component> inputs = new ArrayList<>();
+        inputs.add(name);
+        inputs.add(level);
+        inputs.add(maxLevel);
+        inputs.add(experience);
+        inputs.add(maxExperience);
+        inputs.add(health);
+        inputs.add(maxHealth);
+        inputs.add(attack);
+        inputs.add(maxAttack);
+        inputs.add(defence);
+        inputs.add(maxDefence);
+        inputs.add(magic);
+        inputs.add(maxMagic);
+
+        profileImagePath = player.getGraphics().get(GraphicEnum.PROFILE.toString());
+
+        buildStatsPanel(labels, inputs);
+    }
 	private void createAnimationsPanel() {
 		buildAnimationsPanel();
+	}
+
+	public static void main(String[] args) {
+		JFrame frame = new JFrame("Test InternalJFrame");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.add(new CharacterEditor(null));
+		frame.setSize(440, 360);
+		frame.setVisible(true);
 	}
 
 }

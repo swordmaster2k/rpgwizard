@@ -8,9 +8,7 @@
 package org.rpgwizard.common.assets;
 
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import org.rpgwizard.common.assets.events.AnimationChangedEvent;
 import org.rpgwizard.common.assets.listeners.AnimationChangeListener;

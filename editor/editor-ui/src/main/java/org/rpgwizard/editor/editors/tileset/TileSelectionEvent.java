@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package org.rpgwizard.editor.editors;
+package org.rpgwizard.editor.editors.tileset;
 
 import java.util.EventObject;
 import org.rpgwizard.common.assets.Tile;
@@ -15,26 +15,17 @@ import org.rpgwizard.common.assets.Tile;
  *
  * @author Joshua Michael Daly
  */
-public class TileRegionSelectionEvent extends EventObject {
+public class TileSelectionEvent extends EventObject {
 
-	private final Tile[][] tiles;
+	private final Tile tile;
 
-	/**
-	 *
-	 * @param source
-	 * @param tiles
-	 */
-	public TileRegionSelectionEvent(Object source, Tile[][] tiles) {
+	public TileSelectionEvent(Object source, Tile tile) {
 		super(source);
-		this.tiles = tiles;
+		this.tile = tile;
 	}
 
-	/**
-	 *
-	 * @return
-	 */
-	public Tile[][] getTiles() {
-		return tiles;
+	public Tile getTile() {
+		return tile;
 	}
 
 }

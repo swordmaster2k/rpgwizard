@@ -11,6 +11,7 @@ import java.awt.Component;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.event.InternalFrameListener;
@@ -49,7 +50,6 @@ public class EnemyEditor extends AbstractSpriteEditor
 	 * Public Constructors
 	 * *************************************************************************
 	 */
-
 	/**
 	 * Opens an existing enemy
 	 *
@@ -68,7 +68,7 @@ public class EnemyEditor extends AbstractSpriteEditor
 			setTitle(new File(enemy.getDescriptor().getURI()).getName());
 		}
 
-		this.constructWindow();
+		constructWindow();
 		this.setVisible(true);
 		pack();
 	}
@@ -78,7 +78,6 @@ public class EnemyEditor extends AbstractSpriteEditor
 	 * Public Methods
 	 * *************************************************************************
 	 */
-
 	@Override
 	public AbstractAsset getAsset() {
 		return enemy;
@@ -144,52 +143,60 @@ public class EnemyEditor extends AbstractSpriteEditor
 	}
 
 	private void createStatsPanel() {
-    List<Component> labels = new ArrayList<>();
-    labels.add(new JLabel("Name"));
-    labels.add(new JLabel("Health"));
-    labels.add(new JLabel("Attack"));
-    labels.add(new JLabel("Defence"));
-    labels.add(new JLabel("Magic"));
-    labels.add(new JLabel("Experience Reward"));
-    labels.add(new JLabel("Gold Reward"));
-    
-    // Configure Class scope components
-    enemyName = new JTextField(enemy.getName());
-    enemyName.setColumns(DEFAULT_INPUT_COLUMNS);
-    
-    health = new DoubleField(enemy.getHealth());
-    health.setColumns(DEFAULT_INPUT_COLUMNS);
-    
-    attack = new DoubleField(enemy.getAttack());
-    attack.setColumns(DEFAULT_INPUT_COLUMNS);
-    
-    defence = new DoubleField(enemy.getDefence());
-    defence.setColumns(DEFAULT_INPUT_COLUMNS);
-    
-    magic = new DoubleField(enemy.getMagic());
-    magic.setColumns(DEFAULT_INPUT_COLUMNS);
-    
-    experienceReward = new DoubleField(enemy.getExperienceReward());
-    experienceReward.setColumns(DEFAULT_INPUT_COLUMNS);
-    
-    goldReward = new DoubleField(enemy.getGoldReward());
-    goldReward.setColumns(DEFAULT_INPUT_COLUMNS);
-    
-    List<Component> inputs = new ArrayList<>();
-    inputs.add(enemyName);
-    inputs.add(health);
-    inputs.add(attack);
-    inputs.add(defence);
-    inputs.add(magic);
-    inputs.add(experienceReward);
-    inputs.add(goldReward);
-    
-    profileImagePath = enemy.getGraphics().get(GraphicEnum.PROFILE.toString());
-    
-    buildStatsPanel(labels, inputs);
-  }
+        List<Component> labels = new ArrayList<>();
+        labels.add(new JLabel("Name"));
+        labels.add(new JLabel("Health"));
+        labels.add(new JLabel("Attack"));
+        labels.add(new JLabel("Defence"));
+        labels.add(new JLabel("Magic"));
+        labels.add(new JLabel("Experience Reward"));
+        labels.add(new JLabel("Gold Reward"));
+
+        // Configure Class scope components
+        enemyName = new JTextField(enemy.getName());
+        enemyName.setColumns(DEFAULT_INPUT_COLUMNS);
+
+        health = new DoubleField(enemy.getHealth());
+        health.setColumns(DEFAULT_INPUT_COLUMNS);
+
+        attack = new DoubleField(enemy.getAttack());
+        attack.setColumns(DEFAULT_INPUT_COLUMNS);
+
+        defence = new DoubleField(enemy.getDefence());
+        defence.setColumns(DEFAULT_INPUT_COLUMNS);
+
+        magic = new DoubleField(enemy.getMagic());
+        magic.setColumns(DEFAULT_INPUT_COLUMNS);
+
+        experienceReward = new DoubleField(enemy.getExperienceReward());
+        experienceReward.setColumns(DEFAULT_INPUT_COLUMNS);
+
+        goldReward = new DoubleField(enemy.getGoldReward());
+        goldReward.setColumns(DEFAULT_INPUT_COLUMNS);
+
+        List<Component> inputs = new ArrayList<>();
+        inputs.add(enemyName);
+        inputs.add(health);
+        inputs.add(attack);
+        inputs.add(defence);
+        inputs.add(magic);
+        inputs.add(experienceReward);
+        inputs.add(goldReward);
+
+        profileImagePath = enemy.getGraphics().get(GraphicEnum.PROFILE.toString());
+
+        buildStatsPanel(labels, inputs);
+    }
 	private void createGraphicsPanel() {
 		buildAnimationsPanel();
+	}
+
+	public static void main(String[] args) {
+		JFrame frame = new JFrame("Test InternalJFrame");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.add(new EnemyEditor(null));
+		frame.setSize(440, 360);
+		frame.setVisible(true);
 	}
 
 }

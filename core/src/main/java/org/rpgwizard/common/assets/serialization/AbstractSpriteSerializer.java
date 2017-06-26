@@ -21,8 +21,9 @@ public abstract class AbstractSpriteSerializer extends AbstractJsonSerializer {
 			throws AssetException {
 		sprite.setName(json.getString("name"));
 		sprite.setFrameRate(json.optDouble("frameRate"));
-		sprite.setGraphics(deserializeMap(json.getJSONObject("graphics")));
-		sprite.setAnimations(deserializeMap(json.getJSONObject("animations")));
+		sprite.setGraphics(deserializeStringMap(json.getJSONObject("graphics")));
+		sprite.setAnimations(deserializeStringMap(json
+				.getJSONObject("animations")));
 
 		sprite.setBaseVector(
 				deserializeSpriteVector(json.optJSONObject("baseVector")),

@@ -18,8 +18,8 @@ import org.rpgwizard.common.assets.BoardVector;
 import org.rpgwizard.common.assets.NPC;
 import org.rpgwizard.common.assets.Character;
 import org.rpgwizard.common.assets.Enemy;
-import org.rpgwizard.editor.editors.EnemyModelPanel;
-import org.rpgwizard.editor.editors.NPCModelPanel;
+import org.rpgwizard.editor.editors.enemy.EnemyModelPanel;
+import org.rpgwizard.editor.editors.npc.NPCModelPanel;
 import org.rpgwizard.editor.editors.animation.AnimationModelPanel;
 import org.rpgwizard.editor.editors.character.CharacterModelPanel;
 

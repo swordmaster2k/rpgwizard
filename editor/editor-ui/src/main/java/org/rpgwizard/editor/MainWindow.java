@@ -941,6 +941,9 @@ public class MainWindow extends JFrame implements InternalFrameListener {
     public void setupProject(Project project) {
         closeEditors();
         activeProject = project;
+        
+        // Will create any missing directories.
+        FileTools.createAssetDirectories(System.getProperty("project.path"));
 
         ProjectEditor projectEditor = new ProjectEditor(this.activeProject);
         this.desktopPane.add(projectEditor, BorderLayout.CENTER);

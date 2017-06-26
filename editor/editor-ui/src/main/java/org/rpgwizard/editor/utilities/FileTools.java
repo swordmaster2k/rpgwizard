@@ -55,14 +55,20 @@ public final class FileTools {
 		boolean result = true;
 
 		result &= createDirectory(path + File.separator + projectName);
-
-		for (String directory : CoreProperties.getDirectories()) {
-			result &= createDirectory(path + File.separator + projectName
-					+ File.separator + directory);
-		}
+                result &= createAssetDirectories(path + File.separator + projectName);
 
 		return result;
 	}
+        
+        public static boolean createAssetDirectories(String path) {
+            boolean result = true;
+            
+            for (String directory : CoreProperties.getDirectories()) {
+                    result &= createDirectory(path + File.separator + directory);
+            }
+            
+            return result;
+        }
 
 	private static boolean createDirectory(String path) {
 		File directory = new File(path);

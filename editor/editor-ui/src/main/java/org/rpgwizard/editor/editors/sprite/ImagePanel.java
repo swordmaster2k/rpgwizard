@@ -96,7 +96,6 @@ public class ImagePanel extends AbstractImagePanel {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getClickCount() == 2) {
-			MainWindow mainWindow = MainWindow.getInstance();
 			File imageFile = EditorFileManager.browseLocationBySubdir(
 					EditorFileManager.getGraphicsSubdirectory(),
 					EditorFileManager.getImageFilterDescription(),

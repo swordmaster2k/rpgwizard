@@ -59,6 +59,7 @@ public class AssetSerializerTest {
         assetManager.registerSerializer(new JsonProjectSerializer());
         assetManager.registerSerializer(new JsonSpecialMoveSerializer());
         assetManager.registerSerializer(new JsonEnemySerializer());
+        assetManager.registerSerializer(new JsonItemSerializer());
         assetManager.registerSerializer(new JsonNPCSerializer());
         assetManager.registerSerializer(new TextProgramSerializer());
         assetManager.registerSerializer(new JsonTileSetSerializer());

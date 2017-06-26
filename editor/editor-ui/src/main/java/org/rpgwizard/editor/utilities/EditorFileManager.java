@@ -31,6 +31,7 @@ import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.ui.SingleRootFileSystemView;
 import org.apache.commons.io.FileUtils;
+import org.rpgwizard.common.assets.Item;
 
 /**
  *
@@ -104,6 +105,8 @@ public class EditorFileManager {
 			return CoreProperties.getProperty("toolkit.directory.board");
 		} else if (type == Enemy.class) {
 			return CoreProperties.getProperty("toolkit.directory.enemy");
+                } else if (type == Item.class) {
+                    return CoreProperties.getProperty("toolkit.directory.item");
 		} else if (type == NPC.class) {
 			return CoreProperties.getProperty("toolkit.directory.npc");
 		} else if (type == Character.class) {
@@ -133,6 +136,8 @@ public class EditorFileManager {
 			return "Boards";
 		} else if (type == Enemy.class) {
 			return "Enemies";
+                } else if (type == Item.class) {
+                    return "Items";
 		} else if (type == NPC.class) {
 			return "NPCs";
 		} else if (type == Character.class) {
@@ -171,7 +176,10 @@ public class EditorFileManager {
 		} else if (type == Enemy.class) {
 			return new String[]{CoreProperties
 					.getProperty("toolkit.enemy.extension.default")};
-		} else if (type == NPC.class) {
+		} else if (type == Item.class) {
+			return new String[]{CoreProperties
+					.getProperty("toolkit.item.extension.default")};
+                } else if (type == NPC.class) {
 			return new String[]{CoreProperties
 					.getProperty("toolkit.npc.extension.default")};
 		} else if (type == Character.class) {

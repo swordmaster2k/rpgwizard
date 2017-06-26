@@ -47,6 +47,7 @@ public class CoreProperties {
       properties.getProperty("toolkit.directory.board"),
       properties.getProperty("toolkit.directory.character"),
       properties.getProperty("toolkit.directory.enemy"),
+      properties.getProperty("toolkit.directory.item"),
       properties.getProperty("toolkit.directory.npc"),
       properties.getProperty("toolkit.directory.sounds"),
       properties.getProperty("toolkit.directory.animations"),

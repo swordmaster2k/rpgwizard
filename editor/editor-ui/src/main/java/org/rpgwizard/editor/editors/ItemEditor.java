@@ -43,6 +43,7 @@ import org.rpgwizard.editor.utilities.GuiHelper;
  */
 public class ItemEditor extends AssetEditorWindow {
 
+        private final int DESCRIPTION_INPUT_COLUMNS = 30;
 	private final int DESCRIPTION_INPUT_ROWS = 5;
 
 	private final Item item;
@@ -158,7 +159,7 @@ public class ItemEditor extends AssetEditorWindow {
         }
 
         description = new JTextArea(item.getDescription());
-        description.setColumns(DEFAULT_INPUT_COLUMNS);
+        description.setColumns(DESCRIPTION_INPUT_COLUMNS);
         description.setRows(DESCRIPTION_INPUT_ROWS);
         description.getDocument().addDocumentListener(new DocumentListener() {
             @Override

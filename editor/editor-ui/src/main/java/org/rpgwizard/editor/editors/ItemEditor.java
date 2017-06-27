@@ -9,7 +9,6 @@ package org.rpgwizard.editor.editors;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Image;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +27,11 @@ import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.Item;
 import static org.rpgwizard.editor.editors.sprite.AbstractSpriteEditor.DEFAULT_INPUT_COLUMNS;
-import org.rpgwizard.editor.editors.sprite.ImagePanel;
+import org.rpgwizard.editor.ui.ImagePanel;
 import org.rpgwizard.editor.ui.AssetEditorWindow;
 import org.rpgwizard.editor.ui.DoubleField;
 import org.rpgwizard.editor.ui.IntegerField;
+import org.rpgwizard.editor.ui.listeners.ImagePanelChangeListener;
 import org.rpgwizard.editor.ui.resources.Icons;
 import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.rpgwizard.editor.utilities.GuiHelper;
@@ -157,6 +157,10 @@ public class ItemEditor extends AssetEditorWindow {
             icon.addImage(new File(EditorFileManager.getGraphicsPath()
                     + item.getIcon()));
         }
+        icon.addImageListener(() -> {
+            item.setIcon(icon.getImagePath());
+            setNeedSave(true);
+        });
 
         description = new JTextArea(item.getDescription());
         description.setColumns(DESCRIPTION_INPUT_COLUMNS);

@@ -7,6 +7,7 @@
  */
 package org.rpgwizard.editor.editors.sprite;
 
+import org.rpgwizard.editor.ui.ImagePanel;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;

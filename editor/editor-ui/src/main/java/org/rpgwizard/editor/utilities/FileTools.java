@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015, rpgtoolkit.net <help@rpgtoolkit.net>
+ * Copyright (c) 2015, rpgwizard.org, some files forked from rpgtoolkit.net <info@rpgwizard.org>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -55,20 +55,20 @@ public final class FileTools {
 		boolean result = true;
 
 		result &= createDirectory(path + File.separator + projectName);
-                result &= createAssetDirectories(path + File.separator + projectName);
+		result &= createAssetDirectories(path + File.separator + projectName);
 
 		return result;
 	}
-        
-        public static boolean createAssetDirectories(String path) {
-            boolean result = true;
-            
-            for (String directory : CoreProperties.getDirectories()) {
-                    result &= createDirectory(path + File.separator + directory);
-            }
-            
-            return result;
-        }
+
+	public static boolean createAssetDirectories(String path) {
+		boolean result = true;
+
+		for (String directory : CoreProperties.getDirectories()) {
+			result &= createDirectory(path + File.separator + directory);
+		}
+
+		return result;
+	}
 
 	private static boolean createDirectory(String path) {
 		File directory = new File(path);

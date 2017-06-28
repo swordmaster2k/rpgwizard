@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015, rpgtoolkit.net <help@rpgtoolkit.net>
+ * Copyright (c) 2015, rpgwizard.org, some files forked from rpgtoolkit.net <info@rpgwizard.org>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -51,8 +51,8 @@ public class EditorFactory {
 		} else if (asset instanceof Enemy) {
 			return new EnemyEditor((Enemy) asset);
 		} else if (asset instanceof Item) {
-                    return new ItemEditor((Item) asset);
-                } else if (asset instanceof NPC) {
+			return new ItemEditor((Item) asset);
+		} else if (asset instanceof NPC) {
 			return new NPCEditor((NPC) asset);
 		} else if (asset instanceof Character) {
 			return new CharacterEditor((Character) asset);

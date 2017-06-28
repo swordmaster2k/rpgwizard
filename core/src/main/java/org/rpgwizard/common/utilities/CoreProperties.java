@@ -79,8 +79,8 @@ public class CoreProperties {
 			return getFullExtension("toolkit.board.extension.default");
 		} else if (type == Enemy.class) {
 			return getFullExtension("toolkit.enemy.extension.default");
-                } else if (type == Item.class) {
-                    return getFullExtension("toolkit.item.extension.default");
+		} else if (type == Item.class) {
+			return getFullExtension("toolkit.item.extension.default");
 		} else if (type == NPC.class) {
 			return getFullExtension("toolkit.npc.extension.default");
 		} else if (type == Character.class) {

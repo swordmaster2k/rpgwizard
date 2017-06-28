@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015, rpgtoolkit.net <help@rpgtoolkit.net>
+ * Copyright (c) 2015, rpgwizard.org, some files forked from rpgtoolkit.net <info@rpgwizard.org>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -35,7 +35,7 @@ public final class FileMenu extends JMenu implements ActionListener {
 	private JMenuItem newBoardMenuItem;
 	private JMenuItem newCharacterMenuItem;
 	private JMenuItem newEnemyMenuItem;
-        private JMenuItem newItemMenuItem;
+	private JMenuItem newItemMenuItem;
 	private JMenuItem newNPCMenuItem;
 	private JMenuItem newProgramMenuItem;
 	private JMenuItem newTilesetMenuItem;
@@ -119,8 +119,8 @@ public final class FileMenu extends JMenu implements ActionListener {
 		} else if (e.getSource() == newEnemyMenuItem) {
 			MainWindow.getInstance().createNewEnemy();
 		} else if (e.getSource() == newItemMenuItem) {
-                    MainWindow.getInstance().createNewItem();
-                } else if (e.getSource() == newNPCMenuItem) {
+			MainWindow.getInstance().createNewItem();
+		} else if (e.getSource() == newNPCMenuItem) {
 			MainWindow.getInstance().createNewNPC();
 		} else if (e.getSource() == newProgramMenuItem) {
 			MainWindow.getInstance().createNewProgram();
@@ -138,7 +138,7 @@ public final class FileMenu extends JMenu implements ActionListener {
 		newBoardMenuItem.setEnabled(true);
 		newCharacterMenuItem.setEnabled(true);
 		newEnemyMenuItem.setEnabled(true);
-                newItemMenuItem.setEnabled(true);
+		newItemMenuItem.setEnabled(true);
 		newNPCMenuItem.setEnabled(true);
 		newProgramMenuItem.setEnabled(true);
 		newTilesetMenuItem.setEnabled(true);
@@ -167,7 +167,7 @@ public final class FileMenu extends JMenu implements ActionListener {
 		configureNewBoardMenuItem();
 		configureNewCharacterMenuItem();
 		configureNewEnemyMenuItem();
-                configureNewItemMenuItem();
+		configureNewItemMenuItem();
 		configureNewNPCMenuItem();
 		configureNewProgramMenuItem();
 		configureNewTilesetMenuItem();
@@ -178,7 +178,7 @@ public final class FileMenu extends JMenu implements ActionListener {
 		newMenu.add(newBoardMenuItem);
 		newMenu.add(newCharacterMenuItem);
 		newMenu.add(newEnemyMenuItem);
-                newMenu.add(newItemMenuItem);
+		newMenu.add(newItemMenuItem);
 		newMenu.add(newNPCMenuItem);
 		newMenu.add(newProgramMenuItem);
 		newMenu.add(newTilesetMenuItem);
@@ -230,8 +230,8 @@ public final class FileMenu extends JMenu implements ActionListener {
 		newEnemyMenuItem.addActionListener(this);
 		newEnemyMenuItem.setIcon(Icons.getSmallIcon("new-enemy"));
 	}
-        
-        private void configureNewItemMenuItem() {
+
+	private void configureNewItemMenuItem() {
 		newItemMenuItem = new JMenuItem("New Item");
 		newItemMenuItem.setEnabled(false);
 		newItemMenuItem.addActionListener(this);

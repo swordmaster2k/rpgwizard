@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015, rpgtoolkit.net <help@rpgtoolkit.net>
+ * Copyright (c) 2015, rpgwizard.org, some files forked from rpgtoolkit.net <info@rpgwizard.org>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -105,8 +105,8 @@ public class EditorFileManager {
 			return CoreProperties.getProperty("toolkit.directory.board");
 		} else if (type == Enemy.class) {
 			return CoreProperties.getProperty("toolkit.directory.enemy");
-                } else if (type == Item.class) {
-                    return CoreProperties.getProperty("toolkit.directory.item");
+		} else if (type == Item.class) {
+			return CoreProperties.getProperty("toolkit.directory.item");
 		} else if (type == NPC.class) {
 			return CoreProperties.getProperty("toolkit.directory.npc");
 		} else if (type == Character.class) {
@@ -136,8 +136,8 @@ public class EditorFileManager {
 			return "Boards";
 		} else if (type == Enemy.class) {
 			return "Enemies";
-                } else if (type == Item.class) {
-                    return "Items";
+		} else if (type == Item.class) {
+			return "Items";
 		} else if (type == NPC.class) {
 			return "NPCs";
 		} else if (type == Character.class) {
@@ -179,7 +179,7 @@ public class EditorFileManager {
 		} else if (type == Item.class) {
 			return new String[]{CoreProperties
 					.getProperty("toolkit.item.extension.default")};
-                } else if (type == NPC.class) {
+		} else if (type == NPC.class) {
 			return new String[]{CoreProperties
 					.getProperty("toolkit.npc.extension.default")};
 		} else if (type == Character.class) {

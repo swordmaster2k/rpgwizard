@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015, rpgtoolkit.net <help@rpgtoolkit.net>
+ * Copyright (c) 2015, rpgwizard.org, some files forked from rpgtoolkit.net <info@rpgwizard.org>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -82,7 +82,7 @@ public class Driver {
 		assetManager.registerSerializer(new JsonProjectSerializer());
 		assetManager.registerSerializer(new JsonSpecialMoveSerializer());
 		assetManager.registerSerializer(new JsonEnemySerializer());
-                assetManager.registerSerializer(new JsonItemSerializer());
+		assetManager.registerSerializer(new JsonItemSerializer());
 		assetManager.registerSerializer(new JsonNPCSerializer());
 		assetManager.registerSerializer(new TextProgramSerializer());
 		assetManager.registerSerializer(new JsonTileSetSerializer());

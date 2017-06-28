@@ -7,6 +7,9 @@
  */
 package org.rpgwizard.common.assets;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Character extends AbstractSprite {
 
 	private int level;
@@ -21,17 +24,31 @@ public class Character extends AbstractSprite {
 	private double maxDefence;
 	private double magic;
 	private double maxMagic;
+	private int gold;
+	private Map<String, String> equipment;
+	private Map<String, String> inventory;
 
 	/**
 	 * Opens a player from an existing file
 	 *
 	 * @param descriptor
-	 *            Character (.tem) file to open
+	 *            Character (.character) file to open
 	 */
 	public Character(AssetDescriptor descriptor) {
 		super(descriptor);
+                
+                equipment = new HashMap<>();
+                equipment.put(Equipment.HEAD.toString(), "");
+                equipment.put(Equipment.CHEST.toString(), "");
+                equipment.put(Equipment.RIGHT_HAND.toString(), "");
+                equipment.put(Equipment.LEFT_HAND.toString(), "");
+                equipment.put(Equipment.BOOTS.toString(), "");
+                equipment.put(Equipment.GLOVES.toString(), "");
+                equipment.put(Equipment.ACCESSORY_1.toString(), "");
+                equipment.put(Equipment.ACCESSORY_2.toString(), "");
+                
+                inventory = new HashMap<>();
 	}
-
 	public int getLevel() {
 		return level;
 	}
@@ -128,9 +145,33 @@ public class Character extends AbstractSprite {
 		this.maxMagic = maxMagic;
 	}
 
+	public int getGold() {
+		return gold;
+	}
+
+	public void setGold(int gold) {
+		this.gold = gold;
+	}
+
+	public Map<String, String> getEquipment() {
+		return equipment;
+	}
+
+	public void setEquipment(Map<String, String> equipment) {
+		this.equipment = equipment;
+	}
+
+	public Map<String, String> getInventory() {
+		return inventory;
+	}
+
+	public void setInventory(Map<String, String> inventory) {
+		this.inventory = inventory;
+	}
+
 	@Override
 	public void reset() {
-		throw new UnsupportedOperationException("Not supported yet.");
+
 	}
 
 }

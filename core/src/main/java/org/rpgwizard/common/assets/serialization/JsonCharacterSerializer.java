@@ -52,6 +52,19 @@ public class JsonCharacterSerializer extends AbstractSpriteSerializer {
 		player.setMagic(json.getDouble("magic"));
 		player.setMaxMagic(json.getDouble("maxMagic"));
 
+		// Version 1.1.0
+		if (json.has("gold")) {
+			player.setGold(json.getInt("gold"));
+		}
+		if (json.has("equipment")) {
+			player.setEquipment(deserializeStringMap(json
+					.getJSONObject("equipment")));
+		}
+		if (json.has("inventory")) {
+			player.setInventory(deserializeStringMap(json
+					.getJSONObject("inventory")));
+		}
+
 		handle.setAsset(player);
 	}
 
@@ -73,6 +86,11 @@ public class JsonCharacterSerializer extends AbstractSpriteSerializer {
 		json.put("maxDefence", player.getMaxDefence());
 		json.put("magic", player.getMagic());
 		json.put("maxMagic", player.getMaxMagic());
+
+		// Version 1.1.0
+		json.put("gold", player.getGold());
+		json.put("equipment", serializeMap(player.getEquipment()));
+		json.put("inventory", serializeMap(player.getInventory()));
 	}
 
 }

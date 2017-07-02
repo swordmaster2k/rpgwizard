@@ -42,6 +42,7 @@ public class JsonItemSerializer extends AbstractJsonSerializer {
 		item.setName(json.getString("name"));
 		item.setIcon(json.getString("icon"));
 		item.setDescription(json.getString("description"));
+		item.setType(json.getString("type"));
 		item.setPrice(json.getInt("price"));
 
 		Map<String, Integer> effects = deserializeIntegerMap(json
@@ -64,6 +65,7 @@ public class JsonItemSerializer extends AbstractJsonSerializer {
 		json.put("name", item.getName());
 		json.put("icon", serializePath(item.getIcon()));
 		json.put("description", item.getDescription());
+		json.put("type", item.getType());
 		json.put("price", item.getPrice());
 
 		final JSONObject effects = new JSONObject();

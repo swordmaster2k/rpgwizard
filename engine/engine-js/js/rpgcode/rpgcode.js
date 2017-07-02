@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-/* global rpgwizard, rpgcode, PATH_PROGRAM */
+/* global rpgwizard, rpgcode, PATH_PROGRAM, PATH_ITEM */
 
 var rpgcode = null; // Setup inside of the engine.
 
@@ -50,7 +50,15 @@ function RPGcode() {
         background: null,
         paddingX: 5,
         paddingY: 5,
-        position: "SOUTH"
+        position: "SOUTH",
+        profileDimensions: {
+            width: 100,
+            height: 100
+        },
+        dialogDimensions: {
+            width: Crafty.viewport.width - 100,
+            height: 100
+        }
     };
 }
 
@@ -710,6 +718,30 @@ RPGcode.prototype.getViewport = function () {
 };
 
 /**
+ * Gives an item to a character, placing it in their inventory. 
+ * 
+ * @param {String} filename
+ * @param {String} characterId
+ * @param {Callback} callback Invoked when the item has finished loading assets.
+ * @returns {undefined}
+ */
+RPGcode.prototype.giveItem = function (filename, characterId, callback) {
+    var item = new Item(PATH_ITEM + filename);
+
+    rpgwizard.loadItem(item);
+    rpgwizard.loadCraftyAssets(function (e) {
+        if (!e) {
+            callback();
+        }
+    });
+
+    if (!rpgwizard.craftyCharacter.character.inventory[filename]) {
+        rpgwizard.craftyCharacter.character.inventory[filename] = [];
+    }
+    rpgwizard.craftyCharacter.character.inventory[filename].push(item);
+};
+
+/**
  * Hits the character dealing the requested damage while playing the corresponding
  * animation. Optionally a callback can be invoked when the hit animation
  * has finished playing.
@@ -888,6 +920,25 @@ RPGcode.prototype.moveSprite = function (spriteId, direction, distance) {
                 Crafty.trigger("Invalidate");
             }
     }
+};
+
+/**
+ * Measures text as it would appear on a canvas using the current font, returning
+ * the width and height of the text in pixels.
+ * 
+ * @example
+ * var dimensions = rpgcode.measureText("Hello world");
+ * rpgcode.log(dimensions.width);
+ * rpgcode.log(dimensions.height);
+ * 
+ * @param {String} text
+ * @returns {Object} An object containing the width and height of the text.
+ */
+RPGcode.prototype.measureText = function (text) {
+    var instance = rpgcode.canvases["renderNowCanvas"];
+    var context = instance.canvas.getContext("2d");
+    context.font = rpgcode.font;
+    return {width: context.measureText(text).width, height: parseInt(context.font)};
 };
 
 /**
@@ -1371,6 +1422,23 @@ RPGcode.prototype.setImage = function (fileName, x, y, width, height, canvasId) 
 };
 
 /**
+ * Sets the dialog box's profile and text area dimensions.
+ * 
+ * @example
+ * // Set the profile picture to use and the background dialog image.
+ * var profileDimensions = {width: 100, height: 100};
+ * var dialogDimensions = {width: 640, height: 480};
+ * rpgcode.setDialogDimensions(profileDimensions, dialogDimensions);
+ * 
+ * @param {Object} profileDimensions Dimensions object containing a width and height.
+ * @param {Object} dialogDimensions Dimensions object containing a width and height.
+ */
+RPGcode.prototype.setDialogDimensions = function (profileDimensions, dialogDimensions) {
+    rpgcode.dialogWindow.profileDimensions = profileDimensions;
+    rpgcode.dialogWindow.dialogDimensions = dialogDimensions;
+};
+
+/**
  * Sets the dialog box's speaker profile image and the background image.
  * 
  * @example
@@ -1563,22 +1631,32 @@ RPGcode.prototype.setCharacterStance = function (characterId, stanceId) {
  */
 RPGcode.prototype.showDialog = function (dialog) {
     var dialogWindow = rpgcode.dialogWindow;
+    var fullWidth = dialogWindow.profileDimensions.width + dialogWindow.dialogDimensions.width;
 
     if (!dialogWindow.visible) {
         var x1, y1, x2, y2;
         if (dialogWindow.position === rpgcode.dialogPosition.NORTH) {
             // Draw from the top left.
-            x1 = y1 = y2 = 0;
-            x2 = 100;
+            x1 = Math.round((rpgcode.getViewport().width - fullWidth) / 2);
+            x2 = x1 + dialogWindow.profileDimensions.width;
+            y1 = y2 = 0;
         } else {
             // Draw from the bottom left.
-            x1 = 0;
-            y1 = Crafty.viewport.height - 100;
-            x2 = 100;
+            x1 = Math.round((rpgcode.getViewport().width - fullWidth) / 2);
+            x2 = x1 + dialogWindow.profileDimensions.width;
+            y1 = Crafty.viewport.height - dialogWindow.profileDimensions.width;
             y2 = y1;
         }
-        rpgcode.setImage(dialogWindow.profile, x1, y1, 100, 100);
-        rpgcode.setImage(dialogWindow.background, x2, y2, 540, 100);
+        rpgcode.setImage(
+                dialogWindow.profile, x1, y1, 
+                dialogWindow.profileDimensions.width, 
+                dialogWindow.profileDimensions.width
+        );
+        rpgcode.setImage(
+                dialogWindow.background, x2, y2, 
+                dialogWindow.dialogDimensions.width, 
+                dialogWindow.dialogDimensions.height
+        );
         dialogWindow.visible = true;
     }
 
@@ -1600,6 +1678,23 @@ RPGcode.prototype.stopSound = function (file) {
         Crafty.audio.stop(file);
     } else {
         Crafty.audio.stop();
+    }
+};
+
+/**
+ * Takes the item from the specified character's inventory.
+ * 
+ * @param {String} filename The filename of the item.
+ * @param {String} characterId The character to remove it from.
+ * @returns {undefined}
+ */
+RPGcode.prototype.takeItem = function (filename, characterId) {
+    var inventory = rpgwizard.craftyCharacter.character.inventory;
+    if (inventory[filename]) {
+        inventory[filename].pop();
+        if (inventory[filename].length === 0) {
+            delete inventory[filename];
+        }
     }
 };
 

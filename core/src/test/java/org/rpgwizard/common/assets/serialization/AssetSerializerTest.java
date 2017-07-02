@@ -423,6 +423,7 @@ public class AssetSerializerTest {
         Assert.assertEquals("Sword", asset.getName());
         Assert.assertEquals("Sword/sword_icon.png", asset.getIcon());
         Assert.assertEquals("The sword of evil's bane.", asset.getDescription());
+        Assert.assertEquals("sword", asset.getType());
         Assert.assertEquals(100, asset.getPrice());
         Assert.assertEquals(0.0, asset.getHealthEffect(), 0.0);
         Assert.assertEquals(100.0, asset.getAttackEffect(), 0.0);

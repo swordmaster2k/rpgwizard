@@ -16,6 +16,7 @@ public class Item extends AbstractAsset {
 	private String name;
 	private String icon;
 	private String description;
+	private String type;
 	private int price;
 
 	private double healthEffect;
@@ -50,6 +51,14 @@ public class Item extends AbstractAsset {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public int getPrice() {
@@ -96,6 +105,7 @@ public class Item extends AbstractAsset {
 		name = "";
 		icon = "";
 		description = "";
+		type = "";
 		price = 0;
 
 		healthEffect = 0.0;

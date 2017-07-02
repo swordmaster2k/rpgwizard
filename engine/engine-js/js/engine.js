@@ -583,6 +583,13 @@ RPGWizard.prototype.loadSprite = function (sprite) {
     return entity;
 };
 
+RPGWizard.prototype.loadItem = function (item) {
+    console.info("Loading item=[%s]", JSON.stringify(item));
+    
+    var assets = item.load();
+    this.queueCraftyAssets(assets, item);
+};
+
 RPGWizard.prototype.openProgram = function (filename) {
     console.info("Opening program=[%s]", filename);
 

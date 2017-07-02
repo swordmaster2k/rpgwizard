@@ -2,6 +2,7 @@
    "name":"Sword",
    "icon":"Sword/sword_icon.png",
    "description":"The sword of evil's bane.",
+   "type": "sword",
    "price":100,
    "effects":{
       "health":0.0,

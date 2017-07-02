@@ -57,6 +57,7 @@ public class ItemEditor extends AssetEditorWindow {
 	private JTextField name;
 	private ImagePanel icon;
 	private JTextArea description;
+	private JTextField type;
 	private IntegerField price;
 
 	private JPanel effectsTab;
@@ -128,6 +129,7 @@ public class ItemEditor extends AssetEditorWindow {
         labels.add(new JLabel("Name"));
         labels.add(new JLabel("Icon (48x48)"));
         labels.add(new JLabel("Description"));
+        labels.add(new JLabel("Type"));
         labels.add(new JLabel("Price"));
 
         name = new JTextField(item.getName());
@@ -165,6 +167,8 @@ public class ItemEditor extends AssetEditorWindow {
         description = new JTextArea(item.getDescription());
         description.setColumns(DESCRIPTION_INPUT_COLUMNS);
         description.setRows(DESCRIPTION_INPUT_ROWS);
+        description.setLineWrap(true);
+        description.setWrapStyleWord(true);
         description.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void changedUpdate(DocumentEvent e) {
@@ -181,6 +185,28 @@ public class ItemEditor extends AssetEditorWindow {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 item.setDescription(description.getText());
+                setNeedSave(true);
+            }
+        });
+        
+        type = new JTextField(item.getType());
+        type.setColumns(DEFAULT_INPUT_COLUMNS);
+        type.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                item.setType(type.getText());
+                setNeedSave(true);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                item.setType(type.getText());
+                setNeedSave(true);
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                item.setType(type.getText());
                 setNeedSave(true);
             }
         });
@@ -211,6 +237,7 @@ public class ItemEditor extends AssetEditorWindow {
         inputs.add(name);
         inputs.add(icon);
         inputs.add(description);
+        inputs.add(type);
         inputs.add(price);
 
         buildGeneralTab(labels, inputs);

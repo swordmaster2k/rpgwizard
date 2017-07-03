@@ -51,6 +51,7 @@ public class Html5EnginePlugin extends Plugin {
 	@Extension
 	public static class Html5Engine implements Engine {
 
+		@Override
 		public void run(String projectName, File projectCopy,
 				ProgressMonitor progressMonitor) throws Exception {
 			embedEngine(projectName, projectCopy, progressMonitor);
@@ -64,10 +65,12 @@ public class Html5EnginePlugin extends Plugin {
 			progressMonitor.setProgress(100);
 		}
 
+		@Override
 		public void stop() throws Exception {
 			ENGINE_RUNNABLE.stop();
 		}
 
+		@Override
 		public void stop(ProgressMonitor progressMonitor) throws Exception {
 			ENGINE_RUNNABLE.stop();
 			progressMonitor.setProgress(50);

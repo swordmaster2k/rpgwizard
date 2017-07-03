@@ -854,6 +854,47 @@ RPGcode.prototype.loadAssets = function (assets, onLoad) {
 };
 
 /**
+ * Loads the requested JSON file data from the requested path and returns the
+ * JSON text as it appears in the file.
+ * 
+ * @example
+ * rpgcode.loadJSON(
+ *      "Boards/start.board", 
+ *      function(response) {
+ *          // Success callback.
+ *          console.log(response);
+ *      }, 
+ *      function(response) {
+ *          // Failure callback.
+ *          console.log(response);
+ *      }
+ *  );
+ * 
+ * @param {String} path File path to read from.
+ * @param {Callback} successCallback Invoked if the load succeeded.
+ * @param {Callback} failureCallback Invoked if the load failed.
+ * @returns {undefined}
+ */
+RPGcode.prototype.loadJSON = function (path, successCallback, failureCallback) {
+    var data = JSON.stringify({
+        "path": path
+    });
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+    xhr.addEventListener("readystatechange", function () {
+        if (this.readyState === 4 && this.status === 200) {
+            successCallback(this.responseText);
+        } else {
+            failureCallback(this.responseText);
+        }
+    });
+    xhr.open("POST", "http://localhost:8080/engine/load");
+    xhr.setRequestHeader("content-type", "application/json");
+    xhr.setRequestHeader("cache-control", "no-cache");
+    xhr.send(data);
+};
+
+/**
  * Log a message to the console.
  * 
  * @example 
@@ -1343,6 +1384,49 @@ RPGcode.prototype.setCanvasPosition = function (x, y, canvasId) {
 };
 
 /**
+ * Saves the requested JSON data to the file specified, if the file does not
+ * exist it is created. If the file does exist it is overwritten.
+ * 
+ * @example
+ * rpgcode.saveJSON(
+ *  {
+ *      path: "Boards/start2.board", // Subdirectory and file to save.
+ *      data: {"Test": "Hello world!"} // JSON data to store.
+ *  },
+ *  function(response) {
+ *     // Success callback.
+ *     console.log(success);
+ *     rpgcode.endProgram();
+ *  }, 
+ *  function(response) {
+ *     // Failure callback.
+ *     console.log(response);
+ *     rpgcode.endProgram();
+ *  }
+ * );
+ * 
+ * @param {Object} data JSON object containing path and data properties.
+ * @param {Callback} successCallback Invoked if the file save succeeded.
+ * @param {Callback} failureCallback Invoked if the file save failed.
+ * @returns {undefined}
+ */
+RPGcode.prototype.saveJSON = function (data, successCallback, failureCallback) {
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+    xhr.addEventListener("readystatechange", function () {
+        if (this.readyState === 4 && this.status === 200) {
+            successCallback(this.responseText);
+        } else {
+            failureCallback(this.responseText);
+        }
+    });
+    xhr.open("POST", "http://localhost:8080/engine/save");
+    xhr.setRequestHeader("content-type", "application/json");
+    xhr.setRequestHeader("cache-control", "no-cache");
+    xhr.send(JSON.stringify(data));  
+};
+
+/**
  * Sends the character to a board and places them at the given (x, y) position in tiles.
  * 
  * @example
@@ -1648,15 +1732,15 @@ RPGcode.prototype.showDialog = function (dialog) {
             y2 = y1;
         }
         rpgcode.setImage(
-                dialogWindow.profile, x1, y1, 
-                dialogWindow.profileDimensions.width, 
+                dialogWindow.profile, x1, y1,
+                dialogWindow.profileDimensions.width,
                 dialogWindow.profileDimensions.width
-        );
+                );
         rpgcode.setImage(
-                dialogWindow.background, x2, y2, 
-                dialogWindow.dialogDimensions.width, 
+                dialogWindow.background, x2, y2,
+                dialogWindow.dialogDimensions.width,
                 dialogWindow.dialogDimensions.height
-        );
+                );
         dialogWindow.visible = true;
     }
 

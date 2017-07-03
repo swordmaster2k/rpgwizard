@@ -9,9 +9,13 @@ package org.rpgwizard.html5.engine.plugin;
 
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
+import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.servlet.ServletContainer;
+import org.rpgwizard.html5.engine.plugin.rest.EngineRestService;
 
 /**
  *
@@ -32,6 +36,15 @@ public class EngineRunnable implements Runnable {
 		server = new Server(8080);
 		server.setStopAtShutdown(true);
 
+		EngineRestService restService = new EngineRestService(resourceBase);
+		ResourceConfig resourceConfig = new ResourceConfig();
+		resourceConfig.register(restService);
+
+		ServletContainer servletContainer = new ServletContainer(resourceConfig);
+		ServletHolder servletHolder = new ServletHolder(servletContainer);
+		ServletContextHandler restHandler = new ServletContextHandler();
+		restHandler.addServlet(servletHolder, "/*");
+
 		ResourceHandler resourceHandler = new ResourceHandler();
 		resourceHandler.setDirectoriesListed(true);
 		resourceHandler.setWelcomeFiles(new String[]{"index.html"});
@@ -39,7 +52,7 @@ public class EngineRunnable implements Runnable {
 		resourceHandler.setResourceBase(resourceBase);
 
 		HandlerList handlers = new HandlerList();
-		handlers.setHandlers(new Handler[]{resourceHandler});
+		handlers.setHandlers(new Handler[]{resourceHandler, restHandler});
 		server.setHandler(handlers);
 
 		try {
@@ -52,6 +65,12 @@ public class EngineRunnable implements Runnable {
 
 	public void stop() throws Exception {
 		server.stop();
+	}
+
+	public static void main(String[] args) {
+		EngineRunnable runnable = new EngineRunnable(
+				"C:/Users/user/Desktop/Test");
+		runnable.run();
 	}
 
 }

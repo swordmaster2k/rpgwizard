@@ -69,7 +69,12 @@ public class EngineRestService {
                         + object.getString("path")
                 );
                 
-                FileUtils.writeStringToFile(targetPath, object.getJSONObject("data").toString(), false);
+                switch (object.getString("type").toLowerCase()) {
+                    case "board":
+                    default:
+                        FileUtils.writeStringToFile(targetPath, object.getJSONObject("data").toString(), false);
+                }
+                
                 return Response.status(Status.OK).build();
             } catch (IOException | JSONException ex) {
                 Logger.getLogger(EngineRestService.class.getName()).log(Level.SEVERE, null, ex);

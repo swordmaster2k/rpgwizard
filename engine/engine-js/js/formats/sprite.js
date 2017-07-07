@@ -108,9 +108,21 @@ Sprite.prototype.loadAnimations = function () {
     this.spriteGraphics.east = this._loadAnimation(this.animations[standardKeys[2]]);
     this.spriteGraphics.west = this._loadAnimation(this.animations[standardKeys[3]]);
     this.spriteGraphics.northEast = this._loadAnimation(this.animations[standardKeys[4]]);
+    if (this.spriteGraphics.northEast === null) {
+        this.spriteGraphics.northEast = this.spriteGraphics.east;
+    }
     this.spriteGraphics.northWest = this._loadAnimation(this.animations[standardKeys[5]]);
+    if (this.spriteGraphics.northWest === null) {
+        this.spriteGraphics.northWest = this.spriteGraphics.west;
+    }
     this.spriteGraphics.southEast = this._loadAnimation(this.animations[standardKeys[6]]);
+    if (this.spriteGraphics.southEast === null) {
+        this.spriteGraphics.southEast = this.spriteGraphics.east; 
+    }
     this.spriteGraphics.southWest = this._loadAnimation(this.animations[standardKeys[7]]);
+    if (this.spriteGraphics.southWest === null) {
+        this.spriteGraphics.southWest = this.spriteGraphics.west; 
+    }
     this.spriteGraphics.attack = this._loadAnimation(this.animations[standardKeys[8]]);
     this.spriteGraphics.defend = this._loadAnimation(this.animations[standardKeys[9]]);
     this.spriteGraphics.specialMove = this._loadAnimation(this.animations[standardKeys[10]]);
@@ -248,7 +260,7 @@ Sprite.prototype.changeGraphics = function (direction) {
             break;
         case "NORTH_EAST":
         case this.DirectionEnum.NORTH_EAST:
-            this.spriteGraphics.active = this.grapics.northEast;
+            this.spriteGraphics.active = this.spriteGraphics.northEast;
             break;
         case "NORTH_WEST":
         case this.DirectionEnum.NORTH_WEST:

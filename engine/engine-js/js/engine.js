@@ -380,17 +380,11 @@ RPGWizard.prototype.loadBoard = function (board) {
             var events = vector.events;
 
             var len = points.length;
-            for (var i = 0; i < len - 1; i++) {
-                this.createVector(points[i].x, points[i].y,
-                        points[i + 1].x, points[i + 1].y,
-                        layer, type, events);
+            var collision = [];
+            for (var i = 0; i < len; i++) {
+                collision.push(points[i].x, points[i].y);
             }
-            if (vector.isClosed) {
-                this.createVector(
-                        points[0].x, points[0].y,
-                        points[len - 1].x, points[len - 1].y,
-                        layer, type, events);
-            }
+            this.createVectorPolygon(collision, layer, type, events);
         }, this);
     }
 
@@ -685,32 +679,43 @@ RPGWizard.prototype.endProgram = function (nextProgram) {
     }
 };
 
-RPGWizard.prototype.createVector = function (x1, y1, x2, y2, layer, type, events) {
-    var width = Math.abs(x2 - x1) + 1;
-    var height = Math.abs(y2 - y1) + 1;
-    var points = [0, 0, width, height];
-
-    if (x1 !== x2 && y1 !== y2) {
-        if (x1 < x2 && y1 > y2) {
-            var attr = {x: x1, y: y1 - height, w: width, h: height};
-            points = [0, height, width, 0];
-        } else if (x1 < x2 && y1 < y2) {
-            var attr = {x: x1, y: y1, w: width, h: height};
-        } else if (x1 > x2 && y1 < y2) {
-            var attr = {x: x1 - width, y: y1, w: width, h: height};
-            points = [0, height, width, 0];
-        } else {
-            var attr = {x: x2, y: y2, w: width, h: height};
+RPGWizard.prototype.createVectorPolygon = function (points, layer, type, events) {
+    var minX = maxX = points[0];
+    var minY = maxY = points[1];
+    var currentX, currentY; 
+    var len = points.length;
+    for (var i = 2; i < len; i += 2) {
+        currentX = points[i];
+        currentY = points[i + 1];
+        if (currentX < minX) {
+            minX = currentX;
+        } else if (currentX > maxX) {
+            maxX = currentX;
         }
-    } else if (x1 > x2 || y1 > y2) {
-        var attr = {x: x2, y: y2, w: width, h: height};
-    } else {
-        var attr = {x: x1, y: y1, w: width, h: height};
+        if (currentY < minY) {
+            minY = currentY;
+        } else if (currentY > maxY) {
+            maxY = currentY;
+        }
     }
+    for (var i = 0; i < len; i += 2) {
+        points[i] -= minX;
+        points[i + 1] -= minY;
+    }
+    
+    var width = Math.abs(maxX - minX) + 1;
+    var height = Math.abs(maxY - minY) + 1;
+    var attr = {x: minX, y: minY, w: width, h: height};
 
     attr.layer = layer;
     attr.vectorType = type;
     attr.events = events;
+
+    if (points[0] === points[points.length - 2] && points[1] === points[points.length - 1]) {
+        // Start and end points are the same, Crafty does not like that.
+        points.pop(); // Remove last y.
+        points.pop(); // Remove last x.
+    }
 
     Crafty.e(type + ", Collision, Raycastable")
             .attr(attr)

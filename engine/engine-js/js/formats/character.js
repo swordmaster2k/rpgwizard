@@ -30,7 +30,10 @@ function Character(filename) {
 }
 
 Character.prototype.hitOnCollision = function (hitData, entity) {
-    this.checkCollisions(hitData[0], entity);
+    var sprite = this;
+    hitData.forEach(function(hit) {
+        sprite.checkCollisions(hit, entity);
+    });
 };
 
 Character.prototype.hitOffCollision = function (hitData, entity) {
@@ -38,7 +41,10 @@ Character.prototype.hitOffCollision = function (hitData, entity) {
 };
 
 Character.prototype.hitOnActivation = function (hitData, entity) {
-    this.checkActivations(hitData, entity);
+    var sprite = this;
+    hitData.forEach(function(hit) {
+        sprite.checkActivations(hit, entity);
+    });
 };
 
 Character.prototype.hitOffActivation = function (hitData, entity) {
@@ -49,7 +55,6 @@ Character.prototype.checkCollisions = function (collision, entity) {
     console.debug("Checking collisions for Character name=[%s]", this.name);
 
     var object = collision.obj;
-
     if (object.layer !== this.layer) {
         return;
     }

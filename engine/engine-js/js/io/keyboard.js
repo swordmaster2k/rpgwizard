@@ -5,6 +5,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+/*
+ * Copyeast (c) 2017, rpgwizard.org, some files forked from rpgtoolkit.net <info@rpgwizard.org>
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
 /* global rpgwizard */
 
 function Keyboard() {
@@ -25,8 +32,14 @@ function Keyboard() {
             });
 
     Crafty.c("CustomControls", {
-        __move: {left: false, right: false, up: false, down: false},
-        _speed: 3,
+        __move: {
+            west: false, 
+            east: false, 
+            north: false, 
+            south: false
+        },
+        _speed: 1,
+        _diagonal_speed: 0.8,
 
         CustomControls: function (speed) {
             if (speed) {
@@ -39,30 +52,61 @@ function Keyboard() {
                     return;
                 }
 
-                // Move the player in a direction depending on the booleans
-                // Only move the player in one direction at a time (up/down/left/right)
-                if (move.right) {
+                // Move the player in a direction depending on the booleans.
+                if (move.south && move.west) {
+                    if (rpgwizard.craftyCharacter.character.direction !== this.character.DirectionEnum.SOUTH_WEST) {
+                        rpgwizard.craftyCharacter.character.direction = this.character.DirectionEnum.SOUTH_WEST;
+                        this.character.changeGraphics(this.character.direction);
+                    }
+                    this.x -= this._diagonal_speed;
+                    this.y += this._diagonal_speed;
+                    Crafty.trigger("Moved", {});
+                } else if (move.south && move.east) {
+                    if (rpgwizard.craftyCharacter.character.direction !== this.character.DirectionEnum.SOUTH_EAST) {
+                        rpgwizard.craftyCharacter.character.direction = this.character.DirectionEnum.SOUTH_EAST;
+                        this.character.changeGraphics(this.character.direction);
+                    }
+                    this.x += this._diagonal_speed;
+                    this.y += this._diagonal_speed;
+                    Crafty.trigger("Moved", {});
+                } else if (move.north && move.west) {
+                    if (rpgwizard.craftyCharacter.character.direction !== this.character.DirectionEnum.NORTH_WEST) {
+                        rpgwizard.craftyCharacter.character.direction = this.character.DirectionEnum.NORTH_WEST;
+                        this.character.changeGraphics(this.character.direction);
+                    }
+                    this.x -= this._diagonal_speed;
+                    this.y -= this._diagonal_speed;
+                    Crafty.trigger("Moved", {});
+                } else if (move.north && move.east) {
+                    if (rpgwizard.craftyCharacter.character.direction !== this.character.DirectionEnum.NORTH_EAST) {
+                        rpgwizard.craftyCharacter.character.direction = this.character.DirectionEnum.NORTH_EAST;
+                        this.character.changeGraphics(this.character.direction);
+                    }
+                    this.x += this._diagonal_speed;
+                    this.y -= this._diagonal_speed;
+                    Crafty.trigger("Moved", {});
+                } else if (move.east) {
                     if (rpgwizard.craftyCharacter.character.direction !== this.character.DirectionEnum.EAST) {
                         rpgwizard.craftyCharacter.character.direction = this.character.DirectionEnum.EAST;
                         this.character.changeGraphics(this.character.direction);
                     }
                     this.x += this._speed;
                     Crafty.trigger("Moved", {});
-                } else if (move.left) {
+                } else if (move.west) {
                     if (rpgwizard.craftyCharacter.character.direction !== this.character.DirectionEnum.WEST) {
                         rpgwizard.craftyCharacter.character.direction = this.character.DirectionEnum.WEST;
                         this.character.changeGraphics(this.character.direction);
                     }
                     this.x -= this._speed;
                     Crafty.trigger("Moved", {});
-                } else if (move.up) {
+                } else if (move.north) {
                     if (rpgwizard.craftyCharacter.character.direction !== this.character.DirectionEnum.NORTH) {
                         rpgwizard.craftyCharacter.character.direction = this.character.DirectionEnum.NORTH;
                         this.character.changeGraphics(this.character.direction);
                     }
                     this.y -= this._speed;
                     Crafty.trigger("Moved", {});
-                } else if (move.down) {
+                } else if (move.south) {
                     if (rpgwizard.craftyCharacter.character.direction !== this.character.DirectionEnum.SOUTH) {
                         rpgwizard.craftyCharacter.character.direction = this.character.DirectionEnum.SOUTH;
                         this.character.changeGraphics(this.character.direction);
@@ -71,30 +115,30 @@ function Keyboard() {
                     Crafty.trigger("Moved", {});
                 }
             }).bind("KeyDown", function (e) {
-                // If keys are down, set the direction
+                // If keys are south, set the direction
                 if (e.key === Crafty.keys.RIGHT_ARROW || e.key === Crafty.keys.D) {
-                    move.right = true;
-                    move.left = move.up = move.down = false;
+                    move.east = true;
+                    move.west = false;
                 } else if (e.key === Crafty.keys.LEFT_ARROW || e.key === Crafty.keys.A) {
-                    move.left = true;
-                    move.right = move.up = move.down = false;
+                    move.west = true;
+                    move.east = false;
                 } else if (e.key === Crafty.keys.UP_ARROW || e.key === Crafty.keys.W) {
-                    move.up = true;
-                    move.right = move.left = move.down = false;
+                    move.north = true;
+                    move.south = false;
                 } else if (e.key === Crafty.keys.DOWN_ARROW || e.key === Crafty.keys.S) {
-                    move.down = true;
-                    move.right = move.left = move.up = false;
+                    move.south = true;
+                    move.north = false;
                 }
             }).bind("KeyUp", function (e) {
                 // If key is released, stop moving
                 if (e.key === Crafty.keys.RIGHT_ARROW || e.key === Crafty.keys.D) {
-                    move.right = false;
+                    move.east = false;
                 } else if (e.key === Crafty.keys.LEFT_ARROW || e.key === Crafty.keys.A) {
-                    move.left = false;
+                    move.west = false;
                 } else if (e.key === Crafty.keys.UP_ARROW || e.key === Crafty.keys.W) {
-                    move.up = false;
+                    move.north = false;
                 } else if (e.key === Crafty.keys.DOWN_ARROW || e.key === Crafty.keys.S) {
-                    move.down = false;
+                    move.south = false;
                 }
             });
 

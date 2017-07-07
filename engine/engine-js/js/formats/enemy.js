@@ -30,7 +30,10 @@ function Enemy(filename) {
 }
 
 Enemy.prototype.hitOnCollision = function (hitData, entity) {
-    this.checkCollisions(hitData[0], entity);
+    var sprite = this;
+    hitData.forEach(function(hit) {
+        sprite.checkCollisions(hit, entity);
+    });
 };
 
 Enemy.prototype.hitOffCollision = function (hitData, entity) {
@@ -38,7 +41,10 @@ Enemy.prototype.hitOffCollision = function (hitData, entity) {
 };
 
 Enemy.prototype.hitOnActivation = function (hitData, entity) {
-    this.checkActivations(hitData[0], entity);
+    var sprite = this;
+    hitData.forEach(function(hit) {
+        sprite.checkActivations(hit, entity);
+    });
 };
 
 Enemy.prototype.hitOffActivation = function (hitData, entity) {

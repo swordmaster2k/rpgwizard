@@ -30,7 +30,10 @@ function NPC(filename) {
 }
 
 NPC.prototype.hitOnCollision = function (hitData, entity) {
-    this.checkCollisions(hitData[0], entity);
+    var sprite = this;
+    hitData.forEach(function(hit) {
+        sprite.checkCollisions(hit, entity);
+    });
 };
 
 NPC.prototype.hitOffCollision = function (hitData, entity) {
@@ -38,7 +41,10 @@ NPC.prototype.hitOffCollision = function (hitData, entity) {
 };
 
 NPC.prototype.hitOnActivation = function (hitData, entity) {
-    this.checkActivations(hitData[0], entity);
+    var sprite = this;
+    hitData.forEach(function(hit) {
+        sprite.checkActivations(hit, entity);
+    });
 };
 
 NPC.prototype.hitOffActivation = function (hitData, entity) {

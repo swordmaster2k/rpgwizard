@@ -128,12 +128,14 @@ public class JsonBoardSerializer extends AbstractJsonSerializer {
                 JSONObject event = new JSONObject();
                 event.put("type", sprite.getEventType().name().toLowerCase());
                 event.put("program", serializePath(sprite.getEventProgram()));
+                event.put("key", sprite.getActivationKey());
                 events.put(event);
             }
 
             s.put("events", events);
 
             s.put("thread", serializePath(sprite.getThread()));
+            
             sprites.put(s);
         }
         json.put("sprites", sprites);
@@ -300,10 +302,13 @@ public class JsonBoardSerializer extends AbstractJsonSerializer {
                 JSONObject event = events.getJSONObject(0);
                 sprite.setEventType(EventType.valueOf(event.getString("type").toUpperCase()));
                 sprite.setEventProgram(event.getString("program"));
+                
+                if (sprite.getEventType() == EventType.KEYPRESS) {
+                    sprite.setActivationKey(event.getString("key"));
+                }
             }
 
             sprite.setThread(object.getString("thread"));
-
             sprites.add(sprite);
         }
 

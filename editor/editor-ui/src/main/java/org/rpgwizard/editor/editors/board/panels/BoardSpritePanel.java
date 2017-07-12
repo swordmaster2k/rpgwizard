@@ -8,6 +8,7 @@
 package org.rpgwizard.editor.editors.board.panels;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import javax.swing.GroupLayout;
 import javax.swing.JComboBox;
@@ -21,10 +22,10 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.rpgwizard.common.assets.BoardSprite;
 import org.rpgwizard.common.assets.Enemy;
 import org.rpgwizard.common.assets.EventType;
+import org.rpgwizard.common.assets.KeyType;
 import org.rpgwizard.common.assets.NPC;
 import org.rpgwizard.common.assets.Program;
 import org.rpgwizard.editor.editors.board.BoardLayerView;
-import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.rpgwizard.editor.utilities.GuiHelper;
@@ -62,7 +63,11 @@ public class BoardSpritePanel extends BoardModelPanel {
 	private final JComboBox eventComboBox;
 	private final JLabel eventLabel;
 
-	private static final String[] EVENT_TYPES = {"OVERLAP"};
+	private static final String[] EVENT_TYPES = EventType.toStringArray();
+
+	private static final String[] KEY_TYPES = KeyType.toStringArray();
+	private final JComboBox<String> keyComboBox;
+	private final JLabel keyLabel;
 
 	public BoardSpritePanel(final BoardSprite boardSprite) {
         ///
@@ -210,12 +215,42 @@ public class BoardSpritePanel extends BoardModelPanel {
         /// typeComboBox
         ///
         eventComboBox = new JComboBox(EVENT_TYPES);
-        eventComboBox.addActionListener((ActionEvent e) -> {
-            String type = (String) eventComboBox.getSelectedItem();
-            if (type.equals(EVENT_TYPES[0])) {
-                boardSprite.setEventType(EventType.OVERLAP);
+        eventComboBox.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String selected = eventComboBox.getSelectedItem().toString();
+                
+                if (selected.equals(EventType.OVERLAP.toString())) {
+                    boardSprite.setEventType(EventType.OVERLAP);
+                    MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+                    keyComboBox.setEnabled(false);
+                } else if (selected.equals(EventType.KEYPRESS.toString())) {
+                    boardSprite.setEventType(EventType.KEYPRESS);
+                    MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+                    keyComboBox.setEnabled(true);
+                }
+            }
+            
+        });
+                ///
+        /// keyComboBox
+        ///
+        keyComboBox = new JComboBox<>(KEY_TYPES);
+        if (((BoardSprite) model).getEventType() == EventType.KEYPRESS) {
+            keyComboBox.setSelectedItem(((BoardSprite) model).getActivationKey());
+            keyComboBox.setEnabled(true);
+        } else {
+            keyComboBox.setEnabled(false);
+        }
+        keyComboBox.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ((BoardSprite) model).setActivationKey(keyComboBox.getSelectedItem().toString());
                 MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
             }
+
         });
         ///
         /// this
@@ -228,6 +263,7 @@ public class BoardSpritePanel extends BoardModelPanel {
                         .addComponent(yLabel = getJLabel("Y"))
                         .addComponent(layerLabel = getJLabel("Layer"))
                         .addComponent(eventLabel = getJLabel("Event"))
+                        .addComponent(keyLabel = getJLabel("Key"))
                         .addComponent(eventProgramLabel = getJLabel("Event Program"))
                         .addComponent(threadLabel = getJLabel("Thread")));
 
@@ -239,6 +275,7 @@ public class BoardSpritePanel extends BoardModelPanel {
                         .addComponent(ySpinner)
                         .addComponent(layerSpinner)
                         .addComponent(eventComboBox)
+                        .addComponent(keyComboBox)
                         .addComponent(eventProgramComboBox)
                         .addComponent(threadComboBox));
 
@@ -264,6 +301,9 @@ public class BoardSpritePanel extends BoardModelPanel {
 
         verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(eventLabel).addComponent(eventComboBox));
+        
+        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(keyLabel).addComponent(keyComboBox));
 
         verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(eventProgramLabel).addComponent(eventProgramComboBox));

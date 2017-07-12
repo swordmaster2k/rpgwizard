@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-/* global Sprite */
+/* global Sprite, rpgwizard, PATH_PROGRAM, rpgcode */
 
 Character.prototype = Object.create(Sprite.prototype);
 Character.prototype.constructor = Character;
@@ -32,7 +32,7 @@ function Character(filename) {
 Character.prototype.hitOnCollision = function (hitData, entity) {
     var sprite = this;
     hitData.forEach(function(hit) {
-        sprite.checkCollisions(hit, entity);
+        sprite.processCollision(hit, entity);
     });
 };
 
@@ -43,16 +43,19 @@ Character.prototype.hitOffCollision = function (hitData, entity) {
 Character.prototype.hitOnActivation = function (hitData, entity) {
     var sprite = this;
     hitData.forEach(function(hit) {
-        sprite.checkActivations(hit, entity);
+        sprite.processActivation(hit, entity, true);
     });
 };
 
 Character.prototype.hitOffActivation = function (hitData, entity) {
-    // Not used yet.
+    if (entity.previousKeyHandler) {
+        rpgcode.registerKeyDown(entity.previousKeyHandler.key, entity.previousKeyHandler.callback, true);
+        this.previousKeyHandler = null;
+    }
 };
 
-Character.prototype.checkCollisions = function (collision, entity) {
-    console.debug("Checking collisions for Character name=[%s]", this.name);
+Character.prototype.processCollision = function (collision, entity) {
+    console.debug("Processing collision for Character name=[%s]", this.name);
 
     var object = collision.obj;
     if (object.layer !== this.layer) {
@@ -70,4 +73,42 @@ Character.prototype.checkCollisions = function (collision, entity) {
         case "PASSABLE":
             break;
     }
+};
+
+Character.prototype.processActivation = function (collision, entity, entering) {
+    console.debug("Processing activation for Character name=[%s]", this.name);
+
+    var layer = this.layer;
+    var object = collision.obj;
+    var events;
+    if (object.layer) {
+        if (object.layer !== layer) {
+            return;
+        }
+        events = object.events;
+    } else {
+        if (object.sprite.layer !== layer) {
+            return;
+        }
+        events = object.sprite.events;
+    }
+    
+    events.forEach(function (event) {
+        if (event.program) {
+            if (event.type.toUpperCase() === "OVERLAP") {
+                rpgwizard.runProgram(PATH_PROGRAM.concat(event.program), object);
+            } else if (event.type.toUpperCase() === "KEYPRESS") {
+                if (event.key) {
+                    entity.previousKeyHandler = {
+                        key: event.key, 
+                        callback: rpgwizard.keyboardHandler.downHandlers[event.key]
+                    };
+                    var callback = function() {
+                        rpgcode.runProgram(event.program);  
+                    };
+                    rpgcode.registerKeyDown(event.key, callback, true);
+                }
+            }
+        }
+    });
 };

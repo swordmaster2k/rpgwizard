@@ -33,6 +33,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import org.json.JSONObject;
+import org.rpgwizard.common.assets.KeyPressEvent;
 
 /**
  * Abstract base class for implementing asset serializers that load or store
@@ -158,6 +159,9 @@ public abstract class AbstractJsonSerializer extends AbstractAssetSerializer {
 			final JSONObject evt = new JSONObject();
 			evt.put("type", event.getType().name().toLowerCase());
 			evt.put("program", event.getProgram());
+			if (event.getType() == EventType.KEYPRESS) {
+				evt.put("key", ((KeyPressEvent) event).getKey());
+			}
 			events.put(evt);
 		}
 		v.put("events", events);
@@ -306,8 +310,16 @@ public abstract class AbstractJsonSerializer extends AbstractAssetSerializer {
         int length = array.length();
         for (int i = 0; i < length; i++) {
             JSONObject event = array.getJSONObject(i);
-
-            events.add(new Event(EventType.valueOf(event.getString("type").toUpperCase()), event.getString("program")));
+            EventType type = EventType.valueOf(event.getString("type").toUpperCase());
+            String program = event.getString("program");
+            
+            if (type == EventType.OVERLAP) {
+                events.add(new Event(type, program));
+            } else if (type == EventType.KEYPRESS) {
+                String key = event.getString("key");
+                events.add(new KeyPressEvent(key, program));
+            }
+            
         }
 
         return events;

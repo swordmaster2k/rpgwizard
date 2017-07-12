@@ -35,6 +35,7 @@ public class BoardSprite implements Cloneable, Selectable {
 	private EventType eventType; // Defines how the sprite is activated
 	private String eventProgram; // Override activation program
 	private String thread; // Override multitask program
+	private String activationKey;
 
 	private boolean selected;
 	private BufferedImage southImage;
@@ -53,6 +54,7 @@ public class BoardSprite implements Cloneable, Selectable {
 		eventType = EventType.OVERLAP;
 		eventProgram = "";
 		thread = "";
+		activationKey = "";
 		selected = false;
 	}
 
@@ -145,6 +147,14 @@ public class BoardSprite implements Cloneable, Selectable {
 	}
 
 	/**
+	 * 
+	 * @return
+	 */
+	public String getActivationKey() {
+		return activationKey;
+	}
+
+	/**
 	 *
 	 * @param fileName
 	 */
@@ -201,6 +211,14 @@ public class BoardSprite implements Cloneable, Selectable {
 		this.thread = multitaskingProgram;
 	}
 
+	/**
+	 * 
+	 * @param activationKey
+	 */
+	public void setActivationKey(String activationKey) {
+		this.activationKey = activationKey;
+	}
+
 	@Override
 	public boolean isSelected() {
 		return selected;
@@ -251,6 +269,9 @@ public class BoardSprite implements Cloneable, Selectable {
 		if (!Objects.equals(this.thread, other.thread)) {
 			return false;
 		}
+		if (!Objects.equals(this.activationKey, other.activationKey)) {
+			return false;
+		}
 		if (this.eventType != other.eventType) {
 			return false;
 		}
@@ -272,6 +293,7 @@ public class BoardSprite implements Cloneable, Selectable {
 		clone.eventType = eventType;
 		clone.layer = layer;
 		clone.thread = thread;
+		clone.activationKey = activationKey;
 		clone.sprite = sprite;
 		clone.fileName = fileName;
 		clone.x = x;

@@ -7,18 +7,25 @@
  */
 package org.rpgwizard.common.assets;
 
-import java.util.stream.Stream;
-
 /**
- * Basic event to be used in assets that can trigger events.
- * 
+ *
  * @author Joshua Michael Daly
  */
-public enum EventType {
+public class KeyPressEvent extends Event {
 
-	OVERLAP, KEYPRESS;
+	private String key;
 
-	public static String[] toStringArray() {
-            return Stream.of(EventType.values()).map(EventType::name).toArray(String[]::new);
-        }
+	public KeyPressEvent(String key, String program) {
+		super(EventType.KEYPRESS, program);
+		this.key = key;
+	}
+
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
+	}
+
 }

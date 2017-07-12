@@ -63,7 +63,30 @@
                      "program":"myprogram"
                   }
                ]
+            },
+            {
+               "id":"trigger",
+               "type":"PASSABLE",
+               "points":[
+                  {
+                     "x":0,
+                     "y":0
+                  },
+                  {
+                     "x":1,
+                     "y":1
+                  }
+               ],
+               "isClosed":true,
+               "events":[
+                  {
+                     "type":"keypress",
+                     "key": "ENTER",
+                     "program":"myprogram"
+                  }
+               ]
             }
+
          ]
       }
    ],

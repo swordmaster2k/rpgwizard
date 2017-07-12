@@ -160,12 +160,18 @@ public class AssetSerializerTest {
         Assert.assertEquals(3, layer.getTiles()[0].length);
         Assert.assertEquals(3, layer.getTiles()[1].length);
 
-        Assert.assertTrue(layer.getVectors().size() == 1);
+        Assert.assertTrue(layer.getVectors().size() == 2);
         BoardVector vector = layer.getVectors().get(0);
         Assert.assertEquals("walls", vector.getId());
         Assert.assertEquals(2, vector.getPoints().size());
         Assert.assertEquals(true, vector.isClosed());
         Assert.assertEquals(BoardVectorType.SOLID, vector.getType());
+        
+        vector = layer.getVectors().get(1);
+        Assert.assertEquals("trigger", vector.getId());
+        Assert.assertEquals(2, vector.getPoints().size());
+        Assert.assertEquals(true, vector.isClosed());
+        Assert.assertEquals(BoardVectorType.PASSABLE, vector.getType());
 
         Assert.assertEquals(1, asset.getStartingPositionX());
         Assert.assertEquals(3, asset.getStartingPositionY());

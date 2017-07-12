@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.File;
+import java.util.stream.Stream;
 import javax.swing.GroupLayout;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -25,6 +26,9 @@ import org.rpgwizard.editor.editors.board.BoardLayerView;
 import org.rpgwizard.common.assets.BoardVector;
 import org.rpgwizard.common.assets.BoardVectorType;
 import org.rpgwizard.common.assets.Event;
+import org.rpgwizard.common.assets.EventType;
+import org.rpgwizard.common.assets.KeyPressEvent;
+import org.rpgwizard.common.assets.KeyType;
 import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.utilities.GuiHelper;
@@ -48,12 +52,16 @@ public class BoardVectorPanel extends BoardModelPanel {
 	private final JComboBox<String> typeComboBox;
 	private final JLabel typeLabel;
 
-	private static final String[] VECTOR_TYPES = {"PASSABLE", "SOLID"};
+	private static final String[] VECTOR_TYPES = BoardVectorType
+			.toStringArray();
 
+	private static final String[] EVENT_TYPES = EventType.toStringArray();
 	private final JComboBox<String> eventComboBox;
 	private final JLabel eventLabel;
 
-	private static final String[] EVENT_TYPES = {"OVERLAP"};
+	private static final String[] KEY_TYPES = KeyType.toStringArray();
+	private final JComboBox<String> keyComboBox;
+	private final JLabel keyLabel;
 
 	private final JComboBox eventProgramComboBox;
 	private final JLabel eventProgramLabel;
@@ -167,10 +175,52 @@ public class BoardVectorPanel extends BoardModelPanel {
         ///
         /// eventComboBox
         ///
-        // Fixed only one event type for now.
         eventComboBox = new JComboBox<>(EVENT_TYPES);
-        eventComboBox.setEnabled(false);
-        eventComboBox.setSelectedIndex(0);
+        eventComboBox.setEnabled(true);
+        eventComboBox.setSelectedItem(((BoardVector) model).getEvents().get(0).getType().toString());
+        eventComboBox.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Event event = ((BoardVector) model).getEvents().get(0);
+                String selected = eventComboBox.getSelectedItem().toString();
+                
+                if (selected.equals(EventType.OVERLAP.toString())) {
+                    event = new Event(EventType.OVERLAP, event.getProgram());
+                    event.setType(EventType.OVERLAP);
+                    keyComboBox.setEnabled(false);
+                } else if (selected.equals(EventType.KEYPRESS.toString())) {
+                    event = new KeyPressEvent(event.getProgram(), selected);
+                    keyComboBox.setEnabled(true);
+                }
+                ((BoardVector) model).getEvents().set(0, event);
+                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+            }
+
+        });
+        ///
+        /// keyComboBox
+        ///
+        keyComboBox = new JComboBox<>(KEY_TYPES);
+        
+        if (((BoardVector) model).getEvents().get(0).getType() == EventType.KEYPRESS) {
+            KeyPressEvent event = (KeyPressEvent) ((BoardVector) model).getEvents().get(0);
+            keyComboBox.setSelectedItem(event.getKey());
+            keyComboBox.setEnabled(true);
+        } else {
+            keyComboBox.setEnabled(false);
+        }
+        keyComboBox.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                KeyPressEvent event = (KeyPressEvent) ((BoardVector) model).getEvents().get(0);
+                event.setKey(keyComboBox.getSelectedItem().toString());
+                ((BoardVector) model).getEvents().set(0, event);
+                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+            }
+
+        });
         ///
         /// eventProgramComboBox
         ///
@@ -208,6 +258,7 @@ public class BoardVectorPanel extends BoardModelPanel {
                         .addComponent(layerLabel = getJLabel("Layer"))
                         .addComponent(typeLabel = getJLabel("Type"))
                         .addComponent(eventLabel = getJLabel("Event"))
+                        .addComponent(keyLabel = getJLabel("Key"))
                         .addComponent(eventProgramLabel = getJLabel("Event Program")));
 
         horizontalGroup.addGroup(
@@ -217,6 +268,7 @@ public class BoardVectorPanel extends BoardModelPanel {
                         .addComponent(layerSpinner)
                         .addComponent(typeComboBox)
                         .addComponent(eventComboBox)
+                        .addComponent(keyComboBox)
                         .addComponent(eventProgramComboBox));
 
         layout.setHorizontalGroup(horizontalGroup);
@@ -235,6 +287,9 @@ public class BoardVectorPanel extends BoardModelPanel {
 
         verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(eventLabel).addComponent(eventComboBox));
+        
+        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(keyLabel).addComponent(keyComboBox));
 
         verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(eventProgramLabel).addComponent(eventProgramComboBox));

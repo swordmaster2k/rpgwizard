@@ -7,11 +7,16 @@
  */
 package org.rpgwizard.common.assets;
 
+import java.util.stream.Stream;
+
 /**
  * @author Chris Hutchinson
  */
 public enum BoardVectorType {
 
-	PASSABLE, SOLID
+	PASSABLE, SOLID;
 
+	public static String[] toStringArray() {
+            return Stream.of(BoardVectorType.values()).map(BoardVectorType::name).toArray(String[]::new);
+        }
 }

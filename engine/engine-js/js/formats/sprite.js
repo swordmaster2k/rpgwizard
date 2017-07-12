@@ -361,22 +361,20 @@ Sprite.prototype.checkCollisions = function (collision, entity) {
     }
 };
 
-Sprite.prototype.checkActivations = function (collisions, entity) {
+Sprite.prototype.checkActivations = function (collision, entity) {
     console.debug("Checking activations for Sprite name=[%s]", this.name);
 
     var layer = this.layer;
-    collisions.forEach(function (collision) {
-        var object = collision.obj;
+    var object = collision.obj;
 
-        if (object.layer !== layer) {
-            return;
+    if (object.layer !== layer) {
+        return;
+    }
+
+    var events = object.events;
+    events.forEach(function (event) {
+        if (event.program) {
+            rpgwizard.runProgram(PATH_PROGRAM.concat(event.program), object);
         }
-
-        var events = object.events;
-        events.forEach(function (event) {
-            if (event.program) {
-                rpgwizard.runProgram(PATH_PROGRAM.concat(event.program), object);
-            }
-        });
     });
 };

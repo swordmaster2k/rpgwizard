@@ -31,6 +31,7 @@ function RPGWizard() {
 
     // Program cache, stores programs as Function objects.
     this.programCache = {};
+    this.activePrograms = 0;
     this.endProgramCallback = null;
 
     // Used to store state when runProgram is called.
@@ -427,8 +428,8 @@ RPGWizard.prototype.loadBoard = function (board) {
     this.queueCraftyAssets(assets, craftyBoard.board);
 };
 
-RPGWizard.prototype.switchBoard = function (boardName, tileX, tileY) {
-    console.info("Switching board to boardName=[%s], tileX=[%d], tileY=[%d]",
+RPGWizard.prototype.switchBoard = function (boardName, tileX, tileY, layer) {
+    console.info("Switching board to boardName=[%s], tileX=[%d], tileY=[%d], layer=[%d]",
             boardName, tileX, tileY);
 
     this.controlEnabled = false;
@@ -436,6 +437,7 @@ RPGWizard.prototype.switchBoard = function (boardName, tileX, tileY) {
     Crafty("SOLID").destroy();
     Crafty("PASSABLE").destroy();
     Crafty("Board").destroy();
+    Crafty("BoardSprite").destroy();
     Crafty.audio.stop();
 
     this.loadBoard(new Board(PATH_BOARD + boardName));
@@ -444,9 +446,10 @@ RPGWizard.prototype.switchBoard = function (boardName, tileX, tileY) {
     var tileHeight = this.craftyBoard.board.tileHeight;
     this.craftyCharacter.x = parseInt((tileX * tileWidth) + tileWidth / 2);
     this.craftyCharacter.y = parseInt((tileY * tileHeight) + tileHeight / 2);
+    this.craftyCharacter.character.layer = layer;
 
-    console.log("Switching board player location set to x=[%d], y=[%d]",
-            this.craftyCharacter.x, this.craftyCharacter.y);
+    console.log("Switching board player location set to x=[%d], y=[%d], layer=[%d]",
+            this.craftyCharacter.x, this.craftyCharacter.y, this.craftyCharacter.layer);
 
     this.loadCraftyAssets(this.loadScene);
 };
@@ -471,13 +474,14 @@ RPGWizard.prototype.loadCharacter = function (character) {
                         character.hitOffActivation(hitData, rpgwizard.craftyCharacter);
                     }
             );
-    this.craftyCharacter = Crafty.e("2D, Canvas, player, CustomControls, BaseVector")
+    this.craftyCharacter = Crafty.e("2D, Canvas, player, CustomControls, BaseVector, Tween")
             .attr({
                 x: character.x,
                 y: character.y,
                 character: character,
                 activationVector: activationVector,
-                vectorType: "CHARACTER"
+                vectorType: "CHARACTER",
+                tweenEndCallback: null
             })
             .CustomControls(1)
             .BaseVector(
@@ -489,7 +493,7 @@ RPGWizard.prototype.loadCharacter = function (character) {
                         character.hitOffCollision(hitData, rpgwizard.craftyCharacter);
                     }
             )
-            .bind("Moved", function (from) {
+            .bind("Move", function (from) {
                 // Move activation vector with us.
                 this.activationVector.x = this.x;
                 this.activationVector.y = this.y;
@@ -498,7 +502,12 @@ RPGWizard.prototype.loadCharacter = function (character) {
             })
             .bind("EnterFrame", function (event) {
                 this.dt = event.dt / 1000;
-            });
+            })
+            .bind("TweenEnd", function (event) {
+                if (this.tweenEndCallback) {
+                    this.tweenEndCallback();
+                }
+            });;
 
     this.craftyCharacter.visible = false;
     var assets = this.craftyCharacter.character.load();
@@ -514,16 +523,7 @@ RPGWizard.prototype.loadSprite = function (sprite) {
     if (sprite.thread) {
         sprite.thread = this.openProgram(PATH_PROGRAM + sprite.thread);
     }
-    var entity = Crafty.e("BaseVector")
-            .BaseVector(
-                    new Crafty.polygon(asset.collisionPoints),
-                    function (hitData) {
-                        asset.hitOnCollision(hitData, entity);
-                    },
-                    function (hitData) {
-                        asset.hitOffCollision(hitData, entity);
-                    }
-            );
+    var entity;
     var activationVector = Crafty.e("2D, Canvas, ActivationVector")
             .attr({
                 x: sprite.x,
@@ -563,14 +563,28 @@ RPGWizard.prototype.loadSprite = function (sprite) {
             this.bind("EnterFrame", function (event) {
                 this.dt = event.dt / 1000;
 
-                if (sprite.thread && asset.renderReady) {
+                if (sprite.thread && asset.renderReady && rpgwizard.craftyBoard.show) {
                     sprite.thread.apply(this);
+                }
+            });
+            this.bind("TweenEnd", function (event) {
+                if (this.tweenEndCallback) {
+                    this.tweenEndCallback();
                 }
             });
         }
     });
-    entity.addComponent("BoardSprite");
-
+    entity = Crafty.e("BoardSprite")
+            .BaseVector(
+                    new Crafty.polygon(asset.collisionPoints),
+                    function (hitData) {
+                        asset.hitOnCollision(hitData, entity);
+                    },
+                    function (hitData) {
+                        asset.hitOffCollision(hitData, entity);
+                    }
+            );
+    
     var assets = asset.load();
     this.queueCraftyAssets(assets, asset);
 
@@ -606,6 +620,7 @@ RPGWizard.prototype.openProgram = function (filename) {
 RPGWizard.prototype.runProgram = function (filename, source, callback, chained) {
     console.info("Running program=[%s]", filename);
 
+    rpgwizard.activePrograms++;
     rpgwizard.inProgram = true;
     rpgwizard.currentProgram = filename;
     rpgcode.source = source; // Entity that triggered the program.
@@ -648,6 +663,7 @@ RPGWizard.prototype.runProgram = function (filename, source, callback, chained) 
 
 RPGWizard.prototype.endProgram = function (nextProgram) {
     console.info("Ending current program, nextProgram=[%s]", nextProgram);
+    rpgwizard.activePrograms--;
 
     if (nextProgram) {
         rpgwizard.runProgram(
@@ -656,7 +672,7 @@ RPGWizard.prototype.endProgram = function (nextProgram) {
                 rpgwizard.endProgramCallback,
                 true
         );
-    } else {
+    } else if (rpgwizard.activePrograms === 0) {
         if (rpgwizard.endProgramCallback) {
             rpgwizard.endProgramCallback();
             rpgwizard.endProgramCallback = null;

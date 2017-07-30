@@ -692,6 +692,45 @@ RPGcode.prototype.getRunningProgram = function () {
 };
 
 /**
+ * Gets the sprites's current location, optionally including the visual offset
+ * that happens when boards are smaller than the viewport dimensions.
+ * 
+ * @example
+ * var location = rpgcode.getSpriteLocation("rat");
+ * rpgcode.log(location);
+ * 
+ * @param {String} spriteId ID associated with the sprite. 
+ * @param {Boolean} inTiles Should the location be in tiles, otherwise pixels.
+ * @param {Boolean} includeOffset Should the location include the visual board offset.
+ * @returns {Object} An object containing the characters location in the form {x, y, z}.
+ */
+RPGcode.prototype.getSpriteLocation = function (spriteId, inTiles, includeOffset) {
+    var entity = rpgwizard.craftyBoard.board.sprites[spriteId];
+
+    if (includeOffset) {
+        var x = entity.x + rpgwizard.craftyBoard.xShift;
+        var y = entity.y + rpgwizard.craftyBoard.yShift;
+    } else {
+        var x = entity.x;
+        var y = entity.y;
+    }
+
+    if (inTiles) {
+        return {
+            x: x / rpgwizard.craftyBoard.board.tileWidth,
+            y: y / rpgwizard.craftyBoard.board.tileHeight,
+            layer: entity.sprite.layer
+        };
+    } else {
+        return {
+            x: x,
+            y: y,
+            layer: entity.sprite.layer
+        };
+    }
+};
+
+/**
  * Gets the viewport object, this is useful for calculating the position of 
  * characters or sprites on the board relative to the RPGcode screen.
  * 
@@ -1000,6 +1039,31 @@ RPGcode.prototype.moveCharacter = function (characterId, direction, distance) {
 };
 
 /**
+ * Moves the character to the (x, y) position, the character will travel for the
+ * supplied duration (milliseconds).
+ * 
+ * A short duration will result in the character arriving quicker and vice versa.
+ * 
+ * @example
+ * // Move towards (100, 150) for 50 milliseconds, this will animate the character.
+ * var characterId = "hero";
+ * var x = 100;
+ * var y = 150;
+ * var delay = 50;
+ * rpgcode.moveCharacterTo(characterId, x, y, delay);
+ * 
+ * @param {String} characterId The name set for the character as it appears in the editor.
+ * @param {Number} x A pixel coordinate.
+ * @param {Number} y A pixel coordinate.
+ * @param {Number} duration Time taken for the movement to complete (milliseconds).
+ * @param {Callback} callback Function to invoke when the sprite has finished moving.
+ */
+RPGcode.prototype.moveCharacterTo = function (characterId, x, y, duration, callback) {
+    rpgwizard.craftyCharacter.tweenEndCallback = callback;
+    rpgwizard.craftyCharacter.tween({x: x, y: y}, duration);
+};
+
+/**
  * Moves the sprite to the (x, y) position, the sprite will travel for the
  * supplied duration (milliseconds).
  * 
@@ -1017,15 +1081,18 @@ RPGcode.prototype.moveCharacter = function (characterId, direction, distance) {
  * @param {Number} x A pixel coordinate.
  * @param {Number} y A pixel coordinate.
  * @param {Number} duration Time taken for the movement to complete (milliseconds).
+ * @param {Callback} callback Function to invoke when the sprite has finished moving.
  */
-RPGcode.prototype.moveSpriteTo = function (spriteId, x, y, duration) {
+RPGcode.prototype.moveSpriteTo = function (spriteId, x, y, duration, callback) {
     switch (spriteId) {
         case "source":
+            rpgcode.tweenEndCallback = callback;
             rpgcode.source.tween({x: x, y: y}, duration);
             break;
         default:
             if (rpgwizard.craftyBoard.board.sprites.hasOwnProperty(spriteId)) {
                 var entity = rpgwizard.craftyBoard.board.sprites[spriteId];
+                entity.tweenEndCallback = callback;
                 entity.tween({x: x, y: y}, duration);
             }
     }
@@ -1435,9 +1502,15 @@ RPGcode.prototype.saveJSON = function (data, successCallback, failureCallback) {
  * @param {String} boardName The board to send the character to.
  * @param {Number} tileX The x position to place the character at, in tiles.
  * @param {Number} tileY The y position to place the character at, in tiles.
+ * @param {Number} layer The layer to place the character on.
  */
-RPGcode.prototype.sendToBoard = function (boardName, tileX, tileY) {
-    rpgwizard.switchBoard(boardName, tileX, tileY);
+RPGcode.prototype.sendToBoard = function (boardName, tileX, tileY, layer) {
+    if (!layer) {
+        // Backwards compatability check.
+        layer = rpgwizard.craftyCharacter.character.layer;
+    }
+    
+    rpgwizard.switchBoard(boardName, tileX, tileY, layer);
 };
 
 /**
@@ -1619,8 +1692,8 @@ RPGcode.prototype.setDialogPosition = function (position) {
  */
 RPGcode.prototype.setSpriteLocation = function (spriteId, x, y, layer, inTiles) {
     if (inTiles) {
-        x *= rpgwizard.tileSize;
-        y *= rpgwizard.tileSize;
+        x *= rpgwizard.craftyBoard.board.tileWidth;
+        y *= rpgwizard.craftyBoard.board.tileHeight;
     }
 
     var entity = rpgwizard.craftyBoard.board.sprites[spriteId];
@@ -1672,8 +1745,8 @@ RPGcode.prototype.setSpriteStance = function (spriteId, stanceId) {
  */
 RPGcode.prototype.setCharacterLocation = function (characterId, x, y, layer, isTiles) {
     if (isTiles) {
-        x *= rpgwizard.tileSize;
-        y *= rpgwizard.tileSize;
+        x *= rpgwizard.craftyBoard.board.tileWidth;
+        y *= rpgwizard.craftyBoard.board.tileHeight;
     }
 
     // TODO: characterId will be unused until parties with multiple characters 
@@ -1716,21 +1789,21 @@ RPGcode.prototype.setCharacterStance = function (characterId, stanceId) {
 RPGcode.prototype.showDialog = function (dialog) {
     var dialogWindow = rpgcode.dialogWindow;
     var fullWidth = dialogWindow.profileDimensions.width + dialogWindow.dialogDimensions.width;
+    var x1, y1, x2, y2;
+    if (dialogWindow.position === rpgcode.dialogPosition.NORTH) {
+        // Draw from the top left.
+        x1 = Math.round((rpgcode.getViewport().width - fullWidth) / 2);
+        x2 = x1 + dialogWindow.profileDimensions.width;
+        y1 = y2 = 0;
+    } else {
+        // Draw from the bottom left.
+        x1 = Math.round((rpgcode.getViewport().width - fullWidth) / 2);
+        x2 = x1 + dialogWindow.profileDimensions.width;
+        y1 = Crafty.viewport.height - dialogWindow.profileDimensions.width;
+        y2 = y1;
+    }
 
     if (!dialogWindow.visible) {
-        var x1, y1, x2, y2;
-        if (dialogWindow.position === rpgcode.dialogPosition.NORTH) {
-            // Draw from the top left.
-            x1 = Math.round((rpgcode.getViewport().width - fullWidth) / 2);
-            x2 = x1 + dialogWindow.profileDimensions.width;
-            y1 = y2 = 0;
-        } else {
-            // Draw from the bottom left.
-            x1 = Math.round((rpgcode.getViewport().width - fullWidth) / 2);
-            x2 = x1 + dialogWindow.profileDimensions.width;
-            y1 = Crafty.viewport.height - dialogWindow.profileDimensions.width;
-            y2 = y1;
-        }
         rpgcode.setImage(
                 dialogWindow.profile, x1, y1,
                 dialogWindow.profileDimensions.width,

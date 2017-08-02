@@ -187,7 +187,7 @@ RPGWizard.prototype.startScene = function () {
     if (rpgwizard.craftyBoard.board.firstRunProgram) {
         rpgwizard.runProgram(
                 PATH_PROGRAM + rpgwizard.craftyBoard.board.firstRunProgram,
-                null, null);
+                null, null, true);
     } else {
         rpgwizard.controlEnabled = true;
         Crafty.trigger("EnterFrame", {});

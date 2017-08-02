@@ -559,20 +559,22 @@ RPGcode.prototype.getCharacterDirection = function () {
     // User friendly rewrite of Crafty constants.
     switch (direction) {
         case "n":
-            direction = "NORTH";
-            break;
+            return "NORTH";
         case "s":
-            direction = "SOUTH";
-            break;
+            return "SOUTH";
         case "e":
-            direction = "EAST";
-            break;
+            return "EAST";
         case "w":
-            direction = "WEST";
-            break;
+            return "WEST";
+        case "ne":
+            return "NORTH_EAST";
+        case "se":
+            return "SOUTH_EAST";
+        case "nw":
+            return "NORTH_WEST";
+        case "sw":
+            return "SOUTH_WEST";
     }
-
-    return direction;
 };
 
 /**

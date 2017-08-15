@@ -19,13 +19,15 @@ function Keyboard() {
     this.upHandlers = {};
     this.entity = Crafty.e()
             .bind("KeyDown", function (e) {
-                var handler = rpgwizard.keyboardHandler.downHandlers[e.key];
+                var handler = rpgwizard.inProgram ? rpgwizard.keyboardHandler.downHandlers[e.key] : rpgwizard.keyDownHandlers[e.key];
+                
                 if (handler) {
                     handler();
                 }
             })
             .bind("KeyUp", function (e) {
-                var handler = rpgwizard.keyboardHandler.upHandlers[e.key];
+                var handler = rpgwizard.inProgram ? rpgwizard.keyboardHandler.upHandlers[e.key] : rpgwizard.keyUpHandlers[e.key];
+                
                 if (handler) {
                     handler();
                 }

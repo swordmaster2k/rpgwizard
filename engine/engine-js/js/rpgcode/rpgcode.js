@@ -124,6 +124,41 @@ RPGcode.prototype.addRunTimeProgram = function (filename) {
 };
 
 /**
+ * TODO
+ * 
+ * @example
+ * var sprite = {
+ *  "name":"skeleton.enemy",
+ *  "id":"test3",
+ *  "thread":"AI/PassiveEnemy.js",
+ *  "startingPosition":{
+ *     "x":232,
+ *     "y":120,
+ *     "layer":1
+ *  },
+ *  "events":[
+ *     {
+ *       "program":"AI/BumpCharacter.js",
+ *        "type":"overlap",
+ *        "key":""
+ *     }
+ *  ]
+ * };
+ * 
+ * rpgcode.addSprite(sprite, function() {
+ *  rpgcode.log("Sprite added to board.");
+ * });
+ * 
+ * @param {type} sprite
+ * @param {type} callback
+ * @returns {undefined}
+ */
+RPGcode.prototype.addSprite = function(sprite, callback) {
+    rpgwizard.craftyBoard.board.sprites[sprite.id] = rpgwizard.loadSprite(sprite);
+    rpgwizard.loadCraftyAssets(callback);
+};
+
+/**
  * Animates the sprite using the requested animation. The animationId must be 
  * available for the sprite.
  * 
@@ -304,7 +339,9 @@ RPGcode.prototype.destroyCanvas = function (canvasId) {
  */
 RPGcode.prototype.destroySprite = function (spriteId) {
     if (rpgwizard.craftyBoard.board.sprites.hasOwnProperty(spriteId)) {
-        rpgwizard.craftyBoard.board.sprites[spriteId].destroy();
+        var entity = rpgwizard.craftyBoard.board.sprites[spriteId];
+        entity.activationVector.destroy();
+        entity.destroy();
         delete rpgwizard.craftyBoard.board.sprites[spriteId];
         Crafty.trigger("Invalidate");
     }
@@ -733,6 +770,54 @@ RPGcode.prototype.getSpriteLocation = function (spriteId, inTiles, includeOffset
 };
 
 /**
+ * 
+ * 
+ * @param {type} spriteId
+ * @returns {Entity}
+ */
+RPGcode.prototype.getSprite = function(spriteId) {
+  return rpgwizard.craftyBoard.board.sprites[spriteId];  
+};
+
+/**
+ * Gets the sprites's current direction.
+ * 
+ * var direction = rpgcode.getSpriteDirection();
+ * rpgcode.log(direction);
+ * 
+ * @param {String} spriteId ID associated with the sprite.
+ * @returns {String} A NORTH, SOUTH, EAST, or WEST value.
+ */
+RPGcode.prototype.getSpriteDirection = function (spriteId) {
+    var entity = rpgwizard.craftyBoard.board.sprites[spriteId];
+    if (entity.sprite.npc) {
+        var direction = entity.sprite.npc.direction;
+    } else {
+        var direction = entity.sprite.enemy.direction;
+    }
+    
+    // User friendly rewrite of Crafty constants.
+    switch (direction) {
+        case "n":
+            return "NORTH";
+        case "s":
+            return "SOUTH";
+        case "e":
+            return "EAST";
+        case "w":
+            return "WEST";
+        case "ne":
+            return "NORTH_EAST";
+        case "se":
+            return "SOUTH_EAST";
+        case "nw":
+            return "NORTH_WEST";
+        case "sw":
+            return "SOUTH_WEST";
+    }
+};
+
+/**
  * Gets the viewport object, this is useful for calculating the position of 
  * characters or sprites on the board relative to the RPGcode screen.
  * 
@@ -842,10 +927,10 @@ RPGcode.prototype.hitEnemy = function (spriteId, damage, animationId, callback) 
         enemy.health -= damage;
         enemy.isHit = true;
         rpgcode.animateSprite(spriteId, animationId, function () {
-            enemy.isHit = false;
             if (callback) {
                 callback();
             }
+            enemy.isHit = false;
         });
     } else {
         // Provide error feedback.
@@ -889,9 +974,16 @@ RPGcode.prototype.isControlEnabled = function () {
  * @param {Callback} onLoad Callback to invoke after assets are loaded.
  */
 RPGcode.prototype.loadAssets = function (assets, onLoad) {
-    // If the assets already exist Crafty just ignores 
-    // them but still invokes the callback.
-    Crafty.load(assets, onLoad);
+    if (assets.programs) {
+        assets.programs.forEach(function(program, i) {
+            assets.programs[i] = program.replace(/\.[^/.]+$/, "");
+        });
+        requirejs(assets.programs, function() {
+            Crafty.load(assets, onLoad);
+        });
+    } else {
+        Crafty.load(assets, onLoad);
+    }
 };
 
 /**
@@ -1061,8 +1153,17 @@ RPGcode.prototype.moveCharacter = function (characterId, direction, distance) {
  * @param {Callback} callback Function to invoke when the sprite has finished moving.
  */
 RPGcode.prototype.moveCharacterTo = function (characterId, x, y, duration, callback) {
-    rpgwizard.craftyCharacter.tweenEndCallback = callback;
-    rpgwizard.craftyCharacter.tween({x: x, y: y}, duration);
+    rpgwizard.craftyCharacter.cancelTween({x: true, y: true});
+    rpgwizard.craftyCharacter.tweenEndCallbacks.push(callback);
+    
+    var location = rpgcode.getCharacterLocation();
+    if (location.x !== x && location.y !== y) {
+        rpgwizard.craftyCharacter.tween({x: x, y: y}, duration);
+    } else if (location.x !== x) {
+        rpgwizard.craftyCharacter.tween({x: x}, duration);
+    } else {
+        rpgwizard.craftyCharacter.tween({y: y}, duration);
+    }
 };
 
 /**
@@ -1086,17 +1187,19 @@ RPGcode.prototype.moveCharacterTo = function (characterId, x, y, duration, callb
  * @param {Callback} callback Function to invoke when the sprite has finished moving.
  */
 RPGcode.prototype.moveSpriteTo = function (spriteId, x, y, duration, callback) {
-    switch (spriteId) {
-        case "source":
-            rpgcode.tweenEndCallback = callback;
-            rpgcode.source.tween({x: x, y: y}, duration);
-            break;
-        default:
-            if (rpgwizard.craftyBoard.board.sprites.hasOwnProperty(spriteId)) {
-                var entity = rpgwizard.craftyBoard.board.sprites[spriteId];
-                entity.tweenEndCallback = callback;
-                entity.tween({x: x, y: y}, duration);
-            }
+    if (rpgwizard.craftyBoard.board.sprites.hasOwnProperty(spriteId)) {
+        var entity = rpgwizard.craftyBoard.board.sprites[spriteId];
+        entity.cancelTween({x: true, y: true});
+        entity.tweenEndCallbacks.push(callback);
+        
+        var location = rpgcode.getSpriteLocation(spriteId, false, true);
+        if (location.x !== x && location.y !== y) {
+            entity.tween({x: x, y: y}, duration);
+        } else if (location.x !== x) {
+            entity.tween({x: x}, duration);
+        } else {
+            entity.tween({y: y}, duration);
+        }
     }
 };
 

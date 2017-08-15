@@ -33,19 +33,22 @@ function RPGWizard() {
     this.programCache = {};
     this.activePrograms = 0;
     this.endProgramCallback = null;
+    requirejs.config({
+        baseUrl: PATH_PROGRAM
+    });
 
     // Used to store state when runProgram is called.
     this.keyboardHandler = {};
-    this.keyDownHandlers = null;
-    this.keyUpHandlers = null;
+    this.keyDownHandlers = {};
+    this.keyUpHandlers = {};
 
     // Used to store state when runProgram is called.
     this.mouseHandler = {};
-    this.mouseDownHandler = null;
-    this.mouseUpHandler = null;
-    this.mouseClickHandler = null;
-    this.mouseDoubleClickHandler = null;
-    this.mouseMoveHandler = null;
+    this.mouseDownHandler = {};
+    this.mouseUpHandler = {};
+    this.mouseClickHandler = {};
+    this.mouseDoubleClickHandler = {};
+    this.mouseMoveHandler = {};
 
     // Custom movement parameters.
     this.controlEnabled = false;
@@ -287,28 +290,33 @@ RPGWizard.prototype.createUILayer = function () {
                 }
             })
             .bind("MouseDown", function (e) {
-                if (rpgwizard.mouseHandler.mouseDownHandler) {
-                    rpgwizard.mouseHandler.mouseDownHandler(e);
+                var handler = rpgwizard.inProgram ? rpgwizard.mouseHandler.mouseDownHandler : rpgwizard.mouseDownHandler;
+                if (handler && typeof handler === "function") {
+                    handler(e);
                 }
             })
             .bind("MouseUp", function (e) {
-                if (rpgwizard.mouseHandler.mouseUpHandler) {
-                    rpgwizard.mouseHandler.mouseUpHandler(e);
+                var handler = rpgwizard.inProgram ? rpgwizard.mouseHandler.mouseUpHandler : rpgwizard.mouseUpHandler;
+                if (handler && typeof handler === "function") {
+                    handler(e);
                 }
             })
             .bind("Click", function (e) {
-                if (rpgwizard.mouseHandler.mouseClickHandler) {
-                    rpgwizard.mouseHandler.mouseClickHandler(e);
+                var handler = rpgwizard.inProgram ? rpgwizard.mouseHandler.mouseClickHandler : rpgwizard.mouseClickHandler;
+                if (handler && typeof handler === "function") {
+                    handler(e);
                 }
             })
             .bind("DoubleClick", function (e) {
-                if (rpgwizard.mouseHandler.mouseDoubleClickHandler) {
-                    rpgwizard.mouseHandler.mouseDoubleClickHandler(e);
+                var handler = rpgwizard.inProgram ? rpgwizard.mouseHandler.mouseDoubleClickHandler : rpgwizard.mouseDoubleClickHandler;
+                if (handler && typeof handler === "function") {
+                    handler(e);
                 }
             })
             .bind("MouseMove", function (e) {
-                if (rpgwizard.mouseHandler.mouseMoveHandler) {
-                    rpgwizard.mouseHandler.mouseMoveHandler(e);
+                var handler = rpgwizard.inProgram ? rpgwizard.mouseHandler.mouseMoveHandler : rpgwizard.mouseMoveHandler;
+                if (handler && typeof handler === "function") {
+                    handler(e);
                 }
             });
 };
@@ -396,22 +404,7 @@ RPGWizard.prototype.loadBoard = function (board) {
     var len = board.sprites.length;
     for (var i = 0; i < len; i++) {
         var sprite = board.sprites[i];
-
-        if (sprite.name.endsWith(".enemy")) {
-            sprite.enemy = new Enemy(PATH_ENEMY + sprite.name);
-            sprite.collisionPoints = sprite.enemy.collisionPoints;
-        } else {
-            sprite.npc = new NPC(PATH_NPC + sprite.name);
-            sprite.collisionPoints = sprite.npc.collisionPoints;
-        }
-
-        sprite.x = sprite.startingPosition.x;
-        sprite.y = sprite.startingPosition.y;
-        sprite.layer = sprite.startingPosition.layer;
-
-
-        var boardSprite = this.loadSprite(sprite);
-        sprites[sprite.id] = boardSprite;
+        sprites[sprite.id] = this.loadSprite(sprite);
     }
 
     // Change board sprites to an object set.
@@ -481,7 +474,7 @@ RPGWizard.prototype.loadCharacter = function (character) {
                 character: character,
                 activationVector: activationVector,
                 vectorType: "CHARACTER",
-                tweenEndCallback: null
+                tweenEndCallbacks: []
             })
             .CustomControls(1)
             .BaseVector(
@@ -504,10 +497,13 @@ RPGWizard.prototype.loadCharacter = function (character) {
                 this.dt = event.dt / 1000;
             })
             .bind("TweenEnd", function (event) {
-                if (this.tweenEndCallback) {
-                    this.tweenEndCallback();
+                if (this.tweenEndCallbacks.length > 0) {
+                    var callback = this.tweenEndCallbacks.shift();
+                    if (callback) {
+                        callback();
+                    }
                 }
-            });;
+            });
 
     this.craftyCharacter.visible = false;
     var assets = this.craftyCharacter.character.load();
@@ -516,6 +512,18 @@ RPGWizard.prototype.loadCharacter = function (character) {
 
 RPGWizard.prototype.loadSprite = function (sprite) {
     console.info("Loading sprite=[%s]", JSON.stringify(sprite));
+    
+    if (sprite.name.endsWith(".enemy")) {
+        sprite.enemy = new Enemy(PATH_ENEMY + sprite.name);
+        sprite.collisionPoints = sprite.enemy.collisionPoints;
+    } else {
+        sprite.npc = new NPC(PATH_NPC + sprite.name);
+        sprite.collisionPoints = sprite.npc.collisionPoints;
+    }
+    sprite.x = sprite.startingPosition.x;
+    sprite.y = sprite.startingPosition.y;
+    sprite.layer = sprite.startingPosition.layer;
+
     var isEnemy = sprite.enemy !== undefined;
     var asset = isEnemy ? sprite.enemy : sprite.npc;
 
@@ -550,6 +558,7 @@ RPGWizard.prototype.loadSprite = function (sprite) {
         sprite: sprite,
         events: sprite.events,
         activationVector: activationVector,
+        tweenEndCallbacks: [],
         init: function () {
             this.requires("2D, Canvas, Tween, BaseVector");
             this.attr({x: sprite.x, y: sprite.y, w: 50, h: 50, show: false});
@@ -568,8 +577,11 @@ RPGWizard.prototype.loadSprite = function (sprite) {
                 }
             });
             this.bind("TweenEnd", function (event) {
-                if (this.tweenEndCallback) {
-                    this.tweenEndCallback();
+                if (this.tweenEndCallbacks.length > 0) {
+                    var callback = this.tweenEndCallbacks.shift();
+                    if (callback) {
+                        callback();
+                    }
                 }
             });
         }
@@ -617,7 +629,7 @@ RPGWizard.prototype.openProgram = function (filename) {
     return program;
 };
 
-RPGWizard.prototype.runProgram = function (filename, source, callback, chained) {
+RPGWizard.prototype.runProgram = function (filename, source, callback) {
     console.info("Running program=[%s]", filename);
 
     rpgwizard.activePrograms++;
@@ -629,25 +641,10 @@ RPGWizard.prototype.runProgram = function (filename, source, callback, chained) 
 
     // Store endProgram callback.
     rpgwizard.endProgramCallback = callback;
-
-    // Store the runtime key handlers.
-    if (!chained) {
-        rpgwizard.keyDownHandlers = rpgwizard.keyboardHandler.downHandlers;
-        rpgwizard.keyUpHandlers = rpgwizard.keyboardHandler.upHandlers;
-    }
     
     // Wipe previous keyboard handlers.
     rpgwizard.keyboardHandler.downHandlers = {};
     rpgwizard.keyboardHandler.upHandlers = {};
-
-    // Store the runtime mouse handlers.
-    if (!chained) {
-        rpgwizard.mouseDownHandler = rpgwizard.mouseHandler.mouseDownHandler;
-        rpgwizard.mouseUpHandler = rpgwizard.mouseHandler.mouseUpHandler;
-        rpgwizard.mouseClickHandler = rpgwizard.mouseHandler.mouseClickHandler;
-        rpgwizard.mouseDoubleClickHandler = rpgwizard.mouseHandler.mouseDoubleClickHandler;
-        rpgwizard.mouseMoveHandler = rpgwizard.mouseHandler.mouseMoveHandler;
-    }
     
     // Wipe previous mouse handlers.
     rpgwizard.mouseHandler.mouseDownHandler = null;
@@ -658,7 +655,7 @@ RPGWizard.prototype.runProgram = function (filename, source, callback, chained) 
 
 
     var program = rpgwizard.openProgram(filename);
-    program();
+    program.apply(source);
 };
 
 RPGWizard.prototype.endProgram = function (nextProgram) {
@@ -677,17 +674,6 @@ RPGWizard.prototype.endProgram = function (nextProgram) {
             rpgwizard.endProgramCallback();
             rpgwizard.endProgramCallback = null;
         }
-
-        // Restore keyboard handlers.
-        rpgwizard.keyboardHandler.downHandlers = rpgwizard.keyDownHandlers;
-        rpgwizard.keyboardHandler.upHandlers = rpgwizard.keyUpHandlers;
-
-        // Restore mouse handlers.
-        rpgwizard.mouseHandler.mouseDownHandler = rpgwizard.mouseDownHandler;
-        rpgwizard.mouseHandler.mouseUpHandler = rpgwizard.mouseUpHandler;
-        rpgwizard.mouseHandler.mouseClickHandler = rpgwizard.mouseClickHandler;
-        rpgwizard.mouseHandler.mouseDoubleClickHandler = rpgwizard.mouseDoubleClickHandler;
-        rpgwizard.mouseHandler.mouseMoveHandler = rpgwizard.mouseMoveHandler;
 
         rpgwizard.inProgram = false;
         rpgwizard.currentProgram = null;

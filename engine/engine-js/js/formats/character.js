@@ -66,6 +66,7 @@ Character.prototype.processCollision = function (collision, entity) {
         case "ENEMY":
         case "NPC":
         case "SOLID":
+            entity.cancelTween({x: true, y: true});
             entity.x -= collision.overlap * collision.normal.x;
             entity.y -= collision.overlap * collision.normal.y;
             entity.resetHitChecks();
@@ -104,7 +105,7 @@ Character.prototype.processActivation = function (collision, entity, entering) {
                         callback: rpgwizard.keyboardHandler.downHandlers[event.key]
                     };
                     var callback = function() {
-                        rpgcode.runProgram(event.program);  
+                        rpgcode.runProgram(event.program, object);  
                     };
                     rpgcode.registerKeyDown(event.key, callback, true);
                 }

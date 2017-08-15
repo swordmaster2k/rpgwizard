@@ -11,8 +11,8 @@ function Sprite() {
     this.x = 0;
     this.y = 0;
     this.layer = 0;
-    this.direction = this.DirectionEnum.SOUTH,
-            this.collisionPoints = [];
+    this.direction = this.DirectionEnum.SOUTH;
+    this.collisionPoints = [];
     this.activationPoints = [];
     this.spriteGraphics = {
         elapsed: 0,
@@ -244,34 +244,42 @@ Sprite.prototype.changeGraphics = function (direction) {
     switch (direction) {
         case "NORTH":
         case this.DirectionEnum.NORTH:
+            this.direction = this.DirectionEnum.NORTH;
             this.spriteGraphics.active = this.spriteGraphics.north;
             break;
         case "SOUTH":
         case this.DirectionEnum.SOUTH:
+            this.direction = this.DirectionEnum.SOUTH;
             this.spriteGraphics.active = this.spriteGraphics.south;
             break;
         case "EAST":
         case this.DirectionEnum.EAST:
+            this.direction = this.DirectionEnum.EAST;
             this.spriteGraphics.active = this.spriteGraphics.east;
             break;
         case "WEST":
         case this.DirectionEnum.WEST:
+            this.direction = this.DirectionEnum.WEST;
             this.spriteGraphics.active = this.spriteGraphics.west;
             break;
         case "NORTH_EAST":
         case this.DirectionEnum.NORTH_EAST:
+            this.direction = this.DirectionEnum.NORTH_EAST;
             this.spriteGraphics.active = this.spriteGraphics.northEast;
             break;
         case "NORTH_WEST":
         case this.DirectionEnum.NORTH_WEST:
+            this.direction = this.DirectionEnum.NORTH_WEST;
             this.spriteGraphics.active = this.spriteGraphics.northWest;
             break;
         case "SOUTH_EAST":
         case this.DirectionEnum.SOUTH_EAST:
+            this.direction = this.DirectionEnum.SOUTH_EAST;
             this.spriteGraphics.active = this.spriteGraphics.southEast;
             break;
         case "SOUTH_WEST":
         case this.DirectionEnum.SOUTH_WEST:
+            this.direction = this.DirectionEnum.SOUTH_WEST;
             this.spriteGraphics.active = this.spriteGraphics.southWest;
             break;
         case this.DirectionEnum.ATTACK:

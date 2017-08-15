@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-/* global rpgwizard, rpgcode, PATH_PROGRAM, PATH_ITEM */
+/* global rpgwizard, rpgcode, PATH_PROGRAM, PATH_ITEM, PATH_FONT */
 
 var rpgcode = null; // Setup inside of the engine.
 
@@ -974,11 +974,26 @@ RPGcode.prototype.isControlEnabled = function () {
  * @param {Callback} onLoad Callback to invoke after assets are loaded.
  */
 RPGcode.prototype.loadAssets = function (assets, onLoad) {
+    if (assets.fonts) {
+        assets.fonts.forEach(function(font) {
+            var url = window.location.origin + PATH_FONT + font.file;
+            var newStyle = document.createElement('style');
+            newStyle.appendChild(document.createTextNode("\
+            @font-face {\
+                font-family: \"" + font.name + "\";\
+                src: url(\"" + url + "\");\
+            }\
+            "));
+            document.head.appendChild(newStyle);
+        });
+        delete assets.fonts;
+    }
     if (assets.programs) {
         assets.programs.forEach(function(program, i) {
             assets.programs[i] = program.replace(/\.[^/.]+$/, "");
         });
         requirejs(assets.programs, function() {
+            delete assets.programs;
             Crafty.load(assets, onLoad);
         });
     } else {

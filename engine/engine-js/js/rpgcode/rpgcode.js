@@ -340,7 +340,6 @@ RPGcode.prototype.destroyCanvas = function (canvasId) {
 RPGcode.prototype.destroySprite = function (spriteId) {
     if (rpgwizard.craftyBoard.board.sprites.hasOwnProperty(spriteId)) {
         var entity = rpgwizard.craftyBoard.board.sprites[spriteId];
-        entity.activationVector.destroy();
         entity.destroy();
         delete rpgwizard.craftyBoard.board.sprites[spriteId];
         Crafty.trigger("Invalidate");

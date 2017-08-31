@@ -69,7 +69,7 @@ public class EngineRunnable implements Runnable {
 
 	public static void main(String[] args) {
 		EngineRunnable runnable = new EngineRunnable(
-				"C:/Users/user/Desktop/Test");
+				"C:/Users/user/Desktop/Engine_Test");
 		runnable.run();
 	}
 

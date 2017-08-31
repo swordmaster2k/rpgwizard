@@ -60,6 +60,9 @@ function RPGWizard() {
     // Engine program states.
     this.inProgram = false;
     this.currentProgram = null;
+    
+    // Audio states.
+    this.lastBackgroundMusic = "";
 
     // Debugging options.
     this.showVectors = false;
@@ -182,7 +185,8 @@ RPGWizard.prototype.startScene = function () {
     }
 
     rpgwizard.craftyBoard.show = true;
-    if (rpgwizard.craftyBoard.board.backgroundMusic) {
+    if (rpgwizard.craftyBoard.board.backgroundMusic !== rpgwizard.lastBackgroundMusic) {
+        Crafty.audio.stop();
         rpgwizard.playSound(rpgwizard.craftyBoard.board.backgroundMusic, -1);
     }
     Crafty.trigger("Invalidate");
@@ -431,10 +435,10 @@ RPGWizard.prototype.switchBoard = function (boardName, tileX, tileY, layer) {
     Crafty("PASSABLE").destroy();
     Crafty("Board").destroy();
     Crafty("BoardSprite").destroy();
-    Crafty.audio.stop();
 
+    rpgwizard.lastBackgroundMusic = rpgwizard.craftyBoard.board.backgroundMusic;    
     this.loadBoard(new Board(PATH_BOARD + boardName));
-
+    
     var tileWidth = this.craftyBoard.board.tileWidth;
     var tileHeight = this.craftyBoard.board.tileHeight;
     this.craftyCharacter.x = parseInt((tileX * tileWidth) + tileWidth / 2);
@@ -584,6 +588,9 @@ RPGWizard.prototype.loadSprite = function (sprite) {
                     }
                 }
             });
+        },
+        remove: function() {
+            this.activationVector.destroy();
         }
     });
     entity = Crafty.e("BoardSprite")
@@ -673,11 +680,11 @@ RPGWizard.prototype.endProgram = function (nextProgram) {
         if (rpgwizard.endProgramCallback) {
             rpgwizard.endProgramCallback();
             rpgwizard.endProgramCallback = null;
+        } else {
+            rpgwizard.inProgram = false;
+            rpgwizard.currentProgram = null;
+            rpgwizard.controlEnabled = true;
         }
-
-        rpgwizard.inProgram = false;
-        rpgwizard.currentProgram = null;
-        rpgwizard.controlEnabled = true;
     }
 };
 

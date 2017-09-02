@@ -87,6 +87,11 @@
             <artifactId>jersey-hk2</artifactId>
             <version>${jersey.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.bitbucket.johness</groupId>
+            <artifactId>java-cef</artifactId>
+            <version>49.87.win64.2</version>
+        </dependency>
     </dependencies>
 
     <build>

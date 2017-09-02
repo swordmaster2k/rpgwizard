@@ -61,6 +61,7 @@ Enemy.prototype.checkCollisions = function (collision, entity) {
     }
 
     switch (object.vectorType) {
+        case "NPC":
         case "SOLID":
             entity.cancelTween({x: true, y: true});
             entity.x -= collision.overlap * collision.normal.x;
@@ -68,7 +69,6 @@ Enemy.prototype.checkCollisions = function (collision, entity) {
             entity.resetHitChecks();
             break;
         case "CHARACTER":
-        case "NPC":
         case "ENEMY":
         case "PASSABLE":
             break;

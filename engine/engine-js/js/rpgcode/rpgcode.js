@@ -769,6 +769,20 @@ RPGcode.prototype.getSpriteLocation = function (spriteId, inTiles, includeOffset
 };
 
 /**
+ * Gets the current scale factor that the renderer has been drawn with, useful
+ * for creating responsive and scalable UIs.
+ * 
+ * @example
+ * var scale = rpgcode.getScale();
+ * rpgcode.log(scale);
+ * 
+ * @returns {Number}
+ */
+RPGcode.prototype.getScale = function() {
+  return Crafty.viewport._scale;  
+};
+
+/**
  * 
  * 
  * @param {type} spriteId

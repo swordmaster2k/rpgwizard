@@ -138,7 +138,7 @@ public class Driver {
                             }
                         });
 
-                        System.exit(0);
+                        LOGGER.info("Stopping the RPGWizard Editor...");
                     }
                 });
 

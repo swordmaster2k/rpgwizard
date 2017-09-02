@@ -57,13 +57,14 @@ NPC.prototype.checkCollisions = function (collision, entity) {
     var object = collision.obj;
     switch (object.vectorType) {
         case "CHARACTER":
-        case "ENEMY":
         case "SOLID":
             entity.cancelTween({x: true, y: true});
             entity.x += collision.normal.x;
             entity.y += collision.normal.y;
             entity.resetHitChecks();
             break;
+       case "ENEMY":
+           break;
     }
 };
 

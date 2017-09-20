@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-/* global rpgwizard, rpgcode, PATH_PROGRAM, PATH_ITEM, PATH_FONT */
+/* global rpgwizard, rpgcode, PATH_PROGRAM, PATH_ITEM, PATH_FONT, Crafty */
 
 var rpgcode = null; // Setup inside of the engine.
 
@@ -257,8 +257,6 @@ RPGcode.prototype.clearDialog = function () {
     rpgcode.dialogWindow.paddingY = 5;
     rpgcode.clearCanvas("renderNowCanvas");
 };
-
-
 
 /**
  * Creates a canvas with the specified width, height, and ID. This canvas will not
@@ -783,7 +781,10 @@ RPGcode.prototype.getScale = function() {
 };
 
 /**
+ * Gets the sprite associated with the ID set in the Board editor.
  * 
+ * @example
+ * var sprite = rpgcode.getSprite("MySprite");
  * 
  * @param {type} spriteId
  * @returns {Entity}

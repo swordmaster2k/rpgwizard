@@ -12,7 +12,7 @@
 // Assets to load up for the battle system.
 var assets = {
    "audio": {
-      "Battle.mp3": "Battle.mp3"
+      "Battle.wav": "Battle.wav"
    },
    "images": [
       "hero_battle_profile.png",
@@ -116,7 +116,7 @@ if (rpgcode.getGlobal("haveBattled")) {
 
       // Stop any other music and play the battle tune.
       rpgcode.stopSound();
-      rpgcode.playSound("Battle.mp3", true);
+      rpgcode.playSound("Battle.wav", true);
 
       update();
    });
@@ -283,8 +283,8 @@ if (rpgcode.getGlobal("haveBattled")) {
             rpgcode.setGlobal("haveBattled", true);
             rpgcode.clearCanvas(buffer);
             rpgcode.destroySprite("evil-eye-1");
-            rpgcode.stopSound("Battle.mp3");
-            rpgcode.playSound("Tower.mp3", true);
+            rpgcode.stopSound("Battle.wav");
+            rpgcode.playSound("Tower.wav", true);
             rpgcode.setCharacterStance("Hero", "NORTH");
             rpgcode.endProgram();
          });
@@ -292,7 +292,7 @@ if (rpgcode.getGlobal("haveBattled")) {
          // The character is dead end the game.
          rpgcode.log("Game over punk...");
          rpgcode.clearCanvas(buffer);
-         rpgcode.stopSound("Battle.mp3");
+         rpgcode.stopSound("Battle.wav");
          rpgcode.endProgram("GameOver.js"); // Pass the program we want to run next.
       } else {
          drawState();

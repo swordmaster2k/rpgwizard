@@ -1,1 +1,1 @@
-{"frameRate":6,"soundEffect":"hit.wav","width":39,"spriteSheet":{"image":"Hero/south_hurt.png","x":0,"width":117,"y":0,"height":57},"version":4,"height":57}
+{"frameRate":6,"soundEffect":"hit.wav","width":39,"spriteSheet":{"image":"Hero/south_hurt.png","x":0,"width":117,"y":0,"height":57},"version":1.1,"height":57}

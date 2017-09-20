@@ -15,7 +15,7 @@
 // Game assets used in this program.
 var assets = {
    "audio": {
-      "intro": "intro.mp3"
+      "intro": "intro.wav"
    },
    "images": [
       "block.png",
@@ -144,7 +144,7 @@ function finish() {
    // when running on a mobile device.
    rpgcode.removeAssets({
       "audio": {
-         "intro": "intro.mp3"
+         "intro": "intro.wav"
       },
       "images": [
          "startscreen.png"

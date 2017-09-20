@@ -41,6 +41,7 @@ import org.rpgwizard.common.assets.KeyPressEvent;
  *
  * @author Joel Moore
  * @author Chris Hutchinson
+ * @author Joshua Micahel Daly
  */
 public abstract class AbstractJsonSerializer extends AbstractAssetSerializer {
 

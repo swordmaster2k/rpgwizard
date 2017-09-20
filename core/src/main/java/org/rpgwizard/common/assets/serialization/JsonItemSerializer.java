@@ -39,6 +39,7 @@ public class JsonItemSerializer extends AbstractJsonSerializer {
 			throws AssetException {
 		final Item item = new Item(handle.getDescriptor());
 
+		item.setVersion(json.getDouble("version"));
 		item.setName(json.getString("name"));
 		item.setIcon(json.getString("icon"));
 		item.setDescription(json.getString("description"));

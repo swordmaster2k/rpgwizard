@@ -39,6 +39,7 @@ public class JsonAnimationSerializer extends AbstractJsonSerializer {
 			throws AssetException {
 		final Animation animation = new Animation(handle.getDescriptor());
 
+		animation.setVersion(json.getDouble("version"));
 		animation.setAnimationWidth(json.optInt("width"));
 		animation.setAnimationHeight(json.optInt("height"));
 		animation.setFramRate(json.getInt("frameRate"));

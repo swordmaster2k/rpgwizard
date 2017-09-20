@@ -12,10 +12,20 @@ import java.util.Objects;
 
 public abstract class AbstractAsset implements Asset {
 
+	protected double version;
+
 	protected AssetDescriptor descriptor;
 
 	public AbstractAsset(AssetDescriptor descriptor) {
 		this.descriptor = descriptor;
+	}
+
+	public double getVersion() {
+		return version;
+	}
+
+	public void setVersion(double version) {
+		this.version = version;
 	}
 
 	@Override

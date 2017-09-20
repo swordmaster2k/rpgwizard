@@ -189,7 +189,12 @@ RPGWizard.prototype.loadScene = function (e) {
             rpgwizard.runProgram(
                     PATH_PROGRAM + rpgwizard.project.startupProgram,
                     {},
-                    rpgwizard.startScene);
+                    function() {
+                        rpgwizard.inProgram = false;
+                        rpgwizard.currentProgram = null;
+                        rpgwizard.controlEnabled = true;
+                        rpgwizard.startScene();
+                    });
         } else {
             rpgwizard.startScene();
         }
@@ -684,8 +689,9 @@ RPGWizard.prototype.runProgram = function (filename, source, callback) {
 
 RPGWizard.prototype.endProgram = function (nextProgram) {
     console.debug("Ending current program, nextProgram=[%s]", nextProgram);
-    rpgwizard.activePrograms--;
-
+    if (rpgwizard.activePrograms > 0) {
+        rpgwizard.activePrograms--;
+    }
     if (nextProgram) {
         rpgwizard.runProgram(
                 PATH_PROGRAM + nextProgram, 

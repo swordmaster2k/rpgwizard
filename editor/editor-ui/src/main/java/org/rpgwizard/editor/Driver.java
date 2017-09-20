@@ -40,7 +40,7 @@ public class Driver {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(Driver.class);
 
-	private static void redirectUncaughtExceptions() {
+	public static void redirectUncaughtExceptions() {
         try {
             Thread.setDefaultUncaughtExceptionHandler((Thread t, Throwable e) -> {
                 LOGGER.error("Uncaught Exception detected in thread {}", t, e);
@@ -49,7 +49,7 @@ public class Driver {
             LOGGER.error("Could not set the Default Uncaught Exception Handler", e);
         }
     }
-	private static void logSystemInfo() {
+	public static void logSystemInfo() {
 		LOGGER.info("---------------------------- System Info ----------------------------");
 		LOGGER.info("Operating System: {}", System.getProperty("os.name"));
 		LOGGER.info("System Architecture: {}", System.getProperty("os.arch"));
@@ -63,14 +63,14 @@ public class Driver {
 		LOGGER.info("---------------------------------------------------------------------");
 	}
 
-	private static void registerResolvers() {
+	public static void registerResolvers() {
 		LOGGER.debug("Registering asset resolvers.");
 
 		AssetManager.getInstance().registerResolver(
 				new FileAssetHandleResolver());
 	}
 
-	private static void registerSerializers() {
+	public static void registerSerializers() {
 		LOGGER.debug("Registering asset serializers.");
 
 		AssetManager assetManager = AssetManager.getInstance();
@@ -88,7 +88,7 @@ public class Driver {
 		assetManager.registerSerializer(new JsonTileSetSerializer());
 	}
 
-	private static PluginManager registerPlugins() throws URISyntaxException {
+	public static PluginManager registerPlugins() throws URISyntaxException {
 		String path = FileTools.getExecutionPath(Driver.class);
 
 		path += File.separator

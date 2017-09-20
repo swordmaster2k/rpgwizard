@@ -82,7 +82,7 @@ Character.prototype.processActivation = function (collision, entity, entering) {
     var layer = this.layer;
     var object = collision.obj;
     var events;
-    if (object.layer) {
+    if (object.layer !== undefined || object.layer !== null) {
         if (object.layer !== layer) {
             return;
         }

@@ -41,6 +41,7 @@ public class JsonTileSetSerializer extends AbstractJsonSerializer {
 		final TileSet tileSet = new TileSet(handle.getDescriptor(),
 				json.optInt("tileWidth"), json.optInt("tileHeight"));
 
+		tileSet.setVersion(json.getDouble("version"));
 		tileSet.setName(json.optString("name"));
 		tileSet.setImage(json.optString("image"));
 

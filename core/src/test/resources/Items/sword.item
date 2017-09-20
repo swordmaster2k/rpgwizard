@@ -1,4 +1,5 @@
 {
+   "version": 4.0,
    "name":"Sword",
    "icon":"Sword/sword_icon.png",
    "description":"The sword of evil's bane.",

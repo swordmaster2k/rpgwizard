@@ -8,9 +8,14 @@
 package org.rpgwizard.editor.utilities;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import org.apache.commons.io.FileUtils;
+import org.rpgwizard.common.assets.AbstractAsset;
+import org.rpgwizard.common.assets.AssetException;
+import org.rpgwizard.common.assets.AssetManager;
 import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.ui.SingleRootFileSystemView;
@@ -116,4 +121,30 @@ public final class FileTools {
 		return null;
 	}
 
+	public static void saveAsset(AbstractAsset asset) throws Exception {
+                File original;
+		File backup = EditorFileManager.backupFile(new File(asset
+					.getDescriptor().getURI()));
+		original = new File(asset.getDescriptor().getURI());
+		try {
+			AssetManager.getInstance().serialize(
+					AssetManager.getInstance().getHandle(asset));
+		} catch (IOException | AssetException ex) {
+			LOGGER.error("Failed to save asset=[{}].", asset, ex);
+			if (backup != null) {
+				// Existing file that failed during save.
+				FileUtils.copyFile(backup, original);
+				FileUtils.deleteQuietly(backup);
+			} else {
+				// New file that failed during save.
+				asset.setDescriptor(null);
+				FileUtils.deleteQuietly(original);
+			}
+			throw new Exception("Failed to save asset.");
+		} finally {
+                    if (backup != null) {
+			FileUtils.deleteQuietly(backup);
+                    }
+                }
+        }
 }

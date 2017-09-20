@@ -17,6 +17,7 @@ import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.rpgwizard.editor.utilities.FileTools;
+import org.rpgwizard.editor.utilities.ProjectUpgrader;
 
 /**
  *
@@ -43,8 +44,9 @@ public class OpenProjectAction extends AbstractAction {
 			File file = EditorFileManager.getFileChooser().getSelectedFile();
 			MainWindow mainWindow = MainWindow.getInstance();
 
-			Project project = mainWindow.openProject(file);
 			mainWindow.setProjectPath(file.getParent());
+			ProjectUpgrader.upgrade(file.getParentFile());
+			Project project = mainWindow.openProject(file);
 			mainWindow.setupProject(project);
 		}
 	}

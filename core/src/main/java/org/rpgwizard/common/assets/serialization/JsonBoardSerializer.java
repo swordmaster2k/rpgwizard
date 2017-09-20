@@ -54,6 +54,7 @@ public class JsonBoardSerializer extends AbstractJsonSerializer {
 
 		final Board board = new Board(handle.getDescriptor());
 
+		board.setVersion(json.getDouble("version"));
 		board.setName(json.getString("name"));
 		board.setWidth(json.getInt("width"));
 		board.setHeight(json.getInt("height"));

@@ -220,9 +220,6 @@ public abstract class GuiHelper {
 		int width = board.getWidth() * board.getTileWidth();
 		int height = board.getHeight() * board.getTileHeight();
 
-		System.out.println(String.format("%d, %d, %d, %d", x1, y2, x2, y2));
-		System.out.println(String.format("%d, %d", width, height));
-
 		if (x1 == width && x2 == width) {
 			x1 -= 1;
 			x2 -= 1;

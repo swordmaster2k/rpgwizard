@@ -989,7 +989,7 @@ RPGcode.prototype.isControlEnabled = function () {
 RPGcode.prototype.loadAssets = function (assets, onLoad) {
     if (assets.fonts) {
         assets.fonts.forEach(function(font) {
-            var url = window.location.origin + PATH_FONT + font.file;
+            var url = PATH_FONT + font.file;
             var newStyle = document.createElement('style');
             newStyle.appendChild(document.createTextNode("\
             @font-face {\

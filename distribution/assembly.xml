@@ -26,11 +26,12 @@
                 <include>*.exe</include>
             </includes>
         </fileSet>
-		<fileSet>
+        <fileSet>
             <directory>resources/</directory>
             <outputDirectory>.</outputDirectory>
             <includes>
-				<include>license.txt</include>
+                <include>jre/</include>
+                <include>license.txt</include>
                 <include>README.txt</include>
             </includes>
         </fileSet>

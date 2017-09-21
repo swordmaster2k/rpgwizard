@@ -27,6 +27,7 @@
     <properties>
         <file.version>${project.version}.0</file.version>
         <product.version>${file.version}</product.version>
+        <launch4j.version>1.7.21</launch4j.version>
     </properties>
 
     <dependencies>
@@ -40,7 +41,7 @@
                     <plugin>
                         <groupId>com.akathist.maven.plugins.launch4j</groupId>
                         <artifactId>launch4j-maven-plugin</artifactId>
-                        <version>1.7.17</version>
+                        <version>${launch4j.version}</version>
                         <executions>
                             <execution>
                                 <id>l4j-gui</id>
@@ -62,13 +63,13 @@
                                         <windowTitle>RPG Wizard Editor</windowTitle>
                                     </singleInstance>
                                     <jre>
-                                        <path></path>
+                                        <path>jre</path>
                                         <bundledJre64Bit>false</bundledJre64Bit>
                                         <bundledJreAsFallback>false</bundledJreAsFallback>
                                         <minVersion>1.8.0</minVersion>
                                         <maxVersion></maxVersion>
                                         <jdkPreference>preferJre</jdkPreference>
-                                        <runtimeBits>64/32</runtimeBits>
+                                        <runtimeBits>32</runtimeBits>
                                         <opts>
                                             <opt>-Dorg.rpgwizard.execution.path=&quot;%EXEDIR%&quot;</opt>
                                         </opts>
@@ -116,7 +117,7 @@
                     <plugin>
                         <groupId>com.akathist.maven.plugins.launch4j</groupId>
                         <artifactId>launch4j-maven-plugin</artifactId>
-                        <version>1.7.17</version>
+                        <version>${launch4j.version}</version>
                         <executions>
                             <execution>
                                 <id>l4j-gui</id>

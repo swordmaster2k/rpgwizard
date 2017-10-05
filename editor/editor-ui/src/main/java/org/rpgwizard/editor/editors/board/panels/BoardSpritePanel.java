@@ -221,11 +221,11 @@ public class BoardSpritePanel extends BoardModelPanel {
             public void actionPerformed(ActionEvent e) {
                 String selected = eventComboBox.getSelectedItem().toString();
                 
-                if (selected.equals(EventType.OVERLAP.toString())) {
+                if (selected.equalsIgnoreCase(EventType.OVERLAP.toString())) {
                     boardSprite.setEventType(EventType.OVERLAP);
                     MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
                     keyComboBox.setEnabled(false);
-                } else if (selected.equals(EventType.KEYPRESS.toString())) {
+                } else if (selected.equalsIgnoreCase(EventType.KEYPRESS.toString())) {
                     boardSprite.setEventType(EventType.KEYPRESS);
                     MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
                     keyComboBox.setEnabled(true);

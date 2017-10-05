@@ -6,4 +6,5 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 
+npm install jsdoc
 node_modules/.bin/jsdoc -c jsdoc-conf.json js/rpgcode/rpgcode.js

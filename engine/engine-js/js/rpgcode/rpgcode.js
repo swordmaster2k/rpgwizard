@@ -38,6 +38,7 @@ function RPGcode() {
 
     this.rgba = {r: 255, g: 255, b: 255, a: 1.0};
     this.font = "14px Arial";
+    this.globalAlpha = 1.0;
 
     this.dialogPosition = {
         NORTH: "NORTH",
@@ -426,6 +427,7 @@ RPGcode.prototype.drawText = function (x, y, text, canvasId) {
     if (instance) {
         var context = instance.canvas.getContext("2d");
         var rgba = rpgcode.rgba;
+        context.globalAlpha = rpgcode.globalAlpha;
         context.fillStyle = "rgba(" + rgba.r + "," + rgba.g + "," + rgba.b + "," + rgba.a + ")";
         context.font = rpgcode.font;
         context.fillText(text, x, y);
@@ -480,6 +482,7 @@ RPGcode.prototype.fillRect = function (x, y, width, height, canvasId) {
     if (instance) {
         var context = instance.canvas.getContext("2d");
         var rgba = rpgcode.rgba;
+        context.globalAlpha = rpgcode.globalAlpha;
         context.fillStyle = "rgba(" + rgba.r + "," + rgba.g + "," + rgba.b + "," + rgba.a + ")";
         context.fillRect(x, y, width, height);
     }
@@ -1140,6 +1143,7 @@ RPGcode.prototype.moveSprite = function (spriteId, direction, distance) {
 RPGcode.prototype.measureText = function (text) {
     var instance = rpgcode.canvases["renderNowCanvas"];
     var context = instance.canvas.getContext("2d");
+    context.globalAlpha = rpgcode.globalAlpha;
     context.font = rpgcode.font;
     return {width: context.measureText(text).width, height: parseInt(context.font)};
 };
@@ -1684,6 +1688,20 @@ RPGcode.prototype.setGlobal = function (id, value) {
 };
 
 /**
+ * Sets the global drawing alpha for all subsequent canvas drawing operation. 
+ * Useful for drawing transparent elements to a canvas.
+ * 
+ * For more details see:
+ *  https://www.w3schools.com/Tags/canvas_globalalpha.asp
+ * 
+ * @param {type} alpha
+ * @returns {undefined}
+ */
+RPGcode.prototype.setGlobalAlpha = function (alpha) {
+    rpgcode.globalAlpha = alpha;
+};
+
+/**
  * Sets an image on the canvas specified or the default if none.
  * 
  * @example
@@ -1707,6 +1725,7 @@ RPGcode.prototype.setImage = function (fileName, x, y, width, height, canvasId) 
         var image = Crafty.asset(Crafty.__paths.images + fileName);
         if (image) {
             var context = instance.canvas.getContext("2d");
+            context.globalAlpha = rpgcode.globalAlpha;
             context.drawImage(image, x, y, width, height);
         }
     }

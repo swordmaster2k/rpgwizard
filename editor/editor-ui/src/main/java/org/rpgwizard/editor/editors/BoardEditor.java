@@ -282,7 +282,7 @@ public class BoardEditor extends AssetEditorWindow
 			}
 		}
 
-		board.setName(title);
+		board.setName(getTitle().replace("*", ""));
 
 		save(board);
 	}

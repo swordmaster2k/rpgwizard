@@ -156,6 +156,7 @@ public class Html5EnginePlugin extends Plugin {
 		private void openEmbeddedBrowser(String projectName) {
 			if (EMBEDDED_BROWSER != null) {
 				EMBEDDED_BROWSER.getCefBrowser().loadURL(URL);
+                                EMBEDDED_BROWSER.setTitle(projectName);
 				EMBEDDED_BROWSER.setVisible(true);
 			} else {
 				EMBEDDED_BROWSER = new EmbeddedBrowser(projectName, URL,

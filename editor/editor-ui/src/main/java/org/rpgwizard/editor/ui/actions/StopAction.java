@@ -35,10 +35,13 @@ public class StopAction extends AbstractAction {
 	public void actionPerformed(ActionEvent e) {
 		try {
 			MainWindow instance = MainWindow.getInstance();
+                        instance.getMainToolBar().getStopButton()
+								.setEnabled(false);
 
 			PluginManager pluginManager = MainWindow.getInstance()
 					.getPluginManager();
 			List<Engine> engines = pluginManager.getExtensions(Engine.class);
+                        
 			// Just use the first available engine for now.
 			if (engines.size() > 0) {
 				progressMonitor = new ProgressMonitor(MainWindow.getInstance(),
@@ -58,8 +61,6 @@ public class StopAction extends AbstractAction {
 						Toolkit.getDefaultToolkit().beep();
 						instance.getMainToolBar().getRunButton()
 								.setEnabled(true);
-						instance.getMainToolBar().getStopButton()
-								.setEnabled(false);
 					}
 				};
 				worker.execute();

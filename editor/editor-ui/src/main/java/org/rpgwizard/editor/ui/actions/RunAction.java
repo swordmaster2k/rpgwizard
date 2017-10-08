@@ -39,6 +39,7 @@ public class RunAction extends AbstractAction {
 	public void actionPerformed(ActionEvent e) {
 		try {
 			MainWindow instance = MainWindow.getInstance();
+                        instance.getMainToolBar().getRunButton().setEnabled(false);
 			instance.getMainToolBar().getSaveAllButton().doClick();
 
 			String projectName = instance.getTitle();
@@ -71,8 +72,6 @@ public class RunAction extends AbstractAction {
 					@Override
 					public void done() {
 						Toolkit.getDefaultToolkit().beep();
-						instance.getMainToolBar().getRunButton()
-								.setEnabled(false);
 						instance.getMainToolBar().getStopButton()
 								.setEnabled(true);
 					}

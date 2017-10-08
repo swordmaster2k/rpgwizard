@@ -75,7 +75,6 @@ import org.apache.commons.io.FilenameUtils;
 import org.rpgwizard.common.assets.Item;
 import org.rpgwizard.editor.editors.ItemEditor;
 import org.rpgwizard.editor.editors.ProgramEditor;
-import org.rpgwizard.editor.utilities.ProjectUpgrader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ro.fortsoft.pf4j.PluginManager;
@@ -138,7 +137,6 @@ public class MainWindow extends JFrame implements InternalFrameListener {
 		tileSetPanel = new TileSetTabbedPane();
 		upperTabbedPane = new JTabbedPane();
 		// this.upperTabbedPane.addTab("Project", this.projectPanel); // TODO:
-		// TK 4.1.0
 		upperTabbedPane.addTab("Tileset", tileSetPanel);
 
 		propertiesPanel = new PropertiesPanel();

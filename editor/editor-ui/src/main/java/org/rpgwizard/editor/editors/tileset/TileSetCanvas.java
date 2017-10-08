@@ -78,7 +78,7 @@ public final class TileSetCanvas extends JPanel implements Scrollable {
                 }
             }
         };
-        this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ADD, 0), "increaseTilesAction");
+        this.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ADD, 0), "increaseTilesAction");
         this.getActionMap().put("increaseTilesAction", increaseTilesAction);
 
         Action decreaseTilesAction = new AbstractAction() {
@@ -91,7 +91,7 @@ public final class TileSetCanvas extends JPanel implements Scrollable {
                 }
             }
         };
-        this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, 0), "decreaseTilesAction");
+        this.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, 0), "decreaseTilesAction");
         this.getActionMap().put("decreaseTilesAction", decreaseTilesAction);
 
         tileSetMouseAdapter = new TileSetMouseAdapter();
@@ -344,9 +344,6 @@ public final class TileSetCanvas extends JPanel implements Scrollable {
     private Point getTileCoordinates(int x, int y) {
         int tileWidth = tileSet.getTileWidth();
         int tileHeight = tileSet.getTileHeight();
-        int tileCount = tileSet.getTiles().size();
-        int rows = tileCount / tilesPerRow
-                + (tileCount % tilesPerRow > 0 ? 1 : 0);
 
         int tileX = Math.round(x / tileWidth);
         int tileY = Math.round(y / tileHeight);
@@ -395,6 +392,8 @@ public final class TileSetCanvas extends JPanel implements Scrollable {
 
         @Override
         public void mousePressed(MouseEvent e) {
+            requestFocus();
+            
             origin = getTileCoordinates(e.getX(), e.getY());
             setSelection(new Rectangle(origin.x, origin.y, 0, 0));
             scrollTileToVisible(origin);
@@ -408,6 +407,8 @@ public final class TileSetCanvas extends JPanel implements Scrollable {
 
         @Override
         public void mouseDragged(MouseEvent e) {
+            requestFocus();
+            
             Point point = getTileCoordinates(e.getX(), e.getY());
             
             if (point.x >= tilesPerRow) {

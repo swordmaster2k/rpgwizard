@@ -171,6 +171,11 @@ RPGWizard.prototype.setup = function (filename) {
         //Crafty.viewport.clampToEntities = false;
 
         this.loadCraftyAssets(this.loadScene);
+    } else if (this.project.initialCharacter && this.project.startupProgram) {
+        this.loadCharacter(new Character(PATH_CHARACTER + this.project.initialCharacter));
+        rpgwizard.runProgram(
+                PATH_PROGRAM + rpgwizard.project.startupProgram,
+                {});
     } else if (this.project.startupProgram) {
         rpgwizard.runProgram(
                 PATH_PROGRAM + rpgwizard.project.startupProgram,
@@ -477,7 +482,11 @@ RPGWizard.prototype.switchBoard = function (boardName, tileX, tileY, layer) {
     Crafty("Board").destroy();
     Crafty("BoardSprite").destroy();
 
-    rpgwizard.lastBackgroundMusic = rpgwizard.craftyBoard.board.backgroundMusic;
+    // May not be a last board if it is being set in a startup program.
+    if (rpgwizard.craftyBoard.board) {
+        rpgwizard.lastBackgroundMusic = rpgwizard.craftyBoard.board.backgroundMusic;
+    }
+    
     this.loadBoard(new Board(PATH_BOARD + boardName));
 
     var tileWidth = this.craftyBoard.board.tileWidth;

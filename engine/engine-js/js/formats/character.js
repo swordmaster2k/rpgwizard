@@ -11,7 +11,10 @@ Character.prototype = Object.create(Sprite.prototype);
 Character.prototype.constructor = Character;
 
 function Character(filename) {
-    console.info("Loading Character filename=[%s]", filename);
+    if (rpgwizard.debugEnabled) {
+        console.debug("Loading Character filename=[%s]", filename);
+    }
+    
     Sprite.call(this);
 
     // TODO: Make the changes here that chrome suggests.
@@ -55,7 +58,9 @@ Character.prototype.hitOffActivation = function (hitData, entity) {
 };
 
 Character.prototype.processCollision = function (collision, entity) {
-    console.debug("Processing collision for Character name=[%s]", this.name);
+    if (rpgwizard.debugEnabled) {
+        console.debug("Processing collision for Character name=[%s]", this.name);
+    }
 
     var object = collision.obj;
     if (object.layer !== this.layer) {
@@ -77,7 +82,9 @@ Character.prototype.processCollision = function (collision, entity) {
 };
 
 Character.prototype.processActivation = function (collision, entity, entering) {
-    console.debug("Processing activation for Character name=[%s]", this.name);
+    if (rpgwizard.debugEnabled) {
+        console.debug("Processing activation for Character name=[%s]", this.name);
+    }
 
     var layer = this.layer;
     var object = collision.obj;

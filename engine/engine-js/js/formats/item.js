@@ -5,12 +5,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-/* global PATH_ITEM */
+/* global PATH_ITEM, rpgwizard */
 
 Item.prototype.constructor = Item;
 
 function Item(filename) {
-    console.info("Loading Item filename=[%s]", filename);
+    if (rpgwizard.debugEnabled) {
+        console.debug("Loading Item filename=[%s]", filename);
+    }
     
     // TODO: Make the changes here that chrome suggests.
     var req = new XMLHttpRequest();
@@ -26,12 +28,16 @@ function Item(filename) {
 }
 
 Item.prototype.load = function () {
-    console.info("Loading Item name=[%s]", this.name);
+    if (rpgwizard.debugEnabled) {
+        console.debug("Loading Item name=[%s]", this.name);
+    }
 
     // Return the assets that need to be loaded.
     return {"images": [this.icon]};
 };
 
 Item.prototype.setReady = function () {
-    console.info("Setting ready Item name=[%s]", this.name);
+    if (rpgwizard.debugEnabled) {
+        console.debug("Setting ready Item name=[%s]", this.name);
+    }
 };

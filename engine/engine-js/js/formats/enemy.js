@@ -5,13 +5,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-/* global Sprite */
+/* global Sprite, rpgwizard */
 
 Enemy.prototype = Object.create(Sprite.prototype);
 Enemy.prototype.constructor = Enemy;
 
 function Enemy(filename) {
-    console.info("Loading Enemy filename=[%s]", filename);
+    if (rpgwizard.debugEnabled) {
+        console.info("Loading Enemy filename=[%s]", filename);
+    }
+    
     Sprite.call(this);
 
     // TODO: Make the changes here that chrome suggests.
@@ -52,7 +55,9 @@ Enemy.prototype.hitOffActivation = function (hitData, entity) {
 };
 
 Enemy.prototype.checkCollisions = function (collision, entity) {
-    console.debug("Checking collisions for Enemy name=[%s]", this.name);
+    if (rpgwizard.debugEnabled) {
+        console.debug("Checking collisions for Enemy name=[%s]", this.name);
+    }
 
     var object = collision.obj;
 

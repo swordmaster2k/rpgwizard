@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-/* global PATH_BITMAP, PATH_MEDIA, PATH_PROGRAM, PATH_BOARD, PATH_CHARACTER, PATH_NPC, jailed, rpgcode, PATH_TILESET, PATH_ENEMY */
+/* global PATH_BITMAP, PATH_MEDIA, PATH_PROGRAM, PATH_BOARD, PATH_CHARACTER, PATH_NPC, jailed, rpgcode, PATH_TILESET, PATH_ENEMY, Crafty */
 
 var rpgwizard = new RPGWizard();
 
@@ -66,6 +66,7 @@ function RPGWizard() {
 
     // Debugging options.
     this.showVectors = false;
+    this.debugEnabled = false;
 
     // Custom crafty components.
     Crafty.c("BaseVector", {
@@ -97,8 +98,10 @@ function RPGWizard() {
  * @returns {undefined}
  */
 RPGWizard.prototype.setup = function (filename) {
-    console.debug("Starting engine with filename=[%s]", filename);
-
+    if (rpgwizard.debugEnabled) {
+        console.debug("Starting engine with filename=[%s]", filename);
+    }
+    
     this.project = new Project(filename);
 
     var scale = 1;
@@ -181,7 +184,9 @@ RPGWizard.prototype.setup = function (filename) {
 RPGWizard.prototype.loadScene = function (e) {
     if (e) {
         if (e.type === "loading") {
-            console.debug(JSON.stringify(e));
+            if (rpgwizard.debugEnabled) {
+                console.debug(JSON.stringify(e));
+            }
         } else {
             console.error(JSON.stringify(e));
         }
@@ -245,7 +250,12 @@ RPGWizard.prototype.queueCraftyAssets = function (assets, waitingEntity) {
 
 RPGWizard.prototype.loadCraftyAssets = function (callback) {
     var assets = this.assetsToLoad;
-    console.debug("Loading assets=[" + JSON.stringify(assets) + "]");
+    if (rpgwizard.debugEnabled) {
+        console.debug("Loading assets=[" + JSON.stringify(assets) + "]");
+    }
+
+    // Remove any duplicates.
+    assets.images = assets.images.filter((it, i, ar) => ar.indexOf(it) === i);
 
     // Remove already loaded assets.
     var images = [];
@@ -258,7 +268,6 @@ RPGWizard.prototype.loadCraftyAssets = function (callback) {
     for (var property in assets.audio) {
         if (!Crafty.assets[Crafty.__paths.audio + property]) {
             audio[property] = assets.audio[property];
-            ;
         }
     }
     if (images.length === 0 && Object.keys(audio).length === 0) {
@@ -277,7 +286,9 @@ RPGWizard.prototype.loadCraftyAssets = function (callback) {
     assets.audio = audio;
     Crafty.load(assets,
             function () { // loaded
-                console.debug("Loaded assets=[%s]", JSON.stringify(assets));
+                if (rpgwizard.debugEnabled) {
+                    console.debug("Loaded assets=[%s]", JSON.stringify(assets));
+                }
 
                 // Notifiy the entities that their assets are ready for use.
                 rpgwizard.waitingEntities.forEach(function (entity) {
@@ -350,7 +361,9 @@ RPGWizard.prototype.createUILayer = function () {
 };
 
 RPGWizard.prototype.createCraftyBoard = function (board) {
-    console.debug("Creating Crafty board=[%s]", JSON.stringify(board));
+    if (rpgwizard.debugEnabled) {
+        console.debug("Creating Crafty board=[%s]", JSON.stringify(board));
+    }
 
     var width = board.width * board.tileWidth;
     var height = board.height * board.tileHeight;
@@ -396,7 +409,9 @@ RPGWizard.prototype.createCraftyBoard = function (board) {
 };
 
 RPGWizard.prototype.loadBoard = function (board) {
-    console.debug("Loading board=[%s]", JSON.stringify(board));
+    if (rpgwizard.debugEnabled) {
+        console.debug("Loading board=[%s]", JSON.stringify(board));
+    }
 
     var craftyBoard = this.createCraftyBoard(board);
     var assets = {"images": [], "audio": {}};
@@ -450,8 +465,10 @@ RPGWizard.prototype.loadBoard = function (board) {
 };
 
 RPGWizard.prototype.switchBoard = function (boardName, tileX, tileY, layer) {
-    console.debug("Switching board to boardName=[%s], tileX=[%d], tileY=[%d], layer=[%d]",
-            boardName, tileX, tileY);
+    if (rpgwizard.debugEnabled) {
+        console.debug("Switching board to boardName=[%s], tileX=[%d], tileY=[%d], layer=[%d]",
+                boardName, tileX, tileY);
+    }
 
     this.controlEnabled = false;
 
@@ -469,14 +486,18 @@ RPGWizard.prototype.switchBoard = function (boardName, tileX, tileY, layer) {
     this.craftyCharacter.y = parseInt((tileY * tileHeight) + tileHeight / 2);
     this.craftyCharacter.character.layer = layer;
 
-    console.debug("Switching board player location set to x=[%d], y=[%d], layer=[%d]",
-            this.craftyCharacter.x, this.craftyCharacter.y, this.craftyCharacter.layer);
+    if (rpgwizard.debugEnabled) {
+        console.debug("Switching board player location set to x=[%d], y=[%d], layer=[%d]",
+                this.craftyCharacter.x, this.craftyCharacter.y, this.craftyCharacter.layer);
+    }
 
     this.loadCraftyAssets(this.loadScene);
 };
 
 RPGWizard.prototype.loadCharacter = function (character) {
-    console.debug("Loading character=[%s]", JSON.stringify(character));
+    if (rpgwizard.debugEnabled) {
+        console.debug("Loading character=[%s]", JSON.stringify(character));
+    }
 
     // Have to keep this in a separate entity, as Crafty entites can
     // only have 1 collision polygon at a time, using composition to
@@ -539,7 +560,9 @@ RPGWizard.prototype.loadCharacter = function (character) {
 };
 
 RPGWizard.prototype.loadSprite = function (sprite) {
-    console.debug("Loading sprite=[%s]", JSON.stringify(sprite));
+    if (rpgwizard.debugEnabled) {
+        console.debug("Loading sprite=[%s]", JSON.stringify(sprite));
+    }
 
     if (sprite.name.endsWith(".enemy")) {
         sprite.enemy = new Enemy(PATH_ENEMY + sprite.name);
@@ -635,14 +658,18 @@ RPGWizard.prototype.loadSprite = function (sprite) {
 };
 
 RPGWizard.prototype.loadItem = function (item) {
-    console.debug("Loading item=[%s]", JSON.stringify(item));
+    if (rpgwizard.debugEnabled) {
+        console.debug("Loading item=[%s]", JSON.stringify(item));
+    }
 
     var assets = item.load();
     this.queueCraftyAssets(assets, item);
 };
 
 RPGWizard.prototype.openProgram = function (filename) {
-    console.debug("Opening program=[%s]", filename);
+    if (rpgwizard.debugEnabled) {
+        console.debug("Opening program=[%s]", filename);
+    }
 
     var program = rpgwizard.programCache[filename];
 
@@ -661,7 +688,9 @@ RPGWizard.prototype.openProgram = function (filename) {
 };
 
 RPGWizard.prototype.runProgram = function (filename, source, callback) {
-    console.debug("Running program=[%s]", filename);
+    if (rpgwizard.debugEnabled) {
+        console.debug("Running program=[%s]", filename);
+    }
 
     rpgwizard.activePrograms++;
     rpgwizard.inProgram = true;
@@ -690,7 +719,10 @@ RPGWizard.prototype.runProgram = function (filename, source, callback) {
 };
 
 RPGWizard.prototype.endProgram = function (nextProgram) {
-    console.debug("Ending current program, nextProgram=[%s]", nextProgram);
+    if (rpgwizard.debugEnabled) {
+        console.debug("Ending current program, nextProgram=[%s]", nextProgram);
+    }
+    
     if (rpgwizard.activePrograms > 0) {
         rpgwizard.activePrograms--;
     }
@@ -785,7 +817,9 @@ RPGWizard.prototype.calculateVectorPosition = function (x1, y1, x2, y2) {
 };
 
 RPGWizard.prototype.playSound = function (sound, loop) {
-    console.debug("Playing sound=[%s]", sound);
+    if (rpgwizard.debugEnabled) {
+        console.debug("Playing sound=[%s]", sound);
+    }
 
     Crafty.audio.play(sound, loop);
 };

@@ -85,7 +85,9 @@ Sprite.prototype.calculateActivationPoints = function () {
 };
 
 Sprite.prototype.load = function () {
-    console.info("Loading Sprite name=[%s]", this.name);
+    if (rpgwizard.debugEnabled) {
+        console.debug("Loading Sprite name=[%s]", this.name);
+    }
 
     var frames = this.loadAnimations();
     var soundEffects = this.loadSoundEffects();
@@ -95,7 +97,9 @@ Sprite.prototype.load = function () {
 };
 
 Sprite.prototype.loadAnimations = function () {
-    console.info("Loading Sprite animations name=[%s]", this.name);
+    if (rpgwizard.debugEnabled) {
+        console.debug("Loading Sprite animations name=[%s]", this.name);
+    }
 
     // Load up the standard animations.
     var standardKeys = ["SOUTH", "NORTH", "EAST", "WEST", "NORTH_EAST", "NORTH_WEST",
@@ -159,7 +163,9 @@ Sprite.prototype.loadAnimations = function () {
 };
 
 Sprite.prototype._loadAnimation = function (fileName) {
-    console.debug("Loading Sprite animation name=[%s], fileName=[%s]", this.name, fileName);
+    if (rpgwizard.debugEnabled) {
+        console.debug("Loading Sprite animation name=[%s], fileName=[%s]", this.name, fileName);
+    }
 
     if (fileName) {
         var animation = new Animation(PATH_ANIMATION + fileName);
@@ -170,7 +176,9 @@ Sprite.prototype._loadAnimation = function (fileName) {
 };
 
 Sprite.prototype.loadFrames = function () {
-    console.info("Loading Sprite frames name=[%s]", this.name);
+    if (rpgwizard.debugEnabled) {
+        console.debug("Loading Sprite frames name=[%s]", this.name);
+    }
 
     var frames = [];
     // TODO: create a standard graphics collection in the place of this hack!
@@ -192,7 +200,9 @@ Sprite.prototype.loadFrames = function () {
 };
 
 Sprite.prototype.loadSoundEffects = function () {
-    console.info("Loading Sprite sound effects name=[%s]", this.name);
+    if (rpgwizard.debugEnabled) {
+        console.debug("Loading Sprite sound effects name=[%s]", this.name);
+    }
 
     var soundEffects = {};
     soundEffects[this.spriteGraphics.north.soundEffect] = this.spriteGraphics.north.soundEffect;
@@ -212,7 +222,10 @@ Sprite.prototype.loadSoundEffects = function () {
 };
 
 Sprite.prototype.setReady = function () {
-    console.info("Setting ready Sprite name=[%s]", this.name);
+    if (rpgwizard.debugEnabled) {
+        console.debug("Setting ready Sprite name=[%s]", this.name);
+    }
+    
     this.spriteGraphics.active = this.spriteGraphics.south;
     this.getActiveFrame();
     this.renderReady = true;
@@ -346,7 +359,9 @@ Sprite.prototype.getActiveFrame = function () {
 };
 
 Sprite.prototype.checkCollisions = function (collision, entity) {
-    console.debug("Checking collisions for Sprite name=[%s]", this.name);
+    if (rpgwizard.debugEnabled) {
+        console.debug("Checking collisions for Sprite name=[%s]", this.name);
+    }
 
     var object = collision.obj;
 
@@ -370,7 +385,9 @@ Sprite.prototype.checkCollisions = function (collision, entity) {
 };
 
 Sprite.prototype.checkActivations = function (collision, entity) {
-    console.debug("Checking activations for Sprite name=[%s]", this.name);
+    if (rpgwizard.debugEnabled) {
+        console.debug("Checking activations for Sprite name=[%s]", this.name);
+    }
 
     var layer = this.layer;
     var object = collision.obj;

@@ -5,13 +5,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-/* global Sprite */
+/* global Sprite, rpgwizard */
 
 NPC.prototype = Object.create(Sprite.prototype);
 NPC.prototype.constructor = NPC;
 
 function NPC(filename) {
-    console.info("Loading NPC filename=[%s]", filename);
+    if (rpgwizard.debugEnabled) {
+        console.debug("Loading NPC filename=[%s]", filename);
+    }
     Sprite.call(this);
 
     // TODO: Make the changes here that chrome suggests.
@@ -52,7 +54,9 @@ NPC.prototype.hitOffActivation = function (hitData, entity) {
 };
 
 NPC.prototype.checkCollisions = function (collision, entity) {
-    console.debug("Checking collisions for NPC name=[%s]", this.name);
+    if (rpgwizard.debugEnabled) {
+        console.debug("Checking collisions for NPC name=[%s]", this.name);
+    }
 
     var object = collision.obj;
     switch (object.vectorType) {

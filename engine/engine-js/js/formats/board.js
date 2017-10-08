@@ -8,7 +8,9 @@
 /* global rpgwizard */
 
 function Board(filename) {
-    console.info("Loading Board filename=[%s]", filename);
+    if (rpgwizard.debugEnabled) {
+        console.debug("Loading Board filename=[%s]", filename);
+    }
     
     // TODO: Make the changes here that chrome suggests.
     var req = new XMLHttpRequest();
@@ -25,11 +27,15 @@ function Board(filename) {
 }
 
 Board.prototype.setReady = function () {
-    console.info("Setting ready Board name=[%s]", this.name);
+    if (rpgwizard.debugEnabled) {
+        console.debug("Setting ready Board name=[%s]", this.name);
+    }
 };
 
 Board.prototype.generateLayerCache = function () {
-    console.info("Generating the layer cache for Board name=[%s]", this.name);
+    if (rpgwizard.debugEnabled) {
+        console.debug("Generating the layer cache for Board name=[%s]", this.name);
+    }
     
     this.layerCache = [];
 

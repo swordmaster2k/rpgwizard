@@ -5,8 +5,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+/* global rpgwizard */
+
 function Project(filename) {
-    console.info("Loading Project filename=[%s]", filename);
+    if (rpgwizard.debugEnabled) {
+        console.debug("Loading Project filename=[%s]", filename);
+    }
     
     // TODO: Make the changes here that chrome suggests.
     var req = new XMLHttpRequest();

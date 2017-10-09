@@ -39,10 +39,13 @@ public class RunAction extends AbstractAction {
 	public void actionPerformed(ActionEvent e) {
 		try {
 			MainWindow instance = MainWindow.getInstance();
-                        instance.getMainToolBar().getRunButton().setEnabled(false);
+			instance.getMainToolBar().getRunButton().setEnabled(false);
 			instance.getMainToolBar().getSaveAllButton().doClick();
 
 			String projectName = instance.getTitle();
+			int projectWidth = instance.getActiveProject().getResolutionWidth();
+			int projectHeight = instance.getActiveProject()
+					.getResolutionHeight();
 
 			// Make a temporary copy of the user's project for the engine to
 			// use.
@@ -63,8 +66,8 @@ public class RunAction extends AbstractAction {
 				worker = new SwingWorker<Integer, Integer>() {
 					@Override
 					protected Integer doInBackground() throws Exception {
-						engines.get(0).run(projectName, projectCopy,
-								progressMonitor);
+						engines.get(0).run(projectName, projectWidth,
+								projectHeight, projectCopy, progressMonitor);
 
 						return null;
 					}

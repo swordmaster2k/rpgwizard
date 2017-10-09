@@ -642,7 +642,7 @@ public class MainWindow extends JFrame implements InternalFrameListener {
 	public void createNewBoard() {
 		LOGGER.info("Creating new {}.", Board.class.getSimpleName());
 
-		NewBoardDialog dialog = new NewBoardDialog();
+		NewBoardDialog dialog = new NewBoardDialog(this);
 		dialog.setLocationRelativeTo(this);
 		dialog.setVisible(true);
 

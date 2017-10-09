@@ -15,6 +15,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import org.cef.CefApp;
 import org.cef.CefApp.CefAppState;
@@ -37,7 +38,7 @@ public final class EmbeddedBrowser extends JFrame {
 	private Component devToolsUI;
 
 	public EmbeddedBrowser(String title, String startURL, boolean useOSR,
-			boolean isTransparent) {
+			boolean isTransparent, int width, int height) {
 		CefApp.addAppHandler(new CefAppHandlerAdapter(null) {
 			@Override
 			public void stateHasChanged(org.cef.CefApp.CefAppState state) {
@@ -84,7 +85,7 @@ public final class EmbeddedBrowser extends JFrame {
 									devToolsUI = cefBrowser.getDevTools()
 											.getUIComponent();
 									devToolsUI.setPreferredSize(new Dimension(
-											1000, 200));
+											width, 200));
 									getContentPane().add(devToolsUI,
 											BorderLayout.SOUTH);
 								} else {
@@ -112,11 +113,13 @@ public final class EmbeddedBrowser extends JFrame {
 			}
 		});
 
+		browserUI.setPreferredSize(new Dimension(width, height));
+
 		getContentPane().add(browserUI, BorderLayout.CENTER);
 		setTitle(title);
 
+		validate();
 		pack();
-		setSize(1000, 600);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setVisible(true);
@@ -142,6 +145,17 @@ public final class EmbeddedBrowser extends JFrame {
 		return browserUI;
 	}
 
+	public void display(String url, String projectName, int newWidth,
+			int newHeight) {
+		getCefBrowser().loadURL(url);
+		setTitle(projectName);
+		getBrowserUI().setPreferredSize(new Dimension(newWidth, newHeight));
+		setSize(new Dimension(newWidth, newHeight));
+		revalidate();
+		pack();
+		setVisible(true);
+	}
+
 	public void conceal() {
 		setVisible(false);
 		cefBrowser.loadURL("http://localhost");
@@ -154,7 +168,7 @@ public final class EmbeddedBrowser extends JFrame {
 
 	public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(() -> {
-            EmbeddedBrowser test = new EmbeddedBrowser("Test", "http://localhost:8080", OS.isLinux(), false);
+            EmbeddedBrowser test = new EmbeddedBrowser("Test", "http://localhost:8080/index.html", OS.isLinux(), false, 640, 480);
             test.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {

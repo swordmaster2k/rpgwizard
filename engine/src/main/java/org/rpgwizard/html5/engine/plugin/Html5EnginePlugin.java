@@ -8,6 +8,7 @@
 package org.rpgwizard.html5.engine.plugin;
 
 import java.awt.Desktop;
+import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -63,14 +64,15 @@ public class Html5EnginePlugin extends Plugin {
 		}
 
 		@Override
-		public void run(String projectName, File projectCopy,
-				ProgressMonitor progressMonitor) throws Exception {
+		public void run(String projectName, int width, int height,
+				File projectCopy, ProgressMonitor progressMonitor)
+				throws Exception {
 			embedEngine(projectName, projectCopy, progressMonitor);
 			startEmbeddedServer(projectCopy.getAbsolutePath());
 
 			// 75%
 			progressMonitor.setProgress(75);
-			openEmbeddedBrowser(projectName);
+			openEmbeddedBrowser(projectName, width, height);
 
 			// 100%
 			progressMonitor.setProgress(100);
@@ -153,14 +155,13 @@ public class Html5EnginePlugin extends Plugin {
 			ENGINE_THREAD.start();
 		}
 
-		private void openEmbeddedBrowser(String projectName) {
+		private void openEmbeddedBrowser(String projectName, int width,
+				int height) {
 			if (EMBEDDED_BROWSER != null) {
-				EMBEDDED_BROWSER.getCefBrowser().loadURL(URL);
-                                EMBEDDED_BROWSER.setTitle(projectName);
-				EMBEDDED_BROWSER.setVisible(true);
+				EMBEDDED_BROWSER.display(URL, projectName, width, height);
 			} else {
 				EMBEDDED_BROWSER = new EmbeddedBrowser(projectName, URL,
-						OS.isLinux(), false);
+						OS.isLinux(), false, width, height);
 				EMBEDDED_BROWSER.addWindowListener(new WindowAdapter() {
 					@Override
 					public void windowClosing(WindowEvent e) {
@@ -172,20 +173,13 @@ public class Html5EnginePlugin extends Plugin {
 			}
 		}
 
-		private void openDefaultBrowser() throws Exception {
-			if (Desktop.isDesktopSupported()) {
-				Desktop.getDesktop().browse(new URI(URL));
-			} else {
-				throw new Exception("Cannot open default browser!");
-			}
-		}
-
 	}
 
 	public static void main(String[] args) throws Exception {
 		Html5EnginePlugin.Html5Engine engine = new Html5EnginePlugin.Html5Engine();
-		engine.run("Test", new File("C:/Users/user/Desktop/Engine_Test"),
-				new ProgressMonitor(null, "Test", "Test", 0, 0));
+		engine.run("Test", 640, 480, new File(
+				"C:/Users/user/Desktop/Engine_Test"), new ProgressMonitor(null,
+				"Test", "Test", 0, 0));
 	}
 
 }

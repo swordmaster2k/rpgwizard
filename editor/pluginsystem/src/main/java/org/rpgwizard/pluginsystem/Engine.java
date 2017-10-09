@@ -26,14 +26,18 @@ public interface Engine extends ExtensionPoint {
 	 *
 	 * @param projectName
 	 *            name of the current project
+	 * @param projectWidth
+	 *            width of the game window
+	 * @param projectHeight
+	 *            height of the game window
 	 * @param projectCopy
 	 *            path to the project copy for engine use
 	 * @param progressMonitor
 	 *            for tracking engine startup progress
 	 * @throws java.lang.Exception
 	 */
-	public void run(String projectName, File projectCopy,
-			ProgressMonitor progressMonitor) throws Exception;
+	public void run(String projectName, int projectWidth, int projectHeight,
+			File projectCopy, ProgressMonitor progressMonitor) throws Exception;
 
 	/**
 	 * Requests that the engine instance stop as soon as possible. In this case

@@ -7,6 +7,7 @@
  */
 package org.rpgwizard.html5.engine.plugin;
 
+import java.net.InetSocketAddress;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
@@ -33,7 +34,7 @@ public class EngineRunnable implements Runnable {
 
 	@Override
 	public void run() {
-		server = new Server(8080);
+		server = new Server(new InetSocketAddress("localhost", 8080));
 		server.setStopAtShutdown(true);
 
 		EngineRestService restService = new EngineRestService(resourceBase);
@@ -69,7 +70,7 @@ public class EngineRunnable implements Runnable {
 
 	public static void main(String[] args) {
 		EngineRunnable runnable = new EngineRunnable(
-				"C:/Users/user/Desktop/Engine_Test");
+				System.getProperty("org.rpgwizard.execution.path") + "/project");
 		runnable.run();
 	}
 

@@ -22,7 +22,9 @@ public enum EditorProperty {
 
 	EDITOR_UI_TITLE("editor.ui.title"),
 
-	EDITOR_PLUGINS_DIRECOTRY("editor.plugins.directory"),
+	EDITOR_BUILDS_DIRECOTRY("editor.builds.directory"), EDITOR_JRE_DIRECOTRY(
+			"editor.jre.directory"), EDITOR_PLUGINS_DIRECOTRY(
+			"editor.plugins.directory"),
 
 	// Tooltips
 	EDITOR_UI_TOOLTIP_NEW("editor.ui.tooltip.new"), EDITOR_UI_TOOLTIP_OPEN(

@@ -18,6 +18,8 @@ import org.rpgwizard.common.assets.AssetException;
 import org.rpgwizard.common.assets.AssetManager;
 import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.editor.MainWindow;
+import org.rpgwizard.editor.properties.EditorProperties;
+import org.rpgwizard.editor.properties.EditorProperty;
 import org.rpgwizard.editor.ui.SingleRootFileSystemView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +32,20 @@ public final class FileTools {
 
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(FileTools.class);
+
+	public static String getJreDirectory() throws URISyntaxException {
+		return getExecutionPath(FileTools.class)
+				+ File.separator
+				+ EditorProperties
+						.getProperty(EditorProperty.EDITOR_JRE_DIRECOTRY);
+	}
+
+	public static String getBuildsDirectory() throws URISyntaxException {
+		return getExecutionPath(FileTools.class)
+				+ File.separator
+				+ EditorProperties
+						.getProperty(EditorProperty.EDITOR_BUILDS_DIRECOTRY);
+	}
 
 	public static String getProjectsDirectory() {
 		try {

@@ -19,6 +19,28 @@ import ro.fortsoft.pf4j.ExtensionPoint;
 public interface Engine extends ExtensionPoint {
 
 	/**
+	 * Compiles the project located at the specified path. An engine
+	 * implementation should take a copy of the project rather than compiling
+	 * directly against what the editor is using. As the engine progresses it
+	 * should update the progress of the monitor which will provide UI feedback
+	 * when needed.
+	 *
+	 * @param projectName
+	 *            name of the current project
+	 * @param projectCopy
+	 *            width of the game window
+	 * @param executionPath
+	 *            editors current execution path
+	 * @param progressMonitor
+	 *            for tracking engine startup progress
+	 * @return system path containing the result of the compile process
+	 * @throws java.lang.Exception
+	 */
+	public File compile(String projectName, File projectCopy,
+			File executionPath, ProgressMonitor progressMonitor)
+			throws Exception;
+
+	/**
 	 * Runs the project located at the specified path. An engine implementation
 	 * should take a copy of the project rather than running directly against
 	 * what the editor is using. As the engine progresses it should update the

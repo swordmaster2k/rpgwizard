@@ -173,6 +173,7 @@
                             <descriptorRefs>
                                 <descriptorRef>jar-with-dependencies</descriptorRef>
                             </descriptorRefs>
+                            <finalName>html5-engine</finalName>
                         </configuration>
                         <phase>package</phase>
                         <goals>

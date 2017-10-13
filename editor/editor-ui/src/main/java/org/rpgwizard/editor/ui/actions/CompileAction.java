@@ -8,6 +8,7 @@
 package org.rpgwizard.editor.ui.actions;
 
 import com.google.common.io.Files;
+import java.awt.Desktop;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -19,6 +20,7 @@ import javax.swing.SwingWorker;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.pluginsystem.Engine;
 import org.apache.commons.io.FileUtils;
+import org.rpgwizard.editor.utilities.FileTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ro.fortsoft.pf4j.PluginManager;
@@ -27,10 +29,10 @@ import ro.fortsoft.pf4j.PluginManager;
  *
  * @author Joshua Michael Daly
  */
-public class RunAction extends AbstractAction {
+public class CompileAction extends AbstractAction {
 
 	private static final Logger LOGGER = LoggerFactory
-			.getLogger(RunAction.class);
+			.getLogger(CompileAction.class);
 
 	private ProgressMonitor progressMonitor;
 	private SwingWorker worker;
@@ -39,13 +41,10 @@ public class RunAction extends AbstractAction {
 	public void actionPerformed(ActionEvent e) {
 		try {
 			MainWindow instance = MainWindow.getInstance();
-			instance.getMainToolBar().getRunButton().setEnabled(false);
+			instance.getMainToolBar().getCompileButton().setEnabled(false);
 			instance.getMainToolBar().getSaveAllButton().doClick();
 
 			String projectName = instance.getTitle();
-			int projectWidth = instance.getActiveProject().getResolutionWidth();
-			int projectHeight = instance.getActiveProject()
-					.getResolutionHeight();
 
 			// Make a temporary copy of the user's project for the engine to
 			// use.
@@ -60,14 +59,17 @@ public class RunAction extends AbstractAction {
 			// Just use the first available engine for now.
 			if (engines.size() > 0) {
 				progressMonitor = new ProgressMonitor(MainWindow.getInstance(),
-						"Starting Engine...", "", 0, 100);
+						"Compiling Game...", "", 0, 100);
 				progressMonitor.setProgress(0);
 
 				worker = new SwingWorker<Void, Void>() {
 					@Override
 					protected Void doInBackground() throws Exception {
-						engines.get(0).run(projectName, projectWidth,
-								projectHeight, projectCopy, progressMonitor);
+						File executionPath = new File(
+								FileTools.getExecutionPath(MainWindow.class));
+						File result = engines.get(0).compile(projectName,
+								projectCopy, executionPath, progressMonitor);
+						Desktop.getDesktop().open(result);
 
 						return null;
 					}
@@ -75,7 +77,7 @@ public class RunAction extends AbstractAction {
 					@Override
 					public void done() {
 						Toolkit.getDefaultToolkit().beep();
-						instance.getMainToolBar().getStopButton()
+						instance.getMainToolBar().getCompileButton()
 								.setEnabled(true);
 					}
 				};

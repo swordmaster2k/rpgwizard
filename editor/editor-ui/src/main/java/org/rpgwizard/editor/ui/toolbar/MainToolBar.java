@@ -16,6 +16,7 @@ import org.rpgwizard.editor.properties.EditorProperties;
 import org.rpgwizard.editor.properties.EditorProperty;
 import org.rpgwizard.editor.ui.EditorButton;
 import org.rpgwizard.editor.ui.actions.BucketAction;
+import org.rpgwizard.editor.ui.actions.CompileAction;
 import org.rpgwizard.editor.ui.actions.EraserAction;
 import org.rpgwizard.editor.ui.actions.HelpAction;
 import org.rpgwizard.editor.ui.actions.LightAction;
@@ -72,6 +73,7 @@ public class MainToolBar extends JToolBar {
 
 	private final EditorButton runButton;
 	private final EditorButton stopButton;
+	private final EditorButton compileButton;
 
 	private final EditorButton helpButton;
 
@@ -232,6 +234,13 @@ public class MainToolBar extends JToolBar {
 				.getProperty(EditorProperty.EDITOR_UI_TOOLTIP_STOP_GAME));
 		stopButton.setEnabled(false);
 
+		compileButton = new EditorButton();
+		compileButton.setAction(new CompileAction());
+		compileButton.setIcon(Icons.getSmallIcon("box"));
+		compileButton.setToolTipText(EditorProperties
+				.getProperty(EditorProperty.EDITOR_UI_TOOLTIP_COMPILE_GAME));
+		compileButton.setEnabled(false);
+
 		helpButton = new EditorButton();
 		helpButton.setAction(new HelpAction());
 		helpButton.setIcon(Icons.getSmallIcon("help"));
@@ -279,6 +288,8 @@ public class MainToolBar extends JToolBar {
 		addSeparator();
 		add(runButton);
 		add(stopButton);
+		addSeparator();
+		add(compileButton);
 		addSeparator();
 		add(helpButton);
 	}
@@ -371,6 +382,10 @@ public class MainToolBar extends JToolBar {
 		return stopButton;
 	}
 
+	public EditorButton getCompileButton() {
+		return compileButton;
+	}
+
 	public EditorButton getHelpButton() {
 		return helpButton;
 	}
@@ -398,6 +413,7 @@ public class MainToolBar extends JToolBar {
 		zoomOutButton.setEnabled(enable);
 		runButton.setEnabled(enable);
 		// stopButton.setEnabled(enable);
+		compileButton.setEnabled(enable);
 		// helpButton.setEnabled(enable);
 	}
 

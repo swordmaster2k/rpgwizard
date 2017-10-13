@@ -49,7 +49,8 @@ public enum EditorProperty {
 			"editor.ui.tooltip.zoomin"), EDITOR_UI_TOOLTIP_ZOOM_OUT(
 			"editor.ui.tooltip.zoomout"), EDITOR_UI_TOOLTIP_RUN_GAME(
 			"editor.ui.tooltip.rungame"), EDITOR_UI_TOOLTIP_STOP_GAME(
-			"editor.ui.tooltip.stopgame"), EDITOR_UI_TOOLTIP_HELP(
+			"editor.ui.tooltip.stopgame"), EDITOR_UI_TOOLTIP_COMPILE_GAME(
+			"editor.ui.tooltip.compilegame"), EDITOR_UI_TOOLTIP_HELP(
 			"editor.ui.tooltip.help");
 
 	private final String name;

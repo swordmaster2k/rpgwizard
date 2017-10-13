@@ -198,7 +198,7 @@
                                 <resource>
                                     <directory>${project.build.directory}</directory>
                                     <includes>
-                                        <include>engine-${project.version}-jar-with-dependencies.jar</include>
+                                        <include>html5-engine-jar-with-dependencies.jar</include>
                                     </includes>
                                 </resource>
                             </resources>
@@ -216,7 +216,7 @@
                                 <resource>
                                     <directory>${project.build.directory}</directory>
                                     <includes>
-                                        <include>engine-${project.version}-jar-with-dependencies.jar</include>
+                                        <include>html5-engine-jar-with-dependencies.jar</include>
                                     </includes>
                                 </resource>
                             </resources>

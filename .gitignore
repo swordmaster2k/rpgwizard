@@ -38,3 +38,4 @@ distribution/builds/
 engine/src/main/resources/engine-rpgwizard.zip
 *.zip
 jre/
+launch4j/

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (c) 2017, rpgwizard.org, some files forked from rpgtoolkit.net <info@rpgwizard.org>
+
+    This Source Code Form is subject to the terms of the Mozilla Public
+    License, v. 2.0. If a copy of the MPL was not distributed with this
+    file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+-->
+<launch4jConfig>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>console</headerType>
+  <jar>.\builds\output\html5-engine-jar-with-dependencies.jar</jar>
+  <outfile>.\builds\output\engine.exe</outfile>
+  <errTitle></errTitle>
+  <cmdLine></cmdLine>
+  <chdir>.</chdir>
+  <priority>normal</priority>
+  <downloadUrl>http://java.com/download</downloadUrl>
+  <supportUrl>http://rpgwizard.org/forums</supportUrl>
+  <stayAlive>false</stayAlive>
+  <restartOnCrash>false</restartOnCrash>
+  <manifest></manifest>
+  <icon>editor.ico</icon>
+  <singleInstance>
+    <mutexName>RPGWizard Engine</mutexName>
+    <windowTitle>RPGWizard Engine</windowTitle>
+  </singleInstance>
+  <classPath>
+    <mainClass>org.rpgwizard.html5.engine.Standalone</mainClass>
+  </classPath>
+  <jre>
+    <path>jre</path>
+    <bundledJre64Bit>false</bundledJre64Bit>
+    <bundledJreAsFallback>false</bundledJreAsFallback>
+    <minVersion>1.8.0</minVersion>
+    <maxVersion></maxVersion>
+    <jdkPreference>preferJre</jdkPreference>
+    <runtimeBits>32</runtimeBits>
+    <opt>-Dorg.rpgwizard.execution.path="%EXEDIR%"</opt>
+    <opt>-Dorg.eclipse.jetty.util.log.class=org.eclipse.jetty.util.log.StdErrLog </opt>
+    <opt>-Dorg.eclipse.jetty.LEVEL=INFO</opt>
+  </jre>
+</launch4jConfig>

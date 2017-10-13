@@ -31,6 +31,10 @@
             <outputDirectory>.</outputDirectory>
             <includes>
                 <include>jre/</include>
+				<include>launch4j</include>
+				<include>editor.ico</include>
+				<include>launch4j-config.xml</include>
+				<include>package.bat</include>
                 <include>license.txt</include>
                 <include>README.txt</include>
             </includes>

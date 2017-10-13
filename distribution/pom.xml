@@ -30,9 +30,6 @@
         <launch4j.version>1.7.21</launch4j.version>
     </properties>
 
-    <dependencies>
-    </dependencies>
-
     <profiles>
         <profile>
             <id>32bit</id>
@@ -112,73 +109,35 @@
         </profile>
         <profile>
             <id>64bit</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>com.akathist.maven.plugins.launch4j</groupId>
-                        <artifactId>launch4j-maven-plugin</artifactId>
-                        <version>${launch4j.version}</version>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>${maven.resources.version}</version>
                         <executions>
                             <execution>
-                                <id>l4j-gui</id>
-                                <phase>package</phase>
+                                <id>editor-debug-copy</id>
+                                <phase>install</phase>
                                 <goals>
-                                    <goal>launch4j</goal>
+                                    <goal>copy-resources</goal>
                                 </goals>
                                 <configuration>
-                                    <headerType>gui</headerType>
-                                    <outfile>builds/rpgwizard-editor-${project.version}.exe</outfile>
-                                    <jar>builds/editor-ui-${project.version}-jar-with-dependencies.jar</jar>
-                                    <errTitle>RPGWizard</errTitle>
-                                    <icon>resources/images/editor.ico</icon>
-                                    <classPath>
-                                        <mainClass>org.rpgwizard.editor.Driver</mainClass>
-                                    </classPath>
-                                    <singleInstance>
-                                        <mutexName>RPG Wizard Editor</mutexName>
-                                        <windowTitle>RPG Wizard Editor</windowTitle>
-                                    </singleInstance>
-                                    <jre>
-                                        <path></path>
-                                        <bundledJre64Bit>false</bundledJre64Bit>
-                                        <bundledJreAsFallback>false</bundledJreAsFallback>
-                                        <minVersion>1.8.0</minVersion>
-                                        <maxVersion></maxVersion>
-                                        <jdkPreference>preferJre</jdkPreference>
-                                        <runtimeBits>64/32</runtimeBits>
-                                        <opts>
-                                            <opt>-Dorg.rpgwizard.execution.path=&quot;%EXEDIR%&quot;</opt>
-                                        </opts>
-                                    </jre>
-                                    <versionInfo>
-                                        <fileVersion>${file.version}</fileVersion>
-                                        <txtFileVersion>txt file version?</txtFileVersion>
-                                        <fileDescription>a description</fileDescription>
-                                        <copyright>my copyright</copyright>
-                                        <productVersion>${product.version}</productVersion>
-                                        <txtProductVersion>txt product version</txtProductVersion>
-                                        <productName>E-N-C-C</productName>
-                                        <internalName>ccne</internalName>
-                                        <originalFilename>original.exe</originalFilename>
-                                    </versionInfo>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <artifactId>maven-assembly-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>assembly</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>single</goal>
-                                </goals>
-                                <configuration>
-                                    <finalName>rpgwizard-${project.version}</finalName>
-                                    <descriptors>
-                                        <descriptor>assembly.xml</descriptor>
-                                    </descriptors>
+                                    <outputDirectory>../editor/editor-ui/target/classes/</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.basedir}/resources/</directory>
+                                            <includes>
+                                                <include>jre/</include>
+                                                <include>launch4j/</include>
+                                                <include>editor.ico</include>
+                                                <include>launch4j-config.xml</include>
+                                                <include>package.bat</include>
+                                            </includes>
+                                        </resource>
+                                    </resources>
                                 </configuration>
                             </execution>
                         </executions>

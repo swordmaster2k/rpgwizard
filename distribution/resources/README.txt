@@ -1,11 +1,3 @@
-====
-    Copyright (c) 2017, rpgwizard.org, some files forked from rpgtoolkit.net <info@rpgwizard.org>
-
-    This Source Code Form is subject to the terms of the Mozilla Public
-    License, v. 2.0. If a copy of the MPL was not distributed with this
-    file, You can obtain one at http://mozilla.org/MPL/2.0/.
-====
-
 # RPGWizard [![Travis Build Status](https://api.travis-ci.org/swordmaster2k/rpgwizard.svg?branch=develop)](https://travis-ci.org/swordmaster2k/rpgwizard) [![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
 
 ====================================

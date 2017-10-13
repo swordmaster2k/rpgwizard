@@ -13,8 +13,12 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
 import javax.swing.AbstractAction;
+import javax.swing.JOptionPane;
 import javax.swing.ProgressMonitor;
 import javax.swing.SwingWorker;
 import org.rpgwizard.editor.MainWindow;
@@ -62,20 +66,42 @@ public class CompileAction extends AbstractAction {
 						"Compiling Game...", "", 0, 100);
 				progressMonitor.setProgress(0);
 
-				worker = new SwingWorker<Void, Void>() {
+				worker = new SwingWorker<File, File>() {
 					@Override
-					protected Void doInBackground() throws Exception {
-						File executionPath = new File(
-								FileTools.getExecutionPath(MainWindow.class));
-						File result = engines.get(0).compile(projectName,
-								projectCopy, executionPath, progressMonitor);
-						Desktop.getDesktop().open(result);
-
-						return null;
+					protected File doInBackground() {
+						try {
+							File executionPath = new File(
+									FileTools
+											.getExecutionPath(MainWindow.class));
+							return engines.get(0)
+									.compile(projectName, projectCopy,
+											executionPath, progressMonitor);
+						} catch (Exception ex) {
+							LOGGER.error("Failed to compile game.", ex);
+							return null;
+						}
 					}
 
 					@Override
 					public void done() {
+						if (!isCancelled()) {
+							try {
+								File result = get();
+								if (result == null) {
+									throw new Exception(
+											"Null result returned from compile.");
+								}
+								Desktop.getDesktop().open(result);
+							} catch (Exception ex) {
+								LOGGER.error("Failed to compile game.", ex);
+								JOptionPane.showMessageDialog(
+										MainWindow.getInstance(),
+										"Error compiling game!",
+										"Error on Compile",
+										JOptionPane.ERROR_MESSAGE);
+							}
+						}
+
 						Toolkit.getDefaultToolkit().beep();
 						instance.getMainToolBar().getCompileButton()
 								.setEnabled(true);

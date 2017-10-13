@@ -1,13 +1,4 @@
 <?xml version="1.0"?>
-<!--
-
-    Copyright (c) 2017, rpgwizard.org, some files forked from rpgtoolkit.net <info@rpgwizard.org>
-
-    This Source Code Form is subject to the terms of the Mozilla Public
-    License, v. 2.0. If a copy of the MPL was not distributed with this
-    file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
--->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
@@ -29,6 +20,12 @@
         <product.version>${file.version}</product.version>
         <launch4j.version>1.7.21</launch4j.version>
     </properties>
+    
+    <build>
+        <plugins>
+
+        </plugins>
+    </build>
 
     <profiles>
         <profile>

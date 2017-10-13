@@ -1,13 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!--
-
-    Copyright (c) 2015, rpgtoolkit.net <help@rpgtoolkit.net>
-
-    This Source Code Form is subject to the terms of the Mozilla Public
-    License, v. 2.0. If a copy of the MPL was not distributed with this
-    file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
--->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
@@ -75,12 +66,6 @@
             <artifactId>commons-io</artifactId>
             <version>${commons-io.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.mycila</groupId>
-            <artifactId>license-maven-plugin</artifactId>
-            <version>${license.plugin.version}</version>
-            <scope>compile</scope>
-        </dependency>
 
         <!-- Logging -->
         <dependency>
@@ -105,32 +90,6 @@
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.mycila</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <version>${license.plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>format-headers></id>
-                        <phase>verify</phase>
-                        <configuration>
-                            <header>com/mycila/maven/plugin/license/templates/MPL-2.txt</header>
-                            <properties>
-                                <owner>rpgtoolkit.net</owner>
-                                <email>help@rpgtoolkit.net</email>
-                            </properties>
-                            <excludes>
-                                <exclude>src/main/resources/**</exclude>
-                                <exclude>src/test/resources/**</exclude>
-                                <exclude>licenseheader.txt</exclude>
-                            </excludes>
-                        </configuration>
-                        <goals>
-                            <goal>format</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

@@ -5,7 +5,7 @@
  */
 var assets = {
    "audio": {
-      "item": "item.wav"
+      "item": "item.ogg"
    },
    "images": [
       "menu_bg.png",

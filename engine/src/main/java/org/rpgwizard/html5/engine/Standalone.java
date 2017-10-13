@@ -10,9 +10,17 @@ package org.rpgwizard.html5.engine;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.cef.OS;
+import org.rpgwizard.common.assets.AssetDescriptor;
+import org.rpgwizard.common.assets.AssetException;
+import org.rpgwizard.common.assets.AssetHandle;
+import org.rpgwizard.common.assets.AssetManager;
+import org.rpgwizard.common.assets.Project;
+import org.rpgwizard.common.assets.files.FileAssetHandleResolver;
+import org.rpgwizard.common.assets.serialization.JsonProjectSerializer;
 import org.rpgwizard.html5.engine.plugin.EngineRunnable;
 import org.rpgwizard.html5.engine.plugin.browser.EmbeddedBrowser;
 
@@ -29,34 +37,49 @@ public class Standalone {
 	private static EngineRunnable ENGINE_RUNNABLE;
 	private static EmbeddedBrowser EMBEDDED_BROWSER;
 
-	public static void main(String[] args) {
+	private static Project openProject(File projectFile) throws AssetException,
+			IOException {
+		AssetManager assetManager = AssetManager.getInstance();
+		assetManager.registerResolver(new FileAssetHandleResolver());
+		assetManager.registerSerializer(new JsonProjectSerializer());
+		AssetHandle handle = AssetManager.getInstance().deserialize(
+				new AssetDescriptor(projectFile.toURI()));
+		return (Project) handle.getAsset();
+	}
+
+	public static void main(String[] args) throws AssetException, IOException {
         Standalone.STANDALONE_MODE = true;
-        
+
+//        System.setProperty("org.rpgwizard.execution.path", "D:/Documents/Software Development/rpgwizard/distribution/target/rpgwizard-1.1.0-windows/rpgwizard-1.1.0/builds/RPGWizard 1.1.0 - The Wizard's Tower-1507920535920");
         String resourceBase = System.getProperty("org.rpgwizard.execution.path") + File.separator + "data";
+        File projectFile = new File(new File(resourceBase), "default.game");
 
-        // Start the Embedded Jetty.
-        ENGINE_RUNNABLE = new EngineRunnable(resourceBase);
-        ENGINE_THREAD = new Thread(ENGINE_RUNNABLE);
-        ENGINE_THREAD.start();
+        if (projectFile.exists()) {
+            Project project = openProject(projectFile);
+            
+            // Start the Embedded Jetty.
+            ENGINE_RUNNABLE = new EngineRunnable(resourceBase);
+            ENGINE_THREAD = new Thread(ENGINE_RUNNABLE);
+            ENGINE_THREAD.start();
 
-        javax.swing.SwingUtilities.invokeLater(() -> {
-            // Show the JCEF browser window.
-            EMBEDDED_BROWSER = new EmbeddedBrowser("Test", "http://localhost:8080", OS.isLinux(), false, 640, 480);
-            EMBEDDED_BROWSER.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosing(WindowEvent e) {
-                    try {
-                        ENGINE_RUNNABLE.stop();
-                        EMBEDDED_BROWSER.stop();
-                    } catch (Exception ex) {
-                        Logger.getLogger(Standalone.class.getName()).log(Level.SEVERE, null, ex);
+            javax.swing.SwingUtilities.invokeLater(() -> {
+                // Show the JCEF browser window.
+                EMBEDDED_BROWSER = new EmbeddedBrowser("Test", "http://localhost:8080", OS.isLinux(), false, project.getResolutionWidth(), project.getResolutionHeight());
+                EMBEDDED_BROWSER.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        try {
+                            ENGINE_RUNNABLE.stop();
+                            EMBEDDED_BROWSER.stop();
+                        } catch (Exception ex) {
+                            Logger.getLogger(Standalone.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                        // JCEF keeps hanging.
+                        throw new RuntimeException("Forcefully shutting down JCEF - Can ignore this exception");
                     }
-                    
-                    // JCEF keeps hanging.
-                    throw new RuntimeException("Forcefully shutting down JCEF - Can ignore this exception");
-                }
+                });
             });
-        });
-
+        }
     }
 }

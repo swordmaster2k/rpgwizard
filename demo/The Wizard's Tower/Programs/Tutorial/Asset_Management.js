@@ -5,7 +5,7 @@
 // Game assets used in this program.
 var assets = {
     "audio": {
-        "intro": "intro.wav"
+        "intro": "intro.ogg"
     },
     "images": [
         "block.png",
@@ -22,7 +22,7 @@ rpgcode.loadAssets(assets, function() {
    // Now unlaod the assets we don't need to save memory.
    rpgcode.removeAssets({
       "audio": {
-         "intro": "intro.wav"
+         "intro": "intro.ogg"
       },
       "images": [
          "startscreen.png"

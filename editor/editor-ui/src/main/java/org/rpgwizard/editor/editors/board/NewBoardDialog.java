@@ -59,14 +59,14 @@ public final class NewBoardDialog extends JDialog {
             updateDimensionsLabel();
         });
 
-        tileWidthSpinner = new JSpinner(new SpinnerNumberModel(32, 3, 50, 1));
+        tileWidthSpinner = new JSpinner(new SpinnerNumberModel(32, 16, 128, 1));
         ((JSpinner.DefaultEditor) tileWidthSpinner.getEditor()).getTextField()
                 .setColumns(7);
         tileWidthSpinner.addChangeListener((ChangeEvent e) -> {
             updateDimensionsLabel();
         });
 
-        tileHeightSpinner = new JSpinner(new SpinnerNumberModel(32, 3, 50, 1));
+        tileHeightSpinner = new JSpinner(new SpinnerNumberModel(32, 16, 128, 1));
         ((JSpinner.DefaultEditor) tileHeightSpinner.getEditor()).getTextField()
                 .setColumns(7);
         tileHeightSpinner.addChangeListener((ChangeEvent e) -> {

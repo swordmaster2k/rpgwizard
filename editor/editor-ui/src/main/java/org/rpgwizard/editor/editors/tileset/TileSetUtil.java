@@ -59,7 +59,7 @@ public class TileSetUtil {
 						tileHeight * x + tileHeight, null);
 				g2d.dispose();
 
-				tile = new Tile();
+				tile = new Tile(tileWidth, tileHeight);
 				tileSet.addTile(tile);
 
 				tile.setRect(0, 0, subImage.getRaster());

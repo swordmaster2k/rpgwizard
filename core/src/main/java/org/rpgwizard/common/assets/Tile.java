@@ -34,6 +34,11 @@ public class Tile extends WritableRaster {
 				new Point(0, 0));
 	}
 
+	public Tile(int width, int height) {
+		super(ColorModel.getRGBdefault().createCompatibleSampleModel(width,
+				height), new Point(0, 0));
+	}
+
 	/**
 	 *
 	 * @param tileSet

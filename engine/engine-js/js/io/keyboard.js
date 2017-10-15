@@ -41,11 +41,14 @@ function Keyboard() {
             south: false
         },
         _speed: 1,
-        _diagonal_speed: 0.8,
+        _diagonalSpeed: 0.8,
 
-        CustomControls: function (speed) {
+        CustomControls: function (speed, diagonalSpeed) {
             if (speed) {
                 this._speed = speed;
+            }
+            if (diagonalSpeed) {
+                this._diagonalSpeed = diagonalSpeed;
             }
             var move = this.__move;
 

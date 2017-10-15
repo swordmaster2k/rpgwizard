@@ -10,9 +10,12 @@ package org.rpgwizard.html5.engine.plugin;
 import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
 import java.util.Collection;
 import javax.swing.ProgressMonitor;
 import net.lingala.zip4j.core.ZipFile;
@@ -94,85 +97,113 @@ public class Compiler {
 	public static File compile(String projectName, File projectCopy,
 			File executionPath, ProgressMonitor progressMonitor)
 			throws Exception {
-		File pluginsDirectory = new File(executionPath, PLUGINS_DIRECTORY);
-		File buildsDirectory = new File(executionPath, BUILDS_DIRECTORY);
-		File jreDirectory = new File(executionPath, JRE_DIRECTORY);
-
-		// 1: Create the output directory for this build.
-		File outputDirectory = new File(buildsDirectory, OUTPUT_DIRECTORY);
-		FileUtils.forceMkdir(outputDirectory);
-		progressMonitor.setProgress(10);
-
-		// 2: Copy the JRE into the output directory.
-		FileUtils.copyDirectoryToDirectory(jreDirectory, outputDirectory);
-		progressMonitor.setProgress(20);
-
-		// 3: Copy the HTML5 engine plugin into the output directory.
-		File html5Engine = new File(pluginsDirectory, ENGINE_PLUGIN);
-		File html5EngineCopy = new File(outputDirectory, ENGINE_PLUGIN);
-		FileUtils.copyFile(html5Engine, html5EngineCopy);
-		progressMonitor.setProgress(30);
-
-		// 4: Copy the project supplied by the editor into the output directory.
-		File dataDirectory = new File(outputDirectory, DATA_DIRECTORY);
-		FileUtils.copyDirectory(projectCopy, dataDirectory);
-		progressMonitor.setProgress(40);
-
-		// 5: Embed the HTML5 engine framework into the project copy.
-		embedEngine(projectName, dataDirectory, progressMonitor, true);
-		progressMonitor.setProgress(50);
-
-		// 6: Invoke Launch4J to create the executable.
-		Process process = Runtime.getRuntime().exec(
-				"cmd /c start /B package.bat", null, executionPath);
-		int exitCode = process.waitFor();
-		if (exitCode != 0) {
-			throw new Exception(getErrorFromStream(process.getErrorStream()));
-		}
-
-		progressMonitor.setProgress(60);
-
-		// Wait for 60 seconds for the EXE to exist.
-		File exeFile = new File(outputDirectory, "engine.exe");
-		long start = System.currentTimeMillis();
-		long last = start;
-		int timeOut = 60000;
-		while (!exeFile.exists() && last - start < timeOut) {
-			// Wait.
-			last = System.currentTimeMillis();
-		}
-
-		// 7: Check the result.
-		if (!exeFile.exists()) {
-			throw new Exception(
-					"Timed out waiting for game EXE file to be created!");
-		}
-
-		progressMonitor.setProgress(70);
-
-		// 8: Copy to build folder.
 		String randomName = projectName + "-" + System.currentTimeMillis();
-		File resultDirectory = new File(outputDirectory.getParentFile(),
-				randomName);
-		while (resultDirectory.exists()) {
-			randomName = projectName + "-" + System.currentTimeMillis();
+		File resultDirectory = null;
+		File outputDirectory = null;
+
+		try {
+			File pluginsDirectory = new File(executionPath, PLUGINS_DIRECTORY);
+			File buildsDirectory = new File(executionPath, BUILDS_DIRECTORY);
+			File jreDirectory = new File(executionPath, JRE_DIRECTORY);
+
+			// 1: Create the output directory for this build.
+			outputDirectory = new File(buildsDirectory, OUTPUT_DIRECTORY);
+			FileUtils.forceMkdir(outputDirectory);
+			progressMonitor.setProgress(10);
+
+			// 2: Copy the JRE into the output directory.
+			FileUtils.copyDirectoryToDirectory(jreDirectory, outputDirectory);
+			progressMonitor.setProgress(20);
+
+			// 3: Copy the HTML5 engine plugin into the output directory.
+			File html5Engine = new File(pluginsDirectory, ENGINE_PLUGIN);
+			File html5EngineCopy = new File(outputDirectory, ENGINE_PLUGIN);
+			FileUtils.copyFile(html5Engine, html5EngineCopy);
+			progressMonitor.setProgress(30);
+
+			// 4: Copy the project supplied by the editor into the output
+			// directory.
+			File dataDirectory = new File(outputDirectory, DATA_DIRECTORY);
+			FileUtils.copyDirectory(projectCopy, dataDirectory);
+			progressMonitor.setProgress(40);
+
+			// 5: Embed the HTML5 engine framework into the project copy.
+			embedEngine(projectName, dataDirectory, progressMonitor, true);
+			progressMonitor.setProgress(50);
+
+			// 6: Invoke Launch4J to create the executable.
+			Process process = Runtime.getRuntime().exec(
+					"cmd /c start /B package.bat", null, executionPath);
+			int exitCode = process.waitFor();
+			if (exitCode != 0) {
+				throw new Exception(
+						getErrorFromStream(process.getErrorStream()));
+			}
+
+			progressMonitor.setProgress(60);
+
+			// 7: Wait for 60 seconds for the EXE to exist.
+			File exeFile = new File(outputDirectory, "engine.exe");
+			long start = System.currentTimeMillis();
+			long last = start;
+			int timeOut = 60000;
+			while (!exeFile.exists() && last - start < timeOut) {
+				// Wait.
+				last = System.currentTimeMillis();
+			}
+			if (!exeFile.exists()) {
+				throw new Exception(
+						"Timed out waiting for game EXE file to be created!");
+			}
+
+			progressMonitor.setProgress(70);
+
+			// 8: Create directory to copy to.
 			resultDirectory = new File(outputDirectory.getParentFile(),
 					randomName);
+			while (resultDirectory.exists()) {
+				randomName = projectName + "-" + System.currentTimeMillis();
+				resultDirectory = new File(outputDirectory.getParentFile(),
+						randomName);
+			}
+			FileUtils.forceMkdir(resultDirectory);
+
+			progressMonitor.setProgress(80);
+
+			// 9: Try to copy the outputDirectory contents to the
+			// resultDirectory.
+			boolean copied = false;
+			while (!copied && last - start < timeOut) {
+				try {
+					FileUtils.copyDirectory(outputDirectory, resultDirectory);
+					copied = true;
+				} catch (IOException exception) {
+					// Weaker hardware with slow drives e.g. a netbook can take
+					// time to write everything to outputDirectory.
+					// It may throw something like
+					// "Failed to copy full contents from".
+					last = System.currentTimeMillis();
+				}
+			}
+			if (!copied) {
+				throw new Exception(
+						"Could not copy outputDirectory to resultDirectory!");
+			}
+
+			progressMonitor.setProgress(90);
+
+			return resultDirectory;
+		} catch (Exception ex) {
+			throw ex;
+		} finally {
+			// 10: Clean up the result.
+			FileUtils.deleteQuietly(new File(resultDirectory, randomName));
+			FileUtils.deleteQuietly(new File(resultDirectory, ENGINE_PLUGIN));
+			FileUtils.deleteQuietly(outputDirectory);
+			FileUtils.deleteQuietly(projectCopy);
+
+			progressMonitor.setProgress(100);
 		}
-		FileUtils.forceMkdir(resultDirectory);
-		FileUtils.copyDirectory(outputDirectory, resultDirectory);
-
-		progressMonitor.setProgress(80);
-
-		// 9: Clean up the result.
-		FileUtils.deleteQuietly(new File(resultDirectory, randomName));
-		FileUtils.deleteQuietly(new File(resultDirectory, ENGINE_PLUGIN));
-		FileUtils.deleteQuietly(outputDirectory);
-		FileUtils.deleteQuietly(projectCopy);
-
-		progressMonitor.setProgress(100);
-
-		return resultDirectory;
 	}
 
 	private static String getErrorFromStream(InputStream in) throws IOException {

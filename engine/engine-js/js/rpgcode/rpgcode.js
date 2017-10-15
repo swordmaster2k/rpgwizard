@@ -154,7 +154,7 @@ RPGcode.prototype.addRunTimeProgram = function (filename) {
  * @param {type} callback
  * @returns {undefined}
  */
-RPGcode.prototype.addSprite = function(sprite, callback) {
+RPGcode.prototype.addSprite = function (sprite, callback) {
     rpgwizard.craftyBoard.board.sprites[sprite.id] = rpgwizard.loadSprite(sprite);
     rpgwizard.loadCraftyAssets(callback);
 };
@@ -779,8 +779,8 @@ RPGcode.prototype.getSpriteLocation = function (spriteId, inTiles, includeOffset
  * 
  * @returns {Number}
  */
-RPGcode.prototype.getScale = function() {
-  return Crafty.viewport._scale;  
+RPGcode.prototype.getScale = function () {
+    return Crafty.viewport._scale;
 };
 
 /**
@@ -792,8 +792,8 @@ RPGcode.prototype.getScale = function() {
  * @param {type} spriteId
  * @returns {Entity}
  */
-RPGcode.prototype.getSprite = function(spriteId) {
-  return rpgwizard.craftyBoard.board.sprites[spriteId];  
+RPGcode.prototype.getSprite = function (spriteId) {
+    return rpgwizard.craftyBoard.board.sprites[spriteId];
 };
 
 /**
@@ -812,7 +812,7 @@ RPGcode.prototype.getSpriteDirection = function (spriteId) {
     } else {
         var direction = entity.sprite.enemy.direction;
     }
-    
+
     // User friendly rewrite of Crafty constants.
     switch (direction) {
         case "n":
@@ -992,7 +992,7 @@ RPGcode.prototype.isControlEnabled = function () {
  */
 RPGcode.prototype.loadAssets = function (assets, onLoad) {
     if (assets.fonts) {
-        assets.fonts.forEach(function(font) {
+        assets.fonts.forEach(function (font) {
             var url = PATH_FONT + font.file;
             var newStyle = document.createElement('style');
             newStyle.appendChild(document.createTextNode("\
@@ -1006,10 +1006,10 @@ RPGcode.prototype.loadAssets = function (assets, onLoad) {
         delete assets.fonts;
     }
     if (assets.programs) {
-        assets.programs.forEach(function(program, i) {
+        assets.programs.forEach(function (program, i) {
             assets.programs[i] = program.replace(/\.[^/.]+$/, "");
         });
-        requirejs(assets.programs, function() {
+        requirejs(assets.programs, function () {
             delete assets.programs;
             Crafty.load(assets, onLoad);
         });
@@ -1188,7 +1188,7 @@ RPGcode.prototype.moveCharacter = function (characterId, direction, distance) {
 RPGcode.prototype.moveCharacterTo = function (characterId, x, y, duration, callback) {
     rpgwizard.craftyCharacter.cancelTween({x: true, y: true});
     rpgwizard.craftyCharacter.tweenEndCallbacks.push(callback);
-    
+
     var location = rpgcode.getCharacterLocation();
     if (location.x !== x && location.y !== y) {
         rpgwizard.craftyCharacter.tween({x: x, y: y}, duration);
@@ -1224,7 +1224,7 @@ RPGcode.prototype.moveSpriteTo = function (spriteId, x, y, duration, callback) {
         var entity = rpgwizard.craftyBoard.board.sprites[spriteId];
         entity.cancelTween({x: true, y: true});
         entity.tweenEndCallbacks.push(callback);
-        
+
         var location = rpgcode.getSpriteLocation(spriteId, false, true);
         if (location.x !== x && location.y !== y) {
             entity.tween({x: x, y: y}, duration);
@@ -1234,6 +1234,44 @@ RPGcode.prototype.moveSpriteTo = function (spriteId, x, y, duration, callback) {
             entity.tween({y: y}, duration);
         }
     }
+};
+
+/**
+ * Resets activation checks for the requested character, useful for cases where
+ * you want continually check a program activation.
+ * 
+ * @example
+ * // An example of a pushable block that can only be moved when the character is
+ * // facing EAST. This program would be attached to an NPCs EventProgram.
+ * var direction = rpgcode.getCharacterDirection();
+ * if (!rpgcode.getGlobal("dungeonState").room2.doorOpened && direction === "EAST") {
+ *  var id = "pushable-rock";
+ *  var movementTime = 500;
+ *  var animationId = "SOUTH";
+ *
+ *  var loc = rpgcode.getSpriteLocation("pushable-rock");
+ *  loc.x += 16;
+ *
+ *  rpgcode.moveSpriteTo("pushable-rock", loc.x, loc.y, movementTime, function() { 
+ *      rpgcode.playSound("door");
+ *      rpgcode.destroySprite("closed_door");
+ *      rpgcode.getGlobal("dungeonState").room2.doorOpened=true;
+ *      rpgcode.endProgram();
+ *  });
+ * } else {
+ *  if (!rpgcode.getGlobal("dungeonState").room2.doorOpened) {
+ *      rpgcode.resetActivationChecks("Hero");
+ *  }
+ *  rpgcode.endProgram();
+ * }
+ *
+ * @param {type} characterId The identifier associated with the character.
+ * @returns {undefined}
+ */
+RPGcode.prototype.resetActivationChecks = function (characterId) {
+    // TODO: characterId will be unused until parties with multiple characters 
+    // are supported.
+    rpgwizard.craftyCharacter.activationVector.resetHitChecks();
 };
 
 /**
@@ -1628,7 +1666,7 @@ RPGcode.prototype.saveJSON = function (data, successCallback, failureCallback) {
     xhr.open("POST", "http://localhost:8080/engine/save");
     xhr.setRequestHeader("content-type", "application/json");
     xhr.setRequestHeader("cache-control", "no-cache");
-    xhr.send(JSON.stringify(data));  
+    xhr.send(JSON.stringify(data));
 };
 
 /**
@@ -1647,7 +1685,7 @@ RPGcode.prototype.sendToBoard = function (boardName, tileX, tileY, layer) {
         // Backwards compatability check.
         layer = rpgwizard.craftyCharacter.character.layer;
     }
-    
+
     rpgwizard.switchBoard(boardName, tileX, tileY, layer);
 };
 

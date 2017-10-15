@@ -94,6 +94,7 @@ public class CompileAction extends AbstractAction {
 								Desktop.getDesktop().open(result);
 							} catch (Exception ex) {
 								LOGGER.error("Failed to compile game.", ex);
+								progressMonitor.close();
 								JOptionPane.showMessageDialog(
 										MainWindow.getInstance(),
 										"Error compiling game!",

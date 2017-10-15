@@ -101,7 +101,7 @@ RPGWizard.prototype.setup = function (filename) {
     if (rpgwizard.debugEnabled) {
         console.debug("Starting engine with filename=[%s]", filename);
     }
-    
+
     this.project = new Project(filename);
 
     var scale = 1;
@@ -189,6 +189,7 @@ RPGWizard.prototype.setup = function (filename) {
 RPGWizard.prototype.loadScene = function (e) {
     if (e) {
         if (e.type === "loading") {
+            rpgwizard.showProgress(e.value.percent);
             if (rpgwizard.debugEnabled) {
                 console.debug(JSON.stringify(e));
             }
@@ -196,6 +197,8 @@ RPGWizard.prototype.loadScene = function (e) {
             console.error(JSON.stringify(e));
         }
     } else {
+        rpgwizard.hideProgress();
+        
         // Run the startup program before the game logic loop.
         if (rpgwizard.project.startupProgram && rpgwizard.firstScene) {
             rpgwizard.runProgram(
@@ -486,7 +489,7 @@ RPGWizard.prototype.switchBoard = function (boardName, tileX, tileY, layer) {
     if (rpgwizard.craftyBoard.board) {
         rpgwizard.lastBackgroundMusic = rpgwizard.craftyBoard.board.backgroundMusic;
     }
-    
+
     this.loadBoard(new Board(PATH_BOARD + boardName));
 
     var tileWidth = this.craftyBoard.board.tileWidth;
@@ -534,7 +537,7 @@ RPGWizard.prototype.loadCharacter = function (character) {
                 vectorType: "CHARACTER",
                 tweenEndCallbacks: []
             })
-            .CustomControls(1)
+            .CustomControls(1, 0.8)
             .BaseVector(
                     new Crafty.polygon(character.collisionPoints),
                     function (hitData) {
@@ -731,7 +734,7 @@ RPGWizard.prototype.endProgram = function (nextProgram) {
     if (rpgwizard.debugEnabled) {
         console.debug("Ending current program, nextProgram=[%s]", nextProgram);
     }
-    
+
     if (rpgwizard.activePrograms > 0) {
         rpgwizard.activePrograms--;
     }
@@ -840,6 +843,15 @@ RPGWizard.prototype.playSound = function (sound, loop) {
  */
 RPGWizard.prototype.timestamp = function () {
     return window.performance && window.performance.now ? window.performance.now() : new Date().getTime();
+};
+
+RPGWizard.prototype.hideProgress = function () {
+    document.getElementById("progress").style.visibility = "hidden";
+};
+
+RPGWizard.prototype.showProgress = function (percentage) {
+    document.getElementById("bar").style.width = percentage + '%';
+    document.getElementById("progress").style.visibility = "visible";
 };
 
 // TODO: Make this a utility function. When there is a Craftyjs compiler

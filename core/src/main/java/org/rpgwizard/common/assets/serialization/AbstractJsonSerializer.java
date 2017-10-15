@@ -46,7 +46,7 @@ import org.rpgwizard.common.assets.KeyPressEvent;
 public abstract class AbstractJsonSerializer extends AbstractAssetSerializer {
 
 	public static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
-	public static final double FILE_FORMAT_VERSION = 1.1;
+	public static final double FILE_FORMAT_VERSION = 1.2;
 
 	@Override
     public void serialize(AssetHandle handle)

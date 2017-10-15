@@ -926,7 +926,11 @@ public class MainWindow extends JFrame implements InternalFrameListener {
 	}
 
 	public void setupProject(Project project) {
+                // Clean up previous project.
 		closeEditors();
+                tileSetPanel.removeTileSets();
+                TileSetCache.clear();
+                
 		activeProject = project;
 
 		// Will create any missing directories.

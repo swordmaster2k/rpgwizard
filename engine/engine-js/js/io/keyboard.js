@@ -63,32 +63,32 @@ function Keyboard() {
                         rpgwizard.craftyCharacter.character.direction = this.character.DirectionEnum.SOUTH_WEST;
                         this.character.changeGraphics(this.character.direction);
                     }
-                    this.x -= this._diagonal_speed;
-                    this.y += this._diagonal_speed;
+                    this.x -= this._diagonalSpeed;
+                    this.y += this._diagonalSpeed;
                     Crafty.trigger("Moved", {});
                 } else if (move.south && move.east) {
                     if (rpgwizard.craftyCharacter.character.direction !== this.character.DirectionEnum.SOUTH_EAST) {
                         rpgwizard.craftyCharacter.character.direction = this.character.DirectionEnum.SOUTH_EAST;
                         this.character.changeGraphics(this.character.direction);
                     }
-                    this.x += this._diagonal_speed;
-                    this.y += this._diagonal_speed;
+                    this.x += this._diagonalSpeed;
+                    this.y += this._diagonalSpeed;
                     Crafty.trigger("Moved", {});
                 } else if (move.north && move.west) {
                     if (rpgwizard.craftyCharacter.character.direction !== this.character.DirectionEnum.NORTH_WEST) {
                         rpgwizard.craftyCharacter.character.direction = this.character.DirectionEnum.NORTH_WEST;
                         this.character.changeGraphics(this.character.direction);
                     }
-                    this.x -= this._diagonal_speed;
-                    this.y -= this._diagonal_speed;
+                    this.x -= this._diagonalSpeed;
+                    this.y -= this._diagonalSpeed;
                     Crafty.trigger("Moved", {});
                 } else if (move.north && move.east) {
                     if (rpgwizard.craftyCharacter.character.direction !== this.character.DirectionEnum.NORTH_EAST) {
                         rpgwizard.craftyCharacter.character.direction = this.character.DirectionEnum.NORTH_EAST;
                         this.character.changeGraphics(this.character.direction);
                     }
-                    this.x += this._diagonal_speed;
-                    this.y -= this._diagonal_speed;
+                    this.x += this._diagonalSpeed;
+                    this.y -= this._diagonalSpeed;
                     Crafty.trigger("Moved", {});
                 } else if (move.east) {
                     if (rpgwizard.craftyCharacter.character.direction !== this.character.DirectionEnum.EAST) {

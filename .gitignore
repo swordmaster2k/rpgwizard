@@ -31,11 +31,9 @@ out/
 *.zip
 *.jar
 *.exe
-engine/src/main/resources/engine-rpgwizard.zip
 
 # Distribution
 distribution/builds/
-engine/src/main/resources/engine-rpgwizard.zip
 *.zip
 jre/
 launch4j/

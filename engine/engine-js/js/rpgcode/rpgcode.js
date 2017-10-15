@@ -74,7 +74,6 @@ RPGcode.prototype._animateGeneric = function (generic, resetGraphics, callback) 
     var frameRate = activeGraphics.frameRate;
     var delay = (1.0 / activeGraphics.frameRate) * 1000; // Get number of milliseconds.
     var repeat = activeGraphics.spriteSheet.frames.length - 1;
-
     Crafty.e("Delay").delay(function () {
         generic.animate(frameRate);
     }, delay, repeat, function () {
@@ -116,7 +115,7 @@ RPGcode.prototype._getSpriteType = function (spriteId) {
  * @example
  * rpgcode.addRunTimeProgram("UI/HUD.js");
  * 
- * @param {type} filename
+ * @param {type} filename Filename of the JavaScript file stored in Programs folder.
  * @returns {undefined}
  */
 RPGcode.prototype.addRunTimeProgram = function (filename) {
@@ -125,7 +124,9 @@ RPGcode.prototype.addRunTimeProgram = function (filename) {
 };
 
 /**
- * TODO
+ * Dynamically adds a sprite to the current board, when the sprite has been added
+ * the callback function will be invoked, if any. Useful for spawning item
+ * pickups or enemies.
  * 
  * @example
  * var sprite = {
@@ -150,8 +151,8 @@ RPGcode.prototype.addRunTimeProgram = function (filename) {
  *  rpgcode.log("Sprite added to board.");
  * });
  * 
- * @param {type} sprite
- * @param {type} callback
+ * @param {type} sprite BoardSprite object to add.
+ * @param {type} callback If defined, the function to invoke after the sprite has been added.
  * @returns {undefined}
  */
 RPGcode.prototype.addSprite = function (sprite, callback) {
@@ -492,7 +493,7 @@ RPGcode.prototype.fillRect = function (x, y, width, height, canvasId) {
  * Fires a ray from its origin in the direction and report entities that intersect 
  * with it, given the parameter constraints.
  *
- * This will return any NPCs and Enemies board sprites caught in the path of the 
+ * This will return any enemies, NPCs, and SOLID vectors caught in the path of the 
  * raycast enclosing them inside an object.
  * 
  * @example
@@ -506,16 +507,21 @@ RPGcode.prototype.fillRect = function (x, y, width, height, canvasId) {
  *  hits["npcs"].forEach(function(sprite) {
  *      rpgcode.log(sprite.npc);
  *  });
+ *  hits["solids"].forEach(function(solid) {
+ *      rpgcode.log(solid.distance);
+ *      rpgcode.log(solid.x);
+ *      rpgcode.log(solid.y);
+ *  });
  *  rpgcode.endProgram();
  * 
  * @param {type} origin The point of origin from which the ray will be cast. The object must contain the properties _x and _y
  * @param {type} direction The direction the ray will be cast. It must be normalized. The object must contain the properties x and y.
  * @param {type} maxDistance The maximum distance up to which intersections will be found. This is an optional parameter defaulting to Infinity. If it's Infinity find all intersections. If it's negative find only first intersection (if there is one). If it's positive find all intersections up to that distance.
- * @returns {Object} An object containing all of the NPCs and Enemies in the path of the raycast. 
+ * @returns {Object} An object containing all of the entities in the path of the raycast. 
  */
 RPGcode.prototype.fireRaycast = function (origin, direction, maxDistance) {
     var hits;
-    var results = {npcs: [], enemies: []};
+    var results = {enemies: [], npcs: [], solids: []};
 
     direction = new Crafty.math.Vector2D(direction.x, direction.y).normalize();
     if (maxDistance) {
@@ -531,6 +537,8 @@ RPGcode.prototype.fireRaycast = function (origin, direction, maxDistance) {
             } else if (hit.obj.sprite.enemy) {
                 results.enemies.push(hit.obj.sprite);
             }
+        } else if (hit.obj.vectorType === "SOLID") {
+            results.solids.push({"distance": hit.distance, "x": hit.x, "y": hit.y});
         }
     });
 
@@ -1945,6 +1953,36 @@ RPGcode.prototype.setCharacterLocation = function (characterId, x, y, layer, isT
     rpgwizard.craftyCharacter.x = x;
     rpgwizard.craftyCharacter.y = y;
     rpgwizard.craftyCharacter.character.layer = layer;
+};
+
+/**
+ * Sets the character speed by proportionally applying the change, can be used
+ * to increase or decrease the character speed by some factor 
+ * i.e. 3 times faster or 3 times slower. Positive change values are interpreted 
+ * as an increase and negative values as a decrease.
+ * 
+ * @example
+ * // Increase the character's movement speed by 3 times.
+ * rpgcode.setCharacterSpeed("Hero", 3);
+ * 
+ * // Decrease the character's movement speed by 3 times, returning it to normal.
+ * rpgcode.setCharacterSpeed("Hero", -3);
+ * 
+ * @param {String} characterId The index of the character on the board.
+ * @param {String} change Factor to change the character speed by.
+ */
+RPGcode.prototype.setCharacterSpeed = function (characterId, change) {
+    // TODO: characterId will be unused until parties with multiple characters 
+    // are supported.
+    if (change === 0) {
+        return;
+    } else if (change > 0) {
+        rpgwizard.craftyCharacter._speed *= change;
+        rpgwizard.craftyCharacter._diagonalSpeed *= change;
+    } else if (change < 0) {
+        rpgwizard.craftyCharacter._speed /= -change;
+        rpgwizard.craftyCharacter._diagonalSpeed /= -change;
+    }
 };
 
 /**

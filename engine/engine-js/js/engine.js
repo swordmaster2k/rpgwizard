@@ -1,16 +1,16 @@
-1/*
+/*
  * Copyright (c) 2017, rpgwizard.org, some files forked from rpgtoolkit.net <info@rpgwizard.org>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-/* global PATH_BITMAP, PATH_MEDIA, PATH_PROGRAM, PATH_BOARD, PATH_CHARACTER, PATH_NPC, jailed, rpgcode, PATH_TILESET, PATH_ENEMY, Crafty */
+/* global PATH_BITMAP, PATH_MEDIA, PATH_PROGRAM, PATH_BOARD, PATH_CHARACTER, PATH_NPC, jailed, rpgcode, PATH_TILESET, PATH_ENEMY, Crafty, engineUtil */
 
 var rpgwizard = new RPGWizard();
 
 function RPGWizard() {
-    this.dt = 0; // Craftyjs time step since last frame;
+    this.dt = 0; // Craftyjs time step since last frame.
     this.screen = {};
 
     // Game project file.
@@ -107,8 +107,8 @@ RPGWizard.prototype.setup = function (filename) {
     var scale = 1;
     if (this.project.isFullScreen) {
         var zoomLevel = 100;
-        var bodyWidth = this.getBodyWidth();
-        var bodyHeight = this.getBodyHeight();
+        var bodyWidth = engineUtil.getBodyWidth();
+        var bodyHeight = engineUtil.getBodyHeight();
         scale = bodyWidth / this.project.resolutionWidth;
         if (this.project.resolutionHeight * scale > bodyHeight) {
             scale = bodyHeight / this.project.resolutionHeight;
@@ -189,7 +189,7 @@ RPGWizard.prototype.setup = function (filename) {
 RPGWizard.prototype.loadScene = function (e) {
     if (e) {
         if (e.type === "loading") {
-            rpgwizard.showProgress(e.value.percent);
+            engineUtil.showProgress(e.value.percent);
             if (rpgwizard.debugEnabled) {
                 console.debug(JSON.stringify(e));
             }
@@ -197,8 +197,7 @@ RPGWizard.prototype.loadScene = function (e) {
             console.error(JSON.stringify(e));
         }
     } else {
-        rpgwizard.hideProgress();
-        
+        engineUtil.hideProgress();
         // Run the startup program before the game logic loop.
         if (rpgwizard.project.startupProgram && rpgwizard.firstScene) {
             rpgwizard.runProgram(
@@ -220,7 +219,6 @@ RPGWizard.prototype.startScene = function () {
     if (rpgwizard.firstScene) {
         rpgwizard.firstScene = false;
     }
-
     rpgwizard.craftyBoard.show = true;
     if (rpgwizard.craftyBoard.board.backgroundMusic !== rpgwizard.lastBackgroundMusic) {
         Crafty.audio.stop();
@@ -250,7 +248,6 @@ RPGWizard.prototype.queueCraftyAssets = function (assets, waitingEntity) {
     if (assets.audio) {
         this.assetsToLoad.audio = Object.assign({}, this.assetsToLoad.audio, assets.audio);
     }
-
     if (waitingEntity) {
         this.waitingEntities.push(waitingEntity);
     }
@@ -261,7 +258,6 @@ RPGWizard.prototype.loadCraftyAssets = function (callback) {
     if (rpgwizard.debugEnabled) {
         console.debug("Loading assets=[" + JSON.stringify(assets) + "]");
     }
-
     // Remove any duplicates.
     assets.images = assets.images.filter((it, i, ar) => ar.indexOf(it) === i);
 
@@ -297,16 +293,13 @@ RPGWizard.prototype.loadCraftyAssets = function (callback) {
                 if (rpgwizard.debugEnabled) {
                     console.debug("Loaded assets=[%s]", JSON.stringify(assets));
                 }
-
                 // Notifiy the entities that their assets are ready for use.
                 rpgwizard.waitingEntities.forEach(function (entity) {
                     entity.setReady();
                 });
-
                 // Reset asset queue.
                 rpgwizard.assetsToLoad = {"images": [], "audio": {}};
                 rpgwizard.waitingEntities = [];
-
                 callback();
             },
             function (e) {  // progress 
@@ -375,8 +368,7 @@ RPGWizard.prototype.createCraftyBoard = function (board) {
 
     var width = board.width * board.tileWidth;
     var height = board.height * board.tileHeight;
-    var xShift = 0;
-    var yShift = 0;
+    var xShift = 0, yShift = 0;
     if (width < Crafty.viewport._width) {
         xShift = ((Crafty.viewport._width - (width * Crafty.viewport._scale)) / 2) / Crafty.viewport._scale;
         width = Crafty.viewport._width;
@@ -405,7 +397,6 @@ RPGWizard.prototype.createCraftyBoard = function (board) {
                         var program = rpgwizard.openProgram(PATH_PROGRAM + filename);
                         program();
                     });
-
                     rpgwizard.screen.renderBoard(e.ctx);
                 }
             });
@@ -420,7 +411,6 @@ RPGWizard.prototype.loadBoard = function (board) {
     if (rpgwizard.debugEnabled) {
         console.debug("Loading board=[%s]", JSON.stringify(board));
     }
-
     var craftyBoard = this.createCraftyBoard(board);
     var assets = {"images": [], "audio": {}};
 
@@ -489,9 +479,7 @@ RPGWizard.prototype.switchBoard = function (boardName, tileX, tileY, layer) {
     if (rpgwizard.craftyBoard.board) {
         rpgwizard.lastBackgroundMusic = rpgwizard.craftyBoard.board.backgroundMusic;
     }
-
     this.loadBoard(new Board(PATH_BOARD + boardName));
-
     var tileWidth = this.craftyBoard.board.tileWidth;
     var tileHeight = this.craftyBoard.board.tileHeight;
     this.craftyCharacter.x = parseInt((tileX * tileWidth) + tileWidth / 2);
@@ -510,7 +498,6 @@ RPGWizard.prototype.loadCharacter = function (character) {
     if (rpgwizard.debugEnabled) {
         console.debug("Loading character=[%s]", JSON.stringify(character));
     }
-
     // Have to keep this in a separate entity, as Crafty entites can
     // only have 1 collision polygon at a time, using composition to
     // get around this limitation.
@@ -551,7 +538,6 @@ RPGWizard.prototype.loadCharacter = function (character) {
                 // Move activation vector with us.
                 this.activationVector.x = this.x;
                 this.activationVector.y = this.y;
-
                 this.character.animate(this.dt);
             })
             .bind("EnterFrame", function (event) {
@@ -567,15 +553,13 @@ RPGWizard.prototype.loadCharacter = function (character) {
             });
 
     this.craftyCharacter.visible = false;
-    var assets = this.craftyCharacter.character.load();
-    this.queueCraftyAssets(assets, character);
+    this.queueCraftyAssets(this.craftyCharacter.character.load(), character);
 };
 
 RPGWizard.prototype.loadSprite = function (sprite) {
     if (rpgwizard.debugEnabled) {
         console.debug("Loading sprite=[%s]", JSON.stringify(sprite));
     }
-
     if (sprite.name.endsWith(".enemy")) {
         sprite.enemy = new Enemy(PATH_ENEMY + sprite.name);
         sprite.collisionPoints = sprite.enemy.collisionPoints;
@@ -589,7 +573,6 @@ RPGWizard.prototype.loadSprite = function (sprite) {
 
     var isEnemy = sprite.enemy !== undefined;
     var asset = isEnemy ? sprite.enemy : sprite.npc;
-
     // TODO: width and height of npc must contain the collision polygon.
     if (sprite.thread) {
         sprite.thread = this.openProgram(PATH_PROGRAM + sprite.thread);
@@ -629,12 +612,10 @@ RPGWizard.prototype.loadSprite = function (sprite) {
                 // Move activation vector with us.
                 this.activationVector.x = entity.x;
                 this.activationVector.y = entity.y;
-
                 asset.animate(this.dt);
             });
             this.bind("EnterFrame", function (event) {
                 this.dt = event.dt / 1000;
-
                 if (sprite.thread && asset.renderReady && rpgwizard.craftyBoard.show) {
                     sprite.thread.apply(this);
                 }
@@ -662,9 +643,7 @@ RPGWizard.prototype.loadSprite = function (sprite) {
                         asset.hitOffCollision(hitData, entity);
                     }
             );
-
-    var assets = asset.load();
-    this.queueCraftyAssets(assets, asset);
+    this.queueCraftyAssets(asset.load(), asset);
 
     return entity;
 };
@@ -673,18 +652,14 @@ RPGWizard.prototype.loadItem = function (item) {
     if (rpgwizard.debugEnabled) {
         console.debug("Loading item=[%s]", JSON.stringify(item));
     }
-
-    var assets = item.load();
-    this.queueCraftyAssets(assets, item);
+    this.queueCraftyAssets(item.load(), item);
 };
 
 RPGWizard.prototype.openProgram = function (filename) {
     if (rpgwizard.debugEnabled) {
         console.debug("Opening program=[%s]", filename);
     }
-
     var program = rpgwizard.programCache[filename];
-
     if (!program) {
         // TODO: Make the changes here that chrome suggests.
         var req = new XMLHttpRequest();
@@ -703,28 +678,19 @@ RPGWizard.prototype.runProgram = function (filename, source, callback) {
     if (rpgwizard.debugEnabled) {
         console.debug("Running program=[%s]", filename);
     }
-
     rpgwizard.activePrograms++;
     rpgwizard.inProgram = true;
     rpgwizard.currentProgram = filename;
     rpgcode.source = source; // Entity that triggered the program.
-
     rpgwizard.controlEnabled = false;
-
-    // Store endProgram callback.
-    rpgwizard.endProgramCallback = callback;
-
-    // Wipe previous keyboard handlers.
-    rpgwizard.keyboardHandler.downHandlers = {};
+    rpgwizard.endProgramCallback = callback; // Store endProgram callback.
+    rpgwizard.keyboardHandler.downHandlers = {}; // Wipe previous keyboard handlers.
     rpgwizard.keyboardHandler.upHandlers = {};
-
-    // Wipe previous mouse handlers.
-    rpgwizard.mouseHandler.mouseDownHandler = null;
+    rpgwizard.mouseHandler.mouseDownHandler = null; // Wipe previous mouse handlers.
     rpgwizard.mouseHandler.mouseUpHandler = null;
     rpgwizard.mouseHandler.mouseClickHandler = null;
     rpgwizard.mouseHandler.mouseDoubleClickHandler = null;
     rpgwizard.mouseHandler.mouseMoveHandler = null;
-
 
     var program = rpgwizard.openProgram(filename);
     program.apply(source);
@@ -784,7 +750,6 @@ RPGWizard.prototype.createVectorPolygon = function (points, layer, type, events)
     var width = Math.abs(maxX - minX) + 1;
     var height = Math.abs(maxY - minY) + 1;
     var attr = {x: minX, y: minY, w: width, h: height};
-
     attr.layer = layer;
     attr.vectorType = type;
     attr.events = events;
@@ -801,25 +766,19 @@ RPGWizard.prototype.createVectorPolygon = function (points, layer, type, events)
 };
 
 RPGWizard.prototype.calculateVectorPosition = function (x1, y1, x2, y2) {
+    var width, height;
     var xDiff = x2 - x1;
     var yDiff = y2 - y1;
-
     var distance = Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
-
-    var width;
-    var height;
-
     if (x1 !== x2) {
         width = distance;
         height = 2;
-
         if (xDiff < 0) {
             x1 = x2;
         }
     } else {
         width = 2;
         height = distance;
-
         if (yDiff < 0) {
             y1 = y2;
         }
@@ -832,53 +791,5 @@ RPGWizard.prototype.playSound = function (sound, loop) {
     if (rpgwizard.debugEnabled) {
         console.debug("Playing sound=[%s]", sound);
     }
-
     Crafty.audio.play(sound, loop);
-};
-
-/**
- * Utility function for getting accurate timestamps across browsers.
- * 
- * @returns {Number}
- */
-RPGWizard.prototype.timestamp = function () {
-    return window.performance && window.performance.now ? window.performance.now() : new Date().getTime();
-};
-
-RPGWizard.prototype.hideProgress = function () {
-    document.getElementById("progress").style.visibility = "hidden";
-};
-
-RPGWizard.prototype.showProgress = function (percentage) {
-    document.getElementById("bar").style.width = percentage + '%';
-    document.getElementById("progress").style.visibility = "visible";
-};
-
-// TODO: Make this a utility function. When there is a Craftyjs compiler
-// it will do it instead.
-RPGWizard.prototype.prependPath = function (prepend, items) {
-    var len = items.length;
-    for (var i = 0; i < len; i++) {
-        items[i] = prepend.concat(items[i]);
-    }
-};
-
-RPGWizard.prototype.getBodyWidth = function () {
-    return Math.max(
-            document.documentElement.clientWidth,
-            document.body.scrollWidth,
-            document.documentElement.scrollWidth,
-            document.body.offsetWidth,
-            document.documentElement.offsetWidth
-            );
-};
-
-RPGWizard.prototype.getBodyHeight = function () {
-    return Math.max(
-            document.documentElement.clientHeight,
-            document.body.scrollHeight,
-            document.documentElement.scrollHeight,
-            document.body.offsetHeight,
-            document.documentElement.offsetHeight
-            );
 };

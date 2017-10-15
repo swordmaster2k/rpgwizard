@@ -235,9 +235,7 @@ Sprite.prototype.animate = function (step) {
     if (!step) {
         return;
     }
-
     this.spriteGraphics.elapsed += step;
-
     var delay = (1.0 / this.spriteGraphics.active.frameRate);
     if (this.spriteGraphics.elapsed >= delay) {
         this.spriteGraphics.elapsed -= delay;

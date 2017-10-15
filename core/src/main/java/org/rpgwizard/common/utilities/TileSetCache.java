@@ -42,6 +42,13 @@ public class TileSetCache {
       return null;
     }
   }
+  
+  /**
+   * Clears the Tileset cache.
+   */
+  public static void clear() {
+      TILE_SETS.clear();
+  }
 
   /**
    * Allows the calling object to check if the tile set has already been loaded, this should be

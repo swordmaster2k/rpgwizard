@@ -24,7 +24,7 @@ import org.rpgwizard.editor.editors.tileset.TileSetCanvas;
  *
  * @author Joshua Michael Daly
  */
-public class TileSetTabbedPane extends JTabbedPane {
+public final class TileSetTabbedPane extends JTabbedPane {
 
 	public TileSetTabbedPane() {
 		setFont(new Font(getFont().getFontName(), Font.PLAIN, 10));

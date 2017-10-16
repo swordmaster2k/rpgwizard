@@ -298,8 +298,8 @@ RPGcode.prototype.createCanvas = function (width, height, canvasId) {
  * });
  * 
  * @param {Number} ms Time to wait in milliseconds.
- * @param {Boolean} loop Should the call be indefinite?
  * @param {Callback} callback Function to execute after the delay.
+ * @param {Boolean} loop Should the call be indefinite?
  * @returns {Object} Reference to the delay object.
  */
 RPGcode.prototype.delay = function (ms, callback, loop) {

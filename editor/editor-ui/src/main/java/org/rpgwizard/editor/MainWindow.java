@@ -86,7 +86,7 @@ import ro.fortsoft.pf4j.PluginManager;
  * @author Geoff Wilson
  * @author Joshua Michael Daly
  */
-public class MainWindow extends JFrame implements InternalFrameListener {
+public final class MainWindow extends JFrame implements InternalFrameListener {
 
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(MainWindow.class);
@@ -235,6 +235,10 @@ public class MainWindow extends JFrame implements InternalFrameListener {
 		lastSelectedTile = tile;
 	}
 
+        public JPanel getToolboxPanel() {
+            return toolboxPanel;
+        }
+        
 	public MainMenuBar getMainMenuBar() {
 		return this.menuBar;
 	}

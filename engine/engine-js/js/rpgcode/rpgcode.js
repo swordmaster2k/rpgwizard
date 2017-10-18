@@ -493,7 +493,7 @@ RPGcode.prototype.fillRect = function (x, y, width, height, canvasId) {
  * Fires a ray from its origin in the direction and report entities that intersect 
  * with it, given the parameter constraints.
  *
- * This will return any enemies, NPCs, and SOLID vectors caught in the path of the 
+ * This will return any characters, enemies, NPCs, and SOLID vectors caught in the path of the 
  * raycast enclosing them inside an object.
  * 
  * @example
@@ -501,6 +501,9 @@ RPGcode.prototype.fillRect = function (x, y, width, height, canvasId) {
  *     _x: location.x,
  *     _y: location.y
  *  }, vector, 13);
+ *  hits["characters"].forEach(function(character) {
+ *      rpgcode.log(character);
+ *  });
  *  hits["enemies"].forEach(function(sprite) {
  *      rpgcode.log(sprite.enemy);
  *  });
@@ -521,7 +524,7 @@ RPGcode.prototype.fillRect = function (x, y, width, height, canvasId) {
  */
 RPGcode.prototype.fireRaycast = function (origin, direction, maxDistance) {
     var hits;
-    var results = {enemies: [], npcs: [], solids: []};
+    var results = {characters: [], enemies: [], npcs: [], solids: []};
 
     direction = new Crafty.math.Vector2D(direction.x, direction.y).normalize();
     if (maxDistance) {
@@ -537,6 +540,8 @@ RPGcode.prototype.fireRaycast = function (origin, direction, maxDistance) {
             } else if (hit.obj.sprite.enemy) {
                 results.enemies.push(hit.obj.sprite);
             }
+        } else if (hit.obj.character) {
+            results.characters.push(hit.obj.character);
         } else if (hit.obj.vectorType === "SOLID") {
             results.solids.push({"distance": hit.distance, "x": hit.x, "y": hit.y});
         }
@@ -638,8 +643,8 @@ RPGcode.prototype.getCharacterLocation = function (inTiles, includeOffset) {
     var instance = rpgwizard.craftyCharacter;
 
     if (includeOffset) {
-        var x = instance.x + rpgwizard.craftyBoard.xShift;
-        var y = instance.y + rpgwizard.craftyBoard.yShift;
+        var x = instance.x + rpgwizard.craftyBoard.xShift + Crafty.viewport._x;
+        var y = instance.y + rpgwizard.craftyBoard.yShift + Crafty.viewport._y;
     } else {
         var x = instance.x;
         var y = instance.y;
@@ -755,8 +760,8 @@ RPGcode.prototype.getSpriteLocation = function (spriteId, inTiles, includeOffset
     var entity = rpgwizard.craftyBoard.board.sprites[spriteId];
 
     if (includeOffset) {
-        var x = entity.x + rpgwizard.craftyBoard.xShift;
-        var y = entity.y + rpgwizard.craftyBoard.yShift;
+        var x = entity.x + rpgwizard.craftyBoard.xShift + Crafty.viewport._x;
+        var y = entity.y + rpgwizard.craftyBoard.yShift + Crafty.viewport._y;
     } else {
         var x = entity.x;
         var y = entity.y;

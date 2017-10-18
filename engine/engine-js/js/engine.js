@@ -168,7 +168,7 @@ RPGWizard.prototype.setup = function (filename) {
 
         // Setup the viewport to smoothly follow the player object
         Crafty.viewport.follow(this.craftyCharacter, 0, 0);
-        //Crafty.viewport.clampToEntities = false;
+        Crafty.viewport.clampToEntities = true;
 
         this.loadCraftyAssets(this.loadScene);
     } else if (this.project.initialCharacter && this.project.startupProgram) {
@@ -319,11 +319,6 @@ RPGWizard.prototype.createUILayer = function () {
 
     Crafty.e("2D, UI, Mouse")
             .attr({x: 0, y: 0, w: Crafty.viewport._width, h: Crafty.viewport._height, ready: true})
-            .bind("EnterFrame", function () {
-                // TODO: define custom event e.g. InvalidateUI and only trigger
-                // it when something has been changed via RPGcode.
-                this.trigger("Invalidate");
-            })
             .bind("Draw", function (e) {
                 if (e.ctx) {
                     rpgwizard.screen.renderUI(e.ctx);

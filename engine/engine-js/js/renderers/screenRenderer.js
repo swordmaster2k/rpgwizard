@@ -146,6 +146,7 @@ ScreenRenderer.prototype.renderUI = function (context) {
         if (canvases.hasOwnProperty(property)) {
             var element = canvases[property];
             if (element.render) {
+                context.globalCompositeOperation = 'lighter';
                 context.drawImage(element.canvas, element.x, element.y);
             }
         }

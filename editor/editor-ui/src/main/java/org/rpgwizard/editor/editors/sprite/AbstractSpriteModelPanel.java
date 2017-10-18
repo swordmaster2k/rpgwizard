@@ -64,7 +64,7 @@ public abstract class AbstractSpriteModelPanel extends AbstractModelPanel {
 		// /
 		baseVectorWidthSpinner = getJSpinner(sprite.getBaseVector().getWidth());
 		baseVectorWidthSpinner.setModel(new SpinnerNumberModel(sprite
-				.getBaseVector().getWidth(), 10, 100, 1));
+				.getBaseVector().getWidth(), 1, 100, 1));
 		baseVectorWidthSpinner.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
@@ -90,7 +90,7 @@ public abstract class AbstractSpriteModelPanel extends AbstractModelPanel {
 		baseVectorHeightSpinner = getJSpinner(sprite.getBaseVector()
 				.getHeight());
 		baseVectorHeightSpinner.setModel(new SpinnerNumberModel(sprite
-				.getBaseVector().getHeight(), 10, 100, 1));
+				.getBaseVector().getHeight(), 1, 100, 1));
 		baseVectorHeightSpinner.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
@@ -150,7 +150,7 @@ public abstract class AbstractSpriteModelPanel extends AbstractModelPanel {
 		activationVectorWidthSpinner = getJSpinner(sprite.getActivationVector()
 				.getWidth());
 		activationVectorWidthSpinner.setModel(new SpinnerNumberModel(sprite
-				.getActivationVector().getWidth(), 10, 100, 1));
+				.getActivationVector().getWidth(), 1, 100, 1));
 		activationVectorWidthSpinner.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
@@ -176,7 +176,7 @@ public abstract class AbstractSpriteModelPanel extends AbstractModelPanel {
 		activationVectorHeightSpinner = getJSpinner(sprite
 				.getActivationVector().getHeight());
 		activationVectorHeightSpinner.setModel(new SpinnerNumberModel(sprite
-				.getActivationVector().getHeight(), 10, 100, 1));
+				.getActivationVector().getHeight(), 1, 100, 1));
 		activationVectorHeightSpinner.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {

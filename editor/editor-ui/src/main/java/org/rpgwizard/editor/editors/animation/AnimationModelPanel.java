@@ -67,7 +67,7 @@ public class AnimationModelPanel extends AbstractModelPanel {
     /// widthSpinner
     ///
     widthSpinner = getJSpinner(animation.getAnimationWidth());
-    widthSpinner.setModel(new SpinnerNumberModel(animation.getAnimationWidth(), 10, 1000, 1));
+    widthSpinner.setModel(new SpinnerNumberModel(animation.getAnimationWidth(), 1, 1000, 1));
     widthSpinner.addChangeListener((ChangeEvent e) -> {
         int value = (int)widthSpinner.getValue();
         
@@ -81,7 +81,7 @@ public class AnimationModelPanel extends AbstractModelPanel {
     /// heightSpinner
     ///
     heightSpinner = getJSpinner(animation.getAnimationHeight());
-    heightSpinner.setModel(new SpinnerNumberModel(animation.getAnimationHeight(), 10, 1000, 1));
+    heightSpinner.setModel(new SpinnerNumberModel(animation.getAnimationHeight(), 1, 1000, 1));
     heightSpinner.addChangeListener((ChangeEvent e) -> {
         int value = (int) heightSpinner.getValue();
         
@@ -95,7 +95,7 @@ public class AnimationModelPanel extends AbstractModelPanel {
     /// frameRateSpinner
     ///
     frameRateSpinner = getJSpinner(animation.getFrameRate());
-    frameRateSpinner.setModel(new SpinnerNumberModel(animation.getFrameRate(), 0, 100, 1));
+    frameRateSpinner.setModel(new SpinnerNumberModel(animation.getFrameRate(), 1, 100, 1));
     frameRateSpinner.addChangeListener((ChangeEvent e) -> {
         int value = (int) frameRateSpinner.getValue();
         

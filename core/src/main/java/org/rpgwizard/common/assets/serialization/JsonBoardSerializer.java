@@ -114,6 +114,9 @@ public class JsonBoardSerializer extends AbstractJsonSerializer {
         final JSONArray sprites = new JSONArray();
         for (final BoardSprite sprite : boardSprites) {
             final JSONObject s = new JSONObject();
+            if (sprite.getFileName() == null || sprite.getFileName().isEmpty()) {
+                continue;
+            }
             s.put("name", serializePath(sprite.getFileName()));
             s.put("id", sprite.getId());
             JSONObject spritePosition = new JSONObject();

@@ -1199,6 +1199,7 @@ RPGcode.prototype.moveCharacter = function (characterId, direction, distance) {
  * @param {Callback} callback Function to invoke when the sprite has finished moving.
  */
 RPGcode.prototype.moveCharacterTo = function (characterId, x, y, duration, callback) {
+    rpgwizard.craftyCharacter.trigger("TweenEnd", {});
     rpgwizard.craftyCharacter.cancelTween({x: true, y: true});
     rpgwizard.craftyCharacter.tweenEndCallbacks.push(callback);
 
@@ -1235,6 +1236,7 @@ RPGcode.prototype.moveCharacterTo = function (characterId, x, y, duration, callb
 RPGcode.prototype.moveSpriteTo = function (spriteId, x, y, duration, callback) {
     if (rpgwizard.craftyBoard.board.sprites.hasOwnProperty(spriteId)) {
         var entity = rpgwizard.craftyBoard.board.sprites[spriteId];
+        entity.trigger("TweenEnd", {});
         entity.cancelTween({x: true, y: true});
         entity.tweenEndCallbacks.push(callback);
 

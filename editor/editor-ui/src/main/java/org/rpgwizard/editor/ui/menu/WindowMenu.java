@@ -44,13 +44,13 @@ public final class WindowMenu extends JMenu {
 	public JMenuItem getZoomInMenuItem() {
 		return sidePanel;
 	}
-        
+
 	public void configureSidePanelMenuItem() {
 		sidePanel = new JMenuItem("Side Panel");
 		sidePanel.setIcon(Icons.getSmallIcon("application-sidebar"));
-//		sidePanel.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ADD,
-//				ActionEvent.CTRL_MASK));
-//		sidePanel.setMnemonic(KeyEvent.VK_PLUS);
+		// sidePanel.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ADD,
+		// ActionEvent.CTRL_MASK));
+		// sidePanel.setMnemonic(KeyEvent.VK_PLUS);
 		sidePanel.addActionListener(new SidePanelAction());
 	}
 

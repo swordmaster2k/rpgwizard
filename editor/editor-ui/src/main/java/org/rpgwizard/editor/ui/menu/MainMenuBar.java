@@ -25,7 +25,7 @@ public class MainMenuBar extends JMenuBar {
 	private final ViewMenu viewMenu;
 	private final RunMenu runMenu;
 	private final ToolsMenu toolsMenu;
-        private final WindowMenu windowMenu;
+	private final WindowMenu windowMenu;
 	private final HelpMenu helpMenu;
 
 	public MainMenuBar(MainWindow menuBarParent) {
@@ -38,7 +38,7 @@ public class MainMenuBar extends JMenuBar {
 		viewMenu = new ViewMenu();
 		runMenu = new RunMenu();
 		toolsMenu = new ToolsMenu();
-                windowMenu = new WindowMenu();
+		windowMenu = new WindowMenu();
 		helpMenu = new HelpMenu();
 
 		add(fileMenu);
@@ -46,7 +46,7 @@ public class MainMenuBar extends JMenuBar {
 		add(viewMenu);
 		add(runMenu);
 		add(toolsMenu);
-                add(windowMenu);
+		add(windowMenu);
 		add(helpMenu);
 	}
 
@@ -74,10 +74,10 @@ public class MainMenuBar extends JMenuBar {
 		return toolsMenu;
 	}
 
-        public WindowMenu getWindowMenu() {
-            return windowMenu;
-        }
-        
+	public WindowMenu getWindowMenu() {
+		return windowMenu;
+	}
+
 	@Override
 	public HelpMenu getHelpMenu() {
 		return helpMenu;

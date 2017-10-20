@@ -235,10 +235,10 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
 		lastSelectedTile = tile;
 	}
 
-        public JPanel getToolboxPanel() {
-            return toolboxPanel;
-        }
-        
+	public JPanel getToolboxPanel() {
+		return toolboxPanel;
+	}
+
 	public MainMenuBar getMainMenuBar() {
 		return this.menuBar;
 	}
@@ -930,11 +930,11 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
 	}
 
 	public void setupProject(Project project) {
-                // Clean up previous project.
+		// Clean up previous project.
 		closeEditors();
-                tileSetPanel.removeTileSets();
-                TileSetCache.clear();
-                
+		tileSetPanel.removeTileSets();
+		TileSetCache.clear();
+
 		activeProject = project;
 
 		// Will create any missing directories.

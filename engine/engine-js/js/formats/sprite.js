@@ -121,11 +121,11 @@ Sprite.prototype.loadAnimations = function () {
     }
     this.spriteGraphics.southEast = this._loadAnimation(this.animations[standardKeys[6]]);
     if (this.spriteGraphics.southEast === null) {
-        this.spriteGraphics.southEast = this.spriteGraphics.east; 
+        this.spriteGraphics.southEast = this.spriteGraphics.east;
     }
     this.spriteGraphics.southWest = this._loadAnimation(this.animations[standardKeys[7]]);
     if (this.spriteGraphics.southWest === null) {
-        this.spriteGraphics.southWest = this.spriteGraphics.west; 
+        this.spriteGraphics.southWest = this.spriteGraphics.west;
     }
     this.spriteGraphics.attack = this._loadAnimation(this.animations[standardKeys[8]]);
     this.spriteGraphics.defend = this._loadAnimation(this.animations[standardKeys[9]]);
@@ -225,26 +225,30 @@ Sprite.prototype.setReady = function () {
     if (rpgwizard.debugEnabled) {
         console.debug("Setting ready Sprite name=[%s]", this.name);
     }
-    
+
     this.spriteGraphics.active = this.spriteGraphics.south;
     this.getActiveFrame();
     this.renderReady = true;
 };
 
 Sprite.prototype.animate = function (step) {
-    if (!step) {
-        return;
-    }
-    this.spriteGraphics.elapsed += step;
-    var delay = (1.0 / this.spriteGraphics.active.frameRate);
-    if (this.spriteGraphics.elapsed >= delay) {
-        this.spriteGraphics.elapsed -= delay;
-        var frame = this.spriteGraphics.frameIndex + 1;
-        if (frame < this.spriteGraphics.active.spriteSheet.canvas.width / this.spriteGraphics.active.width) {
-            this.spriteGraphics.frameIndex = frame;
-        } else {
-            this.spriteGraphics.frameIndex = 0;
+    try {
+        if (!step || !this.spriteGraphics.active.spriteSheet.canvas) {
+            return;
         }
+        this.spriteGraphics.elapsed += step;
+        var delay = (1.0 / this.spriteGraphics.active.frameRate);
+        if (this.spriteGraphics.elapsed >= delay) {
+            this.spriteGraphics.elapsed -= delay;
+            var frame = this.spriteGraphics.frameIndex + 1;
+            if (frame < this.spriteGraphics.active.spriteSheet.canvas.width / this.spriteGraphics.active.width) {
+                this.spriteGraphics.frameIndex = frame;
+            } else {
+                this.spriteGraphics.frameIndex = 0;
+            }
+        }
+    } catch (err) {
+        console.error(err);
     }
 };
 

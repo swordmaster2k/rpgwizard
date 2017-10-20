@@ -24,8 +24,8 @@ public class SidePanelAction extends AbstractAction {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-            JPanel toolboxPanel = MainWindow.getInstance().getToolboxPanel();
-            toolboxPanel.setVisible(!toolboxPanel.isVisible());
+		JPanel toolboxPanel = MainWindow.getInstance().getToolboxPanel();
+		toolboxPanel.setVisible(!toolboxPanel.isVisible());
 	}
 
 }

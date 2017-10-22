@@ -212,6 +212,81 @@ RPGcode.prototype.animateCharacter = function (characterId, animationId, callbac
 };
 
 /**
+ * TODO
+ * 
+ * @example
+ * var changes = {
+ *  "NORTH": "BOAT_NORTH",
+ *  "SOUTH": "BOAT_SOUTH",
+ *  "EAST": "BOAT_EAST",
+ *  "WEST": "BOAT_WEST",
+ *  "NORTH_EAST": "BOAT_NORTH_EAST",
+ *  "NORTH_WEST": "BOAT_NORTH_WEST",
+ *  "SOUTH_EAST": "BOAT_SOUTH_EAST",
+ *  "SOUTH_WEST": "BOAT_SOUTH_WEST"
+ * };
+ * changeCharacterGraphics("Hero", changes);
+ * 
+ * @param {type} characterId
+ * @param {type} swaps
+ * @returns {undefined}
+ */
+RPGcode.prototype.changeCharacterGraphics = function (characterId, swaps) {
+    var character = rpgcode.getCharacter(characterId);
+    character.StandardKeys.forEach(function (key) {
+        if (key in swaps) {
+            var customKey = swaps[key];
+            if (customKey in character.spriteGraphics.custom) {
+                var swap;
+                switch (key) {
+                    case "NORTH":
+                        swap = character.spriteGraphics.north;
+                        character.spriteGraphics.north = character.spriteGraphics.custom[customKey];
+                        character.spriteGraphics.custom[customKey] = swap;
+                        break;
+                    case "SOUTH":
+                        swap = character.spriteGraphics.south;
+                        character.spriteGraphics.south = character.spriteGraphics.custom[customKey];
+                        character.spriteGraphics.custom[customKey] = swap;
+                        break;
+                    case "EAST":
+                        swap = character.spriteGraphics.east;
+                        character.spriteGraphics.east = character.spriteGraphics.custom[customKey];
+                        character.spriteGraphics.custom[customKey] = swap;
+                        break;
+                    case "WEST":
+                        swap = character.spriteGraphics.west;
+                        character.spriteGraphics.west = character.spriteGraphics.custom[customKey];
+                        character.spriteGraphics.custom[customKey] = swap;
+                        break;
+                    case "NORTH_EAST":
+                        swap = character.spriteGraphics.northEast;
+                        character.spriteGraphics.northEast = character.spriteGraphics.custom[customKey];
+                        character.spriteGraphics.custom[customKey] = swap;
+                        break;
+                    case "NORTH_WEST":
+                        swap = character.spriteGraphics.northWest;
+                        character.spriteGraphics.northWest = character.spriteGraphics.custom[customKey];
+                        character.spriteGraphics.custom[customKey] = swap;
+                        break;
+                    case "SOUTH_EAST":
+                        swap = character.spriteGraphics.southEast;
+                        character.spriteGraphics.southEast = character.spriteGraphics.custom[customKey];
+                        character.spriteGraphics.custom[customKey] = swap;
+                        break;
+                    case "SOUTH_WEST":
+                        swap = character.spriteGraphics.southWest;
+                        character.spriteGraphics.southWest = character.spriteGraphics.custom[customKey];
+                        character.spriteGraphics.custom[customKey] = swap;
+                        break;
+                }
+            }
+        }
+    });
+    rpgcode.setCharacterStance(characterId, rpgcode.getCharacterDirection(characterId));
+};
+
+/**
  * Clears an entire canvas and triggers a redraw.
  * 
  * @example

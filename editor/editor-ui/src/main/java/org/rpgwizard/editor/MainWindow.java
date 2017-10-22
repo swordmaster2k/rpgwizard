@@ -66,7 +66,7 @@ import org.rpgwizard.editor.ui.toolbar.MainToolBar;
 import org.rpgwizard.editor.ui.PropertiesPanel;
 import org.rpgwizard.editor.ui.TileSetTabbedPane;
 import org.rpgwizard.editor.ui.ToolkitDesktopManager;
-import org.rpgwizard.editor.ui.AssetEditorWindow;
+import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 import org.rpgwizard.editor.ui.listeners.TileSetSelectionListener;
 import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.rpgwizard.editor.utilities.FileTools;
@@ -95,7 +95,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
 	private static final MainWindow INSTANCE = new MainWindow();
 
 	private final JDesktopPane desktopPane;
-	private final Map<File, AssetEditorWindow> editorMap;
+	private final Map<File, AbstractAssetEditorWindow> editorMap;
 
 	private final MainMenuBar menuBar;
 	private final MainToolBar toolBar;
@@ -281,12 +281,12 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
 		this.pluginManager = pluginManager;
 	}
 
-	public Collection<AssetEditorWindow> getOpenEditors() {
+	public Collection<AbstractAssetEditorWindow> getOpenEditors() {
 		return editorMap.values();
 	}
 
 	public void updateEditorMap(File previous, File current,
-			AssetEditorWindow editor) {
+			AbstractAssetEditorWindow editor) {
 		if (current == null) {
 			return;
 		}
@@ -305,9 +305,8 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
 
 		// Because the collection is invalidated on frame close.
 		int size = editorMap.size();
-		AssetEditorWindow[] windows;
-		windows = (AssetEditorWindow[]) editorMap.values().toArray(
-				new AssetEditorWindow[size]);
+		AbstractAssetEditorWindow[] windows;
+		windows = (AbstractAssetEditorWindow[]) editorMap.values().toArray(new AbstractAssetEditorWindow[size]);
 		for (int i = 0; i < size; i++) {
 			try {
 				windows[i].setClosed(true);
@@ -322,7 +321,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
 		LOGGER.debug("Opened internal frame e=[{}].", e.getInternalFrame()
 				.getClass());
 
-		AssetEditorWindow window = (AssetEditorWindow) e.getInternalFrame();
+		AbstractAssetEditorWindow window = (AbstractAssetEditorWindow) e.getInternalFrame();
 		if (window instanceof AnimationEditor) {
 			AnimationEditor editor = (AnimationEditor) window;
 			propertiesPanel.setModel(editor.getAnimation());
@@ -342,8 +341,8 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
 		LOGGER.debug("Closing internal frame e=[{}].", e.getInternalFrame()
 				.getClass());
 
-		AssetEditorWindow window = (AssetEditorWindow) e.getInternalFrame();
-		if (window.doesNeedSave()) {
+		AbstractAssetEditorWindow window = (AbstractAssetEditorWindow) e.getInternalFrame();
+		if (window.needsSave()) {
 			String title = getTitle();
 			String message = "Do you want to save changes to "
 					+ window.getTitle() + "?";
@@ -378,7 +377,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
 		LOGGER.debug("Closed internal frame e=[{}].", e.getInternalFrame()
 				.getClass());
 
-		AssetEditorWindow window = (AssetEditorWindow) e.getInternalFrame();
+		AbstractAssetEditorWindow window = (AbstractAssetEditorWindow) e.getInternalFrame();
 		if (window.getAsset().getFile() != null) {
 			editorMap.remove(window.getAsset().getFile());
 		}
@@ -401,7 +400,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
 		LOGGER.debug("Activated internal frame e=[{}].", e.getInternalFrame()
 				.getClass());
 
-		AssetEditorWindow window = (AssetEditorWindow) e.getInternalFrame();
+		AbstractAssetEditorWindow window = (AbstractAssetEditorWindow) e.getInternalFrame();
 		updateEditorMap(null, window.getAsset().getFile(), window);
 		if (window instanceof AnimationEditor) {
 			AnimationEditor editor = (AnimationEditor) window;
@@ -480,7 +479,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
 	 *
 	 * @param editor
 	 */
-	public void addToolkitEditorWindow(AssetEditorWindow editor) {
+	public void addToolkitEditorWindow(AbstractAssetEditorWindow editor) {
 		editor.addInternalFrameListener(this);
 		editor.setVisible(true);
 		editor.toFront();
@@ -954,12 +953,12 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
 		toolBar.toggleButtonStates(true);
 	}
 
-	private void selectToolkitWindow(AssetEditorWindow window) {
+	private void selectToolkitWindow(AbstractAssetEditorWindow window) {
 		try {
 			window.setSelected(true);
 		} catch (PropertyVetoException ex) {
 			LOGGER.error("Failed to select {} window=[{}].",
-					AssetEditorWindow.class.getSimpleName(), window, ex);
+					AbstractAssetEditorWindow.class.getSimpleName(), window, ex);
 		}
 	}
 

@@ -17,7 +17,7 @@ import java.awt.Shape;
 import org.rpgwizard.common.assets.BoardVector;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.editors.BoardEditor;
-import org.rpgwizard.editor.ui.AssetEditorWindow;
+import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 import org.rpgwizard.editor.utilities.GuiHelper;
 
 /**
@@ -230,12 +230,12 @@ public class BoardVectorBrush extends AbstractBrush {
 	}
 
 	@Override
-	public void doMouseButton1Pressed(Point point, AssetEditorWindow editor) {
+	public void doMouseButton1Pressed(Point point, AbstractAssetEditorWindow editor) {
 
 	}
 
 	@Override
-	public void doMouseButton2Pressed(Point point, AssetEditorWindow editor) {
+	public void doMouseButton2Pressed(Point point, AbstractAssetEditorWindow editor) {
 
 		if (editor instanceof BoardEditor) {
 			BoardEditor boardEditor = (BoardEditor) editor;
@@ -257,7 +257,7 @@ public class BoardVectorBrush extends AbstractBrush {
 	}
 
 	@Override
-	public void doMouseButton3Pressed(Point point, AssetEditorWindow editor) {
+	public void doMouseButton3Pressed(Point point, AbstractAssetEditorWindow editor) {
 
 		if (editor instanceof BoardEditor) {
 			BoardEditor boardEditor = (BoardEditor) editor;
@@ -278,7 +278,7 @@ public class BoardVectorBrush extends AbstractBrush {
 
 	@Override
 	public void doMouseButton1Dragged(Point point, Point origin,
-			AssetEditorWindow editor) {
+			AbstractAssetEditorWindow editor) {
 
 	}
 

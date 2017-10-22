@@ -18,18 +18,28 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class AssetEditorWindow extends JInternalFrame {
+public abstract class AbstractAssetEditorWindow extends JInternalFrame {
 
 	private static final Logger LOGGER = LoggerFactory
-			.getLogger(AssetEditorWindow.class);
+			.getLogger(AbstractAssetEditorWindow.class);
 
 	protected boolean needSave;
 
-	public AssetEditorWindow() {
+	public AbstractAssetEditorWindow() {
 
 	}
+        
+        public AbstractAssetEditorWindow(String title, boolean resizeable,
+			boolean closeable, boolean maximizable, boolean iconifiable,
+			ImageIcon icon) {
+		super(title, resizeable, closeable, maximizable, iconifiable);
+		setDefaultCloseOperation(JInternalFrame.DO_NOTHING_ON_CLOSE);
+		setFrameIcon(icon);
+	}
+        
+        public abstract AbstractAsset getAsset();
 
-	public boolean doesNeedSave() {
+	public boolean needsSave() {
 		return needSave;
 	}
 
@@ -41,17 +51,7 @@ public abstract class AssetEditorWindow extends JInternalFrame {
 		this.needSave = needSave;
 		setTitle(getTitle() + "*");
 	}
-
-	public abstract AbstractAsset getAsset();
-
-	public AssetEditorWindow(String title, boolean resizeable,
-			boolean closeable, boolean maximizable, boolean iconifiable,
-			ImageIcon icon) {
-		super(title, resizeable, closeable, maximizable, iconifiable);
-		setDefaultCloseOperation(JInternalFrame.DO_NOTHING_ON_CLOSE);
-		setFrameIcon(icon);
-	}
-
+	
 	public abstract void save() throws Exception;
 
 	protected void save(AbstractAsset asset) throws Exception {

@@ -24,7 +24,7 @@ import org.fife.rsta.ac.js.JavaScriptLanguageSupport;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.Program;
-import org.rpgwizard.editor.ui.AssetEditorWindow;
+import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 import org.rpgwizard.editor.ui.resources.Icons;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Joshua Michael Daly
  */
-public class ProgramEditor extends AssetEditorWindow {
+public class ProgramEditor extends AbstractAssetEditorWindow {
 
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(ProgramEditor.class);

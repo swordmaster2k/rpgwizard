@@ -25,7 +25,7 @@ import org.rpgwizard.common.assets.listeners.AnimationChangeListener;
 import org.rpgwizard.editor.editors.animation.AddSpriteSheetButton;
 import org.rpgwizard.editor.editors.animation.SpriteSheetImage;
 import org.rpgwizard.editor.ui.AnimatedPanel;
-import org.rpgwizard.editor.ui.AssetEditorWindow;
+import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 import org.rpgwizard.editor.ui.resources.Icons;
 
 /**
@@ -33,7 +33,7 @@ import org.rpgwizard.editor.ui.resources.Icons;
  * @author Geoff Wilson
  * @author Joshua Michael Daly
  */
-public class AnimationEditor extends AssetEditorWindow
+public class AnimationEditor extends AbstractAssetEditorWindow
 		implements
 			AnimationChangeListener {
 

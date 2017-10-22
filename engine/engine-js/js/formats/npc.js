@@ -57,6 +57,10 @@ NPC.prototype.checkCollisions = function (collision, entity) {
     if (rpgwizard.debugEnabled) {
         console.debug("Checking collisions for NPC name=[%s]", this.name);
     }
+    
+    if (!this.onSameLayer(collision)) {
+        return;
+    }
 
     var object = collision.obj;
     switch (object.vectorType) {

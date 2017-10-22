@@ -60,6 +60,13 @@ Sprite.prototype.DirectionEnum = {
     DIE: "DIE"
 };
 
+Sprite.prototype.StandardKeys = [
+    "SOUTH", "NORTH", "EAST", "WEST", "NORTH_EAST", "NORTH_WEST",
+    "SOUTH_EAST", "SOUTH_WEST", "ATTACK", "DEFEND", "SPECIAL_MOVE", "DIE",
+    "REST", "SOUTH_IDLE", "NORTH_IDLE", "EAST_IDLE", "WEST_IDLE",
+    "NORTH_EAST_IDLE", "NORTH_WEST_IDLE", "SOUTH_EAST_IDLE", "SOUTH_WEST_IDLE"
+];
+
 Sprite.prototype.calculateCollisionPoints = function () {
     // Build the collision polygon.
     var xOffset = this.baseVectorOffset.x;
@@ -102,10 +109,7 @@ Sprite.prototype.loadAnimations = function () {
     }
 
     // Load up the standard animations.
-    var standardKeys = ["SOUTH", "NORTH", "EAST", "WEST", "NORTH_EAST", "NORTH_WEST",
-        "SOUTH_EAST", "SOUTH_WEST", "ATTACK", "DEFEND", "SPECIAL_MOVE", "DIE",
-        "REST", "SOUTH_IDLE", "NORTH_IDLE", "EAST_IDLE", "WEST_IDLE",
-        "NORTH_EAST_IDLE", "NORTH_WEST_IDLE", "SOUTH_EAST_IDLE", "SOUTH_WEST_IDLE"];
+    var standardKeys = this.StandardKeys;
 
     this.spriteGraphics.south = this._loadAnimation(this.animations[standardKeys[0]]);
     this.spriteGraphics.north = this._loadAnimation(this.animations[standardKeys[1]]);
@@ -360,17 +364,26 @@ Sprite.prototype.getActiveFrame = function () {
     return spriteSheet.frames[index];
 };
 
+Sprite.prototype.onSameLayer = function (collision) {
+    if (collision.obj.layer !== undefined && collision.obj.layer !== null) {
+        return collision.obj.layer === this.layer;
+    } else if (collision.obj.sprite !== undefined && collision.obj.sprite !== null) {
+        return collision.obj.sprite.layer === this.layer;
+    } else if (collision.obj.character !== undefined && collision.obj.character !== null) {
+        return collision.obj.character.layer === this.layer;
+    }
+    return false;
+};
+
 Sprite.prototype.checkCollisions = function (collision, entity) {
     if (rpgwizard.debugEnabled) {
         console.debug("Checking collisions for Sprite name=[%s]", this.name);
     }
-
-    var object = collision.obj;
-
-    if (object.layer !== this.layer) {
+    if (!this.onSameLayer(collision)) {
         return;
     }
-
+    
+    var object = collision.obj;
     switch (object.vectorType) {
         case "CHARACTER":
         case "ENEMY":
@@ -390,14 +403,11 @@ Sprite.prototype.checkActivations = function (collision, entity) {
     if (rpgwizard.debugEnabled) {
         console.debug("Checking activations for Sprite name=[%s]", this.name);
     }
-
-    var layer = this.layer;
-    var object = collision.obj;
-
-    if (object.layer !== layer) {
+    if (!this.onSameLayer(collision)) {
         return;
     }
 
+    var object = collision.obj;
     var events = object.events;
     events.forEach(function (event) {
         if (event.program) {

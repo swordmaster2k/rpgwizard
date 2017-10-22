@@ -11,7 +11,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import org.rpgwizard.common.assets.Tile;
 import org.rpgwizard.editor.editors.BoardEditor;
-import org.rpgwizard.editor.ui.AssetEditorWindow;
+import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 
 /**
  *
@@ -46,7 +46,7 @@ public class SelectionBrush extends CustomBrush {
 	}
 
 	@Override
-	public void doMouseButton1Pressed(Point point, AssetEditorWindow editor) {
+	public void doMouseButton1Pressed(Point point, AbstractAssetEditorWindow editor) {
 		if (editor instanceof BoardEditor) {
 			BoardEditor boardEditor = (BoardEditor) editor;
 
@@ -57,18 +57,18 @@ public class SelectionBrush extends CustomBrush {
 	}
 
 	@Override
-	public void doMouseButton2Pressed(Point point, AssetEditorWindow editor) {
+	public void doMouseButton2Pressed(Point point, AbstractAssetEditorWindow editor) {
 		// No implementation.
 	}
 
 	@Override
-	public void doMouseButton3Pressed(Point point, AssetEditorWindow editor) {
+	public void doMouseButton3Pressed(Point point, AbstractAssetEditorWindow editor) {
 		// No implementation.
 	}
 
 	@Override
 	public void doMouseButton1Dragged(Point point, Point origin,
-			AssetEditorWindow editor) {
+			AbstractAssetEditorWindow editor) {
 		if (editor instanceof BoardEditor) {
 			BoardEditor boardEditor = (BoardEditor) editor;
 

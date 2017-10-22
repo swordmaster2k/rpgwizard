@@ -14,7 +14,7 @@ import java.awt.Shape;
 import java.util.Stack;
 import org.rpgwizard.common.assets.Tile;
 import org.rpgwizard.editor.editors.BoardEditor;
-import org.rpgwizard.editor.ui.AssetEditorWindow;
+import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 
 /**
  *
@@ -178,25 +178,25 @@ public class BucketBrush extends AbstractBrush {
         }
     }
 	@Override
-	public void doMouseButton1Pressed(Point point, AssetEditorWindow editor) {
+	public void doMouseButton1Pressed(Point point, AbstractAssetEditorWindow editor) {
 		if (editor instanceof BoardEditor) {
 			BoardEditor boardEditor = (BoardEditor) editor;
 		}
 	}
 
 	@Override
-	public void doMouseButton2Pressed(Point point, AssetEditorWindow editor) {
+	public void doMouseButton2Pressed(Point point, AbstractAssetEditorWindow editor) {
 
 	}
 
 	@Override
-	public void doMouseButton3Pressed(Point point, AssetEditorWindow editor) {
+	public void doMouseButton3Pressed(Point point, AbstractAssetEditorWindow editor) {
 
 	}
 
 	@Override
 	public void doMouseButton1Dragged(Point point, Point origin,
-			AssetEditorWindow editor) {
+			AbstractAssetEditorWindow editor) {
 
 	}
 

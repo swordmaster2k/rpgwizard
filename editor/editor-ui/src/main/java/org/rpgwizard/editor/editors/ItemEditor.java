@@ -28,7 +28,7 @@ import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.Item;
 import static org.rpgwizard.editor.editors.sprite.AbstractSpriteEditor.DEFAULT_INPUT_COLUMNS;
 import org.rpgwizard.editor.ui.ImagePanel;
-import org.rpgwizard.editor.ui.AssetEditorWindow;
+import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 import org.rpgwizard.editor.ui.DoubleField;
 import org.rpgwizard.editor.ui.IntegerField;
 import org.rpgwizard.editor.ui.listeners.ImagePanelChangeListener;
@@ -41,7 +41,7 @@ import org.rpgwizard.editor.utilities.GuiHelper;
  *
  * @author Joshua Michael Daly
  */
-public class ItemEditor extends AssetEditorWindow {
+public class ItemEditor extends AbstractAssetEditorWindow {
 
 	private final int DESCRIPTION_INPUT_COLUMNS = 30;
 	private final int DESCRIPTION_INPUT_ROWS = 5;

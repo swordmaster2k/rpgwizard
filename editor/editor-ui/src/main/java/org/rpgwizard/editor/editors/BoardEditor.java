@@ -25,7 +25,7 @@ import org.rpgwizard.common.assets.TileSet;
 import org.rpgwizard.common.assets.events.BoardChangedEvent;
 import org.rpgwizard.common.assets.listeners.BoardChangeListener;
 import org.rpgwizard.editor.MainWindow;
-import org.rpgwizard.editor.ui.AssetEditorWindow;
+import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 import org.rpgwizard.editor.ui.resources.Icons;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
  * @author Geoff Wilson
  * @author Joshua Michael Daly
  */
-public class BoardEditor extends AssetEditorWindow
+public class BoardEditor extends AbstractAssetEditorWindow
 		implements
 			BoardChangeListener {
 

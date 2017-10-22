@@ -32,7 +32,7 @@ import org.rpgwizard.common.assets.Board;
 import org.rpgwizard.common.assets.Character;
 import org.rpgwizard.common.assets.Program;
 import org.rpgwizard.common.assets.Project;
-import org.rpgwizard.editor.ui.AssetEditorWindow;
+import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 import org.rpgwizard.editor.ui.resources.Icons;
 import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.rpgwizard.editor.utilities.GuiHelper;
@@ -43,7 +43,7 @@ import org.rpgwizard.editor.utilities.GuiHelper;
  * @author Geoff Wilson
  * @author Joshua Michael Daly
  */
-public class ProjectEditor extends AssetEditorWindow
+public class ProjectEditor extends AbstractAssetEditorWindow
 		implements
 			InternalFrameListener {
 

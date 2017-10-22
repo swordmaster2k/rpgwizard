@@ -61,12 +61,11 @@ Character.prototype.processCollision = function (collision, entity) {
     if (rpgwizard.debugEnabled) {
         console.debug("Processing collision for Character name=[%s]", this.name);
     }
-
-    var object = collision.obj;
-    if (object.layer !== this.layer) {
+    if (!this.onSameLayer(collision)) {
         return;
     }
 
+    var object = collision.obj;
     switch (object.vectorType) {
         case "NPC":
         case "SOLID":
@@ -85,19 +84,15 @@ Character.prototype.processActivation = function (collision, entity, entering) {
     if (rpgwizard.debugEnabled) {
         console.debug("Processing activation for Character name=[%s]", this.name);
     }
-
-    var layer = this.layer;
-    var object = collision.obj;
+    if (!this.onSameLayer(collision)) {
+        return;
+    }
+    
     var events;
+    var object = collision.obj;
     if (object.layer !== undefined && object.layer !== null) {
-        if (object.layer !== layer) {
-            return;
-        }
         events = object.events;
     } else {
-        if (object.sprite.layer !== layer) {
-            return;
-        }
         events = object.sprite.events;
     }
     

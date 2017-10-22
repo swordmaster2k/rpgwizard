@@ -54,14 +54,14 @@ import org.rpgwizard.editor.ui.DoubleField;
 import org.rpgwizard.editor.utilities.GuiHelper;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.utilities.EditorFileManager;
-import org.rpgwizard.editor.ui.AssetEditorWindow;
+import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 import org.rpgwizard.editor.ui.resources.Icons;
 
 /**
  *
  * @author Joshua Michael Daly
  */
-public abstract class AbstractSpriteEditor extends AssetEditorWindow
+public abstract class AbstractSpriteEditor extends AbstractAssetEditorWindow
 		implements
 			InternalFrameListener,
 			SpriteChangeListener {

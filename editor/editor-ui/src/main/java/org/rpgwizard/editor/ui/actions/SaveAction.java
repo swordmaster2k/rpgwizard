@@ -12,7 +12,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import org.rpgwizard.editor.MainWindow;
-import org.rpgwizard.editor.ui.AssetEditorWindow;
+import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,9 +32,9 @@ public class SaveAction extends AbstractAction {
 		JInternalFrame frame = w.getDesktopPane().getSelectedFrame();
 
 		if (frame != null) {
-			if (frame instanceof AssetEditorWindow) {
+			if (frame instanceof AbstractAssetEditorWindow) {
 				try {
-					AssetEditorWindow window = (AssetEditorWindow) frame;
+					AbstractAssetEditorWindow window = (AbstractAssetEditorWindow) frame;
 					window.save();
 				} catch (Exception ex) {
 					LOGGER.error("Failed to invoke save for asset frame=[{}]",

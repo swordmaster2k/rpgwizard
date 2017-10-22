@@ -43,7 +43,7 @@ public class EditorFactory {
 	 * @param asset
 	 * @return editor for asset
 	 */
-	public static AssetEditorWindow getEditor(Asset asset) {
+	public static AbstractAssetEditorWindow getEditor(Asset asset) {
 		if (asset instanceof Animation) {
 			return new AnimationEditor((Animation) asset);
 		} else if (asset instanceof Board) {

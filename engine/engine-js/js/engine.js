@@ -462,7 +462,6 @@ RPGWizard.prototype.switchBoard = function (boardName, tileX, tileY, layer) {
         console.debug("Switching board to boardName=[%s], tileX=[%d], tileY=[%d], layer=[%d]",
                 boardName, tileX, tileY);
     }
-
     this.controlEnabled = false;
 
     Crafty("SOLID").destroy();

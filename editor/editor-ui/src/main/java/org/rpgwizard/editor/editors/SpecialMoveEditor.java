@@ -32,7 +32,7 @@ import org.rpgwizard.common.assets.SpecialMove;
 import org.rpgwizard.common.assets.StatusEffect;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.utilities.EditorFileManager;
-import org.rpgwizard.editor.ui.AssetEditorWindow;
+import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 import org.rpgwizard.editor.utilities.GuiHelper;
 import org.rpgwizard.editor.ui.IntegerField;
 import org.rpgwizard.editor.ui.resources.Icons;
@@ -44,7 +44,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Joel Moore
  */
-public class SpecialMoveEditor extends AssetEditorWindow
+public class SpecialMoveEditor extends AbstractAssetEditorWindow
 		implements
 			InternalFrameListener {
 

@@ -12,7 +12,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import org.rpgwizard.editor.MainWindow;
-import org.rpgwizard.editor.ui.AssetEditorWindow;
+import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,8 +29,8 @@ public class SaveAllAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		MainWindow w = MainWindow.getInstance();
-		for (AssetEditorWindow editor : w.getOpenEditors()) {
-			if (editor.doesNeedSave()) {
+		for (AbstractAssetEditorWindow editor : w.getOpenEditors()) {
+			if (editor.needsSave()) {
 				try {
 					editor.save();
 				} catch (Exception ex) {

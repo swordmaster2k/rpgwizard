@@ -59,12 +59,11 @@ Enemy.prototype.checkCollisions = function (collision, entity) {
         console.debug("Checking collisions for Enemy name=[%s]", this.name);
     }
 
-    var object = collision.obj;
-
-    if (object.layer !== this.layer) {
+    if (!this.onSameLayer(collision)) {
         return;
     }
-
+    
+    var object = collision.obj;
     switch (object.vectorType) {
         case "NPC":
         case "SOLID":

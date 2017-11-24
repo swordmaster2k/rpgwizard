@@ -63,17 +63,20 @@ public class StartPositionBrush extends AbstractBrush {
 	}
 
 	@Override
-	public void doMouseButton1Pressed(Point point, AbstractAssetEditorWindow editor) {
+	public void doMouseButton1Pressed(Point point,
+			AbstractAssetEditorWindow editor) {
 
 	}
 
 	@Override
-	public void doMouseButton2Pressed(Point point, AbstractAssetEditorWindow editor) {
+	public void doMouseButton2Pressed(Point point,
+			AbstractAssetEditorWindow editor) {
 
 	}
 
 	@Override
-	public void doMouseButton3Pressed(Point point, AbstractAssetEditorWindow editor) {
+	public void doMouseButton3Pressed(Point point,
+			AbstractAssetEditorWindow editor) {
 
 	}
 

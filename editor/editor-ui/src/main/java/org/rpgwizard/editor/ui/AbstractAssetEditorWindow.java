@@ -28,16 +28,16 @@ public abstract class AbstractAssetEditorWindow extends JInternalFrame {
 	public AbstractAssetEditorWindow() {
 
 	}
-        
-        public AbstractAssetEditorWindow(String title, boolean resizeable,
+
+	public AbstractAssetEditorWindow(String title, boolean resizeable,
 			boolean closeable, boolean maximizable, boolean iconifiable,
 			ImageIcon icon) {
 		super(title, resizeable, closeable, maximizable, iconifiable);
 		setDefaultCloseOperation(JInternalFrame.DO_NOTHING_ON_CLOSE);
 		setFrameIcon(icon);
 	}
-        
-        public abstract AbstractAsset getAsset();
+
+	public abstract AbstractAsset getAsset();
 
 	public boolean needsSave() {
 		return needSave;
@@ -51,7 +51,7 @@ public abstract class AbstractAssetEditorWindow extends JInternalFrame {
 		this.needSave = needSave;
 		setTitle(getTitle() + "*");
 	}
-	
+
 	public abstract void save() throws Exception;
 
 	protected void save(AbstractAsset asset) throws Exception {

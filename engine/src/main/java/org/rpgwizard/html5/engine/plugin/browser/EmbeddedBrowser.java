@@ -116,7 +116,7 @@ public final class EmbeddedBrowser extends JFrame {
 		browserUI.setPreferredSize(new Dimension(width, height));
 
 		getContentPane().add(browserUI, BorderLayout.CENTER);
-                setResizable(false);
+		setResizable(false);
 		setTitle(title);
 		validate();
 		pack();

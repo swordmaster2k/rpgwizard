@@ -82,7 +82,7 @@ public class BoardPanel extends AbstractModelPanel {
 				+ File.separator
 				+ CoreProperties.getProperty("toolkit.directory.sounds")
 				+ File.separator);
-		String[] exts = new String[]{"wav", "mp3"};
+		String[] exts = new String[]{"wav", "mp3", "ogg"};
 		musicFileComboBox = GuiHelper.getFileListJComboBox(
 				new File[]{directory}, exts, true);
 		musicFileComboBox.setSelectedItem(board.getBackgroundMusic());

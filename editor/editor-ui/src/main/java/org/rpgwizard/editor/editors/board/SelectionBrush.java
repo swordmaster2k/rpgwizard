@@ -46,7 +46,8 @@ public class SelectionBrush extends CustomBrush {
 	}
 
 	@Override
-	public void doMouseButton1Pressed(Point point, AbstractAssetEditorWindow editor) {
+	public void doMouseButton1Pressed(Point point,
+			AbstractAssetEditorWindow editor) {
 		if (editor instanceof BoardEditor) {
 			BoardEditor boardEditor = (BoardEditor) editor;
 
@@ -57,12 +58,14 @@ public class SelectionBrush extends CustomBrush {
 	}
 
 	@Override
-	public void doMouseButton2Pressed(Point point, AbstractAssetEditorWindow editor) {
+	public void doMouseButton2Pressed(Point point,
+			AbstractAssetEditorWindow editor) {
 		// No implementation.
 	}
 
 	@Override
-	public void doMouseButton3Pressed(Point point, AbstractAssetEditorWindow editor) {
+	public void doMouseButton3Pressed(Point point,
+			AbstractAssetEditorWindow editor) {
 		// No implementation.
 	}
 

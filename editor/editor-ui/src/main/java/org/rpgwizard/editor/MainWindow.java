@@ -306,7 +306,8 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
 		// Because the collection is invalidated on frame close.
 		int size = editorMap.size();
 		AbstractAssetEditorWindow[] windows;
-		windows = (AbstractAssetEditorWindow[]) editorMap.values().toArray(new AbstractAssetEditorWindow[size]);
+		windows = (AbstractAssetEditorWindow[]) editorMap.values().toArray(
+				new AbstractAssetEditorWindow[size]);
 		for (int i = 0; i < size; i++) {
 			try {
 				windows[i].setClosed(true);
@@ -321,7 +322,8 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
 		LOGGER.debug("Opened internal frame e=[{}].", e.getInternalFrame()
 				.getClass());
 
-		AbstractAssetEditorWindow window = (AbstractAssetEditorWindow) e.getInternalFrame();
+		AbstractAssetEditorWindow window = (AbstractAssetEditorWindow) e
+				.getInternalFrame();
 		if (window instanceof AnimationEditor) {
 			AnimationEditor editor = (AnimationEditor) window;
 			propertiesPanel.setModel(editor.getAnimation());
@@ -341,7 +343,8 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
 		LOGGER.debug("Closing internal frame e=[{}].", e.getInternalFrame()
 				.getClass());
 
-		AbstractAssetEditorWindow window = (AbstractAssetEditorWindow) e.getInternalFrame();
+		AbstractAssetEditorWindow window = (AbstractAssetEditorWindow) e
+				.getInternalFrame();
 		if (window.needsSave()) {
 			String title = getTitle();
 			String message = "Do you want to save changes to "
@@ -377,7 +380,8 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
 		LOGGER.debug("Closed internal frame e=[{}].", e.getInternalFrame()
 				.getClass());
 
-		AbstractAssetEditorWindow window = (AbstractAssetEditorWindow) e.getInternalFrame();
+		AbstractAssetEditorWindow window = (AbstractAssetEditorWindow) e
+				.getInternalFrame();
 		if (window.getAsset().getFile() != null) {
 			editorMap.remove(window.getAsset().getFile());
 		}
@@ -400,7 +404,8 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
 		LOGGER.debug("Activated internal frame e=[{}].", e.getInternalFrame()
 				.getClass());
 
-		AbstractAssetEditorWindow window = (AbstractAssetEditorWindow) e.getInternalFrame();
+		AbstractAssetEditorWindow window = (AbstractAssetEditorWindow) e
+				.getInternalFrame();
 		updateEditorMap(null, window.getAsset().getFile(), window);
 		if (window instanceof AnimationEditor) {
 			AnimationEditor editor = (AnimationEditor) window;

@@ -1178,10 +1178,12 @@ RPGcode.prototype.log = function (message) {
  * 
  * @param {String} file Relative path to the sound file to play.
  * @param {Boolean} loop Should it loop indefinitely?
+ * @param {Number} volume (Optional) Value ranging from 1.0 to 0.0, default is 1.0 (i.e. 100%).
+ * @returns {Object} A HTML5 audio element representing the playing sound.
  */
-RPGcode.prototype.playSound = function (file, loop) {
+RPGcode.prototype.playSound = function (file, loop, volume=1.0) {
     var count = loop ? -1 : 1;
-    Crafty.audio.play(file, count);
+    return Crafty.audio.play(file, count, volume);
 };
 
 /**

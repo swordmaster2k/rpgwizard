@@ -212,7 +212,9 @@ RPGcode.prototype.animateCharacter = function (characterId, animationId, callbac
 };
 
 /**
- * TODO
+ * Changes a characters visible graphics at runtime by swapping the values stored
+ * in the left-hand slots with those on the right. These keys can be reversed
+ * to restore the previous values.
  * 
  * @example
  * var changes = {
@@ -225,10 +227,23 @@ RPGcode.prototype.animateCharacter = function (characterId, animationId, callbac
  *  "SOUTH_EAST": "BOAT_SOUTH_EAST",
  *  "SOUTH_WEST": "BOAT_SOUTH_WEST"
  * };
- * changeCharacterGraphics("Hero", changes);
+ * rpgcode.changeCharacterGraphics("Hero", changes);
  * 
- * @param {type} characterId
- * @param {type} swaps
+ * // To restore the defaults all we need to do is swap them around again.
+ * var changes = {
+ *  "BOAT_NORTH": "NORTH",
+ *  "BOAT_SOUTH": "SOUTH",
+ *  "BOAT_EAST": "EAST",
+ *  "BOAT_WEST": "WEST",
+ *  "BOAT_NORTH_EAST": "NORTH_EAST",
+ *  "BOAT_NORTH_WEST": "NORTH_WEST",
+ *  "BOAT_SOUTH_EAST": "SOUTH_EAST",
+ *  "BOAT_SOUTH_WEST": "SOUTH_WEST"
+ * };
+ * rpgcode.changeCharacterGraphics("Hero", changes);
+ * 
+ * @param {String} characterId The label associated with the character. 
+ * @param {Object} swaps An object containing the graphics to swap.
  * @returns {undefined}
  */
 RPGcode.prototype.changeCharacterGraphics = function (characterId, swaps) {
@@ -277,6 +292,21 @@ RPGcode.prototype.changeCharacterGraphics = function (characterId, swaps) {
                     case "SOUTH_WEST":
                         swap = character.spriteGraphics.southWest;
                         character.spriteGraphics.southWest = character.spriteGraphics.custom[customKey];
+                        character.spriteGraphics.custom[customKey] = swap;
+                        break;
+                    case "ATTACK":
+                        swap = character.spriteGraphics.attack;
+                        character.spriteGraphics.attack = character.spriteGraphics.custom[customKey];
+                        character.spriteGraphics.custom[customKey] = swap;
+                        break;
+                    case "DEFEND":
+                        swap = character.spriteGraphics.defend;
+                        character.spriteGraphics.defend = character.spriteGraphics.custom[customKey];
+                        character.spriteGraphics.custom[customKey] = swap;
+                        break;
+                    case "DIE":
+                        swap = character.spriteGraphics.die;
+                        character.spriteGraphics.die = character.spriteGraphics.custom[customKey];
                         character.spriteGraphics.custom[customKey] = swap;
                         break;
                 }
@@ -1181,7 +1211,7 @@ RPGcode.prototype.log = function (message) {
  * @param {Number} volume (Optional) Value ranging from 1.0 to 0.0, default is 1.0 (i.e. 100%).
  * @returns {Object} A HTML5 audio element representing the playing sound.
  */
-RPGcode.prototype.playSound = function (file, loop, volume=1.0) {
+RPGcode.prototype.playSound = function (file, loop, volume = 1.0) {
     var count = loop ? -1 : 1;
     return Crafty.audio.play(file, count, volume);
 };

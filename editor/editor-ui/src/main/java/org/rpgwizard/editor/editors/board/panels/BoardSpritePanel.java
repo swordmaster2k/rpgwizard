@@ -215,6 +215,7 @@ public class BoardSpritePanel extends BoardModelPanel {
         /// typeComboBox
         ///
         eventComboBox = new JComboBox(EVENT_TYPES);
+        eventComboBox.setSelectedItem(boardSprite.getEventType().toString());
         eventComboBox.addActionListener(new ActionListener() {
             
             @Override

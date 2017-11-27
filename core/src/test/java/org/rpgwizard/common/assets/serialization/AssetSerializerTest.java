@@ -140,6 +140,7 @@ public class AssetSerializerTest {
 
     private void checkBoard(Board asset) {
         Assert.assertEquals("Room", asset.getName());
+        Assert.assertEquals("An empty room.", asset.getDescription());
         Assert.assertEquals(3, asset.getWidth());
         Assert.assertEquals(3, asset.getHeight());
         Assert.assertEquals(32, asset.getTileWidth());

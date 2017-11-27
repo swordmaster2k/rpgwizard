@@ -656,6 +656,20 @@ RPGcode.prototype.fireRaycast = function (origin, direction, maxDistance) {
 };
 
 /**
+ * Gets the current board, useful for accessing certain properties e.g.
+ * name, description etc.
+ * 
+ * @example
+ * var board = rpgcode.getBoard();
+ * rpgcode.log(board);
+ * 
+ * @returns {String} Name of the current board.
+ */
+RPGcode.prototype.getBoard = function () {
+    return rpgwizard.craftyBoard.board;
+};
+
+/**
  * Gets the current board's name and returns it.
  * 
  * @example

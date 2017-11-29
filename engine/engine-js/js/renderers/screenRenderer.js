@@ -163,7 +163,7 @@ ScreenRenderer.prototype.sortSprites = function (layer, player) {
         var entity = board.sprites[key];
         var sprite = entity.sprite;
         var asset = sprite.enemy !== undefined ? sprite.enemy : sprite.npc;
-        if (layer === sprite.layer && asset.renderReady) {
+        if (layer === entity.layer && asset.renderReady) {
             asset.x = entity.x;
             asset.y = entity.y;
             asset.layer = entity.layer;

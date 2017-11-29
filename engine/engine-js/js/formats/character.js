@@ -62,6 +62,7 @@ Character.prototype.processCollision = function (collision, entity) {
         console.debug("Processing collision for Character name=[%s]", this.name);
     }
     if (!this.onSameLayer(collision)) {
+        entity.resetHitChecks();
         return;
     }
 

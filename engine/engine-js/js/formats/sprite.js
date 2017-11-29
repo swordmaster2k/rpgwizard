@@ -380,6 +380,7 @@ Sprite.prototype.checkCollisions = function (collision, entity) {
         console.debug("Checking collisions for Sprite name=[%s]", this.name);
     }
     if (!this.onSameLayer(collision)) {
+        entity.resetHitChecks();
         return;
     }
     

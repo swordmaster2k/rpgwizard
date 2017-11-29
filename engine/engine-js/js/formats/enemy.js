@@ -60,6 +60,7 @@ Enemy.prototype.checkCollisions = function (collision, entity) {
     }
 
     if (!this.onSameLayer(collision)) {
+        entity.resetHitChecks();
         return;
     }
     

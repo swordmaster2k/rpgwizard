@@ -630,25 +630,32 @@ RPGcode.prototype.fillRect = function (x, y, width, height, canvasId) {
 RPGcode.prototype.fireRaycast = function (origin, direction, maxDistance) {
     var hits;
     var results = {characters: [], enemies: [], npcs: [], solids: []};
-
     direction = new Crafty.math.Vector2D(direction.x, direction.y).normalize();
     if (maxDistance) {
         hits = Crafty.raycast(origin, direction, maxDistance, "Raycastable");
     } else {
         hits = Crafty.raycast(origin, direction, -1, "Raycastable");
     }
-
+    var layerCheck = { obj: { layer: rpgwizard.craftyCharacter.character.layer } };
     hits.forEach(function (hit) {
         if (hit.obj.sprite) {
             if (hit.obj.sprite.npc) {
-                results.npcs.push(hit.obj.sprite);
+                if (hit.obj.sprite.npc.onSameLayer(layerCheck)) {
+                    results.npcs.push(hit.obj.sprite);
+                }
             } else if (hit.obj.sprite.enemy) {
-                results.enemies.push(hit.obj.sprite);
+                if (hit.obj.sprite.enemy.onSameLayer(layerCheck)) {
+                    results.enemies.push(hit.obj.sprite);
+                }
             }
         } else if (hit.obj.character) {
-            results.characters.push(hit.obj.character);
+            if (hit.obj.character.onSameLayer(layerCheck)) {
+                results.characters.push(hit.obj.character);
+            }
         } else if (hit.obj.vectorType === "SOLID") {
-            results.solids.push({"distance": hit.distance, "x": hit.x, "y": hit.y});
+            if (hit.obj.layer === layerCheck.obj.layer) {
+                results.solids.push({"distance": hit.distance, "x": hit.x, "y": hit.y});
+            }
         }
     });
 
@@ -890,13 +897,13 @@ RPGcode.prototype.getSpriteLocation = function (spriteId, inTiles, includeOffset
         return {
             x: x / rpgwizard.craftyBoard.board.tileWidth,
             y: y / rpgwizard.craftyBoard.board.tileHeight,
-            layer: entity.sprite.layer
+            layer: entity.layer
         };
     } else {
         return {
             x: x,
             y: y,
-            layer: entity.sprite.layer
+            layer: entity.layer
         };
     }
 };

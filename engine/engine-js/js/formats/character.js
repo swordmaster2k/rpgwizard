@@ -73,12 +73,13 @@ Character.prototype.processCollision = function (collision, entity) {
             entity.cancelTween({x: true, y: true});
             entity.x -= collision.overlap * collision.normal.x;
             entity.y -= collision.overlap * collision.normal.y;
-            entity.resetHitChecks();
             break;
         case "ENEMY":
         case "PASSABLE":
             break;
     }
+    
+    entity.resetHitChecks();
 };
 
 Character.prototype.processActivation = function (collision, entity, entering) {
@@ -115,4 +116,6 @@ Character.prototype.processActivation = function (collision, entity, entering) {
             }
         }
     });
+    
+    entity.activationVector.resetHitChecks();
 };

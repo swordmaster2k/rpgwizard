@@ -70,11 +70,12 @@ NPC.prototype.checkCollisions = function (collision, entity) {
             entity.cancelTween({x: true, y: true});
             entity.x += collision.normal.x;
             entity.y += collision.normal.y;
-            entity.resetHitChecks();
             break;
        case "ENEMY":
            break;
     }
+    
+    entity.resetHitChecks();
 };
 
 NPC.prototype.checkActivations = function (collisions, entity) {

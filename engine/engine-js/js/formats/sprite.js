@@ -376,43 +376,9 @@ Sprite.prototype.onSameLayer = function (collision) {
 };
 
 Sprite.prototype.checkCollisions = function (collision, entity) {
-    if (rpgwizard.debugEnabled) {
-        console.debug("Checking collisions for Sprite name=[%s]", this.name);
-    }
-    if (!this.onSameLayer(collision)) {
-        entity.resetHitChecks();
-        return;
-    }
-    
-    var object = collision.obj;
-    switch (object.vectorType) {
-        case "CHARACTER":
-        case "ENEMY":
-        case "NPC":
-        case "SOLID":
-            entity.cancelTween({x: true, y: true});
-            entity.x -= collision.overlap * collision.normal.x;
-            entity.y -= collision.overlap * collision.normal.y;
-            entity.resetHitChecks();
-            break;
-        case "PASSABLE":
-            break;
-    }
+    // Not used yet.
 };
 
 Sprite.prototype.checkActivations = function (collision, entity) {
-    if (rpgwizard.debugEnabled) {
-        console.debug("Checking activations for Sprite name=[%s]", this.name);
-    }
-    if (!this.onSameLayer(collision)) {
-        return;
-    }
-
-    var object = collision.obj;
-    var events = object.events;
-    events.forEach(function (event) {
-        if (event.program) {
-            rpgwizard.runProgram(PATH_PROGRAM.concat(event.program), object);
-        }
-    });
+    // Not used yet.
 };

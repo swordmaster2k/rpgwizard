@@ -71,13 +71,14 @@ Enemy.prototype.checkCollisions = function (collision, entity) {
             entity.cancelTween({x: true, y: true});
             entity.x -= collision.overlap * collision.normal.x;
             entity.y -= collision.overlap * collision.normal.y;
-            entity.resetHitChecks();
             break;
         case "CHARACTER":
         case "ENEMY":
         case "PASSABLE":
             break;
     }
+    
+    entity.resetHitChecks();
 };
 
 Enemy.prototype.checkActivations = function (collisions, entity) {

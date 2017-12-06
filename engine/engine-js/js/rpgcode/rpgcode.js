@@ -569,7 +569,7 @@ RPGcode.prototype.endProgram = function (nextProgram) {
  * // Create a canvas and draw a red rectangle on it.
  * var canvas = "myCanvas";
  * rpgcode.createCanvas(640, 480, canvas);
- * rpgcode.setColor(255, 0, 0, 0);
+ * rpgcode.setColor(255, 0, 0, 1.0);
  * rpgcode.fillRect(0, 0, 100, 100, canvas);
  * rpgcode.renderNow(canvas); 
  * 
@@ -1643,14 +1643,14 @@ RPGcode.prototype.removeGlobal = function (id) {
  * 
  * @example
  * // Draw a rectangle on the default canvas and render it.
- * rpgcode.setColor(255, 0, 0, 0);
+ * rpgcode.setColor(255, 0, 0, 1.0);
  * rpgcode.fillRect(0, 0, 100, 100);
  * rpgcode.renderNow();
  * 
  * // Create a canvas and draw a red rectangle on it.
  * var canvas = "myCanvas";
  * rpgcode.createCanvas(640, 480, canvas);
- * rpgcode.setColor(255, 0, 0, 0);
+ * rpgcode.setColor(255, 0, 0, 1.0);
  * rpgcode.fillRect(0, 0, 100, 100, canvas);
  * rpgcode.renderNow(canvas);  
  * 
@@ -1749,7 +1749,7 @@ RPGcode.prototype.runProgram = function (filename) {
  * // Create a canvas and draw a red rectangle on it.
  * var canvas = "myCanvas";
  * rpgcode.createCanvas(640, 480, canvas);
- * rpgcode.setColor(255, 0, 0, 0);
+ * rpgcode.setColor(255, 0, 0, 1.0);
  * rpgcode.fillRect(0, 0, 100, 100, canvas);
  * rpgcode.renderNow(canvas);
  * 
@@ -1837,7 +1837,7 @@ RPGcode.prototype.sendToBoard = function (boardName, tileX, tileY, layer) {
  * 
  * @example
  * // Set the color to red.
- * rpgcode.setColor(255, 0, 0, 0);
+ * rpgcode.setColor(255, 0, 0, 1.0);
  * 
  * @param {number} r
  * @param {number} g

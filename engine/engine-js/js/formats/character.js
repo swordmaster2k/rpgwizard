@@ -109,13 +109,12 @@ Character.prototype.processActivation = function (collision, entity, entering) {
                         callback: rpgwizard.keyboardHandler.downHandlers[event.key]
                     };
                     var callback = function() {
-                        rpgcode.runProgram(event.program, object);  
+                        rpgcode.unregisterKeyDown(event.key, true);
+                        rpgwizard.runProgram(PATH_PROGRAM.concat(event.program), object);  
                     };
                     rpgcode.registerKeyDown(event.key, callback, true);
                 }
             }
         }
     });
-    
-    entity.activationVector.resetHitChecks();
 };

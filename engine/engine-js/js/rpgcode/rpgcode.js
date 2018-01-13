@@ -1367,15 +1367,7 @@ RPGcode.prototype.moveSpriteTo = function (spriteId, x, y, duration, callback) {
         entity.trigger("TweenEnd", {});
         entity.cancelTween({x: true, y: true});
         entity.tweenEndCallbacks.push(callback);
-
-        var location = rpgcode.getSpriteLocation(spriteId, false, true);
-        if (location.x !== x && location.y !== y) {
-            entity.tween({x: x, y: y}, duration);
-        } else if (location.x !== x) {
-            entity.tween({x: x}, duration);
-        } else {
-            entity.tween({y: y}, duration);
-        }
+        entity.tween({x: x, y: y}, duration);
     }
 };
 

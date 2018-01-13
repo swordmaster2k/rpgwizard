@@ -14,7 +14,7 @@ function Character(filename) {
     if (rpgwizard.debugEnabled) {
         console.debug("Loading Character filename=[%s]", filename);
     }
-    
+
     Sprite.call(this);
 
     // TODO: Make the changes here that chrome suggests.
@@ -34,18 +34,18 @@ function Character(filename) {
 
 Character.prototype.hitOnCollision = function (hitData, entity) {
     var sprite = this;
-    hitData.forEach(function(hit) {
+    hitData.forEach(function (hit) {
         sprite.processCollision(hit, entity);
     });
 };
 
 Character.prototype.hitOffCollision = function (hitData, entity) {
-    // Not used yet.
+    entity.resetHitChecks();
 };
 
 Character.prototype.hitOnActivation = function (hitData, entity) {
     var sprite = this;
-    hitData.forEach(function(hit) {
+    hitData.forEach(function (hit) {
         sprite.processActivation(hit, entity, true);
     });
 };
@@ -55,31 +55,30 @@ Character.prototype.hitOffActivation = function (hitData, entity) {
         rpgcode.registerKeyDown(entity.previousKeyHandler.key, entity.previousKeyHandler.callback, true);
         this.previousKeyHandler = null;
     }
+    entity.activationVector.resetHitChecks();
 };
 
 Character.prototype.processCollision = function (collision, entity) {
     if (rpgwizard.debugEnabled) {
         console.debug("Processing collision for Character name=[%s]", this.name);
     }
-    if (!this.onSameLayer(collision)) {
-        entity.resetHitChecks();
-        return;
-    }
-
-    var object = collision.obj;
-    switch (object.vectorType) {
-        case "NPC":
-        case "SOLID":
-            entity.cancelTween({x: true, y: true});
-            entity.x -= collision.overlap * collision.normal.x;
-            entity.y -= collision.overlap * collision.normal.y;
-            break;
-        case "ENEMY":
-        case "PASSABLE":
-            break;
-    }
     
+    if (this.onSameLayer(collision)) {
+        var object = collision.obj;
+        switch (object.vectorType) {
+            case "NPC":
+            case "SOLID":
+                entity.cancelTween({x: true, y: true});
+                entity.x -= collision.overlap * collision.normal.x;
+                entity.y -= collision.overlap * collision.normal.y;
+                break;
+            case "ENEMY":
+            case "PASSABLE":
+                break;
+        }
+    }
     entity.resetHitChecks();
+    entity.activationVector.resetHitChecks();
 };
 
 Character.prototype.processActivation = function (collision, entity, entering) {
@@ -89,7 +88,7 @@ Character.prototype.processActivation = function (collision, entity, entering) {
     if (!this.onSameLayer(collision)) {
         return;
     }
-    
+
     var events;
     var object = collision.obj;
     if (object.layer !== undefined && object.layer !== null) {
@@ -97,7 +96,7 @@ Character.prototype.processActivation = function (collision, entity, entering) {
     } else {
         events = object.sprite.events;
     }
-    
+
     events.forEach(function (event) {
         if (event.program) {
             if (event.type.toUpperCase() === "OVERLAP") {
@@ -105,12 +104,12 @@ Character.prototype.processActivation = function (collision, entity, entering) {
             } else if (event.type.toUpperCase() === "KEYPRESS") {
                 if (event.key) {
                     entity.previousKeyHandler = {
-                        key: event.key, 
+                        key: event.key,
                         callback: rpgwizard.keyboardHandler.downHandlers[event.key]
                     };
-                    var callback = function() {
+                    var callback = function () {
                         rpgcode.unregisterKeyDown(event.key, true);
-                        rpgwizard.runProgram(PATH_PROGRAM.concat(event.program), object);  
+                        rpgwizard.runProgram(PATH_PROGRAM.concat(event.program), object);
                     };
                     rpgcode.registerKeyDown(event.key, callback, true);
                 }

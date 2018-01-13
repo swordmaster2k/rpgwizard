@@ -90,7 +90,7 @@ public class ProgramEditor extends AbstractAssetEditorWindow {
 		}
 
 		String code = program.getProgramBuffer().toString();
-		textArea = new RSyntaxTextArea(code, 30, 120);
+		textArea = new RSyntaxTextArea(code, 30, 90);
 		LanguageSupportFactory.get().register(textArea);
 		textArea.setCaretPosition(0);
 		textArea.requestFocusInWindow();

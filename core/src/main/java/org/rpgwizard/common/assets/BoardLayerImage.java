@@ -21,80 +21,81 @@ import java.io.IOException;
  * @author Joshua Michael Daly
  */
 public class BoardLayerImage {
-    
-    private String src;
-    private int x;
-    private int y;
-    
-    // Non-IO.
-    private BufferedImage image;
-    private int layer;
-    
-    public BoardLayerImage() {
-        this.src = "";
-        this.x = 0;
-        this.y = 0;
-        this.image = null;
-        this.layer = 0;
-    }
-    
-    public BoardLayerImage(String src, int x, int y) {
-        this.src = src;
-        this.x = x;
-        this.y = y;
-        this.loadImage();
-    }
 
-    public String getSrc() {
-        return src;
-    }
+	private String src;
+	private int x;
+	private int y;
 
-    public void setSrc(String src) {
-        this.src = src;
-    }
+	// Non-IO.
+	private BufferedImage image;
+	private int layer;
 
-    public int getX() {
-        return x;
-    }
+	public BoardLayerImage() {
+		this.src = "";
+		this.x = 0;
+		this.y = 0;
+		this.image = null;
+		this.layer = 0;
+	}
 
-    public void setX(int x) {
-        this.x = x;
-    }
+	public BoardLayerImage(String src, int x, int y) {
+		this.src = src;
+		this.x = x;
+		this.y = y;
+		this.loadImage();
+	}
 
-    public int getY() {
-        return y;
-    }
+	public String getSrc() {
+		return src;
+	}
 
-    public void setY(int y) {
-        this.y = y;
-    }
+	public void setSrc(String src) {
+		this.src = src;
+	}
 
-    public BufferedImage getImage() {
-        return image;
-    }
-    
-    public final void loadImage() {
-        if (this.src.isEmpty()) {
-            return;
-        }
-        try {
-            this.image = CoreUtil.loadBufferedImage(src);
-        } catch (IOException ex) {
-            this.image = null;
-        }
-    }
+	public int getX() {
+		return x;
+	}
 
-    public int getLayer() {
-        return layer;
-    }
+	public void setX(int x) {
+		this.x = x;
+	}
 
-    public void setLayer(int layer) {
-        this.layer = layer;
-    }
-    
-    @Override
-    public String toString() {
-        return "BoardLayerImage{" + "src=" + src + ", x=" + x + ", y=" + y + '}';
-    }
-    
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public BufferedImage getImage() {
+		return image;
+	}
+
+	public final void loadImage() {
+		if (this.src.isEmpty()) {
+			return;
+		}
+		try {
+			this.image = CoreUtil.loadBufferedImage(src);
+		} catch (IOException ex) {
+			this.image = null;
+		}
+	}
+
+	public int getLayer() {
+		return layer;
+	}
+
+	public void setLayer(int layer) {
+		this.layer = layer;
+	}
+
+	@Override
+	public String toString() {
+		return "BoardLayerImage{" + "src=" + src + ", x=" + x + ", y=" + y
+				+ '}';
+	}
+
 }

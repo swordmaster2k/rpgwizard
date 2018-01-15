@@ -45,6 +45,16 @@ ScreenRenderer.prototype.renderBoard = function (context) {
 
         // Loop through layers.
         for (var i = 0; i < this.board.layers.length; i++) {
+            var boardLayer = this.board.layers[i];
+
+            /*
+             * Render layer image (if any).
+             */
+            boardLayer.images.forEach(function (image) {
+                var layerImage = Crafty.assets[Crafty.__paths.images + image.src];
+                context.drawImage(layerImage, x + image.x, y + image.y);
+            }, this);
+
             /*
              * Render this layer. 
              */
@@ -113,7 +123,7 @@ ScreenRenderer.prototype.renderBoard = function (context) {
                 /*
                  * (Optional) Render Vectors.
                  */
-                this.board.layers[i].vectors.forEach(function (vector) {
+                boardLayer.vectors.forEach(function (vector) {
                     var haveMoved = false;
                     if (vector.type === "SOLID") {
                         context.strokeStyle = "#FF0000";

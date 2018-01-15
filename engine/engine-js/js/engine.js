@@ -416,10 +416,12 @@ RPGWizard.prototype.loadBoard = function (board) {
     });
 
     for (var layer = 0; layer < board.layers.length; layer++) {
+        var boardLayer = board.layers[layer];
+
         /*
          * Setup vectors.
          */
-        board.layers[layer].vectors.forEach(function (vector) {
+        boardLayer.vectors.forEach(function (vector) {
             var type = vector.type;
             var points = vector.points;
             var events = vector.events;
@@ -430,6 +432,13 @@ RPGWizard.prototype.loadBoard = function (board) {
                 collision.push(points[i].x, points[i].y);
             }
             this.createVectorPolygon(collision, layer, type, events);
+        }, this);
+
+        /*
+         * Layer images.
+         */
+        boardLayer.images.forEach(function (image) {
+            assets.images.push(image.src);
         }, this);
     }
 

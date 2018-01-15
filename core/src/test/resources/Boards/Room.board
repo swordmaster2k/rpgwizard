@@ -1,32 +1,32 @@
 {
    "version":4.0,
    "name":"Room",
-   "description": "An empty room.",
+   "description":"An empty room.",
    "width":3,
    "height":3,
-   "tileWidth": 32,
-   "tileHeight": 32,
-   "firstRunProgram": "room.prg",
-   "backgroundMusic": "room.wav",
+   "tileWidth":32,
+   "tileHeight":32,
+   "firstRunProgram":"room.prg",
+   "backgroundMusic":"room.wav",
    "tileSets":[
       "Default.tileset"
    ],
    "sprites":[
       {
-         "id": "block1",
+         "id":"block1",
          "name":"Block.npc",
          "startingPosition":{
             "x":1,
             "y":2,
             "layer":0
          },
-         "events": [
+         "events":[
             {
-                "type": "overlap",
-                "program": "myprogram"
+               "type":"overlap",
+               "program":"myprogram"
             }
          ],
-         "thread": "mythread"
+         "thread":"mythread"
       }
    ],
    "layers":[
@@ -82,12 +82,23 @@
                "events":[
                   {
                      "type":"keypress",
-                     "key": "ENTER",
+                     "key":"ENTER",
                      "program":"myprogram"
                   }
                ]
             }
-
+         ],
+         "images":[
+            {
+               "x":40,
+               "y":40,
+               "src":"1.png"
+            },
+			{
+               "x":80,
+               "y":80,
+               "src":"2.png"
+            }
          ]
       }
    ],

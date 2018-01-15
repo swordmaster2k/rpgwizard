@@ -49,7 +49,7 @@ public class BoardLayer implements Cloneable {
 	/**
 	 * A list of all the images on this layer.
 	 */
-	private ArrayList<BoardImage> images;
+	private ArrayList<BoardLayerImage> images;
 
 	/**
 	 * Creates a new layer with a parent board.
@@ -205,7 +205,7 @@ public class BoardLayer implements Cloneable {
 	 *
 	 * @return images used on this layer
 	 */
-	public ArrayList<BoardImage> getImages() {
+	public ArrayList<BoardLayerImage> getImages() {
 		return images;
 	}
 
@@ -215,7 +215,7 @@ public class BoardLayer implements Cloneable {
 	 * @param images
 	 *            images used on this layer
 	 */
-	public void setImages(ArrayList<BoardImage> images) {
+	public void setImages(ArrayList<BoardLayerImage> images) {
 		this.images = images;
 	}
 
@@ -294,7 +294,7 @@ public class BoardLayer implements Cloneable {
 			sprite.setLayer(number);
 		}
 
-		for (BoardImage image : images) {
+		for (BoardLayerImage image : images) {
 			image.setLayer(number);
 		}
 	}
@@ -317,7 +317,7 @@ public class BoardLayer implements Cloneable {
 			sprite.setLayer(number);
 		}
 
-		for (BoardImage image : images) {
+		for (BoardLayerImage image : images) {
 			image.setLayer(number);
 		}
 	}
@@ -333,7 +333,7 @@ public class BoardLayer implements Cloneable {
 		super.clone();
 
 		BoardLayer layer = new BoardLayer(board);
-		layer.images = (ArrayList<BoardImage>) images.clone();
+		layer.images = (ArrayList<BoardLayerImage>) images.clone();
 		layer.lights = (ArrayList<BoardLight>) lights.clone();
 		layer.name = name + "_clone";
 		layer.number = number;

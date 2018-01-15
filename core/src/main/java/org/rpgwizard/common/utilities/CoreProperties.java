@@ -7,7 +7,6 @@
  */
 package org.rpgwizard.common.utilities;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;

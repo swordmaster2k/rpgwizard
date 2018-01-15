@@ -35,6 +35,7 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.rpgwizard.common.assets.BoardLayerImage;
 import org.rpgwizard.common.assets.Item;
 
 /**
@@ -167,12 +168,21 @@ public class AssetSerializerTest {
         Assert.assertEquals(2, vector.getPoints().size());
         Assert.assertEquals(true, vector.isClosed());
         Assert.assertEquals(BoardVectorType.SOLID, vector.getType());
-        
         vector = layer.getVectors().get(1);
         Assert.assertEquals("trigger", vector.getId());
         Assert.assertEquals(2, vector.getPoints().size());
         Assert.assertEquals(true, vector.isClosed());
         Assert.assertEquals(BoardVectorType.PASSABLE, vector.getType());
+        
+        Assert.assertTrue(layer.getImages().size() == 2);
+        BoardLayerImage image = layer.getImages().get(0);
+        Assert.assertEquals(40, image.getX());
+        Assert.assertEquals(40, image.getY());
+        Assert.assertEquals("1.png", image.getSrc());
+        image = layer.getImages().get(1);
+        Assert.assertEquals(80, image.getX());
+        Assert.assertEquals(80, image.getY());
+        Assert.assertEquals("2.png", image.getSrc());
 
         Assert.assertEquals(1, asset.getStartingPositionX());
         Assert.assertEquals(3, asset.getStartingPositionY());

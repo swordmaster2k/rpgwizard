@@ -12,6 +12,7 @@ import org.rpgwizard.editor.editors.board.panels.BoardPanel;
 import org.rpgwizard.editor.editors.board.panels.BoardVectorPanel;
 import org.rpgwizard.editor.editors.board.panels.BoardSpritePanel;
 import org.rpgwizard.common.assets.Board;
+import org.rpgwizard.common.assets.BoardLayerImage;
 import org.rpgwizard.common.assets.BoardLight;
 import org.rpgwizard.common.assets.BoardSprite;
 import org.rpgwizard.common.assets.BoardVector;
@@ -21,6 +22,7 @@ import org.rpgwizard.common.assets.Enemy;
 import org.rpgwizard.editor.editors.enemy.EnemyModelPanel;
 import org.rpgwizard.editor.editors.npc.NPCModelPanel;
 import org.rpgwizard.editor.editors.animation.AnimationModelPanel;
+import org.rpgwizard.editor.editors.board.panels.BoardLayerImagePanel;
 import org.rpgwizard.editor.editors.character.CharacterModelPanel;
 
 /**
@@ -41,6 +43,8 @@ public final class ModelPanelFactory {
 			return new BoardVectorPanel((BoardVector) model);
 		} else if (model instanceof BoardSprite) {
 			return new BoardSpritePanel((BoardSprite) model);
+		} else if (model instanceof BoardLayerImage) {
+			return new BoardLayerImagePanel((BoardLayerImage) model);
 		} else if (model instanceof BoardLight) {
 
 		} else if (model instanceof Animation) {

@@ -7,6 +7,7 @@
  */
 package org.rpgwizard.editor.editors.board;
 
+import org.rpgwizard.editor.editors.board.brush.AbstractBrush;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -126,6 +127,7 @@ public final class BoardView2D extends AbstractBoardView {
 				(board.getHeight() * board.getTileHeight()));
 
 		paintLayers(g);
+		paintImages(g);
 		paintSprites(g);
 		paintStartPostion(g);
 
@@ -151,8 +153,26 @@ public final class BoardView2D extends AbstractBoardView {
 	}
 
 	/**
-	 * Handles the drawing of individual layers to the graphics context. It
+	 * Handles the drawing of a layer's images to the graphics context. It
 	 * cycles through each layer and calls that layers drawTiles(g) method.
+	 *
+	 * @param g
+	 *            The graphics context to draw on.
+	 */
+	@Override
+	protected void paintImages(Graphics2D g) {
+		ArrayList<BoardLayerView> layers = getLayerArrayList();
+
+		for (BoardLayerView layer : layers) {
+			if (layer.isIsVisible()) {
+				layer.drawImages(g);
+			}
+		}
+	}
+
+	/**
+	 * Handles the drawing of a layer's tiles to the graphics context. It cycles
+	 * through each layer and calls that layers drawTiles(g) method.
 	 *
 	 * @param g
 	 *            The graphics context to draw on.

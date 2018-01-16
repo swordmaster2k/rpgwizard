@@ -295,9 +295,6 @@ public class BoardSpritePanel extends BoardModelPanel {
                 .addComponent(yLabel).addComponent(ySpinner));
 
         verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(yLabel).addComponent(ySpinner));
-
-        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(layerLabel).addComponent(layerSpinner));
 
         verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)

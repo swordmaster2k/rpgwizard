@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package org.rpgwizard.editor.editors.board;
+package org.rpgwizard.editor.editors.board.brush;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -17,6 +17,8 @@ import java.awt.Shape;
 import org.rpgwizard.common.assets.BoardVector;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.editors.BoardEditor;
+import org.rpgwizard.editor.editors.board.AbstractBoardView;
+import org.rpgwizard.editor.editors.board.BoardLayerView;
 import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 import org.rpgwizard.editor.utilities.GuiHelper;
 

@@ -43,7 +43,8 @@ public enum EditorProperty {
 			"editor.ui.tooltip.eraseregion"), EDITOR_UI_TOOLTIP_DRAW_VECTOR(
 			"editor.ui.tooltip.drawvector"), EDITOR_UI_TOOLTIP_DRAW_PROGRAM(
 			"editor.ui.tooltip.drawprogram"), EDITOR_UI_TOOLTIP_SET_BOARD_SPRITE(
-			"editor.ui.tooltip.setboardsprite"), EDITOR_UI_TOOLTIP_SET_BOARD_LIGHT(
+			"editor.ui.tooltip.setboardsprite"), EDITOR_UI_TOOLTIP_SET_BOARD_IMAGE(
+			"editor.ui.tooltip.setboardimage"), EDITOR_UI_TOOLTIP_SET_BOARD_LIGHT(
 			"editor.ui.tooltip.setboardlight"), EDITOR_UI_TOOLTIP_SET_START_POSITION(
 			"editor.ui.tooltip.setstartposition"), EDITOR_UI_TOOLTIP_ZOOM_IN(
 			"editor.ui.tooltip.zoomin"), EDITOR_UI_TOOLTIP_ZOOM_OUT(

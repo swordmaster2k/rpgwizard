@@ -46,19 +46,19 @@ ScreenRenderer.prototype.renderBoard = function (context) {
         // Loop through layers.
         for (var i = 0; i < this.board.layers.length; i++) {
             var boardLayer = this.board.layers[i];
+            
+            /*
+             * Render this layer. 
+             */
+            context.drawImage(this.board.layerCache[i], 0, 0, width, height, x, y, width, height);
 
             /*
-             * Render layer image (if any).
+             * Render layer images.
              */
             boardLayer.images.forEach(function (image) {
                 var layerImage = Crafty.assets[Crafty.__paths.images + image.src];
                 context.drawImage(layerImage, x + image.x, y + image.y);
             }, this);
-
-            /*
-             * Render this layer. 
-             */
-            context.drawImage(this.board.layerCache[i], 0, 0, width, height, x, y, width, height);
 
             /*
              * Sort sprites for depth.

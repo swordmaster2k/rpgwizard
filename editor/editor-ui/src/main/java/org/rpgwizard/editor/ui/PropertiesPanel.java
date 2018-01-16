@@ -13,7 +13,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import org.rpgwizard.editor.MainWindow;
 
 /**
  *

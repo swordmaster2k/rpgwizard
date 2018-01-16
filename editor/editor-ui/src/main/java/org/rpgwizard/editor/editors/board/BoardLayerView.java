@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.rpgwizard.common.assets.Board;
 import org.rpgwizard.common.assets.BoardLayer;
+import org.rpgwizard.common.assets.BoardLayerImage;
 import org.rpgwizard.common.assets.BoardSprite;
 import org.rpgwizard.common.assets.BoardVector;
 import org.rpgwizard.common.assets.Tile;
@@ -325,6 +326,47 @@ public class BoardLayerView {
 		this.parentContainer = parentContainer;
 	}
 
+	/**
+	 * Draws the images for this layer.
+	 *
+	 * @param g
+	 *            Graphics context to draw to.
+	 */
+	public void drawImages(Graphics2D g) {
+		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP,
+				opacity));
+		List<BoardLayerImage> images = layer.getImages();
+		for (BoardLayerImage layerImage : images) {
+                    try {
+                        BufferedImage image = layerImage.getImage();
+                        int width = image.getWidth();
+                        int height = image.getHeight();
+                        int x = layerImage.getX();
+                        int y = layerImage.getY();
+                        
+                        g.drawImage(image, x, y, null);
+                        
+                        // If the image has a source image.
+                        if (layerImage.isSelected()) {
+                            g.setColor(Color.BLUE);
+                            g.drawRect(x, y, width, height);
+                        }
+                    } catch (NullPointerException | IndexOutOfBoundsException e) {
+                        int tileWidth = layer.getBoard().getTileWidth();
+                        int tileHeight = layer.getBoard().getTileHeight();
+                        int x = layerImage.getX();
+                        int y = layerImage.getY();
+                        g.setColor(Color.WHITE);
+                        g.fillRect(x, y, tileWidth, tileHeight);
+
+                        // Used when the image does not have a source image.
+                        if (layerImage.isSelected()) {
+                            g.setColor(Color.BLUE);
+                            g.drawRect(x, y, tileWidth, tileHeight);
+                        }
+                    }
+		}
+	}
 	/**
 	 * Draws the tiles for this layer.
 	 *

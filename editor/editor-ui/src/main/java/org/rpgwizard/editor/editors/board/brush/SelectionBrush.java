@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package org.rpgwizard.editor.editors.board;
+package org.rpgwizard.editor.editors.board.brush;
 
 import java.awt.Point;
 import java.awt.Rectangle;

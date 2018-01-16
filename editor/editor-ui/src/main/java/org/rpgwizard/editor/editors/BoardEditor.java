@@ -16,7 +16,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 import org.rpgwizard.common.assets.Tile;
 import org.rpgwizard.common.assets.Board;
-import org.rpgwizard.editor.editors.board.AbstractBrush;
+import org.rpgwizard.editor.editors.board.brush.AbstractBrush;
 import org.rpgwizard.common.Selectable;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.AssetDescriptor;
@@ -433,6 +433,16 @@ public class BoardEditor extends AbstractAssetEditorWindow
 
 	@Override
 	public void boardSpriteRemoved(BoardChangedEvent e) {
+		setNeedSave(true);
+	}
+
+	@Override
+	public void boardLayerImageAdded(BoardChangedEvent e) {
+		setNeedSave(true);
+	}
+
+	@Override
+	public void boardLayerImageRemoved(BoardChangedEvent e) {
 		setNeedSave(true);
 	}
 

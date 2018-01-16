@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package org.rpgwizard.editor.editors.board;
+package org.rpgwizard.editor.editors.board.brush;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -16,6 +16,8 @@ import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import org.rpgwizard.common.assets.Tile;
 import org.rpgwizard.editor.editors.BoardEditor;
+import org.rpgwizard.editor.editors.board.AbstractBoardView;
+import org.rpgwizard.editor.editors.board.BoardLayerView;
 import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 
 /**
@@ -23,7 +25,7 @@ import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
  *
  * @author Joshua Michael Daly
  */
-public class ShapeBrush extends AbstractBrush {
+public class EraserBrush extends AbstractBrush {
 
 	/**
      *
@@ -35,29 +37,16 @@ public class ShapeBrush extends AbstractBrush {
      */
 	protected Tile paintTile;
 
-	/**
-     *
-     */
-	public ShapeBrush() {
+	public EraserBrush() {
 
 	}
 
-	/**
-	 *
-	 *
-	 * @param shape
-	 */
-	public ShapeBrush(Area shape) {
+	public EraserBrush(Area shape) {
 		this.shape = shape;
 		paintTile = new Tile();
 	}
 
-	/**
-	 *
-	 *
-	 * @param abstractBrush
-	 */
-	public ShapeBrush(AbstractBrush abstractBrush) {
+	public EraserBrush(AbstractBrush abstractBrush) {
 		super(abstractBrush);
 
 		if (abstractBrush instanceof ShapeBrush) {
@@ -104,6 +93,11 @@ public class ShapeBrush extends AbstractBrush {
 		return shape;
 	}
 
+	@Override
+	public boolean isPixelBased() {
+		return false;
+	}
+
 	/**
 	 *
 	 *
@@ -146,8 +140,8 @@ public class ShapeBrush extends AbstractBrush {
 	 */
 	@Override
 	public boolean equals(Brush brush) {
-		return brush instanceof ShapeBrush
-				&& ((ShapeBrush) brush).shape.equals(shape);
+		return brush instanceof EraserBrush
+				&& ((EraserBrush) brush).shape.equals(shape);
 	}
 
 	/**
@@ -162,30 +156,47 @@ public class ShapeBrush extends AbstractBrush {
 	@Override
 	public Rectangle doPaint(int x, int y, Rectangle selection)
 			throws Exception {
-		Rectangle shapeBounds = shape.getBounds();
-		int centerX = x - shapeBounds.width / 2;
-		int centerY = y - shapeBounds.height / 2;
-
 		super.doPaint(x, y, selection);
 
-		for (int layer = 0; layer < affectedLayers; layer++) {
-			BoardLayerView boardLayer = affectedContainer.getLayer(currentLayer
-					+ layer);
+		if (selection != null && selection.contains(x, y)) {
+			BoardLayerView layer = affectedContainer.getLayer(currentLayer);
 
-			if (boardLayer != null) {
-				for (int i = 0; i <= shapeBounds.height + 1; i++) {
-					for (int j = 0; j <= shapeBounds.width + 1; j++) {
-						if (shape.contains(i, j)) {
-							boardLayer.getLayer().setTileAt(j + centerX,
-									i + centerY, paintTile);
+			if (layer == null) {
+				return null;
+			}
+			if (selection.contains(x, y)) {
+				for (int y2 = selection.y; y2 < selection.height + selection.y; y2++) {
+					for (int x2 = selection.x; x2 < selection.width
+							+ selection.x; x2++) {
+						layer.getLayer().setTileAt(x2, y2, paintTile);
+					}
+				}
+			}
+			return selection;
+		} else {
+			Rectangle shapeBounds = shape.getBounds();
+			int centerX = x - shapeBounds.width / 2;
+			int centerY = y - shapeBounds.height / 2;
+
+			for (int layer = 0; layer < affectedLayers; layer++) {
+				BoardLayerView boardLayer = affectedContainer
+						.getLayer(currentLayer + layer);
+
+				if (boardLayer != null) {
+					for (int i = 0; i <= shapeBounds.height + 1; i++) {
+						for (int j = 0; j <= shapeBounds.width + 1; j++) {
+							if (shape.contains(i, j)) {
+								boardLayer.getLayer().setTileAt(j + centerX,
+										i + centerY, paintTile);
+							}
 						}
 					}
 				}
 			}
-		}
 
-		return new Rectangle(centerX, centerY, shapeBounds.width,
-				shapeBounds.height);
+			return new Rectangle(centerX, centerY, shapeBounds.width,
+					shapeBounds.height);
+		}
 	}
 
 	@Override
@@ -213,11 +224,6 @@ public class ShapeBrush extends AbstractBrush {
 	public void doMouseButton1Dragged(Point point, Point origin,
 			AbstractAssetEditorWindow editor) {
 
-	}
-
-	@Override
-	public boolean isPixelBased() {
-		return false;
 	}
 
 }

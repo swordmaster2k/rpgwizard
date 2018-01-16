@@ -7,6 +7,8 @@
  */
 package org.rpgwizard.editor.editors.board;
 
+import org.rpgwizard.editor.editors.board.brush.AbstractBrush;
+import org.rpgwizard.editor.editors.board.brush.Brush;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;

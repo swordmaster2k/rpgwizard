@@ -448,6 +448,14 @@ public abstract class AbstractBoardView extends JPanel
 	 * @param g
 	 *            The graphics context to draw on.
 	 */
+	protected abstract void paintImages(Graphics2D g);
+
+	/**
+	 * A concrete BoardView will implement its own layer drawing code here.
+	 *
+	 * @param g
+	 *            The graphics context to draw on.
+	 */
 	protected abstract void paintLayers(Graphics2D g);
 
 	/**
@@ -735,6 +743,16 @@ public abstract class AbstractBoardView extends JPanel
 
 	@Override
 	public void boardSpriteRemoved(BoardChangedEvent e) {
+		repaint();
+	}
+
+	@Override
+	public void boardLayerImageAdded(BoardChangedEvent e) {
+		repaint();
+	}
+
+	@Override
+	public void boardLayerImageRemoved(BoardChangedEvent e) {
 		repaint();
 	}
 

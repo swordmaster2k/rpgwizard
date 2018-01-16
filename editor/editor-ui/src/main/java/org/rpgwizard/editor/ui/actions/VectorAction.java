@@ -10,7 +10,7 @@ package org.rpgwizard.editor.ui.actions;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import org.rpgwizard.editor.editors.BoardEditor;
-import org.rpgwizard.editor.editors.board.BoardVectorBrush;
+import org.rpgwizard.editor.editors.board.brush.BoardVectorBrush;
 import org.rpgwizard.editor.MainWindow;
 
 /**

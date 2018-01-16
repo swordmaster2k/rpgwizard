@@ -7,6 +7,12 @@
  */
 package org.rpgwizard.editor.editors.board;
 
+import org.rpgwizard.editor.editors.board.brush.AbstractBrush;
+import org.rpgwizard.editor.editors.board.brush.ShapeBrush;
+import org.rpgwizard.editor.editors.board.brush.BucketBrush;
+import org.rpgwizard.editor.editors.board.brush.SelectionBrush;
+import org.rpgwizard.editor.editors.board.brush.EraserBrush;
+import org.rpgwizard.editor.editors.board.brush.CustomBrush;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
@@ -192,15 +198,15 @@ public class BoardMouseAdapter extends MouseAdapter {
 	private boolean checkBrushValid(AbstractBrush brush) {
 		if (brush instanceof ShapeBrush) {
 			ShapeBrush shapeBrush = (ShapeBrush) brush;
-			if (shapeBrush.paintTile == null) {
+			if (shapeBrush.getTile() == null) {
 				return false;
 			}
 
-			return isSameTileSize(editor.getBoard(), shapeBrush.paintTile);
+			return isSameTileSize(editor.getBoard(), shapeBrush.getTile());
 		} else if (brush instanceof BucketBrush) {
 			BucketBrush bucketBrush = (BucketBrush) brush;
 
-			if (bucketBrush.pourTile == null) {
+			if (bucketBrush.getPourTile() == null) {
 				return false;
 			}
 
@@ -208,14 +214,14 @@ public class BoardMouseAdapter extends MouseAdapter {
 		} else if (brush instanceof CustomBrush) {
 			CustomBrush customBrush = (CustomBrush) brush;
 
-			if (customBrush.tiles.length > 0) {
-				if (customBrush.tiles[0].length > 0) {
-					if (customBrush.tiles[0][0] == null) {
+			if (customBrush.getTiles().length > 0) {
+				if (customBrush.getTiles()[0].length > 0) {
+					if (customBrush.getTiles()[0][0] == null) {
 						return true; // Selection brush.
 					}
 
 					return isSameTileSize(editor.getBoard(),
-							customBrush.tiles[0][0]);
+							customBrush.getTiles()[0][0]);
 				}
 			}
 		}

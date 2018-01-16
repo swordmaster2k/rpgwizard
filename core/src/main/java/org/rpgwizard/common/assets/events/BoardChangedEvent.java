@@ -10,6 +10,7 @@ package org.rpgwizard.common.assets.events;
 import java.util.EventObject;
 import org.rpgwizard.common.assets.Board;
 import org.rpgwizard.common.assets.BoardLayer;
+import org.rpgwizard.common.assets.BoardLayerImage;
 import org.rpgwizard.common.assets.BoardSprite;
 
 /**
@@ -22,6 +23,7 @@ public class BoardChangedEvent extends EventObject {
 
 	private BoardLayer layer;
 	private BoardSprite boardSprite;
+	private BoardLayerImage boardLayerImage;
 
 	/**
 	 * Creates a new event.
@@ -69,4 +71,13 @@ public class BoardChangedEvent extends EventObject {
 	public void setBoardSprite(BoardSprite boardSprite) {
 		this.boardSprite = boardSprite;
 	}
+
+	public BoardLayerImage getBoardLayerImage() {
+		return boardLayerImage;
+	}
+
+	public void setBoardLayerImage(BoardLayerImage boardLayerImage) {
+		this.boardLayerImage = boardLayerImage;
+	}
+
 }

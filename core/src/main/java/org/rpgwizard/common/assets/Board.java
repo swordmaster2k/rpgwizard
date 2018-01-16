@@ -198,7 +198,19 @@ public final class Board extends AbstractAsset implements Selectable {
 	public void removeSprite(BoardSprite sprite) {
 		BoardLayer boardLayer = layers.get(sprite.getLayer());
 		boardLayer.removeBoardSprite(sprite);
-		fireBoardSpriteAdded(sprite);
+		fireBoardSpriteRemoved(sprite);
+	}
+
+	public void addLayerImage(BoardLayerImage image) {
+		BoardLayer boardLayer = layers.get(image.getLayer());
+		boardLayer.addBoardLayerImage(image);
+		fireBoardLayerImageAdded(image);
+	}
+
+	public void removeLayerImage(BoardLayerImage image) {
+		BoardLayer boardLayer = layers.get(image.getLayer());
+		boardLayer.removeBoardLayerImage(image);
+		fireBoardLayerImageRemoved(image);
 	}
 
 	public StartingPosition getStartingPosition() {
@@ -627,6 +639,47 @@ public final class Board extends AbstractAsset implements Selectable {
 			}
 
 			((BoardChangeListener) iterator.next()).boardSpriteRemoved(event);
+		}
+	}
+
+	/**
+	 * Fires the <code>BoardChangedEvent</code> informs all the listeners that
+	 * this board has changed.
+	 *
+	 * @param image
+	 */
+	public void fireBoardLayerImageAdded(BoardLayerImage image) {
+		BoardChangedEvent event = null;
+		Iterator iterator = boardChangeListeners.iterator();
+
+		while (iterator.hasNext()) {
+			if (event == null) {
+				event = new BoardChangedEvent(this);
+				event.setBoardLayerImage(image);
+			}
+
+			((BoardChangeListener) iterator.next()).boardLayerImageAdded(event);
+		}
+	}
+
+	/**
+	 * Fires the <code>BoardChangedEvent</code> informs all the listeners that
+	 * this board has changed.
+	 *
+	 * @param image
+	 */
+	public void fireBoardLayerImageRemoved(BoardLayerImage image) {
+		BoardChangedEvent event = null;
+		Iterator iterator = boardChangeListeners.iterator();
+
+		while (iterator.hasNext()) {
+			if (event == null) {
+				event = new BoardChangedEvent(this);
+				event.setBoardLayerImage(image);
+			}
+
+			((BoardChangeListener) iterator.next())
+					.boardLayerImageRemoved(event);
 		}
 	}
 

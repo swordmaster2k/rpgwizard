@@ -266,4 +266,14 @@ public class BoardLayersTableModel extends AbstractTableModel
 		fireTableDataChanged();
 	}
 
+	@Override
+	public void boardLayerImageAdded(BoardChangedEvent e) {
+		fireTableDataChanged();
+	}
+
+	@Override
+	public void boardLayerImageRemoved(BoardChangedEvent e) {
+		fireTableDataChanged();
+	}
+
 }

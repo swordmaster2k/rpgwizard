@@ -19,6 +19,7 @@ import org.rpgwizard.editor.ui.actions.BucketAction;
 import org.rpgwizard.editor.ui.actions.CompileAction;
 import org.rpgwizard.editor.ui.actions.EraserAction;
 import org.rpgwizard.editor.ui.actions.HelpAction;
+import org.rpgwizard.editor.ui.actions.LayerImageAction;
 import org.rpgwizard.editor.ui.actions.LightAction;
 import org.rpgwizard.editor.ui.actions.OpenFileAction;
 import org.rpgwizard.editor.ui.actions.PencilAction;
@@ -65,6 +66,7 @@ public class MainToolBar extends JToolBar {
 
 	private final JToggleButton vectorButton;
 	private final JToggleButton spriteButton;
+	private final JToggleButton imageButton;
 	private final JToggleButton lightButton;
 	private final JToggleButton startPositionButton;
 
@@ -192,6 +194,13 @@ public class MainToolBar extends JToolBar {
 				.setToolTipText(EditorProperties
 						.getProperty(EditorProperty.EDITOR_UI_TOOLTIP_SET_BOARD_SPRITE));
 
+		imageButton = new JToggleButton();
+		imageButton.setFocusable(false);
+		imageButton.setAction(new LayerImageAction());
+		imageButton.setIcon(Icons.getSmallIcon("image-select"));
+		imageButton.setToolTipText(EditorProperties
+				.getProperty(EditorProperty.EDITOR_UI_TOOLTIP_SET_BOARD_IMAGE));
+
 		lightButton = new JToggleButton();
 		lightButton.setFocusable(false);
 		lightButton.setAction(new LightAction());
@@ -258,6 +267,7 @@ public class MainToolBar extends JToolBar {
 		toolButtonGroup.add(eraserButton);
 		toolButtonGroup.add(vectorButton);
 		toolButtonGroup.add(spriteButton);
+		toolButtonGroup.add(imageButton);
 		toolButtonGroup.add(lightButton);
 		toolButtonGroup.add(startPositionButton);
 
@@ -280,6 +290,7 @@ public class MainToolBar extends JToolBar {
 		add(eraserButton);
 		add(vectorButton);
 		add(spriteButton);
+		add(imageButton);
 		// add(lightButton);
 		add(startPositionButton);
 		addSeparator();
@@ -407,6 +418,7 @@ public class MainToolBar extends JToolBar {
 		eraserButton.setEnabled(enable);
 		vectorButton.setEnabled(enable);
 		spriteButton.setEnabled(enable);
+		imageButton.setEnabled(enable);
 		// lightButton.setEnabled(enable);
 		startPositionButton.setEnabled(enable);
 		zoomInButton.setEnabled(enable);

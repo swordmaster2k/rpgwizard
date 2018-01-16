@@ -134,7 +134,7 @@ public class Driver {
                             try {
                                 engine.stop();
                             } catch (Exception ex) {
-                                LOGGER.error("Failed to stop engine!", ex);
+                                LOGGER.warn("Failed to stop engine! reason=[{}]", ex.getMessage());
                             }
                         });
 

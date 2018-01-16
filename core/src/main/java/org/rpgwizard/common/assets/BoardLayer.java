@@ -259,6 +259,14 @@ public class BoardLayer implements Cloneable {
 		sprites.remove(sprite);
 	}
 
+	public void addBoardLayerImage(BoardLayerImage image) {
+		images.add(image);
+	}
+
+	public void removeBoardLayerImage(BoardLayerImage image) {
+		images.remove(image);
+	}
+
 	/**
 	 * Does this layer contain the coordinates.
 	 *
@@ -441,6 +449,49 @@ public class BoardLayer implements Cloneable {
 		}
 
 		return sprite;
+	}
+
+	/**
+	 * Finds an image at the coordinates based on a small bounding box around
+	 * the mouse click.
+	 *
+	 * @param x
+	 *            mouse click x
+	 * @param y
+	 *            mouse click y
+	 * @return a sprite or null
+	 */
+	public BoardLayerImage findImageAt(int x, int y) {
+		for (BoardLayerImage image : images) {
+			int diffX = Math.abs(image.getX() - x);
+			int diffY = Math.abs(image.getY() - y);
+
+			if (diffX < 20 && diffY < 20) {
+				return image;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Removes the image at the specified mouse click location.
+	 *
+	 * @param x
+	 *            mouse click x
+	 * @param y
+	 *            mouse click y
+	 * @return removed if any
+	 */
+	public BoardLayerImage removeImageAt(int x, int y) {
+		BoardLayerImage image = findImageAt(x, y);
+
+		if (image != null) {
+			images.remove(image);
+			board.fireBoardChanged();
+		}
+
+		return image;
 	}
 
 	/**

@@ -11,7 +11,7 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import org.rpgwizard.editor.editors.BoardEditor;
-import org.rpgwizard.editor.editors.board.ShapeBrush;
+import org.rpgwizard.editor.editors.board.brush.ShapeBrush;
 import org.rpgwizard.editor.MainWindow;
 
 /**

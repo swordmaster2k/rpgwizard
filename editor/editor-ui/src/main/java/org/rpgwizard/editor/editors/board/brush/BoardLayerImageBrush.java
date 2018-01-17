@@ -19,6 +19,7 @@ import org.rpgwizard.editor.editors.BoardEditor;
 import org.rpgwizard.editor.editors.board.AbstractBoardView;
 import org.rpgwizard.editor.editors.board.BoardLayerView;
 import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
+import org.rpgwizard.editor.ui.actions.RemoveLayerImageAction;
 
 /**
  *
@@ -103,12 +104,8 @@ public class BoardLayerImageBrush extends AbstractBrush {
 			AbstractAssetEditorWindow editor) {
 		if (editor instanceof BoardEditor) {
 			BoardEditor boardEditor = (BoardEditor) editor;
-			boardEditor.getBoard().removeLayerImage(boardLayerImage);
-
-			if (boardLayerImage == boardEditor.getSelectedObject()) {
-				boardEditor.getSelectedObject().setSelectedState(false);
-				boardEditor.setSelectedObject(null);
-			}
+                        RemoveLayerImageAction action = new RemoveLayerImageAction(boardEditor, boardLayerImage);
+                        action.actionPerformed(null);
 		}
 	}
 

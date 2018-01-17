@@ -20,6 +20,7 @@ import org.rpgwizard.editor.editors.BoardEditor;
 import org.rpgwizard.editor.editors.board.AbstractBoardView;
 import org.rpgwizard.editor.editors.board.BoardLayerView;
 import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
+import org.rpgwizard.editor.ui.actions.RemoveVectorAction;
 import org.rpgwizard.editor.utilities.GuiHelper;
 
 /**
@@ -243,19 +244,11 @@ public class BoardVectorBrush extends AbstractBrush {
 
 		if (editor instanceof BoardEditor) {
 			BoardEditor boardEditor = (BoardEditor) editor;
-
 			if (stillDrawing) {
 				finish();
 			}
-
-			Object result = boardEditor.getBoardView()
-					.getCurrentSelectedLayer().getLayer()
-					.removeVectorAt(point.x, point.y);
-
-			if (result == boardEditor.getSelectedObject()) {
-				boardEditor.getSelectedObject().setSelectedState(false);
-				boardEditor.setSelectedObject(null);
-			}
+                        RemoveVectorAction action = new RemoveVectorAction(boardEditor, point.x, point.y);
+                        action.actionPerformed(null);
 		}
 
 	}

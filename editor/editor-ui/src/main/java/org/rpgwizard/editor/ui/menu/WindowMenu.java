@@ -7,20 +7,12 @@
  */
 package org.rpgwizard.editor.ui.menu;
 
-import org.rpgwizard.editor.ui.listeners.SnapToGridItemListener;
-import org.rpgwizard.editor.ui.listeners.ShowVectorsItemListener;
-import org.rpgwizard.editor.ui.listeners.ShowGridItemListener;
-import org.rpgwizard.editor.ui.listeners.ShowCoordinatesItemListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
 import org.rpgwizard.editor.ui.actions.SidePanelAction;
-import org.rpgwizard.editor.ui.actions.ZoomInAction;
-import org.rpgwizard.editor.ui.actions.ZoomOutAction;
 import org.rpgwizard.editor.ui.resources.Icons;
 
 /**
@@ -48,8 +40,7 @@ public final class WindowMenu extends JMenu {
 	public void configureSidePanelMenuItem() {
 		sidePanel = new JMenuItem("Side Panel");
 		sidePanel.setIcon(Icons.getSmallIcon("application-sidebar"));
-		// sidePanel.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ADD,
-		// ActionEvent.CTRL_MASK));
+		sidePanel.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_OPEN_BRACKET, ActionEvent.CTRL_MASK));
 		// sidePanel.setMnemonic(KeyEvent.VK_PLUS);
 		sidePanel.addActionListener(new SidePanelAction());
 	}

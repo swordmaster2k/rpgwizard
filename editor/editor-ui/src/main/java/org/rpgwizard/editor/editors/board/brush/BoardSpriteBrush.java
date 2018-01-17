@@ -19,6 +19,7 @@ import org.rpgwizard.editor.editors.BoardEditor;
 import org.rpgwizard.editor.editors.board.AbstractBoardView;
 import org.rpgwizard.editor.editors.board.BoardLayerView;
 import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
+import org.rpgwizard.editor.ui.actions.RemoveSpriteAction;
 
 /**
  *
@@ -155,12 +156,8 @@ public class BoardSpriteBrush extends AbstractBrush {
 			AbstractAssetEditorWindow editor) {
 		if (editor instanceof BoardEditor) {
 			BoardEditor boardEditor = (BoardEditor) editor;
-			boardEditor.getBoard().removeSprite(boardSprite);
-
-			if (boardSprite == boardEditor.getSelectedObject()) {
-				boardEditor.getSelectedObject().setSelectedState(false);
-				boardEditor.setSelectedObject(null);
-			}
+                        RemoveSpriteAction action = new RemoveSpriteAction(boardEditor, boardSprite);
+                        action.actionPerformed(null);
 		}
 	}
 

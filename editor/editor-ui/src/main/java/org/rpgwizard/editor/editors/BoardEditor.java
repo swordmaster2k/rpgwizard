@@ -11,6 +11,8 @@ import org.rpgwizard.editor.editors.board.BoardView2D;
 import org.rpgwizard.editor.editors.board.BoardMouseAdapter;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
@@ -21,11 +23,17 @@ import org.rpgwizard.common.Selectable;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.BoardLayer;
+import org.rpgwizard.common.assets.BoardLayerImage;
+import org.rpgwizard.common.assets.BoardSprite;
+import org.rpgwizard.common.assets.BoardVector;
 import org.rpgwizard.common.assets.TileSet;
 import org.rpgwizard.common.assets.events.BoardChangedEvent;
 import org.rpgwizard.common.assets.listeners.BoardChangeListener;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
+import org.rpgwizard.editor.ui.actions.RemoveLayerImageAction;
+import org.rpgwizard.editor.ui.actions.RemoveSpriteAction;
+import org.rpgwizard.editor.ui.actions.RemoveVectorAction;
 import org.rpgwizard.editor.ui.resources.Icons;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +46,7 @@ import org.slf4j.LoggerFactory;
  */
 public class BoardEditor extends AbstractAssetEditorWindow
 		implements
-			BoardChangeListener {
+			BoardChangeListener, KeyListener {
 
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(BoardEditor.class);
@@ -71,7 +79,7 @@ public class BoardEditor extends AbstractAssetEditorWindow
 		boardMouseAdapter = new BoardMouseAdapter(this);
 		this.board = board;
 		this.board.addBoardChangeListener(this);
-
+                
 		if (board.getDescriptor() == null) {
 			init(board, "Untitled");
 		} else {
@@ -445,20 +453,52 @@ public class BoardEditor extends AbstractAssetEditorWindow
 	public void boardLayerImageRemoved(BoardChangedEvent e) {
 		setNeedSave(true);
 	}
+        
+	@Override
+	public void keyTyped(KeyEvent e) {
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+            if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+                if (selectedObject == null) {
+                    return;
+                }
+                if (selectedObject instanceof BoardSprite) {
+                    RemoveSpriteAction action = new RemoveSpriteAction(this, (BoardSprite) selectedObject);
+                    action.actionPerformed(null);
+                } else if (selectedObject instanceof BoardLayerImage) {
+                    RemoveLayerImageAction action = new RemoveLayerImageAction(this, (BoardLayerImage) selectedObject);
+                    action.actionPerformed(null);
+                } else if (selectedObject instanceof BoardVector) {
+                    BoardVector boardVector = (BoardVector) selectedObject;
+                    Point point = boardVector.getPoints().get(0);
+                    RemoveVectorAction action = new RemoveVectorAction(this, point.x, point.y);
+                    action.actionPerformed(null);
+                }
+            }
+	}
 
 	private void init(Board board, String fileName) {
 		boardView = new BoardView2D(this, board);
 		boardView.addMouseListener(boardMouseAdapter);
 		boardView.addMouseMotionListener(boardMouseAdapter);
+                boardView.addKeyListener(this);
+                boardView.setFocusable(true);
 
 		scrollPane = new JScrollPane(boardView);
 		scrollPane.getViewport().setScrollMode(JViewport.SIMPLE_SCROLL_MODE);
-		scrollPane
-				.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+                scrollPane.setFocusable(false);
 
 		cursorTileLocation = new Point(0, 0);
 		cursorLocation = new Point(0, 0);
 
+                setFocusable(false);
 		setTitle(fileName);
 		add(scrollPane);
 		pack();

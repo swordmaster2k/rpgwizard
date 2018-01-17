@@ -784,7 +784,7 @@ public abstract class AbstractBoardView extends JPanel
 		gridColor = DEFAULT_GRID_COLOR;
 		gridOpacity = 100;
 
-		startPositionImage = Icons.getSmallIcon("flag-checker").getImage();
+		startPositionImage = Icons.getLargeIcon("icons8-finish-flag-48").getImage();
 
 		if (!layers.isEmpty()) {
 			currentSelectedLayer = layers.get(0);

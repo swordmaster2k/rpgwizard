@@ -11,6 +11,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.image.BufferedImage;
 import org.rpgwizard.common.assets.Board;
 import org.rpgwizard.common.assets.BoardSprite;
 import org.rpgwizard.editor.MainWindow;
@@ -168,10 +169,15 @@ public class BoardSpriteBrush extends AbstractBrush {
 			AbstractAssetEditorWindow editor) {
 		if (editor instanceof BoardEditor) {
 			BoardEditor boardEditor = (BoardEditor) editor;
-
-			BoardSprite sprite = boardEditor.getBoardView()
-					.getCurrentSelectedLayer().getLayer()
-					.findSpriteAt(point.x, point.y);
+                        BufferedImage defaultImage = BoardLayerView.getPlaceHolderSprite();
+			BoardSprite sprite = boardEditor
+                                .getBoardView()
+                                .getCurrentSelectedLayer()
+                                .getLayer()
+                                .findSpriteAt(
+                                        point.x, point.y, 
+                                        defaultImage.getWidth(), defaultImage.getHeight()
+                                );
 			boardSprite = sprite;
 			selectSprite(sprite, boardEditor);
 		}

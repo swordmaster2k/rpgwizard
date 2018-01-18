@@ -17,6 +17,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.SwingUtilities;
 import org.rpgwizard.common.assets.Board;
 import org.rpgwizard.common.assets.Tile;
 
@@ -91,10 +92,12 @@ public class BoardMouseAdapter extends MouseAdapter {
 			int x = (int) (e.getX() / editor.getBoardView().getZoom());
 			int y = (int) (e.getY() / editor.getBoardView().getZoom());
 
-			if (brush instanceof ShapeBrush || brush instanceof SelectionBrush
-					|| brush instanceof CustomBrush
-					|| brush instanceof EraserBrush) {
+			if (SwingUtilities.isLeftMouseButton(e)) {
 				doMouseButton1Dragged(brush, x, y);
+			} else if (SwingUtilities.isMiddleMouseButton(e)) {
+
+			} else if (SwingUtilities.isRightMouseButton(e)) {
+				doMouseButton3Dragged(brush, x, y);
 			}
 		}
 	}
@@ -193,6 +196,29 @@ public class BoardMouseAdapter extends MouseAdapter {
 		brush.doMouseButton1Dragged(point, origin, editor);
 
 		editor.doPaint(brush, point, null);
+	}
+
+	/**
+	 *
+	 *
+	 * @param e
+	 * @param brush
+	 */
+	private void doMouseButton3Dragged(AbstractBrush brush, int x, int y) {
+		// Ensure that the dragging remains within the bounds of the board.
+		Point point = editor.getBoardView().getTileCoordinates(x, y);
+		if (!editor.getBoardView().checkTileInBounds(point.x, point.y)) {
+			return;
+		}
+
+		if (brush.isPixelBased()) {
+			point = new Point(x, y);
+		}
+
+		editor.setCursorTileLocation(point);
+		editor.setCursorLocation(new Point(x, y));
+
+		brush.doMouseButton3Dragged(point, origin, editor);
 	}
 
 	private boolean checkBrushValid(AbstractBrush brush) {

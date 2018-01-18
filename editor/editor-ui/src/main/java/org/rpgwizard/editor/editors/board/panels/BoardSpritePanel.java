@@ -19,12 +19,13 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import org.apache.commons.lang3.ArrayUtils;
-import org.rpgwizard.common.assets.BoardSprite;
+import org.rpgwizard.common.assets.board.BoardSprite;
 import org.rpgwizard.common.assets.Enemy;
 import org.rpgwizard.common.assets.EventType;
 import org.rpgwizard.common.assets.KeyType;
 import org.rpgwizard.common.assets.NPC;
 import org.rpgwizard.common.assets.Program;
+import org.rpgwizard.common.assets.board.model.BoardModelEvent;
 import org.rpgwizard.editor.editors.board.BoardLayerView;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.utilities.EditorFileManager;
@@ -311,4 +312,13 @@ public class BoardSpritePanel extends BoardModelPanel {
 
         layout.setVerticalGroup(verticalGroup);
     }
+	@Override
+	public void modelMoved(BoardModelEvent e) {
+		if (e.getSource() == model) {
+			BoardSprite sprite = (BoardSprite) e.getSource();
+			xSpinner.setValue(sprite.getX());
+			ySpinner.setValue(sprite.getY());
+		}
+	}
+
 }

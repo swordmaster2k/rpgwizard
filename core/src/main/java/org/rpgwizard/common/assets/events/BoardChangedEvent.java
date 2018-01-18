@@ -9,9 +9,9 @@ package org.rpgwizard.common.assets.events;
 
 import java.util.EventObject;
 import org.rpgwizard.common.assets.Board;
-import org.rpgwizard.common.assets.BoardLayer;
-import org.rpgwizard.common.assets.BoardLayerImage;
-import org.rpgwizard.common.assets.BoardSprite;
+import org.rpgwizard.common.assets.board.BoardLayer;
+import org.rpgwizard.common.assets.board.BoardLayerImage;
+import org.rpgwizard.common.assets.board.BoardSprite;
 
 /**
  * An <code>EventObject</code> used to contain information of a change that has

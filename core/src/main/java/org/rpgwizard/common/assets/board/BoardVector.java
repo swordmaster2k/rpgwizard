@@ -5,13 +5,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package org.rpgwizard.common.assets;
+package org.rpgwizard.common.assets.board;
 
 import java.awt.Point;
 import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.Objects;
 import org.rpgwizard.common.Selectable;
+import org.rpgwizard.common.assets.Event;
+import org.rpgwizard.common.assets.EventType;
 
 /**
  *

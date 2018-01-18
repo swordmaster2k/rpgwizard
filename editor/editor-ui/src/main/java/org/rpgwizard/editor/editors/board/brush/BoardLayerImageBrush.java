@@ -13,7 +13,7 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.image.BufferedImage;
 import org.rpgwizard.common.assets.Board;
-import org.rpgwizard.common.assets.BoardLayerImage;
+import org.rpgwizard.common.assets.board.BoardLayerImage;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.editors.BoardEditor;
 import org.rpgwizard.editor.editors.board.AbstractBoardView;
@@ -80,7 +80,7 @@ public class BoardLayerImageBrush extends AbstractBrush {
 				y -= (board.getTileHeight() / 2);
 			}
 
-			boardLayerImage = new BoardLayerImage("", x, y, currentLayer);
+			boardLayerImage = new BoardLayerImage(x, y, currentLayer);
 			board.addLayerImage(boardLayerImage);
 
 			int centerX = x - shapeBounds.width / 2;
@@ -104,8 +104,9 @@ public class BoardLayerImageBrush extends AbstractBrush {
 			AbstractAssetEditorWindow editor) {
 		if (editor instanceof BoardEditor) {
 			BoardEditor boardEditor = (BoardEditor) editor;
-                        RemoveLayerImageAction action = new RemoveLayerImageAction(boardEditor, boardLayerImage);
-                        action.actionPerformed(null);
+			RemoveLayerImageAction action = new RemoveLayerImageAction(
+					boardEditor, boardLayerImage);
+			action.actionPerformed(null);
 		}
 	}
 
@@ -114,15 +115,13 @@ public class BoardLayerImageBrush extends AbstractBrush {
 			AbstractAssetEditorWindow editor) {
 		if (editor instanceof BoardEditor) {
 			BoardEditor boardEditor = (BoardEditor) editor;
-                        BufferedImage defaultImage = BoardLayerView.getPlaceHolderImage();
+			BufferedImage defaultImage = BoardLayerView.getPlaceHolderImage();
 			BoardLayerImage image = boardEditor
-                                .getBoardView()
-                                .getCurrentSelectedLayer()
-                                .getLayer()
-                                .findImageAt(
-                                        point.x, point.y, 
-                                        defaultImage.getWidth(), defaultImage.getHeight()
-                                );
+					.getBoardView()
+					.getCurrentSelectedLayer()
+					.getLayer()
+					.findImageAt(point.x, point.y, defaultImage.getWidth(),
+							defaultImage.getHeight());
 			boardLayerImage = image;
 			selectImage(image, boardEditor);
 		}
@@ -130,6 +129,12 @@ public class BoardLayerImageBrush extends AbstractBrush {
 
 	@Override
 	public void doMouseButton1Dragged(Point point, Point origin,
+			AbstractAssetEditorWindow editor) {
+
+	}
+
+	@Override
+	public void doMouseButton3Dragged(Point point, Point origin,
 			AbstractAssetEditorWindow editor) {
 
 	}

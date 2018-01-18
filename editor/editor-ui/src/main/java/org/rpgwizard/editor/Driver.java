@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
 import org.rpgwizard.common.assets.AssetManager;
 import org.rpgwizard.common.assets.files.FileAssetHandleResolver;
 import org.rpgwizard.common.assets.serialization.JsonAnimationSerializer;
@@ -117,7 +118,7 @@ public class Driver {
                 registerSerializers();
                 PluginManager pluginManager = registerPlugins();
 
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                UIManager.setLookAndFeel(new SubstanceGraphiteLookAndFeel());
 
                 MainWindow mainWindow = MainWindow.getInstance();
                 mainWindow.setPluginManager(pluginManager);
@@ -143,9 +144,7 @@ public class Driver {
                 });
 
                 mainWindow.setVisible(true);
-            } catch (ClassNotFoundException | InstantiationException
-                    | IllegalAccessException | UnsupportedLookAndFeelException
-                    | URISyntaxException ex) {
+            } catch (UnsupportedLookAndFeelException | URISyntaxException ex) {
                 LOGGER.error("Failed to start the editor!", ex);
             }
         });

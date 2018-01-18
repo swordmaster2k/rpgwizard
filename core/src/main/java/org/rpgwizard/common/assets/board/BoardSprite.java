@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package org.rpgwizard.common.assets;
+package org.rpgwizard.common.assets.board;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -16,6 +16,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FilenameUtils;
 import org.rpgwizard.common.Selectable;
+import org.rpgwizard.common.assets.AbstractSprite;
+import org.rpgwizard.common.assets.Animation;
+import org.rpgwizard.common.assets.AnimationEnum;
+import org.rpgwizard.common.assets.AssetDescriptor;
+import org.rpgwizard.common.assets.AssetException;
+import org.rpgwizard.common.assets.AssetHandle;
+import org.rpgwizard.common.assets.AssetManager;
+import org.rpgwizard.common.assets.EventType;
+import org.rpgwizard.common.assets.board.model.AbstractBoardModel;
 import org.rpgwizard.common.utilities.CoreProperties;
 
 /**
@@ -23,7 +32,10 @@ import org.rpgwizard.common.utilities.CoreProperties;
  *
  * @author Joshua Michael Daly
  */
-public class BoardSprite implements Cloneable, Selectable {
+public class BoardSprite extends AbstractBoardModel
+		implements
+			Cloneable,
+			Selectable {
 
 	private AbstractSprite sprite;
 	private String fileName;
@@ -180,6 +192,17 @@ public class BoardSprite implements Cloneable, Selectable {
 	}
 
 	/**
+	 * 
+	 * @param x
+	 * @param y
+	 */
+	public void setPosition(int x, int y) {
+		this.x = x;
+		this.y = y;
+		fireModelMoved();
+	}
+
+	/**
 	 *
 	 * @param layer
 	 */
@@ -329,7 +352,7 @@ public class BoardSprite implements Cloneable, Selectable {
 
                 sprite = (AbstractSprite) handle.getAsset();
 
-                String southAnimation = sprite.animations.get(AnimationEnum.SOUTH.toString());
+                String southAnimation = sprite.getAnimations().get(AnimationEnum.SOUTH.toString());
                 if (!southAnimation.isEmpty()) {
                     file = new File(
                             System.getProperty("project.path")

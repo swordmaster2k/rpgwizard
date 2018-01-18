@@ -77,4 +77,8 @@ public abstract class AbstractModelPanel extends JPanel {
 		return spinner;
 	}
 
+	public void tearDown() {
+		// Do nothing by default, let children override it.
+	}
+
 }

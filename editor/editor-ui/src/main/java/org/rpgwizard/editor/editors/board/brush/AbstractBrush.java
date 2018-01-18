@@ -114,6 +114,10 @@ public abstract class AbstractBrush implements Brush {
 		// TODO: draw an off-board preview here.
 	}
 
+	public boolean checkDragBounds(int x, int y, int width, int height) {
+		return 0 < x && 0 < y && x < width && y < height;
+	}
+
 	public abstract void doMouseButton1Pressed(Point point,
 			AbstractAssetEditorWindow editor);
 
@@ -124,6 +128,9 @@ public abstract class AbstractBrush implements Brush {
 			AbstractAssetEditorWindow editor);
 
 	public abstract void doMouseButton1Dragged(Point point, Point origin,
+			AbstractAssetEditorWindow editor);
+
+	public abstract void doMouseButton3Dragged(Point point, Point origin,
 			AbstractAssetEditorWindow editor);
 
 	public abstract boolean isPixelBased();

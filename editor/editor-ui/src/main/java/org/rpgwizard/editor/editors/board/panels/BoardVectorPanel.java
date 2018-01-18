@@ -23,8 +23,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.rpgwizard.editor.editors.board.BoardLayerView;
-import org.rpgwizard.common.assets.BoardVector;
-import org.rpgwizard.common.assets.BoardVectorType;
+import org.rpgwizard.common.assets.board.BoardVector;
+import org.rpgwizard.common.assets.board.BoardVectorType;
 import org.rpgwizard.common.assets.Event;
 import org.rpgwizard.common.assets.EventType;
 import org.rpgwizard.common.assets.KeyPressEvent;

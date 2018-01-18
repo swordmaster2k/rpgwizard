@@ -13,9 +13,12 @@ import javax.swing.GroupLayout;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
+import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import org.apache.commons.lang3.ArrayUtils;
-import org.rpgwizard.common.assets.BoardLayerImage;
+import org.rpgwizard.common.assets.board.BoardLayerImage;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.rpgwizard.editor.utilities.GuiHelper;
@@ -28,6 +31,9 @@ public class BoardLayerImagePanel extends BoardModelPanel {
 
 	private final JComboBox fileComboBox;
 	private final JLabel fileLabel;
+
+	private final JTextField idField;
+	private final JLabel idLabel;
 
 	private final JSpinner xSpinner;
 	private final JLabel xLabel;
@@ -66,6 +72,35 @@ public class BoardLayerImagePanel extends BoardModelPanel {
             MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
         });
         ///
+        /// idField
+        ///
+        idField = new JTextField();
+        idField.setText(((BoardLayerImage) model).getId());
+        idField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateImageId();
+                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateImageId();
+                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateImageId();
+                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+            }
+
+            private void updateImageId() {
+                ((BoardLayerImage) model).setId(idField.getText());
+                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+            }
+        });
+        ///
         /// xSpinner
         ///
         xSpinner = new JSpinner();
@@ -99,12 +134,14 @@ public class BoardLayerImagePanel extends BoardModelPanel {
         horizontalGroup.addGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(fileLabel = getJLabel("Image"))
+                        .addComponent(idLabel = getJLabel("ID"))
                         .addComponent(xLabel = getJLabel("X"))
                         .addComponent(yLabel = getJLabel("Y")));
 
         horizontalGroup.addGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(fileComboBox)
+                        .addComponent(idField)
                         .addComponent(xSpinner)
                         .addComponent(ySpinner));
 
@@ -112,6 +149,9 @@ public class BoardLayerImagePanel extends BoardModelPanel {
 
         verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(fileLabel).addComponent(fileComboBox));
+        
+        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(idLabel).addComponent(idField));
 
         verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(xLabel).addComponent(xSpinner));

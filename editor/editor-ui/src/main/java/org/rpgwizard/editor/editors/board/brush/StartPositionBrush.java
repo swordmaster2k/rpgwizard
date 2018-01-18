@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package org.rpgwizard.editor.editors.board;
+package org.rpgwizard.editor.editors.board.brush;
 
 import org.rpgwizard.editor.editors.board.brush.AbstractBrush;
 import org.rpgwizard.editor.editors.board.brush.Brush;
@@ -14,6 +14,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import org.rpgwizard.common.assets.Board;
+import org.rpgwizard.editor.editors.board.AbstractBoardView;
 import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 
 /**
@@ -84,6 +85,12 @@ public class StartPositionBrush extends AbstractBrush {
 
 	@Override
 	public void doMouseButton1Dragged(Point point, Point origin,
+			AbstractAssetEditorWindow editor) {
+
+	}
+
+	@Override
+	public void doMouseButton3Dragged(Point point, Point origin,
 			AbstractAssetEditorWindow editor) {
 
 	}

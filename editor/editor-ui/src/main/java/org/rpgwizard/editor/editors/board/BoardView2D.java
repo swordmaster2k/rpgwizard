@@ -269,6 +269,12 @@ public final class BoardView2D extends AbstractBoardView {
 			if (layer.isIsVisible()) {
 				if (layer.getLayer().getNumber() == startingLayer) {
 					g.drawImage(startPositionImage, x, y, this);
+					int imageHeight = startPositionImage.getHeight(null);
+					int stringY = y > imageHeight ? y : y + imageHeight;
+					Color lastColor = g.getColor();
+					g.setColor(Color.MAGENTA);
+					g.drawString("Layer " + startingLayer, x, stringY);
+					g.setColor(lastColor);
 				}
 			}
 		}

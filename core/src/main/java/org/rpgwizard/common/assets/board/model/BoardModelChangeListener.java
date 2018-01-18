@@ -5,18 +5,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package org.rpgwizard.common.assets;
-
-import java.util.stream.Stream;
+package org.rpgwizard.common.assets.board.model;
 
 /**
- * @author Chris Hutchinson
+ *
+ * @author Joshua Michael Daly
  */
-public enum BoardVectorType {
+public interface BoardModelChangeListener {
 
-	PASSABLE, SOLID;
+	public void modelChanged(BoardModelEvent e);
 
-	public static String[] toStringArray() {
-            return Stream.of(BoardVectorType.values()).map(BoardVectorType::name).toArray(String[]::new);
-        }
+	public void modelMoved(BoardModelEvent e);
+
 }

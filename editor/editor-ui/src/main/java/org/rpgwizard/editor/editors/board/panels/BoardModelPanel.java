@@ -7,6 +7,9 @@
  */
 package org.rpgwizard.editor.editors.board.panels;
 
+import org.rpgwizard.common.assets.board.model.AbstractBoardModel;
+import org.rpgwizard.common.assets.board.model.BoardModelChangeListener;
+import org.rpgwizard.common.assets.board.model.BoardModelEvent;
 import org.rpgwizard.editor.editors.BoardEditor;
 import org.rpgwizard.editor.ui.AbstractModelPanel;
 import org.rpgwizard.editor.MainWindow;
@@ -15,10 +18,22 @@ import org.rpgwizard.editor.MainWindow;
  *
  * @author Joshua Michael Daly
  */
-public class BoardModelPanel extends AbstractModelPanel {
+public class BoardModelPanel extends AbstractModelPanel
+		implements
+			BoardModelChangeListener {
 
 	public BoardModelPanel(Object model) {
 		super(model);
+		if (model instanceof AbstractBoardModel) {
+			((AbstractBoardModel) model).addBoardChangeListener(this);
+		}
+	}
+
+	@Override
+	public void tearDown() {
+		if (model instanceof AbstractBoardModel) {
+			((AbstractBoardModel) model).removeBoardChangeListener(this);
+		}
 	}
 
 	public BoardEditor getBoardEditor() {
@@ -31,6 +46,16 @@ public class BoardModelPanel extends AbstractModelPanel {
 		if (editor != null) {
 			editor.getBoardView().repaint();
 		}
+	}
+
+	@Override
+	public void modelChanged(BoardModelEvent e) {
+
+	}
+
+	@Override
+	public void modelMoved(BoardModelEvent e) {
+
 	}
 
 }

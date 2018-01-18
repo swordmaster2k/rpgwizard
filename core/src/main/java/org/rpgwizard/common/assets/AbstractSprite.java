@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import org.rpgwizard.common.assets.board.BoardVector;
 import org.rpgwizard.common.assets.events.SpriteChangedEvent;
 import org.rpgwizard.common.assets.listeners.SpriteChangeListener;
 

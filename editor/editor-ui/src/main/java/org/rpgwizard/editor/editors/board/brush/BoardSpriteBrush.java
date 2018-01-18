@@ -7,13 +7,14 @@
  */
 package org.rpgwizard.editor.editors.board.brush;
 
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.image.BufferedImage;
 import org.rpgwizard.common.assets.Board;
-import org.rpgwizard.common.assets.BoardSprite;
+import org.rpgwizard.common.assets.board.BoardSprite;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.editors.BoardEditor;
 import org.rpgwizard.editor.editors.board.AbstractBoardView;
@@ -98,7 +99,6 @@ public class BoardSpriteBrush extends AbstractBrush {
 	public Rectangle doPaint(int x, int y, Rectangle selection)
 			throws Exception {
 		super.doPaint(x, y, selection);
-
 		BoardLayerView boardLayerView = affectedContainer
 				.getLayer(currentLayer);
 
@@ -106,26 +106,20 @@ public class BoardSpriteBrush extends AbstractBrush {
 			boolean snap = MainWindow.getInstance().isSnapToGrid();
 			Board board = boardLayerView.getLayer().getBoard();
 			Rectangle shapeBounds = getBounds();
-
 			if (snap) {
-				x = Math.max(0, Math.min(x / board.getTileWidth(),
-						board.getWidth() - 1))
-						* board.getTileWidth() + (board.getTileWidth() / 2);
-				y = Math.max(0, Math.min(y / board.getTileHeight(),
-						board.getHeight() - 1))
-						* board.getTileHeight() + (board.getTileHeight() / 2);
+				Point point = getSnapPoint(board, x, y);
+				x = point.x;
+				y = point.y;
 			}
 
 			boardSprite = new BoardSprite();
 			boardSprite.setX(x);
 			boardSprite.setY(y);
 			boardSprite.setLayer(currentLayer);
-
 			board.addSprite(boardSprite);
 
 			int centerX = x - shapeBounds.width / 2;
 			int centerY = y - shapeBounds.height / 2;
-
 			return new Rectangle(centerX, centerY, shapeBounds.width,
 					shapeBounds.height);
 		} else {
@@ -156,8 +150,9 @@ public class BoardSpriteBrush extends AbstractBrush {
 			AbstractAssetEditorWindow editor) {
 		if (editor instanceof BoardEditor) {
 			BoardEditor boardEditor = (BoardEditor) editor;
-                        RemoveSpriteAction action = new RemoveSpriteAction(boardEditor, boardSprite);
-                        action.actionPerformed(null);
+			RemoveSpriteAction action = new RemoveSpriteAction(boardEditor,
+					boardSprite);
+			action.actionPerformed(null);
 		}
 	}
 
@@ -166,15 +161,13 @@ public class BoardSpriteBrush extends AbstractBrush {
 			AbstractAssetEditorWindow editor) {
 		if (editor instanceof BoardEditor) {
 			BoardEditor boardEditor = (BoardEditor) editor;
-                        BufferedImage defaultImage = BoardLayerView.getPlaceHolderSprite();
+			BufferedImage defaultImage = BoardLayerView.getPlaceHolderSprite();
 			BoardSprite sprite = boardEditor
-                                .getBoardView()
-                                .getCurrentSelectedLayer()
-                                .getLayer()
-                                .findSpriteAt(
-                                        point.x, point.y, 
-                                        defaultImage.getWidth(), defaultImage.getHeight()
-                                );
+					.getBoardView()
+					.getCurrentSelectedLayer()
+					.getLayer()
+					.findSpriteAt(point.x, point.y, defaultImage.getWidth(),
+							defaultImage.getHeight());
 			boardSprite = sprite;
 			selectSprite(sprite, boardEditor);
 		}
@@ -187,8 +180,40 @@ public class BoardSpriteBrush extends AbstractBrush {
 	}
 
 	@Override
+	public void doMouseButton3Dragged(Point point, Point origin,
+			AbstractAssetEditorWindow editor) {
+		if (editor instanceof BoardEditor) {
+			BoardEditor boardEditor = (BoardEditor) editor;
+			if (boardEditor.getSelectedObject() == boardSprite) {
+				Dimension dimension = boardEditor.getBoard()
+						.getBoardPixelDimensions();
+				if (checkDragBounds(point.x, point.y, dimension.width,
+						dimension.height)) {
+					if (MainWindow.getInstance().isSnapToGrid()) {
+						point = getSnapPoint(boardEditor.getBoard(), point.x,
+								point.y);
+					}
+					boardSprite.setPosition(point.x, point.y);
+					boardEditor.getBoardView().repaint();
+				}
+			}
+		}
+	}
+
+	@Override
 	public boolean isPixelBased() {
 		return true;
+	}
+
+	private Point getSnapPoint(Board board, int x, int y) {
+		x = Math.max(0,
+				Math.min(x / board.getTileWidth(), board.getWidth() - 1))
+				* board.getTileWidth() + (board.getTileWidth() / 2);
+		y = Math.max(0,
+				Math.min(y / board.getTileHeight(), board.getHeight() - 1))
+				* board.getTileHeight() + (board.getTileHeight() / 2);
+
+		return new Point(x, y);
 	}
 
 	/**

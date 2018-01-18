@@ -40,7 +40,8 @@ public final class WindowMenu extends JMenu {
 	public void configureSidePanelMenuItem() {
 		sidePanel = new JMenuItem("Side Panel");
 		sidePanel.setIcon(Icons.getSmallIcon("application-sidebar"));
-		sidePanel.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_OPEN_BRACKET, ActionEvent.CTRL_MASK));
+		sidePanel.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_OPEN_BRACKET, ActionEvent.CTRL_MASK));
 		// sidePanel.setMnemonic(KeyEvent.VK_PLUS);
 		sidePanel.addActionListener(new SidePanelAction());
 	}

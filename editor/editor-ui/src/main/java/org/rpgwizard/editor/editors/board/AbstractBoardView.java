@@ -23,7 +23,7 @@ import javax.swing.JPanel;
 
 import org.rpgwizard.common.assets.listeners.BoardChangeListener;
 import org.rpgwizard.common.assets.events.BoardChangedEvent;
-import org.rpgwizard.common.assets.BoardLayer;
+import org.rpgwizard.common.assets.board.BoardLayer;
 import org.rpgwizard.common.assets.Board;
 import org.rpgwizard.common.assets.TilePixelOutOfRangeException;
 import org.rpgwizard.editor.editors.BoardEditor;
@@ -784,7 +784,8 @@ public abstract class AbstractBoardView extends JPanel
 		gridColor = DEFAULT_GRID_COLOR;
 		gridOpacity = 100;
 
-		startPositionImage = Icons.getLargeIcon("icons8-finish-flag-48").getImage();
+		startPositionImage = Icons.getLargeIcon("icons8-finish-flag-48")
+				.getImage();
 
 		if (!layers.isEmpty()) {
 			currentSelectedLayer = layers.get(0);

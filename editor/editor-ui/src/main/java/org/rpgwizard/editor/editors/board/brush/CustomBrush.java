@@ -211,6 +211,12 @@ public class CustomBrush extends AbstractBrush {
 	}
 
 	@Override
+	public void doMouseButton3Dragged(Point point, Point origin,
+			AbstractAssetEditorWindow editor) {
+
+	}
+
+	@Override
 	public boolean isPixelBased() {
 		return false;
 	}

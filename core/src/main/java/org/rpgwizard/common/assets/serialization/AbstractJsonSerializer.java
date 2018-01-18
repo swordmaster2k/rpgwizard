@@ -24,8 +24,8 @@ import java.util.Map;
 import org.rpgwizard.common.assets.AbstractAssetSerializer;
 import org.rpgwizard.common.assets.AssetException;
 import org.rpgwizard.common.assets.AssetHandle;
-import org.rpgwizard.common.assets.BoardVector;
-import org.rpgwizard.common.assets.BoardVectorType;
+import org.rpgwizard.common.assets.board.BoardVector;
+import org.rpgwizard.common.assets.board.BoardVectorType;
 import org.rpgwizard.common.assets.Event;
 import org.rpgwizard.common.assets.EventType;
 import org.apache.commons.io.FilenameUtils;
@@ -33,7 +33,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import org.json.JSONObject;
-import org.rpgwizard.common.assets.BoardLayerImage;
+import org.rpgwizard.common.assets.board.BoardLayerImage;
 import org.rpgwizard.common.assets.KeyPressEvent;
 
 /**
@@ -205,9 +205,10 @@ public abstract class AbstractJsonSerializer extends AbstractAssetSerializer {
 
 	protected JSONObject serializeBoardLayerImage(BoardLayerImage image) {
 		final JSONObject object = new JSONObject();
+		object.put("id", image.getId());
+		object.put("src", image.getSrc());
 		object.put("x", image.getX());
 		object.put("y", image.getY());
-		object.put("src", image.getSrc());
 
 		return object;
 	}
@@ -225,7 +226,8 @@ public abstract class AbstractJsonSerializer extends AbstractAssetSerializer {
     }
 	protected BoardLayerImage deserializeBoardLayerImage(JSONObject object) {
 		BoardLayerImage layerImage = new BoardLayerImage(
-				object.getString("src"), object.getInt("x"), object.getInt("y"));
+				object.getString("id"), object.getString("src"),
+				object.getInt("x"), object.getInt("y"));
 		return layerImage;
 	}
 

@@ -15,7 +15,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import org.rpgwizard.common.assets.AbstractSprite;
-import org.rpgwizard.common.assets.BoardVector;
+import org.rpgwizard.common.assets.board.BoardVector;
 import org.rpgwizard.editor.ui.AbstractModelPanel;
 
 /**

@@ -20,6 +20,7 @@
     <properties>
         <rsyntaxtextarea.version>2.6.1</rsyntaxtextarea.version>
         <languagesupport.version>2.6.0</languagesupport.version>
+        <substance.version>7.3</substance.version>
     </properties>
 
     <dependencies>
@@ -47,6 +48,11 @@
             <groupId>com.fifesoft</groupId>
             <artifactId>languagesupport</artifactId>
             <version>${languagesupport.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.insubstantial</groupId>
+            <artifactId>substance</artifactId>
+            <version>${substance.version}</version>
         </dependency>
     </dependencies>
     

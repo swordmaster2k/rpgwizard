@@ -21,7 +21,7 @@ import javax.swing.event.ListSelectionListener;
 public class PropertiesPanel extends JPanel implements ListSelectionListener {
 
 	private Object model;
-
+	private AbstractModelPanel panel;
 	private JScrollPane propertiesScrollPane;
 
 	public PropertiesPanel() {
@@ -40,15 +40,16 @@ public class PropertiesPanel extends JPanel implements ListSelectionListener {
 	public void setModel(Object model) {
 		this.model = model;
 
-		AbstractModelPanel panel = ModelPanelFactory.getModelPanel(model);
+		if (panel != null) {
+			panel.tearDown();
+		}
+		panel = ModelPanelFactory.getModelPanel(model);
 
 		// To ensure that the internal controls are not streched.
 		JPanel intermediate = new JPanel(new BorderLayout());
-
 		if (panel != null) {
 			intermediate.add(panel, BorderLayout.NORTH);
 		}
-
 		propertiesScrollPane.setViewportView(intermediate);
 		propertiesScrollPane.getViewport().revalidate();
 	}
@@ -59,12 +60,7 @@ public class PropertiesPanel extends JPanel implements ListSelectionListener {
 	}
 
 	private void initialize() {
-		if (model != null) {
-
-		} else {
-
-		}
-
+		panel = null;
 		propertiesScrollPane = new JScrollPane();
 		propertiesScrollPane.getViewport().setScrollMode(
 				JViewport.SIMPLE_SCROLL_MODE);

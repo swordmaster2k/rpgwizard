@@ -7,6 +7,10 @@
  */
 package org.rpgwizard.common.assets;
 
+import org.rpgwizard.common.assets.board.BoardLayer;
+import org.rpgwizard.common.assets.board.BoardSprite;
+import org.rpgwizard.common.assets.board.BoardLayerImage;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -93,6 +97,8 @@ public final class Board extends AbstractAsset implements Selectable {
 		this.tileWidth = tileWidth;
 		this.tileHeight = tileHeight;
 		addLayer();
+		startingPosition.x = (width * tileWidth) / 2;
+		startingPosition.y = (height * tileHeight) / 2;
 	}
 
 	/**
@@ -332,6 +338,15 @@ public final class Board extends AbstractAsset implements Selectable {
 	}
 
 	/**
+	 * Gets the boards width and height in pixels.
+	 * 
+	 * @return
+	 */
+	public Dimension getBoardPixelDimensions() {
+		return new Dimension(width * tileWidth, height * tileHeight);
+	}
+
+	/**
 	 * Gets the board layer names.
 	 *
 	 * @return board layer names
@@ -450,7 +465,6 @@ public final class Board extends AbstractAsset implements Selectable {
 	@Override
 	public void reset() {
 		tileSets.clear();
-
 		width = 0;
 		height = 0;
 		perspective = Perspective.ORTHOGONAL;

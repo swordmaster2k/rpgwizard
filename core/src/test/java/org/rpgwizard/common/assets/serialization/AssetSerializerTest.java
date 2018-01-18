@@ -16,16 +16,16 @@ import org.rpgwizard.common.assets.Animation;
 import org.rpgwizard.common.assets.AnimationEnum;
 import org.rpgwizard.common.assets.AssetManager;
 import org.rpgwizard.common.assets.Board;
-import org.rpgwizard.common.assets.BoardLayer;
-import org.rpgwizard.common.assets.BoardSprite;
-import org.rpgwizard.common.assets.BoardVector;
+import org.rpgwizard.common.assets.board.BoardLayer;
+import org.rpgwizard.common.assets.board.BoardSprite;
+import org.rpgwizard.common.assets.board.BoardVector;
 import org.rpgwizard.common.assets.Enemy;
 import org.rpgwizard.common.assets.Project;
 import org.rpgwizard.common.assets.GraphicEnum;
 import org.rpgwizard.common.assets.NPC;
 import org.rpgwizard.common.assets.Character;
 import org.rpgwizard.common.assets.TileSet;
-import org.rpgwizard.common.assets.BoardVectorType;
+import org.rpgwizard.common.assets.board.BoardVectorType;
 import org.rpgwizard.common.assets.Event;
 import org.rpgwizard.common.assets.EventType;
 import org.rpgwizard.common.assets.Program;
@@ -35,7 +35,7 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.rpgwizard.common.assets.BoardLayerImage;
+import org.rpgwizard.common.assets.board.BoardLayerImage;
 import org.rpgwizard.common.assets.Item;
 
 /**
@@ -176,10 +176,13 @@ public class AssetSerializerTest {
         
         Assert.assertTrue(layer.getImages().size() == 2);
         BoardLayerImage image = layer.getImages().get(0);
+        Assert.assertEquals("image1", image.getId());
         Assert.assertEquals(40, image.getX());
         Assert.assertEquals(40, image.getY());
         Assert.assertEquals("1.png", image.getSrc());
+        
         image = layer.getImages().get(1);
+        Assert.assertEquals("image2", image.getId());
         Assert.assertEquals(80, image.getX());
         Assert.assertEquals(80, image.getY());
         Assert.assertEquals("2.png", image.getSrc());

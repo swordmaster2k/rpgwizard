@@ -5,13 +5,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package org.rpgwizard.common.assets;
+package org.rpgwizard.common.assets.board;
 
 import com.google.common.collect.Lists;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import org.rpgwizard.common.assets.Board;
+import org.rpgwizard.common.assets.Tile;
 
 /**
  * Represents a layer on a board.
@@ -418,23 +420,23 @@ public class BoardLayer implements Cloneable {
 	 *            mouse click x
 	 * @param y
 	 *            mouse click y
-         * @param width 
-         *            default image width
-         * @param height
-         *            default image height
+	 * @param width
+	 *            default image width
+	 * @param height
+	 *            default image height
 	 * @return a sprite or null
 	 */
 	public BoardSprite findSpriteAt(int x, int y, int width, int height) {
 		for (BoardSprite sprite : Lists.reverse(sprites)) {
-                        BufferedImage image = sprite.getSouthImage();
-                        if (image != null) {
-                            width = image.getWidth();
-                            height = image.getHeight();
-                        }
-                        int x1 = sprite.getX() - width / 2;
-                        int y1 = sprite.getY() - height / 2;
-                        int x2 = x1 + width;
-                        int y2 = y1 + height;
+			BufferedImage image = sprite.getSouthImage();
+			if (image != null) {
+				width = image.getWidth();
+				height = image.getHeight();
+			}
+			int x1 = sprite.getX() - width / 2;
+			int y1 = sprite.getY() - height / 2;
+			int x2 = x1 + width;
+			int y2 = y1 + height;
 			if (x1 < x && x < x2 && y1 < y && y < y2) {
 				return sprite;
 			}
@@ -450,10 +452,10 @@ public class BoardLayer implements Cloneable {
 	 *            mouse click x
 	 * @param y
 	 *            mouse click y
-         * @param width 
-         *            default image width
-         * @param height
-         *            default image height
+	 * @param width
+	 *            default image width
+	 * @param height
+	 *            default image height
 	 * @return removed if any
 	 */
 	public BoardSprite removeSpriteAt(int x, int y, int width, int height) {
@@ -475,23 +477,23 @@ public class BoardLayer implements Cloneable {
 	 *            mouse click x
 	 * @param y
 	 *            mouse click y
-         * @param width 
-         *            default image width
-         * @param height
-         *            default image height 
+	 * @param width
+	 *            default image width
+	 * @param height
+	 *            default image height
 	 * @return a sprite or null
 	 */
 	public BoardLayerImage findImageAt(int x, int y, int width, int height) {
 		for (BoardLayerImage layerImage : Lists.reverse(images)) {
-                        BufferedImage image = layerImage.getImage();
-                        if (image != null) {
-                            width = image.getWidth();
-                            height = image.getHeight();
-                        }
-                        int x1 = layerImage.getX();
-                        int y1 = layerImage.getY();
-                        int x2 = x1 + width;
-                        int y2 = y1 + height;
+			BufferedImage image = layerImage.getImage();
+			if (image != null) {
+				width = image.getWidth();
+				height = image.getHeight();
+			}
+			int x1 = layerImage.getX();
+			int y1 = layerImage.getY();
+			int x2 = x1 + width;
+			int y2 = y1 + height;
 			if (x1 < x && x < x2 && y1 < y && y < y2) {
 				return layerImage;
 			}
@@ -507,10 +509,10 @@ public class BoardLayer implements Cloneable {
 	 *            mouse click x
 	 * @param y
 	 *            mouse click y
-         * @param width 
-         *            default image width
-         * @param height
-         *            default image height
+	 * @param width
+	 *            default image width
+	 * @param height
+	 *            default image height
 	 * @return removed if any
 	 */
 	public BoardLayerImage removeImageAt(int x, int y, int width, int height) {

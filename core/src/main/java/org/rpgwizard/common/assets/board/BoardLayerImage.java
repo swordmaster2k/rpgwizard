@@ -10,12 +10,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.rpgwizard.common.assets;
+package org.rpgwizard.common.assets.board;
 
 import org.rpgwizard.common.utilities.CoreUtil;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.UUID;
 import org.rpgwizard.common.Selectable;
 
 /**
@@ -24,6 +25,7 @@ import org.rpgwizard.common.Selectable;
  */
 public class BoardLayerImage implements Selectable {
 
+	private String id;
 	private String src;
 	private int x;
 	private int y;
@@ -34,6 +36,7 @@ public class BoardLayerImage implements Selectable {
 	private boolean selected;
 
 	public BoardLayerImage() {
+		id = UUID.randomUUID().toString();
 		this.src = "";
 		this.x = 0;
 		this.y = 0;
@@ -42,7 +45,15 @@ public class BoardLayerImage implements Selectable {
 		selected = false;
 	}
 
-	public BoardLayerImage(String src, int x, int y) {
+	public BoardLayerImage(int x, int y, int layer) {
+		this();
+		this.x = x;
+		this.y = y;
+		this.layer = layer;
+	}
+
+	public BoardLayerImage(String id, String src, int x, int y) {
+		this.id = id;
 		this.src = src;
 		this.x = x;
 		this.y = y;
@@ -50,9 +61,17 @@ public class BoardLayerImage implements Selectable {
 		selected = false;
 	}
 
-	public BoardLayerImage(String src, int x, int y, int layer) {
-		this(src, x, y);
+	public BoardLayerImage(String id, String src, int x, int y, int layer) {
+		this(id, src, x, y);
 		this.layer = layer;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getSrc() {

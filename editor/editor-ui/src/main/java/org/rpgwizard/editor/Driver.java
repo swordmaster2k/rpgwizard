@@ -11,11 +11,12 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.util.List;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
+import org.pushingpixels.substance.api.skin.SubstanceGraphiteAquaLookAndFeel;
 import org.rpgwizard.common.assets.AssetManager;
 import org.rpgwizard.common.assets.files.FileAssetHandleResolver;
 import org.rpgwizard.common.assets.serialization.JsonAnimationSerializer;
@@ -118,7 +119,9 @@ public class Driver {
                 registerSerializers();
                 PluginManager pluginManager = registerPlugins();
 
-                UIManager.setLookAndFeel(new SubstanceGraphiteLookAndFeel());
+                UIManager.setLookAndFeel(new SubstanceGraphiteAquaLookAndFeel());
+                JFrame.setDefaultLookAndFeelDecorated(true);
+                JDialog.setDefaultLookAndFeelDecorated(true);
 
                 MainWindow mainWindow = MainWindow.getInstance();
                 mainWindow.setPluginManager(pluginManager);

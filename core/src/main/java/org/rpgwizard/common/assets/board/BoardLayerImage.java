@@ -18,12 +18,13 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.UUID;
 import org.rpgwizard.common.Selectable;
+import org.rpgwizard.common.assets.board.model.AbstractBoardModel;
 
 /**
  *
  * @author Joshua Michael Daly
  */
-public class BoardLayerImage implements Selectable {
+public class BoardLayerImage extends AbstractBoardModel implements Selectable {
 
 	private String id;
 	private String src;
@@ -128,6 +129,17 @@ public class BoardLayerImage implements Selectable {
 
 	public void setLayer(int layer) {
 		this.layer = layer;
+	}
+        
+        /**
+	 * 
+	 * @param x
+	 * @param y
+	 */
+	public void setPosition(int x, int y) {
+		this.x = x;
+		this.y = y;
+		fireModelMoved();
 	}
 
 	@Override

@@ -9,7 +9,6 @@ package org.rpgwizard.editor;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Rectangle;
@@ -100,9 +99,14 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
 	private final MainMenuBar menuBar;
 	private final MainToolBar toolBar;
 
-	private final JPanel toolboxPanel;
-	private final JTabbedPane upperTabbedPane;
-	private final JTabbedPane lowerTabbedPane;
+	private final JPanel westPanel;
+	private final JTabbedPane westUpperTabbedPane;
+	private final JTabbedPane westLowerTabbedPane;
+        
+        private final JPanel eastPanel;
+	private final JTabbedPane eastUpperTabbedPane;
+	private final JTabbedPane eastLowerTabbedPane;
+        
 	// private final ProjectPanel projectPanel;
 	private final TileSetTabbedPane tileSetPanel;
 	private final PropertiesPanel propertiesPanel;
@@ -125,32 +129,71 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
 	private PluginManager pluginManager;
 
 	private MainWindow() {
+                ///
+                /// super
+                ///
 		super(EditorProperties.getProperty(EditorProperty.EDITOR_UI_TITLE));
-
+                ///
+                /// desktopPane
+                ///
 		desktopPane = new JDesktopPane();
 		desktopPane.setBackground(Color.LIGHT_GRAY);
 		desktopPane.setDesktopManager(new ToolkitDesktopManager());
-
+                ///
+                /// editorMap
+                ///
 		editorMap = new HashMap();
-
-		// this.projectPanel = new ProjectPanel();
+                ///
+                /// tileSetPanel
+                ///
 		tileSetPanel = new TileSetTabbedPane();
-		upperTabbedPane = new JTabbedPane();
+                // this.projectPanel = new ProjectPanel();
+                ///
+                /// westUpperTabbedPane
+                ///
+		westUpperTabbedPane = new JTabbedPane();
 		// this.upperTabbedPane.addTab("Project", this.projectPanel); // TODO:
-		upperTabbedPane.addTab("Tileset", tileSetPanel);
-
+		westUpperTabbedPane.addTab("Tileset", tileSetPanel);
+                ///
+                /// layerPanel
+                ///
+                layerPanel = new LayerPanel();
+                ///
+                /// propertiesPanel
+                ///
 		propertiesPanel = new PropertiesPanel();
-		layerPanel = new LayerPanel();
-		lowerTabbedPane = new JTabbedPane();
-		lowerTabbedPane.addTab("Properties", propertiesPanel);
-		lowerTabbedPane.addTab("Layers", layerPanel);
-
-		toolboxPanel = new JPanel(new GridLayout(2, 1));
-		toolboxPanel.setPreferredSize(new Dimension(384, 0));
-		toolboxPanel.add(upperTabbedPane);
-		toolboxPanel.add(lowerTabbedPane);
-
-		// Application icon.
+		///
+                /// westLowerTabbedPane
+                ///
+		westLowerTabbedPane = new JTabbedPane();
+		westLowerTabbedPane.addTab("Layers", layerPanel);
+                westLowerTabbedPane.addTab("Properties", propertiesPanel);
+                ///
+                /// westPanel
+                ///
+		westPanel = new JPanel(new GridLayout(2, 1));
+		westPanel.setPreferredSize(new Dimension(384, 0));
+		westPanel.add(westUpperTabbedPane);
+		westPanel.add(westLowerTabbedPane);
+                ///
+                /// eastUpperTabbedPane
+                ///
+                eastUpperTabbedPane = new JTabbedPane();
+                ///
+                /// eastLowerTabbedPane
+                ///
+		eastLowerTabbedPane = new JTabbedPane();
+                ///
+                /// eastPanel
+                ///
+		eastPanel = new JPanel(new GridLayout(2, 1));
+		eastPanel.setPreferredSize(new Dimension(350, 0));
+		eastPanel.add(eastUpperTabbedPane);
+		eastPanel.add(eastLowerTabbedPane);
+                eastPanel.setVisible(false);
+                ///
+                /// Misc
+                ///
 		setIconImage(Icons.getLargeIcon("editor").getImage());
 
 		menuBar = new MainMenuBar(this);
@@ -163,14 +206,17 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
 		lastSelectedTile = new Tile();
 
 		tileSetSelectionListener = new TileSetSelectionListener();
-
+                ///
+                /// this
+                ///
 		JPanel parent = new JPanel(new BorderLayout());
 		parent.add(desktopPane, BorderLayout.CENTER);
 
 		setLayout(new BorderLayout());
 		add(toolBar, BorderLayout.NORTH);
 		add(parent, BorderLayout.CENTER);
-		add(toolboxPanel, BorderLayout.WEST);
+		add(westPanel, BorderLayout.WEST);
+                add(eastPanel, BorderLayout.EAST);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -235,9 +281,21 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
 		lastSelectedTile = tile;
 	}
 
-	public JPanel getToolboxPanel() {
-		return toolboxPanel;
+	public JPanel getWestPanel() {
+		return westPanel;
 	}
+
+        public JTabbedPane getWestLowerTabbedPane() {
+            return westLowerTabbedPane;
+        }
+        
+        public JPanel getEastPanel() {
+            return eastPanel;
+        }
+        
+        public JTabbedPane getEastLowerTabbedPane() {
+            return eastLowerTabbedPane;
+        }
 
 	public MainMenuBar getMainMenuBar() {
 		return this.menuBar;
@@ -265,12 +323,6 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
 
 	public TileSelectionListener getTileSetSelectionListener() {
 		return tileSetSelectionListener;
-	}
-
-	public void setLowerTabbedPane(Component component) {
-		if (lowerTabbedPane.getSelectedComponent() != component) {
-			lowerTabbedPane.setSelectedComponent(component);
-		}
 	}
 
 	public PluginManager getPluginManager() {
@@ -329,8 +381,8 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
 			propertiesPanel.setModel(editor.getAnimation());
 		} else if (window instanceof BoardEditor) {
 			BoardEditor editor = (BoardEditor) window;
-			upperTabbedPane.setSelectedComponent(tileSetPanel);
-			lowerTabbedPane.setSelectedComponent(layerPanel);
+			westUpperTabbedPane.setSelectedComponent(tileSetPanel);
+			westLowerTabbedPane.setSelectedComponent(layerPanel);
 			propertiesPanel.setModel(editor.getBoard());
 		} else if (window instanceof CharacterEditor) {
 			CharacterEditor editor = (CharacterEditor) window;
@@ -902,7 +954,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
 			}
 
 			tileSetPanel.addTileSet(tileSet);
-			upperTabbedPane.setSelectedComponent(tileSetPanel);
+			westUpperTabbedPane.setSelectedComponent(tileSetPanel);
 		} catch (IOException ex) {
 			LOGGER.error("Failed to open {} file=[{}].",
 					TileSet.class.getSimpleName(), file, ex);

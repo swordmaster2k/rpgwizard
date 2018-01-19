@@ -12,7 +12,8 @@ import java.awt.event.KeyEvent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
-import org.rpgwizard.editor.ui.actions.SidePanelAction;
+import org.rpgwizard.editor.ui.actions.EastPanelAction;
+import org.rpgwizard.editor.ui.actions.WestPanelAction;
 import org.rpgwizard.editor.ui.resources.Icons;
 
 /**
@@ -21,29 +22,39 @@ import org.rpgwizard.editor.ui.resources.Icons;
  */
 public final class WindowMenu extends JMenu {
 
-	private JMenuItem sidePanel;
+	private JMenuItem westPanel;
+        private JMenuItem eastPanel;
 
 	public WindowMenu() {
 		super("Window");
 
 		setMnemonic(KeyEvent.VK_W);
 
-		configureSidePanelMenuItem();
+		configureWestPanelMenuItem();
+                configureEastPanelMenuItem();
 
-		add(sidePanel);
+		add(westPanel);
+                add(eastPanel);
 	}
 
 	public JMenuItem getZoomInMenuItem() {
-		return sidePanel;
+		return westPanel;
 	}
 
-	public void configureSidePanelMenuItem() {
-		sidePanel = new JMenuItem("Side Panel");
-		sidePanel.setIcon(Icons.getSmallIcon("application-sidebar"));
-		sidePanel.setAccelerator(KeyStroke.getKeyStroke(
+	public void configureWestPanelMenuItem() {
+		westPanel = new JMenuItem("West Panel");
+		westPanel.setIcon(Icons.getSmallIcon("application-sidebar"));
+		westPanel.setAccelerator(KeyStroke.getKeyStroke(
 				KeyEvent.VK_OPEN_BRACKET, ActionEvent.CTRL_MASK));
-		// sidePanel.setMnemonic(KeyEvent.VK_PLUS);
-		sidePanel.addActionListener(new SidePanelAction());
+		westPanel.addActionListener(new WestPanelAction());
+	}
+        
+        public void configureEastPanelMenuItem() {
+		eastPanel = new JMenuItem("East Panel");
+		eastPanel.setIcon(Icons.getSmallIcon("application-sidebar-flipped"));
+		eastPanel.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_CLOSE_BRACKET, ActionEvent.CTRL_MASK));
+		eastPanel.addActionListener(new EastPanelAction());
 	}
 
 }

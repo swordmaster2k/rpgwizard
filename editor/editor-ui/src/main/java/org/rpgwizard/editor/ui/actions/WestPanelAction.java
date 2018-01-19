@@ -16,7 +16,7 @@ import org.rpgwizard.editor.MainWindow;
  *
  * @author Joshua Michael Daly
  */
-public class SidePanelAction extends AbstractAction {
+public class WestPanelAction extends AbstractAction {
 
 	/**
 	 *
@@ -24,8 +24,8 @@ public class SidePanelAction extends AbstractAction {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		JPanel toolboxPanel = MainWindow.getInstance().getToolboxPanel();
-		toolboxPanel.setVisible(!toolboxPanel.isVisible());
+		JPanel panel = MainWindow.getInstance().getWestPanel();
+		panel.setVisible(!panel.isVisible());
 	}
 
 }

@@ -10,6 +10,7 @@ package org.rpgwizard.editor.ui.menu;
 import java.awt.event.KeyEvent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import org.rpgwizard.editor.ui.actions.AboutAction;
 import org.rpgwizard.editor.ui.resources.Icons;
 
 /**
@@ -44,7 +45,8 @@ public final class HelpMenu extends JMenu {
 		aboutMenuItem = new JMenuItem("About"); // About Menu
 		aboutMenuItem.setIcon(Icons.getSmallIcon("information"));
 		aboutMenuItem.setMnemonic(KeyEvent.VK_A);
-		aboutMenuItem.setEnabled(false);
+                aboutMenuItem.addActionListener(new AboutAction());
+		aboutMenuItem.setEnabled(true);
 	}
 
 }

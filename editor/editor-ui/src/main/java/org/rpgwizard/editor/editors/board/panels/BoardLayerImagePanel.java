@@ -19,6 +19,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import org.apache.commons.lang3.ArrayUtils;
 import org.rpgwizard.common.assets.board.BoardLayerImage;
+import org.rpgwizard.common.assets.board.model.BoardModelEvent;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.rpgwizard.editor.utilities.GuiHelper;
@@ -161,4 +162,14 @@ public class BoardLayerImagePanel extends BoardModelPanel {
 
         layout.setVerticalGroup(verticalGroup);
     }
+        
+        @Override
+	public void modelMoved(BoardModelEvent e) {
+		if (e.getSource() == model) {
+			BoardLayerImage sprite = (BoardLayerImage) e.getSource();
+			xSpinner.setValue(sprite.getX());
+			ySpinner.setValue(sprite.getY());
+                        MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+		}
+	}
 }

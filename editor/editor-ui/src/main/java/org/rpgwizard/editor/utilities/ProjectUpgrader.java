@@ -15,6 +15,7 @@ import org.rpgwizard.common.assets.Animation;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.AssetHandle;
 import org.rpgwizard.common.assets.AssetManager;
+import org.rpgwizard.common.assets.Board;
 import org.rpgwizard.common.assets.Character;
 import org.rpgwizard.common.assets.Enemy;
 import org.rpgwizard.common.assets.Item;
@@ -53,6 +54,13 @@ public class ProjectUpgrader {
 		filesUpgraded += upgradeFiles(new String[]{extension.replace(".", "")},
 				subPath);
 
+                // Upgrade board files.
+		extension = CoreProperties
+				.getFullExtension("toolkit.board.extension.json");
+		subPath = EditorFileManager.getFullPath(Board.class);
+		filesUpgraded += upgradeFiles(new String[]{extension.replace(".", "")},
+				subPath);
+                
 		// Upgrade animation files.
 		extension = CoreProperties
 				.getFullExtension("toolkit.animation.extension.json");

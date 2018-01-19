@@ -172,7 +172,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
                 /// westPanel
                 ///
 		westPanel = new JPanel(new GridLayout(2, 1));
-		westPanel.setPreferredSize(new Dimension(384, 0));
+		westPanel.setPreferredSize(new Dimension(350, 0));
 		westPanel.add(westUpperTabbedPane);
 		westPanel.add(westLowerTabbedPane);
                 ///

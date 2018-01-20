@@ -45,7 +45,7 @@ public final class HelpMenu extends JMenu {
 		aboutMenuItem = new JMenuItem("About"); // About Menu
 		aboutMenuItem.setIcon(Icons.getSmallIcon("information"));
 		aboutMenuItem.setMnemonic(KeyEvent.VK_A);
-                aboutMenuItem.addActionListener(new AboutAction());
+		aboutMenuItem.addActionListener(new AboutAction());
 		aboutMenuItem.setEnabled(true);
 	}
 

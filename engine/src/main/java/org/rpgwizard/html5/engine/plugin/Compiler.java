@@ -18,6 +18,7 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.util.Collection;
 import javax.swing.ProgressMonitor;
+import javax.swing.SwingUtilities;
 import net.lingala.zip4j.core.ZipFile;
 import org.apache.commons.io.FileExistsException;
 import org.apache.commons.io.FileUtils;
@@ -55,7 +56,7 @@ public class Compiler {
 		zipFile.extractAll(destinationPath);
 
 		if (!isCompileMode) {
-			progressMonitor.setProgress(25);
+			updateProgress(progressMonitor, 25);
 		}
 
 		// Clean up the zip.
@@ -82,7 +83,7 @@ public class Compiler {
 		}
 
 		if (!isCompileMode) {
-			progressMonitor.setProgress(50);
+			updateProgress(progressMonitor, 50);
 		}
 
 		// Modify index.html file for this project.
@@ -109,27 +110,27 @@ public class Compiler {
 			// 1: Create the output directory for this build.
 			outputDirectory = new File(buildsDirectory, OUTPUT_DIRECTORY);
 			FileUtils.forceMkdir(outputDirectory);
-			progressMonitor.setProgress(10);
+			updateProgress(progressMonitor, 10);
 
 			// 2: Copy the JRE into the output directory.
 			FileUtils.copyDirectoryToDirectory(jreDirectory, outputDirectory);
-			progressMonitor.setProgress(20);
+			updateProgress(progressMonitor, 20);
 
 			// 3: Copy the HTML5 engine plugin into the output directory.
 			File html5Engine = new File(pluginsDirectory, ENGINE_PLUGIN);
 			File html5EngineCopy = new File(outputDirectory, ENGINE_PLUGIN);
 			FileUtils.copyFile(html5Engine, html5EngineCopy);
-			progressMonitor.setProgress(30);
+			updateProgress(progressMonitor, 30);
 
 			// 4: Copy the project supplied by the editor into the output
 			// directory.
 			File dataDirectory = new File(outputDirectory, DATA_DIRECTORY);
 			FileUtils.copyDirectory(projectCopy, dataDirectory);
-			progressMonitor.setProgress(40);
+			updateProgress(progressMonitor, 40);
 
 			// 5: Embed the HTML5 engine framework into the project copy.
 			embedEngine(projectName, dataDirectory, progressMonitor, true);
-			progressMonitor.setProgress(50);
+			updateProgress(progressMonitor, 50);
 
 			// 6: Invoke Launch4J to create the executable.
 			Process process = Runtime.getRuntime().exec(
@@ -140,7 +141,7 @@ public class Compiler {
 						getErrorFromStream(process.getErrorStream()));
 			}
 
-			progressMonitor.setProgress(60);
+			updateProgress(progressMonitor, 60);
 
 			// 7: Wait for 60 seconds for the EXE to exist.
 			File exeFile = new File(outputDirectory, "engine.exe");
@@ -156,7 +157,7 @@ public class Compiler {
 						"Timed out waiting for game EXE file to be created!");
 			}
 
-			progressMonitor.setProgress(70);
+			updateProgress(progressMonitor, 70);
 
 			// 8: Create directory to copy to.
 			resultDirectory = new File(outputDirectory.getParentFile(),
@@ -168,7 +169,7 @@ public class Compiler {
 			}
 			FileUtils.forceMkdir(resultDirectory);
 
-			progressMonitor.setProgress(80);
+			updateProgress(progressMonitor, 80);
 
 			// 9: Try to copy the outputDirectory contents to the
 			// resultDirectory.
@@ -190,7 +191,7 @@ public class Compiler {
 						"Could not copy outputDirectory to resultDirectory!");
 			}
 
-			progressMonitor.setProgress(90);
+			updateProgress(progressMonitor, 90);
 
 			return resultDirectory;
 		} catch (Exception ex) {
@@ -202,7 +203,7 @@ public class Compiler {
 			FileUtils.deleteQuietly(outputDirectory);
 			FileUtils.deleteQuietly(projectCopy);
 
-			progressMonitor.setProgress(100);
+			updateProgress(progressMonitor, 100);
 		}
 	}
 
@@ -218,6 +219,11 @@ public class Compiler {
         }
         return result;
     }
+	private static void updateProgress(ProgressMonitor progressMonitor, int progress) {
+            SwingUtilities.invokeLater(() -> {
+                progressMonitor.setProgress(progress);
+            });
+        }
 	public static void main(String[] args) throws Exception {
 		File executionPath = new File("D:/Desktop/compile_test");
 		File projectCopy = new File(

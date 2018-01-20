@@ -13,13 +13,13 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 import javax.swing.ProgressMonitor;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.pluginsystem.Engine;
@@ -70,13 +70,9 @@ public class CompileAction extends AbstractAction {
 					@Override
 					protected File doInBackground() {
 						try {
-							File executionPath = new File(
-									FileTools
-											.getExecutionPath(MainWindow.class));
-							return engines.get(0)
-									.compile(projectName, projectCopy,
-											executionPath, progressMonitor);
-						} catch (Exception ex) {
+							File executionPath = new File(FileTools.getExecutionPath(MainWindow.class));
+                                                        return compileGame(engines.get(0), projectName, projectCopy, executionPath, progressMonitor);
+						} catch (InterruptedException | InvocationTargetException | URISyntaxException ex) {
 							LOGGER.error("Failed to compile game.", ex);
 							return null;
 						}
@@ -114,6 +110,18 @@ public class CompileAction extends AbstractAction {
 		} catch (IOException ex) {
 			LOGGER.error("Failed to run engine.", ex);
 		}
+	}
+	private File compileGame(Engine engine, String projectName,
+			File projectCopy, File executionPath,
+			ProgressMonitor progressMonitor) throws InterruptedException,
+			InvocationTargetException {
+		try {
+			return engine.compile(projectName, projectCopy, executionPath,
+					progressMonitor);
+		} catch (Exception ex) {
+			LOGGER.error("Failed to run engine.", ex);
+		}
+		return null;
 	}
 
 }

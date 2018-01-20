@@ -11,6 +11,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import javax.swing.ProgressMonitor;
+import javax.swing.SwingUtilities;
 import org.rpgwizard.pluginsystem.Engine;
 import org.apache.commons.io.FileUtils;
 import org.cef.OS;
@@ -73,11 +74,11 @@ public class Html5EnginePlugin extends Plugin {
 			startEmbeddedServer(projectCopy.getAbsolutePath());
 
 			// 75%
-			progressMonitor.setProgress(75);
+			updateProgress(progressMonitor, 75);
 			openEmbeddedBrowser(projectName, width, height);
 
 			// 100%
-			progressMonitor.setProgress(100);
+			updateProgress(progressMonitor, 100);
 		}
 
 		@Override
@@ -90,9 +91,9 @@ public class Html5EnginePlugin extends Plugin {
 		public void stop(ProgressMonitor progressMonitor) throws Exception {
 			ENGINE_RUNNABLE.stop();
 			EMBEDDED_BROWSER.conceal();
-			progressMonitor.setProgress(50);
+			updateProgress(progressMonitor, 50);
 			FileUtils.deleteQuietly(TEMP_PROJECT);
-			progressMonitor.setProgress(100);
+			updateProgress(progressMonitor, 100);
 		}
 
 		private void startEmbeddedServer(String resourceBase) throws Exception {
@@ -103,21 +104,28 @@ public class Html5EnginePlugin extends Plugin {
 
 		private void openEmbeddedBrowser(String projectName, int width,
 				int height) {
-			if (EMBEDDED_BROWSER != null) {
-				EMBEDDED_BROWSER.display(URL, projectName, width, height);
-			} else {
-				EMBEDDED_BROWSER = new EmbeddedBrowser(projectName, URL,
-						OS.isLinux(), false, width, height);
-				EMBEDDED_BROWSER.addWindowListener(new WindowAdapter() {
-					@Override
-					public void windowClosing(WindowEvent e) {
-						EMBEDDED_BROWSER.setVisible(false);
-						EMBEDDED_BROWSER.getCefBrowser().loadURL(
-								"http://www.rpgwizard.org");
-					}
-				});
-			}
+                    SwingUtilities.invokeLater(() -> {
+                        if (EMBEDDED_BROWSER != null) {
+                            EMBEDDED_BROWSER.display(URL, projectName, width, height);
+                        } else {
+                            EMBEDDED_BROWSER = new EmbeddedBrowser(projectName, URL,
+                                    OS.isLinux(), false, width, height);
+                            EMBEDDED_BROWSER.addWindowListener(new WindowAdapter() {
+                                @Override
+                                public void windowClosing(WindowEvent e) {
+                                    EMBEDDED_BROWSER.setVisible(false);
+                                    EMBEDDED_BROWSER.getCefBrowser().loadURL(
+                                            "http://www.rpgwizard.org");
+                                }
+                            });
+                        }
+                    });
 		}
 	}
 
+	private static void updateProgress(ProgressMonitor progressMonitor, int progress) {
+            SwingUtilities.invokeLater(() -> {
+                progressMonitor.setProgress(progress);
+            });
+        }
 }

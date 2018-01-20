@@ -8,10 +8,12 @@
 package org.rpgwizard.editor.ui.actions;
 
 import com.google.common.io.Files;
+import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.ProgressMonitor;
@@ -53,21 +55,21 @@ public class RunAction extends AbstractAction {
 			File projectCopy = Files.createTempDir();
 			FileUtils.copyDirectory(projectOriginal, projectCopy);
 
-			PluginManager pluginManager = MainWindow.getInstance()
-					.getPluginManager();
+			PluginManager pluginManager = instance.getPluginManager();
 			List<Engine> engines = pluginManager.getExtensions(Engine.class);
 
 			// Just use the first available engine for now.
 			if (engines.size() > 0) {
-				progressMonitor = new ProgressMonitor(MainWindow.getInstance(),
+				progressMonitor = new ProgressMonitor(instance,
 						"Starting Engine...", "", 0, 100);
 				progressMonitor.setProgress(0);
-
+				Dimension dimensions = new Dimension(projectWidth,
+						projectHeight);
 				worker = new SwingWorker<Void, Void>() {
 					@Override
 					protected Void doInBackground() throws Exception {
-						engines.get(0).run(projectName, projectWidth,
-								projectHeight, projectCopy, progressMonitor);
+						runEngine(engines.get(0), projectName, dimensions,
+								projectCopy, progressMonitor);
 
 						return null;
 					}
@@ -85,6 +87,14 @@ public class RunAction extends AbstractAction {
 		} catch (IOException ex) {
 			LOGGER.error("Failed to run engine.", ex);
 		}
+	}
+
+	private void runEngine(Engine engine, String projectName,
+			Dimension dimensions, File projectCopy,
+			ProgressMonitor progressMonitor) throws InterruptedException,
+			InvocationTargetException, Exception {
+		engine.run(projectName, dimensions.width, dimensions.height,
+				projectCopy, progressMonitor);
 	}
 
 }

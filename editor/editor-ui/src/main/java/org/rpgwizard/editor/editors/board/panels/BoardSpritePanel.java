@@ -318,7 +318,7 @@ public class BoardSpritePanel extends BoardModelPanel {
 			BoardSprite sprite = (BoardSprite) e.getSource();
 			xSpinner.setValue(sprite.getX());
 			ySpinner.setValue(sprite.getY());
-                        MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+			MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
 		}
 	}
 

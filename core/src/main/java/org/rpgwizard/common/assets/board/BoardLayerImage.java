@@ -130,8 +130,8 @@ public class BoardLayerImage extends AbstractBoardModel implements Selectable {
 	public void setLayer(int layer) {
 		this.layer = layer;
 	}
-        
-        /**
+
+	/**
 	 * 
 	 * @param x
 	 * @param y

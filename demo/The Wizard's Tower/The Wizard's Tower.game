@@ -1,1 +1,1 @@
-{"initialCharacter":"Hero.character","gameOverProgram":"GameOver.js","startupProgram":"Startup.js","resolutionHeight":480,"name":"The Wizard's Tower","isFullScreen":false,"resolutionWidth":640,"version":1.2,"initialBoard":"Room0.board"}
+{"initialCharacter":"Hero.character","gameOverProgram":"GameOver.js","startupProgram":"Startup.js","resolutionHeight":480,"name":"The Wizard's Tower","isFullScreen":false,"resolutionWidth":640,"version":1.3,"initialBoard":"Room0.board"}

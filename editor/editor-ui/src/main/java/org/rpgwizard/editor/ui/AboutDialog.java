@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) 2015, rpgwizard.org, some files forked from rpgtoolkit.net <info@rpgwizard.org>
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
 package org.rpgwizard.editor.ui;
 
 import java.awt.BorderLayout;
@@ -21,7 +28,7 @@ import org.rpgwizard.editor.properties.EditorProperty;
  */
 public final class AboutDialog extends JDialog {
 
-    public AboutDialog(JFrame parent) {
+	public AboutDialog(JFrame parent) {
         super(parent, "About RPGWizard", true);
 
         JLabel titleLabel = new JLabel(EditorProperties.getProperty(EditorProperty.EDITOR_UI_TITLE));
@@ -99,10 +106,9 @@ public final class AboutDialog extends JDialog {
 
         pack();
     }
-
-    public static void main(String[] args) {
-        JDialog dialog = new AboutDialog(new JFrame());
-        dialog.setVisible(true);
-    }
+	public static void main(String[] args) {
+		JDialog dialog = new AboutDialog(new JFrame());
+		dialog.setVisible(true);
+	}
 
 }

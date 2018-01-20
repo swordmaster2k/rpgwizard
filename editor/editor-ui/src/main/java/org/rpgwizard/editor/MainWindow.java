@@ -102,11 +102,11 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
 	private final JPanel westPanel;
 	private final JTabbedPane westUpperTabbedPane;
 	private final JTabbedPane westLowerTabbedPane;
-        
-        private final JPanel eastPanel;
+
+	private final JPanel eastPanel;
 	private final JTabbedPane eastUpperTabbedPane;
 	private final JTabbedPane eastLowerTabbedPane;
-        
+
 	// private final ProjectPanel projectPanel;
 	private final TileSetTabbedPane tileSetPanel;
 	private final PropertiesPanel propertiesPanel;
@@ -129,71 +129,71 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
 	private PluginManager pluginManager;
 
 	private MainWindow() {
-                ///
-                /// super
-                ///
+		// /
+		// / super
+		// /
 		super(EditorProperties.getProperty(EditorProperty.EDITOR_UI_TITLE));
-                ///
-                /// desktopPane
-                ///
+		// /
+		// / desktopPane
+		// /
 		desktopPane = new JDesktopPane();
 		desktopPane.setBackground(Color.LIGHT_GRAY);
 		desktopPane.setDesktopManager(new ToolkitDesktopManager());
-                ///
-                /// editorMap
-                ///
+		// /
+		// / editorMap
+		// /
 		editorMap = new HashMap();
-                ///
-                /// tileSetPanel
-                ///
+		// /
+		// / tileSetPanel
+		// /
 		tileSetPanel = new TileSetTabbedPane();
-                // this.projectPanel = new ProjectPanel();
-                ///
-                /// westUpperTabbedPane
-                ///
+		// this.projectPanel = new ProjectPanel();
+		// /
+		// / westUpperTabbedPane
+		// /
 		westUpperTabbedPane = new JTabbedPane();
 		// this.upperTabbedPane.addTab("Project", this.projectPanel); // TODO:
 		westUpperTabbedPane.addTab("Tileset", tileSetPanel);
-                ///
-                /// layerPanel
-                ///
-                layerPanel = new LayerPanel();
-                ///
-                /// propertiesPanel
-                ///
+		// /
+		// / layerPanel
+		// /
+		layerPanel = new LayerPanel();
+		// /
+		// / propertiesPanel
+		// /
 		propertiesPanel = new PropertiesPanel();
-		///
-                /// westLowerTabbedPane
-                ///
+		// /
+		// / westLowerTabbedPane
+		// /
 		westLowerTabbedPane = new JTabbedPane();
 		westLowerTabbedPane.addTab("Layers", layerPanel);
-                westLowerTabbedPane.addTab("Properties", propertiesPanel);
-                ///
-                /// westPanel
-                ///
+		westLowerTabbedPane.addTab("Properties", propertiesPanel);
+		// /
+		// / westPanel
+		// /
 		westPanel = new JPanel(new GridLayout(2, 1));
 		westPanel.setPreferredSize(new Dimension(350, 0));
 		westPanel.add(westUpperTabbedPane);
 		westPanel.add(westLowerTabbedPane);
-                ///
-                /// eastUpperTabbedPane
-                ///
-                eastUpperTabbedPane = new JTabbedPane();
-                ///
-                /// eastLowerTabbedPane
-                ///
+		// /
+		// / eastUpperTabbedPane
+		// /
+		eastUpperTabbedPane = new JTabbedPane();
+		// /
+		// / eastLowerTabbedPane
+		// /
 		eastLowerTabbedPane = new JTabbedPane();
-                ///
-                /// eastPanel
-                ///
+		// /
+		// / eastPanel
+		// /
 		eastPanel = new JPanel(new GridLayout(2, 1));
 		eastPanel.setPreferredSize(new Dimension(350, 0));
 		eastPanel.add(eastUpperTabbedPane);
 		eastPanel.add(eastLowerTabbedPane);
-                eastPanel.setVisible(false);
-                ///
-                /// Misc
-                ///
+		eastPanel.setVisible(false);
+		// /
+		// / Misc
+		// /
 		setIconImage(Icons.getLargeIcon("editor").getImage());
 
 		menuBar = new MainMenuBar(this);
@@ -206,9 +206,9 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
 		lastSelectedTile = new Tile();
 
 		tileSetSelectionListener = new TileSetSelectionListener();
-                ///
-                /// this
-                ///
+		// /
+		// / this
+		// /
 		JPanel parent = new JPanel(new BorderLayout());
 		parent.add(desktopPane, BorderLayout.CENTER);
 
@@ -216,7 +216,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
 		add(toolBar, BorderLayout.NORTH);
 		add(parent, BorderLayout.CENTER);
 		add(westPanel, BorderLayout.WEST);
-                add(eastPanel, BorderLayout.EAST);
+		add(eastPanel, BorderLayout.EAST);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -285,17 +285,17 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
 		return westPanel;
 	}
 
-        public JTabbedPane getWestLowerTabbedPane() {
-            return westLowerTabbedPane;
-        }
-        
-        public JPanel getEastPanel() {
-            return eastPanel;
-        }
-        
-        public JTabbedPane getEastLowerTabbedPane() {
-            return eastLowerTabbedPane;
-        }
+	public JTabbedPane getWestLowerTabbedPane() {
+		return westLowerTabbedPane;
+	}
+
+	public JPanel getEastPanel() {
+		return eastPanel;
+	}
+
+	public JTabbedPane getEastLowerTabbedPane() {
+		return eastLowerTabbedPane;
+	}
 
 	public MainMenuBar getMainMenuBar() {
 		return this.menuBar;

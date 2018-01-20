@@ -70,9 +70,9 @@ public class BoardLayerImageBrush extends AbstractBrush {
 			Rectangle shapeBounds = getBounds();
 
 			if (snap) {
-                            Point point = getSnapPoint(board, x, y);
-                            x = point.x;
-                            y = point.y;
+				Point point = getSnapPoint(board, x, y);
+				x = point.x;
+				y = point.y;
 			} else {
 				x -= (board.getTileWidth() / 2);
 				y -= (board.getTileHeight() / 2);
@@ -134,26 +134,26 @@ public class BoardLayerImageBrush extends AbstractBrush {
 	@Override
 	public void doMouseButton3Dragged(Point point, Point origin,
 			AbstractAssetEditorWindow editor) {
-            if (editor instanceof BoardEditor) {
-                BoardEditor boardEditor = (BoardEditor) editor;
-                if (boardEditor.getSelectedObject() == boardLayerImage) {
-                    Dimension dimension = boardEditor.getBoard()
-                            .getBoardPixelDimensions();
-                    Board board = boardEditor.getBoard();
-                    if (checkDragBounds(point.x, point.y, dimension.width,
-                            dimension.height)) {
-                        if (MainWindow.getInstance().isSnapToGrid()) {
-                            point = getSnapPoint(boardEditor.getBoard(), point.x,
-                                    point.y);
-                        } else {
-                            point.x -= (board.getTileWidth() / 2);
-                            point.y -= (board.getTileHeight() / 2);
+		if (editor instanceof BoardEditor) {
+			BoardEditor boardEditor = (BoardEditor) editor;
+			if (boardEditor.getSelectedObject() == boardLayerImage) {
+				Dimension dimension = boardEditor.getBoard()
+						.getBoardPixelDimensions();
+				Board board = boardEditor.getBoard();
+				if (checkDragBounds(point.x, point.y, dimension.width,
+						dimension.height)) {
+					if (MainWindow.getInstance().isSnapToGrid()) {
+						point = getSnapPoint(boardEditor.getBoard(), point.x,
+								point.y);
+					} else {
+						point.x -= (board.getTileWidth() / 2);
+						point.y -= (board.getTileHeight() / 2);
+					}
+					boardLayerImage.setPosition(point.x, point.y);
+					boardEditor.getBoardView().repaint();
+				}
 			}
-                        boardLayerImage.setPosition(point.x, point.y);
-                        boardEditor.getBoardView().repaint();
-                    }
-                }
-            }
+		}
 	}
 
 	@Override
@@ -177,17 +177,17 @@ public class BoardLayerImageBrush extends AbstractBrush {
 				&& ((BoardLayerImageBrush) brush).boardLayerImage
 						.equals(boardLayerImage);
 	}
-        
-        private Point getSnapPoint(Board board, int x, int y) {
-            x = Math.max(0, Math.min(x / board.getTileWidth(),
-                    board.getWidth() - 1))
-                    * board.getTileWidth();
-            y = Math.max(0, Math.min(y / board.getTileHeight(),
-                    board.getHeight() - 1))
-                    * board.getTileHeight();
 
-            return new Point(x, y);
-        }
+	private Point getSnapPoint(Board board, int x, int y) {
+		x = Math.max(0,
+				Math.min(x / board.getTileWidth(), board.getWidth() - 1))
+				* board.getTileWidth();
+		y = Math.max(0,
+				Math.min(y / board.getTileHeight(), board.getHeight() - 1))
+				* board.getTileHeight();
+
+		return new Point(x, y);
+	}
 
 	/**
 	 *

@@ -162,14 +162,13 @@ public class BoardLayerImagePanel extends BoardModelPanel {
 
         layout.setVerticalGroup(verticalGroup);
     }
-        
-        @Override
+	@Override
 	public void modelMoved(BoardModelEvent e) {
 		if (e.getSource() == model) {
 			BoardLayerImage sprite = (BoardLayerImage) e.getSource();
 			xSpinner.setValue(sprite.getX());
 			ySpinner.setValue(sprite.getY());
-                        MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+			MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
 		}
 	}
 }

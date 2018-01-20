@@ -23,7 +23,7 @@ import org.rpgwizard.editor.ui.resources.Icons;
 public final class WindowMenu extends JMenu {
 
 	private JMenuItem westPanel;
-        private JMenuItem eastPanel;
+	private JMenuItem eastPanel;
 
 	public WindowMenu() {
 		super("Window");
@@ -31,10 +31,10 @@ public final class WindowMenu extends JMenu {
 		setMnemonic(KeyEvent.VK_W);
 
 		configureWestPanelMenuItem();
-                configureEastPanelMenuItem();
+		configureEastPanelMenuItem();
 
 		add(westPanel);
-                add(eastPanel);
+		add(eastPanel);
 	}
 
 	public JMenuItem getZoomInMenuItem() {
@@ -48,8 +48,8 @@ public final class WindowMenu extends JMenu {
 				KeyEvent.VK_OPEN_BRACKET, ActionEvent.CTRL_MASK));
 		westPanel.addActionListener(new WestPanelAction());
 	}
-        
-        public void configureEastPanelMenuItem() {
+
+	public void configureEastPanelMenuItem() {
 		eastPanel = new JMenuItem("East Panel");
 		eastPanel.setIcon(Icons.getSmallIcon("application-sidebar-flipped"));
 		eastPanel.setAccelerator(KeyStroke.getKeyStroke(

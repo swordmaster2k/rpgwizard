@@ -54,13 +54,13 @@ public class ProjectUpgrader {
 		filesUpgraded += upgradeFiles(new String[]{extension.replace(".", "")},
 				subPath);
 
-                // Upgrade board files.
+		// Upgrade board files.
 		extension = CoreProperties
 				.getFullExtension("toolkit.board.extension.json");
 		subPath = EditorFileManager.getFullPath(Board.class);
 		filesUpgraded += upgradeFiles(new String[]{extension.replace(".", "")},
 				subPath);
-                
+
 		// Upgrade animation files.
 		extension = CoreProperties
 				.getFullExtension("toolkit.animation.extension.json");

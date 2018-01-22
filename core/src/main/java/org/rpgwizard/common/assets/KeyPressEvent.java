@@ -13,19 +13,19 @@ package org.rpgwizard.common.assets;
  */
 public class KeyPressEvent extends Event {
 
-	private String key;
+    private String key;
 
-	public KeyPressEvent(String key, String program) {
-		super(EventType.KEYPRESS, program);
-		this.key = key;
-	}
+    public KeyPressEvent(String key, String program) {
+        super(EventType.KEYPRESS, program);
+        this.key = key;
+    }
 
-	public String getKey() {
-		return key;
-	}
+    public String getKey() {
+        return key;
+    }
 
-	public void setKey(String key) {
-		this.key = key;
-	}
+    public void setKey(String key) {
+        this.key = key;
+    }
 
 }

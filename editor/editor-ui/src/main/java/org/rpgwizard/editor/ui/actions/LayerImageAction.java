@@ -19,12 +19,12 @@ import org.rpgwizard.editor.editors.board.brush.BoardLayerImageBrush;
  */
 public class LayerImageAction extends AbstractAction {
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		BoardEditor.toggleSelectedOnBoardEditor();
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        BoardEditor.toggleSelectedOnBoardEditor();
 
-		BoardLayerImageBrush brush = new BoardLayerImageBrush();
-		MainWindow.getInstance().setCurrentBrush(brush);
-	}
+        BoardLayerImageBrush brush = new BoardLayerImageBrush();
+        MainWindow.getInstance().setCurrentBrush(brush);
+    }
 
 }

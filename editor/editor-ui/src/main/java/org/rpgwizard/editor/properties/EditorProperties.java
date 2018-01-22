@@ -19,22 +19,21 @@ import org.slf4j.LoggerFactory;
  */
 public class EditorProperties {
 
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(EditorProperties.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EditorProperties.class);
 
-	private static final EditorProperties INSTANCE = new EditorProperties();
-	private final Properties properties = new Properties();
+    private static final EditorProperties INSTANCE = new EditorProperties();
+    private final Properties properties = new Properties();
 
-	private EditorProperties() {
-    try (InputStream in = EditorProperties.class.
-            getResourceAsStream("/editor/properties/editor.properties")) {
-      properties.load(in);
-    } catch (IOException ex) {
-      LOGGER.error("Failed to load editor properties file.", ex);
+    private EditorProperties() {
+        try (InputStream in = EditorProperties.class.getResourceAsStream("/editor/properties/editor.properties")) {
+            properties.load(in);
+        } catch (IOException ex) {
+            LOGGER.error("Failed to load editor properties file.", ex);
+        }
     }
-  }
-	public static String getProperty(EditorProperty property) {
-		return INSTANCE.properties.getProperty(property.toString());
-	}
+
+    public static String getProperty(EditorProperty property) {
+        return INSTANCE.properties.getProperty(property.toString());
+    }
 
 }

@@ -13,105 +13,105 @@ package org.rpgwizard.common.assets;
  */
 public class Item extends AbstractAsset {
 
-	private String name;
-	private String icon;
-	private String description;
-	private String type;
-	private int price;
+    private String name;
+    private String icon;
+    private String description;
+    private String type;
+    private int price;
 
-	private double healthEffect;
-	private double attackEffect;
-	private double defenceEffect;
-	private double magicEffect;
+    private double healthEffect;
+    private double attackEffect;
+    private double defenceEffect;
+    private double magicEffect;
 
-	public Item(AssetDescriptor descriptor) {
-		super(descriptor);
-		init();
-	}
+    public Item(AssetDescriptor descriptor) {
+        super(descriptor);
+        init();
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getIcon() {
-		return icon;
-	}
+    public String getIcon() {
+        return icon;
+    }
 
-	public void setIcon(String icon) {
-		this.icon = icon;
-	}
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public int getPrice() {
-		return price;
-	}
+    public int getPrice() {
+        return price;
+    }
 
-	public void setPrice(int price) {
-		this.price = price;
-	}
+    public void setPrice(int price) {
+        this.price = price;
+    }
 
-	public double getHealthEffect() {
-		return healthEffect;
-	}
+    public double getHealthEffect() {
+        return healthEffect;
+    }
 
-	public void setHealthEffect(double healthEffect) {
-		this.healthEffect = healthEffect;
-	}
+    public void setHealthEffect(double healthEffect) {
+        this.healthEffect = healthEffect;
+    }
 
-	public double getAttackEffect() {
-		return attackEffect;
-	}
+    public double getAttackEffect() {
+        return attackEffect;
+    }
 
-	public void setAttackEffect(double attackEffect) {
-		this.attackEffect = attackEffect;
-	}
+    public void setAttackEffect(double attackEffect) {
+        this.attackEffect = attackEffect;
+    }
 
-	public double getDefenceEffect() {
-		return defenceEffect;
-	}
+    public double getDefenceEffect() {
+        return defenceEffect;
+    }
 
-	public void setDefenceEffect(double defenceEffect) {
-		this.defenceEffect = defenceEffect;
-	}
+    public void setDefenceEffect(double defenceEffect) {
+        this.defenceEffect = defenceEffect;
+    }
 
-	public double getMagicEffect() {
-		return magicEffect;
-	}
+    public double getMagicEffect() {
+        return magicEffect;
+    }
 
-	public void setMagicEffect(double magicEffect) {
-		this.magicEffect = magicEffect;
-	}
+    public void setMagicEffect(double magicEffect) {
+        this.magicEffect = magicEffect;
+    }
 
-	private void init() {
-		name = "";
-		icon = "";
-		description = "";
-		type = "";
-		price = 0;
+    private void init() {
+        name = "";
+        icon = "";
+        description = "";
+        type = "";
+        price = 0;
 
-		healthEffect = 0.0;
-		attackEffect = 0.0;
-		defenceEffect = 0.0;
-		magicEffect = 0.0;
-	}
+        healthEffect = 0.0;
+        attackEffect = 0.0;
+        defenceEffect = 0.0;
+        magicEffect = 0.0;
+    }
 
 }

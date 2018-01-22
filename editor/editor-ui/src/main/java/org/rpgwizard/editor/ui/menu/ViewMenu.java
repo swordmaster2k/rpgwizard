@@ -28,123 +28,119 @@ import org.rpgwizard.editor.ui.resources.Icons;
  */
 public final class ViewMenu extends JMenu {
 
-	private JMenuItem zoomInMenuItem;
-	private JMenuItem zoomOutMenuItem;
-	private JCheckBoxMenuItem showGridMenuItem;
-	private JCheckBoxMenuItem showCoordinatesMenuItem;
-	private JCheckBoxMenuItem showVectorsMenuItem;
-	private JCheckBoxMenuItem snapToGridMenuItem;
+    private JMenuItem zoomInMenuItem;
+    private JMenuItem zoomOutMenuItem;
+    private JCheckBoxMenuItem showGridMenuItem;
+    private JCheckBoxMenuItem showCoordinatesMenuItem;
+    private JCheckBoxMenuItem showVectorsMenuItem;
+    private JCheckBoxMenuItem snapToGridMenuItem;
 
-	/**
-   *
-   */
-	public ViewMenu() {
-		super("View");
+    /**
+    *
+    */
+    public ViewMenu() {
+        super("View");
 
-		setMnemonic(KeyEvent.VK_V);
+        setMnemonic(KeyEvent.VK_V);
 
-		configureZoomInMenuItem();
-		configureZoomOutMenuItem();
-		configureShowGridMenuItem();
-		configureShowCoordinatesMenuItem();
-		configureShowVectorsMenuItem();
-		configureSnapToGridMenuItem();
+        configureZoomInMenuItem();
+        configureZoomOutMenuItem();
+        configureShowGridMenuItem();
+        configureShowCoordinatesMenuItem();
+        configureShowVectorsMenuItem();
+        configureSnapToGridMenuItem();
 
-		add(zoomInMenuItem);
-		add(zoomOutMenuItem);
-		add(new JSeparator());
-		add(showGridMenuItem);
-		add(showCoordinatesMenuItem);
-		add(showVectorsMenuItem);
-		add(new JSeparator());
-		add(snapToGridMenuItem);
-	}
+        add(zoomInMenuItem);
+        add(zoomOutMenuItem);
+        add(new JSeparator());
+        add(showGridMenuItem);
+        add(showCoordinatesMenuItem);
+        add(showVectorsMenuItem);
+        add(new JSeparator());
+        add(snapToGridMenuItem);
+    }
 
-	public JMenuItem getZoomInMenuItem() {
-		return zoomInMenuItem;
-	}
+    public JMenuItem getZoomInMenuItem() {
+        return zoomInMenuItem;
+    }
 
-	public JMenuItem getZoomOutMenuItem() {
-		return zoomOutMenuItem;
-	}
+    public JMenuItem getZoomOutMenuItem() {
+        return zoomOutMenuItem;
+    }
 
-	public JCheckBoxMenuItem getShowGridMenuItem() {
-		return showGridMenuItem;
-	}
+    public JCheckBoxMenuItem getShowGridMenuItem() {
+        return showGridMenuItem;
+    }
 
-	public JCheckBoxMenuItem getShowCoordinatesMenuItem() {
-		return showCoordinatesMenuItem;
-	}
+    public JCheckBoxMenuItem getShowCoordinatesMenuItem() {
+        return showCoordinatesMenuItem;
+    }
 
-	public JCheckBoxMenuItem getShowVectorsMenuItem() {
-		return showVectorsMenuItem;
-	}
+    public JCheckBoxMenuItem getShowVectorsMenuItem() {
+        return showVectorsMenuItem;
+    }
 
-	/**
-   *
-   */
-	public void configureZoomInMenuItem() {
-		zoomInMenuItem = new JMenuItem("Zoom In");
-		zoomInMenuItem.setIcon(Icons.getSmallIcon("zoom-in"));
-		zoomInMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ADD,
-				ActionEvent.CTRL_MASK));
-		zoomInMenuItem.setMnemonic(KeyEvent.VK_PLUS);
-		zoomInMenuItem.addActionListener(new ZoomInAction());
-	}
+    /**
+    *
+    */
+    public void configureZoomInMenuItem() {
+        zoomInMenuItem = new JMenuItem("Zoom In");
+        zoomInMenuItem.setIcon(Icons.getSmallIcon("zoom-in"));
+        zoomInMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ADD, ActionEvent.CTRL_MASK));
+        zoomInMenuItem.setMnemonic(KeyEvent.VK_PLUS);
+        zoomInMenuItem.addActionListener(new ZoomInAction());
+    }
 
-	/**
-   *
-   */
-	public void configureZoomOutMenuItem() {
-		zoomOutMenuItem = new JMenuItem("Zoom Out");
-		zoomOutMenuItem.setIcon(Icons.getSmallIcon("zoom-out"));
-		zoomOutMenuItem.setAccelerator(KeyStroke.getKeyStroke(
-				KeyEvent.VK_SUBTRACT, ActionEvent.CTRL_MASK));
-		zoomOutMenuItem.setMnemonic(KeyEvent.VK_MINUS);
-		zoomOutMenuItem.addActionListener(new ZoomOutAction());
-	}
+    /**
+    *
+    */
+    public void configureZoomOutMenuItem() {
+        zoomOutMenuItem = new JMenuItem("Zoom Out");
+        zoomOutMenuItem.setIcon(Icons.getSmallIcon("zoom-out"));
+        zoomOutMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, ActionEvent.CTRL_MASK));
+        zoomOutMenuItem.setMnemonic(KeyEvent.VK_MINUS);
+        zoomOutMenuItem.addActionListener(new ZoomOutAction());
+    }
 
-	/**
-   *
-   */
-	public void configureShowGridMenuItem() {
-		showGridMenuItem = new JCheckBoxMenuItem("Show Grid");
-		showGridMenuItem.setIcon(Icons.getSmallIcon("grid"));
-		showGridMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G,
-				ActionEvent.CTRL_MASK));
-		showGridMenuItem.setMnemonic(KeyEvent.VK_G);
-		showGridMenuItem.addItemListener(new ShowGridItemListener());
-	}
+    /**
+    *
+    */
+    public void configureShowGridMenuItem() {
+        showGridMenuItem = new JCheckBoxMenuItem("Show Grid");
+        showGridMenuItem.setIcon(Icons.getSmallIcon("grid"));
+        showGridMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK));
+        showGridMenuItem.setMnemonic(KeyEvent.VK_G);
+        showGridMenuItem.addItemListener(new ShowGridItemListener());
+    }
 
-	/**
-   *
-   */
-	public void configureShowCoordinatesMenuItem() {
-		showCoordinatesMenuItem = new JCheckBoxMenuItem("Show Coordinates");
-		// showGridMenuItem.setAccelerator(
-		// KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK));
-		// showGridMenuItem.setMnemonic(KeyEvent.VK_G);
-		showCoordinatesMenuItem
-				.addItemListener(new ShowCoordinatesItemListener());
-	}
+    /**
+    *
+    */
+    public void configureShowCoordinatesMenuItem() {
+        showCoordinatesMenuItem = new JCheckBoxMenuItem("Show Coordinates");
+        // showGridMenuItem.setAccelerator(
+        // KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK));
+        // showGridMenuItem.setMnemonic(KeyEvent.VK_G);
+        showCoordinatesMenuItem.addItemListener(new ShowCoordinatesItemListener());
+    }
 
-	/**
-   *
-   */
-	public void configureShowVectorsMenuItem() {
-		showVectorsMenuItem = new JCheckBoxMenuItem("Show Vectors");
-		// showGridMenuItem.setAccelerator(
-		// KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK));
-		// showGridMenuItem.setMnemonic(KeyEvent.VK_G);
-		showVectorsMenuItem.addItemListener(new ShowVectorsItemListener());
-	}
+    /**
+    *
+    */
+    public void configureShowVectorsMenuItem() {
+        showVectorsMenuItem = new JCheckBoxMenuItem("Show Vectors");
+        // showGridMenuItem.setAccelerator(
+        // KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK));
+        // showGridMenuItem.setMnemonic(KeyEvent.VK_G);
+        showVectorsMenuItem.addItemListener(new ShowVectorsItemListener());
+    }
 
-	/**
-   *
-   */
-	public void configureSnapToGridMenuItem() {
-		snapToGridMenuItem = new JCheckBoxMenuItem("Snap to Grid");
-		snapToGridMenuItem.addItemListener(new SnapToGridItemListener());
-	}
+    /**
+    *
+    */
+    public void configureSnapToGridMenuItem() {
+        snapToGridMenuItem = new JCheckBoxMenuItem("Snap to Grid");
+        snapToGridMenuItem.addItemListener(new SnapToGridItemListener());
+    }
 
 }

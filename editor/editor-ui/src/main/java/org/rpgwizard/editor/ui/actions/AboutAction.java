@@ -19,12 +19,12 @@ import org.rpgwizard.editor.ui.AboutDialog;
  */
 public class AboutAction extends AbstractAction {
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		JDialog dialog = new AboutDialog(MainWindow.getInstance());
-		dialog.setModal(true);
-		dialog.setLocationRelativeTo(null);
-		dialog.setVisible(true);
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        JDialog dialog = new AboutDialog(MainWindow.getInstance());
+        dialog.setModal(true);
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
+    }
 
 }

@@ -11,20 +11,19 @@ import java.util.EventObject;
 import org.rpgwizard.common.assets.Animation;
 
 /**
- * An <code>EventObject</code> used to contain information of a change that has
- * happened on a animation.
+ * An <code>EventObject</code> used to contain information of a change that has happened on a animation.
  *
  * @author Joshua Michael Daly
  */
 public class AnimationChangedEvent extends EventObject {
 
-	/**
-	 * Creates a new event.
-	 * 
-	 * @param animation
-	 *            animation the event happened on
-	 */
-	public AnimationChangedEvent(Animation animation) {
-		super(animation);
-	}
+    /**
+     * Creates a new event.
+     * 
+     * @param animation
+     *            animation the event happened on
+     */
+    public AnimationChangedEvent(Animation animation) {
+        super(animation);
+    }
 }

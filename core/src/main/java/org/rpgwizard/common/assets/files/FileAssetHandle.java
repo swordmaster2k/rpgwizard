@@ -25,35 +25,35 @@ import java.nio.file.Paths;
  */
 public class FileAssetHandle extends AssetHandle {
 
-	public FileAssetHandle(AssetDescriptor descriptor) {
-		super(descriptor);
-	}
+    public FileAssetHandle(AssetDescriptor descriptor) {
+        super(descriptor);
+    }
 
-	public File getFile() {
-		final Path path = Paths.get(descriptor.getURI());
-		final File file = path.toFile();
-		return file;
-	}
+    public File getFile() {
+        final Path path = Paths.get(descriptor.getURI());
+        final File file = path.toFile();
+        return file;
+    }
 
-	@Override
-	public ReadableByteChannel read() throws IOException {
-		final File file = getFile();
-		return new FileInputStream(file).getChannel();
-	}
+    @Override
+    public ReadableByteChannel read() throws IOException {
+        final File file = getFile();
+        return new FileInputStream(file).getChannel();
+    }
 
-	@Override
-	public WritableByteChannel write() throws IOException {
-		final File file = getFile();
-		return new FileOutputStream(file).getChannel();
-	}
+    @Override
+    public WritableByteChannel write() throws IOException {
+        final File file = getFile();
+        return new FileOutputStream(file).getChannel();
+    }
 
-	@Override
-	public long size() throws IOException {
-		final File file = getFile();
-		if (file.exists()) {
-			return file.length();
-		}
-		return -1;
-	}
+    @Override
+    public long size() throws IOException {
+        final File file = getFile();
+        if (file.exists()) {
+            return file.length();
+        }
+        return -1;
+    }
 
 }

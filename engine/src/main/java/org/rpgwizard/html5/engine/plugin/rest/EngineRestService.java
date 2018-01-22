@@ -29,58 +29,51 @@ import org.json.JSONObject;
 @Path("/engine")
 public class EngineRestService {
 
-	private final File projectPath;
+    private final File projectPath;
 
-	public EngineRestService(String projectPath) {
-		this.projectPath = new File(projectPath);
-	}
+    public EngineRestService(String projectPath) {
+        this.projectPath = new File(projectPath);
+    }
 
-	public EngineRestService(File projectPath) {
-		this.projectPath = projectPath;
-	}
+    public EngineRestService(File projectPath) {
+        this.projectPath = projectPath;
+    }
 
-	@POST
-	@Path("/load")
-        @Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response load(String json) {
-            try {
-                JSONObject object = new JSONObject(json);
-                File targetPath = new File(
-                        projectPath.getAbsoluteFile() 
-                        + File.separator
-                        + object.getString("path")
-                );
-                
-                String entity = FileUtils.readFileToString(targetPath, "UTF-8");
-                return Response.status(Status.OK).entity(entity).build();
-            } catch (IOException | JSONException ex) {
-                Logger.getLogger(EngineRestService.class.getName()).log(Level.SEVERE, null, ex);
-                return Response.status(Status.INTERNAL_SERVER_ERROR).build();
-            }	
-	}
-	@POST
-	@Path("/save")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response save(String json) {
-            try {
-                JSONObject object = new JSONObject(json);
-                File targetPath = new File(
-                        projectPath.getAbsoluteFile() 
-                        + File.separator
-                        + object.getString("path")
-                );
-                
-                switch (object.getString("type").toLowerCase()) {
-                    case "board":
-                    default:
-                        FileUtils.writeStringToFile(targetPath, object.getJSONObject("data").toString(), false);
-                }
-                
-                return Response.status(Status.OK).build();
-            } catch (IOException | JSONException ex) {
-                Logger.getLogger(EngineRestService.class.getName()).log(Level.SEVERE, null, ex);
-                return Response.status(Status.INTERNAL_SERVER_ERROR).build();
-            }	
-	}
+    @POST
+    @Path("/load")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response load(String json) {
+        try {
+            JSONObject object = new JSONObject(json);
+            File targetPath = new File(projectPath.getAbsoluteFile() + File.separator + object.getString("path"));
+
+            String entity = FileUtils.readFileToString(targetPath, "UTF-8");
+            return Response.status(Status.OK).entity(entity).build();
+        } catch (IOException | JSONException ex) {
+            Logger.getLogger(EngineRestService.class.getName()).log(Level.SEVERE, null, ex);
+            return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @POST
+    @Path("/save")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response save(String json) {
+        try {
+            JSONObject object = new JSONObject(json);
+            File targetPath = new File(projectPath.getAbsoluteFile() + File.separator + object.getString("path"));
+
+            switch (object.getString("type").toLowerCase()) {
+            case "board":
+            default:
+                FileUtils.writeStringToFile(targetPath, object.getJSONObject("data").toString(), false);
+            }
+
+            return Response.status(Status.OK).build();
+        } catch (IOException | JSONException ex) {
+            Logger.getLogger(EngineRestService.class.getName()).log(Level.SEVERE, null, ex);
+            return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }

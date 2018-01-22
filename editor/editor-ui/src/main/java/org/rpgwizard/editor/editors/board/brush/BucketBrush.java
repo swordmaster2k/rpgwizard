@@ -25,110 +25,110 @@ import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
  */
 public class BucketBrush extends AbstractBrush {
 
-	/**
+    /**
      *
      */
-	protected Tile pourTile;
+    protected Tile pourTile;
 
-	/**
+    /**
      *
      */
-	protected Tile oldTile;
+    protected Tile oldTile;
 
-	/**
+    /**
      *
      */
-	public BucketBrush() {
+    public BucketBrush() {
 
-	}
+    }
 
-	/**
-	 *
-	 *
-	 * @return
-	 */
-	@Override
-	public Shape getShape() {
-		return getBounds();
-	}
+    /**
+     *
+     *
+     * @return
+     */
+    @Override
+    public Shape getShape() {
+        return getBounds();
+    }
 
-	/**
-	 *
-	 *
-	 * @return
-	 */
-	@Override
-	public Rectangle getBounds() {
-		return new Rectangle(0, 0, 1, 1);
-	}
+    /**
+     *
+     *
+     * @return
+     */
+    @Override
+    public Rectangle getBounds() {
+        return new Rectangle(0, 0, 1, 1);
+    }
 
-	/**
-	 *
-	 *
-	 * @return
-	 */
-	public Tile getPourTile() {
-		return pourTile;
-	}
+    /**
+     *
+     *
+     * @return
+     */
+    public Tile getPourTile() {
+        return pourTile;
+    }
 
-	/**
-	 *
-	 *
-	 * @param tile
-	 */
-	public void setPourTile(Tile tile) {
-		pourTile = tile;
-	}
+    /**
+     *
+     *
+     * @param tile
+     */
+    public void setPourTile(Tile tile) {
+        pourTile = tile;
+    }
 
-	/**
-	 *
-	 *
-	 * @return
-	 */
-	public Tile getOldTile() {
-		return oldTile;
-	}
+    /**
+     *
+     *
+     * @return
+     */
+    public Tile getOldTile() {
+        return oldTile;
+    }
 
-	/**
-	 *
-	 *
-	 * @param tile
-	 */
-	public void setOldTile(Tile tile) {
-		oldTile = tile;
-	}
+    /**
+     *
+     *
+     * @param tile
+     */
+    public void setOldTile(Tile tile) {
+        oldTile = tile;
+    }
 
-	/**
-	 *
-	 *
-	 * @param g2d
-	 * @param view
-	 */
-	@Override
-	public void drawPreview(Graphics2D g2d, AbstractBoardView view) {
+    /**
+     *
+     *
+     * @param g2d
+     * @param view
+     */
+    @Override
+    public void drawPreview(Graphics2D g2d, AbstractBoardView view) {
 
-	}
+    }
 
-	/**
-	 *
-	 *
-	 * @param brush
-	 * @return
-	 */
-	@Override
-	public boolean equals(Brush brush) {
-		return brush instanceof BucketBrush;
-	}
+    /**
+     *
+     *
+     * @param brush
+     * @return
+     */
+    @Override
+    public boolean equals(Brush brush) {
+        return brush instanceof BucketBrush;
+    }
 
-	/**
-	 *
-	 *
-	 * @param x
-	 * @param y
-	 * @param selection
-	 * @return
-	 */
-	@Override
+    /**
+     *
+     *
+     * @param x
+     * @param y
+     * @param selection
+     * @return
+     */
+    @Override
     public Rectangle doPaint(int x, int y, Rectangle selection) {
         BoardLayerView layer = affectedContainer.getLayer(currentLayer);
 
@@ -179,41 +179,37 @@ public class BucketBrush extends AbstractBrush {
             return new Rectangle(area.x, area.y, area.width + 1, area.height + 1);
         }
     }
-	@Override
-	public void doMouseButton1Pressed(Point point,
-			AbstractAssetEditorWindow editor) {
-		if (editor instanceof BoardEditor) {
-			BoardEditor boardEditor = (BoardEditor) editor;
-		}
-	}
 
-	@Override
-	public void doMouseButton2Pressed(Point point,
-			AbstractAssetEditorWindow editor) {
+    @Override
+    public void doMouseButton1Pressed(Point point, AbstractAssetEditorWindow editor) {
+        if (editor instanceof BoardEditor) {
+            BoardEditor boardEditor = (BoardEditor) editor;
+        }
+    }
 
-	}
+    @Override
+    public void doMouseButton2Pressed(Point point, AbstractAssetEditorWindow editor) {
 
-	@Override
-	public void doMouseButton3Pressed(Point point,
-			AbstractAssetEditorWindow editor) {
+    }
 
-	}
+    @Override
+    public void doMouseButton3Pressed(Point point, AbstractAssetEditorWindow editor) {
 
-	@Override
-	public void doMouseButton1Dragged(Point point, Point origin,
-			AbstractAssetEditorWindow editor) {
+    }
 
-	}
+    @Override
+    public void doMouseButton1Dragged(Point point, Point origin, AbstractAssetEditorWindow editor) {
 
-	@Override
-	public void doMouseButton3Dragged(Point point, Point origin,
-			AbstractAssetEditorWindow editor) {
+    }
 
-	}
+    @Override
+    public void doMouseButton3Dragged(Point point, Point origin, AbstractAssetEditorWindow editor) {
 
-	@Override
-	public boolean isPixelBased() {
-		return false;
-	}
+    }
+
+    @Override
+    public boolean isPixelBased() {
+        return false;
+    }
 
 }

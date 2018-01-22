@@ -22,60 +22,56 @@ import org.json.JSONObject;
  */
 public class JsonAnimationSerializer extends AbstractJsonSerializer {
 
-	@Override
-	public boolean serializable(AssetDescriptor descriptor) {
-		final String ext = Paths.extension(descriptor.getURI());
-		return (ext.endsWith(CoreProperties
-				.getFullExtension("toolkit.animation.extension.json")));
-	}
+    @Override
+    public boolean serializable(AssetDescriptor descriptor) {
+        final String ext = Paths.extension(descriptor.getURI());
+        return (ext.endsWith(CoreProperties.getFullExtension("toolkit.animation.extension.json")));
+    }
 
-	@Override
-	public boolean deserializable(AssetDescriptor descriptor) {
-		return serializable(descriptor);
-	}
+    @Override
+    public boolean deserializable(AssetDescriptor descriptor) {
+        return serializable(descriptor);
+    }
 
-	@Override
-	protected void load(AssetHandle handle, JSONObject json)
-			throws AssetException {
-		final Animation animation = new Animation(handle.getDescriptor());
+    @Override
+    protected void load(AssetHandle handle, JSONObject json) throws AssetException {
+        final Animation animation = new Animation(handle.getDescriptor());
 
-		animation.setVersion(json.getDouble("version"));
-		animation.setAnimationWidth(json.optInt("width"));
-		animation.setAnimationHeight(json.optInt("height"));
-		animation.setFramRate(json.getInt("frameRate"));
+        animation.setVersion(json.getDouble("version"));
+        animation.setAnimationWidth(json.optInt("width"));
+        animation.setAnimationHeight(json.optInt("height"));
+        animation.setFramRate(json.getInt("frameRate"));
 
-		JSONObject object = json.getJSONObject("spriteSheet");
-		animation.setSpriteSheet(new SpriteSheet(object.getString("image"),
-				object.getInt("x"), object.getInt("y"), object.getInt("width"),
-				object.getInt("height")));
+        JSONObject object = json.getJSONObject("spriteSheet");
+        animation.setSpriteSheet(new SpriteSheet(object.getString("image"), object.getInt("x"), object.getInt("y"),
+                object.getInt("width"), object.getInt("height")));
 
-		animation.setSoundEffect(json.getString("soundEffect"));
+        animation.setSoundEffect(json.getString("soundEffect"));
 
-		handle.setAsset(animation);
-	}
+        handle.setAsset(animation);
+    }
 
-	@Override
-	public void store(AssetHandle handle, JSONObject json)
-			throws AssetException {
-		super.store(handle, json);
+    @Override
+    public void store(AssetHandle handle, JSONObject json) throws AssetException {
+        super.store(handle, json);
 
-		Animation animation = (Animation) handle.getAsset();
+        Animation animation = (Animation) handle.getAsset();
 
-		json.put("width", animation.getAnimationWidth());
-		json.put("height", animation.getAnimationHeight());
-		json.put("frameRate", animation.getFrameRate());
+        json.put("width", animation.getAnimationWidth());
+        json.put("height", animation.getAnimationHeight());
+        json.put("frameRate", animation.getFrameRate());
 
-		final SpriteSheet spriteSheet = animation.getSpriteSheet();
-		final JSONObject object = new JSONObject();
-		object.put("image", serializePath(spriteSheet.getFileName()));
-		object.put("x", spriteSheet.getX());
-		object.put("y", spriteSheet.getY());
-		object.put("width", spriteSheet.getWidth());
-		object.put("height", spriteSheet.getHeight());
+        final SpriteSheet spriteSheet = animation.getSpriteSheet();
+        final JSONObject object = new JSONObject();
+        object.put("image", serializePath(spriteSheet.getFileName()));
+        object.put("x", spriteSheet.getX());
+        object.put("y", spriteSheet.getY());
+        object.put("width", spriteSheet.getWidth());
+        object.put("height", spriteSheet.getHeight());
 
-		json.put("spriteSheet", object);
+        json.put("spriteSheet", object);
 
-		json.put("soundEffect", serializePath(animation.getSoundEffect()));
-	}
+        json.put("soundEffect", serializePath(animation.getSoundEffect()));
+    }
 
 }

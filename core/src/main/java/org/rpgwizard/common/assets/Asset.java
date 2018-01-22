@@ -15,12 +15,12 @@ import java.io.File;
  */
 public interface Asset {
 
-	File getFile();
+    File getFile();
 
-	AssetDescriptor getDescriptor();
+    AssetDescriptor getDescriptor();
 
-	void setDescriptor(AssetDescriptor assetDescriptor);
+    void setDescriptor(AssetDescriptor assetDescriptor);
 
-	void reset();
+    void reset();
 
 }

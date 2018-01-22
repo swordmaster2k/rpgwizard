@@ -16,111 +16,109 @@ import org.rpgwizard.common.assets.listeners.SpriteChangeListener;
  *
  * @author Joshua Michael Daly
  */
-public class AnimationsTableModel extends AbstractTableModel
-		implements
-			SpriteChangeListener {
+public class AnimationsTableModel extends AbstractTableModel implements SpriteChangeListener {
 
-	private final AbstractSprite sprite;
+    private final AbstractSprite sprite;
 
-	private static final String[] COLUMNS = {"Name", "Animation"};
+    private static final String[] COLUMNS = { "Name", "Animation" };
 
-	public AnimationsTableModel(AbstractSprite sprite) {
-		this.sprite = sprite;
-	}
+    public AnimationsTableModel(AbstractSprite sprite) {
+        this.sprite = sprite;
+    }
 
-	/**
-	 *
-	 *
-	 * @param column
-	 * @return
-	 */
-	@Override
-	public Class getColumnClass(int column) {
-		switch (column) {
-			case 0 :
-				return String.class;
-			case 1 :
-				return String.class;
-		}
+    /**
+     *
+     *
+     * @param column
+     * @return
+     */
+    @Override
+    public Class getColumnClass(int column) {
+        switch (column) {
+        case 0:
+            return String.class;
+        case 1:
+            return String.class;
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 *
-	 *
-	 * @param column
-	 * @return
-	 */
-	@Override
-	public String getColumnName(int column) {
-		return COLUMNS[column];
-	}
+    /**
+     *
+     *
+     * @param column
+     * @return
+     */
+    @Override
+    public String getColumnName(int column) {
+        return COLUMNS[column];
+    }
 
-	@Override
-	public int getRowCount() {
-		return (sprite.getAnimations().size());
-	}
+    @Override
+    public int getRowCount() {
+        return (sprite.getAnimations().size());
+    }
 
-	@Override
-	public int getColumnCount() {
-		return COLUMNS.length;
-	}
+    @Override
+    public int getColumnCount() {
+        return COLUMNS.length;
+    }
 
-	@Override
-	public Object getValueAt(int rowIndex, int columnIndex) {
-		switch (columnIndex) {
-			case 0 :
-				return sprite.getAnimations().keySet().toArray()[rowIndex];
-			case 1 :
-				return sprite.getAnimations().values().toArray()[rowIndex];
-			default :
-				return "NOT SUPPORTED";
-		}
-	}
+    @Override
+    public Object getValueAt(int rowIndex, int columnIndex) {
+        switch (columnIndex) {
+        case 0:
+            return sprite.getAnimations().keySet().toArray()[rowIndex];
+        case 1:
+            return sprite.getAnimations().values().toArray()[rowIndex];
+        default:
+            return "NOT SUPPORTED";
+        }
+    }
 
-	/**
-	 *
-	 *
-	 * @param value
-	 * @param rowIndex
-	 * @param columnIndex
-	 */
-	@Override
-	public void setValueAt(Object value, int rowIndex, int columnIndex) {
-		fireTableCellUpdated(rowIndex, columnIndex);
-	}
+    /**
+     *
+     *
+     * @param value
+     * @param rowIndex
+     * @param columnIndex
+     */
+    @Override
+    public void setValueAt(Object value, int rowIndex, int columnIndex) {
+        fireTableCellUpdated(rowIndex, columnIndex);
+    }
 
-	/**
-	 *
-	 *
-	 * @param rowIndex
-	 * @param columnIndex
-	 * @return
-	 */
-	@Override
-	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		// Don't allow direct editing of cells for simplicity.
-		return false;
-	}
+    /**
+     *
+     *
+     * @param rowIndex
+     * @param columnIndex
+     * @return
+     */
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        // Don't allow direct editing of cells for simplicity.
+        return false;
+    }
 
-	@Override
-	public void spriteChanged(SpriteChangedEvent e) {
-	}
+    @Override
+    public void spriteChanged(SpriteChangedEvent e) {
+    }
 
-	@Override
-	public void spriteAnimationAdded(SpriteChangedEvent e) {
-		fireTableDataChanged();
-	}
+    @Override
+    public void spriteAnimationAdded(SpriteChangedEvent e) {
+        fireTableDataChanged();
+    }
 
-	@Override
-	public void spriteAnimationUpdated(SpriteChangedEvent e) {
-		fireTableDataChanged();
-	}
+    @Override
+    public void spriteAnimationUpdated(SpriteChangedEvent e) {
+        fireTableDataChanged();
+    }
 
-	@Override
-	public void spriteAnimationRemoved(SpriteChangedEvent e) {
-		fireTableDataChanged();
-	}
+    @Override
+    public void spriteAnimationRemoved(SpriteChangedEvent e) {
+        fireTableDataChanged();
+    }
 
 }

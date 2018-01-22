@@ -37,8 +37,7 @@ import org.rpgwizard.common.assets.board.BoardLayerImage;
 import org.rpgwizard.common.assets.KeyPressEvent;
 
 /**
- * Abstract base class for implementing asset serializers that load or store
- * their contents using JSON encoding.
+ * Abstract base class for implementing asset serializers that load or store their contents using JSON encoding.
  *
  * @author Joel Moore
  * @author Chris Hutchinson
@@ -46,12 +45,11 @@ import org.rpgwizard.common.assets.KeyPressEvent;
  */
 public abstract class AbstractJsonSerializer extends AbstractAssetSerializer {
 
-	public static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
-	public static final double FILE_FORMAT_VERSION = 1.3;
+    public static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
+    public static final double FILE_FORMAT_VERSION = 1.3;
 
-	@Override
-    public void serialize(AssetHandle handle)
-            throws IOException, AssetException {
+    @Override
+    public void serialize(AssetHandle handle) throws IOException, AssetException {
 
         try (final WritableByteChannel channel = handle.write()) {
 
@@ -69,9 +67,9 @@ public abstract class AbstractJsonSerializer extends AbstractAssetSerializer {
         }
 
     }
-	@Override
-    public void deserialize(AssetHandle handle)
-            throws IOException, AssetException {
+
+    @Override
+    public void deserialize(AssetHandle handle) throws IOException, AssetException {
 
         try (final ReadableByteChannel channel = handle.read()) {
 
@@ -91,15 +89,14 @@ public abstract class AbstractJsonSerializer extends AbstractAssetSerializer {
         }
 
     }
-	protected abstract void load(AssetHandle handle, JSONObject json)
-			throws AssetException;
 
-	protected void store(AssetHandle handle, JSONObject json)
-			throws AssetException {
-		json.put("version", FILE_FORMAT_VERSION);
-	}
+    protected abstract void load(AssetHandle handle, JSONObject json) throws AssetException;
 
-	protected ArrayList<String> getStringArrayList(JSONArray array) {
+    protected void store(AssetHandle handle, JSONObject json) throws AssetException {
+        json.put("version", FILE_FORMAT_VERSION);
+    }
+
+    protected ArrayList<String> getStringArrayList(JSONArray array) {
         ArrayList<String> strings = new ArrayList<>();
 
         int length = array.length();
@@ -109,7 +106,8 @@ public abstract class AbstractJsonSerializer extends AbstractAssetSerializer {
 
         return strings;
     }
-	protected ArrayList<Boolean> getBooleanArrayList(JSONArray array) {
+
+    protected ArrayList<Boolean> getBooleanArrayList(JSONArray array) {
         ArrayList<Boolean> booleans = new ArrayList<>();
 
         int length = array.length();
@@ -119,59 +117,60 @@ public abstract class AbstractJsonSerializer extends AbstractAssetSerializer {
 
         return booleans;
     }
-	protected boolean[] getBooleanArray(JSONArray array) {
-		boolean[] booleans = new boolean[array.length()];
 
-		int length = array.length();
-		for (int i = 0; i < length; i++) {
-			booleans[i] = array.getBoolean(i);
-		}
+    protected boolean[] getBooleanArray(JSONArray array) {
+        boolean[] booleans = new boolean[array.length()];
 
-		return booleans;
-	}
+        int length = array.length();
+        for (int i = 0; i < length; i++) {
+            booleans[i] = array.getBoolean(i);
+        }
 
-	protected JSONArray serializeBoardVectors(List<BoardVector> vectors) {
-		final JSONArray jsonVectors = new JSONArray();
+        return booleans;
+    }
 
-		for (final BoardVector vector : vectors) {
-			jsonVectors.put(serializeBoardVector(vector));
-		}
+    protected JSONArray serializeBoardVectors(List<BoardVector> vectors) {
+        final JSONArray jsonVectors = new JSONArray();
 
-		return jsonVectors;
-	}
+        for (final BoardVector vector : vectors) {
+            jsonVectors.put(serializeBoardVector(vector));
+        }
 
-	protected JSONObject serializeBoardVector(BoardVector vector) {
-		final JSONObject v = new JSONObject();
-		final JSONArray points = new JSONArray();
-		final JSONArray events = new JSONArray();
+        return jsonVectors;
+    }
 
-		for (final Point point : vector.getPoints()) {
-			final JSONObject pt = new JSONObject();
-			pt.put("x", point.x);
-			pt.put("y", point.y);
-			points.put(pt);
-		}
+    protected JSONObject serializeBoardVector(BoardVector vector) {
+        final JSONObject v = new JSONObject();
+        final JSONArray points = new JSONArray();
+        final JSONArray events = new JSONArray();
 
-		v.put("id", vector.getId());
-		v.put("points", points);
-		v.put("isClosed", vector.isClosed());
-		v.put("type", vector.getType());
+        for (final Point point : vector.getPoints()) {
+            final JSONObject pt = new JSONObject();
+            pt.put("x", point.x);
+            pt.put("y", point.y);
+            points.put(pt);
+        }
 
-		for (final Event event : vector.getEvents()) {
-			final JSONObject evt = new JSONObject();
-			evt.put("type", event.getType().name().toLowerCase());
-			evt.put("program", event.getProgram());
-			if (event.getType() == EventType.KEYPRESS) {
-				evt.put("key", ((KeyPressEvent) event).getKey());
-			}
-			events.put(evt);
-		}
-		v.put("events", events);
+        v.put("id", vector.getId());
+        v.put("points", points);
+        v.put("isClosed", vector.isClosed());
+        v.put("type", vector.getType());
 
-		return v;
-	}
+        for (final Event event : vector.getEvents()) {
+            final JSONObject evt = new JSONObject();
+            evt.put("type", event.getType().name().toLowerCase());
+            evt.put("program", event.getProgram());
+            if (event.getType() == EventType.KEYPRESS) {
+                evt.put("key", ((KeyPressEvent) event).getKey());
+            }
+            events.put(evt);
+        }
+        v.put("events", events);
 
-	protected ArrayList<BoardVector> deserializeBoardVectors(JSONArray array) {
+        return v;
+    }
+
+    protected ArrayList<BoardVector> deserializeBoardVectors(JSONArray array) {
         ArrayList<BoardVector> vectors = new ArrayList<>();
 
         int length = array.length();
@@ -182,38 +181,39 @@ public abstract class AbstractJsonSerializer extends AbstractAssetSerializer {
 
         return vectors;
     }
-	protected BoardVector deserializeBoardVector(JSONObject object) {
-		BoardVector vector = new BoardVector();
-		vector.setId(object.getString("id"));
-		vector.setPoints(getPoints(object.getJSONArray("points")));
-		vector.setClosed(object.getBoolean("isClosed"));
-		vector.setType(BoardVectorType.valueOf(object.getString("type")));
-		vector.setEvents(getEvents(object.getJSONArray("events")));
 
-		return vector;
-	}
+    protected BoardVector deserializeBoardVector(JSONObject object) {
+        BoardVector vector = new BoardVector();
+        vector.setId(object.getString("id"));
+        vector.setPoints(getPoints(object.getJSONArray("points")));
+        vector.setClosed(object.getBoolean("isClosed"));
+        vector.setType(BoardVectorType.valueOf(object.getString("type")));
+        vector.setEvents(getEvents(object.getJSONArray("events")));
 
-	protected JSONArray serializeBoardLayerImages(List<BoardLayerImage> images) {
-		final JSONArray array = new JSONArray();
+        return vector;
+    }
 
-		for (final BoardLayerImage image : images) {
-			array.put(serializeBoardLayerImage(image));
-		}
+    protected JSONArray serializeBoardLayerImages(List<BoardLayerImage> images) {
+        final JSONArray array = new JSONArray();
 
-		return array;
-	}
+        for (final BoardLayerImage image : images) {
+            array.put(serializeBoardLayerImage(image));
+        }
 
-	protected JSONObject serializeBoardLayerImage(BoardLayerImage image) {
-		final JSONObject object = new JSONObject();
-		object.put("id", image.getId());
-		object.put("src", image.getSrc());
-		object.put("x", image.getX());
-		object.put("y", image.getY());
+        return array;
+    }
 
-		return object;
-	}
+    protected JSONObject serializeBoardLayerImage(BoardLayerImage image) {
+        final JSONObject object = new JSONObject();
+        object.put("id", image.getId());
+        object.put("src", image.getSrc());
+        object.put("x", image.getX());
+        object.put("y", image.getY());
 
-	protected ArrayList<BoardLayerImage> deserializeBoardLayerImages(JSONArray array) {
+        return object;
+    }
+
+    protected ArrayList<BoardLayerImage> deserializeBoardLayerImages(JSONArray array) {
         ArrayList<BoardLayerImage> images = new ArrayList<>();
 
         int length = array.length();
@@ -224,48 +224,48 @@ public abstract class AbstractJsonSerializer extends AbstractAssetSerializer {
 
         return images;
     }
-	protected BoardLayerImage deserializeBoardLayerImage(JSONObject object) {
-		BoardLayerImage layerImage = new BoardLayerImage(
-				object.getString("id"), object.getString("src"),
-				object.getInt("x"), object.getInt("y"));
-		return layerImage;
-	}
 
-	protected JSONArray serializeSpriteVectors(List<BoardVector> vectors) {
-		final JSONArray jsonVectors = new JSONArray();
+    protected BoardLayerImage deserializeBoardLayerImage(JSONObject object) {
+        BoardLayerImage layerImage = new BoardLayerImage(object.getString("id"), object.getString("src"),
+                object.getInt("x"), object.getInt("y"));
+        return layerImage;
+    }
 
-		for (final BoardVector vector : vectors) {
-			jsonVectors.put(serializeSpriteVector(vector));
-		}
+    protected JSONArray serializeSpriteVectors(List<BoardVector> vectors) {
+        final JSONArray jsonVectors = new JSONArray();
 
-		return jsonVectors;
-	}
+        for (final BoardVector vector : vectors) {
+            jsonVectors.put(serializeSpriteVector(vector));
+        }
 
-	protected JSONObject serializeSpriteVector(BoardVector vector) {
-		final JSONObject v = new JSONObject();
-		final JSONArray points = new JSONArray();
-		final JSONArray events = new JSONArray();
+        return jsonVectors;
+    }
 
-		for (final Point point : vector.getPoints()) {
-			final JSONObject pt = new JSONObject();
-			pt.put("x", point.x);
-			pt.put("y", point.y);
-			points.put(pt);
-		}
-		v.put("points", points);
+    protected JSONObject serializeSpriteVector(BoardVector vector) {
+        final JSONObject v = new JSONObject();
+        final JSONArray points = new JSONArray();
+        final JSONArray events = new JSONArray();
 
-		for (final Event event : vector.getEvents()) {
-			final JSONObject evt = new JSONObject();
-			evt.put("type", event.getType().name().toLowerCase());
-			evt.put("program", serializePath(event.getProgram()));
-			events.put(evt);
-		}
-		v.put("events", events);
+        for (final Point point : vector.getPoints()) {
+            final JSONObject pt = new JSONObject();
+            pt.put("x", point.x);
+            pt.put("y", point.y);
+            points.put(pt);
+        }
+        v.put("points", points);
 
-		return v;
-	}
+        for (final Event event : vector.getEvents()) {
+            final JSONObject evt = new JSONObject();
+            evt.put("type", event.getType().name().toLowerCase());
+            evt.put("program", serializePath(event.getProgram()));
+            events.put(evt);
+        }
+        v.put("events", events);
 
-	protected ArrayList<BoardVector> deserializeSpriteVectors(JSONArray array) {
+        return v;
+    }
+
+    protected ArrayList<BoardVector> deserializeSpriteVectors(JSONArray array) {
         ArrayList<BoardVector> vectors = new ArrayList<>();
 
         int length = array.length();
@@ -276,63 +276,62 @@ public abstract class AbstractJsonSerializer extends AbstractAssetSerializer {
 
         return vectors;
     }
-	protected BoardVector deserializeSpriteVector(JSONObject object) {
-		BoardVector vector = new BoardVector();
-		vector.setPoints(getPoints(object.getJSONArray("points")));
-		vector.setEvents(getEvents(object.getJSONArray("events")));
 
-		return vector;
-	}
+    protected BoardVector deserializeSpriteVector(JSONObject object) {
+        BoardVector vector = new BoardVector();
+        vector.setPoints(getPoints(object.getJSONArray("points")));
+        vector.setEvents(getEvents(object.getJSONArray("events")));
 
-	protected JSONObject serializePoint(Point point) {
-		JSONObject object = new JSONObject();
-		object.put("x", point.getX());
-		object.put("y", point.getY());
-		return object;
-	}
+        return vector;
+    }
 
-	protected Point deserializePoint(JSONObject object) {
-		return new Point(object.getInt("x"), object.getInt("y"));
-	}
+    protected JSONObject serializePoint(Point point) {
+        JSONObject object = new JSONObject();
+        object.put("x", point.getX());
+        object.put("y", point.getY());
+        return object;
+    }
 
-	protected LinkedHashMap<String, String> deserializeStringMap(
-			JSONObject object) {
-		LinkedHashMap<String, String> map = new LinkedHashMap();
-		Iterator keys = object.keys();
-		while (keys.hasNext()) {
-			String key = (String) keys.next();
-			map.put(key, object.getString(key));
-		}
+    protected Point deserializePoint(JSONObject object) {
+        return new Point(object.getInt("x"), object.getInt("y"));
+    }
 
-		return map;
-	}
+    protected LinkedHashMap<String, String> deserializeStringMap(JSONObject object) {
+        LinkedHashMap<String, String> map = new LinkedHashMap();
+        Iterator keys = object.keys();
+        while (keys.hasNext()) {
+            String key = (String) keys.next();
+            map.put(key, object.getString(key));
+        }
 
-	protected LinkedHashMap<String, Integer> deserializeIntegerMap(
-			JSONObject object) {
-		LinkedHashMap<String, Integer> map = new LinkedHashMap();
-		Iterator keys = object.keys();
-		while (keys.hasNext()) {
-			String key = (String) keys.next();
-			map.put(key, object.getInt(key));
-		}
+        return map;
+    }
 
-		return map;
-	}
+    protected LinkedHashMap<String, Integer> deserializeIntegerMap(JSONObject object) {
+        LinkedHashMap<String, Integer> map = new LinkedHashMap();
+        Iterator keys = object.keys();
+        while (keys.hasNext()) {
+            String key = (String) keys.next();
+            map.put(key, object.getInt(key));
+        }
 
-	protected static JSONObject serializeMap(Map map) throws JSONException {
-		JSONObject json = new JSONObject();
-		for (Object key : map.keySet()) {
-			json.put(key.toString(), serializePath(map.get(key).toString()));
-		}
-		return json;
-	}
+        return map;
+    }
 
-	protected static String serializePath(String path) {
-		// Use *nix path separator everywhere, higher compatability.
-		return FilenameUtils.separatorsToUnix(path);
-	}
+    protected static JSONObject serializeMap(Map map) throws JSONException {
+        JSONObject json = new JSONObject();
+        for (Object key : map.keySet()) {
+            json.put(key.toString(), serializePath(map.get(key).toString()));
+        }
+        return json;
+    }
 
-	private ArrayList<Point> getPoints(JSONArray array) {
+    protected static String serializePath(String path) {
+        // Use *nix path separator everywhere, higher compatability.
+        return FilenameUtils.separatorsToUnix(path);
+    }
+
+    private ArrayList<Point> getPoints(JSONArray array) {
         ArrayList<Point> points = new ArrayList<>();
 
         int length = array.length();
@@ -344,7 +343,8 @@ public abstract class AbstractJsonSerializer extends AbstractAssetSerializer {
 
         return points;
     }
-	private ArrayList<Event> getEvents(JSONArray array) {
+
+    private ArrayList<Event> getEvents(JSONArray array) {
         ArrayList<Event> events = new ArrayList<>();
 
         int length = array.length();

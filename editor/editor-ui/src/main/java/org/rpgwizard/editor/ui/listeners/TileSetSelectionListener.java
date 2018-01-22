@@ -28,44 +28,44 @@ import org.rpgwizard.editor.editors.board.brush.ShapeBrush;
  */
 public class TileSetSelectionListener implements TileSelectionListener {
 
-	@Override
-	public void tileSelected(TileSelectionEvent e) {
-		MainWindow mainWindow = MainWindow.getInstance();
+    @Override
+    public void tileSelected(TileSelectionEvent e) {
+        MainWindow mainWindow = MainWindow.getInstance();
 
-		Brush currentBrush = mainWindow.getCurrentBrush();
-		Tile lastSelectedTile = mainWindow.getLastSelectedTile();
+        Brush currentBrush = mainWindow.getCurrentBrush();
+        Tile lastSelectedTile = mainWindow.getLastSelectedTile();
 
-		if (currentBrush instanceof ShapeBrush) {
-			((ShapeBrush) currentBrush).setTile(e.getTile());
-			mainWindow.getMainToolBar().getPencilButton().setSelected(true);
-		} else if (currentBrush instanceof BucketBrush) {
-			((BucketBrush) currentBrush).setPourTile(e.getTile());
-		} else {
-			ShapeBrush shapeBrush = new ShapeBrush();
-			shapeBrush.setTile(e.getTile());
-			shapeBrush.makeRectangleBrush(new Rectangle(0, 0, 1, 1));
-			mainWindow.setCurrentBrush(shapeBrush);
-			mainWindow.getMainToolBar().getPencilButton().setSelected(true);
-		}
+        if (currentBrush instanceof ShapeBrush) {
+            ((ShapeBrush) currentBrush).setTile(e.getTile());
+            mainWindow.getMainToolBar().getPencilButton().setSelected(true);
+        } else if (currentBrush instanceof BucketBrush) {
+            ((BucketBrush) currentBrush).setPourTile(e.getTile());
+        } else {
+            ShapeBrush shapeBrush = new ShapeBrush();
+            shapeBrush.setTile(e.getTile());
+            shapeBrush.makeRectangleBrush(new Rectangle(0, 0, 1, 1));
+            mainWindow.setCurrentBrush(shapeBrush);
+            mainWindow.getMainToolBar().getPencilButton().setSelected(true);
+        }
 
-		if (lastSelectedTile != e.getTile()) {
-			mainWindow.setLastSelectedTile(e.getTile());
-		}
-	}
+        if (lastSelectedTile != e.getTile()) {
+            mainWindow.setLastSelectedTile(e.getTile());
+        }
+    }
 
-	@Override
-	public void tileRegionSelected(TileRegionSelectionEvent e) {
-		MainWindow mainWindow = MainWindow.getInstance();
+    @Override
+    public void tileRegionSelected(TileRegionSelectionEvent e) {
+        MainWindow mainWindow = MainWindow.getInstance();
 
-		Brush currentBrush = MainWindow.getInstance().getCurrentBrush();
+        Brush currentBrush = MainWindow.getInstance().getCurrentBrush();
 
-		if (!(currentBrush instanceof CustomBrush)) {
-			mainWindow.setCurrentBrush(new CustomBrush(e.getTiles()));
-		} else {
-			((CustomBrush) currentBrush).setTiles(e.getTiles());
-		}
+        if (!(currentBrush instanceof CustomBrush)) {
+            mainWindow.setCurrentBrush(new CustomBrush(e.getTiles()));
+        } else {
+            ((CustomBrush) currentBrush).setTiles(e.getTiles());
+        }
 
-		mainWindow.getMainToolBar().getPencilButton().setSelected(true);
-	}
+        mainWindow.getMainToolBar().getPencilButton().setSelected(true);
+    }
 
 }

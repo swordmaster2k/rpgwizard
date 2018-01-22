@@ -26,43 +26,42 @@ import org.rpgwizard.editor.editors.ProgramEditor;
 import org.rpgwizard.editor.editors.ProjectEditor;
 
 /**
- * A factory for obtaining the corresponding file format editor based on the
- * asset type.
+ * A factory for obtaining the corresponding file format editor based on the asset type.
  * 
  * @author Joshua Michael Daly
  */
 public class EditorFactory {
 
-	private EditorFactory() {
+    private EditorFactory() {
 
-	}
+    }
 
-	/**
-	 * Gets the matching editor for the asset type.
-	 * 
-	 * @param asset
-	 * @return editor for asset
-	 */
-	public static AbstractAssetEditorWindow getEditor(Asset asset) {
-		if (asset instanceof Animation) {
-			return new AnimationEditor((Animation) asset);
-		} else if (asset instanceof Board) {
-			return new BoardEditor((Board) asset);
-		} else if (asset instanceof Enemy) {
-			return new EnemyEditor((Enemy) asset);
-		} else if (asset instanceof Item) {
-			return new ItemEditor((Item) asset);
-		} else if (asset instanceof NPC) {
-			return new NPCEditor((NPC) asset);
-		} else if (asset instanceof Character) {
-			return new CharacterEditor((Character) asset);
-		} else if (asset instanceof Program) {
-			return new ProgramEditor((Program) asset);
-		} else if (asset instanceof Project) {
-			return new ProjectEditor((Project) asset);
-		}
+    /**
+     * Gets the matching editor for the asset type.
+     * 
+     * @param asset
+     * @return editor for asset
+     */
+    public static AbstractAssetEditorWindow getEditor(Asset asset) {
+        if (asset instanceof Animation) {
+            return new AnimationEditor((Animation) asset);
+        } else if (asset instanceof Board) {
+            return new BoardEditor((Board) asset);
+        } else if (asset instanceof Enemy) {
+            return new EnemyEditor((Enemy) asset);
+        } else if (asset instanceof Item) {
+            return new ItemEditor((Item) asset);
+        } else if (asset instanceof NPC) {
+            return new NPCEditor((NPC) asset);
+        } else if (asset instanceof Character) {
+            return new CharacterEditor((Character) asset);
+        } else if (asset instanceof Program) {
+            return new ProgramEditor((Program) asset);
+        } else if (asset instanceof Project) {
+            return new ProjectEditor((Project) asset);
+        }
 
-		return null;
-	}
+        return null;
+    }
 
 }

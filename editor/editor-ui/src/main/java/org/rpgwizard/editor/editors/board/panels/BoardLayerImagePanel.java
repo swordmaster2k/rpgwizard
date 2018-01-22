@@ -30,19 +30,19 @@ import org.rpgwizard.editor.utilities.GuiHelper;
  */
 public class BoardLayerImagePanel extends BoardModelPanel {
 
-	private final JComboBox fileComboBox;
-	private final JLabel fileLabel;
+    private final JComboBox fileComboBox;
+    private final JLabel fileLabel;
 
-	private final JTextField idField;
-	private final JLabel idLabel;
+    private final JTextField idField;
+    private final JLabel idLabel;
 
-	private final JSpinner xSpinner;
-	private final JLabel xLabel;
+    private final JSpinner xSpinner;
+    private final JLabel xLabel;
 
-	private final JSpinner ySpinner;
-	private final JLabel yLabel;
+    private final JSpinner ySpinner;
+    private final JLabel yLabel;
 
-	public BoardLayerImagePanel(final BoardLayerImage boardLayerImage) {
+    public BoardLayerImagePanel(final BoardLayerImage boardLayerImage) {
         ///
         /// super
         ///
@@ -50,15 +50,9 @@ public class BoardLayerImagePanel extends BoardModelPanel {
         ///
         /// fileComboBox
         ///
-        String[] exts = (String[]) ArrayUtils.addAll(
-                EditorFileManager.getImageExtensions()
-        );
-        fileComboBox = GuiHelper.getFileListJComboBox(
-                new File[]{
-                    new File(EditorFileManager.getGraphicsPath())
-                },
-                exts, true
-        );
+        String[] exts = (String[]) ArrayUtils.addAll(EditorFileManager.getImageExtensions());
+        fileComboBox = GuiHelper.getFileListJComboBox(new File[] { new File(EditorFileManager.getGraphicsPath()) },
+                exts, true);
         fileComboBox.setSelectedItem(boardLayerImage.getSrc());
         fileComboBox.addActionListener((ActionEvent e) -> {
             String fileName = (String) fileComboBox.getSelectedItem();
@@ -132,43 +126,37 @@ public class BoardLayerImagePanel extends BoardModelPanel {
         ///
         /// this
         ///
-        horizontalGroup.addGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(fileLabel = getJLabel("Image"))
-                        .addComponent(idLabel = getJLabel("ID"))
-                        .addComponent(xLabel = getJLabel("X"))
-                        .addComponent(yLabel = getJLabel("Y")));
+        horizontalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addComponent(fileLabel = getJLabel("Image")).addComponent(idLabel = getJLabel("ID"))
+                .addComponent(xLabel = getJLabel("X")).addComponent(yLabel = getJLabel("Y")));
 
-        horizontalGroup.addGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(fileComboBox)
-                        .addComponent(idField)
-                        .addComponent(xSpinner)
-                        .addComponent(ySpinner));
+        horizontalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(fileComboBox)
+                .addComponent(idField).addComponent(xSpinner).addComponent(ySpinner));
 
         layout.setHorizontalGroup(horizontalGroup);
 
-        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(fileLabel).addComponent(fileComboBox));
-        
-        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(idLabel).addComponent(idField));
+        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(fileLabel)
+                .addComponent(fileComboBox));
 
-        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(xLabel).addComponent(xSpinner));
+        verticalGroup.addGroup(
+                layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(idLabel).addComponent(idField));
 
-        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(yLabel).addComponent(ySpinner));
+        verticalGroup.addGroup(
+                layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(xLabel).addComponent(xSpinner));
+
+        verticalGroup.addGroup(
+                layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(yLabel).addComponent(ySpinner));
 
         layout.setVerticalGroup(verticalGroup);
     }
-	@Override
-	public void modelMoved(BoardModelEvent e) {
-		if (e.getSource() == model) {
-			BoardLayerImage sprite = (BoardLayerImage) e.getSource();
-			xSpinner.setValue(sprite.getX());
-			ySpinner.setValue(sprite.getY());
-			MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
-		}
-	}
+
+    @Override
+    public void modelMoved(BoardModelEvent e) {
+        if (e.getSource() == model) {
+            BoardLayerImage sprite = (BoardLayerImage) e.getSource();
+            xSpinner.setValue(sprite.getX());
+            ySpinner.setValue(sprite.getY());
+            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+        }
+    }
 }

@@ -19,12 +19,12 @@ import org.rpgwizard.editor.MainWindow;
  */
 public class SpriteAction extends AbstractAction {
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		BoardEditor.toggleSelectedOnBoardEditor();
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        BoardEditor.toggleSelectedOnBoardEditor();
 
-		BoardSpriteBrush brush = new BoardSpriteBrush();
-		MainWindow.getInstance().setCurrentBrush(brush);
-	}
+        BoardSpriteBrush brush = new BoardSpriteBrush();
+        MainWindow.getInstance().setCurrentBrush(brush);
+    }
 
 }

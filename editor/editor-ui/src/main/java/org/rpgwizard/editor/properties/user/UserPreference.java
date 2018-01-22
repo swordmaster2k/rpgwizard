@@ -16,23 +16,23 @@ import org.rpgwizard.editor.ui.Theme;
  */
 public enum UserPreference {
 
-	USER_PREFERENCE_THEME("editor.user.preference.theme", Theme.DARK.toString());
+    USER_PREFERENCE_THEME("editor.user.preference.theme", Theme.DARK.toString());
 
-	private final String name;
-	private final String defaultValue;
+    private final String name;
+    private final String defaultValue;
 
-	private UserPreference(String name, String defaultValue) {
-		this.name = name;
-		this.defaultValue = defaultValue;
-	}
+    private UserPreference(String name, String defaultValue) {
+        this.name = name;
+        this.defaultValue = defaultValue;
+    }
 
-	public String getDefaultValue() {
-		return defaultValue;
-	}
+    public String getDefaultValue() {
+        return defaultValue;
+    }
 
-	@Override
-	public String toString() {
-		return name;
-	}
+    @Override
+    public String toString() {
+        return name;
+    }
 
 }

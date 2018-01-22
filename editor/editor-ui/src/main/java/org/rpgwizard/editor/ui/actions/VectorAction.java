@@ -19,18 +19,16 @@ import org.rpgwizard.editor.MainWindow;
  */
 public class VectorAction extends AbstractAction {
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		BoardEditor.toggleSelectedOnBoardEditor();
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        BoardEditor.toggleSelectedOnBoardEditor();
 
-		BoardVectorBrush brush = new BoardVectorBrush();
-		MainWindow.getInstance().setCurrentBrush(brush);
+        BoardVectorBrush brush = new BoardVectorBrush();
+        MainWindow.getInstance().setCurrentBrush(brush);
 
-		if (MainWindow.getInstance().getMainMenuBar().getViewMenu()
-				.getShowVectorsMenuItem().isSelected() == false) {
-			MainWindow.getInstance().getMainMenuBar().getViewMenu()
-					.getShowVectorsMenuItem().setSelected(true);
-		}
-	}
+        if (MainWindow.getInstance().getMainMenuBar().getViewMenu().getShowVectorsMenuItem().isSelected() == false) {
+            MainWindow.getInstance().getMainMenuBar().getViewMenu().getShowVectorsMenuItem().setSelected(true);
+        }
+    }
 
 }

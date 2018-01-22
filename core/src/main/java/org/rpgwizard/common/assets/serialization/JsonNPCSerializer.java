@@ -21,34 +21,31 @@ import org.json.JSONObject;
  */
 public class JsonNPCSerializer extends AbstractSpriteSerializer {
 
-	@Override
-	public boolean serializable(AssetDescriptor descriptor) {
-		final String ext = Paths.extension(descriptor.getURI());
-		return (ext.endsWith(CoreProperties
-				.getFullExtension("toolkit.npc.extension.json")));
-	}
+    @Override
+    public boolean serializable(AssetDescriptor descriptor) {
+        final String ext = Paths.extension(descriptor.getURI());
+        return (ext.endsWith(CoreProperties.getFullExtension("toolkit.npc.extension.json")));
+    }
 
-	@Override
-	public boolean deserializable(AssetDescriptor descriptor) {
-		return serializable(descriptor);
-	}
+    @Override
+    public boolean deserializable(AssetDescriptor descriptor) {
+        return serializable(descriptor);
+    }
 
-	@Override
-	protected void load(AssetHandle handle, JSONObject json)
-			throws AssetException {
-		final NPC npc = super.load(new NPC(handle.getDescriptor()), json);
+    @Override
+    protected void load(AssetHandle handle, JSONObject json) throws AssetException {
+        final NPC npc = super.load(new NPC(handle.getDescriptor()), json);
 
-		npc.setDescription(json.getString("description"));
+        npc.setDescription(json.getString("description"));
 
-		handle.setAsset(npc);
-	}
+        handle.setAsset(npc);
+    }
 
-	@Override
-	protected void store(AssetHandle handle, JSONObject json)
-			throws AssetException {
-		final NPC npc = super.store((NPC) handle.getAsset(), json);
+    @Override
+    protected void store(AssetHandle handle, JSONObject json) throws AssetException {
+        final NPC npc = super.store((NPC) handle.getAsset(), json);
 
-		json.put("description", npc.getDescription());
-	}
+        json.put("description", npc.getDescription());
+    }
 
 }

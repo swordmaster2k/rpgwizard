@@ -28,44 +28,42 @@ import org.slf4j.LoggerFactory;
  */
 public class ThemeAction extends AbstractAction {
 
-	private static final org.slf4j.Logger LOGGER = LoggerFactory
-			.getLogger(ThemeAction.class);
+    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(ThemeAction.class);
 
-	private final Theme theme;
+    private final Theme theme;
 
-	public ThemeAction(Theme theme) {
-		this.theme = theme;
-	}
+    public ThemeAction(Theme theme) {
+        this.theme = theme;
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		switch (theme) {
-			case LIGHT :
-				changeTheme(new SubstanceNebulaLookAndFeel());
-				break;
-			case DARK :
-				changeTheme(new SubstanceGraphiteAquaLookAndFeel());
-				break;
-			default :
-				// Do Nothing.
-		}
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        switch (theme) {
+        case LIGHT:
+            changeTheme(new SubstanceNebulaLookAndFeel());
+            break;
+        case DARK:
+            changeTheme(new SubstanceGraphiteAquaLookAndFeel());
+            break;
+        default:
+            // Do Nothing.
+        }
+    }
 
-	private void changeTheme(LookAndFeel laf) {
-		try {
-			if (UIManager.getLookAndFeel().getClass().equals(laf.getClass())) {
-				return;
-			}
-			UIManager.setLookAndFeel(laf);
-			for (Window window : Window.getWindows()) {
-				SwingUtilities.updateComponentTreeUI(window);
-			}
-			EditorFileManager.getFileChooser().updateUI();
-			UserPreferencesProperties.setProperty(
-					UserPreference.USER_PREFERENCE_THEME, theme.toString());
-		} catch (UnsupportedLookAndFeelException ex) {
-			LOGGER.error("Could not change theme laf=[{}]", ex, laf);
-		}
-	}
+    private void changeTheme(LookAndFeel laf) {
+        try {
+            if (UIManager.getLookAndFeel().getClass().equals(laf.getClass())) {
+                return;
+            }
+            UIManager.setLookAndFeel(laf);
+            for (Window window : Window.getWindows()) {
+                SwingUtilities.updateComponentTreeUI(window);
+            }
+            EditorFileManager.getFileChooser().updateUI();
+            UserPreferencesProperties.setProperty(UserPreference.USER_PREFERENCE_THEME, theme.toString());
+        } catch (UnsupportedLookAndFeelException ex) {
+            LOGGER.error("Could not change theme laf=[{}]", ex, laf);
+        }
+    }
 
 }

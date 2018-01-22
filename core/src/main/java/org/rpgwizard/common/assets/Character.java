@@ -12,166 +12,167 @@ import java.util.Map;
 
 public class Character extends AbstractSprite {
 
-	private int level;
-	private int maxLevel;
-	private double experience;
-	private double maxExperience;
-	private double health;
-	private double maxHealth;
-	private double attack;
-	private double maxAttack;
-	private double defence;
-	private double maxDefence;
-	private double magic;
-	private double maxMagic;
-	private int gold;
-	private Map<String, String> equipment;
-	private Map<String, String> inventory;
+    private int level;
+    private int maxLevel;
+    private double experience;
+    private double maxExperience;
+    private double health;
+    private double maxHealth;
+    private double attack;
+    private double maxAttack;
+    private double defence;
+    private double maxDefence;
+    private double magic;
+    private double maxMagic;
+    private int gold;
+    private Map<String, String> equipment;
+    private Map<String, String> inventory;
 
-	/**
-	 * Opens a player from an existing file
-	 *
-	 * @param descriptor
-	 *            Character (.character) file to open
-	 */
-	public Character(AssetDescriptor descriptor) {
-		super(descriptor);
-                
-                equipment = new HashMap<>();
-                equipment.put(Equipment.HEAD.toString(), "");
-                equipment.put(Equipment.CHEST.toString(), "");
-                equipment.put(Equipment.RIGHT_HAND.toString(), "");
-                equipment.put(Equipment.LEFT_HAND.toString(), "");
-                equipment.put(Equipment.BOOTS.toString(), "");
-                equipment.put(Equipment.GLOVES.toString(), "");
-                equipment.put(Equipment.ACCESSORY_1.toString(), "");
-                equipment.put(Equipment.ACCESSORY_2.toString(), "");
-                
-                inventory = new HashMap<>();
-	}
-	public int getLevel() {
-		return level;
-	}
+    /**
+     * Opens a player from an existing file
+     *
+     * @param descriptor
+     *            Character (.character) file to open
+     */
+    public Character(AssetDescriptor descriptor) {
+        super(descriptor);
 
-	public void setLevel(int level) {
-		this.level = level;
-	}
+        equipment = new HashMap<>();
+        equipment.put(Equipment.HEAD.toString(), "");
+        equipment.put(Equipment.CHEST.toString(), "");
+        equipment.put(Equipment.RIGHT_HAND.toString(), "");
+        equipment.put(Equipment.LEFT_HAND.toString(), "");
+        equipment.put(Equipment.BOOTS.toString(), "");
+        equipment.put(Equipment.GLOVES.toString(), "");
+        equipment.put(Equipment.ACCESSORY_1.toString(), "");
+        equipment.put(Equipment.ACCESSORY_2.toString(), "");
 
-	public int getMaxLevel() {
-		return maxLevel;
-	}
+        inventory = new HashMap<>();
+    }
 
-	public void setMaxLevel(int maxLevel) {
-		this.maxLevel = maxLevel;
-	}
+    public int getLevel() {
+        return level;
+    }
 
-	public double getExperience() {
-		return experience;
-	}
+    public void setLevel(int level) {
+        this.level = level;
+    }
 
-	public void setExperience(double experience) {
-		this.experience = experience;
-	}
+    public int getMaxLevel() {
+        return maxLevel;
+    }
 
-	public double getMaxExperience() {
-		return maxExperience;
-	}
+    public void setMaxLevel(int maxLevel) {
+        this.maxLevel = maxLevel;
+    }
 
-	public void setMaxExperience(double maxExperience) {
-		this.maxExperience = maxExperience;
-	}
+    public double getExperience() {
+        return experience;
+    }
 
-	public double getHealth() {
-		return health;
-	}
+    public void setExperience(double experience) {
+        this.experience = experience;
+    }
 
-	public void setHealth(double health) {
-		this.health = health;
-	}
+    public double getMaxExperience() {
+        return maxExperience;
+    }
 
-	public double getMaxHealth() {
-		return maxHealth;
-	}
+    public void setMaxExperience(double maxExperience) {
+        this.maxExperience = maxExperience;
+    }
 
-	public void setMaxHealth(double maxHealth) {
-		this.maxHealth = maxHealth;
-	}
+    public double getHealth() {
+        return health;
+    }
 
-	public double getAttack() {
-		return attack;
-	}
+    public void setHealth(double health) {
+        this.health = health;
+    }
 
-	public void setAttack(double attack) {
-		this.attack = attack;
-	}
+    public double getMaxHealth() {
+        return maxHealth;
+    }
 
-	public double getMaxAttack() {
-		return maxAttack;
-	}
+    public void setMaxHealth(double maxHealth) {
+        this.maxHealth = maxHealth;
+    }
 
-	public void setMaxAttack(double maxAttack) {
-		this.maxAttack = maxAttack;
-	}
+    public double getAttack() {
+        return attack;
+    }
 
-	public double getDefence() {
-		return defence;
-	}
+    public void setAttack(double attack) {
+        this.attack = attack;
+    }
 
-	public void setDefence(double defence) {
-		this.defence = defence;
-	}
+    public double getMaxAttack() {
+        return maxAttack;
+    }
 
-	public double getMaxDefence() {
-		return maxDefence;
-	}
+    public void setMaxAttack(double maxAttack) {
+        this.maxAttack = maxAttack;
+    }
 
-	public void setMaxDefence(double maxDefence) {
-		this.maxDefence = maxDefence;
-	}
+    public double getDefence() {
+        return defence;
+    }
 
-	public double getMagic() {
-		return magic;
-	}
+    public void setDefence(double defence) {
+        this.defence = defence;
+    }
 
-	public void setMagic(double magic) {
-		this.magic = magic;
-	}
+    public double getMaxDefence() {
+        return maxDefence;
+    }
 
-	public double getMaxMagic() {
-		return maxMagic;
-	}
+    public void setMaxDefence(double maxDefence) {
+        this.maxDefence = maxDefence;
+    }
 
-	public void setMaxMagic(double maxMagic) {
-		this.maxMagic = maxMagic;
-	}
+    public double getMagic() {
+        return magic;
+    }
 
-	public int getGold() {
-		return gold;
-	}
+    public void setMagic(double magic) {
+        this.magic = magic;
+    }
 
-	public void setGold(int gold) {
-		this.gold = gold;
-	}
+    public double getMaxMagic() {
+        return maxMagic;
+    }
 
-	public Map<String, String> getEquipment() {
-		return equipment;
-	}
+    public void setMaxMagic(double maxMagic) {
+        this.maxMagic = maxMagic;
+    }
 
-	public void setEquipment(Map<String, String> equipment) {
-		this.equipment = equipment;
-	}
+    public int getGold() {
+        return gold;
+    }
 
-	public Map<String, String> getInventory() {
-		return inventory;
-	}
+    public void setGold(int gold) {
+        this.gold = gold;
+    }
 
-	public void setInventory(Map<String, String> inventory) {
-		this.inventory = inventory;
-	}
+    public Map<String, String> getEquipment() {
+        return equipment;
+    }
 
-	@Override
-	public void reset() {
+    public void setEquipment(Map<String, String> equipment) {
+        this.equipment = equipment;
+    }
 
-	}
+    public Map<String, String> getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(Map<String, String> inventory) {
+        this.inventory = inventory;
+    }
+
+    @Override
+    public void reset() {
+
+    }
 
 }

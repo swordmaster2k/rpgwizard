@@ -16,9 +16,9 @@ import java.util.stream.Stream;
  */
 public enum EventType {
 
-	OVERLAP, KEYPRESS;
+    OVERLAP, KEYPRESS;
 
-	public static String[] toStringArray() {
-            return Stream.of(EventType.values()).map(EventType::name).toArray(String[]::new);
-        }
+    public static String[] toStringArray() {
+        return Stream.of(EventType.values()).map(EventType::name).toArray(String[]::new);
+    }
 }

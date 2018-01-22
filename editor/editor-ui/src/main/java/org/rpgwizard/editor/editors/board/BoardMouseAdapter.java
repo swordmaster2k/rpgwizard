@@ -31,233 +31,231 @@ import org.rpgwizard.editor.MainWindow;
  */
 public class BoardMouseAdapter extends MouseAdapter {
 
-	private Point origin;
-	private final BoardEditor editor;
+    private Point origin;
+    private final BoardEditor editor;
 
-	/**
-	 *
-	 *
-	 * @param boardEditor
-	 */
-	public BoardMouseAdapter(BoardEditor boardEditor) {
-		editor = boardEditor;
-	}
+    /**
+     *
+     *
+     * @param boardEditor
+     */
+    public BoardMouseAdapter(BoardEditor boardEditor) {
+        editor = boardEditor;
+    }
 
-	/**
-	 *
-	 *
-	 * @param e
-	 */
-	@Override
-	public void mousePressed(MouseEvent e) {
-		if (editor.getBoardView().getCurrentSelectedLayer() != null) {
-			AbstractBrush brush = MainWindow.getInstance().getCurrentBrush();
-			if (!checkBrushValid(brush)) {
-				return;
-			}
+    /**
+     *
+     *
+     * @param e
+     */
+    @Override
+    public void mousePressed(MouseEvent e) {
+        if (editor.getBoardView().getCurrentSelectedLayer() != null) {
+            AbstractBrush brush = MainWindow.getInstance().getCurrentBrush();
+            if (!checkBrushValid(brush)) {
+                return;
+            }
 
-			int button = e.getButton();
-			int x = (int) (e.getX() / editor.getBoardView().getZoom());
-			int y = (int) (e.getY() / editor.getBoardView().getZoom());
+            int button = e.getButton();
+            int x = (int) (e.getX() / editor.getBoardView().getZoom());
+            int y = (int) (e.getY() / editor.getBoardView().getZoom());
 
-			switch (button) {
-				case MouseEvent.BUTTON1 :
-					doMouseButton1Pressed(brush, x, y);
-					break;
-				case MouseEvent.BUTTON2 :
-					doMouseButton2Pressed(brush, x, y);
-					break;
-				case MouseEvent.BUTTON3 :
-					doMouseButton3Pressed(brush, x, y);
-					break;
-				default :
-					break;
-			}
-		}
-	}
+            switch (button) {
+            case MouseEvent.BUTTON1:
+                doMouseButton1Pressed(brush, x, y);
+                break;
+            case MouseEvent.BUTTON2:
+                doMouseButton2Pressed(brush, x, y);
+                break;
+            case MouseEvent.BUTTON3:
+                doMouseButton3Pressed(brush, x, y);
+                break;
+            default:
+                break;
+            }
+        }
+    }
 
-	/**
-	 *
-	 *
-	 * @param e
-	 */
-	@Override
-	public void mouseDragged(MouseEvent e) {
-		if (editor.getBoardView().getCurrentSelectedLayer() != null) {
-			AbstractBrush brush = MainWindow.getInstance().getCurrentBrush();
-			if (!checkBrushValid(brush)) {
-				return;
-			}
+    /**
+     *
+     *
+     * @param e
+     */
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        if (editor.getBoardView().getCurrentSelectedLayer() != null) {
+            AbstractBrush brush = MainWindow.getInstance().getCurrentBrush();
+            if (!checkBrushValid(brush)) {
+                return;
+            }
 
-			int x = (int) (e.getX() / editor.getBoardView().getZoom());
-			int y = (int) (e.getY() / editor.getBoardView().getZoom());
+            int x = (int) (e.getX() / editor.getBoardView().getZoom());
+            int y = (int) (e.getY() / editor.getBoardView().getZoom());
 
-			if (SwingUtilities.isLeftMouseButton(e)) {
-				doMouseButton1Dragged(brush, x, y);
-			} else if (SwingUtilities.isMiddleMouseButton(e)) {
+            if (SwingUtilities.isLeftMouseButton(e)) {
+                doMouseButton1Dragged(brush, x, y);
+            } else if (SwingUtilities.isMiddleMouseButton(e)) {
 
-			} else if (SwingUtilities.isRightMouseButton(e)) {
-				doMouseButton3Dragged(brush, x, y);
-			}
-		}
-	}
+            } else if (SwingUtilities.isRightMouseButton(e)) {
+                doMouseButton3Dragged(brush, x, y);
+            }
+        }
+    }
 
-	/**
-	 *
-	 *
-	 * @param e
-	 */
-	@Override
-	public void mouseMoved(MouseEvent e) {
-		int x = (int) (e.getX() / editor.getBoardView().getZoom());
-		int y = (int) (e.getY() / editor.getBoardView().getZoom());
-		editor.setCursorTileLocation(editor.getBoardView().getTileCoordinates(
-				x, y));
-		editor.setCursorLocation(new Point(x, y));
-		editor.getBoardView().repaint();
-	}
+    /**
+     *
+     *
+     * @param e
+     */
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        int x = (int) (e.getX() / editor.getBoardView().getZoom());
+        int y = (int) (e.getY() / editor.getBoardView().getZoom());
+        editor.setCursorTileLocation(editor.getBoardView().getTileCoordinates(x, y));
+        editor.setCursorLocation(new Point(x, y));
+        editor.getBoardView().repaint();
+    }
 
-	/**
-	 * Deals with the creation of an object on a board layer.
-	 *
-	 * @param e
-	 * @param brush
-	 */
-	private void doMouseButton1Pressed(AbstractBrush brush, int x, int y) {
-		Rectangle selection = editor.getSelectionExpaned();
+    /**
+     * Deals with the creation of an object on a board layer.
+     *
+     * @param e
+     * @param brush
+     */
+    private void doMouseButton1Pressed(AbstractBrush brush, int x, int y) {
+        Rectangle selection = editor.getSelectionExpaned();
 
-		Point point;
-		if (brush.isPixelBased()) {
-			point = new Point(x, y);
-		} else {
-			point = editor.getBoardView().getTileCoordinates(x, y);
-		}
+        Point point;
+        if (brush.isPixelBased()) {
+            point = new Point(x, y);
+        } else {
+            point = editor.getBoardView().getTileCoordinates(x, y);
+        }
 
-		origin = point;
-		brush.doMouseButton1Pressed(point, editor);
+        origin = point;
+        brush.doMouseButton1Pressed(point, editor);
 
-		editor.doPaint(brush, point, selection);
-	}
+        editor.doPaint(brush, point, selection);
+    }
 
-	/**
-	 * Deals with the deletion of an object on a board layer.
-	 *
-	 * @param e
-	 * @param brush
-	 */
-	private void doMouseButton2Pressed(AbstractBrush brush, int x, int y) {
-		Point point;
-		if (brush.isPixelBased()) {
-			point = new Point(x, y);
-		} else {
-			point = editor.getBoardView().getTileCoordinates(x, y);
-		}
+    /**
+     * Deals with the deletion of an object on a board layer.
+     *
+     * @param e
+     * @param brush
+     */
+    private void doMouseButton2Pressed(AbstractBrush brush, int x, int y) {
+        Point point;
+        if (brush.isPixelBased()) {
+            point = new Point(x, y);
+        } else {
+            point = editor.getBoardView().getTileCoordinates(x, y);
+        }
 
-		brush.doMouseButton2Pressed(point, editor);
-	}
+        brush.doMouseButton2Pressed(point, editor);
+    }
 
-	/**
-	 * Deals with the selection of an object on a board layer
-	 *
-	 * @param e
-	 * @param brush
-	 */
-	private void doMouseButton3Pressed(AbstractBrush brush, int x, int y) {
-		Point point;
-		if (brush.isPixelBased()) {
-			point = new Point(x, y);
-		} else {
-			point = editor.getBoardView().getTileCoordinates(x, y);
-		}
+    /**
+     * Deals with the selection of an object on a board layer
+     *
+     * @param e
+     * @param brush
+     */
+    private void doMouseButton3Pressed(AbstractBrush brush, int x, int y) {
+        Point point;
+        if (brush.isPixelBased()) {
+            point = new Point(x, y);
+        } else {
+            point = editor.getBoardView().getTileCoordinates(x, y);
+        }
 
-		brush.doMouseButton3Pressed(point, editor);
-	}
+        brush.doMouseButton3Pressed(point, editor);
+    }
 
-	/**
-	 *
-	 *
-	 * @param e
-	 * @param brush
-	 */
-	private void doMouseButton1Dragged(AbstractBrush brush, int x, int y) {
-		// Ensure that the dragging remains within the bounds of the board.
-		Point point = editor.getBoardView().getTileCoordinates(x, y);
-		if (!editor.getBoardView().checkTileInBounds(point.x, point.y)) {
-			return;
-		}
+    /**
+     *
+     *
+     * @param e
+     * @param brush
+     */
+    private void doMouseButton1Dragged(AbstractBrush brush, int x, int y) {
+        // Ensure that the dragging remains within the bounds of the board.
+        Point point = editor.getBoardView().getTileCoordinates(x, y);
+        if (!editor.getBoardView().checkTileInBounds(point.x, point.y)) {
+            return;
+        }
 
-		if (brush.isPixelBased()) {
-			point = new Point(x, y);
-		}
+        if (brush.isPixelBased()) {
+            point = new Point(x, y);
+        }
 
-		editor.setCursorTileLocation(point);
-		editor.setCursorLocation(new Point(x, y));
+        editor.setCursorTileLocation(point);
+        editor.setCursorLocation(new Point(x, y));
 
-		brush.doMouseButton1Dragged(point, origin, editor);
+        brush.doMouseButton1Dragged(point, origin, editor);
 
-		editor.doPaint(brush, point, null);
-	}
+        editor.doPaint(brush, point, null);
+    }
 
-	/**
-	 *
-	 *
-	 * @param e
-	 * @param brush
-	 */
-	private void doMouseButton3Dragged(AbstractBrush brush, int x, int y) {
-		// Ensure that the dragging remains within the bounds of the board.
-		Point point = editor.getBoardView().getTileCoordinates(x, y);
-		if (!editor.getBoardView().checkTileInBounds(point.x, point.y)) {
-			return;
-		}
+    /**
+     *
+     *
+     * @param e
+     * @param brush
+     */
+    private void doMouseButton3Dragged(AbstractBrush brush, int x, int y) {
+        // Ensure that the dragging remains within the bounds of the board.
+        Point point = editor.getBoardView().getTileCoordinates(x, y);
+        if (!editor.getBoardView().checkTileInBounds(point.x, point.y)) {
+            return;
+        }
 
-		if (brush.isPixelBased()) {
-			point = new Point(x, y);
-		}
+        if (brush.isPixelBased()) {
+            point = new Point(x, y);
+        }
 
-		editor.setCursorTileLocation(point);
-		editor.setCursorLocation(new Point(x, y));
+        editor.setCursorTileLocation(point);
+        editor.setCursorLocation(new Point(x, y));
 
-		brush.doMouseButton3Dragged(point, origin, editor);
-	}
+        brush.doMouseButton3Dragged(point, origin, editor);
+    }
 
-	private boolean checkBrushValid(AbstractBrush brush) {
-		if (brush instanceof ShapeBrush) {
-			ShapeBrush shapeBrush = (ShapeBrush) brush;
-			if (shapeBrush.getTile() == null) {
-				return false;
-			}
+    private boolean checkBrushValid(AbstractBrush brush) {
+        if (brush instanceof ShapeBrush) {
+            ShapeBrush shapeBrush = (ShapeBrush) brush;
+            if (shapeBrush.getTile() == null) {
+                return false;
+            }
 
-			return isSameTileSize(editor.getBoard(), shapeBrush.getTile());
-		} else if (brush instanceof BucketBrush) {
-			BucketBrush bucketBrush = (BucketBrush) brush;
+            return isSameTileSize(editor.getBoard(), shapeBrush.getTile());
+        } else if (brush instanceof BucketBrush) {
+            BucketBrush bucketBrush = (BucketBrush) brush;
 
-			if (bucketBrush.getPourTile() == null) {
-				return false;
-			}
+            if (bucketBrush.getPourTile() == null) {
+                return false;
+            }
 
-			return isSameTileSize(editor.getBoard(), bucketBrush.getPourTile());
-		} else if (brush instanceof CustomBrush) {
-			CustomBrush customBrush = (CustomBrush) brush;
+            return isSameTileSize(editor.getBoard(), bucketBrush.getPourTile());
+        } else if (brush instanceof CustomBrush) {
+            CustomBrush customBrush = (CustomBrush) brush;
 
-			if (customBrush.getTiles().length > 0) {
-				if (customBrush.getTiles()[0].length > 0) {
-					if (customBrush.getTiles()[0][0] == null) {
-						return true; // Selection brush.
-					}
+            if (customBrush.getTiles().length > 0) {
+                if (customBrush.getTiles()[0].length > 0) {
+                    if (customBrush.getTiles()[0][0] == null) {
+                        return true; // Selection brush.
+                    }
 
-					return isSameTileSize(editor.getBoard(),
-							customBrush.getTiles()[0][0]);
-				}
-			}
-		}
+                    return isSameTileSize(editor.getBoard(), customBrush.getTiles()[0][0]);
+                }
+            }
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	private boolean isSameTileSize(Board board, Tile tile) {
-		return board.getTileWidth() == tile.getTileSet().getTileWidth()
-				&& board.getTileHeight() == tile.getTileSet().getTileHeight();
-	}
+    private boolean isSameTileSize(Board board, Tile tile) {
+        return board.getTileWidth() == tile.getTileSet().getTileWidth()
+                && board.getTileHeight() == tile.getTileSet().getTileHeight();
+    }
 
 }

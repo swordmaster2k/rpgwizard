@@ -33,113 +33,109 @@ import org.slf4j.LoggerFactory;
  * @author Joel Moore
  * @author Joshua Michael Daly
  */
-public class CharacterEditor extends AbstractSpriteEditor
-		implements
-			InternalFrameListener,
-			SpriteChangeListener {
+public class CharacterEditor extends AbstractSpriteEditor implements InternalFrameListener, SpriteChangeListener {
 
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(CharacterEditor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CharacterEditor.class);
 
-	private final Character player;
+    private final Character player;
 
-	private JTextField name;
-	private IntegerField level;
-	private IntegerField maxLevel;
-	private DoubleField experience;
-	private DoubleField maxExperience;
-	private DoubleField health;
-	private DoubleField maxHealth;
-	private DoubleField attack;
-	private DoubleField maxAttack;
-	private DoubleField defence;
-	private DoubleField maxDefence;
-	private DoubleField magic;
-	private DoubleField maxMagic;
+    private JTextField name;
+    private IntegerField level;
+    private IntegerField maxLevel;
+    private DoubleField experience;
+    private DoubleField maxExperience;
+    private DoubleField health;
+    private DoubleField maxHealth;
+    private DoubleField attack;
+    private DoubleField maxAttack;
+    private DoubleField defence;
+    private DoubleField maxDefence;
+    private DoubleField magic;
+    private DoubleField maxMagic;
 
-	public CharacterEditor(Character player) {
-		super("Untitled", player, Icons.getIcon("character"));
+    public CharacterEditor(Character player) {
+        super("Untitled", player, Icons.getIcon("character"));
 
-		this.player = player;
-		this.player.addSpriteChangeListener(this);
+        this.player = player;
+        this.player.addSpriteChangeListener(this);
 
-		if (this.player.getDescriptor() == null) {
-			setupNewPlayer();
-		} else {
-			setTitle(new File(player.getDescriptor().getURI()).getName());
-		}
+        if (this.player.getDescriptor() == null) {
+            setupNewPlayer();
+        } else {
+            setTitle(new File(player.getDescriptor().getURI()).getName());
+        }
 
-		constructWindow();
-		setVisible(true);
-		pack();
-	}
+        constructWindow();
+        setVisible(true);
+        pack();
+    }
 
-	@Override
-	public AbstractAsset getAsset() {
-		return player;
-	}
+    @Override
+    public AbstractAsset getAsset() {
+        return player;
+    }
 
-	public Character getPlayer() {
-		return player;
-	}
+    public Character getPlayer() {
+        return player;
+    }
 
-	@Override
-	public void save() throws Exception {
-		// Get the relative portrait path.
-		checkProfileImagePath();
+    @Override
+    public void save() throws Exception {
+        // Get the relative portrait path.
+        checkProfileImagePath();
 
-		// Update all player variables from stats panel.
-		player.setName(name.getText());
-		player.setLevel(level.getValue());
-		player.setMaxLevel(maxLevel.getValue());
-		player.setExperience(experience.getValue());
-		player.setMaxExperience(maxExperience.getValue());
-		player.setHealth(health.getValue());
-		player.setMaxHealth(maxHealth.getValue());
-		player.setAttack(attack.getValue());
-		player.setMaxAttack(maxAttack.getValue());
-		player.setDefence(defence.getValue());
-		player.setMaxDefence(maxDefence.getValue());
-		player.setMagic(magic.getValue());
-		player.setMaxMagic(maxMagic.getValue());
+        // Update all player variables from stats panel.
+        player.setName(name.getText());
+        player.setLevel(level.getValue());
+        player.setMaxLevel(maxLevel.getValue());
+        player.setExperience(experience.getValue());
+        player.setMaxExperience(maxExperience.getValue());
+        player.setHealth(health.getValue());
+        player.setMaxHealth(maxHealth.getValue());
+        player.setAttack(attack.getValue());
+        player.setMaxAttack(maxAttack.getValue());
+        player.setDefence(defence.getValue());
+        player.setMaxDefence(maxDefence.getValue());
+        player.setMagic(magic.getValue());
+        player.setMaxMagic(maxMagic.getValue());
 
-		// Update all player variables from graphics panel.
-		player.setIdleTimeBeforeStanding(idleTimeoutField.getValue());
-		player.setFrameRate(stepRateField.getValue());
+        // Update all player variables from graphics panel.
+        player.setIdleTimeBeforeStanding(idleTimeoutField.getValue());
+        player.setFrameRate(stepRateField.getValue());
 
-		save(player);
-	}
+        save(player);
+    }
 
-	/**
-	 *
-	 *
-	 * @param file
-	 * @throws java.lang.Exception
-	 */
-	@Override
-	public void saveAs(File file) throws Exception {
-		player.setDescriptor(new AssetDescriptor(file.toURI()));
-		this.setTitle(file.getName());
-		save();
-	}
+    /**
+     *
+     *
+     * @param file
+     * @throws java.lang.Exception
+     */
+    @Override
+    public void saveAs(File file) throws Exception {
+        player.setDescriptor(new AssetDescriptor(file.toURI()));
+        this.setTitle(file.getName());
+        save();
+    }
 
-	private void setupNewPlayer() {
+    private void setupNewPlayer() {
 
-	}
+    }
 
-	/**
-	 * Builds the Swing interface
-	 */
-	private void constructWindow() {
-		addInternalFrameListener(this);
+    /**
+     * Builds the Swing interface
+     */
+    private void constructWindow() {
+        addInternalFrameListener(this);
 
-		createStatsPanel();
-		createAnimationsPanel();
+        createStatsPanel();
+        createAnimationsPanel();
 
-		build();
-	}
+        build();
+    }
 
-	private void createStatsPanel() {
+    private void createStatsPanel() {
         List<Component> labels = new ArrayList<>();
         labels.add(new JLabel("Name"));
         labels.add(new JLabel("Level"));
@@ -213,16 +209,17 @@ public class CharacterEditor extends AbstractSpriteEditor
 
         buildStatsPanel(labels, inputs);
     }
-	private void createAnimationsPanel() {
-		buildAnimationsPanel();
-	}
 
-	public static void main(String[] args) {
-		JFrame frame = new JFrame("Test InternalJFrame");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.add(new CharacterEditor(null));
-		frame.setSize(440, 360);
-		frame.setVisible(true);
-	}
+    private void createAnimationsPanel() {
+        buildAnimationsPanel();
+    }
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Test InternalJFrame");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.add(new CharacterEditor(null));
+        frame.setSize(440, 360);
+        frame.setVisible(true);
+    }
 
 }

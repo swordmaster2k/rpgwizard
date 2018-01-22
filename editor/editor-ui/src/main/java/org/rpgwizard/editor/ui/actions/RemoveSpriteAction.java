@@ -18,21 +18,21 @@ import org.rpgwizard.editor.editors.BoardEditor;
  */
 public class RemoveSpriteAction extends AbstractAction {
 
-	private final BoardEditor boardEditor;
-	private final BoardSprite boardSprite;
+    private final BoardEditor boardEditor;
+    private final BoardSprite boardSprite;
 
-	public RemoveSpriteAction(BoardEditor boardEditor, BoardSprite boardSprite) {
-		this.boardEditor = boardEditor;
-		this.boardSprite = boardSprite;
-	}
+    public RemoveSpriteAction(BoardEditor boardEditor, BoardSprite boardSprite) {
+        this.boardEditor = boardEditor;
+        this.boardSprite = boardSprite;
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		boardEditor.getBoard().removeSprite(boardSprite);
-		if (boardSprite == boardEditor.getSelectedObject()) {
-			boardEditor.getSelectedObject().setSelectedState(false);
-			boardEditor.setSelectedObject(null);
-		}
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        boardEditor.getBoard().removeSprite(boardSprite);
+        if (boardSprite == boardEditor.getSelectedObject()) {
+            boardEditor.getSelectedObject().setSelectedState(false);
+            boardEditor.setSelectedObject(null);
+        }
+    }
 
 }

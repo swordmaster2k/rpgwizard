@@ -9,24 +9,24 @@ package org.rpgwizard.common.assets;
 
 public class Program extends AbstractAsset {
 
-	private final StringBuffer programBuffer;
+    private final StringBuffer programBuffer;
 
-	public Program(AssetDescriptor assetDescriptor) {
-		super(assetDescriptor);
-		programBuffer = new StringBuffer();
-	}
+    public Program(AssetDescriptor assetDescriptor) {
+        super(assetDescriptor);
+        programBuffer = new StringBuffer();
+    }
 
-	public String getFileName() {
-		return descriptor.getURI().toString();
-	}
+    public String getFileName() {
+        return descriptor.getURI().toString();
+    }
 
-	public StringBuffer getProgramBuffer() {
-		return programBuffer;
-	}
+    public StringBuffer getProgramBuffer() {
+        return programBuffer;
+    }
 
-	public void update(String code) {
-		programBuffer.delete(0, programBuffer.length());
-		programBuffer.insert(0, code);
-	}
+    public void update(String code) {
+        programBuffer.delete(0, programBuffer.length());
+        programBuffer.insert(0, code);
+    }
 
 }

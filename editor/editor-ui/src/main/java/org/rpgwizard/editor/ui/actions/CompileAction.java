@@ -35,93 +35,84 @@ import ro.fortsoft.pf4j.PluginManager;
  */
 public class CompileAction extends AbstractAction {
 
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(CompileAction.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CompileAction.class);
 
-	private ProgressMonitor progressMonitor;
-	private SwingWorker worker;
+    private ProgressMonitor progressMonitor;
+    private SwingWorker worker;
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		try {
-			MainWindow instance = MainWindow.getInstance();
-			instance.getMainToolBar().getCompileButton().setEnabled(false);
-			instance.getMainToolBar().getSaveAllButton().doClick();
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        try {
+            MainWindow instance = MainWindow.getInstance();
+            instance.getMainToolBar().getCompileButton().setEnabled(false);
+            instance.getMainToolBar().getSaveAllButton().doClick();
 
-			String projectName = instance.getTitle();
+            String projectName = instance.getTitle();
 
-			// Make a temporary copy of the user's project for the engine to
-			// use.
-			File projectOriginal = new File(System.getProperty("project.path"));
-			File projectCopy = Files.createTempDir();
-			FileUtils.copyDirectory(projectOriginal, projectCopy);
+            // Make a temporary copy of the user's project for the engine to
+            // use.
+            File projectOriginal = new File(System.getProperty("project.path"));
+            File projectCopy = Files.createTempDir();
+            FileUtils.copyDirectory(projectOriginal, projectCopy);
 
-			PluginManager pluginManager = MainWindow.getInstance()
-					.getPluginManager();
-			List<Engine> engines = pluginManager.getExtensions(Engine.class);
+            PluginManager pluginManager = MainWindow.getInstance().getPluginManager();
+            List<Engine> engines = pluginManager.getExtensions(Engine.class);
 
-			// Just use the first available engine for now.
-			if (engines.size() > 0) {
-				progressMonitor = new ProgressMonitor(MainWindow.getInstance(),
-						"Compiling Game...", "", 0, 100);
-				progressMonitor.setProgress(0);
+            // Just use the first available engine for now.
+            if (engines.size() > 0) {
+                progressMonitor = new ProgressMonitor(MainWindow.getInstance(), "Compiling Game...", "", 0, 100);
+                progressMonitor.setProgress(0);
 
-				worker = new SwingWorker<File, File>() {
-					@Override
-					protected File doInBackground() {
-						try {
-							File executionPath = new File(FileTools.getExecutionPath(MainWindow.class));
-                                                        return compileGame(engines.get(0), projectName, projectCopy, executionPath, progressMonitor);
-						} catch (InterruptedException | InvocationTargetException | URISyntaxException ex) {
-							LOGGER.error("Failed to compile game.", ex);
-							return null;
-						}
-					}
+                worker = new SwingWorker<File, File>() {
+                    @Override
+                    protected File doInBackground() {
+                        try {
+                            File executionPath = new File(FileTools.getExecutionPath(MainWindow.class));
+                            return compileGame(engines.get(0), projectName, projectCopy, executionPath,
+                                    progressMonitor);
+                        } catch (InterruptedException | InvocationTargetException | URISyntaxException ex) {
+                            LOGGER.error("Failed to compile game.", ex);
+                            return null;
+                        }
+                    }
 
-					@Override
-					public void done() {
-						if (!isCancelled()) {
-							try {
-								File result = get();
-								if (result == null) {
-									throw new Exception(
-											"Null result returned from compile.");
-								}
-								Desktop.getDesktop().open(result);
-							} catch (Exception ex) {
-								LOGGER.error("Failed to compile game.", ex);
-								progressMonitor.close();
-								JOptionPane.showMessageDialog(
-										MainWindow.getInstance(),
-										"Error compiling game!",
-										"Error on Compile",
-										JOptionPane.ERROR_MESSAGE);
-							}
-						}
+                    @Override
+                    public void done() {
+                        if (!isCancelled()) {
+                            try {
+                                File result = get();
+                                if (result == null) {
+                                    throw new Exception("Null result returned from compile.");
+                                }
+                                Desktop.getDesktop().open(result);
+                            } catch (Exception ex) {
+                                LOGGER.error("Failed to compile game.", ex);
+                                progressMonitor.close();
+                                JOptionPane.showMessageDialog(MainWindow.getInstance(), "Error compiling game!",
+                                        "Error on Compile", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
 
-						Toolkit.getDefaultToolkit().beep();
-						instance.getMainToolBar().getCompileButton()
-								.setEnabled(true);
-					}
-				};
-				worker.execute();
-			}
+                        Toolkit.getDefaultToolkit().beep();
+                        instance.getMainToolBar().getCompileButton().setEnabled(true);
+                    }
+                };
+                worker.execute();
+            }
 
-		} catch (IOException ex) {
-			LOGGER.error("Failed to run engine.", ex);
-		}
-	}
-	private File compileGame(Engine engine, String projectName,
-			File projectCopy, File executionPath,
-			ProgressMonitor progressMonitor) throws InterruptedException,
-			InvocationTargetException {
-		try {
-			return engine.compile(projectName, projectCopy, executionPath,
-					progressMonitor);
-		} catch (Exception ex) {
-			LOGGER.error("Failed to run engine.", ex);
-		}
-		return null;
-	}
+        } catch (IOException ex) {
+            LOGGER.error("Failed to run engine.", ex);
+        }
+    }
+
+    private File compileGame(Engine engine, String projectName, File projectCopy, File executionPath,
+            ProgressMonitor progressMonitor) throws InterruptedException, InvocationTargetException {
+        try {
+            return engine.compile(projectName, projectCopy, executionPath, progressMonitor);
+        } catch (Exception ex) {
+            LOGGER.error("Failed to run engine.", ex);
+        }
+        return null;
+    }
 
 }

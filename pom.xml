@@ -52,7 +52,7 @@
         <logback.version>1.1.8</logback.version>
         <pf4j.version>1.2.0</pf4j.version>
         <assertj.version>3.5.0</assertj.version>
-        <maven.formatter.version>0.5.2</maven.formatter.version>
+        <maven.formatter.version>2.7.1</maven.formatter.version>
         <maven.resources.version>3.0.2</maven.resources.version>
         <maven.clean.version>3.0.0</maven.clean.version>
     </properties>
@@ -157,7 +157,7 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>net.revelc.code</groupId>
+                <groupId>net.revelc.code.formatter</groupId>
                 <artifactId>formatter-maven-plugin</artifactId>
                 <version>${maven.formatter.version}</version>
                 <executions>

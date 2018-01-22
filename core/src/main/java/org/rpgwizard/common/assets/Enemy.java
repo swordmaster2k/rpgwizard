@@ -9,72 +9,72 @@ package org.rpgwizard.common.assets;
 
 public class Enemy extends AbstractSprite {
 
-	private int level;
-	private double health;
-	private double attack;
-	private double defence;
-	private double magic;
-	private double experienceReward;
-	private double goldReward;
+    private int level;
+    private double health;
+    private double attack;
+    private double defence;
+    private double magic;
+    private double experienceReward;
+    private double goldReward;
 
-	public Enemy(AssetDescriptor descriptor) {
-		super(descriptor);
-	}
+    public Enemy(AssetDescriptor descriptor) {
+        super(descriptor);
+    }
 
-	public int getLevel() {
-		return level;
-	}
+    public int getLevel() {
+        return level;
+    }
 
-	public void setLevel(int level) {
-		this.level = level;
-	}
+    public void setLevel(int level) {
+        this.level = level;
+    }
 
-	public double getHealth() {
-		return health;
-	}
+    public double getHealth() {
+        return health;
+    }
 
-	public void setHealth(double health) {
-		this.health = health;
-	}
+    public void setHealth(double health) {
+        this.health = health;
+    }
 
-	public double getAttack() {
-		return attack;
-	}
+    public double getAttack() {
+        return attack;
+    }
 
-	public void setAttack(double attack) {
-		this.attack = attack;
-	}
+    public void setAttack(double attack) {
+        this.attack = attack;
+    }
 
-	public double getDefence() {
-		return defence;
-	}
+    public double getDefence() {
+        return defence;
+    }
 
-	public void setDefence(double defence) {
-		this.defence = defence;
-	}
+    public void setDefence(double defence) {
+        this.defence = defence;
+    }
 
-	public double getMagic() {
-		return magic;
-	}
+    public double getMagic() {
+        return magic;
+    }
 
-	public void setMagic(double magic) {
-		this.magic = magic;
-	}
+    public void setMagic(double magic) {
+        this.magic = magic;
+    }
 
-	public double getExperienceReward() {
-		return experienceReward;
-	}
+    public double getExperienceReward() {
+        return experienceReward;
+    }
 
-	public void setExperienceReward(double experienceReward) {
-		this.experienceReward = experienceReward;
-	}
+    public void setExperienceReward(double experienceReward) {
+        this.experienceReward = experienceReward;
+    }
 
-	public double getGoldReward() {
-		return goldReward;
-	}
+    public double getGoldReward() {
+        return goldReward;
+    }
 
-	public void setGoldReward(double goldReward) {
-		this.goldReward = goldReward;
-	}
+    public void setGoldReward(double goldReward) {
+        this.goldReward = goldReward;
+    }
 
 }

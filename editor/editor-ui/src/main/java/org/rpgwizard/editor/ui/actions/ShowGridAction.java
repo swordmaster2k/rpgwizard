@@ -16,13 +16,13 @@ import javax.swing.AbstractAction;
  */
 public class ShowGridAction extends AbstractAction {
 
-	public ShowGridAction() {
+    public ShowGridAction() {
 
-	}
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
+    @Override
+    public void actionPerformed(ActionEvent e) {
 
-	}
+    }
 
 }

@@ -17,9 +17,9 @@ import org.rpgwizard.editor.MainWindow;
  */
 public class NewProjectAction extends AbstractAction {
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		MainWindow.getInstance().createNewProject();
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        MainWindow.getInstance().createNewProject();
+    }
 
 }

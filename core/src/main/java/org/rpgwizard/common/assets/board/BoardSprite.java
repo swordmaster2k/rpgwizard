@@ -32,337 +32,323 @@ import org.rpgwizard.common.utilities.CoreProperties;
  *
  * @author Joshua Michael Daly
  */
-public class BoardSprite extends AbstractBoardModel
-		implements
-			Cloneable,
-			Selectable {
+public class BoardSprite extends AbstractBoardModel implements Cloneable, Selectable {
 
-	private AbstractSprite sprite;
-	private String fileName;
+    private AbstractSprite sprite;
+    private String fileName;
 
-	private String id;
-	private int x;
-	private int y;
-	private int layer;
-	private EventType eventType; // Defines how the sprite is activated
-	private String eventProgram; // Override activation program
-	private String thread; // Override multitask program
-	private String activationKey;
+    private String id;
+    private int x;
+    private int y;
+    private int layer;
+    private EventType eventType; // Defines how the sprite is activated
+    private String eventProgram; // Override activation program
+    private String thread; // Override multitask program
+    private String activationKey;
 
-	private boolean selected;
-	private BufferedImage southImage;
+    private boolean selected;
+    private BufferedImage southImage;
 
-	/**
+    /**
      *
      */
-	public BoardSprite() {
-		super();
+    public BoardSprite() {
+        super();
 
-		fileName = "";
-		id = UUID.randomUUID().toString();
-		x = 0;
-		y = 0;
-		layer = 0;
-		eventType = EventType.OVERLAP;
-		eventProgram = "";
-		thread = "";
-		activationKey = "";
-		selected = false;
-	}
+        fileName = "";
+        id = UUID.randomUUID().toString();
+        x = 0;
+        y = 0;
+        layer = 0;
+        eventType = EventType.OVERLAP;
+        eventProgram = "";
+        thread = "";
+        activationKey = "";
+        selected = false;
+    }
 
-	/**
-	 *
-	 * @return
-	 */
-	public String getFileName() {
-		return fileName;
-	}
+    /**
+     *
+     * @return
+     */
+    public String getFileName() {
+        return fileName;
+    }
 
-	public String getId() {
-		return id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	/**
-	 *
-	 * @return
-	 */
-	public int getX() {
-		return (int) x;
-	}
+    /**
+     *
+     * @return
+     */
+    public int getX() {
+        return (int) x;
+    }
 
-	/**
-	 *
-	 * @return
-	 */
-	public int getY() {
-		return (int) y;
-	}
+    /**
+     *
+     * @return
+     */
+    public int getY() {
+        return (int) y;
+    }
 
-	/**
-	 *
-	 * @return
-	 */
-	public int getLayer() {
-		return layer;
-	}
+    /**
+     *
+     * @return
+     */
+    public int getLayer() {
+        return layer;
+    }
 
-	public int getWidth() {
-		return southImage.getWidth();
-	}
+    public int getWidth() {
+        return southImage.getWidth();
+    }
 
-	public int getHeight() {
-		return southImage.getHeight();
-	}
+    public int getHeight() {
+        return southImage.getHeight();
+    }
 
-	/**
-	 *
-	 * @return
-	 */
-	public AbstractSprite getSprite() {
-		return sprite;
-	}
+    /**
+     *
+     * @return
+     */
+    public AbstractSprite getSprite() {
+        return sprite;
+    }
 
-	/**
-	 *
-	 * @param sprite
-	 */
-	public void setSprite(AbstractSprite sprite) {
-		this.sprite = sprite;
-	}
+    /**
+     *
+     * @param sprite
+     */
+    public void setSprite(AbstractSprite sprite) {
+        this.sprite = sprite;
+    }
 
-	/**
-	 *
-	 * @return
-	 */
-	public EventType getEventType() {
-		return eventType;
-	}
+    /**
+     *
+     * @return
+     */
+    public EventType getEventType() {
+        return eventType;
+    }
 
-	/**
-	 *
-	 * @return
-	 */
-	public String getEventProgram() {
-		return eventProgram;
-	}
+    /**
+     *
+     * @return
+     */
+    public String getEventProgram() {
+        return eventProgram;
+    }
 
-	/**
-	 *
-	 * @return
-	 */
-	public String getThread() {
-		return thread;
-	}
+    /**
+     *
+     * @return
+     */
+    public String getThread() {
+        return thread;
+    }
 
-	/**
-	 * 
-	 * @return
-	 */
-	public String getActivationKey() {
-		return activationKey;
-	}
+    /**
+     * 
+     * @return
+     */
+    public String getActivationKey() {
+        return activationKey;
+    }
 
-	/**
-	 *
-	 * @param fileName
-	 */
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-		southImage = prepareSprite();
-	}
+    /**
+     *
+     * @param fileName
+     */
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+        southImage = prepareSprite();
+    }
 
-	/**
-	 *
-	 * @param x
-	 */
-	public void setX(int x) {
-		this.x = x;
-	}
+    /**
+     *
+     * @param x
+     */
+    public void setX(int x) {
+        this.x = x;
+    }
 
-	/**
-	 *
-	 * @param y
-	 */
-	public void setY(int y) {
-		this.y = y;
-	}
+    /**
+     *
+     * @param y
+     */
+    public void setY(int y) {
+        this.y = y;
+    }
 
-	/**
-	 * 
-	 * @param x
-	 * @param y
-	 */
-	public void setPosition(int x, int y) {
-		this.x = x;
-		this.y = y;
-		fireModelMoved();
-	}
+    /**
+     * 
+     * @param x
+     * @param y
+     */
+    public void setPosition(int x, int y) {
+        this.x = x;
+        this.y = y;
+        fireModelMoved();
+    }
 
-	/**
-	 *
-	 * @param layer
-	 */
-	public void setLayer(int layer) {
-		this.layer = layer;
-	}
+    /**
+     *
+     * @param layer
+     */
+    public void setLayer(int layer) {
+        this.layer = layer;
+    }
 
-	/**
-	 *
-	 * @param eventType
-	 */
-	public void setEventType(EventType eventType) {
-		this.eventType = eventType;
-	}
+    /**
+     *
+     * @param eventType
+     */
+    public void setEventType(EventType eventType) {
+        this.eventType = eventType;
+    }
 
-	/**
-	 *
-	 * @param activationProgram
-	 */
-	public void setEventProgram(String activationProgram) {
-		this.eventProgram = activationProgram;
-	}
+    /**
+     *
+     * @param activationProgram
+     */
+    public void setEventProgram(String activationProgram) {
+        this.eventProgram = activationProgram;
+    }
 
-	/**
-	 *
-	 * @param multitaskingProgram
-	 */
-	public void setThread(String multitaskingProgram) {
-		this.thread = multitaskingProgram;
-	}
+    /**
+     *
+     * @param multitaskingProgram
+     */
+    public void setThread(String multitaskingProgram) {
+        this.thread = multitaskingProgram;
+    }
 
-	/**
-	 * 
-	 * @param activationKey
-	 */
-	public void setActivationKey(String activationKey) {
-		this.activationKey = activationKey;
-	}
+    /**
+     * 
+     * @param activationKey
+     */
+    public void setActivationKey(String activationKey) {
+        this.activationKey = activationKey;
+    }
 
-	@Override
-	public boolean isSelected() {
-		return selected;
-	}
+    @Override
+    public boolean isSelected() {
+        return selected;
+    }
 
-	@Override
-	public void setSelectedState(boolean state) {
-		selected = state;
-	}
+    @Override
+    public void setSelectedState(boolean state) {
+        selected = state;
+    }
 
-	public BufferedImage getSouthImage() {
-		return southImage;
-	}
+    public BufferedImage getSouthImage() {
+        return southImage;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		final BoardSprite other = (BoardSprite) obj;
-		if (!this.id.equals(other.id)) {
-			return false;
-		}
-		if (this.x != other.x) {
-			return false;
-		}
-		if (this.y != other.y) {
-			return false;
-		}
-		if (this.layer != other.layer) {
-			return false;
-		}
-		if (this.selected != other.selected) {
-			return false;
-		}
-		if (!Objects.equals(this.fileName, other.fileName)) {
-			return false;
-		}
-		if (!Objects.equals(this.eventProgram, other.eventProgram)) {
-			return false;
-		}
-		if (!Objects.equals(this.thread, other.thread)) {
-			return false;
-		}
-		if (!Objects.equals(this.activationKey, other.activationKey)) {
-			return false;
-		}
-		if (this.eventType != other.eventType) {
-			return false;
-		}
-		return true;
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final BoardSprite other = (BoardSprite) obj;
+        if (!this.id.equals(other.id)) {
+            return false;
+        }
+        if (this.x != other.x) {
+            return false;
+        }
+        if (this.y != other.y) {
+            return false;
+        }
+        if (this.layer != other.layer) {
+            return false;
+        }
+        if (this.selected != other.selected) {
+            return false;
+        }
+        if (!Objects.equals(this.fileName, other.fileName)) {
+            return false;
+        }
+        if (!Objects.equals(this.eventProgram, other.eventProgram)) {
+            return false;
+        }
+        if (!Objects.equals(this.thread, other.thread)) {
+            return false;
+        }
+        if (!Objects.equals(this.activationKey, other.activationKey)) {
+            return false;
+        }
+        if (this.eventType != other.eventType) {
+            return false;
+        }
+        return true;
+    }
 
-	/**
-	 * Directly clones the board sprite.
-	 *
-	 * @return a clone
-	 * @throws CloneNotSupportedException
-	 */
-	@Override
-	public Object clone() throws CloneNotSupportedException {
-		super.clone();
+    /**
+     * Directly clones the board sprite.
+     *
+     * @return a clone
+     * @throws CloneNotSupportedException
+     */
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        super.clone();
 
-		BoardSprite clone = new BoardSprite();
-		clone.eventProgram = eventProgram;
-		clone.eventType = eventType;
-		clone.layer = layer;
-		clone.thread = thread;
-		clone.activationKey = activationKey;
-		clone.sprite = sprite;
-		clone.fileName = fileName;
-		clone.x = x;
-		clone.y = y;
-		clone.southImage = southImage;
+        BoardSprite clone = new BoardSprite();
+        clone.eventProgram = eventProgram;
+        clone.eventType = eventType;
+        clone.layer = layer;
+        clone.thread = thread;
+        clone.activationKey = activationKey;
+        clone.sprite = sprite;
+        clone.fileName = fileName;
+        clone.x = x;
+        clone.y = y;
+        clone.southImage = southImage;
 
-		return clone;
-	}
+        return clone;
+    }
 
-	private BufferedImage prepareSprite() {
+    private BufferedImage prepareSprite() {
         // TODO: This is should not be in here!
         BufferedImage image = null;
         if (!fileName.isEmpty()) {
             File file;
-            if (FilenameUtils.getExtension(fileName).equals(CoreProperties.getProperty("toolkit.enemy.extension.default"))) {
-                file = new File(System.getProperty("project.path")
-                        + File.separator
-                        + CoreProperties.getProperty("toolkit.directory.enemy")
-                        + File.separator
-                        + fileName);
+            if (FilenameUtils.getExtension(fileName)
+                    .equals(CoreProperties.getProperty("toolkit.enemy.extension.default"))) {
+                file = new File(System.getProperty("project.path") + File.separator
+                        + CoreProperties.getProperty("toolkit.directory.enemy") + File.separator + fileName);
             } else {
-                file = new File(System.getProperty("project.path")
-                        + File.separator
-                        + CoreProperties.getProperty("toolkit.directory.npc")
-                        + File.separator
-                        + fileName);
+                file = new File(System.getProperty("project.path") + File.separator
+                        + CoreProperties.getProperty("toolkit.directory.npc") + File.separator + fileName);
             }
 
             AssetHandle handle;
             try {
-                handle = AssetManager.getInstance().deserialize(
-                        new AssetDescriptor(file.toURI()));
+                handle = AssetManager.getInstance().deserialize(new AssetDescriptor(file.toURI()));
 
                 sprite = (AbstractSprite) handle.getAsset();
 
                 String southAnimation = sprite.getAnimations().get(AnimationEnum.SOUTH.toString());
                 if (!southAnimation.isEmpty()) {
-                    file = new File(
-                            System.getProperty("project.path")
-                            + File.separator
-                            + CoreProperties.getProperty("toolkit.directory.animations"),
-                            southAnimation
-                    );
+                    file = new File(System.getProperty("project.path") + File.separator
+                            + CoreProperties.getProperty("toolkit.directory.animations"), southAnimation);
 
-                    handle = AssetManager.getInstance().deserialize(
-                            new AssetDescriptor(file.toURI()));
+                    handle = AssetManager.getInstance().deserialize(new AssetDescriptor(file.toURI()));
                     Animation animation = (Animation) handle.getAsset();
 
                     if (animation != null) {

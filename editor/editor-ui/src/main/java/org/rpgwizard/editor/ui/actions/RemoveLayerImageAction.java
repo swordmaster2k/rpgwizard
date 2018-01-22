@@ -18,22 +18,21 @@ import org.rpgwizard.editor.editors.BoardEditor;
  */
 public class RemoveLayerImageAction extends AbstractAction {
 
-	private final BoardEditor boardEditor;
-	private final BoardLayerImage boardLayerImage;
+    private final BoardEditor boardEditor;
+    private final BoardLayerImage boardLayerImage;
 
-	public RemoveLayerImageAction(BoardEditor boardEditor,
-			BoardLayerImage boardLayerImage) {
-		this.boardEditor = boardEditor;
-		this.boardLayerImage = boardLayerImage;
-	}
+    public RemoveLayerImageAction(BoardEditor boardEditor, BoardLayerImage boardLayerImage) {
+        this.boardEditor = boardEditor;
+        this.boardLayerImage = boardLayerImage;
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		boardEditor.getBoard().removeLayerImage(boardLayerImage);
-		if (boardLayerImage == boardEditor.getSelectedObject()) {
-			boardEditor.getSelectedObject().setSelectedState(false);
-			boardEditor.setSelectedObject(null);
-		}
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        boardEditor.getBoard().removeLayerImage(boardLayerImage);
+        if (boardLayerImage == boardEditor.getSelectedObject()) {
+            boardEditor.getSelectedObject().setSelectedState(false);
+            boardEditor.setSelectedObject(null);
+        }
+    }
 
 }

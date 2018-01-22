@@ -23,60 +23,57 @@ import org.json.JSONObject;
  */
 public class JsonSpecialMoveSerializer extends AbstractJsonSerializer {
 
-	@Override
-	public boolean serializable(AssetDescriptor descriptor) {
-		final String ext = Paths.extension(descriptor.getURI());
-		return (ext.contains(CoreProperties
-				.getFullExtension("toolkit.specialmove.extension.json")));
-	}
+    @Override
+    public boolean serializable(AssetDescriptor descriptor) {
+        final String ext = Paths.extension(descriptor.getURI());
+        return (ext.contains(CoreProperties.getFullExtension("toolkit.specialmove.extension.json")));
+    }
 
-	@Override
-	public boolean deserializable(AssetDescriptor descriptor) {
-		return this.serializable(descriptor);
-	}
+    @Override
+    public boolean deserializable(AssetDescriptor descriptor) {
+        return this.serializable(descriptor);
+    }
 
-	@Override
-	public void load(AssetHandle handle, JSONObject json) {
+    @Override
+    public void load(AssetHandle handle, JSONObject json) {
 
-		final SpecialMove smove = new SpecialMove(handle.getDescriptor());
+        final SpecialMove smove = new SpecialMove(handle.getDescriptor());
 
-		smove.setVersion(json.getDouble("version"));
-		smove.setName(json.optString("name"));
-		smove.setDescription(json.optString("description"));
-		smove.setFightPower(json.optInt("fightPower"));
-		smove.setMovePowerCost(json.optInt("mpCost"));
-		smove.setMovePowerDrainedFromTarget(json.optInt("mpDrainedFromTarget"));
-		smove.isUsableInBattle(json.optBoolean("canUseInBattle"));
-		smove.isUsableInMenu(json.optBoolean("canUseInMenu"));
+        smove.setVersion(json.getDouble("version"));
+        smove.setName(json.optString("name"));
+        smove.setDescription(json.optString("description"));
+        smove.setFightPower(json.optInt("fightPower"));
+        smove.setMovePowerCost(json.optInt("mpCost"));
+        smove.setMovePowerDrainedFromTarget(json.optInt("mpDrainedFromTarget"));
+        smove.isUsableInBattle(json.optBoolean("canUseInBattle"));
+        smove.isUsableInMenu(json.optBoolean("canUseInMenu"));
 
-		smove.setProgram(AssetDescriptor.parse(json.optString("script")));
-		smove.setStatusEffect(AssetDescriptor.parse(json
-				.optString("statusEffect")));
-		smove.setAnimation(AssetDescriptor.parse(json.optString("animation")));
+        smove.setProgram(AssetDescriptor.parse(json.optString("script")));
+        smove.setStatusEffect(AssetDescriptor.parse(json.optString("statusEffect")));
+        smove.setAnimation(AssetDescriptor.parse(json.optString("animation")));
 
-		handle.setAsset(smove);
+        handle.setAsset(smove);
 
-	}
+    }
 
-	@Override
-	public void store(AssetHandle handle, JSONObject json)
-			throws AssetException {
-		super.store(handle, json);
+    @Override
+    public void store(AssetHandle handle, JSONObject json) throws AssetException {
+        super.store(handle, json);
 
-		final SpecialMove smove = (SpecialMove) handle.getAsset();
+        final SpecialMove smove = (SpecialMove) handle.getAsset();
 
-		json.put("name", smove.getName());
-		json.put("description", smove.getDescription());
-		json.put("fightPower", smove.getFightPower());
-		json.put("mpCost", smove.getMovePowerCost());
-		json.put("mpDrainedFromTarget", smove.getMovePowerDrainedFromTarget());
-		json.put("canUseInBattle", smove.isUsableInBattle());
-		json.put("canUseInMenu", smove.isUsableInMenu());
+        json.put("name", smove.getName());
+        json.put("description", smove.getDescription());
+        json.put("fightPower", smove.getFightPower());
+        json.put("mpCost", smove.getMovePowerCost());
+        json.put("mpDrainedFromTarget", smove.getMovePowerDrainedFromTarget());
+        json.put("canUseInBattle", smove.isUsableInBattle());
+        json.put("canUseInMenu", smove.isUsableInMenu());
 
-		json.put("script", smove.getProgram());
-		json.put("statusEffect", smove.getStatusEffect());
-		json.put("animation", smove.getAnimation());
+        json.put("script", smove.getProgram());
+        json.put("statusEffect", smove.getStatusEffect());
+        json.put("animation", smove.getAnimation());
 
-	}
+    }
 
 }

@@ -45,9 +45,9 @@ import ro.fortsoft.pf4j.PluginManager;
 
 public class Driver {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(Driver.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Driver.class);
 
-	public static void redirectUncaughtExceptions() {
+    public static void redirectUncaughtExceptions() {
         try {
             Thread.setDefaultUncaughtExceptionHandler((Thread t, Throwable e) -> {
                 LOGGER.error("Uncaught Exception detected in thread {}", t, e);
@@ -56,85 +56,79 @@ public class Driver {
             LOGGER.error("Could not set the Default Uncaught Exception Handler", e);
         }
     }
-	public static void logSystemInfo() {
-		LOGGER.info("---------------------------- System Info ----------------------------");
-		LOGGER.info("Operating System: {}", System.getProperty("os.name"));
-		LOGGER.info("System Architecture: {}", System.getProperty("os.arch"));
-		LOGGER.info("Available Processors (cores): {}", Runtime.getRuntime()
-				.availableProcessors());
-		LOGGER.info("Free Memory (bytes): {}", Runtime.getRuntime()
-				.freeMemory());
-		LOGGER.info("Total Memory (bytes): {}", Runtime.getRuntime()
-				.totalMemory());
-		LOGGER.info("Max Memory (bytes): {}", Runtime.getRuntime().maxMemory());
-		LOGGER.info("---------------------------------------------------------------------");
-	}
 
-	public static void registerResolvers() {
-		LOGGER.debug("Registering asset resolvers.");
+    public static void logSystemInfo() {
+        LOGGER.info("---------------------------- System Info ----------------------------");
+        LOGGER.info("Operating System: {}", System.getProperty("os.name"));
+        LOGGER.info("System Architecture: {}", System.getProperty("os.arch"));
+        LOGGER.info("Available Processors (cores): {}", Runtime.getRuntime().availableProcessors());
+        LOGGER.info("Free Memory (bytes): {}", Runtime.getRuntime().freeMemory());
+        LOGGER.info("Total Memory (bytes): {}", Runtime.getRuntime().totalMemory());
+        LOGGER.info("Max Memory (bytes): {}", Runtime.getRuntime().maxMemory());
+        LOGGER.info("---------------------------------------------------------------------");
+    }
 
-		AssetManager.getInstance().registerResolver(
-				new FileAssetHandleResolver());
-	}
+    public static void registerResolvers() {
+        LOGGER.debug("Registering asset resolvers.");
 
-	public static void registerSerializers() {
-		LOGGER.debug("Registering asset serializers.");
+        AssetManager.getInstance().registerResolver(new FileAssetHandleResolver());
+    }
 
-		AssetManager assetManager = AssetManager.getInstance();
+    public static void registerSerializers() {
+        LOGGER.debug("Registering asset serializers.");
 
-		// JSON.
-		assetManager.registerSerializer(new JsonAnimationSerializer());
-		assetManager.registerSerializer(new JsonCharacterSerializer());
-		assetManager.registerSerializer(new JsonBoardSerializer());
-		assetManager.registerSerializer(new JsonProjectSerializer());
-		assetManager.registerSerializer(new JsonSpecialMoveSerializer());
-		assetManager.registerSerializer(new JsonEnemySerializer());
-		assetManager.registerSerializer(new JsonItemSerializer());
-		assetManager.registerSerializer(new JsonNPCSerializer());
-		assetManager.registerSerializer(new TextProgramSerializer());
-		assetManager.registerSerializer(new JsonTileSetSerializer());
-	}
+        AssetManager assetManager = AssetManager.getInstance();
 
-	public static PluginManager registerPlugins() throws URISyntaxException {
-		String path = FileTools.getExecutionPath(Driver.class);
+        // JSON.
+        assetManager.registerSerializer(new JsonAnimationSerializer());
+        assetManager.registerSerializer(new JsonCharacterSerializer());
+        assetManager.registerSerializer(new JsonBoardSerializer());
+        assetManager.registerSerializer(new JsonProjectSerializer());
+        assetManager.registerSerializer(new JsonSpecialMoveSerializer());
+        assetManager.registerSerializer(new JsonEnemySerializer());
+        assetManager.registerSerializer(new JsonItemSerializer());
+        assetManager.registerSerializer(new JsonNPCSerializer());
+        assetManager.registerSerializer(new TextProgramSerializer());
+        assetManager.registerSerializer(new JsonTileSetSerializer());
+    }
 
-		path += File.separator
-				+ EditorProperties
-						.getProperty(EditorProperty.EDITOR_PLUGINS_DIRECOTRY)
-				+ File.separator;
+    public static PluginManager registerPlugins() throws URISyntaxException {
+        String path = FileTools.getExecutionPath(Driver.class);
 
-		System.setProperty("pf4j.pluginsDir", path);
-		LOGGER.info(System.getProperty("pf4j.pluginsDir"));
+        path += File.separator + EditorProperties.getProperty(EditorProperty.EDITOR_PLUGINS_DIRECOTRY) + File.separator;
 
-		PluginManager pluginManager = new JarPluginManager();
-		pluginManager.loadPlugins();
-		pluginManager.startPlugins();
+        System.setProperty("pf4j.pluginsDir", path);
+        LOGGER.info(System.getProperty("pf4j.pluginsDir"));
 
-		return pluginManager;
-	}
+        PluginManager pluginManager = new JarPluginManager();
+        pluginManager.loadPlugins();
+        pluginManager.startPlugins();
 
-	public static void loadUserPreferences() {
-		Theme theme = Theme.valueOf(UserPreferencesProperties.getProperty(
-				UserPreference.USER_PREFERENCE_THEME).toUpperCase());
-		final LookAndFeel laf;
-		switch (theme) {
-			case LIGHT :
-				laf = new SubstanceNebulaLookAndFeel();
-				break;
-			case DARK :
-			default :
-				laf = new SubstanceGraphiteAquaLookAndFeel();
-		}
-		try {
-			UIManager.setLookAndFeel(laf);
-			JFrame.setDefaultLookAndFeelDecorated(true);
-			JDialog.setDefaultLookAndFeelDecorated(true);
-		} catch (UnsupportedLookAndFeelException ex) {
-			LOGGER.error("Failed to set look and feel theme=[{}]!", ex, theme);
-		}
-	}
+        return pluginManager;
+    }
 
-	public static void main(String[] args) {
+    public static void loadUserPreferences() {
+        Theme theme = Theme
+                .valueOf(UserPreferencesProperties.getProperty(UserPreference.USER_PREFERENCE_THEME).toUpperCase());
+        final LookAndFeel laf;
+        switch (theme) {
+        case LIGHT:
+            laf = new SubstanceNebulaLookAndFeel();
+            break;
+        case DARK:
+        default:
+            laf = new SubstanceGraphiteAquaLookAndFeel();
+        }
+        try {
+            UIManager.setLookAndFeel(laf);
+            JFrame.setDefaultLookAndFeelDecorated(true);
+            JDialog.setDefaultLookAndFeelDecorated(true);
+        } catch (UnsupportedLookAndFeelException ex) {
+            LOGGER.error("Failed to set look and feel theme=[{}]!", ex, theme);
+        }
+    }
+
+    public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             try {
                 LOGGER.info("Starting the RPGWizard Editor...");
@@ -164,10 +158,10 @@ public class Driver {
                                 LOGGER.warn("Failed to stop engine! reason=[{}]", ex.getMessage());
                             }
                         });
-                        
+
                         // Write out user preferences.
                         UserPreferencesProperties.save();
-                        
+
                         LOGGER.info("Stopping the RPGWizard Editor...");
                     }
                 });

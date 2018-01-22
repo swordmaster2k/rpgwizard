@@ -32,32 +32,32 @@ import org.rpgwizard.editor.editors.character.CharacterModelPanel;
  */
 public final class ModelPanelFactory {
 
-	private ModelPanelFactory() {
+    private ModelPanelFactory() {
 
-	}
+    }
 
-	public static AbstractModelPanel getModelPanel(Object model) {
-		if (model instanceof Board) {
-			return new BoardPanel((Board) model);
-		} else if (model instanceof BoardVector) {
-			return new BoardVectorPanel((BoardVector) model);
-		} else if (model instanceof BoardSprite) {
-			return new BoardSpritePanel((BoardSprite) model);
-		} else if (model instanceof BoardLayerImage) {
-			return new BoardLayerImagePanel((BoardLayerImage) model);
-		} else if (model instanceof BoardLight) {
+    public static AbstractModelPanel getModelPanel(Object model) {
+        if (model instanceof Board) {
+            return new BoardPanel((Board) model);
+        } else if (model instanceof BoardVector) {
+            return new BoardVectorPanel((BoardVector) model);
+        } else if (model instanceof BoardSprite) {
+            return new BoardSpritePanel((BoardSprite) model);
+        } else if (model instanceof BoardLayerImage) {
+            return new BoardLayerImagePanel((BoardLayerImage) model);
+        } else if (model instanceof BoardLight) {
 
-		} else if (model instanceof Animation) {
-			return new AnimationModelPanel((Animation) model);
-		} else if (model instanceof Character) {
-			return new CharacterModelPanel((Character) model);
-		} else if (model instanceof NPC) {
-			return new NPCModelPanel((NPC) model);
-		} else if (model instanceof Enemy) {
-			return new EnemyModelPanel((Enemy) model);
-		}
+        } else if (model instanceof Animation) {
+            return new AnimationModelPanel((Animation) model);
+        } else if (model instanceof Character) {
+            return new CharacterModelPanel((Character) model);
+        } else if (model instanceof NPC) {
+            return new NPCModelPanel((NPC) model);
+        } else if (model instanceof Enemy) {
+            return new EnemyModelPanel((Enemy) model);
+        }
 
-		return null;
-	}
+        return null;
+    }
 
 }

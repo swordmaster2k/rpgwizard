@@ -19,34 +19,34 @@ import org.rpgwizard.editor.ui.resources.Icons;
  */
 public final class HelpMenu extends JMenu {
 
-	private JMenuItem indexMenuItem;
-	private JMenuItem aboutMenuItem;
+    private JMenuItem indexMenuItem;
+    private JMenuItem aboutMenuItem;
 
-	public HelpMenu() {
-		super("Help");
+    public HelpMenu() {
+        super("Help");
 
-		this.setMnemonic(KeyEvent.VK_H);
+        this.setMnemonic(KeyEvent.VK_H);
 
-		this.configureIndexMenuItem();
-		this.configureAboutMenuItem();
+        this.configureIndexMenuItem();
+        this.configureAboutMenuItem();
 
-		this.add(indexMenuItem);
-		this.add(aboutMenuItem);
-	}
+        this.add(indexMenuItem);
+        this.add(aboutMenuItem);
+    }
 
-	public void configureIndexMenuItem() {
-		indexMenuItem = new JMenuItem("Index"); // Help Index Menu (browser
-												// based?)
-		indexMenuItem.setIcon(Icons.getSmallIcon("help"));
-		indexMenuItem.setEnabled(false);
-	}
+    public void configureIndexMenuItem() {
+        indexMenuItem = new JMenuItem("Index"); // Help Index Menu (browser
+                                                // based?)
+        indexMenuItem.setIcon(Icons.getSmallIcon("help"));
+        indexMenuItem.setEnabled(false);
+    }
 
-	public void configureAboutMenuItem() {
-		aboutMenuItem = new JMenuItem("About"); // About Menu
-		aboutMenuItem.setIcon(Icons.getSmallIcon("information"));
-		aboutMenuItem.setMnemonic(KeyEvent.VK_A);
-		aboutMenuItem.addActionListener(new AboutAction());
-		aboutMenuItem.setEnabled(true);
-	}
+    public void configureAboutMenuItem() {
+        aboutMenuItem = new JMenuItem("About"); // About Menu
+        aboutMenuItem.setIcon(Icons.getSmallIcon("information"));
+        aboutMenuItem.setMnemonic(KeyEvent.VK_A);
+        aboutMenuItem.addActionListener(new AboutAction());
+        aboutMenuItem.setEnabled(true);
+    }
 
 }

@@ -17,24 +17,24 @@ import org.rpgwizard.common.assets.Tile;
  */
 public class TileRegionSelectionEvent extends EventObject {
 
-	private final Tile[][] tiles;
+    private final Tile[][] tiles;
 
-	/**
-	 *
-	 * @param source
-	 * @param tiles
-	 */
-	public TileRegionSelectionEvent(Object source, Tile[][] tiles) {
-		super(source);
-		this.tiles = tiles;
-	}
+    /**
+     *
+     * @param source
+     * @param tiles
+     */
+    public TileRegionSelectionEvent(Object source, Tile[][] tiles) {
+        super(source);
+        this.tiles = tiles;
+    }
 
-	/**
-	 *
-	 * @return
-	 */
-	public Tile[][] getTiles() {
-		return tiles;
-	}
+    /**
+     *
+     * @return
+     */
+    public Tile[][] getTiles() {
+        return tiles;
+    }
 
 }

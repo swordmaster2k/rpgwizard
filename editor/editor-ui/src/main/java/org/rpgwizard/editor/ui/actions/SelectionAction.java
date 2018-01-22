@@ -20,12 +20,12 @@ import org.rpgwizard.editor.MainWindow;
  */
 public class SelectionAction extends AbstractAction {
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		BoardEditor.toggleSelectedOnBoardEditor();
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        BoardEditor.toggleSelectedOnBoardEditor();
 
-		SelectionBrush brush = new SelectionBrush(new Tile[1][1]);
-		MainWindow.getInstance().setCurrentBrush(brush);
-	}
+        SelectionBrush brush = new SelectionBrush(new Tile[1][1]);
+        MainWindow.getInstance().setCurrentBrush(brush);
+    }
 
 }

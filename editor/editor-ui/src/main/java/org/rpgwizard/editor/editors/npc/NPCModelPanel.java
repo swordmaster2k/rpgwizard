@@ -16,11 +16,11 @@ import org.rpgwizard.editor.editors.sprite.AbstractSpriteModelPanel;
  */
 public class NPCModelPanel extends AbstractSpriteModelPanel {
 
-	private final NPC npc;
+    private final NPC npc;
 
-	public NPCModelPanel(NPC model) {
-		super(model);
-		npc = model;
-	}
+    public NPCModelPanel(NPC model) {
+        super(model);
+        npc = model;
+    }
 
 }

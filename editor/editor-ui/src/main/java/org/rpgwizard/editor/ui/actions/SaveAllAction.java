@@ -23,26 +23,23 @@ import org.slf4j.LoggerFactory;
  */
 public class SaveAllAction extends AbstractAction {
 
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(SaveAction.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SaveAction.class);
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		MainWindow w = MainWindow.getInstance();
-		for (AbstractAssetEditorWindow editor : w.getOpenEditors()) {
-			if (editor.needsSave()) {
-				try {
-					editor.save();
-				} catch (Exception ex) {
-					LOGGER.error("Failed to invoke save for asset frame=[{}]",
-							editor, ex);
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        MainWindow w = MainWindow.getInstance();
+        for (AbstractAssetEditorWindow editor : w.getOpenEditors()) {
+            if (editor.needsSave()) {
+                try {
+                    editor.save();
+                } catch (Exception ex) {
+                    LOGGER.error("Failed to invoke save for asset frame=[{}]", editor, ex);
 
-					JOptionPane.showMessageDialog(MainWindow.getInstance(),
-							"Error saving file!", "Error on Save",
-							JOptionPane.ERROR_MESSAGE);
-				}
-			}
-		}
-	}
+                    JOptionPane.showMessageDialog(MainWindow.getInstance(), "Error saving file!", "Error on Save",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+    }
 
 }

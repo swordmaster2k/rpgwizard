@@ -14,9 +14,9 @@ import java.util.stream.Stream;
  */
 public enum BoardVectorType {
 
-	PASSABLE, SOLID;
+    PASSABLE, SOLID;
 
-	public static String[] toStringArray() {
-            return Stream.of(BoardVectorType.values()).map(BoardVectorType::name).toArray(String[]::new);
-        }
+    public static String[] toStringArray() {
+        return Stream.of(BoardVectorType.values()).map(BoardVectorType::name).toArray(String[]::new);
+    }
 }

@@ -18,15 +18,15 @@ import org.rpgwizard.editor.MainWindow;
  */
 public class SnapToGridItemListener implements ItemListener {
 
-	@Override
-	public void itemStateChanged(ItemEvent e) {
-		JCheckBoxMenuItem snapToGridMenuItem = (JCheckBoxMenuItem) e.getItem();
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        JCheckBoxMenuItem snapToGridMenuItem = (JCheckBoxMenuItem) e.getItem();
 
-		if (snapToGridMenuItem.getState()) {
-			MainWindow.getInstance().setSnapToGrid(true);
-		} else {
-			MainWindow.getInstance().setSnapToGrid(false);
-		}
-	}
+        if (snapToGridMenuItem.getState()) {
+            MainWindow.getInstance().setSnapToGrid(true);
+        } else {
+            MainWindow.getInstance().setSnapToGrid(false);
+        }
+    }
 
 }

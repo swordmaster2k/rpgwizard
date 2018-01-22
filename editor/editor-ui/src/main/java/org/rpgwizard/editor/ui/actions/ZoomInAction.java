@@ -18,17 +18,17 @@ import org.rpgwizard.editor.editors.BoardEditor;
  */
 public class ZoomInAction extends AbstractAction {
 
-	/**
-	 *
-	 * @param e
-	 */
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		BoardEditor editor = MainWindow.getInstance().getCurrentBoardEditor();
+    /**
+     *
+     * @param e
+     */
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        BoardEditor editor = MainWindow.getInstance().getCurrentBoardEditor();
 
-		if (editor != null) {
-			editor.zoomIn();
-		}
-	}
+        if (editor != null) {
+            editor.zoomIn();
+        }
+    }
 
 }

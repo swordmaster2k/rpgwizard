@@ -12,5 +12,5 @@ package org.rpgwizard.common.assets;
  * @author Joshua Michael Daly
  */
 public enum GraphicEnum {
-	PROFILE
+    PROFILE
 }

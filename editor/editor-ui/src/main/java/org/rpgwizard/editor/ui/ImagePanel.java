@@ -23,120 +23,117 @@ import org.rpgwizard.editor.utilities.TransparentDrawer;
  */
 public class ImagePanel extends AbstractImagePanel {
 
-	private final Image defaultImage;
+    private final Image defaultImage;
 
-	private Dimension scaledDimension;
+    private Dimension scaledDimension;
 
-	public ImagePanel() {
-		super(new Dimension(250, 500));
-		setToolTipText("Double click to select an image.");
+    public ImagePanel() {
+        super(new Dimension(250, 500));
+        setToolTipText("Double click to select an image.");
 
-		defaultImage = Icons.getIcon("image", Icons.Size.LARGE).getImage();
-		scaledDimension = null;
-	}
+        defaultImage = Icons.getIcon("image", Icons.Size.LARGE).getImage();
+        scaledDimension = null;
+    }
 
-	public ImagePanel(Dimension dimension) {
-		super(dimension);
-		setToolTipText("Double click to select an image.");
+    public ImagePanel(Dimension dimension) {
+        super(dimension);
+        setToolTipText("Double click to select an image.");
 
-		defaultImage = Icons.getIcon("image", Icons.Size.LARGE).getImage();
-		scaledDimension = null;
-	}
+        defaultImage = Icons.getIcon("image", Icons.Size.LARGE).getImage();
+        scaledDimension = null;
+    }
 
-	public ImagePanel(Dimension dimension, Image image) {
-		super(dimension);
-		setToolTipText("Double click to select an image.");
+    public ImagePanel(Dimension dimension, Image image) {
+        super(dimension);
+        setToolTipText("Double click to select an image.");
 
-		defaultImage = image;
-		scaledDimension = null;
-	}
+        defaultImage = image;
+        scaledDimension = null;
+    }
 
-	@Override
-	public Dimension getPreferredSize() {
-		return dimension;
-	}
+    @Override
+    public Dimension getPreferredSize() {
+        return dimension;
+    }
 
-	@Override
-	public Dimension getMaximumSize() {
-		return dimension;
-	}
+    @Override
+    public Dimension getMaximumSize() {
+        return dimension;
+    }
 
-	@Override
-	public Dimension getMinimumSize() {
-		return dimension;
-	}
+    @Override
+    public Dimension getMinimumSize() {
+        return dimension;
+    }
 
-	@Override
-	public void paint(Graphics g) {
-		if (scaledDimension == null) {
-			// First call to paint.
-			calculateScaledDimension();
-		}
+    @Override
+    public void paint(Graphics g) {
+        if (scaledDimension == null) {
+            // First call to paint.
+            calculateScaledDimension();
+        }
 
-		TransparentDrawer.drawTransparentBackground(g, getWidth(), getHeight());
+        TransparentDrawer.drawTransparentBackground(g, getWidth(), getHeight());
 
-		Image image;
-		if (bufferedImages.size() > 0) {
-			image = bufferedImages.getFirst();
-		} else {
-			image = defaultImage;
-		}
+        Image image;
+        if (bufferedImages.size() > 0) {
+            image = bufferedImages.getFirst();
+        } else {
+            image = defaultImage;
+        }
 
-		int x = (getWidth() - scaledDimension.width) / 2;
-		int y = (getHeight() - scaledDimension.height) / 2;
-		g.drawImage(image, x, y, scaledDimension.width, scaledDimension.height,
-				this);
+        int x = (getWidth() - scaledDimension.width) / 2;
+        int y = (getHeight() - scaledDimension.height) / 2;
+        g.drawImage(image, x, y, scaledDimension.width, scaledDimension.height, this);
 
-		g.setColor(Color.LIGHT_GRAY);
-		g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
-	}
+        g.setColor(Color.LIGHT_GRAY);
+        g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
+    }
 
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		if (e.getClickCount() == 2) {
-			File imageFile = EditorFileManager.browseLocationBySubdir(
-					EditorFileManager.getGraphicsSubdirectory(),
-					EditorFileManager.getImageFilterDescription(),
-					EditorFileManager.getImageExtensions());
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if (e.getClickCount() == 2) {
+            File imageFile = EditorFileManager.browseLocationBySubdir(EditorFileManager.getGraphicsSubdirectory(),
+                    EditorFileManager.getImageFilterDescription(), EditorFileManager.getImageExtensions());
 
-			if (imageFile != null) {
-				if (bufferedImages.size() > 0) {
-					bufferedImages.remove();
-				}
+            if (imageFile != null) {
+                if (bufferedImages.size() > 0) {
+                    bufferedImages.remove();
+                }
 
-				addImage(imageFile);
-				calculateScaledDimension();
-				repaint();
-			}
-		}
-	}
+                addImage(imageFile);
+                calculateScaledDimension();
+                repaint();
+            }
+        }
+    }
 
-	private void calculateScaledDimension() {
-		Image image;
-		if (bufferedImages.isEmpty()) {
-			image = defaultImage;
-		} else {
-			image = bufferedImages.getFirst();
-		}
+    private void calculateScaledDimension() {
+        Image image;
+        if (bufferedImages.isEmpty()) {
+            image = defaultImage;
+        } else {
+            image = bufferedImages.getFirst();
+        }
 
-		int originalWidth = image.getWidth(this);
-		int originalHeight = image.getHeight(this);
-		int boundWidth = getWidth();
-		int boundHeight = getHeight();
-		int newWidth = originalWidth;
-		int newHeight = originalHeight;
+        int originalWidth = image.getWidth(this);
+        int originalHeight = image.getHeight(this);
+        int boundWidth = getWidth();
+        int boundHeight = getHeight();
+        int newWidth = originalWidth;
+        int newHeight = originalHeight;
 
-		if (originalWidth > boundWidth) {
-			newWidth = boundWidth;
-			newHeight = (newWidth * originalHeight) / originalWidth;
-		}
+        if (originalWidth > boundWidth) {
+            newWidth = boundWidth;
+            newHeight = (newWidth * originalHeight) / originalWidth;
+        }
 
-		if (newHeight > boundHeight) {
-			newHeight = boundHeight;
-			newWidth = (newHeight * originalWidth) / originalHeight;
-		}
+        if (newHeight > boundHeight) {
+            newHeight = boundHeight;
+            newWidth = (newHeight * originalWidth) / originalHeight;
+        }
 
-		scaledDimension = new Dimension(newWidth, newHeight);
-	}
+        scaledDimension = new Dimension(newWidth, newHeight);
+    }
 
 }

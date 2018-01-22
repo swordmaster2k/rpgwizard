@@ -12,19 +12,19 @@ package org.rpgwizard.common.assets;
  */
 public enum StatusEffectTarget {
 
-	/**
-	 * Effect can target any entity.
-	 */
-	ANY,
+    /**
+     * Effect can target any entity.
+     */
+    ANY,
 
-	/**
-	 * Effect targets a player.
-	 */
-	SELF,
+    /**
+     * Effect targets a player.
+     */
+    SELF,
 
-	/**
-	 * Effect targets an enemy.
-	 */
-	ENEMY
+    /**
+     * Effect targets an enemy.
+     */
+    ENEMY
 
 }

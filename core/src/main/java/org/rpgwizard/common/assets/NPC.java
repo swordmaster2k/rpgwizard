@@ -9,26 +9,26 @@ package org.rpgwizard.common.assets;
 
 public class NPC extends AbstractSprite {
 
-	private String description;
+    private String description;
 
-	public NPC(AssetDescriptor descriptor) {
-		super(descriptor);
-		description = "";
-	}
+    public NPC(AssetDescriptor descriptor) {
+        super(descriptor);
+        description = "";
+    }
 
-	/**
-	 * @return the description
-	 */
-	public String getDescription() {
-		return description;
-	}
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
 
-	/**
-	 * @param description
-	 *            the description to set
-	 */
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    /**
+     * @param description
+     *            the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
 }

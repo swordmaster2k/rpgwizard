@@ -18,14 +18,14 @@ import org.rpgwizard.common.assets.AssetHandleResolver;
  */
 public class FileAssetHandleResolver implements AssetHandleResolver {
 
-	@Override
-	public boolean resolvable(AssetDescriptor descriptor) {
-		return descriptor.getURI().getScheme().equals("file");
-	}
+    @Override
+    public boolean resolvable(AssetDescriptor descriptor) {
+        return descriptor.getURI().getScheme().equals("file");
+    }
 
-	@Override
-	public AssetHandle resolve(AssetDescriptor descriptor) {
-		return new FileAssetHandle(descriptor);
-	}
+    @Override
+    public AssetHandle resolve(AssetDescriptor descriptor) {
+        return new FileAssetHandle(descriptor);
+    }
 
 }

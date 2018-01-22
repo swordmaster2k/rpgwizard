@@ -18,8 +18,7 @@ import org.rpgwizard.common.assets.events.SpriteChangedEvent;
 import org.rpgwizard.common.assets.listeners.SpriteChangeListener;
 
 /**
- * A common abstract class for all sprite like assets to inherit
- * (Character, Enemy, NPC).
+ * A common abstract class for all sprite like assets to inherit (Character, Enemy, NPC).
  *
  * @author Joshua Michael Daly
  */
@@ -37,7 +36,7 @@ public abstract class AbstractSprite extends AbstractAsset {
     protected ArrayList<Animation> standardGraphicsAnimations;
 
     protected double idleTimeBeforeStanding;
-    protected double frameRate; //Seconds between each step
+    protected double frameRate; // Seconds between each step
     protected int loopSpeed;
 
     protected BoardVector baseVector;
@@ -125,7 +124,8 @@ public abstract class AbstractSprite extends AbstractAsset {
     }
 
     /**
-     * @param idleTimeBeforeStanding the idleTimeBeforeStanding to set
+     * @param idleTimeBeforeStanding
+     *            the idleTimeBeforeStanding to set
      */
     public void setIdleTimeBeforeStanding(double idleTimeBeforeStanding) {
         this.idleTimeBeforeStanding = idleTimeBeforeStanding;
@@ -139,7 +139,8 @@ public abstract class AbstractSprite extends AbstractAsset {
     }
 
     /**
-     * @param frameRate the frameRate to set (seconds between each step)
+     * @param frameRate
+     *            the frameRate to set (seconds between each step)
      */
     public void setFrameRate(double frameRate) {
         this.frameRate = frameRate;
@@ -150,7 +151,8 @@ public abstract class AbstractSprite extends AbstractAsset {
     }
 
     /**
-     * @param baseVector the baseVector to set
+     * @param baseVector
+     *            the baseVector to set
      * @param fire
      */
     public void setBaseVector(BoardVector baseVector, boolean fire) {
@@ -166,7 +168,8 @@ public abstract class AbstractSprite extends AbstractAsset {
     }
 
     /**
-     * @param activationVector the activationVector to set
+     * @param activationVector
+     *            the activationVector to set
      * @param fire
      */
     public void setActivationVector(BoardVector activationVector, boolean fire) {
@@ -204,7 +207,8 @@ public abstract class AbstractSprite extends AbstractAsset {
     /**
      * Add a new <code>SpriteChangeListener</code> for this sprite.
      *
-     * @param listener new change listener
+     * @param listener
+     *            new change listener
      */
     public void addSpriteChangeListener(SpriteChangeListener listener) {
         spriteChangeListeners.add(listener);
@@ -213,7 +217,8 @@ public abstract class AbstractSprite extends AbstractAsset {
     /**
      * Remove an existing <code>PlayerChangeListener</code> for this player.
      *
-     * @param listener change listener
+     * @param listener
+     *            change listener
      */
     public void removeSpriteChangeListener(SpriteChangeListener listener) {
         spriteChangeListeners.remove(listener);
@@ -235,8 +240,7 @@ public abstract class AbstractSprite extends AbstractAsset {
     }
 
     /**
-     * Fires the <code>SpriteChangedEvent</code> informs all the listeners that
-     * this sprite has changed.
+     * Fires the <code>SpriteChangedEvent</code> informs all the listeners that this sprite has changed.
      */
     public void fireSpriteChanged() {
         SpriteChangedEvent event = null;
@@ -252,8 +256,7 @@ public abstract class AbstractSprite extends AbstractAsset {
     }
 
     /**
-     * Fires the <code>SpriteChangedEvent</code> informs all the listeners that
-     * this sprite has had an animation added.
+     * Fires the <code>SpriteChangedEvent</code> informs all the listeners that this sprite has had an animation added.
      */
     public void fireSpriteAnimationAdded() {
         SpriteChangedEvent event = null;
@@ -269,8 +272,8 @@ public abstract class AbstractSprite extends AbstractAsset {
     }
 
     /**
-     * Fires the <code>SpriteChangedEvent</code> informs all the listeners that
-     * this sprite has had an animation updated.
+     * Fires the <code>SpriteChangedEvent</code> informs all the listeners that this sprite has had an animation
+     * updated.
      */
     public void fireSpriteAnimationUpdated() {
         SpriteChangedEvent event = null;
@@ -286,8 +289,8 @@ public abstract class AbstractSprite extends AbstractAsset {
     }
 
     /**
-     * Fires the <code>SpriteChangedEvent</code> informs all the listeners that
-     * this sprite has had an animation removed.
+     * Fires the <code>SpriteChangedEvent</code> informs all the listeners that this sprite has had an animation
+     * removed.
      */
     public void fireSpriteAnimationRemoved() {
         SpriteChangedEvent event = null;

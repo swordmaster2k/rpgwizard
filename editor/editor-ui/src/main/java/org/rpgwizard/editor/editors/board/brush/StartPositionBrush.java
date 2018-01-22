@@ -24,80 +24,73 @@ import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
  */
 public class StartPositionBrush extends AbstractBrush {
 
-	@Override
-	public Shape getShape() {
-		return getBounds();
-	}
+    @Override
+    public Shape getShape() {
+        return getBounds();
+    }
 
-	@Override
-	public Rectangle getBounds() {
-		return new Rectangle(0, 0, 1, 1);
-	}
+    @Override
+    public Rectangle getBounds() {
+        return new Rectangle(0, 0, 1, 1);
+    }
 
-	@Override
-	public void drawPreview(Graphics2D g2d, AbstractBoardView view) {
-	}
+    @Override
+    public void drawPreview(Graphics2D g2d, AbstractBoardView view) {
+    }
 
-	/**
-	 *
-	 *
-	 * @param x
-	 * @param y
-	 * @param selection
-	 * @return
-	 * @throws Exception
-	 */
-	@Override
-	public Rectangle doPaint(int x, int y, Rectangle selection)
-			throws Exception {
-		Board board = affectedContainer.getLayer(currentLayer).getLayer()
-				.getBoard();
-		board.setStartingPositionX(x);
-		board.setStartingPositionY(y);
-		board.setStartingLayer(currentLayer);
-		board.fireBoardChanged();
+    /**
+     *
+     *
+     * @param x
+     * @param y
+     * @param selection
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public Rectangle doPaint(int x, int y, Rectangle selection) throws Exception {
+        Board board = affectedContainer.getLayer(currentLayer).getLayer().getBoard();
+        board.setStartingPositionX(x);
+        board.setStartingPositionY(y);
+        board.setStartingLayer(currentLayer);
+        board.fireBoardChanged();
 
-		return null;
-	}
+        return null;
+    }
 
-	@Override
-	public boolean equals(Brush brush) {
-		return brush instanceof StartPositionBrush;
-	}
+    @Override
+    public boolean equals(Brush brush) {
+        return brush instanceof StartPositionBrush;
+    }
 
-	@Override
-	public void doMouseButton1Pressed(Point point,
-			AbstractAssetEditorWindow editor) {
+    @Override
+    public void doMouseButton1Pressed(Point point, AbstractAssetEditorWindow editor) {
 
-	}
+    }
 
-	@Override
-	public void doMouseButton2Pressed(Point point,
-			AbstractAssetEditorWindow editor) {
+    @Override
+    public void doMouseButton2Pressed(Point point, AbstractAssetEditorWindow editor) {
 
-	}
+    }
 
-	@Override
-	public void doMouseButton3Pressed(Point point,
-			AbstractAssetEditorWindow editor) {
+    @Override
+    public void doMouseButton3Pressed(Point point, AbstractAssetEditorWindow editor) {
 
-	}
+    }
 
-	@Override
-	public void doMouseButton1Dragged(Point point, Point origin,
-			AbstractAssetEditorWindow editor) {
+    @Override
+    public void doMouseButton1Dragged(Point point, Point origin, AbstractAssetEditorWindow editor) {
 
-	}
+    }
 
-	@Override
-	public void doMouseButton3Dragged(Point point, Point origin,
-			AbstractAssetEditorWindow editor) {
+    @Override
+    public void doMouseButton3Dragged(Point point, Point origin, AbstractAssetEditorWindow editor) {
 
-	}
+    }
 
-	@Override
-	public boolean isPixelBased() {
-		return true;
-	}
+    @Override
+    public boolean isPixelBased() {
+        return true;
+    }
 
 }

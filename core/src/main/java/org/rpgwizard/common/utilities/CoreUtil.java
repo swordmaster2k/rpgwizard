@@ -26,30 +26,24 @@ import org.slf4j.LoggerFactory;
  */
 public class CoreUtil {
 
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(CoreUtil.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CoreUtil.class);
 
-	public static BufferedImage loadBufferedImage(String fileName)
-			throws IOException {
-		LOGGER.info("Loading image fileName=[{}]", fileName);
+    public static BufferedImage loadBufferedImage(String fileName) throws IOException {
+        LOGGER.info("Loading image fileName=[{}]", fileName);
 
-		BufferedImage image = null;
-		try {
-			if (!fileName.equals("")) {
-				FileInputStream fis = new FileInputStream(
-						System.getProperty("project.path")
-								+ File.separator
-								+ CoreProperties
-										.getProperty("toolkit.directory.graphics")
-								+ File.separator + fileName);
-				image = ImageIO.read(fis);
-			}
-		} catch (IOException ex) {
-			LOGGER.error("Failed to load image.", ex);
-			throw ex;
-		}
+        BufferedImage image = null;
+        try {
+            if (!fileName.equals("")) {
+                FileInputStream fis = new FileInputStream(System.getProperty("project.path") + File.separator
+                        + CoreProperties.getProperty("toolkit.directory.graphics") + File.separator + fileName);
+                image = ImageIO.read(fis);
+            }
+        } catch (IOException ex) {
+            LOGGER.error("Failed to load image.", ex);
+            throw ex;
+        }
 
-		return image;
-	}
+        return image;
+    }
 
 }

@@ -12,5 +12,5 @@ package org.rpgwizard.editor.ui;
  * @author Joshua Michael Daly
  */
 public enum Theme {
-	DARK, LIGHT
+    DARK, LIGHT
 }

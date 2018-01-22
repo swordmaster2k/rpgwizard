@@ -26,61 +26,54 @@ import javax.swing.event.ChangeEvent;
  */
 public final class NewBoardDialog extends JDialog {
 
-	private final JSpinner widthSpinner;
-	private final JSpinner heightSpinner;
-	private final JSpinner tileWidthSpinner;
-	private final JSpinner tileHeightSpinner;
-	private final JLabel dimensionsLabel;
+    private final JSpinner widthSpinner;
+    private final JSpinner heightSpinner;
+    private final JSpinner tileWidthSpinner;
+    private final JSpinner tileHeightSpinner;
+    private final JLabel dimensionsLabel;
 
-	private final JButton okButton;
-	private final JButton cancelButton;
+    private final JButton okButton;
+    private final JButton cancelButton;
 
-	private int[] value = null;
+    private int[] value = null;
 
-	/**
-	 *
-	 * @param owner
-	 */
-	public NewBoardDialog(Window owner) {
-        super(owner, "New Board",
-                JDialog.ModalityType.APPLICATION_MODAL);
+    /**
+     *
+     * @param owner
+     */
+    public NewBoardDialog(Window owner) {
+        super(owner, "New Board", JDialog.ModalityType.APPLICATION_MODAL);
 
         widthSpinner = new JSpinner(new SpinnerNumberModel(10, 3, 50, 1));
-        ((JSpinner.DefaultEditor) widthSpinner.getEditor()).getTextField()
-                .setColumns(7);
+        ((JSpinner.DefaultEditor) widthSpinner.getEditor()).getTextField().setColumns(7);
         widthSpinner.addChangeListener((ChangeEvent e) -> {
             updateDimensionsLabel();
         });
 
         heightSpinner = new JSpinner(new SpinnerNumberModel(10, 3, 50, 1));
-        ((JSpinner.DefaultEditor) heightSpinner.getEditor()).getTextField()
-                .setColumns(7);
+        ((JSpinner.DefaultEditor) heightSpinner.getEditor()).getTextField().setColumns(7);
         heightSpinner.addChangeListener((ChangeEvent e) -> {
             updateDimensionsLabel();
         });
 
         tileWidthSpinner = new JSpinner(new SpinnerNumberModel(32, 16, 128, 1));
-        ((JSpinner.DefaultEditor) tileWidthSpinner.getEditor()).getTextField()
-                .setColumns(7);
+        ((JSpinner.DefaultEditor) tileWidthSpinner.getEditor()).getTextField().setColumns(7);
         tileWidthSpinner.addChangeListener((ChangeEvent e) -> {
             updateDimensionsLabel();
         });
 
         tileHeightSpinner = new JSpinner(new SpinnerNumberModel(32, 16, 128, 1));
-        ((JSpinner.DefaultEditor) tileHeightSpinner.getEditor()).getTextField()
-                .setColumns(7);
+        ((JSpinner.DefaultEditor) tileHeightSpinner.getEditor()).getTextField().setColumns(7);
         tileHeightSpinner.addChangeListener((ChangeEvent e) -> {
             updateDimensionsLabel();
         });
-        
+
         dimensionsLabel = new JLabel("320x320px", SwingConstants.RIGHT);
 
         okButton = new JButton("OK");
         okButton.addActionListener((ActionEvent e) -> {
-            value = new int[]{(int) widthSpinner.getValue(),
-                (int) heightSpinner.getValue(),
-                (int) tileWidthSpinner.getValue(),
-                (int) tileHeightSpinner.getValue()};
+            value = new int[] { (int) widthSpinner.getValue(), (int) heightSpinner.getValue(),
+                    (int) tileWidthSpinner.getValue(), (int) tileHeightSpinner.getValue() };
             dispose();
         });
 
@@ -112,22 +105,21 @@ public final class NewBoardDialog extends JDialog {
         setResizable(false);
         pack();
     }
-	/**
-	 *
-	 * @return
-	 */
-	public int[] getValue() {
-		return value;
-	}
 
-	private void updateDimensionsLabel() {
-		int width = (int) widthSpinner.getValue()
-				* (int) tileWidthSpinner.getValue();
-		int height = (int) heightSpinner.getValue()
-				* (int) tileHeightSpinner.getValue();
+    /**
+     *
+     * @return
+     */
+    public int[] getValue() {
+        return value;
+    }
 
-		String text = width + "x" + height + "px";
-		dimensionsLabel.setText(text);
-	}
+    private void updateDimensionsLabel() {
+        int width = (int) widthSpinner.getValue() * (int) tileWidthSpinner.getValue();
+        int height = (int) heightSpinner.getValue() * (int) tileHeightSpinner.getValue();
+
+        String text = width + "x" + height + "px";
+        dimensionsLabel.setText(text);
+    }
 
 }

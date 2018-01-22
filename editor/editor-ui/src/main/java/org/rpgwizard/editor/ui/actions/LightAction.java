@@ -16,8 +16,8 @@ import javax.swing.AbstractAction;
  */
 public class LightAction extends AbstractAction {
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+    }
 
 }

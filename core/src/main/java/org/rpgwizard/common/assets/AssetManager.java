@@ -22,158 +22,149 @@ import org.slf4j.LoggerFactory;
  */
 public class AssetManager {
 
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(AssetManager.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AssetManager.class);
 
-	// Singleton.
-	// TODO: Singleton pattern is not appropriate for this type.
-	private static final AssetManager INSTANCE = new AssetManager();
+    // Singleton.
+    // TODO: Singleton pattern is not appropriate for this type.
+    private static final AssetManager INSTANCE = new AssetManager();
 
-	private final TreeSet<AssetSerializer> serializers;
-	private final List<AssetHandleResolver> resolvers;
-	private final Map<AssetDescriptor, AssetHandle> assets;
+    private final TreeSet<AssetSerializer> serializers;
+    private final List<AssetHandleResolver> resolvers;
+    private final Map<AssetDescriptor, AssetHandle> assets;
 
-	public static AssetManager getInstance() {
-		return INSTANCE;
-	}
+    public static AssetManager getInstance() {
+        return INSTANCE;
+    }
 
-	private AssetManager() {
-    this.resolvers = new ArrayList<>();
-    this.serializers = new TreeSet<>(
-      new AssetSerializer.PriorityComparator());
-    this.assets = new HashMap<>();
-  }
-	/***
-	 * Returns the number of assets managed.
-	 * 
-	 * @return count of assets managed
-	 */
-	public int getAssetCount() {
-		return this.assets.size();
-	}
+    private AssetManager() {
+        this.resolvers = new ArrayList<>();
+        this.serializers = new TreeSet<>(new AssetSerializer.PriorityComparator());
+        this.assets = new HashMap<>();
+    }
 
-	/**
-	 * Gets the handle for the given asset. If the asset is not already being
-	 * managed, a handle for it is created and added. If a handle with the
-	 * asset's descriptor is already being managed, the handle's asset is set to
-	 * the given asset.
-	 *
-	 * @param asset
-	 * @return a handle for the given asset, or null if the asset is null
-	 */
-	public AssetHandle getHandle(Asset asset) {
-		if (asset == null) {
-			return null;
-		}
-		AssetDescriptor d = asset.getDescriptor();
-		AssetHandle h;
-		if (this.assets.containsKey(d)) {
-			h = this.assets.get(d);
-		} else {
-			h = this.resolve(d);
-			this.assets.put(d, h);
-		}
-		h.setAsset(asset);
-		return h;
-	}
+    /***
+     * Returns the number of assets managed.
+     * 
+     * @return count of assets managed
+     */
+    public int getAssetCount() {
+        return this.assets.size();
+    }
 
-	/**
-	 * Removes an asset from the map.
-	 * 
-	 * @param asset
-	 */
-	public void removeAsset(Asset asset) {
-		assets.remove(asset.getDescriptor());
-	}
+    /**
+     * Gets the handle for the given asset. If the asset is not already being managed, a handle for it is created and
+     * added. If a handle with the asset's descriptor is already being managed, the handle's asset is set to the given
+     * asset.
+     *
+     * @param asset
+     * @return a handle for the given asset, or null if the asset is null
+     */
+    public AssetHandle getHandle(Asset asset) {
+        if (asset == null) {
+            return null;
+        }
+        AssetDescriptor d = asset.getDescriptor();
+        AssetHandle h;
+        if (this.assets.containsKey(d)) {
+            h = this.assets.get(d);
+        } else {
+            h = this.resolve(d);
+            this.assets.put(d, h);
+        }
+        h.setAsset(asset);
+        return h;
+    }
 
-	/**
-	 * Registers a serializer with the manager. Serializers are sorted in
-	 * ascending order of priority, so lower priority numbers are first.
-	 *
-	 * @param serializer
-	 */
-	public void registerSerializer(final AssetSerializer serializer) {
-		LOGGER.info("Registering serializer=[{}].", serializer);
+    /**
+     * Removes an asset from the map.
+     * 
+     * @param asset
+     */
+    public void removeAsset(Asset asset) {
+        assets.remove(asset.getDescriptor());
+    }
 
-		if (serializer == null) {
-			throw new NullPointerException();
-		}
-		this.serializers.add(serializer);
-	}
+    /**
+     * Registers a serializer with the manager. Serializers are sorted in ascending order of priority, so lower priority
+     * numbers are first.
+     *
+     * @param serializer
+     */
+    public void registerSerializer(final AssetSerializer serializer) {
+        LOGGER.info("Registering serializer=[{}].", serializer);
 
-	public void registerResolver(final AssetHandleResolver resolver) {
-		LOGGER.info("Registering resolver=[{}].", resolver);
+        if (serializer == null) {
+            throw new NullPointerException();
+        }
+        this.serializers.add(serializer);
+    }
 
-		if (resolver == null) {
-			throw new NullPointerException();
-		}
-		this.resolvers.add(resolver);
-	}
+    public void registerResolver(final AssetHandleResolver resolver) {
+        LOGGER.info("Registering resolver=[{}].", resolver);
 
-	public AssetHandle serialize(AssetHandle handle) throws IOException,
-			AssetException {
-		final AssetDescriptor descriptor = handle.getDescriptor();
-		LOGGER.info("Attempting to serialize asset with URI=[{}]",
-				descriptor.uri);
+        if (resolver == null) {
+            throw new NullPointerException();
+        }
+        this.resolvers.add(resolver);
+    }
 
-		if (handle.getAsset() != null) {
-			assets.put(descriptor, handle);
-		}
+    public AssetHandle serialize(AssetHandle handle) throws IOException, AssetException {
+        final AssetDescriptor descriptor = handle.getDescriptor();
+        LOGGER.info("Attempting to serialize asset with URI=[{}]", descriptor.uri);
 
-		for (AssetSerializer serializer : serializers) {
-			if (serializer.serializable(descriptor)) {
-				LOGGER.info("Found serializer=[{}] for asset with URI=[{}]",
-						serializer, descriptor.uri);
-				serializer.serialize(handle);
-				break;
-			}
-		}
+        if (handle.getAsset() != null) {
+            assets.put(descriptor, handle);
+        }
 
-		return handle;
+        for (AssetSerializer serializer : serializers) {
+            if (serializer.serializable(descriptor)) {
+                LOGGER.info("Found serializer=[{}] for asset with URI=[{}]", serializer, descriptor.uri);
+                serializer.serialize(handle);
+                break;
+            }
+        }
 
-	}
+        return handle;
 
-	public AssetHandle deserialize(AssetDescriptor descriptor)
-			throws IOException, AssetException {
-		LOGGER.info("Attempting to deserialize asset with URI=[{}]",
-				descriptor.uri);
+    }
 
-		if (assets.containsKey(descriptor)) {
-			LOGGER.info("Found asset in cache with URI=[{}]", descriptor.uri);
-			return assets.get(descriptor);
-		}
+    public AssetHandle deserialize(AssetDescriptor descriptor) throws IOException, AssetException {
+        LOGGER.info("Attempting to deserialize asset with URI=[{}]", descriptor.uri);
 
-		final AssetHandle handle = resolve(descriptor);
+        if (assets.containsKey(descriptor)) {
+            LOGGER.info("Found asset in cache with URI=[{}]", descriptor.uri);
+            return assets.get(descriptor);
+        }
 
-		if (handle != null) {
-			for (AssetSerializer serializer : serializers) {
-				if (serializer.deserializable(descriptor)) {
-					LOGGER.info(
-							"Found serializer=[{}] for asset with URI=[{}]",
-							serializer, descriptor.uri);
-					serializer.deserialize(handle);
-					if (handle.getAsset() != null) {
-						assets.put(descriptor, handle);
-					}
-					break;
-				}
-			}
-		}
+        final AssetHandle handle = resolve(descriptor);
 
-		return handle;
+        if (handle != null) {
+            for (AssetSerializer serializer : serializers) {
+                if (serializer.deserializable(descriptor)) {
+                    LOGGER.info("Found serializer=[{}] for asset with URI=[{}]", serializer, descriptor.uri);
+                    serializer.deserialize(handle);
+                    if (handle.getAsset() != null) {
+                        assets.put(descriptor, handle);
+                    }
+                    break;
+                }
+            }
+        }
 
-	}
+        return handle;
 
-	private AssetHandle resolve(final AssetDescriptor descriptor) {
+    }
 
-		for (final AssetHandleResolver resolver : resolvers) {
-			if (resolver.resolvable(descriptor)) {
-				return resolver.resolve(descriptor);
-			}
-		}
+    private AssetHandle resolve(final AssetDescriptor descriptor) {
 
-		return null;
+        for (final AssetHandleResolver resolver : resolvers) {
+            if (resolver.resolvable(descriptor)) {
+                return resolver.resolve(descriptor);
+            }
+        }
 
-	}
+        return null;
+
+    }
 
 }

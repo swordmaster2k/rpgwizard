@@ -21,52 +21,49 @@ import org.apache.commons.io.FilenameUtils;
  */
 public class PopupListFilesListener implements PopupMenuListener {
 
-	private final File[] rootDirectories;
-	private final String[] extension;
-	private final boolean recursive;
-	private final JComboBox comboBox;
+    private final File[] rootDirectories;
+    private final String[] extension;
+    private final boolean recursive;
+    private final JComboBox comboBox;
 
-	public PopupListFilesListener(File[] directories, String[] exts,
-			boolean isRecursive, JComboBox model) {
-		rootDirectories = directories;
-		extension = exts;
-		recursive = isRecursive;
-		comboBox = model;
+    public PopupListFilesListener(File[] directories, String[] exts, boolean isRecursive, JComboBox model) {
+        rootDirectories = directories;
+        extension = exts;
+        recursive = isRecursive;
+        comboBox = model;
 
-		populate();
-	}
+        populate();
+    }
 
-	@Override
-	public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-		Object previouslySelected = comboBox.getSelectedItem();
-		comboBox.removeAllItems();
-		comboBox.addItem("");
-		populate();
-		comboBox.setSelectedItem(previouslySelected);
-	}
+    @Override
+    public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+        Object previouslySelected = comboBox.getSelectedItem();
+        comboBox.removeAllItems();
+        comboBox.addItem("");
+        populate();
+        comboBox.setSelectedItem(previouslySelected);
+    }
 
-	@Override
-	public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-	}
+    @Override
+    public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+    }
 
-	@Override
-	public void popupMenuCanceled(PopupMenuEvent e) {
-	}
+    @Override
+    public void popupMenuCanceled(PopupMenuEvent e) {
+    }
 
-	private void populate() {
-		for (File rootDirectory : rootDirectories) {
-			Collection<File> files = FileUtils.listFiles(rootDirectory,
-					extension, recursive);
+    private void populate() {
+        for (File rootDirectory : rootDirectories) {
+            Collection<File> files = FileUtils.listFiles(rootDirectory, extension, recursive);
 
-			for (File file : files) {
-				String path = file.getAbsolutePath();
-				path = path.replace(rootDirectory.getAbsolutePath()
-						+ File.separator, "");
+            for (File file : files) {
+                String path = file.getAbsolutePath();
+                path = path.replace(rootDirectory.getAbsolutePath() + File.separator, "");
 
-				comboBox.addItem(FilenameUtils.separatorsToUnix(path));
-			}
-		}
+                comboBox.addItem(FilenameUtils.separatorsToUnix(path));
+            }
+        }
 
-	}
+    }
 
 }

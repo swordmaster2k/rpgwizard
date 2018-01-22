@@ -21,11 +21,11 @@ import org.rpgwizard.editor.editors.sprite.AbstractSpriteModelPanel;
  */
 public class EnemyModelPanel extends AbstractSpriteModelPanel {
 
-	private final Enemy enemy;
+    private final Enemy enemy;
 
-	public EnemyModelPanel(Enemy model) {
-		super(model);
-		enemy = model;
-	}
+    public EnemyModelPanel(Enemy model) {
+        super(model);
+        enemy = model;
+    }
 
 }

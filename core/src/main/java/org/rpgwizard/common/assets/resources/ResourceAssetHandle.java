@@ -21,35 +21,35 @@ import org.rpgwizard.common.assets.AssetHandle;
  */
 public class ResourceAssetHandle extends AssetHandle {
 
-	private final ClassLoader loader;
+    private final ClassLoader loader;
 
-	public ResourceAssetHandle(AssetDescriptor descriptor) {
-		this(descriptor, ResourceAssetHandle.class.getClassLoader());
-	}
+    public ResourceAssetHandle(AssetDescriptor descriptor) {
+        this(descriptor, ResourceAssetHandle.class.getClassLoader());
+    }
 
-	public ResourceAssetHandle(AssetDescriptor descriptor, ClassLoader loader) {
-		super(descriptor);
-		if (loader == null)
-			throw new NullPointerException();
-		this.loader = loader;
-	}
+    public ResourceAssetHandle(AssetDescriptor descriptor, ClassLoader loader) {
+        super(descriptor);
+        if (loader == null)
+            throw new NullPointerException();
+        this.loader = loader;
+    }
 
-	@Override
-	public ReadableByteChannel read() throws IOException {
-		final String part = this.descriptor.getURI().getSchemeSpecificPart();
-		final String path = part.substring(1);
-		final InputStream in = this.loader.getResourceAsStream(path);
-		return Channels.newChannel(in);
-	}
+    @Override
+    public ReadableByteChannel read() throws IOException {
+        final String part = this.descriptor.getURI().getSchemeSpecificPart();
+        final String path = part.substring(1);
+        final InputStream in = this.loader.getResourceAsStream(path);
+        return Channels.newChannel(in);
+    }
 
-	@Override
-	public WritableByteChannel write() throws IOException {
-		throw new IOException("internal resource assets are read-only.");
-	}
+    @Override
+    public WritableByteChannel write() throws IOException {
+        throw new IOException("internal resource assets are read-only.");
+    }
 
-	@Override
-	public long size() throws IOException {
-		return 0;
-	}
+    @Override
+    public long size() throws IOException {
+        return 0;
+    }
 
 }

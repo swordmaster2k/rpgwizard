@@ -13,6 +13,6 @@ package org.rpgwizard.editor.ui.listeners;
  */
 public interface ImagePanelChangeListener {
 
-	public void addedImage();
+    public void addedImage();
 
 }

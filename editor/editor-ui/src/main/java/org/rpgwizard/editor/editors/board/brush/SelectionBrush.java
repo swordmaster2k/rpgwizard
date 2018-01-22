@@ -20,75 +20,68 @@ import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
  */
 public class SelectionBrush extends CustomBrush {
 
-	/**
-	 *
-	 *
-	 * @param tiles
-	 */
-	public SelectionBrush(Tile[][] tiles) {
-		super(tiles);
-	}
+    /**
+     *
+     *
+     * @param tiles
+     */
+    public SelectionBrush(Tile[][] tiles) {
+        super(tiles);
+    }
 
-	/**
-	 *
-	 *
-	 * @param x
-	 * @param y
-	 * @param selection
-	 * @return
-	 * @throws Exception
-	 */
-	@Override
-	public Rectangle doPaint(int x, int y, Rectangle selection)
-			throws Exception {
-		// Do nothing on paint. Perhaps collect the selected tiles here?
-		return null;
-	}
+    /**
+     *
+     *
+     * @param x
+     * @param y
+     * @param selection
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public Rectangle doPaint(int x, int y, Rectangle selection) throws Exception {
+        // Do nothing on paint. Perhaps collect the selected tiles here?
+        return null;
+    }
 
-	@Override
-	public void doMouseButton1Pressed(Point point,
-			AbstractAssetEditorWindow editor) {
-		if (editor instanceof BoardEditor) {
-			BoardEditor boardEditor = (BoardEditor) editor;
+    @Override
+    public void doMouseButton1Pressed(Point point, AbstractAssetEditorWindow editor) {
+        if (editor instanceof BoardEditor) {
+            BoardEditor boardEditor = (BoardEditor) editor;
 
-			boardEditor.setSelection(new Rectangle(point.x, point.y, 0, 0));
-			boardEditor.setSelectedTiles(boardEditor
-					.createTileLayerFromRegion(boardEditor.getSelection()));
-		}
-	}
+            boardEditor.setSelection(new Rectangle(point.x, point.y, 0, 0));
+            boardEditor.setSelectedTiles(boardEditor.createTileLayerFromRegion(boardEditor.getSelection()));
+        }
+    }
 
-	@Override
-	public void doMouseButton2Pressed(Point point,
-			AbstractAssetEditorWindow editor) {
-		// No implementation.
-	}
+    @Override
+    public void doMouseButton2Pressed(Point point, AbstractAssetEditorWindow editor) {
+        // No implementation.
+    }
 
-	@Override
-	public void doMouseButton3Pressed(Point point,
-			AbstractAssetEditorWindow editor) {
-		// No implementation.
-	}
+    @Override
+    public void doMouseButton3Pressed(Point point, AbstractAssetEditorWindow editor) {
+        // No implementation.
+    }
 
-	@Override
-	public void doMouseButton1Dragged(Point point, Point origin,
-			AbstractAssetEditorWindow editor) {
-		if (editor instanceof BoardEditor) {
-			BoardEditor boardEditor = (BoardEditor) editor;
+    @Override
+    public void doMouseButton1Dragged(Point point, Point origin, AbstractAssetEditorWindow editor) {
+        if (editor instanceof BoardEditor) {
+            BoardEditor boardEditor = (BoardEditor) editor;
 
-			Rectangle select = new Rectangle(origin.x, origin.y, 0, 0);
-			select.add(point);
+            Rectangle select = new Rectangle(origin.x, origin.y, 0, 0);
+            select.add(point);
 
-			if (!select.equals(boardEditor.getSelection())) {
-				boardEditor.setSelection(select);
-			}
-			boardEditor.setSelectedTiles(boardEditor
-					.createTileLayerFromRegion(boardEditor.getSelection()));
-		}
-	}
+            if (!select.equals(boardEditor.getSelection())) {
+                boardEditor.setSelection(select);
+            }
+            boardEditor.setSelectedTiles(boardEditor.createTileLayerFromRegion(boardEditor.getSelection()));
+        }
+    }
 
-	@Override
-	public boolean isPixelBased() {
-		return false;
-	}
+    @Override
+    public boolean isPixelBased() {
+        return false;
+    }
 
 }

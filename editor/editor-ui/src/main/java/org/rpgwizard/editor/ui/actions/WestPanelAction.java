@@ -18,14 +18,14 @@ import org.rpgwizard.editor.MainWindow;
  */
 public class WestPanelAction extends AbstractAction {
 
-	/**
-	 *
-	 * @param e
-	 */
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		JPanel panel = MainWindow.getInstance().getWestPanel();
-		panel.setVisible(!panel.isVisible());
-	}
+    /**
+     *
+     * @param e
+     */
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        JPanel panel = MainWindow.getInstance().getWestPanel();
+        panel.setVisible(!panel.isVisible());
+    }
 
 }

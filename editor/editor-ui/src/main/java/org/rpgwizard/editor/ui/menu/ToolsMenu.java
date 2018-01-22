@@ -16,10 +16,10 @@ import javax.swing.JMenu;
  */
 public final class ToolsMenu extends JMenu {
 
-	public ToolsMenu() {
-		super("Tools");
+    public ToolsMenu() {
+        super("Tools");
 
-		this.setMnemonic(KeyEvent.VK_T);
-	}
+        this.setMnemonic(KeyEvent.VK_T);
+    }
 
 }

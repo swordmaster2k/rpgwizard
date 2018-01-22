@@ -40,35 +40,34 @@ import org.rpgwizard.editor.utilities.GuiHelper;
  */
 public class BoardVectorPanel extends BoardModelPanel {
 
-	private final JSpinner layerSpinner;
-	private final JLabel layerLabel;
+    private final JSpinner layerSpinner;
+    private final JLabel layerLabel;
 
-	private final JCheckBox isClosedCheckBox;
-	private final JLabel isClosedLabel;
+    private final JCheckBox isClosedCheckBox;
+    private final JLabel isClosedLabel;
 
-	private final JTextField idTextField;
-	private final JLabel idLabel;
+    private final JTextField idTextField;
+    private final JLabel idLabel;
 
-	private final JComboBox<String> typeComboBox;
-	private final JLabel typeLabel;
+    private final JComboBox<String> typeComboBox;
+    private final JLabel typeLabel;
 
-	private static final String[] VECTOR_TYPES = BoardVectorType
-			.toStringArray();
+    private static final String[] VECTOR_TYPES = BoardVectorType.toStringArray();
 
-	private static final String[] EVENT_TYPES = EventType.toStringArray();
-	private final JComboBox<String> eventComboBox;
-	private final JLabel eventLabel;
+    private static final String[] EVENT_TYPES = EventType.toStringArray();
+    private final JComboBox<String> eventComboBox;
+    private final JLabel eventLabel;
 
-	private static final String[] KEY_TYPES = KeyType.toStringArray();
-	private final JComboBox<String> keyComboBox;
-	private final JLabel keyLabel;
+    private static final String[] KEY_TYPES = KeyType.toStringArray();
+    private final JComboBox<String> keyComboBox;
+    private final JLabel keyLabel;
 
-	private final JComboBox eventProgramComboBox;
-	private final JLabel eventProgramLabel;
+    private final JComboBox eventProgramComboBox;
+    private final JLabel eventProgramLabel;
 
-	private int lastSpinnerLayer; // Used to ensure that the selection is valid.
+    private int lastSpinnerLayer; // Used to ensure that the selection is valid.
 
-	public BoardVectorPanel(BoardVector boardVector) {
+    public BoardVectorPanel(BoardVector boardVector) {
         ///
         /// super
         ///
@@ -80,11 +79,10 @@ public class BoardVectorPanel extends BoardModelPanel {
         layerSpinner.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                BoardLayerView lastLayerView = getBoardEditor().getBoardView().
-                        getLayer(((BoardVector) model).getLayer());
+                BoardLayerView lastLayerView = getBoardEditor().getBoardView()
+                        .getLayer(((BoardVector) model).getLayer());
 
-                BoardLayerView newLayerView = getBoardEditor().getBoardView().
-                        getLayer((int) layerSpinner.getValue());
+                BoardLayerView newLayerView = getBoardEditor().getBoardView().getLayer((int) layerSpinner.getValue());
 
                 // Make sure this is a valid move.
                 if (lastLayerView != null && newLayerView != null) {
@@ -96,7 +94,7 @@ public class BoardVectorPanel extends BoardModelPanel {
 
                     // Store new layer selection index.
                     lastSpinnerLayer = (int) layerSpinner.getValue();
-                    
+
                     MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
                 } else {
                     // Not a valid layer revert selection.
@@ -134,8 +132,7 @@ public class BoardVectorPanel extends BoardModelPanel {
 
             @Override
             public void focusLost(FocusEvent e) {
-                if (!((BoardVector) model).getId().
-                        equals(idTextField.getText())) {
+                if (!((BoardVector) model).getId().equals(idTextField.getText())) {
                     ((BoardVector) model).setId(idTextField.getText());
                     MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
                 }
@@ -147,12 +144,12 @@ public class BoardVectorPanel extends BoardModelPanel {
         typeComboBox = new JComboBox<>(VECTOR_TYPES);
 
         switch (((BoardVector) model).getType()) {
-            case PASSABLE:
-                typeComboBox.setSelectedIndex(0);
-                break;
-            case SOLID:
-                typeComboBox.setSelectedIndex(1);
-                break;
+        case PASSABLE:
+            typeComboBox.setSelectedIndex(0);
+            break;
+        case SOLID:
+            typeComboBox.setSelectedIndex(1);
+            break;
         }
 
         typeComboBox.addActionListener(new ActionListener() {
@@ -160,12 +157,12 @@ public class BoardVectorPanel extends BoardModelPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 switch (typeComboBox.getSelectedIndex()) {
-                    case 0:
-                        ((BoardVector) model).setType(BoardVectorType.PASSABLE);
-                        break;
-                    case 1:
-                        ((BoardVector) model).setType(BoardVectorType.SOLID);
-                        break;
+                case 0:
+                    ((BoardVector) model).setType(BoardVectorType.PASSABLE);
+                    break;
+                case 1:
+                    ((BoardVector) model).setType(BoardVectorType.SOLID);
+                    break;
                 }
 
                 updateCurrentBoardView();
@@ -184,7 +181,7 @@ public class BoardVectorPanel extends BoardModelPanel {
             public void actionPerformed(ActionEvent e) {
                 Event event = ((BoardVector) model).getEvents().get(0);
                 String selected = eventComboBox.getSelectedItem().toString();
-                
+
                 if (selected.equals(EventType.OVERLAP.toString())) {
                     event = new Event(EventType.OVERLAP, event.getProgram());
                     event.setType(EventType.OVERLAP);
@@ -202,7 +199,7 @@ public class BoardVectorPanel extends BoardModelPanel {
         /// keyComboBox
         ///
         keyComboBox = new JComboBox<>(KEY_TYPES);
-        
+
         if (((BoardVector) model).getEvents().get(0).getType() == EventType.KEYPRESS) {
             KeyPressEvent event = (KeyPressEvent) ((BoardVector) model).getEvents().get(0);
             keyComboBox.setSelectedItem(event.getKey());
@@ -224,20 +221,17 @@ public class BoardVectorPanel extends BoardModelPanel {
         ///
         /// eventProgramComboBox
         ///
-        File directory = new File(
-                System.getProperty("project.path")
-                + File.separator
-                + CoreProperties.getProperty("toolkit.directory.program")
-                + File.separator);
-        String[] exts = new String[]{"program", "js"};
-        eventProgramComboBox = GuiHelper.getFileListJComboBox(new File[]{directory}, exts, true);
+        File directory = new File(System.getProperty("project.path") + File.separator
+                + CoreProperties.getProperty("toolkit.directory.program") + File.separator);
+        String[] exts = new String[] { "program", "js" };
+        eventProgramComboBox = GuiHelper.getFileListJComboBox(new File[] { directory }, exts, true);
         eventProgramComboBox.setSelectedItem(((BoardVector) model).getEvents().get(0).getProgram());
         eventProgramComboBox.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 Event event = ((BoardVector) model).getEvents().get(0);
-                
+
                 if (eventProgramComboBox.getSelectedItem() == null) {
                     event.setProgram("");
                 } else {
@@ -251,45 +245,35 @@ public class BoardVectorPanel extends BoardModelPanel {
         ///
         /// this
         ///
-        horizontalGroup.addGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(idLabel = getJLabel("ID"))
-                        .addComponent(isClosedLabel = getJLabel("Is Closed"))
-                        .addComponent(layerLabel = getJLabel("Layer"))
-                        .addComponent(typeLabel = getJLabel("Type"))
-                        .addComponent(eventLabel = getJLabel("Event"))
-                        .addComponent(keyLabel = getJLabel("Key"))
-                        .addComponent(eventProgramLabel = getJLabel("Event Program")));
+        horizontalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addComponent(idLabel = getJLabel("ID")).addComponent(isClosedLabel = getJLabel("Is Closed"))
+                .addComponent(layerLabel = getJLabel("Layer")).addComponent(typeLabel = getJLabel("Type"))
+                .addComponent(eventLabel = getJLabel("Event")).addComponent(keyLabel = getJLabel("Key"))
+                .addComponent(eventProgramLabel = getJLabel("Event Program")));
 
-        horizontalGroup.addGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(idTextField)
-                        .addComponent(isClosedCheckBox)
-                        .addComponent(layerSpinner)
-                        .addComponent(typeComboBox)
-                        .addComponent(eventComboBox)
-                        .addComponent(keyComboBox)
-                        .addComponent(eventProgramComboBox));
+        horizontalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(idTextField)
+                .addComponent(isClosedCheckBox).addComponent(layerSpinner).addComponent(typeComboBox)
+                .addComponent(eventComboBox).addComponent(keyComboBox).addComponent(eventProgramComboBox));
 
         layout.setHorizontalGroup(horizontalGroup);
 
-        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(idLabel).addComponent(idTextField));
+        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(idLabel)
+                .addComponent(idTextField));
 
-        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(isClosedLabel).addComponent(isClosedCheckBox));
+        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(isClosedLabel)
+                .addComponent(isClosedCheckBox));
 
-        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(layerLabel).addComponent(layerSpinner));
+        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(layerLabel)
+                .addComponent(layerSpinner));
 
-        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(typeLabel).addComponent(typeComboBox));
+        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(typeLabel)
+                .addComponent(typeComboBox));
 
-        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(eventLabel).addComponent(eventComboBox));
-        
-        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(keyLabel).addComponent(keyComboBox));
+        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(eventLabel)
+                .addComponent(eventComboBox));
+
+        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(keyLabel)
+                .addComponent(keyComboBox));
 
         verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(eventProgramLabel).addComponent(eventProgramComboBox));

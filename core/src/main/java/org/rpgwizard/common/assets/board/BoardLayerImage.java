@@ -26,166 +26,165 @@ import org.rpgwizard.common.assets.board.model.AbstractBoardModel;
  */
 public class BoardLayerImage extends AbstractBoardModel implements Selectable {
 
-	private String id;
-	private String src;
-	private int x;
-	private int y;
+    private String id;
+    private String src;
+    private int x;
+    private int y;
 
-	// Non-IO.
-	private BufferedImage image;
-	private int layer;
-	private boolean selected;
+    // Non-IO.
+    private BufferedImage image;
+    private int layer;
+    private boolean selected;
 
-	public BoardLayerImage() {
-		id = UUID.randomUUID().toString();
-		this.src = "";
-		this.x = 0;
-		this.y = 0;
-		this.image = null;
-		this.layer = 0;
-		selected = false;
-	}
+    public BoardLayerImage() {
+        id = UUID.randomUUID().toString();
+        this.src = "";
+        this.x = 0;
+        this.y = 0;
+        this.image = null;
+        this.layer = 0;
+        selected = false;
+    }
 
-	public BoardLayerImage(int x, int y, int layer) {
-		this();
-		this.x = x;
-		this.y = y;
-		this.layer = layer;
-	}
+    public BoardLayerImage(int x, int y, int layer) {
+        this();
+        this.x = x;
+        this.y = y;
+        this.layer = layer;
+    }
 
-	public BoardLayerImage(String id, String src, int x, int y) {
-		this.id = id;
-		this.src = src;
-		this.x = x;
-		this.y = y;
-		this.loadImage();
-		selected = false;
-	}
+    public BoardLayerImage(String id, String src, int x, int y) {
+        this.id = id;
+        this.src = src;
+        this.x = x;
+        this.y = y;
+        this.loadImage();
+        selected = false;
+    }
 
-	public BoardLayerImage(String id, String src, int x, int y, int layer) {
-		this(id, src, x, y);
-		this.layer = layer;
-	}
+    public BoardLayerImage(String id, String src, int x, int y, int layer) {
+        this(id, src, x, y);
+        this.layer = layer;
+    }
 
-	public String getId() {
-		return id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public String getSrc() {
-		return src;
-	}
+    public String getSrc() {
+        return src;
+    }
 
-	public void setSrc(String src) {
-		this.src = src;
-	}
+    public void setSrc(String src) {
+        this.src = src;
+    }
 
-	public int getX() {
-		return x;
-	}
+    public int getX() {
+        return x;
+    }
 
-	public void setX(int x) {
-		this.x = x;
-	}
+    public void setX(int x) {
+        this.x = x;
+    }
 
-	public int getY() {
-		return y;
-	}
+    public int getY() {
+        return y;
+    }
 
-	public void setY(int y) {
-		this.y = y;
-	}
+    public void setY(int y) {
+        this.y = y;
+    }
 
-	public BufferedImage getImage() {
-		return image;
-	}
+    public BufferedImage getImage() {
+        return image;
+    }
 
-	public final void loadImage() {
-		if (src.isEmpty()) {
-			return;
-		}
-		try {
-			image = CoreUtil.loadBufferedImage(src);
-		} catch (IOException ex) {
-			image = null;
-		}
-	}
+    public final void loadImage() {
+        if (src.isEmpty()) {
+            return;
+        }
+        try {
+            image = CoreUtil.loadBufferedImage(src);
+        } catch (IOException ex) {
+            image = null;
+        }
+    }
 
-	public final void loadImage(String src) {
-		this.src = src;
-		try {
-			image = CoreUtil.loadBufferedImage(src);
-		} catch (IOException ex) {
-			image = null;
-		}
-	}
+    public final void loadImage(String src) {
+        this.src = src;
+        try {
+            image = CoreUtil.loadBufferedImage(src);
+        } catch (IOException ex) {
+            image = null;
+        }
+    }
 
-	public int getLayer() {
-		return layer;
-	}
+    public int getLayer() {
+        return layer;
+    }
 
-	public void setLayer(int layer) {
-		this.layer = layer;
-	}
+    public void setLayer(int layer) {
+        this.layer = layer;
+    }
 
-	/**
-	 * 
-	 * @param x
-	 * @param y
-	 */
-	public void setPosition(int x, int y) {
-		this.x = x;
-		this.y = y;
-		fireModelMoved();
-	}
+    /**
+     * 
+     * @param x
+     * @param y
+     */
+    public void setPosition(int x, int y) {
+        this.x = x;
+        this.y = y;
+        fireModelMoved();
+    }
 
-	@Override
-	public String toString() {
-		return "BoardLayerImage{" + "src=" + src + ", x=" + x + ", y=" + y
-				+ '}';
-	}
+    @Override
+    public String toString() {
+        return "BoardLayerImage{" + "src=" + src + ", x=" + x + ", y=" + y + '}';
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		final BoardLayerImage other = (BoardLayerImage) obj;
-		if (this.x != other.x) {
-			return false;
-		}
-		if (this.y != other.y) {
-			return false;
-		}
-		if (this.layer != other.layer) {
-			return false;
-		}
-		if (!Objects.equals(this.src, other.src)) {
-			return false;
-		}
-		if (this.selected != other.selected) {
-			return false;
-		}
-		return true;
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final BoardLayerImage other = (BoardLayerImage) obj;
+        if (this.x != other.x) {
+            return false;
+        }
+        if (this.y != other.y) {
+            return false;
+        }
+        if (this.layer != other.layer) {
+            return false;
+        }
+        if (!Objects.equals(this.src, other.src)) {
+            return false;
+        }
+        if (this.selected != other.selected) {
+            return false;
+        }
+        return true;
+    }
 
-	@Override
-	public boolean isSelected() {
-		return selected;
-	}
+    @Override
+    public boolean isSelected() {
+        return selected;
+    }
 
-	@Override
-	public void setSelectedState(boolean state) {
-		selected = state;
-	}
+    @Override
+    public void setSelectedState(boolean state) {
+        selected = state;
+    }
 
 }

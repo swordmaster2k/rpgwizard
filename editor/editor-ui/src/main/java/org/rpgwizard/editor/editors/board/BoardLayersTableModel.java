@@ -12,268 +12,264 @@ import org.rpgwizard.common.assets.listeners.BoardChangeListener;
 import org.rpgwizard.common.assets.events.BoardChangedEvent;
 
 /**
- * We want to update the board model here, not the view. After updating the
- * model will fire an event to notify the view of the change.
+ * We want to update the board model here, not the view. After updating the model will fire an event to notify the view
+ * of the change.
  *
  * @author Joshua Michael Daly
  */
-public class BoardLayersTableModel extends AbstractTableModel
-		implements
-			BoardChangeListener {
+public class BoardLayersTableModel extends AbstractTableModel implements BoardChangeListener {
 
-	private AbstractBoardView boardView;
+    private AbstractBoardView boardView;
 
-	private static final String[] COLUMNS = {"Locked", "Show", "Layer Name"};
+    private static final String[] COLUMNS = { "Locked", "Show", "Layer Name" };
 
-	/**
+    /**
      *
      */
-	public BoardLayersTableModel() {
+    public BoardLayersTableModel() {
 
-	}
+    }
 
-	/**
-	 *
-	 * @param board
-	 */
-	public BoardLayersTableModel(AbstractBoardView board) {
-		boardView = board;
-		boardView.getBoard().addBoardChangeListener(this);
-	}
+    /**
+     *
+     * @param board
+     */
+    public BoardLayersTableModel(AbstractBoardView board) {
+        boardView = board;
+        boardView.getBoard().addBoardChangeListener(this);
+    }
 
-	/**
-	 *
-	 * @return
-	 */
-	public AbstractBoardView getBoardView() {
-		return boardView;
-	}
+    /**
+     *
+     * @return
+     */
+    public AbstractBoardView getBoardView() {
+        return boardView;
+    }
 
-	/**
-	 *
-	 * @param board
-	 */
-	public void setBoardView(AbstractBoardView board) {
-		boardView = board;
-		// fireBoardDataChanged();
-	}
+    /**
+     *
+     * @param board
+     */
+    public void setBoardView(AbstractBoardView board) {
+        boardView = board;
+        // fireBoardDataChanged();
+    }
 
-	/**
-	 *
-	 *
-	 * @param column
-	 * @return
-	 */
-	@Override
-	public String getColumnName(int column) {
-		return COLUMNS[column];
-	}
+    /**
+     *
+     *
+     * @param column
+     * @return
+     */
+    @Override
+    public String getColumnName(int column) {
+        return COLUMNS[column];
+    }
 
-	/**
-	 *
-	 *
-	 * @return
-	 */
-	@Override
-	public int getRowCount() {
-		if (boardView == null) {
-			return 0;
-		} else {
-			return boardView.getTotalLayers();
-		}
-	}
+    /**
+     *
+     *
+     * @return
+     */
+    @Override
+    public int getRowCount() {
+        if (boardView == null) {
+            return 0;
+        } else {
+            return boardView.getTotalLayers();
+        }
+    }
 
-	/**
-	 *
-	 *
-	 * @return
-	 */
-	@Override
-	public int getColumnCount() {
-		return COLUMNS.length;
-	}
+    /**
+     *
+     *
+     * @return
+     */
+    @Override
+    public int getColumnCount() {
+        return COLUMNS.length;
+    }
 
-	/**
-	 *
-	 *
-	 * @param column
-	 * @return
-	 */
-	@Override
-	public Class getColumnClass(int column) {
-		switch (column) {
-			case 0 :
-				return Boolean.class;
-			case 1 :
-				return Boolean.class;
-			case 2 :
-				return String.class;
-		}
+    /**
+     *
+     *
+     * @param column
+     * @return
+     */
+    @Override
+    public Class getColumnClass(int column) {
+        switch (column) {
+        case 0:
+            return Boolean.class;
+        case 1:
+            return Boolean.class;
+        case 2:
+            return String.class;
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 *
-	 *
-	 * @param rowIndex
-	 * @param columnIndex
-	 * @return
-	 */
-	@Override
-	public Object getValueAt(int rowIndex, int columnIndex) {
-		BoardLayerView layerView = boardView.getLayer(getRowCount() - rowIndex
-				- 1);
+    /**
+     *
+     *
+     * @param rowIndex
+     * @param columnIndex
+     * @return
+     */
+    @Override
+    public Object getValueAt(int rowIndex, int columnIndex) {
+        BoardLayerView layerView = boardView.getLayer(getRowCount() - rowIndex - 1);
 
-		if (layerView != null) {
-			switch (columnIndex) {
-				case 0 :
-					return null;
-					// return layerView.isLocked();
-				case 1 :
-					return layerView.isVisible();
-				case 2 :
-					return layerView.getLayer().getName();
-				default :
-					return null;
-			}
-		} else {
-			return null;
-		}
-	}
+        if (layerView != null) {
+            switch (columnIndex) {
+            case 0:
+                return null;
+            // return layerView.isLocked();
+            case 1:
+                return layerView.isVisible();
+            case 2:
+                return layerView.getLayer().getName();
+            default:
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
 
-	/**
-	 *
-	 *
-	 * @param rowIndex
-	 * @param columnIndex
-	 * @return
-	 */
-	@Override
-	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		BoardLayerView layer = boardView.getLayer(getRowCount() - rowIndex - 1);
+    /**
+     *
+     *
+     * @param rowIndex
+     * @param columnIndex
+     * @return
+     */
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        BoardLayerView layer = boardView.getLayer(getRowCount() - rowIndex - 1);
 
-		return !(columnIndex == 0 && layer != null && !layer.isVisible());
-	}
+        return !(columnIndex == 0 && layer != null && !layer.isVisible());
+    }
 
-	/**
-	 *
-	 *
-	 * @param value
-	 * @param rowIndex
-	 * @param columnIndex
-	 */
-	@Override
-	public void setValueAt(Object value, int rowIndex, int columnIndex) {
-		// The layerView locking and visibility is solely view related so we
-		// don't have to worry about the model there, but the name is
-		// linked to the model board in the background.
-		BoardLayerView layerView = boardView.getLayer(getRowCount() - rowIndex
-				- 1);
+    /**
+     *
+     *
+     * @param value
+     * @param rowIndex
+     * @param columnIndex
+     */
+    @Override
+    public void setValueAt(Object value, int rowIndex, int columnIndex) {
+        // The layerView locking and visibility is solely view related so we
+        // don't have to worry about the model there, but the name is
+        // linked to the model board in the background.
+        BoardLayerView layerView = boardView.getLayer(getRowCount() - rowIndex - 1);
 
-		if (layerView != null) {
-			switch (columnIndex) {
-			// layer.setLocked((Boolean)value);
-				case 0 :
-					break;
-				case 1 :
-					layerView.setVisibility((Boolean) value);
-					break;
-				case 2 :
-					// View need to do this using the board models layerTitles
-					// the model will then need to update the view, not the
-					// other
-					// way around.
-					layerView.getLayer().setName(value.toString());
-					break;
-				default :
-					break;
-			}
+        if (layerView != null) {
+            switch (columnIndex) {
+            // layer.setLocked((Boolean)value);
+            case 0:
+                break;
+            case 1:
+                layerView.setVisibility((Boolean) value);
+                break;
+            case 2:
+                // View need to do this using the board models layerTitles
+                // the model will then need to update the view, not the
+                // other
+                // way around.
+                layerView.getLayer().setName(value.toString());
+                break;
+            default:
+                break;
+            }
 
-			fireTableCellUpdated(rowIndex, columnIndex);
-		}
-	}
+            fireTableCellUpdated(rowIndex, columnIndex);
+        }
+    }
 
-	/**
-	 *
-	 *
-	 * @param e
-	 */
-	@Override
-	public void boardChanged(BoardChangedEvent e) {
-		// Do not respond to this, or the opacity slider will not work!
-	}
+    /**
+     *
+     *
+     * @param e
+     */
+    @Override
+    public void boardChanged(BoardChangedEvent e) {
+        // Do not respond to this, or the opacity slider will not work!
+    }
 
-	/**
-	 *
-	 *
-	 * @param e
-	 */
-	@Override
-	public void boardLayerAdded(BoardChangedEvent e) {
-		fireTableDataChanged();
-	}
+    /**
+     *
+     *
+     * @param e
+     */
+    @Override
+    public void boardLayerAdded(BoardChangedEvent e) {
+        fireTableDataChanged();
+    }
 
-	/**
-	 *
-	 *
-	 * @param e
-	 */
-	@Override
-	public void boardLayerMovedUp(BoardChangedEvent e) {
-		// fireTableRowsUpdated(firstRow, lastRow);
-		fireTableDataChanged();
-	}
+    /**
+     *
+     *
+     * @param e
+     */
+    @Override
+    public void boardLayerMovedUp(BoardChangedEvent e) {
+        // fireTableRowsUpdated(firstRow, lastRow);
+        fireTableDataChanged();
+    }
 
-	/**
-	 *
-	 *
-	 * @param e
-	 */
-	@Override
-	public void boardLayerMovedDown(BoardChangedEvent e) {
-		// fireTableRowsUpdated(firstRow, lastRow);
-		fireTableDataChanged();
-	}
+    /**
+     *
+     *
+     * @param e
+     */
+    @Override
+    public void boardLayerMovedDown(BoardChangedEvent e) {
+        // fireTableRowsUpdated(firstRow, lastRow);
+        fireTableDataChanged();
+    }
 
-	/**
-	 *
-	 *
-	 * @param e
-	 */
-	@Override
-	public void boardLayerCloned(BoardChangedEvent e) {
-		fireTableDataChanged();
-	}
+    /**
+     *
+     *
+     * @param e
+     */
+    @Override
+    public void boardLayerCloned(BoardChangedEvent e) {
+        fireTableDataChanged();
+    }
 
-	/**
-	 *
-	 *
-	 * @param e
-	 */
-	@Override
-	public void boardLayerDeleted(BoardChangedEvent e) {
-		fireTableDataChanged();
-	}
+    /**
+     *
+     *
+     * @param e
+     */
+    @Override
+    public void boardLayerDeleted(BoardChangedEvent e) {
+        fireTableDataChanged();
+    }
 
-	@Override
-	public void boardSpriteAdded(BoardChangedEvent e) {
-		fireTableDataChanged();
-	}
+    @Override
+    public void boardSpriteAdded(BoardChangedEvent e) {
+        fireTableDataChanged();
+    }
 
-	@Override
-	public void boardSpriteRemoved(BoardChangedEvent e) {
-		fireTableDataChanged();
-	}
+    @Override
+    public void boardSpriteRemoved(BoardChangedEvent e) {
+        fireTableDataChanged();
+    }
 
-	@Override
-	public void boardLayerImageAdded(BoardChangedEvent e) {
-		fireTableDataChanged();
-	}
+    @Override
+    public void boardLayerImageAdded(BoardChangedEvent e) {
+        fireTableDataChanged();
+    }
 
-	@Override
-	public void boardLayerImageRemoved(BoardChangedEvent e) {
-		fireTableDataChanged();
-	}
+    @Override
+    public void boardLayerImageRemoved(BoardChangedEvent e) {
+        fireTableDataChanged();
+    }
 
 }

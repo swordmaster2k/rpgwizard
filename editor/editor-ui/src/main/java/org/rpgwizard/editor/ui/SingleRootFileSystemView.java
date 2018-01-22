@@ -13,8 +13,8 @@ import javax.swing.filechooser.FileSystemView;
 /**
  * A FileSystemView class that limits the file selections to a single root.
  *
- * When used with the JFileChooser component the user will only be able to
- * traverse the directories contained within the specified root fill.
+ * When used with the JFileChooser component the user will only be able to traverse the directories contained within the
+ * specified root fill.
  *
  * The "Look In" combo box will only display the specified root.
  *
@@ -24,37 +24,37 @@ import javax.swing.filechooser.FileSystemView;
  */
 public class SingleRootFileSystemView extends FileSystemView {
 
-	private final File root;
-	private final File[] roots;
+    private final File root;
+    private final File[] roots;
 
-	public SingleRootFileSystemView(File root) {
-		super();
+    public SingleRootFileSystemView(File root) {
+        super();
 
-		this.root = root;
-		roots = new File[]{root};
-	}
+        this.root = root;
+        roots = new File[] { root };
+    }
 
-	@Override
-	public File createNewFolder(File containingDir) {
-		File folder = new File(containingDir, "New Folder");
-		folder.mkdir();
+    @Override
+    public File createNewFolder(File containingDir) {
+        File folder = new File(containingDir, "New Folder");
+        folder.mkdir();
 
-		return folder;
-	}
+        return folder;
+    }
 
-	@Override
-	public File getDefaultDirectory() {
-		return root;
-	}
+    @Override
+    public File getDefaultDirectory() {
+        return root;
+    }
 
-	@Override
-	public File getHomeDirectory() {
-		return root;
-	}
+    @Override
+    public File getHomeDirectory() {
+        return root;
+    }
 
-	@Override
-	public File[] getRoots() {
-		return roots;
-	}
+    @Override
+    public File[] getRoots() {
+        return roots;
+    }
 
 }

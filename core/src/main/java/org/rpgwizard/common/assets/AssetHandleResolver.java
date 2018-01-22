@@ -13,27 +13,26 @@ package org.rpgwizard.common.assets;
  */
 public interface AssetHandleResolver {
 
-	/**
-	 * Determines if the asset handle resolver can resolve a handle for the
-	 * specified asset descriptor.
-	 **
-	 * @param descriptor
-	 *            asset descriptor instance
-	 * @return true if resolvable, false otherwise
-	 * @throws NullPointerException
-	 *             if (descriptor == null)
-	 */
-	boolean resolvable(AssetDescriptor descriptor) throws NullPointerException;
+    /**
+     * Determines if the asset handle resolver can resolve a handle for the specified asset descriptor.
+     **
+     * @param descriptor
+     *            asset descriptor instance
+     * @return true if resolvable, false otherwise
+     * @throws NullPointerException
+     *             if (descriptor == null)
+     */
+    boolean resolvable(AssetDescriptor descriptor) throws NullPointerException;
 
-	/**
-	 * Resolves an asset handle for the specified descriptor.
-	 *
-	 * @param descriptor
-	 *            asset descriptor instance
-	 * @return asset handle if resolved, null otherwise
-	 * @throws NullPointerException
-	 *             if (descriptor == null)
-	 */
-	AssetHandle resolve(AssetDescriptor descriptor) throws NullPointerException;
+    /**
+     * Resolves an asset handle for the specified descriptor.
+     *
+     * @param descriptor
+     *            asset descriptor instance
+     * @return asset handle if resolved, null otherwise
+     * @throws NullPointerException
+     *             if (descriptor == null)
+     */
+    AssetHandle resolve(AssetDescriptor descriptor) throws NullPointerException;
 
 }

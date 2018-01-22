@@ -43,88 +43,87 @@ import org.rpgwizard.editor.utilities.GuiHelper;
  */
 public class ItemEditor extends AbstractAssetEditorWindow {
 
-	private final int DESCRIPTION_INPUT_COLUMNS = 30;
-	private final int DESCRIPTION_INPUT_ROWS = 5;
+    private final int DESCRIPTION_INPUT_COLUMNS = 30;
+    private final int DESCRIPTION_INPUT_ROWS = 5;
 
-	private final Item item;
+    private final Item item;
 
-	private JTabbedPane tabbedPane;
-	private Border defaultEtchedBorder;
+    private JTabbedPane tabbedPane;
+    private Border defaultEtchedBorder;
 
-	private JPanel generalTab;
-	private JPanel generalEditPanel;
+    private JPanel generalTab;
+    private JPanel generalEditPanel;
 
-	private JTextField name;
-	private ImagePanel icon;
-	private JTextArea description;
-	private JTextField type;
-	private IntegerField price;
+    private JTextField name;
+    private ImagePanel icon;
+    private JTextArea description;
+    private JTextField type;
+    private IntegerField price;
 
-	private JPanel effectsTab;
-	private JPanel effectsEditPanel;
+    private JPanel effectsTab;
+    private JPanel effectsEditPanel;
 
-	private DoubleField health;
-	private DoubleField attack;
-	private DoubleField defence;
-	private DoubleField magic;
+    private DoubleField health;
+    private DoubleField attack;
+    private DoubleField defence;
+    private DoubleField magic;
 
-	public ItemEditor(Item item) {
-		super("Untitled", true, true, true, true, Icons.getIcon("item"));
-		this.item = item;
+    public ItemEditor(Item item) {
+        super("Untitled", true, true, true, true, Icons.getIcon("item"));
+        this.item = item;
 
-		if (item.getDescriptor() == null) {
-			setupNewItem();
-		} else {
-			setTitle(new File(item.getDescriptor().getURI()).getName());
-		}
+        if (item.getDescriptor() == null) {
+            setupNewItem();
+        } else {
+            setTitle(new File(item.getDescriptor().getURI()).getName());
+        }
 
-		constructWindow();
-		setVisible(true);
-		pack();
-	}
+        constructWindow();
+        setVisible(true);
+        pack();
+    }
 
-	@Override
-	public AbstractAsset getAsset() {
-		return item;
-	}
+    @Override
+    public AbstractAsset getAsset() {
+        return item;
+    }
 
-	@Override
-	public void save() throws Exception {
-		save(item);
-	}
+    @Override
+    public void save() throws Exception {
+        save(item);
+    }
 
-	@Override
-	public void saveAs(File file) throws Exception {
-		item.setDescriptor(new AssetDescriptor(file.toURI()));
-		setTitle(file.getName());
-		save();
-	}
+    @Override
+    public void saveAs(File file) throws Exception {
+        item.setDescriptor(new AssetDescriptor(file.toURI()));
+        setTitle(file.getName());
+        save();
+    }
 
-	private void setupNewItem() {
+    private void setupNewItem() {
 
-	}
+    }
 
-	/**
-	 * Builds the Swing interface
-	 */
-	private void constructWindow() {
-		defaultEtchedBorder = BorderFactory
-				.createEtchedBorder(EtchedBorder.LOWERED);
+    /**
+     * Builds the Swing interface
+     */
+    private void constructWindow() {
+        defaultEtchedBorder = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
 
-		generalTab = new JPanel();
-		effectsTab = new JPanel();
+        generalTab = new JPanel();
+        effectsTab = new JPanel();
 
-		createGeneralEditPanel();
-		createEffectsEditPanel();
+        createGeneralEditPanel();
+        createEffectsEditPanel();
 
-		tabbedPane = new JTabbedPane();
-		tabbedPane.addTab("General", generalTab);
-		tabbedPane.addTab("Effects", effectsTab);
+        tabbedPane = new JTabbedPane();
+        tabbedPane.addTab("General", generalTab);
+        tabbedPane.addTab("Effects", effectsTab);
 
-		add(tabbedPane);
-	}
+        add(tabbedPane);
+    }
 
-	private void createGeneralEditPanel() {
+    private void createGeneralEditPanel() {
         List<Component> labels = new ArrayList<>();
         labels.add(new JLabel("Name"));
         labels.add(new JLabel("Icon (48x48)"));
@@ -153,11 +152,10 @@ public class ItemEditor extends AbstractAssetEditorWindow {
                 setNeedSave(true);
             }
         });
-        
+
         icon = new ImagePanel(new Dimension(48, 48));
         if (!item.getIcon().isEmpty()) {
-            icon.addImage(new File(EditorFileManager.getGraphicsPath()
-                    + item.getIcon()));
+            icon.addImage(new File(EditorFileManager.getGraphicsPath() + item.getIcon()));
         }
         icon.addImageListener(() -> {
             item.setIcon(icon.getImagePath());
@@ -188,7 +186,7 @@ public class ItemEditor extends AbstractAssetEditorWindow {
                 setNeedSave(true);
             }
         });
-        
+
         type = new JTextField(item.getType());
         type.setColumns(DEFAULT_INPUT_COLUMNS);
         type.getDocument().addDocumentListener(new DocumentListener() {
@@ -242,16 +240,15 @@ public class ItemEditor extends AbstractAssetEditorWindow {
 
         buildGeneralTab(labels, inputs);
     }
-	private void buildGeneralTab(List<Component> labels, List<Component> inputs) {
-		// Configure the necessary Panels
-		generalEditPanel = new JPanel();
-		generalEditPanel.setBorder(BorderFactory.createTitledBorder(
-				defaultEtchedBorder, "General"));
-		GuiHelper.buildEditPanelPair(generalTab, generalEditPanel, labels,
-				inputs);
-	}
 
-	private void createEffectsEditPanel() {
+    private void buildGeneralTab(List<Component> labels, List<Component> inputs) {
+        // Configure the necessary Panels
+        generalEditPanel = new JPanel();
+        generalEditPanel.setBorder(BorderFactory.createTitledBorder(defaultEtchedBorder, "General"));
+        GuiHelper.buildEditPanelPair(generalTab, generalEditPanel, labels, inputs);
+    }
+
+    private void createEffectsEditPanel() {
         List<Component> labels = new ArrayList<>();
         labels.add(new JLabel("Health"));
         labels.add(new JLabel("Attack"));
@@ -354,22 +351,20 @@ public class ItemEditor extends AbstractAssetEditorWindow {
 
         buildEffectsPanel(labels, inputs);
     }
-	private void buildEffectsPanel(List<Component> labels,
-			List<Component> inputs) {
-		// Configure the necessary Panels
-		effectsEditPanel = new JPanel();
-		effectsEditPanel.setBorder(BorderFactory.createTitledBorder(
-				defaultEtchedBorder, "Effects (+/-)"));
-		GuiHelper.buildEditPanelPair(effectsTab, effectsEditPanel, labels,
-				inputs);
-	}
 
-	public static void main(String[] args) {
-		JFrame frame = new JFrame("Test InternalJFrame");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.add(new ItemEditor(new Item(null)));
-		frame.setSize(440, 360);
-		frame.setVisible(true);
-	}
+    private void buildEffectsPanel(List<Component> labels, List<Component> inputs) {
+        // Configure the necessary Panels
+        effectsEditPanel = new JPanel();
+        effectsEditPanel.setBorder(BorderFactory.createTitledBorder(defaultEtchedBorder, "Effects (+/-)"));
+        GuiHelper.buildEditPanelPair(effectsTab, effectsEditPanel, labels, inputs);
+    }
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Test InternalJFrame");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.add(new ItemEditor(new Item(null)));
+        frame.setSize(440, 360);
+        frame.setVisible(true);
+    }
 
 }

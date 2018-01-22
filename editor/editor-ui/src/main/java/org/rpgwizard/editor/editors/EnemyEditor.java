@@ -30,119 +30,113 @@ import org.rpgwizard.editor.ui.resources.Icons;
  * @author Joel Moore
  * @author Joshua Michael Daly
  */
-public class EnemyEditor extends AbstractSpriteEditor
-		implements
-			InternalFrameListener,
-			SpriteChangeListener {
+public class EnemyEditor extends AbstractSpriteEditor implements InternalFrameListener, SpriteChangeListener {
 
-	private final Enemy enemy;
+    private final Enemy enemy;
 
-	private JTextField enemyName;
-	private DoubleField health;
-	private DoubleField attack;
-	private DoubleField defence;
-	private DoubleField magic;
-	private DoubleField experienceReward;
-	private DoubleField goldReward;
+    private JTextField enemyName;
+    private DoubleField health;
+    private DoubleField attack;
+    private DoubleField defence;
+    private DoubleField magic;
+    private DoubleField experienceReward;
+    private DoubleField goldReward;
 
-	/*
-	 * *************************************************************************
-	 * Public Constructors
-	 * *************************************************************************
-	 */
-	/**
-	 * Opens an existing enemy
-	 *
-	 * @param theEnemy
-	 *            Enemy to edit
-	 */
-	public EnemyEditor(Enemy theEnemy) {
-		super("Untitled", theEnemy, Icons.getIcon("enemy"));
+    /*
+     * ************************************************************************* Public Constructors
+     * *************************************************************************
+     */
+    /**
+     * Opens an existing enemy
+     *
+     * @param theEnemy
+     *            Enemy to edit
+     */
+    public EnemyEditor(Enemy theEnemy) {
+        super("Untitled", theEnemy, Icons.getIcon("enemy"));
 
-		enemy = theEnemy;
-		enemy.addSpriteChangeListener(this);
+        enemy = theEnemy;
+        enemy.addSpriteChangeListener(this);
 
-		if (enemy.getDescriptor() == null) {
-			setupNewEnemy();
-		} else {
-			setTitle(new File(enemy.getDescriptor().getURI()).getName());
-		}
+        if (enemy.getDescriptor() == null) {
+            setupNewEnemy();
+        } else {
+            setTitle(new File(enemy.getDescriptor().getURI()).getName());
+        }
 
-		constructWindow();
-		this.setVisible(true);
-		pack();
-	}
+        constructWindow();
+        this.setVisible(true);
+        pack();
+    }
 
-	/*
-	 * *************************************************************************
-	 * Public Methods
-	 * *************************************************************************
-	 */
-	@Override
-	public AbstractAsset getAsset() {
-		return enemy;
-	}
+    /*
+     * ************************************************************************* Public Methods
+     * *************************************************************************
+     */
+    @Override
+    public AbstractAsset getAsset() {
+        return enemy;
+    }
 
-	public Enemy getEnemy() {
-		return enemy;
-	}
+    public Enemy getEnemy() {
+        return enemy;
+    }
 
-	@Override
-	public void save() throws Exception {
-		// Get the relative portrait path.
-		checkProfileImagePath();
+    @Override
+    public void save() throws Exception {
+        // Get the relative portrait path.
+        checkProfileImagePath();
 
-		// Update all enemy variables from the stats panel
-		enemy.setName(enemyName.getText());
-		enemy.setHealth(health.getValue());
-		enemy.setAttack(attack.getValue());
-		enemy.setDefence(defence.getValue());
-		enemy.setMagic(magic.getValue());
-		enemy.setExperienceReward(experienceReward.getValue());
-		enemy.setGoldReward(goldReward.getValue());
+        // Update all enemy variables from the stats panel
+        enemy.setName(enemyName.getText());
+        enemy.setHealth(health.getValue());
+        enemy.setAttack(attack.getValue());
+        enemy.setDefence(defence.getValue());
+        enemy.setMagic(magic.getValue());
+        enemy.setExperienceReward(experienceReward.getValue());
+        enemy.setGoldReward(goldReward.getValue());
 
-		// Update all enemy variables from graphics panel.
-		enemy.setIdleTimeBeforeStanding(idleTimeoutField.getValue());
-		enemy.setFrameRate(stepRateField.getValue());
+        // Update all enemy variables from graphics panel.
+        enemy.setIdleTimeBeforeStanding(idleTimeoutField.getValue());
+        enemy.setFrameRate(stepRateField.getValue());
 
-		save(enemy);
-	}
+        save(enemy);
+    }
 
-	/**
-	 *
-	 *
-	 * @param file
-	 * @throws java.lang.Exception
-	 */
-	@Override
-	public void saveAs(File file) throws Exception {
-		enemy.setDescriptor(new AssetDescriptor(file.toURI()));
-		this.setTitle(file.getName());
-		save();
-	}
+    /**
+     *
+     *
+     * @param file
+     * @throws java.lang.Exception
+     */
+    @Override
+    public void saveAs(File file) throws Exception {
+        enemy.setDescriptor(new AssetDescriptor(file.toURI()));
+        this.setTitle(file.getName());
+        save();
+    }
 
-	/*
-	 * *************************************************************************
-	 * Private Methods
-	 * *************************************************************************
-	 */
-	private void setupNewEnemy() {
+    /*
+     * ************************************************************************* Private Methods
+     * *************************************************************************
+     */
+    private void setupNewEnemy() {
 
-	}
+    }
 
-	/**
-	 * Builds the Swing interface
-	 */
-	private void constructWindow() {
-		this.addInternalFrameListener(this);
+    /**
+     * Builds the Swing interface
+     */
+    private void constructWindow() {
+        this.addInternalFrameListener(this);
 
-		this.createStatsPanel();
-		this.createGraphicsPanel();
+        this.createStatsPanel();
+        this.createGraphicsPanel();
 
-		build();
-	}
+        build();
+    }
 
-	private void createStatsPanel() {
+    private void createStatsPanel() {
         List<Component> labels = new ArrayList<>();
         labels.add(new JLabel("Name"));
         labels.add(new JLabel("Health"));
@@ -187,16 +181,17 @@ public class EnemyEditor extends AbstractSpriteEditor
 
         buildStatsPanel(labels, inputs);
     }
-	private void createGraphicsPanel() {
-		buildAnimationsPanel();
-	}
 
-	public static void main(String[] args) {
-		JFrame frame = new JFrame("Test InternalJFrame");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.add(new EnemyEditor(null));
-		frame.setSize(440, 360);
-		frame.setVisible(true);
-	}
+    private void createGraphicsPanel() {
+        buildAnimationsPanel();
+    }
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Test InternalJFrame");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.add(new EnemyEditor(null));
+        frame.setSize(440, 360);
+        frame.setVisible(true);
+    }
 
 }

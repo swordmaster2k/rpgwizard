@@ -26,69 +26,66 @@ import org.rpgwizard.editor.editors.tileset.TileSetCanvas;
  */
 public final class TileSetTabbedPane extends JTabbedPane {
 
-	public TileSetTabbedPane() {
-		setFont(new Font(getFont().getFontName(), Font.PLAIN, 10));
-		setTabPlacement(JTabbedPane.BOTTOM);
+    public TileSetTabbedPane() {
+        setFont(new Font(getFont().getFontName(), Font.PLAIN, 10));
+        setTabPlacement(JTabbedPane.BOTTOM);
 
-		addMouseListener();
-		addTabChangeListener();
-	}
+        addMouseListener();
+        addTabChangeListener();
+    }
 
-	public void addTileSet(TileSet tileSet) {
-		String tabName = tileSet.getName().replace(
-				CoreProperties.getDefaultExtension(TileSet.class), "");
+    public void addTileSet(TileSet tileSet) {
+        String tabName = tileSet.getName().replace(CoreProperties.getDefaultExtension(TileSet.class), "");
 
-		if (indexOfTab(tabName) < 0) {
-			JScrollPane scrollPane = new JScrollPane();
-			scrollPane.getViewport()
-					.setScrollMode(JViewport.SIMPLE_SCROLL_MODE);
+        if (indexOfTab(tabName) < 0) {
+            JScrollPane scrollPane = new JScrollPane();
+            scrollPane.getViewport().setScrollMode(JViewport.SIMPLE_SCROLL_MODE);
 
-			TileSetCanvas canvas = new TileSetCanvas(tileSet);
-			canvas.addTileSelectionListener(MainWindow.getInstance()
-					.getTileSetSelectionListener());
+            TileSetCanvas canvas = new TileSetCanvas(tileSet);
+            canvas.addTileSelectionListener(MainWindow.getInstance().getTileSetSelectionListener());
 
-			scrollPane.setViewportView(canvas);
-			scrollPane.getViewport().revalidate();
+            scrollPane.setViewportView(canvas);
+            scrollPane.getViewport().revalidate();
 
-			addTab(tabName, scrollPane);
-			setSelectedIndex(indexOfTab(tabName));
-		}
-	}
+            addTab(tabName, scrollPane);
+            setSelectedIndex(indexOfTab(tabName));
+        }
+    }
 
-	public void addTileSets(Collection<TileSet> tileSets) {
-		for (TileSet tileSet : tileSets) {
-			addTileSet(tileSet);
-		}
-	}
+    public void addTileSets(Collection<TileSet> tileSets) {
+        for (TileSet tileSet : tileSets) {
+            addTileSet(tileSet);
+        }
+    }
 
-	public void removeTileSets() {
-		removeAll();
-	}
+    public void removeTileSets() {
+        removeAll();
+    }
 
-	private void addMouseListener() {
-		addMouseListener(new MouseAdapter() {
+    private void addMouseListener() {
+        addMouseListener(new MouseAdapter() {
 
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				JTabbedPane tabs = (JTabbedPane) e.getSource();
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JTabbedPane tabs = (JTabbedPane) e.getSource();
 
-				int index = tabs.indexAtLocation(e.getX(), e.getY());
+                int index = tabs.indexAtLocation(e.getX(), e.getY());
 
-				if (index > -1 && e.getButton() == MouseEvent.BUTTON2) {
-					tabs.remove(index);
-				}
-			}
+                if (index > -1 && e.getButton() == MouseEvent.BUTTON2) {
+                    tabs.remove(index);
+                }
+            }
 
-		});
-	}
+        });
+    }
 
-	private void addTabChangeListener() {
+    private void addTabChangeListener() {
         addChangeListener((ChangeEvent e) -> {
             JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
             int index = sourceTabbedPane.getSelectedIndex();
 
             if (index > -1) {
-                
+
             }
         });
     }

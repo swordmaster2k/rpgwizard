@@ -15,8 +15,8 @@ import java.util.EventObject;
  */
 public class BoardModelEvent extends EventObject {
 
-	public BoardModelEvent(AbstractBoardModel source) {
-		super(source);
-	}
+    public BoardModelEvent(AbstractBoardModel source) {
+        super(source);
+    }
 
 }

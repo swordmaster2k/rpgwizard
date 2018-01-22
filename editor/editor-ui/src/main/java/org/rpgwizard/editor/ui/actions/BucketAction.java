@@ -19,13 +19,13 @@ import org.rpgwizard.editor.MainWindow;
  */
 public class BucketAction extends AbstractAction {
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		BoardEditor.toggleSelectedOnBoardEditor();
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        BoardEditor.toggleSelectedOnBoardEditor();
 
-		BucketBrush brush = new BucketBrush();
-		brush.setPourTile(MainWindow.getInstance().getLastSelectedTile());
-		MainWindow.getInstance().setCurrentBrush(brush);
-	}
+        BucketBrush brush = new BucketBrush();
+        brush.setPourTile(MainWindow.getInstance().getLastSelectedTile());
+        MainWindow.getInstance().setCurrentBrush(brush);
+    }
 
 }

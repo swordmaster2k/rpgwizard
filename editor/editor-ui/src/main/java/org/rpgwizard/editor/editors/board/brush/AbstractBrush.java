@@ -23,116 +23,108 @@ import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
  */
 public abstract class AbstractBrush implements Brush {
 
-	/**
-   *
-   */
-	protected int affectedLayers = 1;
+    /**
+    *
+    */
+    protected int affectedLayers = 1;
 
-	/**
-   *
-   */
-	protected MultiLayerContainer affectedContainer;
+    /**
+    *
+    */
+    protected MultiLayerContainer affectedContainer;
 
-	/**
-   *
-   */
-	protected boolean isPainting = false;
+    /**
+    *
+    */
+    protected boolean isPainting = false;
 
-	/**
-   *
-   */
-	protected int currentLayer;
+    /**
+    *
+    */
+    protected int currentLayer;
 
-	/**
-   *
-   */
-	public AbstractBrush() {
+    /**
+    *
+    */
+    public AbstractBrush() {
 
-	}
+    }
 
-	/**
-	 *
-	 * @param abstractBrush
-	 */
-	public AbstractBrush(AbstractBrush abstractBrush) {
-		affectedLayers = abstractBrush.affectedLayers;
-	}
+    /**
+     *
+     * @param abstractBrush
+     */
+    public AbstractBrush(AbstractBrush abstractBrush) {
+        affectedLayers = abstractBrush.affectedLayers;
+    }
 
-	@Override
-	public int getAffectedLayers() {
-		return affectedLayers;
-	}
+    @Override
+    public int getAffectedLayers() {
+        return affectedLayers;
+    }
 
-	/**
-	 *
-	 * @param layers
-	 */
-	public void setAffectedLayers(int layers) {
-		affectedLayers = layers;
-	}
+    /**
+     *
+     * @param layers
+     */
+    public void setAffectedLayers(int layers) {
+        affectedLayers = layers;
+    }
 
-	/**
-	 *
-	 * @return
-	 */
-	public int getInitialLayer() {
-		return currentLayer;
-	}
+    /**
+     *
+     * @return
+     */
+    public int getInitialLayer() {
+        return currentLayer;
+    }
 
-	/**
-	 *
-	 * @return
-	 */
-	public abstract Shape getShape();
+    /**
+     *
+     * @return
+     */
+    public abstract Shape getShape();
 
-	@Override
-	public void startPaint(MultiLayerContainer container, int layer) {
-		affectedContainer = container;
-		currentLayer = layer;
-		isPainting = true;
-	}
+    @Override
+    public void startPaint(MultiLayerContainer container, int layer) {
+        affectedContainer = container;
+        currentLayer = layer;
+        isPainting = true;
+    }
 
-	@Override
-	public Rectangle doPaint(int x, int y, Rectangle selection)
-			throws Exception {
-		if (!isPainting) {
-			throw new Exception("Attempted to call doPaint() without calling"
-					+ "startPaint() beforehand.");
-		}
+    @Override
+    public Rectangle doPaint(int x, int y, Rectangle selection) throws Exception {
+        if (!isPainting) {
+            throw new Exception("Attempted to call doPaint() without calling" + "startPaint() beforehand.");
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	@Override
-	public void endPaint() {
-		isPainting = false;
-	}
+    @Override
+    public void endPaint() {
+        isPainting = false;
+    }
 
-	@Override
-	public void drawPreview(Graphics2D g2d, Dimension dimension,
-			AbstractBoardView view) {
-		// TODO: draw an off-board preview here.
-	}
+    @Override
+    public void drawPreview(Graphics2D g2d, Dimension dimension, AbstractBoardView view) {
+        // TODO: draw an off-board preview here.
+    }
 
-	public boolean checkDragBounds(int x, int y, int width, int height) {
-		return 0 < x && 0 < y && x < width && y < height;
-	}
+    public boolean checkDragBounds(int x, int y, int width, int height) {
+        return 0 < x && 0 < y && x < width && y < height;
+    }
 
-	public abstract void doMouseButton1Pressed(Point point,
-			AbstractAssetEditorWindow editor);
+    public abstract void doMouseButton1Pressed(Point point, AbstractAssetEditorWindow editor);
 
-	public abstract void doMouseButton2Pressed(Point point,
-			AbstractAssetEditorWindow editor);
+    public abstract void doMouseButton2Pressed(Point point, AbstractAssetEditorWindow editor);
 
-	public abstract void doMouseButton3Pressed(Point point,
-			AbstractAssetEditorWindow editor);
+    public abstract void doMouseButton3Pressed(Point point, AbstractAssetEditorWindow editor);
 
-	public abstract void doMouseButton1Dragged(Point point, Point origin,
-			AbstractAssetEditorWindow editor);
+    public abstract void doMouseButton1Dragged(Point point, Point origin, AbstractAssetEditorWindow editor);
 
-	public abstract void doMouseButton3Dragged(Point point, Point origin,
-			AbstractAssetEditorWindow editor);
+    public abstract void doMouseButton3Dragged(Point point, Point origin, AbstractAssetEditorWindow editor);
 
-	public abstract boolean isPixelBased();
+    public abstract boolean isPixelBased();
 
 }

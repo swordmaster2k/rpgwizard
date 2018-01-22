@@ -16,11 +16,11 @@ import org.rpgwizard.editor.editors.sprite.AbstractSpriteModelPanel;
  */
 public class CharacterModelPanel extends AbstractSpriteModelPanel {
 
-	private final Character player;
+    private final Character player;
 
-	public CharacterModelPanel(Character model) {
-		super(model);
-		player = model;
-	}
+    public CharacterModelPanel(Character model) {
+        super(model);
+        player = model;
+    }
 
 }

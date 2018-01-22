@@ -14,58 +14,57 @@ package org.rpgwizard.common.assets;
  * @author Joel Moore
  */
 public class PlayerSpecialMove {
-	private String name;
-	private long minExperience;
-	private long minLevel;
-	private String conditionVariable;
-	private String conditionVariableTest;
+    private String name;
+    private long minExperience;
+    private long minLevel;
+    private String conditionVariable;
+    private String conditionVariableTest;
 
-	public PlayerSpecialMove(String name, long minExperience, long minLevel,
-			String cVar, String cVarTest) {
-		this.name = name;
-		this.minExperience = minExperience;
-		this.minLevel = minLevel;
-		this.conditionVariable = cVar;
-		this.conditionVariableTest = cVarTest;
-	}
+    public PlayerSpecialMove(String name, long minExperience, long minLevel, String cVar, String cVarTest) {
+        this.name = name;
+        this.minExperience = minExperience;
+        this.minLevel = minLevel;
+        this.conditionVariable = cVar;
+        this.conditionVariableTest = cVarTest;
+    }
 
-	public String getName() {
-		return this.name;
-	}
+    public String getName() {
+        return this.name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public long getMinExperience() {
-		return this.minExperience;
-	}
+    public long getMinExperience() {
+        return this.minExperience;
+    }
 
-	public void setMinExperience(long minExperience) {
-		this.minExperience = minExperience;
-	}
+    public void setMinExperience(long minExperience) {
+        this.minExperience = minExperience;
+    }
 
-	public long getMinLevel() {
-		return this.minLevel;
-	}
+    public long getMinLevel() {
+        return this.minLevel;
+    }
 
-	public void setMinLevel(long minLevel) {
-		this.minLevel = minLevel;
-	}
+    public void setMinLevel(long minLevel) {
+        this.minLevel = minLevel;
+    }
 
-	public String getConditionVariable() {
-		return this.conditionVariable;
-	}
+    public String getConditionVariable() {
+        return this.conditionVariable;
+    }
 
-	public void setConditionVariable(String conditionVariable) {
-		this.conditionVariable = conditionVariable;
-	}
+    public void setConditionVariable(String conditionVariable) {
+        this.conditionVariable = conditionVariable;
+    }
 
-	public String getConditionVariableTest() {
-		return this.conditionVariableTest;
-	}
+    public String getConditionVariableTest() {
+        return this.conditionVariableTest;
+    }
 
-	public void setConditionVariableTest(String conditionVariableTest) {
-		this.conditionVariableTest = conditionVariableTest;
-	}
+    public void setConditionVariableTest(String conditionVariableTest) {
+        this.conditionVariableTest = conditionVariableTest;
+    }
 }

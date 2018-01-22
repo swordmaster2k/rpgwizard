@@ -39,95 +39,94 @@ import org.slf4j.LoggerFactory;
  */
 public class ProgramEditor extends AbstractAssetEditorWindow {
 
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(ProgramEditor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProgramEditor.class);
 
-	private final Program program;
+    private final Program program;
 
-	private RSyntaxTextArea textArea;
+    private RSyntaxTextArea textArea;
 
-	public ProgramEditor(Program program) {
-		super("Untitled", true, true, true, true, Icons.getIcon("program"));
+    public ProgramEditor(Program program) {
+        super("Untitled", true, true, true, true, Icons.getIcon("program"));
 
-		this.program = program;
+        this.program = program;
 
-		if (program.getDescriptor() == null) {
-			init(program, "Untitled");
-		} else {
-			init(program, new File(program.getDescriptor().getURI()).getName());
-		}
-	}
+        if (program.getDescriptor() == null) {
+            init(program, "Untitled");
+        } else {
+            init(program, new File(program.getDescriptor().getURI()).getName());
+        }
+    }
 
-	@Override
-	public AbstractAsset getAsset() {
-		return program;
-	}
+    @Override
+    public AbstractAsset getAsset() {
+        return program;
+    }
 
-	@Override
-	public void save() throws Exception {
-		program.update(textArea.getText());
-		save(program);
-	}
+    @Override
+    public void save() throws Exception {
+        program.update(textArea.getText());
+        save(program);
+    }
 
-	@Override
-	public void saveAs(File file) throws Exception {
-		program.setDescriptor(new AssetDescriptor(file.toURI()));
-		setTitle(file.getName());
-		save();
-	}
+    @Override
+    public void saveAs(File file) throws Exception {
+        program.setDescriptor(new AssetDescriptor(file.toURI()));
+        setTitle(file.getName());
+        save();
+    }
 
-	private void init(Program program, String fileName) {
-		JPanel panel = new JPanel(new BorderLayout());
+    private void init(Program program, String fileName) {
+        JPanel panel = new JPanel(new BorderLayout());
 
-		LanguageSupportFactory languageFactory = LanguageSupportFactory.get();
-		JavaScriptLanguageSupport languageSupport = (JavaScriptLanguageSupport) languageFactory
-				.getSupportFor(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
+        LanguageSupportFactory languageFactory = LanguageSupportFactory.get();
+        JavaScriptLanguageSupport languageSupport = (JavaScriptLanguageSupport) languageFactory
+                .getSupportFor(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
 
-		try {
-			languageSupport.getJarManager().addCurrentJreClassFileSource();
-		} catch (IOException ex) {
-			LOGGER.error("Failed to load language support!", ex);
-		}
+        try {
+            languageSupport.getJarManager().addCurrentJreClassFileSource();
+        } catch (IOException ex) {
+            LOGGER.error("Failed to load language support!", ex);
+        }
 
-		String code = program.getProgramBuffer().toString();
-		textArea = new RSyntaxTextArea(code, 30, 90);
-		LanguageSupportFactory.get().register(textArea);
-		textArea.setCaretPosition(0);
-		textArea.requestFocusInWindow();
-		textArea.setMarkOccurrences(true);
-		textArea.setCodeFoldingEnabled(true);
-		textArea.setTabsEmulated(true);
-		textArea.setTabSize(3);
-		textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
-		textArea.getDocument().addDocumentListener(new DocumentListener() {
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				setNeedSave(true);
-			}
+        String code = program.getProgramBuffer().toString();
+        textArea = new RSyntaxTextArea(code, 30, 90);
+        LanguageSupportFactory.get().register(textArea);
+        textArea.setCaretPosition(0);
+        textArea.requestFocusInWindow();
+        textArea.setMarkOccurrences(true);
+        textArea.setCodeFoldingEnabled(true);
+        textArea.setTabsEmulated(true);
+        textArea.setTabSize(3);
+        textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
+        textArea.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                setNeedSave(true);
+            }
 
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				setNeedSave(true);
-			}
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                setNeedSave(true);
+            }
 
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				setNeedSave(true);
-			}
-		});
-		ToolTipManager.sharedInstance().registerComponent(textArea);
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                setNeedSave(true);
+            }
+        });
+        ToolTipManager.sharedInstance().registerComponent(textArea);
 
-		RTextScrollPane scrollPane = new RTextScrollPane(textArea);
-		panel.add(scrollPane);
+        RTextScrollPane scrollPane = new RTextScrollPane(textArea);
+        panel.add(scrollPane);
 
-		setContentPane(panel);
-		setTitle(fileName);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		pack();
-	}
+        setContentPane(panel);
+        setTitle(fileName);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        pack();
+    }
 
-	public void cleanUp() {
-		LanguageSupportFactory.get().unregister(textArea);
-	}
+    public void cleanUp() {
+        LanguageSupportFactory.get().unregister(textArea);
+    }
 
 }

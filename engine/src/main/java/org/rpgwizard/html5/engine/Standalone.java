@@ -33,28 +33,25 @@ import org.rpgwizard.html5.engine.plugin.browser.EmbeddedBrowser;
  */
 public class Standalone {
 
-	public static boolean STANDALONE_MODE = false;
+    public static boolean STANDALONE_MODE = false;
 
-	private static Thread ENGINE_THREAD;
-	private static EngineRunnable ENGINE_RUNNABLE;
-	private static EmbeddedBrowser EMBEDDED_BROWSER;
+    private static Thread ENGINE_THREAD;
+    private static EngineRunnable ENGINE_RUNNABLE;
+    private static EmbeddedBrowser EMBEDDED_BROWSER;
 
-	private static void showErrorDialog(String title, String message) {
-		JOptionPane.showMessageDialog(new JFrame(), message, title,
-				JOptionPane.ERROR_MESSAGE);
-	}
+    private static void showErrorDialog(String title, String message) {
+        JOptionPane.showMessageDialog(new JFrame(), message, title, JOptionPane.ERROR_MESSAGE);
+    }
 
-	private static Project openProject(File projectFile) throws AssetException,
-			IOException {
-		AssetManager assetManager = AssetManager.getInstance();
-		assetManager.registerResolver(new FileAssetHandleResolver());
-		assetManager.registerSerializer(new JsonProjectSerializer());
-		AssetHandle handle = AssetManager.getInstance().deserialize(
-				new AssetDescriptor(projectFile.toURI()));
-		return (Project) handle.getAsset();
-	}
+    private static Project openProject(File projectFile) throws AssetException, IOException {
+        AssetManager assetManager = AssetManager.getInstance();
+        assetManager.registerResolver(new FileAssetHandleResolver());
+        assetManager.registerSerializer(new JsonProjectSerializer());
+        AssetHandle handle = AssetManager.getInstance().deserialize(new AssetDescriptor(projectFile.toURI()));
+        return (Project) handle.getAsset();
+    }
 
-	private static void start(String resourceBase, Project project) {
+    private static void start(String resourceBase, Project project) {
         // Start the Embedded Jetty.
         ENGINE_RUNNABLE = new EngineRunnable(resourceBase);
         ENGINE_THREAD = new Thread(ENGINE_RUNNABLE);
@@ -62,7 +59,8 @@ public class Standalone {
 
         javax.swing.SwingUtilities.invokeLater(() -> {
             // Show the JCEF browser window.
-            EMBEDDED_BROWSER = new EmbeddedBrowser(project.getName(), "http://localhost:8080", OS.isLinux(), false, project.getResolutionWidth(), project.getResolutionHeight());
+            EMBEDDED_BROWSER = new EmbeddedBrowser(project.getName(), "http://localhost:8080", OS.isLinux(), false,
+                    project.getResolutionWidth(), project.getResolutionHeight());
             EMBEDDED_BROWSER.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
@@ -72,17 +70,20 @@ public class Standalone {
                     } catch (Exception ex) {
                         Logger.getLogger(Standalone.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    
+
                     // JCEF keeps hanging.
                     throw new RuntimeException("Forcefully shutting down JCEF - Can ignore this exception");
                 }
             });
         });
     }
-	public static void main(String[] args) {
+
+    public static void main(String[] args) {
         Standalone.STANDALONE_MODE = true;
 
-//        System.setProperty("org.rpgwizard.execution.path", "D:/Documents/Software Development/rpgwizard/distribution/target/rpgwizard-1.1.0-windows/rpgwizard-1.1.0/builds/RPGWizard 1.1.0 - The Wizard's Tower-1507920535920");
+        // System.setProperty("org.rpgwizard.execution.path", "D:/Documents/Software
+        // Development/rpgwizard/distribution/target/rpgwizard-1.1.0-windows/rpgwizard-1.1.0/builds/RPGWizard 1.1.0 -
+        // The Wizard's Tower-1507920535920");
         String resourceBase = System.getProperty("org.rpgwizard.execution.path") + File.separator + "data";
         File projectFile = new File(new File(resourceBase), "default.game");
 

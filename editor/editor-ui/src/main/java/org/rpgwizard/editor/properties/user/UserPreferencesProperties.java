@@ -25,17 +25,17 @@ import org.slf4j.LoggerFactory;
  */
 public class UserPreferencesProperties {
 
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(UserPreferencesProperties.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserPreferencesProperties.class);
 
-	private static final String PREFERENCES_FILE = "preferences.properties";
-	private static final UserPreferencesProperties INSTANCE = new UserPreferencesProperties();
-	private Properties properties = new Properties();
-	private File preferences;
+    private static final String PREFERENCES_FILE = "preferences.properties";
+    private static final UserPreferencesProperties INSTANCE = new UserPreferencesProperties();
+    private Properties properties = new Properties();
+    private File preferences;
 
-	private UserPreferencesProperties() {
+    private UserPreferencesProperties() {
         try {
-            preferences = new File(FileTools.getExecutionPath(UserPreferencesProperties.class) + File.separator + PREFERENCES_FILE);
+            preferences = new File(
+                    FileTools.getExecutionPath(UserPreferencesProperties.class) + File.separator + PREFERENCES_FILE);
             if (!preferences.exists()) {
                 setup(preferences, properties);
             } else {
@@ -48,25 +48,25 @@ public class UserPreferencesProperties {
             properties = null;
         }
     }
-	public static String getProperty(UserPreference property) {
-		if (INSTANCE.properties == null) {
-			return property.getDefaultValue();
-		}
-		if (!INSTANCE.properties.containsKey(property.toString())) {
-			INSTANCE.properties.setProperty(property.toString(),
-					property.getDefaultValue());
-		}
-		return INSTANCE.properties.getProperty(property.toString());
-	}
 
-	public static void setProperty(UserPreference property, String value) {
-		if (INSTANCE.properties == null) {
-			return;
-		}
-		INSTANCE.properties.setProperty(property.toString(), value);
-	}
+    public static String getProperty(UserPreference property) {
+        if (INSTANCE.properties == null) {
+            return property.getDefaultValue();
+        }
+        if (!INSTANCE.properties.containsKey(property.toString())) {
+            INSTANCE.properties.setProperty(property.toString(), property.getDefaultValue());
+        }
+        return INSTANCE.properties.getProperty(property.toString());
+    }
 
-	public static void save(File preferences, Properties properties) {
+    public static void setProperty(UserPreference property, String value) {
+        if (INSTANCE.properties == null) {
+            return;
+        }
+        INSTANCE.properties.setProperty(property.toString(), value);
+    }
+
+    public static void save(File preferences, Properties properties) {
         if (preferences != null && properties != null) {
             LOGGER.info("Saving user preferences=[{}], properties=[{}]", preferences.getAbsolutePath(), properties);
             try (FileOutputStream out = new FileOutputStream(preferences)) {
@@ -78,12 +78,12 @@ public class UserPreferencesProperties {
             LOGGER.error("Could not save user preferences=[{}], properties=[{}]", preferences, properties);
         }
     }
-	public static void save() {
-		UserPreferencesProperties.save(INSTANCE.preferences,
-				INSTANCE.properties);
-	}
 
-	private static void setup(File preferences, Properties properties) throws FileNotFoundException, IOException {
+    public static void save() {
+        UserPreferencesProperties.save(INSTANCE.preferences, INSTANCE.properties);
+    }
+
+    private static void setup(File preferences, Properties properties) throws FileNotFoundException, IOException {
         preferences.createNewFile();
         try (InputStream in = new FileInputStream(preferences)) {
             properties.load(in);

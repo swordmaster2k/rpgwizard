@@ -20,55 +20,53 @@ import javax.swing.event.ListSelectionListener;
  */
 public class PropertiesPanel extends JPanel implements ListSelectionListener {
 
-	private Object model;
-	private AbstractModelPanel panel;
-	private JScrollPane propertiesScrollPane;
+    private Object model;
+    private AbstractModelPanel panel;
+    private JScrollPane propertiesScrollPane;
 
-	public PropertiesPanel() {
-		initialize();
-	}
+    public PropertiesPanel() {
+        initialize();
+    }
 
-	public PropertiesPanel(Object model) {
-		this.model = model;
-		initialize();
-	}
+    public PropertiesPanel(Object model) {
+        this.model = model;
+        initialize();
+    }
 
-	public Object getModel() {
-		return model;
-	}
+    public Object getModel() {
+        return model;
+    }
 
-	public void setModel(Object model) {
-		this.model = model;
+    public void setModel(Object model) {
+        this.model = model;
 
-		if (panel != null) {
-			panel.tearDown();
-		}
-		panel = ModelPanelFactory.getModelPanel(model);
+        if (panel != null) {
+            panel.tearDown();
+        }
+        panel = ModelPanelFactory.getModelPanel(model);
 
-		// To ensure that the internal controls are not streched.
-		JPanel intermediate = new JPanel(new BorderLayout());
-		if (panel != null) {
-			intermediate.add(panel, BorderLayout.NORTH);
-		}
-		propertiesScrollPane.setViewportView(intermediate);
-		propertiesScrollPane.getViewport().revalidate();
-	}
+        // To ensure that the internal controls are not streched.
+        JPanel intermediate = new JPanel(new BorderLayout());
+        if (panel != null) {
+            intermediate.add(panel, BorderLayout.NORTH);
+        }
+        propertiesScrollPane.setViewportView(intermediate);
+        propertiesScrollPane.getViewport().revalidate();
+    }
 
-	@Override
-	public void valueChanged(ListSelectionEvent e) {
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
 
-	}
+    }
 
-	private void initialize() {
-		panel = null;
-		propertiesScrollPane = new JScrollPane();
-		propertiesScrollPane.getViewport().setScrollMode(
-				JViewport.SIMPLE_SCROLL_MODE);
-		propertiesScrollPane
-				.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+    private void initialize() {
+        panel = null;
+        propertiesScrollPane = new JScrollPane();
+        propertiesScrollPane.getViewport().setScrollMode(JViewport.SIMPLE_SCROLL_MODE);
+        propertiesScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-		setLayout(new BorderLayout());
-		add(propertiesScrollPane, BorderLayout.CENTER);
-	}
+        setLayout(new BorderLayout());
+        add(propertiesScrollPane, BorderLayout.CENTER);
+    }
 
 }

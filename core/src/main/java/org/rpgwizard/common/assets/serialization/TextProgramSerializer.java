@@ -29,34 +29,30 @@ import org.apache.commons.io.FileUtils;
  */
 public class TextProgramSerializer extends AbstractAssetSerializer {
 
-	@Override
-	public boolean serializable(AssetDescriptor descriptor) {
-		final String ext = Paths.extension(descriptor.getURI());
-		return (ext.endsWith(CoreProperties
-				.getFullExtension("toolkit.program.extension.default")));
-	}
+    @Override
+    public boolean serializable(AssetDescriptor descriptor) {
+        final String ext = Paths.extension(descriptor.getURI());
+        return (ext.endsWith(CoreProperties.getFullExtension("toolkit.program.extension.default")));
+    }
 
-	@Override
-	public boolean deserializable(AssetDescriptor descriptor) {
-		return serializable(descriptor);
-	}
+    @Override
+    public boolean deserializable(AssetDescriptor descriptor) {
+        return serializable(descriptor);
+    }
 
-	@Override
-	public void serialize(AssetHandle handle) throws IOException,
-			AssetException {
-		final Program program = (Program) handle.getAsset();
-		FileUtils.writeStringToFile(program.getFile(), program
-				.getProgramBuffer().toString());
-	}
+    @Override
+    public void serialize(AssetHandle handle) throws IOException, AssetException {
+        final Program program = (Program) handle.getAsset();
+        FileUtils.writeStringToFile(program.getFile(), program.getProgramBuffer().toString());
+    }
 
-	@Override
-	public void deserialize(AssetHandle handle) throws IOException,
-			AssetException {
-		final Program program = new Program(handle.getDescriptor());
-		File path = new File(handle.getDescriptor().getURI().getPath());
-		program.update(FileUtils.readFileToString(path, "UTF-8"));
+    @Override
+    public void deserialize(AssetHandle handle) throws IOException, AssetException {
+        final Program program = new Program(handle.getDescriptor());
+        File path = new File(handle.getDescriptor().getURI().getPath());
+        program.update(FileUtils.readFileToString(path, "UTF-8"));
 
-		handle.setAsset(program);
-	}
+        handle.setAsset(program);
+    }
 
 }

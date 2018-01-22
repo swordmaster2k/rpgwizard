@@ -13,8 +13,8 @@ package org.rpgwizard.common.assets.board.model;
  */
 public interface BoardModelChangeListener {
 
-	public void modelChanged(BoardModelEvent e);
+    public void modelChanged(BoardModelEvent e);
 
-	public void modelMoved(BoardModelEvent e);
+    public void modelMoved(BoardModelEvent e);
 
 }

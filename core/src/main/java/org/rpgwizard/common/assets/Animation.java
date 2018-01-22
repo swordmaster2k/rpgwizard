@@ -14,8 +14,7 @@ import org.rpgwizard.common.assets.events.AnimationChangedEvent;
 import org.rpgwizard.common.assets.listeners.AnimationChangeListener;
 
 /**
- * This class is responsible for reading and writing RPG Toolkit 3.1 compatible
- * Animation files.
+ * This class is responsible for reading and writing RPG Toolkit 3.1 compatible Animation files.
  *
  * @author geoff wilson
  * @author Joshua Michael Daly
@@ -44,8 +43,8 @@ public class Animation extends AbstractAsset {
     }
 
     /**
-     * Gets the height (Y value) of the animation, this is necessary for both
-     * the editor and the graphics uk.co.tkce.engine.
+     * Gets the height (Y value) of the animation, this is necessary for both the editor and the graphics
+     * uk.co.tkce.engine.
      *
      * @return Height value of the animation,
      */
@@ -54,10 +53,10 @@ public class Animation extends AbstractAsset {
     }
 
     /**
-     * Changes the height of the animation, it will attempt to preserve the
-     * existing data
+     * Changes the height of the animation, it will attempt to preserve the existing data
      *
-     * @param newHeight New height value for the animation.
+     * @param newHeight
+     *            New height value for the animation.
      */
     public void setAnimationHeight(int newHeight) {
         animationHeight = newHeight;
@@ -65,8 +64,8 @@ public class Animation extends AbstractAsset {
     }
 
     /**
-     * Gets the width (X value) of the animation, this is necessary for both the
-     * editor and the graphics uk.co.tkce.engine.
+     * Gets the width (X value) of the animation, this is necessary for both the editor and the graphics
+     * uk.co.tkce.engine.
      *
      * @return Width value of the animation,
      */
@@ -75,10 +74,10 @@ public class Animation extends AbstractAsset {
     }
 
     /**
-     * Changes the width of the animation, it will attempt to preserve the
-     * existing data
+     * Changes the width of the animation, it will attempt to preserve the existing data
      *
-     * @param newWidth New width value for the animation.
+     * @param newWidth
+     *            New width value for the animation.
      */
     public void setAnimationWidth(int newWidth) {
         animationWidth = newWidth;
@@ -103,9 +102,8 @@ public class Animation extends AbstractAsset {
     }
 
     /**
-     * Gets the Frame Delay (seconds between each frame) of the animation, this
-     * is required for the graphics uk.co.tkce.engine to correctly configure
-     * animation timers.
+     * Gets the Frame Delay (seconds between each frame) of the animation, this is required for the graphics
+     * uk.co.tkce.engine to correctly configure animation timers.
      *
      * @return Frame delay value for the animation
      */
@@ -135,25 +133,25 @@ public class Animation extends AbstractAsset {
     /**
      * Add a new <code>AnimationChangeListener</code> for this board.
      *
-     * @param listener new change listener
+     * @param listener
+     *            new change listener
      */
     public void addAnimationChangeListener(AnimationChangeListener listener) {
         animationChangeListeners.add(listener);
     }
 
     /**
-     * Remove an existing <code>AnimationChangeListener</code> for this
-     * animation.
+     * Remove an existing <code>AnimationChangeListener</code> for this animation.
      *
-     * @param listener change listener
+     * @param listener
+     *            change listener
      */
     public void removeAnimationChangeListener(AnimationChangeListener listener) {
         animationChangeListeners.remove(listener);
     }
 
     /**
-     * Fires the <code>AnimationChangedEvent</code> informs all the listeners
-     * that this animation has changed.
+     * Fires the <code>AnimationChangedEvent</code> informs all the listeners that this animation has changed.
      */
     public void fireAnimationChanged() {
         AnimationChangedEvent event = null;
@@ -169,8 +167,7 @@ public class Animation extends AbstractAsset {
     }
 
     /**
-     * Fires the <code>AnimationChangedEvent</code> informs all the listeners
-     * that this animation has changed.
+     * Fires the <code>AnimationChangedEvent</code> informs all the listeners that this animation has changed.
      */
     public void fireAnimationFrameAdded() {
         AnimationChangedEvent event = null;
@@ -186,8 +183,7 @@ public class Animation extends AbstractAsset {
     }
 
     /**
-     * Fires the <code>AnimationChangedEvent</code> informs all the listeners
-     * that this animation has changed.
+     * Fires the <code>AnimationChangedEvent</code> informs all the listeners that this animation has changed.
      */
     public void fireAnimationFrameRemoved() {
         AnimationChangedEvent event = null;

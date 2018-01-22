@@ -19,15 +19,14 @@ import org.rpgwizard.editor.editors.BoardEditor;
  */
 public class ShowVectorsItemListener implements ItemListener {
 
-	@Override
-	public void itemStateChanged(ItemEvent e) {
-		JCheckBoxMenuItem showVectorsMenuItem = (JCheckBoxMenuItem) e.getItem();
-		BoardEditor editor = MainWindow.getInstance().getCurrentBoardEditor();
-		if (editor != null) {
-			MainWindow.getInstance().setShowVectors(
-					showVectorsMenuItem.isSelected());
-			editor.getBoardView().repaint();
-		}
-	}
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        JCheckBoxMenuItem showVectorsMenuItem = (JCheckBoxMenuItem) e.getItem();
+        BoardEditor editor = MainWindow.getInstance().getCurrentBoardEditor();
+        if (editor != null) {
+            MainWindow.getInstance().setShowVectors(showVectorsMenuItem.isSelected());
+            editor.getBoardView().repaint();
+        }
+    }
 
 }

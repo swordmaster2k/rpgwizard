@@ -23,42 +23,39 @@ import org.json.JSONObject;
  */
 public class JsonTileSetSerializer extends AbstractJsonSerializer {
 
-	@Override
-	public boolean serializable(AssetDescriptor descriptor) {
-		final String ext = Paths.extension(descriptor.getURI());
-		return (ext.equals(CoreProperties
-				.getFullExtension("toolkit.tileset.extension.json")));
-	}
+    @Override
+    public boolean serializable(AssetDescriptor descriptor) {
+        final String ext = Paths.extension(descriptor.getURI());
+        return (ext.equals(CoreProperties.getFullExtension("toolkit.tileset.extension.json")));
+    }
 
-	@Override
-	public boolean deserializable(AssetDescriptor descriptor) {
-		return serializable(descriptor);
-	}
+    @Override
+    public boolean deserializable(AssetDescriptor descriptor) {
+        return serializable(descriptor);
+    }
 
-	@Override
-	protected void load(AssetHandle handle, JSONObject json)
-			throws AssetException {
-		final TileSet tileSet = new TileSet(handle.getDescriptor(),
-				json.optInt("tileWidth"), json.optInt("tileHeight"));
+    @Override
+    protected void load(AssetHandle handle, JSONObject json) throws AssetException {
+        final TileSet tileSet = new TileSet(handle.getDescriptor(), json.optInt("tileWidth"),
+                json.optInt("tileHeight"));
 
-		tileSet.setVersion(json.getDouble("version"));
-		tileSet.setName(json.optString("name"));
-		tileSet.setImage(json.optString("image"));
+        tileSet.setVersion(json.getDouble("version"));
+        tileSet.setName(json.optString("name"));
+        tileSet.setImage(json.optString("image"));
 
-		handle.setAsset(tileSet);
-	}
+        handle.setAsset(tileSet);
+    }
 
-	@Override
-	protected void store(AssetHandle handle, JSONObject json)
-			throws AssetException {
-		super.store(handle, json);
+    @Override
+    protected void store(AssetHandle handle, JSONObject json) throws AssetException {
+        super.store(handle, json);
 
-		final TileSet tileSet = (TileSet) handle.getAsset();
+        final TileSet tileSet = (TileSet) handle.getAsset();
 
-		json.put("name", tileSet.getName());
-		json.put("tileWidth", tileSet.getTileWidth());
-		json.put("tileHeight", tileSet.getTileHeight());
-		json.put("image", serializePath(tileSet.getImage()));
-	}
+        json.put("name", tileSet.getName());
+        json.put("tileWidth", tileSet.getTileWidth());
+        json.put("tileHeight", tileSet.getTileHeight());
+        json.put("image", serializePath(tileSet.getImage()));
+    }
 
 }

@@ -13,32 +13,32 @@ package org.rpgwizard.html5.engine.plugin.rest.model;
  */
 public class FileSave {
 
-	private String path;
-	private String data;
+    private String path;
+    private String data;
 
-	public FileSave() {
+    public FileSave() {
 
-	}
+    }
 
-	public String getPath() {
-		return path;
-	}
+    public String getPath() {
+        return path;
+    }
 
-	public void setPath(String path) {
-		this.path = path;
-	}
+    public void setPath(String path) {
+        this.path = path;
+    }
 
-	public String getData() {
-		return data;
-	}
+    public String getData() {
+        return data;
+    }
 
-	public void setData(String data) {
-		this.data = data;
-	}
+    public void setData(String data) {
+        this.data = data;
+    }
 
-	@Override
-	public String toString() {
-		return "FileSave{" + "path=" + path + ", data=" + data + "}";
-	}
+    @Override
+    public String toString() {
+        return "FileSave{" + "path=" + path + ", data=" + data + "}";
+    }
 
 }

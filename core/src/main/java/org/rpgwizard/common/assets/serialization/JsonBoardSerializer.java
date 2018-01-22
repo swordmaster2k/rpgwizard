@@ -37,62 +37,57 @@ import org.rpgwizard.common.assets.board.BoardLayerImage;
  */
 public class JsonBoardSerializer extends AbstractJsonSerializer {
 
-	@Override
-	public boolean serializable(AssetDescriptor descriptor) {
-		final String ext = Paths.extension(descriptor.getURI());
-		return (ext.equals(CoreProperties
-				.getFullExtension("toolkit.board.extension.json")));
-	}
+    @Override
+    public boolean serializable(AssetDescriptor descriptor) {
+        final String ext = Paths.extension(descriptor.getURI());
+        return (ext.equals(CoreProperties.getFullExtension("toolkit.board.extension.json")));
+    }
 
-	@Override
-	public boolean deserializable(AssetDescriptor descriptor) {
-		return serializable(descriptor);
-	}
+    @Override
+    public boolean deserializable(AssetDescriptor descriptor) {
+        return serializable(descriptor);
+    }
 
-	@Override
-	protected void load(AssetHandle handle, JSONObject json)
-			throws AssetException {
+    @Override
+    protected void load(AssetHandle handle, JSONObject json) throws AssetException {
 
-		final Board board = new Board(handle.getDescriptor());
+        final Board board = new Board(handle.getDescriptor());
 
-		board.setVersion(json.getDouble("version"));
-		board.setName(json.getString("name"));
+        board.setVersion(json.getDouble("version"));
+        board.setName(json.getString("name"));
 
-		// Version 1.3.0
-		if (json.has("description")) {
-			board.setDescription(json.getString("description"));
-		}
+        // Version 1.3.0
+        if (json.has("description")) {
+            board.setDescription(json.getString("description"));
+        }
 
-		board.setWidth(json.getInt("width"));
-		board.setHeight(json.getInt("height"));
-		board.setTileWidth(json.getInt("tileWidth"));
-		board.setTileHeight(json.getInt("tileHeight"));
+        board.setWidth(json.getInt("width"));
+        board.setHeight(json.getInt("height"));
+        board.setTileWidth(json.getInt("tileWidth"));
+        board.setTileHeight(json.getInt("tileHeight"));
 
-		JSONArray tileSets = json.getJSONArray("tileSets");
-		List<String> tileSetNames = getStringArrayList(tileSets);
-		board.setTileSets(getTileSets(tileSets));
+        JSONArray tileSets = json.getJSONArray("tileSets");
+        List<String> tileSetNames = getStringArrayList(tileSets);
+        board.setTileSets(getTileSets(tileSets));
 
-		List<BoardSprite> sprites = getSprites(json.getJSONArray("sprites"));
+        List<BoardSprite> sprites = getSprites(json.getJSONArray("sprites"));
 
-		board.setLayers(getBoardLayers(json.getJSONArray("layers"), board,
-				tileSetNames, sprites));
+        board.setLayers(getBoardLayers(json.getJSONArray("layers"), board, tileSetNames, sprites));
 
-		JSONObject startingPosition = json.getJSONObject("startingPosition");
-		board.setStartingPosition(new StartingPosition(startingPosition
-				.getInt("x"), startingPosition.getInt("y"), startingPosition
-				.getInt("layer")));
+        JSONObject startingPosition = json.getJSONObject("startingPosition");
+        board.setStartingPosition(new StartingPosition(startingPosition.getInt("x"), startingPosition.getInt("y"),
+                startingPosition.getInt("layer")));
 
-		board.setFirstRunProgram(json.getString("firstRunProgram"));
-		board.setBackgroundMusic(json.getString("backgroundMusic"));
+        board.setFirstRunProgram(json.getString("firstRunProgram"));
+        board.setBackgroundMusic(json.getString("backgroundMusic"));
 
-		board.setBoardDimensions(new int[board.getWidth()][board.getHeight()][board
-				.getLayers().size()]);
+        board.setBoardDimensions(new int[board.getWidth()][board.getHeight()][board.getLayers().size()]);
 
-		handle.setAsset(board);
+        handle.setAsset(board);
 
-	}
+    }
 
-	@Override
+    @Override
     protected void store(AssetHandle handle, JSONObject json) throws AssetException {
         super.store(handle, json);
 
@@ -133,7 +128,7 @@ public class JsonBoardSerializer extends AbstractJsonSerializer {
             spritePosition.put("layer", sprite.getLayer());
             s.put("startingPosition", spritePosition);
 
-            // TODO: remove this once the editor supports adding multiple 
+            // TODO: remove this once the editor supports adding multiple
             // events through the UI
             JSONArray events = new JSONArray();
             if (sprite.getEventProgram() != null && !sprite.getEventProgram().isEmpty()) {
@@ -174,8 +169,7 @@ public class JsonBoardSerializer extends AbstractJsonSerializer {
 
                 Tile tile = layerTiles[x][y];
                 if (tile.getTileSet() != null) {
-                    tileSetIndex = new ArrayList<>(board.getTileSets().keySet())
-                            .indexOf(tile.getTileSet().getName());
+                    tileSetIndex = new ArrayList<>(board.getTileSets().keySet()).indexOf(tile.getTileSet().getName());
                     tileIndex = tile.getIndex();
                 }
 
@@ -196,7 +190,7 @@ public class JsonBoardSerializer extends AbstractJsonSerializer {
             // Vectors.
             JSONArray vectors = serializeBoardVectors(boardLayer.getVectors());
             layer.put("vectors", vectors);
-            
+
             // Images.
             JSONArray images = serializeBoardLayerImages(boardLayer.getImages());
             layer.put("images", images);
@@ -216,7 +210,8 @@ public class JsonBoardSerializer extends AbstractJsonSerializer {
 
         handle.setAsset(board);
     }
-	private Map<String, TileSet> getTileSets(JSONArray array) {
+
+    private Map<String, TileSet> getTileSets(JSONArray array) {
         Map<String, TileSet> tileSets = new HashMap<>();
 
         TileSet tileSet;
@@ -231,7 +226,9 @@ public class JsonBoardSerializer extends AbstractJsonSerializer {
 
         return tileSets;
     }
-	private LinkedList<BoardLayer> getBoardLayers(JSONArray array, Board board, List<String> tileSetNames, List<BoardSprite> sprites) {
+
+    private LinkedList<BoardLayer> getBoardLayers(JSONArray array, Board board, List<String> tileSetNames,
+            List<BoardSprite> sprites) {
         LinkedList<BoardLayer> layers = new LinkedList<>();
 
         int width = board.getWidth();
@@ -303,7 +300,8 @@ public class JsonBoardSerializer extends AbstractJsonSerializer {
 
         return layers;
     }
-	private ArrayList<BoardSprite> getSprites(JSONArray array) {
+
+    private ArrayList<BoardSprite> getSprites(JSONArray array) {
         ArrayList<BoardSprite> sprites = new ArrayList<>();
 
         BoardSprite sprite;
@@ -321,7 +319,7 @@ public class JsonBoardSerializer extends AbstractJsonSerializer {
             sprite.setY(startingPosition.getInt("y"));
             sprite.setLayer(startingPosition.getInt("layer"));
 
-            // TODO: remove this once the editor supports adding multiple 
+            // TODO: remove this once the editor supports adding multiple
             // events through the UI
             JSONArray events = object.getJSONArray("events");
             if (events.length() > 0) {

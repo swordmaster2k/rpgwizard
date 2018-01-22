@@ -18,40 +18,40 @@ import org.rpgwizard.editor.ui.resources.Icons;
  */
 public final class RunMenu extends JMenu {
 
-	private JMenuItem debugProgramMenuItem;
-	private JMenuItem runProjectMenuItem;
+    private JMenuItem debugProgramMenuItem;
+    private JMenuItem runProjectMenuItem;
 
-	public RunMenu() {
-		super("Run");
+    public RunMenu() {
+        super("Run");
 
-		setMnemonic(KeyEvent.VK_R);
+        setMnemonic(KeyEvent.VK_R);
 
-		configureDebugProgramMenuItem();
-		configureRunProjectMenuItem();
+        configureDebugProgramMenuItem();
+        configureRunProjectMenuItem();
 
-		add(debugProgramMenuItem);
-		add(runProjectMenuItem);
-	}
+        add(debugProgramMenuItem);
+        add(runProjectMenuItem);
+    }
 
-	public void configureDebugProgramMenuItem() {
-		debugProgramMenuItem = new JMenuItem("Debug Program");
-		debugProgramMenuItem.setIcon(Icons.getSmallIcon("bug"));
-		// debugProgramMenuItem.setAccelerator(
-		// KeyStroke.getKeyStroke(KeyEvent.VK_F5,
-		// ActionEvent.ACTION_PERFORMED));
-		debugProgramMenuItem.setMnemonic(KeyEvent.VK_D);
+    public void configureDebugProgramMenuItem() {
+        debugProgramMenuItem = new JMenuItem("Debug Program");
+        debugProgramMenuItem.setIcon(Icons.getSmallIcon("bug"));
+        // debugProgramMenuItem.setAccelerator(
+        // KeyStroke.getKeyStroke(KeyEvent.VK_F5,
+        // ActionEvent.ACTION_PERFORMED));
+        debugProgramMenuItem.setMnemonic(KeyEvent.VK_D);
 
-		debugProgramMenuItem.setEnabled(false);
-	}
+        debugProgramMenuItem.setEnabled(false);
+    }
 
-	public void configureRunProjectMenuItem() {
-		runProjectMenuItem = new JMenuItem("Run Project");
-		runProjectMenuItem.setIcon(Icons.getSmallIcon("run"));
-		// runProjectMenuItem.setAccelerator(
-		// KeyStroke.getKeyStroke(KeyEvent.VK_F11, ActionEvent.ACTION_FIRST));
-		runProjectMenuItem.setMnemonic(KeyEvent.VK_N);
+    public void configureRunProjectMenuItem() {
+        runProjectMenuItem = new JMenuItem("Run Project");
+        runProjectMenuItem.setIcon(Icons.getSmallIcon("run"));
+        // runProjectMenuItem.setAccelerator(
+        // KeyStroke.getKeyStroke(KeyEvent.VK_F11, ActionEvent.ACTION_FIRST));
+        runProjectMenuItem.setMnemonic(KeyEvent.VK_N);
 
-		runProjectMenuItem.setEnabled(false);
-	}
+        runProjectMenuItem.setEnabled(false);
+    }
 
 }

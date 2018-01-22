@@ -17,30 +17,29 @@ import org.rpgwizard.common.assets.EventType;
 
 /**
  *
- * TT_NULL = -1 'To denote empty slot in editor. TT_NORMAL = 0 'See TILE_TYPE
- * enumeration, board conversion.h TT_SOLID = 1 TT_UNDER = 2 TT_UNIDIRECTIONAL =
- * 4 'Incomplete / unnecessary. TT_STAIRS = 8 TT_WAYPOINT = 16
+ * TT_NULL = -1 'To denote empty slot in editor. TT_NORMAL = 0 'See TILE_TYPE enumeration, board conversion.h TT_SOLID =
+ * 1 TT_UNDER = 2 TT_UNIDIRECTIONAL = 4 'Incomplete / unnecessary. TT_STAIRS = 8 TT_WAYPOINT = 16
  *
  * @author Geoff Wilson
  * @author Joshua Michael Daly
  */
 public class BoardVector implements Cloneable, Selectable {
 
-	private String id;
-	private BoardVectorType type;
-	private ArrayList<Point> points;
-	private boolean isClosed;
-	private ArrayList<Event> events;
+    private String id;
+    private BoardVectorType type;
+    private ArrayList<Point> points;
+    private boolean isClosed;
+    private ArrayList<Event> events;
 
-	// Non-IO.
-	private int layer;
-	private Polygon polygon;
-	private boolean selected;
+    // Non-IO.
+    private int layer;
+    private Polygon polygon;
+    private boolean selected;
 
-	/**
+    /**
      *
      */
-	public BoardVector() {
+    public BoardVector() {
         id = "";
         type = BoardVectorType.SOLID;
         isClosed = false;
@@ -52,253 +51,254 @@ public class BoardVector implements Cloneable, Selectable {
         polygon = new Polygon();
         selected = false;
     }
-	/**
-	 *
-	 * @return
-	 */
-	public ArrayList<Point> getPoints() {
-		return points;
-	}
 
-	/**
-	 *
-	 * @return
-	 */
-	public BoardVectorType getType() {
-		return type;
-	}
+    /**
+     *
+     * @return
+     */
+    public ArrayList<Point> getPoints() {
+        return points;
+    }
 
-	/**
-	 *
-	 * @return
-	 */
-	public int getPointCount() {
-		return points.size();
-	}
+    /**
+     *
+     * @return
+     */
+    public BoardVectorType getType() {
+        return type;
+    }
 
-	/**
-	 *
-	 * @param index
-	 * @return
-	 */
-	public int getPointX(int index) {
-		return (int) points.get(index).getX();
-	}
+    /**
+     *
+     * @return
+     */
+    public int getPointCount() {
+        return points.size();
+    }
 
-	/**
-	 *
-	 * @param index
-	 * @return
-	 */
-	public int getPointY(int index) {
-		return (int) points.get(index).getY();
-	}
+    /**
+     *
+     * @param index
+     * @return
+     */
+    public int getPointX(int index) {
+        return (int) points.get(index).getX();
+    }
 
-	/**
-	 *
-	 * @return
-	 */
-	public int getLayer() {
-		return (layer);
-	}
+    /**
+     *
+     * @param index
+     * @return
+     */
+    public int getPointY(int index) {
+        return (int) points.get(index).getY();
+    }
 
-	/**
-	 *
-	 * @return
-	 */
-	public String getId() {
-		return (id);
-	}
+    /**
+     *
+     * @return
+     */
+    public int getLayer() {
+        return (layer);
+    }
 
-	/**
-	 *
-	 * @return
-	 */
-	public double getWidth() {
-		return polygon.getBounds().getWidth();
-	}
+    /**
+     *
+     * @return
+     */
+    public String getId() {
+        return (id);
+    }
 
-	public double getHeight() {
-		return polygon.getBounds().getHeight();
-	}
+    /**
+     *
+     * @return
+     */
+    public double getWidth() {
+        return polygon.getBounds().getWidth();
+    }
 
-	/**
-	 *
-	 * @return
-	 */
-	public boolean isClosed() {
-		return (isClosed);
-	}
+    public double getHeight() {
+        return polygon.getBounds().getHeight();
+    }
 
-	/**
-	 *
-	 * @param xVal
-	 * @param yVal
-	 */
-	public void addPoint(long xVal, long yVal) {
-		points.add(new Point((int) xVal, (int) yVal));
-		polygon.addPoint((int) xVal, (int) yVal);
-	}
+    /**
+     *
+     * @return
+     */
+    public boolean isClosed() {
+        return (isClosed);
+    }
 
-	/**
-	 *
-	 * @param layer
-	 */
-	public void setLayer(int layer) {
-		this.layer = layer;
-	}
+    /**
+     *
+     * @param xVal
+     * @param yVal
+     */
+    public void addPoint(long xVal, long yVal) {
+        points.add(new Point((int) xVal, (int) yVal));
+        polygon.addPoint((int) xVal, (int) yVal);
+    }
 
-	/**
-	 *
-	 * @param closed
-	 */
-	public void setClosed(boolean closed) {
-		isClosed = closed;
-	}
+    /**
+     *
+     * @param layer
+     */
+    public void setLayer(int layer) {
+        this.layer = layer;
+    }
 
-	/**
-	 *
-	 * @param id
-	 */
-	public void setId(String id) {
-		this.id = id;
-	}
+    /**
+     *
+     * @param closed
+     */
+    public void setClosed(boolean closed) {
+        isClosed = closed;
+    }
 
-	/**
-	 *
-	 * @param type
-	 */
-	public void setType(BoardVectorType type) {
-		this.type = type;
-	}
+    /**
+     *
+     * @param id
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	/**
-	 *
-	 * @return
-	 */
-	public Polygon getPolygon() {
-		return polygon;
-	}
+    /**
+     *
+     * @param type
+     */
+    public void setType(BoardVectorType type) {
+        this.type = type;
+    }
 
-	/**
-	 *
-	 * @param isClosed
-	 */
-	public void setIsClosed(boolean isClosed) {
-		this.isClosed = isClosed;
-	}
+    /**
+     *
+     * @return
+     */
+    public Polygon getPolygon() {
+        return polygon;
+    }
 
-	/**
-	 *
-	 * @param points
-	 */
-	public void setPoints(ArrayList<Point> points) {
-		this.points = points;
+    /**
+     *
+     * @param isClosed
+     */
+    public void setIsClosed(boolean isClosed) {
+        this.isClosed = isClosed;
+    }
 
-		this.polygon = new Polygon();
-		for (Point point : this.points) {
-			this.polygon.addPoint((int) point.getX(), (int) point.getY());
-		}
-	}
+    /**
+     *
+     * @param points
+     */
+    public void setPoints(ArrayList<Point> points) {
+        this.points = points;
 
-	/**
-	 *
-	 * @param polygon
-	 */
-	public void setPolygon(Polygon polygon) {
-		this.polygon = polygon;
-	}
+        this.polygon = new Polygon();
+        for (Point point : this.points) {
+            this.polygon.addPoint((int) point.getX(), (int) point.getY());
+        }
+    }
 
-	@Override
-	public boolean isSelected() {
-		return selected;
-	}
+    /**
+     *
+     * @param polygon
+     */
+    public void setPolygon(Polygon polygon) {
+        this.polygon = polygon;
+    }
 
-	@Override
-	public void setSelectedState(boolean state) {
-		selected = state;
-	}
+    @Override
+    public boolean isSelected() {
+        return selected;
+    }
 
-	public ArrayList<Event> getEvents() {
-		return events;
-	}
+    @Override
+    public void setSelectedState(boolean state) {
+        selected = state;
+    }
 
-	public void setEvents(ArrayList<Event> events) {
-		this.events = events;
-	}
+    public ArrayList<Event> getEvents() {
+        return events;
+    }
 
-	public void addEvent(Event event) {
-		events.add(event);
-	}
+    public void setEvents(ArrayList<Event> events) {
+        this.events = events;
+    }
 
-	/**
-	 *
-	 * @return @throws CloneNotSupportedException
-	 */
-	@Override
-	public Object clone() throws CloneNotSupportedException {
-		super.clone();
+    public void addEvent(Event event) {
+        events.add(event);
+    }
 
-		BoardVector clone = new BoardVector();
-		clone.layer = layer;
-		clone.id = id;
-		clone.isClosed = isClosed;
-		clone.points = (ArrayList<Point>) points.clone();
-		clone.polygon = polygon;
-		clone.type = type;
-		clone.events = events;
+    /**
+     *
+     * @return @throws CloneNotSupportedException
+     */
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        super.clone();
 
-		return clone;
-	}
+        BoardVector clone = new BoardVector();
+        clone.layer = layer;
+        clone.id = id;
+        clone.isClosed = isClosed;
+        clone.points = (ArrayList<Point>) points.clone();
+        clone.polygon = polygon;
+        clone.type = type;
+        clone.events = events;
 
-	@Override
-	public int hashCode() {
-		int hash = 3;
-		hash = 79 * hash + Objects.hashCode(this.id);
-		hash = 79 * hash + Objects.hashCode(this.type);
-		hash = 79 * hash + Objects.hashCode(this.points);
-		hash = 79 * hash + (this.isClosed ? 1 : 0);
-		hash = 79 * hash + Objects.hashCode(this.events);
-		hash = 79 * hash + this.layer;
-		hash = 79 * hash + Objects.hashCode(this.polygon);
-		hash = 79 * hash + (this.selected ? 1 : 0);
-		return hash;
-	}
+        return clone;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		final BoardVector other = (BoardVector) obj;
-		if (this.isClosed != other.isClosed) {
-			return false;
-		}
-		if (this.layer != other.layer) {
-			return false;
-		}
-		if (this.selected != other.selected) {
-			return false;
-		}
-		if (!Objects.equals(this.id, other.id)) {
-			return false;
-		}
-		if (this.type != other.type) {
-			return false;
-		}
-		if (!Objects.equals(this.points, other.points)) {
-			return false;
-		}
-		if (!Objects.equals(this.events, other.events)) {
-			return false;
-		}
-		return true;
-	}
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 79 * hash + Objects.hashCode(this.id);
+        hash = 79 * hash + Objects.hashCode(this.type);
+        hash = 79 * hash + Objects.hashCode(this.points);
+        hash = 79 * hash + (this.isClosed ? 1 : 0);
+        hash = 79 * hash + Objects.hashCode(this.events);
+        hash = 79 * hash + this.layer;
+        hash = 79 * hash + Objects.hashCode(this.polygon);
+        hash = 79 * hash + (this.selected ? 1 : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final BoardVector other = (BoardVector) obj;
+        if (this.isClosed != other.isClosed) {
+            return false;
+        }
+        if (this.layer != other.layer) {
+            return false;
+        }
+        if (this.selected != other.selected) {
+            return false;
+        }
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        if (this.type != other.type) {
+            return false;
+        }
+        if (!Objects.equals(this.points, other.points)) {
+            return false;
+        }
+        if (!Objects.equals(this.events, other.events)) {
+            return false;
+        }
+        return true;
+    }
 
 }

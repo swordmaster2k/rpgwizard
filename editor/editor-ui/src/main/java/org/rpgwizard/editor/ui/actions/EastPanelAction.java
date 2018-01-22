@@ -20,32 +20,32 @@ import org.rpgwizard.editor.MainWindow;
  */
 public class EastPanelAction extends AbstractAction {
 
-	/**
-	 *
-	 * @param e
-	 */
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		MainWindow mainWindow = MainWindow.getInstance();
-		JPanel panel = mainWindow.getEastPanel();
-		JTabbedPane westLowerTabbedPane = mainWindow.getWestLowerTabbedPane();
-		JTabbedPane eastLowerTabbedPane = mainWindow.getEastLowerTabbedPane();
-		if (panel.isVisible()) {
-			moveTab(eastLowerTabbedPane, westLowerTabbedPane, 0);
-		} else {
-			moveTab(westLowerTabbedPane, eastLowerTabbedPane, 1);
-		}
-		panel.setVisible(!panel.isVisible());
-	}
+    /**
+     *
+     * @param e
+     */
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        MainWindow mainWindow = MainWindow.getInstance();
+        JPanel panel = mainWindow.getEastPanel();
+        JTabbedPane westLowerTabbedPane = mainWindow.getWestLowerTabbedPane();
+        JTabbedPane eastLowerTabbedPane = mainWindow.getEastLowerTabbedPane();
+        if (panel.isVisible()) {
+            moveTab(eastLowerTabbedPane, westLowerTabbedPane, 0);
+        } else {
+            moveTab(westLowerTabbedPane, eastLowerTabbedPane, 1);
+        }
+        panel.setVisible(!panel.isVisible());
+    }
 
-	private void moveTab(JTabbedPane origin, JTabbedPane target, int index) {
-		if (origin.getTabCount() > index) {
-			String title = origin.getTitleAt(index);
-			Component component = origin.getComponentAt(index);
-			origin.removeTabAt(index);
-			target.addTab(title, component);
-			target.setSelectedIndex(target.getTabCount() - 1);
-		}
-	}
+    private void moveTab(JTabbedPane origin, JTabbedPane target, int index) {
+        if (origin.getTabCount() > index) {
+            String title = origin.getTitleAt(index);
+            Component component = origin.getComponentAt(index);
+            origin.removeTabAt(index);
+            target.addTab(title, component);
+            target.setSelectedIndex(target.getTabCount() - 1);
+        }
+    }
 
 }

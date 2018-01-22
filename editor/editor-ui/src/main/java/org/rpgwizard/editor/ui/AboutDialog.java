@@ -28,29 +28,18 @@ import org.rpgwizard.editor.properties.EditorProperty;
  */
 public final class AboutDialog extends JDialog {
 
-	public AboutDialog(JFrame parent) {
+    public AboutDialog(JFrame parent) {
         super(parent, "About RPGWizard", true);
 
         JLabel titleLabel = new JLabel(EditorProperties.getProperty(EditorProperty.EDITOR_UI_TITLE));
         titleLabel.setFont(new Font(titleLabel.getName(), Font.BOLD, 16));
 
-        String disclaimer = 
-                "RPGWizard is an open source project, and is supported by its community. It owes its heritage to the RPGToolkit, from which it was originally forked."
-                + "\n\n"
-                + "The RPGWizard team is lead by Joshua Michael Daly."
-                + "\n\n"
-                + "Special thanks to:"
-                + "\n"
-                + " - Grindalf, for supplying the demo game assets."
-                + "\n\n"
-                + "Some icons by:"
-                + "\n"
-                + " - Yusuke Kamiyamane. Licensed under a Creative Commons Attribution 3.0 License."
-                + "\n"
-                + " - Icons8. Licensed under a Creative Commons Attribution-NoDerivs 3.0 Unported."
-                + "\n\n"
-                + "Copyright 2016-2017 RPGWizard. All rights reserved."
-                + "\n\n"
+        String disclaimer = "RPGWizard is an open source project, and is supported by its community. It owes its heritage to the RPGToolkit, from which it was originally forked."
+                + "\n\n" + "The RPGWizard team is lead by Joshua Michael Daly." + "\n\n" + "Special thanks to:" + "\n"
+                + " - Grindalf, for supplying the demo game assets." + "\n\n" + "Some icons by:" + "\n"
+                + " - Yusuke Kamiyamane. Licensed under a Creative Commons Attribution 3.0 License." + "\n"
+                + " - Icons8. Licensed under a Creative Commons Attribution-NoDerivs 3.0 Unported." + "\n\n"
+                + "Copyright 2016-2017 RPGWizard. All rights reserved." + "\n\n"
                 + "Covered Software is provided under this License on "
                 + "an “as is” basis, without warranty of any kind, either "
                 + "expressed, implied, or statutory, including, without "
@@ -63,7 +52,7 @@ public final class AboutDialog extends JDialog {
                 + "This disclaimer of warranty constitutes an essential part "
                 + "of this License. No use of any Covered Software is authorized "
                 + "under this License except under this disclaimer.";
-        
+
         JTextArea disclaimerArea = new JTextArea(22, 50);
         disclaimerArea.setText(disclaimer);
         disclaimerArea.setWrapStyleWord(true);
@@ -91,7 +80,7 @@ public final class AboutDialog extends JDialog {
         JPanel textPanel = new JPanel();
         textPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         textPanel.add(disclaimerArea);
-        
+
         JPanel okPanel = new JPanel();
         JButton ok = new JButton("Ok");
         okPanel.add(ok);
@@ -106,9 +95,10 @@ public final class AboutDialog extends JDialog {
 
         pack();
     }
-	public static void main(String[] args) {
-		JDialog dialog = new AboutDialog(new JFrame());
-		dialog.setVisible(true);
-	}
+
+    public static void main(String[] args) {
+        JDialog dialog = new AboutDialog(new JFrame());
+        dialog.setVisible(true);
+    }
 
 }

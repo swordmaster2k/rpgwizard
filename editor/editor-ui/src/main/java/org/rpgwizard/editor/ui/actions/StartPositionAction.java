@@ -19,12 +19,12 @@ import org.rpgwizard.editor.MainWindow;
  */
 public class StartPositionAction extends AbstractAction {
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		BoardEditor.toggleSelectedOnBoardEditor();
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        BoardEditor.toggleSelectedOnBoardEditor();
 
-		StartPositionBrush brush = new StartPositionBrush();
-		MainWindow.getInstance().setCurrentBrush(brush);
-	}
+        StartPositionBrush brush = new StartPositionBrush();
+        MainWindow.getInstance().setCurrentBrush(brush);
+    }
 
 }

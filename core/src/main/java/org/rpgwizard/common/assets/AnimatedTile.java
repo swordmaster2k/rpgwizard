@@ -15,56 +15,57 @@ import java.util.List;
  */
 public class AnimatedTile extends AbstractAsset {
 
-	/**
-	 * Animated tile frame descriptor.
-	 */
-	public class Frame {
+    /**
+     * Animated tile frame descriptor.
+     */
+    public class Frame {
 
-		private AssetDescriptor descriptor;
-		private String frameTarget;
-		private int duration;
+        private AssetDescriptor descriptor;
+        private String frameTarget;
+        private int duration;
 
-		public Frame(AssetDescriptor descriptor, String frameTarget) {
-			this.descriptor = descriptor;
-			this.frameTarget = frameTarget;
-			duration = 0;
-		}
+        public Frame(AssetDescriptor descriptor, String frameTarget) {
+            this.descriptor = descriptor;
+            this.frameTarget = frameTarget;
+            duration = 0;
+        }
 
-		public AssetDescriptor getDescriptor() {
-			return this.descriptor;
-		}
+        public AssetDescriptor getDescriptor() {
+            return this.descriptor;
+        }
 
-		public String getFrameTarget() {
-			return frameTarget;
-		}
+        public String getFrameTarget() {
+            return frameTarget;
+        }
 
-		public void setFrameTarget(String frameTarget) {
-			this.frameTarget = frameTarget;
-		}
+        public void setFrameTarget(String frameTarget) {
+            this.frameTarget = frameTarget;
+        }
 
-		public int getDuration() {
-			return this.duration;
-		}
+        public int getDuration() {
+            return this.duration;
+        }
 
-		public void setDuration(int value) {
-			this.duration = Math.max(0, value);
-		}
+        public void setDuration(int value) {
+            this.duration = Math.max(0, value);
+        }
 
-	}
+    }
 
-	private final List<Frame> frames;
+    private final List<Frame> frames;
 
-	public AnimatedTile(AssetDescriptor descriptor) {
-    super(descriptor);
-    frames = new ArrayList<>();
-  }
-	/**
-	 * Returns a list of animation frames associated with this animated tile.
-	 *
-	 * @return list of animation frames
-	 */
-	public List<Frame> getFrames() {
-		return frames;
-	}
+    public AnimatedTile(AssetDescriptor descriptor) {
+        super(descriptor);
+        frames = new ArrayList<>();
+    }
+
+    /**
+     * Returns a list of animation frames associated with this animated tile.
+     *
+     * @return list of animation frames
+     */
+    public List<Frame> getFrames() {
+        return frames;
+    }
 
 }

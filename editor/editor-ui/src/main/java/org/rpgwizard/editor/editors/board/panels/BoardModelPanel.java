@@ -18,44 +18,42 @@ import org.rpgwizard.editor.MainWindow;
  *
  * @author Joshua Michael Daly
  */
-public class BoardModelPanel extends AbstractModelPanel
-		implements
-			BoardModelChangeListener {
+public class BoardModelPanel extends AbstractModelPanel implements BoardModelChangeListener {
 
-	public BoardModelPanel(Object model) {
-		super(model);
-		if (model instanceof AbstractBoardModel) {
-			((AbstractBoardModel) model).addBoardChangeListener(this);
-		}
-	}
+    public BoardModelPanel(Object model) {
+        super(model);
+        if (model instanceof AbstractBoardModel) {
+            ((AbstractBoardModel) model).addBoardChangeListener(this);
+        }
+    }
 
-	@Override
-	public void tearDown() {
-		if (model instanceof AbstractBoardModel) {
-			((AbstractBoardModel) model).removeBoardChangeListener(this);
-		}
-	}
+    @Override
+    public void tearDown() {
+        if (model instanceof AbstractBoardModel) {
+            ((AbstractBoardModel) model).removeBoardChangeListener(this);
+        }
+    }
 
-	public BoardEditor getBoardEditor() {
-		return MainWindow.getInstance().getCurrentBoardEditor();
-	}
+    public BoardEditor getBoardEditor() {
+        return MainWindow.getInstance().getCurrentBoardEditor();
+    }
 
-	public void updateCurrentBoardView() {
-		BoardEditor editor = MainWindow.getInstance().getCurrentBoardEditor();
+    public void updateCurrentBoardView() {
+        BoardEditor editor = MainWindow.getInstance().getCurrentBoardEditor();
 
-		if (editor != null) {
-			editor.getBoardView().repaint();
-		}
-	}
+        if (editor != null) {
+            editor.getBoardView().repaint();
+        }
+    }
 
-	@Override
-	public void modelChanged(BoardModelEvent e) {
+    @Override
+    public void modelChanged(BoardModelEvent e) {
 
-	}
+    }
 
-	@Override
-	public void modelMoved(BoardModelEvent e) {
+    @Override
+    public void modelMoved(BoardModelEvent e) {
 
-	}
+    }
 
 }

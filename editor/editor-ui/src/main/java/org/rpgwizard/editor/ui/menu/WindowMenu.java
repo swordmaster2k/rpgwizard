@@ -25,67 +25,65 @@ import org.rpgwizard.editor.ui.resources.Icons;
  */
 public final class WindowMenu extends JMenu {
 
-	private JMenuItem westPanel;
-	private JMenuItem eastPanel;
+    private JMenuItem westPanel;
+    private JMenuItem eastPanel;
 
-	private JMenu themesMenu;
-	private JMenuItem lightTheme;
-	private JMenuItem darkTheme;
+    private JMenu themesMenu;
+    private JMenuItem lightTheme;
+    private JMenuItem darkTheme;
 
-	public WindowMenu() {
-		super("Window");
+    public WindowMenu() {
+        super("Window");
 
-		setMnemonic(KeyEvent.VK_W);
+        setMnemonic(KeyEvent.VK_W);
 
-		configureWestPanelMenuItem();
-		configureEastPanelMenuItem();
-		configureThemeSubMenu();
+        configureWestPanelMenuItem();
+        configureEastPanelMenuItem();
+        configureThemeSubMenu();
 
-		add(westPanel);
-		add(eastPanel);
-		add(new JSeparator());
-		add(themesMenu);
-	}
+        add(westPanel);
+        add(eastPanel);
+        add(new JSeparator());
+        add(themesMenu);
+    }
 
-	public JMenuItem getZoomInMenuItem() {
-		return westPanel;
-	}
+    public JMenuItem getZoomInMenuItem() {
+        return westPanel;
+    }
 
-	public void configureWestPanelMenuItem() {
-		westPanel = new JMenuItem("West Panel");
-		westPanel.setIcon(Icons.getSmallIcon("application-sidebar"));
-		westPanel.setAccelerator(KeyStroke.getKeyStroke(
-				KeyEvent.VK_OPEN_BRACKET, ActionEvent.CTRL_MASK
-						+ ActionEvent.ALT_MASK));
-		westPanel.addActionListener(new WestPanelAction());
-	}
+    public void configureWestPanelMenuItem() {
+        westPanel = new JMenuItem("West Panel");
+        westPanel.setIcon(Icons.getSmallIcon("application-sidebar"));
+        westPanel.setAccelerator(
+                KeyStroke.getKeyStroke(KeyEvent.VK_OPEN_BRACKET, ActionEvent.CTRL_MASK + ActionEvent.ALT_MASK));
+        westPanel.addActionListener(new WestPanelAction());
+    }
 
-	public void configureEastPanelMenuItem() {
-		eastPanel = new JMenuItem("East Panel");
-		eastPanel.setIcon(Icons.getSmallIcon("application-sidebar-flipped"));
-		eastPanel.setAccelerator(KeyStroke.getKeyStroke(
-				KeyEvent.VK_CLOSE_BRACKET, ActionEvent.CTRL_MASK
-						+ ActionEvent.ALT_MASK));
-		eastPanel.addActionListener(new EastPanelAction());
-	}
+    public void configureEastPanelMenuItem() {
+        eastPanel = new JMenuItem("East Panel");
+        eastPanel.setIcon(Icons.getSmallIcon("application-sidebar-flipped"));
+        eastPanel.setAccelerator(
+                KeyStroke.getKeyStroke(KeyEvent.VK_CLOSE_BRACKET, ActionEvent.CTRL_MASK + ActionEvent.ALT_MASK));
+        eastPanel.addActionListener(new EastPanelAction());
+    }
 
-	private void configureThemeSubMenu() {
-		configureLightThemeMenuItem();
-		configureDarkThemeMenuItem();
+    private void configureThemeSubMenu() {
+        configureLightThemeMenuItem();
+        configureDarkThemeMenuItem();
 
-		themesMenu = new JMenu("Themes");
-		themesMenu.add(lightTheme);
-		themesMenu.add(darkTheme);
-	}
+        themesMenu = new JMenu("Themes");
+        themesMenu.add(lightTheme);
+        themesMenu.add(darkTheme);
+    }
 
-	public void configureLightThemeMenuItem() {
-		lightTheme = new JMenuItem("Light");
-		lightTheme.addActionListener(new ThemeAction(Theme.LIGHT));
-	}
+    public void configureLightThemeMenuItem() {
+        lightTheme = new JMenuItem("Light");
+        lightTheme.addActionListener(new ThemeAction(Theme.LIGHT));
+    }
 
-	public void configureDarkThemeMenuItem() {
-		darkTheme = new JMenuItem("Dark");
-		darkTheme.addActionListener(new ThemeAction(Theme.DARK));
-	}
+    public void configureDarkThemeMenuItem() {
+        darkTheme = new JMenuItem("Dark");
+        darkTheme.addActionListener(new ThemeAction(Theme.DARK));
+    }
 
 }

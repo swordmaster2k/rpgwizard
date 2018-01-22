@@ -13,23 +13,22 @@ package org.rpgwizard.common.assets;
  */
 public enum Equipment {
 
-	HEAD("head"), CHEST("chest"), RIGHT_HAND("right-hand"), LEFT_HAND(
-			"left-hand"), BOOTS("boots"), GLOVES("gloves"), ACCESSORY_1(
-			"accessory-1"), ACCESSORY_2("accessory-2");
+    HEAD("head"), CHEST("chest"), RIGHT_HAND("right-hand"), LEFT_HAND("left-hand"), BOOTS("boots"), GLOVES(
+            "gloves"), ACCESSORY_1("accessory-1"), ACCESSORY_2("accessory-2");
 
-	private final String name;
+    private final String name;
 
-	private Equipment(String name) {
-		this.name = name;
-	}
+    private Equipment(String name) {
+        this.name = name;
+    }
 
-	public boolean equalsName(String otherName) {
-		return name.equals(otherName);
-	}
+    public boolean equalsName(String otherName) {
+        return name.equals(otherName);
+    }
 
-	@Override
-	public String toString() {
-		return name;
-	}
+    @Override
+    public String toString() {
+        return name;
+    }
 
 }

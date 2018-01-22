@@ -22,60 +22,56 @@ import org.rpgwizard.common.utilities.CoreProperties;
  */
 public class JsonItemSerializer extends AbstractJsonSerializer {
 
-	@Override
-	public boolean serializable(AssetDescriptor descriptor) {
-		final String ext = Paths.extension(descriptor.getURI());
-		return (ext.endsWith(CoreProperties
-				.getFullExtension("toolkit.item.extension.json")));
-	}
+    @Override
+    public boolean serializable(AssetDescriptor descriptor) {
+        final String ext = Paths.extension(descriptor.getURI());
+        return (ext.endsWith(CoreProperties.getFullExtension("toolkit.item.extension.json")));
+    }
 
-	@Override
-	public boolean deserializable(AssetDescriptor descriptor) {
-		return serializable(descriptor);
-	}
+    @Override
+    public boolean deserializable(AssetDescriptor descriptor) {
+        return serializable(descriptor);
+    }
 
-	@Override
-	protected void load(AssetHandle handle, JSONObject json)
-			throws AssetException {
-		final Item item = new Item(handle.getDescriptor());
+    @Override
+    protected void load(AssetHandle handle, JSONObject json) throws AssetException {
+        final Item item = new Item(handle.getDescriptor());
 
-		item.setVersion(json.getDouble("version"));
-		item.setName(json.getString("name"));
-		item.setIcon(json.getString("icon"));
-		item.setDescription(json.getString("description"));
-		item.setType(json.getString("type"));
-		item.setPrice(json.getInt("price"));
+        item.setVersion(json.getDouble("version"));
+        item.setName(json.getString("name"));
+        item.setIcon(json.getString("icon"));
+        item.setDescription(json.getString("description"));
+        item.setType(json.getString("type"));
+        item.setPrice(json.getInt("price"));
 
-		Map<String, Integer> effects = deserializeIntegerMap(json
-				.getJSONObject("effects"));
-		item.setHealthEffect(effects.get("health"));
-		item.setAttackEffect(effects.get("attack"));
-		item.setDefenceEffect(effects.get("defence"));
-		item.setMagicEffect(effects.get("magic"));
+        Map<String, Integer> effects = deserializeIntegerMap(json.getJSONObject("effects"));
+        item.setHealthEffect(effects.get("health"));
+        item.setAttackEffect(effects.get("attack"));
+        item.setDefenceEffect(effects.get("defence"));
+        item.setMagicEffect(effects.get("magic"));
 
-		handle.setAsset(item);
-	}
+        handle.setAsset(item);
+    }
 
-	@Override
-	protected void store(AssetHandle handle, JSONObject json)
-			throws AssetException {
-		super.store(handle, json);
+    @Override
+    protected void store(AssetHandle handle, JSONObject json) throws AssetException {
+        super.store(handle, json);
 
-		final Item item = (Item) handle.getAsset();
+        final Item item = (Item) handle.getAsset();
 
-		json.put("name", item.getName());
-		json.put("icon", serializePath(item.getIcon()));
-		json.put("description", item.getDescription());
-		json.put("type", item.getType());
-		json.put("price", item.getPrice());
+        json.put("name", item.getName());
+        json.put("icon", serializePath(item.getIcon()));
+        json.put("description", item.getDescription());
+        json.put("type", item.getType());
+        json.put("price", item.getPrice());
 
-		final JSONObject effects = new JSONObject();
-		effects.put("health", item.getHealthEffect());
-		effects.put("attack", item.getAttackEffect());
-		effects.put("defence", item.getDefenceEffect());
-		effects.put("magic", item.getMagicEffect());
+        final JSONObject effects = new JSONObject();
+        effects.put("health", item.getHealthEffect());
+        effects.put("attack", item.getAttackEffect());
+        effects.put("defence", item.getDefenceEffect());
+        effects.put("magic", item.getMagicEffect());
 
-		json.put("effects", effects);
-	}
+        json.put("effects", effects);
+    }
 
 }

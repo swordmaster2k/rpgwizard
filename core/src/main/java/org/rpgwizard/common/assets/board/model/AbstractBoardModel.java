@@ -21,7 +21,8 @@ public class AbstractBoardModel {
     /**
      * Add a new <code>BoardChangeListener</code> for this board.
      *
-     * @param listener new change listener
+     * @param listener
+     *            new change listener
      */
     public void addBoardChangeListener(BoardModelChangeListener listener) {
         changeListeners.add(listener);
@@ -30,15 +31,15 @@ public class AbstractBoardModel {
     /**
      * Remove an existing <code>BoardChangeListener</code> for this board.
      *
-     * @param listener change listener
+     * @param listener
+     *            change listener
      */
     public void removeBoardChangeListener(BoardModelChangeListener listener) {
         changeListeners.remove(listener);
     }
 
     /**
-     * Fires the <code>BoardModelEvent</code> informs all the listeners that
-     * this model has changed.
+     * Fires the <code>BoardModelEvent</code> informs all the listeners that this model has changed.
      */
     public void fireModelChanged() {
         BoardModelEvent event = null;
@@ -50,10 +51,9 @@ public class AbstractBoardModel {
             ((BoardModelChangeListener) iterator.next()).modelChanged(event);
         }
     }
-    
+
     /**
-     * Fires the <code>BoardModelEvent</code> informs all the listeners that
-     * this model has moved on the board.
+     * Fires the <code>BoardModelEvent</code> informs all the listeners that this model has moved on the board.
      */
     public void fireModelMoved() {
         BoardModelEvent event = null;

@@ -31,70 +31,61 @@ import ro.fortsoft.pf4j.PluginManager;
  */
 public class RunAction extends AbstractAction {
 
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(RunAction.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RunAction.class);
 
-	private ProgressMonitor progressMonitor;
-	private SwingWorker worker;
+    private ProgressMonitor progressMonitor;
+    private SwingWorker worker;
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		try {
-			MainWindow instance = MainWindow.getInstance();
-			instance.getMainToolBar().getRunButton().setEnabled(false);
-			instance.getMainToolBar().getSaveAllButton().doClick();
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        try {
+            MainWindow instance = MainWindow.getInstance();
+            instance.getMainToolBar().getRunButton().setEnabled(false);
+            instance.getMainToolBar().getSaveAllButton().doClick();
 
-			String projectName = instance.getTitle();
-			int projectWidth = instance.getActiveProject().getResolutionWidth();
-			int projectHeight = instance.getActiveProject()
-					.getResolutionHeight();
+            String projectName = instance.getTitle();
+            int projectWidth = instance.getActiveProject().getResolutionWidth();
+            int projectHeight = instance.getActiveProject().getResolutionHeight();
 
-			// Make a temporary copy of the user's project for the engine to
-			// use.
-			File projectOriginal = new File(System.getProperty("project.path"));
-			File projectCopy = Files.createTempDir();
-			FileUtils.copyDirectory(projectOriginal, projectCopy);
+            // Make a temporary copy of the user's project for the engine to
+            // use.
+            File projectOriginal = new File(System.getProperty("project.path"));
+            File projectCopy = Files.createTempDir();
+            FileUtils.copyDirectory(projectOriginal, projectCopy);
 
-			PluginManager pluginManager = instance.getPluginManager();
-			List<Engine> engines = pluginManager.getExtensions(Engine.class);
+            PluginManager pluginManager = instance.getPluginManager();
+            List<Engine> engines = pluginManager.getExtensions(Engine.class);
 
-			// Just use the first available engine for now.
-			if (engines.size() > 0) {
-				progressMonitor = new ProgressMonitor(instance,
-						"Starting Engine...", "", 0, 100);
-				progressMonitor.setProgress(0);
-				Dimension dimensions = new Dimension(projectWidth,
-						projectHeight);
-				worker = new SwingWorker<Void, Void>() {
-					@Override
-					protected Void doInBackground() throws Exception {
-						runEngine(engines.get(0), projectName, dimensions,
-								projectCopy, progressMonitor);
+            // Just use the first available engine for now.
+            if (engines.size() > 0) {
+                progressMonitor = new ProgressMonitor(instance, "Starting Engine...", "", 0, 100);
+                progressMonitor.setProgress(0);
+                Dimension dimensions = new Dimension(projectWidth, projectHeight);
+                worker = new SwingWorker<Void, Void>() {
+                    @Override
+                    protected Void doInBackground() throws Exception {
+                        runEngine(engines.get(0), projectName, dimensions, projectCopy, progressMonitor);
 
-						return null;
-					}
+                        return null;
+                    }
 
-					@Override
-					public void done() {
-						Toolkit.getDefaultToolkit().beep();
-						instance.getMainToolBar().getStopButton()
-								.setEnabled(true);
-					}
-				};
-				worker.execute();
-			}
+                    @Override
+                    public void done() {
+                        Toolkit.getDefaultToolkit().beep();
+                        instance.getMainToolBar().getStopButton().setEnabled(true);
+                    }
+                };
+                worker.execute();
+            }
 
-		} catch (IOException ex) {
-			LOGGER.error("Failed to run engine.", ex);
-		}
-	}
+        } catch (IOException ex) {
+            LOGGER.error("Failed to run engine.", ex);
+        }
+    }
 
-	private void runEngine(Engine engine, String projectName,
-			Dimension dimensions, File projectCopy,
-			ProgressMonitor progressMonitor) throws InterruptedException,
-			InvocationTargetException, Exception {
-		engine.run(projectName, dimensions.width, dimensions.height,
-				projectCopy, progressMonitor);
-	}
+    private void runEngine(Engine engine, String projectName, Dimension dimensions, File projectCopy,
+            ProgressMonitor progressMonitor) throws InterruptedException, InvocationTargetException, Exception {
+        engine.run(projectName, dimensions.width, dimensions.height, projectCopy, progressMonitor);
+    }
 
 }

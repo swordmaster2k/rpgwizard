@@ -24,54 +24,53 @@ import org.rpgwizard.html5.engine.plugin.rest.EngineRestService;
  */
 public class EngineRunnable implements Runnable {
 
-	private final String resourceBase;
+    private final String resourceBase;
 
-	private Server server;
+    private Server server;
 
-	public EngineRunnable(String resourceBase) {
-		this.resourceBase = resourceBase;
-	}
+    public EngineRunnable(String resourceBase) {
+        this.resourceBase = resourceBase;
+    }
 
-	@Override
-	public void run() {
-		server = new Server(new InetSocketAddress("localhost", 8080));
-		server.setStopAtShutdown(true);
+    @Override
+    public void run() {
+        server = new Server(new InetSocketAddress("localhost", 8080));
+        server.setStopAtShutdown(true);
 
-		EngineRestService restService = new EngineRestService(resourceBase);
-		ResourceConfig resourceConfig = new ResourceConfig();
-		resourceConfig.register(restService);
+        EngineRestService restService = new EngineRestService(resourceBase);
+        ResourceConfig resourceConfig = new ResourceConfig();
+        resourceConfig.register(restService);
 
-		ServletContainer servletContainer = new ServletContainer(resourceConfig);
-		ServletHolder servletHolder = new ServletHolder(servletContainer);
-		ServletContextHandler restHandler = new ServletContextHandler();
-		restHandler.addServlet(servletHolder, "/*");
+        ServletContainer servletContainer = new ServletContainer(resourceConfig);
+        ServletHolder servletHolder = new ServletHolder(servletContainer);
+        ServletContextHandler restHandler = new ServletContextHandler();
+        restHandler.addServlet(servletHolder, "/*");
 
-		ResourceHandler resourceHandler = new ResourceHandler();
-		resourceHandler.setDirectoriesListed(true);
-		resourceHandler.setWelcomeFiles(new String[]{"index.html"});
-		resourceHandler.setCacheControl("no-store,no-cache,must-revalidate");
-		resourceHandler.setResourceBase(resourceBase);
+        ResourceHandler resourceHandler = new ResourceHandler();
+        resourceHandler.setDirectoriesListed(true);
+        resourceHandler.setWelcomeFiles(new String[] { "index.html" });
+        resourceHandler.setCacheControl("no-store,no-cache,must-revalidate");
+        resourceHandler.setResourceBase(resourceBase);
 
-		HandlerList handlers = new HandlerList();
-		handlers.setHandlers(new Handler[]{resourceHandler, restHandler});
-		server.setHandler(handlers);
+        HandlerList handlers = new HandlerList();
+        handlers.setHandlers(new Handler[] { resourceHandler, restHandler });
+        server.setHandler(handlers);
 
-		try {
-			server.start();
-			server.join();
-		} catch (Exception ex) {
-			throw new RuntimeException(ex);
-		}
-	}
+        try {
+            server.start();
+            server.join();
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
 
-	public void stop() throws Exception {
-		server.stop();
-	}
+    public void stop() throws Exception {
+        server.stop();
+    }
 
-	public static void main(String[] args) {
-		EngineRunnable runnable = new EngineRunnable(
-				System.getProperty("org.rpgwizard.execution.path") + "/project");
-		runnable.run();
-	}
+    public static void main(String[] args) {
+        EngineRunnable runnable = new EngineRunnable(System.getProperty("org.rpgwizard.execution.path") + "/project");
+        runnable.run();
+    }
 
 }

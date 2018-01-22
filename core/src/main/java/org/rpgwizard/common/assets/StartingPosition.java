@@ -13,20 +13,20 @@ package org.rpgwizard.common.assets;
  */
 public class StartingPosition {
 
-	public int x;
-	public int y;
-	public int layer;
+    public int x;
+    public int y;
+    public int layer;
 
-	public StartingPosition() {
-		x = 0;
-		y = 0;
-		layer = 0;
-	}
+    public StartingPosition() {
+        x = 0;
+        y = 0;
+        layer = 0;
+    }
 
-	public StartingPosition(int x, int y, int layer) {
-		this.x = x;
-		this.y = y;
-		this.layer = layer;
-	}
+    public StartingPosition(int x, int y, int layer) {
+        this.x = x;
+        this.y = y;
+        this.layer = layer;
+    }
 
 }

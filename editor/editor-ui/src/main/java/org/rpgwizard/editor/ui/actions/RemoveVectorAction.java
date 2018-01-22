@@ -18,25 +18,24 @@ import org.rpgwizard.editor.editors.BoardEditor;
  */
 public class RemoveVectorAction extends AbstractAction {
 
-	private final BoardEditor boardEditor;
-	private final int x;
-	private final int y;
+    private final BoardEditor boardEditor;
+    private final int x;
+    private final int y;
 
-	public RemoveVectorAction(BoardEditor boardEditor, int x, int y) {
-		this.boardEditor = boardEditor;
-		this.x = x;
-		this.y = y;
-	}
+    public RemoveVectorAction(BoardEditor boardEditor, int x, int y) {
+        this.boardEditor = boardEditor;
+        this.x = x;
+        this.y = y;
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		BoardVector result = boardEditor.getBoardView()
-				.getCurrentSelectedLayer().getLayer().removeVectorAt(x, y);
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        BoardVector result = boardEditor.getBoardView().getCurrentSelectedLayer().getLayer().removeVectorAt(x, y);
 
-		if (result == boardEditor.getSelectedObject()) {
-			boardEditor.getSelectedObject().setSelectedState(false);
-			boardEditor.setSelectedObject(null);
-		}
-	}
+        if (result == boardEditor.getSelectedObject()) {
+            boardEditor.getSelectedObject().setSelectedState(false);
+            boardEditor.setSelectedObject(null);
+        }
+    }
 
 }

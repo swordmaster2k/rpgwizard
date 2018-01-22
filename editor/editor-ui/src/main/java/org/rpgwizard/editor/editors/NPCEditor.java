@@ -27,75 +27,72 @@ import org.rpgwizard.editor.ui.resources.Icons;
  *
  * @author Joshua Michael Daly
  */
-public class NPCEditor extends AbstractSpriteEditor
-		implements
-			InternalFrameListener,
-			SpriteChangeListener {
+public class NPCEditor extends AbstractSpriteEditor implements InternalFrameListener, SpriteChangeListener {
 
-	private final NPC npc;
+    private final NPC npc;
 
-	private JTextField npcName;
-	private JTextField npcDescription;
+    private JTextField npcName;
+    private JTextField npcDescription;
 
-	public NPCEditor(NPC npc) {
-		super("Untitled", npc, Icons.getIcon("npc"));
+    public NPCEditor(NPC npc) {
+        super("Untitled", npc, Icons.getIcon("npc"));
 
-		this.npc = npc;
-		this.npc.addSpriteChangeListener(this);
+        this.npc = npc;
+        this.npc.addSpriteChangeListener(this);
 
-		if (this.npc.getDescriptor() == null) {
-			setupNewNPC();
-		} else {
-			setTitle(new File(npc.getDescriptor().getURI()).getName());
-		}
+        if (this.npc.getDescriptor() == null) {
+            setupNewNPC();
+        } else {
+            setTitle(new File(npc.getDescriptor().getURI()).getName());
+        }
 
-		constructWindow();
-		setVisible(true);
-		pack();
-	}
+        constructWindow();
+        setVisible(true);
+        pack();
+    }
 
-	@Override
-	public AbstractAsset getAsset() {
-		return npc;
-	}
+    @Override
+    public AbstractAsset getAsset() {
+        return npc;
+    }
 
-	public NPC getNPC() {
-		return npc;
-	}
+    public NPC getNPC() {
+        return npc;
+    }
 
-	@Override
-	public void save() throws Exception {
-		// Get the relative portrait path.
-		checkProfileImagePath();
+    @Override
+    public void save() throws Exception {
+        // Get the relative portrait path.
+        checkProfileImagePath();
 
-		npc.setName(npcName.getText());
-		npc.setDescription(npcDescription.getText());
+        npc.setName(npcName.getText());
+        npc.setDescription(npcDescription.getText());
 
-		save(npc);
-	}
+        save(npc);
+    }
 
-	@Override
-	public void saveAs(File file) throws Exception {
-		npc.setDescriptor(new AssetDescriptor((file.toURI())));
-		setTitle(file.getName());
-		save();
-	}
+    @Override
+    public void saveAs(File file) throws Exception {
+        npc.setDescriptor(new AssetDescriptor((file.toURI())));
+        setTitle(file.getName());
+        save();
+    }
 
-	private void setupNewNPC() {
-		String undefined = "Undefined";
-		npc.setDescription(undefined);
-	}
+    private void setupNewNPC() {
+        String undefined = "Undefined";
+        npc.setDescription(undefined);
+    }
 
-	private void constructWindow() {
-		addInternalFrameListener(this);
+    private void constructWindow() {
+        addInternalFrameListener(this);
 
-		createStatsPanel();
-		createAnimationsPanel();
+        createStatsPanel();
+        createAnimationsPanel();
 
-		build();
-	}
+        build();
+    }
 
-	private void createStatsPanel() {
+    private void createStatsPanel() {
         List<Component> labels = new ArrayList<>();
         labels.add(new JLabel("Name"));
         labels.add(new JLabel("Description"));
@@ -114,16 +111,17 @@ public class NPCEditor extends AbstractSpriteEditor
 
         buildStatsPanel(labels, inputs);
     }
-	private void createAnimationsPanel() {
-		buildAnimationsPanel();
-	}
 
-	public static void main(String[] args) {
-		JFrame frame = new JFrame("Test InternalJFrame");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.add(new NPCEditor(null));
-		frame.setSize(440, 360);
-		frame.setVisible(true);
-	}
+    private void createAnimationsPanel() {
+        buildAnimationsPanel();
+    }
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Test InternalJFrame");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.add(new NPCEditor(null));
+        frame.setSize(440, 360);
+        frame.setVisible(true);
+    }
 
 }

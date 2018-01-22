@@ -17,47 +17,45 @@ import java.util.regex.Pattern;
  */
 public final class Paths {
 
-	private static final Pattern PATH_EXTENSION_PATTERN = Pattern
-			.compile(".*/.*?(\\..*)");
+    private static final Pattern PATH_EXTENSION_PATTERN = Pattern.compile(".*/.*?(\\..*)");
 
-	/**
-	 * Extracts the file extension (if present) from a filesystem path.
-	 *
-	 * @param uri
-	 *            file URI (e.g. file:\\\test.ext)
-	 * @return file extension or empty string if not present
-	 */
-	public static String extension(final URI uri) {
-		return Paths.extension(uri.getPath().toString());
-	}
+    /**
+     * Extracts the file extension (if present) from a filesystem path.
+     *
+     * @param uri
+     *            file URI (e.g. file:\\\test.ext)
+     * @return file extension or empty string if not present
+     */
+    public static String extension(final URI uri) {
+        return Paths.extension(uri.getPath().toString());
+    }
 
-	/***
-	 * Extracts the file extension (if present) from a filesystem path.
-	 *
-	 * @param path
-	 *            path contents
-	 * @return String if extension present, empty string otherwise
-	 */
-	public static String extension(String path) {
-		final Matcher m = PATH_EXTENSION_PATTERN.matcher(path);
-		if (m.matches()) {
-			return m.group(1);
-		}
-		return "";
-	}
+    /***
+     * Extracts the file extension (if present) from a filesystem path.
+     *
+     * @param path
+     *            path contents
+     * @return String if extension present, empty string otherwise
+     */
+    public static String extension(String path) {
+        final Matcher m = PATH_EXTENSION_PATTERN.matcher(path);
+        if (m.matches()) {
+            return m.group(1);
+        }
+        return "";
+    }
 
-	/***
-	 * Extracts the filename from a URI, the name of the file with no path
-	 * information.
-	 *
-	 * @param uri
-	 *            file URI
-	 * @return filename (with type extension)
-	 */
-	public static String filename(final URI uri) {
-		final java.nio.file.Path path = java.nio.file.Paths.get(uri);
-		final String filename = path.getFileName().toString();
-		return filename;
-	}
+    /***
+     * Extracts the filename from a URI, the name of the file with no path information.
+     *
+     * @param uri
+     *            file URI
+     * @return filename (with type extension)
+     */
+    public static String filename(final URI uri) {
+        final java.nio.file.Path path = java.nio.file.Paths.get(uri);
+        final String filename = path.getFileName().toString();
+        return filename;
+    }
 
 }

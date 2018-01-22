@@ -11,8 +11,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
+import org.rpgwizard.editor.ui.Theme;
 import org.rpgwizard.editor.ui.actions.EastPanelAction;
+import org.rpgwizard.editor.ui.actions.ThemeAction;
 import org.rpgwizard.editor.ui.actions.WestPanelAction;
 import org.rpgwizard.editor.ui.resources.Icons;
 
@@ -25,6 +28,10 @@ public final class WindowMenu extends JMenu {
 	private JMenuItem westPanel;
 	private JMenuItem eastPanel;
 
+	private JMenu themesMenu;
+	private JMenuItem lightTheme;
+	private JMenuItem darkTheme;
+
 	public WindowMenu() {
 		super("Window");
 
@@ -32,9 +39,12 @@ public final class WindowMenu extends JMenu {
 
 		configureWestPanelMenuItem();
 		configureEastPanelMenuItem();
+		configureThemeSubMenu();
 
 		add(westPanel);
 		add(eastPanel);
+		add(new JSeparator());
+		add(themesMenu);
 	}
 
 	public JMenuItem getZoomInMenuItem() {
@@ -45,7 +55,8 @@ public final class WindowMenu extends JMenu {
 		westPanel = new JMenuItem("West Panel");
 		westPanel.setIcon(Icons.getSmallIcon("application-sidebar"));
 		westPanel.setAccelerator(KeyStroke.getKeyStroke(
-				KeyEvent.VK_OPEN_BRACKET, ActionEvent.CTRL_MASK));
+				KeyEvent.VK_OPEN_BRACKET, ActionEvent.CTRL_MASK
+						+ ActionEvent.ALT_MASK));
 		westPanel.addActionListener(new WestPanelAction());
 	}
 
@@ -53,8 +64,28 @@ public final class WindowMenu extends JMenu {
 		eastPanel = new JMenuItem("East Panel");
 		eastPanel.setIcon(Icons.getSmallIcon("application-sidebar-flipped"));
 		eastPanel.setAccelerator(KeyStroke.getKeyStroke(
-				KeyEvent.VK_CLOSE_BRACKET, ActionEvent.CTRL_MASK));
+				KeyEvent.VK_CLOSE_BRACKET, ActionEvent.CTRL_MASK
+						+ ActionEvent.ALT_MASK));
 		eastPanel.addActionListener(new EastPanelAction());
+	}
+
+	private void configureThemeSubMenu() {
+		configureLightThemeMenuItem();
+		configureDarkThemeMenuItem();
+
+		themesMenu = new JMenu("Themes");
+		themesMenu.add(lightTheme);
+		themesMenu.add(darkTheme);
+	}
+
+	public void configureLightThemeMenuItem() {
+		lightTheme = new JMenuItem("Light");
+		lightTheme.addActionListener(new ThemeAction(Theme.LIGHT));
+	}
+
+	public void configureDarkThemeMenuItem() {
+		darkTheme = new JMenuItem("Dark");
+		darkTheme.addActionListener(new ThemeAction(Theme.DARK));
 	}
 
 }

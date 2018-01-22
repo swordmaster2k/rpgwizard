@@ -13,10 +13,12 @@ import java.net.URISyntaxException;
 import java.util.List;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.pushingpixels.substance.api.skin.SubstanceGraphiteAquaLookAndFeel;
+import org.pushingpixels.substance.api.skin.SubstanceNebulaLookAndFeel;
 import org.rpgwizard.common.assets.AssetManager;
 import org.rpgwizard.common.assets.files.FileAssetHandleResolver;
 import org.rpgwizard.common.assets.serialization.JsonAnimationSerializer;
@@ -31,6 +33,9 @@ import org.rpgwizard.common.assets.serialization.JsonTileSetSerializer;
 import org.rpgwizard.common.assets.serialization.TextProgramSerializer;
 import org.rpgwizard.editor.properties.EditorProperties;
 import org.rpgwizard.editor.properties.EditorProperty;
+import org.rpgwizard.editor.properties.user.UserPreference;
+import org.rpgwizard.editor.properties.user.UserPreferencesProperties;
+import org.rpgwizard.editor.ui.Theme;
 import org.rpgwizard.editor.utilities.FileTools;
 import org.rpgwizard.pluginsystem.Engine;
 import org.slf4j.Logger;
@@ -108,6 +113,27 @@ public class Driver {
 		return pluginManager;
 	}
 
+	public static void loadUserPreferences() {
+		Theme theme = Theme.valueOf(UserPreferencesProperties.getProperty(
+				UserPreference.USER_PREFERENCE_THEME).toUpperCase());
+		final LookAndFeel laf;
+		switch (theme) {
+			case LIGHT :
+				laf = new SubstanceNebulaLookAndFeel();
+				break;
+			case DARK :
+			default :
+				laf = new SubstanceGraphiteAquaLookAndFeel();
+		}
+		try {
+			UIManager.setLookAndFeel(laf);
+			JFrame.setDefaultLookAndFeelDecorated(true);
+			JDialog.setDefaultLookAndFeelDecorated(true);
+		} catch (UnsupportedLookAndFeelException ex) {
+			LOGGER.error("Failed to set look and feel theme=[{}]!", ex, theme);
+		}
+	}
+
 	public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             try {
@@ -118,10 +144,7 @@ public class Driver {
                 registerResolvers();
                 registerSerializers();
                 PluginManager pluginManager = registerPlugins();
-
-                UIManager.setLookAndFeel(new SubstanceGraphiteAquaLookAndFeel());
-                JFrame.setDefaultLookAndFeelDecorated(true);
-                JDialog.setDefaultLookAndFeelDecorated(true);
+                loadUserPreferences();
 
                 MainWindow mainWindow = MainWindow.getInstance();
                 mainWindow.setPluginManager(pluginManager);
@@ -141,13 +164,16 @@ public class Driver {
                                 LOGGER.warn("Failed to stop engine! reason=[{}]", ex.getMessage());
                             }
                         });
-
+                        
+                        // Write out user preferences.
+                        UserPreferencesProperties.save();
+                        
                         LOGGER.info("Stopping the RPGWizard Editor...");
                     }
                 });
 
                 mainWindow.setVisible(true);
-            } catch (UnsupportedLookAndFeelException | URISyntaxException ex) {
+            } catch (URISyntaxException ex) {
                 LOGGER.error("Failed to start the editor!", ex);
             }
         });

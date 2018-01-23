@@ -195,11 +195,10 @@ public abstract class AbstractJsonSerializer extends AbstractAssetSerializer {
 
     protected JSONArray serializeBoardLayerImages(List<BoardLayerImage> images) {
         final JSONArray array = new JSONArray();
-
-        for (final BoardLayerImage image : images) {
-            array.put(serializeBoardLayerImage(image));
-        }
-
+        images.stream().filter((image) -> !(image.getSrc() == null || image.getSrc().isEmpty()))
+                .forEachOrdered((image) -> {
+                    array.put(serializeBoardLayerImage(image));
+                });
         return array;
     }
 

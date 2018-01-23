@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
  * @author Joel Moore
  * @author Joshua Michael Daly
  */
-public class CharacterEditor extends AbstractSpriteEditor implements InternalFrameListener, SpriteChangeListener {
+public final class CharacterEditor extends AbstractSpriteEditor implements InternalFrameListener, SpriteChangeListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CharacterEditor.class);
 
@@ -58,7 +58,6 @@ public class CharacterEditor extends AbstractSpriteEditor implements InternalFra
 
         this.player = player;
         this.player.addSpriteChangeListener(this);
-
         if (this.player.getDescriptor() == null) {
             setupNewPlayer();
         } else {

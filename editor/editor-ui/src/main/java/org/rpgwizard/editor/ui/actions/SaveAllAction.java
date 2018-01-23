@@ -9,7 +9,6 @@ package org.rpgwizard.editor.ui.actions;
 
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
-import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;

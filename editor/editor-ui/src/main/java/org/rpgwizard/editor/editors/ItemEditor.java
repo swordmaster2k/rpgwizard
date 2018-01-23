@@ -31,7 +31,6 @@ import org.rpgwizard.editor.ui.ImagePanel;
 import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 import org.rpgwizard.editor.ui.DoubleField;
 import org.rpgwizard.editor.ui.IntegerField;
-import org.rpgwizard.editor.ui.listeners.ImagePanelChangeListener;
 import org.rpgwizard.editor.ui.resources.Icons;
 import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.rpgwizard.editor.utilities.GuiHelper;
@@ -41,7 +40,7 @@ import org.rpgwizard.editor.utilities.GuiHelper;
  *
  * @author Joshua Michael Daly
  */
-public class ItemEditor extends AbstractAssetEditorWindow {
+public final class ItemEditor extends AbstractAssetEditorWindow {
 
     private final int DESCRIPTION_INPUT_COLUMNS = 30;
     private final int DESCRIPTION_INPUT_ROWS = 5;
@@ -70,8 +69,8 @@ public class ItemEditor extends AbstractAssetEditorWindow {
 
     public ItemEditor(Item item) {
         super("Untitled", true, true, true, true, Icons.getIcon("item"));
-        this.item = item;
 
+        this.item = item;
         if (item.getDescriptor() == null) {
             setupNewItem();
         } else {

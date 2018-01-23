@@ -78,8 +78,6 @@ public class Driver {
         LOGGER.debug("Registering asset serializers.");
 
         AssetManager assetManager = AssetManager.getInstance();
-
-        // JSON.
         assetManager.registerSerializer(new JsonAnimationSerializer());
         assetManager.registerSerializer(new JsonCharacterSerializer());
         assetManager.registerSerializer(new JsonBoardSerializer());
@@ -94,16 +92,13 @@ public class Driver {
 
     public static PluginManager registerPlugins() throws URISyntaxException {
         String path = FileTools.getExecutionPath(Driver.class);
-
         path += File.separator + EditorProperties.getProperty(EditorProperty.EDITOR_PLUGINS_DIRECOTRY) + File.separator;
-
         System.setProperty("pf4j.pluginsDir", path);
         LOGGER.info(System.getProperty("pf4j.pluginsDir"));
 
         PluginManager pluginManager = new JarPluginManager();
         pluginManager.loadPlugins();
         pluginManager.startPlugins();
-
         return pluginManager;
     }
 
@@ -161,11 +156,9 @@ public class Driver {
 
                         // Write out user preferences.
                         UserPreferencesProperties.save();
-
                         LOGGER.info("Stopping the RPGWizard Editor...");
                     }
                 });
-
                 mainWindow.setVisible(true);
             } catch (URISyntaxException ex) {
                 LOGGER.error("Failed to start the editor!", ex);

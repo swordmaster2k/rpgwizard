@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Joshua Michael Daly
  */
-public class ProgramEditor extends AbstractAssetEditorWindow {
+public final class ProgramEditor extends AbstractAssetEditorWindow {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProgramEditor.class);
 
@@ -49,7 +49,6 @@ public class ProgramEditor extends AbstractAssetEditorWindow {
         super("Untitled", true, true, true, true, Icons.getIcon("program"));
 
         this.program = program;
-
         if (program.getDescriptor() == null) {
             init(program, "Untitled");
         } else {

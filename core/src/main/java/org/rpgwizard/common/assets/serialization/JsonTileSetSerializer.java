@@ -7,8 +7,6 @@
  */
 package org.rpgwizard.common.assets.serialization;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.AssetException;
 import org.rpgwizard.common.assets.AssetHandle;

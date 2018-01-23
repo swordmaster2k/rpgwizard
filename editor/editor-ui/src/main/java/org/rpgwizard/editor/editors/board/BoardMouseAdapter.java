@@ -10,8 +10,6 @@ package org.rpgwizard.editor.editors.board;
 import org.rpgwizard.editor.editors.board.brush.AbstractBrush;
 import org.rpgwizard.editor.editors.board.brush.ShapeBrush;
 import org.rpgwizard.editor.editors.board.brush.BucketBrush;
-import org.rpgwizard.editor.editors.board.brush.SelectionBrush;
-import org.rpgwizard.editor.editors.board.brush.EraserBrush;
 import org.rpgwizard.editor.editors.board.brush.CustomBrush;
 import java.awt.Point;
 import java.awt.Rectangle;

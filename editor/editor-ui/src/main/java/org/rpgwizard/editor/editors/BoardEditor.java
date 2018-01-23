@@ -44,7 +44,7 @@ import org.slf4j.LoggerFactory;
  * @author Geoff Wilson
  * @author Joshua Michael Daly
  */
-public class BoardEditor extends AbstractAssetEditorWindow implements BoardChangeListener, KeyListener {
+public final class BoardEditor extends AbstractAssetEditorWindow implements BoardChangeListener, KeyListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BoardEditor.class);
 
@@ -76,7 +76,6 @@ public class BoardEditor extends AbstractAssetEditorWindow implements BoardChang
         boardMouseAdapter = new BoardMouseAdapter(this);
         this.board = board;
         this.board.addBoardChangeListener(this);
-
         if (board.getDescriptor() == null) {
             init(board, "Untitled");
         } else {

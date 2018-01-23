@@ -10,7 +10,6 @@ package org.rpgwizard.editor.editors.sprite.listener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JTable;
-import org.rpgwizard.common.assets.Animation;
 import org.rpgwizard.common.assets.AbstractSprite;
 import org.rpgwizard.common.assets.AnimationEnum;
 import org.rpgwizard.editor.editors.sprite.AbstractSpriteEditor;

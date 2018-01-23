@@ -27,7 +27,7 @@ import org.rpgwizard.editor.ui.resources.Icons;
  *
  * @author Joshua Michael Daly
  */
-public class NPCEditor extends AbstractSpriteEditor implements InternalFrameListener, SpriteChangeListener {
+public final class NPCEditor extends AbstractSpriteEditor implements InternalFrameListener, SpriteChangeListener {
 
     private final NPC npc;
 
@@ -39,7 +39,6 @@ public class NPCEditor extends AbstractSpriteEditor implements InternalFrameList
 
         this.npc = npc;
         this.npc.addSpriteChangeListener(this);
-
         if (this.npc.getDescriptor() == null) {
             setupNewNPC();
         } else {

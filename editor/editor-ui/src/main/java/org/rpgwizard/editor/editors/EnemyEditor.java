@@ -30,7 +30,7 @@ import org.rpgwizard.editor.ui.resources.Icons;
  * @author Joel Moore
  * @author Joshua Michael Daly
  */
-public class EnemyEditor extends AbstractSpriteEditor implements InternalFrameListener, SpriteChangeListener {
+public final class EnemyEditor extends AbstractSpriteEditor implements InternalFrameListener, SpriteChangeListener {
 
     private final Enemy enemy;
 
@@ -42,10 +42,6 @@ public class EnemyEditor extends AbstractSpriteEditor implements InternalFrameLi
     private DoubleField experienceReward;
     private DoubleField goldReward;
 
-    /*
-     * ************************************************************************* Public Constructors
-     * *************************************************************************
-     */
     /**
      * Opens an existing enemy
      *
@@ -57,7 +53,6 @@ public class EnemyEditor extends AbstractSpriteEditor implements InternalFrameLi
 
         enemy = theEnemy;
         enemy.addSpriteChangeListener(this);
-
         if (enemy.getDescriptor() == null) {
             setupNewEnemy();
         } else {
@@ -69,10 +64,6 @@ public class EnemyEditor extends AbstractSpriteEditor implements InternalFrameLi
         pack();
     }
 
-    /*
-     * ************************************************************************* Public Methods
-     * *************************************************************************
-     */
     @Override
     public AbstractAsset getAsset() {
         return enemy;

@@ -10,8 +10,6 @@ package org.rpgwizard.common.assets;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import org.rpgwizard.common.utilities.CoreProperties;
 

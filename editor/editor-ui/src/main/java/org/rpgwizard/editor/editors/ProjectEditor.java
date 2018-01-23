@@ -43,7 +43,7 @@ import org.rpgwizard.editor.utilities.GuiHelper;
  * @author Geoff Wilson
  * @author Joshua Michael Daly
  */
-public class ProjectEditor extends AbstractAssetEditorWindow implements InternalFrameListener {
+public final class ProjectEditor extends AbstractAssetEditorWindow implements InternalFrameListener {
 
     private final Project project; // Project file we are altering
 
@@ -75,10 +75,6 @@ public class ProjectEditor extends AbstractAssetEditorWindow implements Internal
     private JTextField customResWidth;
     private JTextField customResHeight;
 
-    /*
-     * ************************************************************************* Public Constructors
-     * *************************************************************************
-     */
     /**
      * Opens an existing project
      *
@@ -95,10 +91,6 @@ public class ProjectEditor extends AbstractAssetEditorWindow implements Internal
         setVisible(true);
     }
 
-    /*
-     * ************************************************************************* Public Methods
-     * *************************************************************************
-     */
     @Override
     public AbstractAsset getAsset() {
         return project;
@@ -176,10 +168,6 @@ public class ProjectEditor extends AbstractAssetEditorWindow implements Internal
 
     }
 
-    /*
-     * ************************************************************************* Private Methods
-     * *************************************************************************
-     */
     /**
      * Builds the Swing interface
      */

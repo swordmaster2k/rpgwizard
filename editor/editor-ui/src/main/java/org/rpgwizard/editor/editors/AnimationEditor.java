@@ -33,7 +33,7 @@ import org.rpgwizard.editor.ui.resources.Icons;
  * @author Geoff Wilson
  * @author Joshua Michael Daly
  */
-public class AnimationEditor extends AbstractAssetEditorWindow implements AnimationChangeListener {
+public final class AnimationEditor extends AbstractAssetEditorWindow implements AnimationChangeListener {
 
     private final Animation animation;
 
@@ -47,7 +47,6 @@ public class AnimationEditor extends AbstractAssetEditorWindow implements Animat
 
         animation = theAnimation;
         animation.addAnimationChangeListener(this);
-
         if (animation.getDescriptor() != null) {
             setTitle(new File(animation.getDescriptor().getURI()).getName());
         }
@@ -135,11 +134,9 @@ public class AnimationEditor extends AbstractAssetEditorWindow implements Animat
             SpriteSheet spriteSheet = animation.getSpriteSheet();
             if (!spriteSheet.getFileName().isEmpty()) {
                 SpriteSheetImage spriteSheetImage = new SpriteSheetImage(animation, spriteSheet);
-
                 spriteSheetImage.loadImage();
                 animatedPanel.setAnimation(animation);
                 timelinePanel.add(spriteSheetImage);
-
             } else {
                 timelinePanel.add(new AddSpriteSheetButton(animation));
             }

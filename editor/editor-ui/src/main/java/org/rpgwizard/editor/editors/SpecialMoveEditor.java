@@ -44,7 +44,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Joel Moore
  */
-public class SpecialMoveEditor extends AbstractAssetEditorWindow implements InternalFrameListener {
+public final class SpecialMoveEditor extends AbstractAssetEditorWindow implements InternalFrameListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SpecialMoveEditor.class);
 
@@ -67,10 +67,6 @@ public class SpecialMoveEditor extends AbstractAssetEditorWindow implements Inte
     private JCheckBox battleDriven;
     private JCheckBox boardDriven;
 
-    /*
-     * ************************************************************************* Public Constructors
-     * *************************************************************************
-     */
     /**
      * Create a new blank SpecialMove
      */
@@ -100,10 +96,6 @@ public class SpecialMoveEditor extends AbstractAssetEditorWindow implements Inte
         this.setVisible(true);
     }
 
-    /*
-     * ************************************************************************* Public Methods
-     * *************************************************************************
-     */
     @Override
     public AbstractAsset getAsset() {
         return move;
@@ -192,10 +184,6 @@ public class SpecialMoveEditor extends AbstractAssetEditorWindow implements Inte
 
     }
 
-    /*
-     * ************************************************************************* Private Methods
-     * *************************************************************************
-     */
     /**
      * Builds the Swing interface
      */

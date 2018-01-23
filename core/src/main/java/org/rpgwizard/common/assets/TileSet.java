@@ -8,9 +8,7 @@
 package org.rpgwizard.common.assets;
 
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * This class is responsible for managing a tilset inside the editor It stores all of the tiles in the set in a big

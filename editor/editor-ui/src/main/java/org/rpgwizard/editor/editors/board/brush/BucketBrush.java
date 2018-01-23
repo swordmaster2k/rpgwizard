@@ -13,7 +13,6 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.util.Stack;
 import org.rpgwizard.common.assets.Tile;
-import org.rpgwizard.editor.editors.BoardEditor;
 import org.rpgwizard.editor.editors.board.AbstractBoardView;
 import org.rpgwizard.editor.editors.board.BoardLayerView;
 import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
@@ -182,9 +181,7 @@ public class BucketBrush extends AbstractBrush {
 
     @Override
     public void doMouseButton1Pressed(Point point, AbstractAssetEditorWindow editor) {
-        if (editor instanceof BoardEditor) {
-            BoardEditor boardEditor = (BoardEditor) editor;
-        }
+
     }
 
     @Override

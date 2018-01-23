@@ -452,6 +452,76 @@ RPGcode.prototype.destroySprite = function (spriteId) {
 };
 
 /**
+ * Draws a circle onto the canvas.
+ * 
+ * @example
+ * // Create a canvas and draw a red circle on it.
+ * var canvas = "myCanvas";
+ * rpgcode.createCanvas(640, 480, canvas);
+ * rpgcode.setColor(255, 0, 0, 1.0);
+ * rpgcode.drawCircle(100, 100, 25, canvas);
+ * rpgcode.renderNow(canvas); 
+ * 
+ * @param {Number} x The start x postion.
+ * @param {Number} y The start y postion.
+ * @param {Number} radius In pixels.
+ * @param {String} canvasId The ID of the canvas to draw on, defaults to "renderNowCanvas" if none specified.
+ */
+RPGcode.prototype.drawCircle = function (x, y, radius, canvasId) {
+    if (!canvasId) {
+        canvasId = "renderNowCanvas";
+    }
+
+    var instance = rpgcode.canvases[canvasId];
+    if (instance) {
+        var context = instance.canvas.getContext("2d");
+        var rgba = rpgcode.rgba;
+        context.globalAlpha = rpgcode.globalAlpha;
+        context.strokeStyle = "rgba(" + rgba.r + "," + rgba.g + "," + rgba.b + "," + rgba.a + ")";
+        context.beginPath();
+        context.arc(x, y, radius, 0, 2 * Math.PI);
+        context.stroke();
+    }
+};
+
+/**
+ * Draws a line onto the canvas.
+ * 
+ * @example
+ * // Create a canvas and draw a red line on it.
+ * var canvas = "myCanvas";
+ * rpgcode.createCanvas(640, 480, canvas);
+ * rpgcode.setColor(255, 0, 0, 1.0);
+ * rpgcode.drawLine(25, 25, 50, 50, 1, canvas);
+ * rpgcode.renderNow(canvas); 
+ * 
+ * @param {Number} x1 In pixels.
+ * @param {Number} y1 In pixels.
+ * @param {Number} x2 In pixels.
+ * @param {Number} y2 In pixels.
+ * @param {Number} lineWidth In pixels.
+ * @param {String} canvasId The ID of the canvas to draw on, defaults to "renderNowCanvas" if none specified.
+ */
+RPGcode.prototype.drawLine = function (x1, y1, x2, y2, lineWidth, canvasId) {
+    if (!canvasId) {
+        canvasId = "renderNowCanvas";
+    }
+
+    var instance = rpgcode.canvases[canvasId];
+    if (instance) {
+        var context = instance.canvas.getContext("2d");
+        var rgba = rpgcode.rgba;
+        context.globalAlpha = rpgcode.globalAlpha;
+        context.lineWidth = lineWidth;
+        context.strokeStyle = "rgba(" + rgba.r + "," + rgba.g + "," + rgba.b + "," + rgba.a + ")";
+        context.beginPath();
+        context.moveTo(x1, y1);
+        context.lineTo(x2, y2);
+        context.stroke();
+    }
+};
+
+/**
  * Draws the source canvas onto the target canvas.
  * 
  * @example
@@ -501,6 +571,40 @@ RPGcode.prototype.drawOntoCanvas = function (sourceId, x, y, width, height, targ
         var sourceCanvas = source.canvas;
         var targetContext = target.canvas.getContext("2d");
         targetContext.drawImage(sourceCanvas, x, y, width, height);
+    }
+};
+
+/**
+ * Draws a rectangle onto the canvas.
+ * 
+ * @example
+ * // Create a canvas and draw a red rectangle on it.
+ * var canvas = "myCanvas";
+ * rpgcode.createCanvas(640, 480, canvas);
+ * rpgcode.setColor(255, 0, 0, 1.0);
+ * rpgcode.drawRect(0, 0, 100, 100, 1, canvas);
+ * rpgcode.renderNow(canvas); 
+ * 
+ * @param {Number} x The start x postion.
+ * @param {Number} y The start y postion.
+ * @param {Number} width In pixels.
+ * @param {Number} height In pixels.
+ * @param {Number} lineWidth In pixels.
+ * @param {String} canvasId The ID of the canvas to draw on, defaults to "renderNowCanvas" if none specified.
+ */
+RPGcode.prototype.drawRect = function (x, y, width, height, lineWidth, canvasId) {
+    if (!canvasId) {
+        canvasId = "renderNowCanvas";
+    }
+
+    var instance = rpgcode.canvases[canvasId];
+    if (instance) {
+        var context = instance.canvas.getContext("2d");
+        var rgba = rpgcode.rgba;
+        context.globalAlpha = rpgcode.globalAlpha;
+        context.lineWidth = lineWidth;
+        context.strokeStyle = "rgba(" + rgba.r + "," + rgba.g + "," + rgba.b + "," + rgba.a + ")";
+        context.strokeRect(x, y, width, height);
     }
 };
 
@@ -559,6 +663,39 @@ RPGcode.prototype.endProgram = function (nextProgram) {
         rpgwizard.endProgram(nextProgram);
     } else {
         rpgwizard.endProgram();
+    }
+};
+
+/**
+ * Fills a solid circle onto the canvas.
+ * 
+ * @example
+ * // Create a canvas and draw a red circle on it.
+ * var canvas = "myCanvas";
+ * rpgcode.createCanvas(640, 480, canvas);
+ * rpgcode.setColor(255, 0, 0, 1.0);
+ * rpgcode.fillCircle(100, 100, 25, canvas);
+ * rpgcode.renderNow(canvas); 
+ * 
+ * @param {Number} x The start x postion.
+ * @param {Number} y The start y postion.
+ * @param {Number} radius The start y postion.
+ * @param {String} canvasId The ID of the canvas to draw on, defaults to "renderNowCanvas" if none specified.
+ */
+RPGcode.prototype.fillCircle = function (x, y, radius, canvasId) {
+    if (!canvasId) {
+        canvasId = "renderNowCanvas";
+    }
+
+    var instance = rpgcode.canvases[canvasId];
+    if (instance) {
+        var context = instance.canvas.getContext("2d");
+        var rgba = rpgcode.rgba;
+        context.globalAlpha = rpgcode.globalAlpha;
+        context.fillStyle = "rgba(" + rgba.r + "," + rgba.g + "," + rgba.b + "," + rgba.a + ")";
+        context.beginPath();
+        context.arc(x, y, radius, 0, 2 * Math.PI);
+        context.fill();
     }
 };
 
@@ -822,6 +959,36 @@ RPGcode.prototype.getDistanceBetweenPoints = function (x1, y1, x2, y2) {
  */
 RPGcode.prototype.getGlobal = function (id) {
     return rpgcode.globals[id];
+};
+
+/**
+ * Gets the pixel ImageData at the (x, y) coordinate on the canvas.
+ * 
+ * @example
+ * // Draw a rectangle on the default canvas and render it.
+ * rpgcode.setColor(255, 0, 0, 1.0);
+ * rpgcode.fillRect(0, 0, 100, 100);
+ * rpgcode.renderNow();
+ * 
+ * // Get the red pixel at (50, 50) from the rectangle.
+ * var imageData = rpgcode.getPixel(50, 50);
+ * rpgcode.log(imageData);
+ * 
+ * @param {Number} x In pixels.
+ * @param {Number} y In pixels.
+ * @param {String} canvasId The ID of the canvas to draw on, defaults to "renderNowCanvas" if none specified.
+ */
+RPGcode.prototype.getPixel = function (x, y, canvasId) {
+    if (!canvasId) {
+        canvasId = "renderNowCanvas";
+    }
+
+    var instance = rpgcode.canvases[canvasId];
+    if (instance) {
+        var context = instance.canvas.getContext("2d");
+        return context.getImageData(x, y, 1, 1);
+    }
+    return null;
 };
 
 /**
@@ -1091,6 +1258,28 @@ RPGcode.prototype.hitEnemy = function (spriteId, damage, animationId, callback) 
     } else {
         // Provide error feedback.
     }
+};
+
+/**
+ * Returns a true/false value indicating whether an asset has been loaded.
+ * 
+ * @example
+ * rpgcode.log(rpgcode.isAssetLoaded("Hero/attack_east.png", "image")); // logs true
+ * rpgcode.log(rpgcode.isAssetLoaded("intro", "audio")); // logs true
+ * 
+ * @param {String} asset Filename of the asset including any subfolders.
+ * @param {String} type Either "image" or "audio".
+ * @returns {Boolean}
+ */
+RPGcode.prototype.isAssetLoaded = function (asset, type) {
+    type = type.toLowerCase();
+    if (type === "image") {
+        return !!Crafty.assets[Crafty.__paths.images + asset];
+    }
+    if (type === "audio") {
+        return !!Crafty.assets[Crafty.__paths.audio + asset];
+    }
+    return false;
 };
 
 /**
@@ -1901,6 +2090,41 @@ RPGcode.prototype.setImage = function (fileName, x, y, width, height, canvasId) 
             context.globalAlpha = rpgcode.globalAlpha;
             context.drawImage(image, x, y, width, height);
         }
+    }
+};
+
+/**
+ * Sets the pixel ImageData at the (x, y) coordinate on the canvas.
+ * 
+ * @example
+ * // Draw a rectangle on the default canvas and render it.
+ * rpgcode.setColor(255, 0, 0, 1.0);
+ * rpgcode.fillRect(0, 0, 100, 100);
+ * rpgcode.renderNow();
+ * 
+ * // Set a pixel to green at (50, 50) from the rectangle.
+ * rpgcode.setColor(0, 255, 0, 1.0);
+ * rpgcode.setPixel(50, 50);
+ * 
+ * @param {Number} x In pixels.
+ * @param {Number} y In pixels.
+ * @param {String} canvasId The ID of the canvas to draw on, defaults to "renderNowCanvas" if none specified.
+ */
+RPGcode.prototype.setPixel = function (x, y, canvasId) {
+    if (!canvasId) {
+        canvasId = "renderNowCanvas";
+    }
+
+    var instance = rpgcode.canvases[canvasId];
+    if (instance) {
+        var context = instance.canvas.getContext("2d");
+        var imageData = context.getImageData(x, y, 1, 1);
+        var rgba = rpgcode.rgba;
+        imageData.data[0] = rgba.r;
+        imageData.data[1] = rgba.g;
+        imageData.data[2] = rgba.b;
+        imageData.data[3] = rgba.a * 255;
+        context.putImageData(imageData, x, y);
     }
 };
 

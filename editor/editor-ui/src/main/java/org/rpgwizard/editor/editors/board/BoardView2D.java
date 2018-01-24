@@ -18,6 +18,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.font.FontRenderContext;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
@@ -90,7 +91,7 @@ public final class BoardView2D extends AbstractBoardView {
         g2d.transform(affineTransform);
 
         try {
-            paintBoard();
+            paintBoard(false);
         } catch (TilePixelOutOfRangeException e) {
 
         }
@@ -108,6 +109,33 @@ public final class BoardView2D extends AbstractBoardView {
     }
 
     /**
+     * Paints this board for use with the board image exporter.
+     *
+     * @param g
+     *            The graphics context to draw to.
+     * @param tilesOnly
+     *            Indicates whether only tile information should be recorded.
+     */
+    public void paintForExport(Graphics g, boolean tilesOnly) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.transform(AffineTransform.getScaleInstance(1.0, 1.0));
+        try {
+            paintBoard(tilesOnly);
+        } catch (TilePixelOutOfRangeException e) {
+
+        }
+        if (bufferedImage != null) {
+            g.drawImage(bufferedImage, 0, 0, null);
+        }
+        if (MainWindow.getInstance().isShowCoordinates() && !tilesOnly) {
+            paintCoordinates(g2d);
+        }
+        g.dispose();
+        g2d.dispose();
+    }
+
+    /**
      * Paints the board to the screen using a BufferedImage, it calls multiple sub methods which each draw part of the
      * board (if they are set to).
      *
@@ -115,36 +143,38 @@ public final class BoardView2D extends AbstractBoardView {
      *             Thrown if a tiles pixel value is out of the allowed range.
      */
     @Override
-    protected void paintBoard() throws TilePixelOutOfRangeException {
+    protected void paintBoard(boolean tilesOnly) throws TilePixelOutOfRangeException {
         Graphics2D g = bufferedImage.createGraphics();
 
         // Draw background first.
         TransparentDrawer.drawTransparentBackground(g, (board.getWidth() * board.getTileWidth()),
                 (board.getHeight() * board.getTileHeight()));
-
         paintLayers(g);
-        paintImages(g);
-        paintSprites(g);
-        paintStartPostion(g);
 
-        // Reset an opcaity changes in the layers.
-        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, 1.0f));
+        if (!tilesOnly) {
+            paintImages(g);
+            paintSprites(g);
+            paintStartPostion(g);
 
-        if (MainWindow.getInstance().isShowGrid()) {
-            paintGrid(g);
+            // Reset an opcaity changes in the layers.
+            g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, 1.0f));
+
+            if (MainWindow.getInstance().isShowGrid()) {
+                paintGrid(g);
+            }
+
+            if (boardEditor.getSelection() != null) {
+                paintSelection(g);
+            }
+
+            paintCursor(g);
+
+            if (MainWindow.getInstance().isShowVectors()) {
+                paintVectors(g);
+            }
+
+            paintBrushPreview(g);
         }
-
-        if (boardEditor.getSelection() != null) {
-            paintSelection(g);
-        }
-
-        paintCursor(g);
-
-        if (MainWindow.getInstance().isShowVectors()) {
-            paintVectors(g);
-        }
-
-        paintBrushPreview(g);
     }
 
     /**

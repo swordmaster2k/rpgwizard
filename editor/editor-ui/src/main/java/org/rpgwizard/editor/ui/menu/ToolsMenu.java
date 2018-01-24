@@ -9,6 +9,9 @@ package org.rpgwizard.editor.ui.menu;
 
 import java.awt.event.KeyEvent;
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import org.rpgwizard.editor.ui.actions.BoardToImageAction;
+import org.rpgwizard.editor.ui.resources.Icons;
 
 /**
  *
@@ -16,10 +19,23 @@ import javax.swing.JMenu;
  */
 public final class ToolsMenu extends JMenu {
 
+    private JMenuItem boardImageExportItem;
+
     public ToolsMenu() {
         super("Tools");
+        configureBoardImageExportItem();
 
-        this.setMnemonic(KeyEvent.VK_T);
+        add(boardImageExportItem);
+        setMnemonic(KeyEvent.VK_T);
+    }
+
+    /**
+     *
+     */
+    public void configureBoardImageExportItem() {
+        boardImageExportItem = new JMenuItem("Export Board to Image");
+        boardImageExportItem.setIcon(Icons.getSmallIcon("image-export"));
+        boardImageExportItem.addActionListener(new BoardToImageAction());
     }
 
 }

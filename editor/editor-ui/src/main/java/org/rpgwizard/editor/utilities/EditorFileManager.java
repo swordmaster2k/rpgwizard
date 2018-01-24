@@ -7,6 +7,7 @@
  */
 package org.rpgwizard.editor.utilities;
 
+import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -291,6 +292,21 @@ public class EditorFileManager {
         String subdir = getTypeSubdirectory(type);
         String desc = getTypeFilterDescription(type);
         String[] exts = getTypeExtensions(type);
+        return saveLocationBySubdir(subdir, desc, exts);
+    }
+
+    /**
+     * Browse for a file of the given image, starting in the subdirectory for that type, and return its location. The
+     * file may not exist yet if the user types it in. Filters by extensions relevant to that type. This is a shortcut
+     * method for saveLocationBySubdir().
+     *
+     * @return the location of the file the user selects; or null if no file or an invalid file is selected (see
+     *         saveLocationBySubdir())
+     */
+    public static File saveImage() {
+        String subdir = getGraphicsSubdirectory();
+        String desc = getTypeFilterDescription(null);
+        String[] exts = getImageExtensions();
         return saveLocationBySubdir(subdir, desc, exts);
     }
 

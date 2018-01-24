@@ -425,10 +425,12 @@ public abstract class AbstractBoardView extends JPanel implements MultiLayerCont
     /**
      * A concrete BoardView will implement its own layer drawing code here.
      *
+     * @param tilesOnly
+     *            Indicates whether only tile information should be painted.
      * @throws TilePixelOutOfRangeException
      *             Thrown if a tiles pixel value is out of the allowed range.
      */
-    protected abstract void paintBoard() throws TilePixelOutOfRangeException;
+    protected abstract void paintBoard(boolean tilesOnly) throws TilePixelOutOfRangeException;
 
     /**
      * A concrete BoardView will implement its own layer drawing code here.

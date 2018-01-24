@@ -28,12 +28,11 @@ nbproject/
 # Node JS
 node_modules/
 out/
-*.zip
 *.jar
 *.exe
 
 # Distribution
 distribution/builds/
-*.zip
 jre/
 launch4j/
+*.zip

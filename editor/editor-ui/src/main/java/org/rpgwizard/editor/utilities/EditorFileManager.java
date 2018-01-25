@@ -10,6 +10,8 @@ package org.rpgwizard.editor.utilities;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -446,6 +448,26 @@ public class EditorFileManager {
             valid &= extValid;
         }
 
+        return valid;
+    }
+
+    /**
+     * Validates that the target path starts with the required path.
+     * 
+     * @param target
+     * @param required
+     * @return
+     */
+    public static boolean validatePathStartsWith(File target, File required) {
+        Path child = Paths.get(target.toURI()).toAbsolutePath();
+        Path parent = Paths.get(required.toURI()).toAbsolutePath();
+        boolean valid = child.startsWith(parent);
+        if (!valid) {
+            String folder = required.getName();
+            String message = "Please select an image file from within the project's \"" + folder + "\" folder!";
+            JOptionPane.showMessageDialog(MainWindow.getInstance(), message, "Invalid File Choice",
+                    JOptionPane.ERROR_MESSAGE);
+        }
         return valid;
     }
 

@@ -14,7 +14,6 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import javax.swing.event.InternalFrameListener;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.GraphicEnum;
@@ -33,7 +32,7 @@ import org.slf4j.LoggerFactory;
  * @author Joel Moore
  * @author Joshua Michael Daly
  */
-public final class CharacterEditor extends AbstractSpriteEditor implements InternalFrameListener, SpriteChangeListener {
+public final class CharacterEditor extends AbstractSpriteEditor implements SpriteChangeListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CharacterEditor.class);
 
@@ -126,11 +125,8 @@ public final class CharacterEditor extends AbstractSpriteEditor implements Inter
      * Builds the Swing interface
      */
     private void constructWindow() {
-        addInternalFrameListener(this);
-
         createStatsPanel();
         createAnimationsPanel();
-
         build();
     }
 

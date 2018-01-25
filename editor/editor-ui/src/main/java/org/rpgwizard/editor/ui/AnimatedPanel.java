@@ -235,6 +235,12 @@ public class AnimatedPanel extends AbstractImagePanel implements AnimationChange
         repaint();
     }
 
+    public void tearDown() {
+        if (animation != null) {
+            animation.removeAnimationChangeListener(this);
+        }
+    }
+
     private void init() {
         playImage = Icons.getLargeIcon("animation-play").getImage();
         stopImage = Icons.getLargeIcon("animation-stop").getImage();

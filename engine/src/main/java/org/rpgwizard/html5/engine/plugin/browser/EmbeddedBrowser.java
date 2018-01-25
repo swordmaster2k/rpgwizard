@@ -154,7 +154,9 @@ public final class EmbeddedBrowser extends JFrame {
     }
 
     public void stop() {
-        cefApp.dispose();
+        if (cefApp != null) {
+            cefApp.dispose();
+        }
         // dispose(); // This crashes everything.
     }
 

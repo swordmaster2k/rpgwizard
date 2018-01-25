@@ -248,8 +248,12 @@ public class BoardLayer implements Cloneable {
      *            the tile
      */
     public void setTileAt(int x, int y, Tile tile) {
-        tiles[x][y] = tile;
-        board.fireBoardChanged();
+        if (x >= 0 && x < tiles.length) {
+            if (y >= 0 && y < tiles[x].length) {
+                tiles[x][y] = tile;
+                board.fireBoardChanged();
+            }
+        }
     }
 
     /**

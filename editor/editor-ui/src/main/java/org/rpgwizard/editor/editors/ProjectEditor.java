@@ -129,42 +129,8 @@ public final class ProjectEditor extends AbstractAssetEditorWindow implements In
         save();
     }
 
-    public void gracefulClose() {
-
-    }
-
-    @Override
-    public void internalFrameOpened(InternalFrameEvent e) {
-
-    }
-
-    @Override
-    public void internalFrameClosing(InternalFrameEvent e) {
-
-    }
-
     @Override
     public void internalFrameClosed(InternalFrameEvent e) {
-        this.gracefulClose();
-    }
-
-    @Override
-    public void internalFrameIconified(InternalFrameEvent e) {
-
-    }
-
-    @Override
-    public void internalFrameDeiconified(InternalFrameEvent e) {
-
-    }
-
-    @Override
-    public void internalFrameActivated(InternalFrameEvent e) {
-
-    }
-
-    @Override
-    public void internalFrameDeactivated(InternalFrameEvent e) {
 
     }
 
@@ -172,8 +138,7 @@ public final class ProjectEditor extends AbstractAssetEditorWindow implements In
      * Builds the Swing interface
      */
     private void constructWindow() {
-        this.addInternalFrameListener(this);
-
+        addInternalFrameListener(this);
         // Builds the components needed to display the Project status.
         JTabbedPane tabPane = new JTabbedPane();
 

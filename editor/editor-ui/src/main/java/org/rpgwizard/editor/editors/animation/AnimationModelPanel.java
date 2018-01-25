@@ -16,6 +16,8 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import org.rpgwizard.common.assets.Animation;
+import org.rpgwizard.common.assets.events.AnimationChangedEvent;
+import org.rpgwizard.common.assets.listeners.AnimationChangeListener;
 import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.editor.ui.AbstractModelPanel;
 import org.rpgwizard.editor.utilities.GuiHelper;
@@ -24,7 +26,7 @@ import org.rpgwizard.editor.utilities.GuiHelper;
  *
  * @author Joshua Michael Daly
  */
-public class AnimationModelPanel extends AbstractModelPanel {
+public class AnimationModelPanel extends AbstractModelPanel implements AnimationChangeListener {
 
     private final JComboBox soundEffectComboBox;
     private final JLabel soundEffectLabel;
@@ -46,9 +48,10 @@ public class AnimationModelPanel extends AbstractModelPanel {
         ///
         super(model);
         ///
-        /// animation
+        /// this
         ///
-        this.animation = model;
+        animation = model;
+        animation.addAnimationChangeListener(this);
         ///
         /// soundEffectComboBox
         ///
@@ -129,5 +132,37 @@ public class AnimationModelPanel extends AbstractModelPanel {
                 .addComponent(frameRateSpinner));
 
         layout.setVerticalGroup(verticalGroup);
+    }
+
+    @Override
+    public void animationChanged(AnimationChangedEvent e) {
+        Animation source = (Animation) e.getSource();
+        if (!animation.equals(source)) {
+            return;
+        }
+        if (((int) widthSpinner.getValue()) != source.getAnimationWidth()) {
+            widthSpinner.setValue(source.getAnimationWidth());
+        }
+        if (((int) heightSpinner.getValue()) != source.getAnimationHeight()) {
+            heightSpinner.setValue(source.getAnimationHeight());
+        }
+        if (((int) frameRateSpinner.getValue()) != source.getFrameRate()) {
+            frameRateSpinner.setValue(source.getFrameCount());
+        }
+    }
+
+    @Override
+    public void animationFrameAdded(AnimationChangedEvent e) {
+
+    }
+
+    @Override
+    public void animationFrameRemoved(AnimationChangedEvent e) {
+
+    }
+
+    @Override
+    public void tearDown() {
+        animation.removeAnimationChangeListener(this);
     }
 }

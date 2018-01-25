@@ -431,12 +431,10 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
 
     @Override
     public void internalFrameIconified(InternalFrameEvent e) {
-
     }
 
     @Override
     public void internalFrameDeiconified(InternalFrameEvent e) {
-
     }
 
     @Override

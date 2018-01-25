@@ -16,6 +16,8 @@ import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.InternalFrameListener;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.Animation;
 import org.rpgwizard.common.assets.AssetDescriptor;
@@ -33,7 +35,8 @@ import org.rpgwizard.editor.ui.resources.Icons;
  * @author Geoff Wilson
  * @author Joshua Michael Daly
  */
-public final class AnimationEditor extends AbstractAssetEditorWindow implements AnimationChangeListener {
+public final class AnimationEditor extends AbstractAssetEditorWindow
+        implements InternalFrameListener, AnimationChangeListener {
 
     private final Animation animation;
 
@@ -78,7 +81,9 @@ public final class AnimationEditor extends AbstractAssetEditorWindow implements 
         save();
     }
 
-    public void gracefulClose() {
+    @Override
+    public void internalFrameClosed(InternalFrameEvent e) {
+        animatedPanel.tearDown();
         animation.removeAnimationChangeListener(this);
     }
 

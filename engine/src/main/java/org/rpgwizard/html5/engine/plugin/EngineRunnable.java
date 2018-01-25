@@ -65,7 +65,9 @@ public class EngineRunnable implements Runnable {
     }
 
     public void stop() throws Exception {
-        server.stop();
+        if (server != null && server.isRunning()) {
+            server.stop();
+        }
     }
 
     public static void main(String[] args) {

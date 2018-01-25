@@ -16,6 +16,8 @@ import org.rpgwizard.pluginsystem.Engine;
 import org.apache.commons.io.FileUtils;
 import org.cef.OS;
 import org.rpgwizard.html5.engine.plugin.browser.EmbeddedBrowser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ro.fortsoft.pf4j.Extension;
 import ro.fortsoft.pf4j.Plugin;
@@ -27,6 +29,8 @@ import ro.fortsoft.pf4j.PluginWrapper;
  * @author Joshua Michael Daly
  */
 public class Html5EnginePlugin extends Plugin {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(Html5EnginePlugin.class);
 
     private static final String URL = "http://localhost:8080";
 
@@ -65,6 +69,12 @@ public class Html5EnginePlugin extends Plugin {
         @Override
         public void run(String projectName, int width, int height, File projectCopy, ProgressMonitor progressMonitor)
                 throws Exception {
+            // Ensure the engine isn't already running.
+            try {
+                stop(null);
+            } catch (Exception ex) {
+                LOGGER.warn("Failed to stop engine! reason=[{}]", ex.getMessage());
+            }
             TEMP_PROJECT = projectCopy;
             Compiler.embedEngine(projectName, projectCopy, progressMonitor, false);
             startEmbeddedServer(projectCopy.getAbsolutePath());
@@ -79,16 +89,29 @@ public class Html5EnginePlugin extends Plugin {
 
         @Override
         public void stop() throws Exception {
-            ENGINE_RUNNABLE.stop();
-            EMBEDDED_BROWSER.stop();
+            if (ENGINE_RUNNABLE != null) {
+                ENGINE_RUNNABLE.stop();
+            }
+            if (EMBEDDED_BROWSER != null) {
+                EMBEDDED_BROWSER.stop();
+            }
+            if (TEMP_PROJECT != null) {
+                FileUtils.deleteQuietly(TEMP_PROJECT);
+            }
         }
 
         @Override
         public void stop(ProgressMonitor progressMonitor) throws Exception {
-            ENGINE_RUNNABLE.stop();
-            EMBEDDED_BROWSER.conceal();
+            if (ENGINE_RUNNABLE != null) {
+                ENGINE_RUNNABLE.stop();
+            }
+            if (EMBEDDED_BROWSER != null) {
+                EMBEDDED_BROWSER.conceal();
+            }
             updateProgress(progressMonitor, 50);
-            FileUtils.deleteQuietly(TEMP_PROJECT);
+            if (TEMP_PROJECT != null) {
+                FileUtils.deleteQuietly(TEMP_PROJECT);
+            }
             updateProgress(progressMonitor, 100);
         }
 
@@ -117,6 +140,9 @@ public class Html5EnginePlugin extends Plugin {
     }
 
     private static void updateProgress(ProgressMonitor progressMonitor, int progress) {
+        if (progressMonitor == null) {
+            return;
+        }
         SwingUtilities.invokeLater(() -> {
             progressMonitor.setProgress(progress);
         });

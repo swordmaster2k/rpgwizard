@@ -94,12 +94,15 @@ public class SpriteSheetImage extends JPanel implements MouseListener {
                     EditorFileManager.getImageFilterDescription(), EditorFileManager.getImageExtensions());
 
             if (imageFile != null) {
-                String remove = EditorFileManager.getGraphicsPath();
-                String path = imageFile.getAbsolutePath().replace(remove, "");
+                if (EditorFileManager.validatePathStartsWith(imageFile,
+                        new File(EditorFileManager.getGraphicsPath()))) {
+                    String remove = EditorFileManager.getGraphicsPath();
+                    String path = imageFile.getAbsolutePath().replace(remove, "");
 
-                spriteSheet = new SpriteSheet(path, 0, 0, dimension.width, dimension.height);
-                animation.setSpriteSheet(spriteSheet);
-                repaint();
+                    spriteSheet = new SpriteSheet(path, 0, 0, dimension.width, dimension.height);
+                    animation.setSpriteSheet(spriteSheet);
+                    repaint();
+                }
             }
         } else if (e.getButton() == MouseEvent.BUTTON2) {
             animation.removeSpriteSheet();

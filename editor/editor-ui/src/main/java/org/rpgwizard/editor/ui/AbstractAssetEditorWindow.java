@@ -10,6 +10,8 @@ package org.rpgwizard.editor.ui;
 import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
+import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.InternalFrameListener;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.AssetManager;
@@ -18,7 +20,7 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class AbstractAssetEditorWindow extends JInternalFrame {
+public abstract class AbstractAssetEditorWindow extends JInternalFrame implements InternalFrameListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractAssetEditorWindow.class);
 
@@ -32,7 +34,9 @@ public abstract class AbstractAssetEditorWindow extends JInternalFrame {
             boolean iconifiable, ImageIcon icon) {
         super(title, resizeable, closeable, maximizable, iconifiable);
         setDefaultCloseOperation(JInternalFrame.DO_NOTHING_ON_CLOSE);
+        addInternalFrameListener(this);
         setFrameIcon(icon);
+
     }
 
     public abstract AbstractAsset getAsset();
@@ -92,6 +96,41 @@ public abstract class AbstractAssetEditorWindow extends JInternalFrame {
     }
 
     public abstract void saveAs(File file) throws Exception;
+
+    @Override
+    public void internalFrameOpened(InternalFrameEvent e) {
+
+    }
+
+    @Override
+    public void internalFrameClosing(InternalFrameEvent e) {
+
+    }
+
+    @Override
+    public void internalFrameClosed(InternalFrameEvent e) {
+
+    }
+
+    @Override
+    public void internalFrameIconified(InternalFrameEvent e) {
+
+    }
+
+    @Override
+    public void internalFrameDeiconified(InternalFrameEvent e) {
+
+    }
+
+    @Override
+    public void internalFrameActivated(InternalFrameEvent e) {
+
+    }
+
+    @Override
+    public void internalFrameDeactivated(InternalFrameEvent e) {
+
+    }
 
     private boolean selectDescriptor(AbstractAsset asset) {
         File file = EditorFileManager.saveByType(asset.getClass());

@@ -30,7 +30,7 @@ import org.rpgwizard.editor.ui.resources.Icons;
  * @author Joel Moore
  * @author Joshua Michael Daly
  */
-public final class EnemyEditor extends AbstractSpriteEditor implements InternalFrameListener, SpriteChangeListener {
+public final class EnemyEditor extends AbstractSpriteEditor implements SpriteChangeListener {
 
     private final Enemy enemy;
 
@@ -119,11 +119,8 @@ public final class EnemyEditor extends AbstractSpriteEditor implements InternalF
      * Builds the Swing interface
      */
     private void constructWindow() {
-        this.addInternalFrameListener(this);
-
-        this.createStatsPanel();
-        this.createGraphicsPanel();
-
+        createStatsPanel();
+        createGraphicsPanel();
         build();
     }
 

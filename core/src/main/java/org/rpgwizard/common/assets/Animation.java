@@ -9,6 +9,7 @@ package org.rpgwizard.common.assets;
 
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import org.rpgwizard.common.assets.events.AnimationChangedEvent;
 import org.rpgwizard.common.assets.listeners.AnimationChangeListener;
@@ -196,6 +197,28 @@ public class Animation extends AbstractAsset {
 
             ((AnimationChangeListener) iterator.next()).animationFrameRemoved(event);
         }
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 29 * hash + Objects.hashCode(this.spriteSheet);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Animation other = (Animation) obj;
+        return this.spriteSheet.getFileName().equals(other.spriteSheet.getFileName());
     }
 
     private void init() {

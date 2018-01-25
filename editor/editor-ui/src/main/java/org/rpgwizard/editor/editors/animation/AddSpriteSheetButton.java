@@ -17,8 +17,10 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 import org.rpgwizard.common.assets.Animation;
 import org.rpgwizard.common.assets.SpriteSheet;
+import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.rpgwizard.editor.ui.resources.Icons;
 import org.rpgwizard.editor.utilities.TransparentDrawer;
@@ -51,22 +53,23 @@ public class AddSpriteSheetButton extends SpriteSheetImage {
                 EditorFileManager.getImageFilterDescription(), EditorFileManager.getImageExtensions());
 
         if (imageFile != null) {
-            try {
-                BufferedImage image = ImageIO.read(imageFile);
+            if (EditorFileManager.validatePathStartsWith(imageFile, new File(EditorFileManager.getGraphicsPath()))) {
+                try {
+                    BufferedImage image = ImageIO.read(imageFile);
 
-                // TODO: Work around until user can specifiy region.
-                int x = 0;
-                int y = 0;
-                int width = image.getWidth();
-                int height = image.getHeight();
+                    // TODO: Work around until user can specifiy region.
+                    int x = 0;
+                    int y = 0;
+                    int width = image.getWidth();
+                    int height = image.getHeight();
 
-                String remove = EditorFileManager.getGraphicsPath();
-                String path = imageFile.getAbsolutePath().replace(remove, "");
-                animation.setSpriteSheet(new SpriteSheet(path, x, y, width, height));
-                animation.setAnimationHeight(height); // Save the user an extra
-                                                      // step.
-            } catch (IOException ex) {
-                Logger.getLogger(AddSpriteSheetButton.class.getName()).log(Level.SEVERE, null, ex);
+                    String remove = EditorFileManager.getGraphicsPath();
+                    String path = imageFile.getAbsolutePath().replace(remove, "");
+                    animation.setSpriteSheet(new SpriteSheet(path, x, y, width, height));
+                    animation.setAnimationHeight(height); // Save the user an extra step.
+                } catch (IOException ex) {
+                    Logger.getLogger(AddSpriteSheetButton.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
     }

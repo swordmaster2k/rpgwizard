@@ -14,7 +14,6 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import javax.swing.event.InternalFrameListener;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.GraphicEnum;
@@ -27,7 +26,7 @@ import org.rpgwizard.editor.ui.resources.Icons;
  *
  * @author Joshua Michael Daly
  */
-public final class NPCEditor extends AbstractSpriteEditor implements InternalFrameListener, SpriteChangeListener {
+public final class NPCEditor extends AbstractSpriteEditor implements SpriteChangeListener {
 
     private final NPC npc;
 
@@ -83,11 +82,8 @@ public final class NPCEditor extends AbstractSpriteEditor implements InternalFra
     }
 
     private void constructWindow() {
-        addInternalFrameListener(this);
-
         createStatsPanel();
         createAnimationsPanel();
-
         build();
     }
 

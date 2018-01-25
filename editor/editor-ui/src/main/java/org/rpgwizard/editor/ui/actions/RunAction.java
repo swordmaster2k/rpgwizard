@@ -65,7 +65,6 @@ public class RunAction extends AbstractAction {
                     @Override
                     protected Void doInBackground() throws Exception {
                         runEngine(engines.get(0), projectName, dimensions, projectCopy, progressMonitor);
-
                         return null;
                     }
 

@@ -61,8 +61,7 @@ import org.rpgwizard.editor.ui.resources.Icons;
  *
  * @author Joshua Michael Daly
  */
-public abstract class AbstractSpriteEditor extends AbstractAssetEditorWindow
-        implements InternalFrameListener, SpriteChangeListener {
+public abstract class AbstractSpriteEditor extends AbstractAssetEditorWindow implements SpriteChangeListener {
 
     public static final int DEFAULT_INPUT_COLUMNS = 12;
 
@@ -194,39 +193,9 @@ public abstract class AbstractSpriteEditor extends AbstractAssetEditorWindow
     }
 
     @Override
-    public void internalFrameOpened(InternalFrameEvent e) {
-
-    }
-
-    @Override
-    public void internalFrameClosing(InternalFrameEvent e) {
-
-    }
-
-    @Override
     public void internalFrameClosed(InternalFrameEvent e) {
         sprite.removeSpriteChangeListener(this);
         sprite.removeSpriteChangeListener(animationsTableModel);
-    }
-
-    @Override
-    public void internalFrameIconified(InternalFrameEvent e) {
-
-    }
-
-    @Override
-    public void internalFrameDeiconified(InternalFrameEvent e) {
-
-    }
-
-    @Override
-    public void internalFrameActivated(InternalFrameEvent e) {
-
-    }
-
-    @Override
-    public void internalFrameDeactivated(InternalFrameEvent e) {
-
     }
 
     @Override

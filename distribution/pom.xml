@@ -67,6 +67,7 @@
                                         <opts>
                                             <opt>-Dorg.rpgwizard.execution.path=&quot;%EXEDIR%&quot;</opt>
                                         </opts>
+										<maxHeapSize>500</maxHeapSize>
                                     </jre>
                                     <versionInfo>
                                         <fileVersion>${file.version}</fileVersion>

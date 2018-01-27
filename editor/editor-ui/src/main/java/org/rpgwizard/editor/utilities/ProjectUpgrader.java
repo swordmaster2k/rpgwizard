@@ -96,9 +96,10 @@ public class ProjectUpgrader {
         int counter = 0;
         Collection<File> files = FileUtils.listFiles(path, extensions, true);
         for (File file : files) {
+            AbstractAsset asset = null;
             try {
                 AssetHandle handle = AssetManager.getInstance().deserialize(new AssetDescriptor(file.toURI()));
-                AbstractAsset asset = (AbstractAsset) handle.getAsset();
+                asset = (AbstractAsset) handle.getAsset();
 
                 if (checkVersion(asset)) {
                     LOGGER.info("Upgrading asset file=[{}]", file.getAbsolutePath());
@@ -107,6 +108,10 @@ public class ProjectUpgrader {
                 }
             } catch (Exception ex) {
                 LOGGER.error("Failed to upgrade file=[{}]", file.getAbsolutePath(), ex);
+            } finally {
+                if (asset != null) {
+                    AssetManager.getInstance().removeAsset(asset);
+                }
             }
         }
 

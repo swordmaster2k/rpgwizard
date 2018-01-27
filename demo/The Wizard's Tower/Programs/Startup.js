@@ -152,5 +152,8 @@ function finish() {
       rpgcode.runProgram("MenuSystem.js");
    }, true);
 
+   // Increase character walk speed.
+   rpgcode.setCharacterSpeed("Hero", 1.5);
+
    rpgcode.endProgram();
 }

@@ -9,6 +9,7 @@ package org.rpgwizard.editor.ui.actions;
 
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
+import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
@@ -27,15 +28,17 @@ public class SaveAllAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         MainWindow w = MainWindow.getInstance();
-        for (AbstractAssetEditorWindow editor : w.getOpenEditors()) {
-            if (editor.needsSave()) {
-                try {
-                    editor.save();
-                } catch (Exception ex) {
-                    LOGGER.error("Failed to invoke save for asset frame=[{}]", editor, ex);
-
-                    JOptionPane.showMessageDialog(MainWindow.getInstance(), "Error saving file!", "Error on Save",
-                            JOptionPane.ERROR_MESSAGE);
+        for (JInternalFrame frame : w.getDesktopPane().getAllFrames()) {
+            if (frame instanceof AbstractAssetEditorWindow) {
+                AbstractAssetEditorWindow editor = (AbstractAssetEditorWindow) frame;
+                if (editor.needsSave()) {
+                    try {
+                        editor.save();
+                    } catch (Exception ex) {
+                        LOGGER.error("Failed to invoke save for asset frame=[{}]", editor, ex);
+                        JOptionPane.showMessageDialog(MainWindow.getInstance(), "Error saving file!", "Error on Save",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             }
         }

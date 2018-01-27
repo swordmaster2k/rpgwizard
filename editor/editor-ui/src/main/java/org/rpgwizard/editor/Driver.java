@@ -141,7 +141,7 @@ public class Driver {
                 mainWindow.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(WindowEvent windowEvent) {
-                        mainWindow.closeEditors();
+                        mainWindow.closeAllFrames();
                         mainWindow.dispose();
 
                         // Quietly stop any engines.

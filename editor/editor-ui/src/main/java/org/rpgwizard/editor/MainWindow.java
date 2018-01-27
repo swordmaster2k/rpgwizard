@@ -347,18 +347,10 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
         editorMap.put(current, editor);
     }
 
-    public void closeEditors() {
-        if (editorMap.isEmpty()) {
-            return;
-        }
-
-        // Because the collection is invalidated on frame close.
-        int size = editorMap.size();
-        AbstractAssetEditorWindow[] windows;
-        windows = (AbstractAssetEditorWindow[]) editorMap.values().toArray(new AbstractAssetEditorWindow[size]);
-        for (int i = 0; i < size; i++) {
+    public void closeAllFrames() {
+        for (JInternalFrame frame : desktopPane.getAllFrames()) {
             try {
-                windows[i].setClosed(true);
+                frame.setClosed(true);
             } catch (PropertyVetoException ex) {
                 LOGGER.error("Failed to close internal frame.", ex);
             }
@@ -937,7 +929,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
 
     public void setupProject(Project project) {
         // Clean up previous project.
-        closeEditors();
+        closeAllFrames();
         tileSetPanel.removeTileSets();
         TileSetCache.clear();
 
@@ -946,7 +938,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
         // Will create any missing directories.
         FileTools.createAssetDirectories(System.getProperty("project.path"));
 
-        ProjectEditor projectEditor = new ProjectEditor(this.activeProject);
+        ProjectEditor projectEditor = new ProjectEditor(activeProject);
         this.desktopPane.add(projectEditor, BorderLayout.CENTER);
 
         projectEditor.addInternalFrameListener(this);

@@ -106,14 +106,12 @@ RPGWizard.prototype.setup = function (filename) {
 
     var scale = 1;
     if (this.project.isFullScreen) {
-        var zoomLevel = 100;
         var bodyWidth = engineUtil.getBodyWidth();
         var bodyHeight = engineUtil.getBodyHeight();
         scale = bodyWidth / this.project.resolutionWidth;
         if (this.project.resolutionHeight * scale > bodyHeight) {
             scale = bodyHeight / this.project.resolutionHeight;
         }
-        zoomLevel *= scale;
     }
 
     var container = document.getElementById("container");
@@ -167,7 +165,6 @@ RPGWizard.prototype.setup = function (filename) {
         this.craftyCharacter.activationVector.y = this.craftyCharacter.y;
 
         // Setup the viewport to smoothly follow the player object
-        Crafty.viewport.follow(this.craftyCharacter, 0, 0);
         Crafty.viewport.clampToEntities = true;
 
         this.loadCraftyAssets(this.loadScene);
@@ -219,6 +216,15 @@ RPGWizard.prototype.startScene = function () {
     if (rpgwizard.firstScene) {
         rpgwizard.firstScene = false;
     }
+
+    Crafty.viewport.x = 0;
+    Crafty.viewport.y = 0;
+    var width = Math.floor((rpgwizard.craftyBoard.board.width * rpgwizard.craftyBoard.board.tileWidth) * Crafty.viewport._scale);
+    var height = Math.floor((rpgwizard.craftyBoard.board.height * rpgwizard.craftyBoard.board.tileHeight) * Crafty.viewport._scale);
+    if (width > Crafty.viewport._width || height > Crafty.viewport._height) {
+        Crafty.viewport.follow(this.craftyCharacter, 0, 0);
+    }
+
     rpgwizard.craftyBoard.show = true;
     if (rpgwizard.craftyBoard.board.backgroundMusic !== rpgwizard.lastBackgroundMusic) {
         Crafty.audio.stop();
@@ -363,15 +369,31 @@ RPGWizard.prototype.createCraftyBoard = function (board) {
 
     var width = board.width * board.tileWidth;
     var height = board.height * board.tileHeight;
+    var vWidth = Crafty.viewport._width;
+    var vHeight = Crafty.viewport._height;
+    var scale = Crafty.viewport._scale;
     var xShift = 0, yShift = 0;
-    if (width < Crafty.viewport._width) {
-        xShift = ((Crafty.viewport._width - (width * Crafty.viewport._scale)) / 2) / Crafty.viewport._scale;
-        width = Crafty.viewport._width;
+    if (width < vWidth) {
+        var sWidth = width * scale;
+        xShift = Math.max(((vWidth - sWidth) / 2) / scale, 0);
+        if (xShift < 1) {
+            Math.max(sWidth - vWidth, 0);
+        }
+        width = vWidth;
     }
-    if (height < Crafty.viewport._height) {
-        yShift = ((Crafty.viewport._height - (height * Crafty.viewport._scale)) / 2) / Crafty.viewport._scale;
-        height = Crafty.viewport._height;
+    if (height < vHeight) {
+        var sHeight = height * scale;
+        yShift = Math.max(((vHeight - sHeight) / 2) / scale, 0);
+        if (yShift < 1) {
+            Math.max(sHeight - vHeight, 0);
+        }
+        height = vHeight;
     }
+
+    console.log("width=" + width);
+    console.log("height=" + height);
+    console.log("xShift=" + xShift);
+    console.log("yShift=" + yShift);
 
     Crafty.c("Board", {
         ready: true,

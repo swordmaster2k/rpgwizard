@@ -81,7 +81,10 @@ public class AssetManager {
      * @param asset
      */
     public void removeAsset(Asset asset) {
-        assets.remove(asset.getDescriptor());
+        if (asset != null && asset.getDescriptor() != null) {
+            LOGGER.info("Removing asset in cache with URI=[{}]", asset.getDescriptor().uri);
+            assets.remove(asset.getDescriptor());
+        }
     }
 
     /**

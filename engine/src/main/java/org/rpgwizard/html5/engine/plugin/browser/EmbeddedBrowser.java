@@ -80,8 +80,14 @@ public final class EmbeddedBrowser extends JFrame {
                             if (event.type == CefKeyboardHandler.CefKeyEvent.EventType.KEYEVENT_RAWKEYDOWN) {
                                 if (devToolsUI == null) {
                                     devToolsUI = cefBrowser.getDevTools().getUIComponent();
-                                    devToolsUI.setPreferredSize(new Dimension(width, 200));
+                                    if (getWidth() >= 800) {
+                                        devToolsUI.setPreferredSize(new Dimension(getWidth(), 300));
+                                    } else {
+                                        devToolsUI.setPreferredSize(new Dimension(800, 300));
+                                    }
                                     getContentPane().add(devToolsUI, BorderLayout.SOUTH);
+                                    pack();
+                                    setLocationRelativeTo(null);
                                 } else {
                                     devToolsUI.setVisible(!devToolsUI.isVisible());
                                 }
@@ -109,7 +115,6 @@ public final class EmbeddedBrowser extends JFrame {
         browserUI.setPreferredSize(new Dimension(width, height));
 
         getContentPane().add(browserUI, BorderLayout.CENTER);
-        setResizable(false);
         setTitle(title);
         validate();
         pack();
@@ -145,6 +150,7 @@ public final class EmbeddedBrowser extends JFrame {
         setSize(new Dimension(newWidth, newHeight));
         revalidate();
         pack();
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 

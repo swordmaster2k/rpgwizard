@@ -17,11 +17,15 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.InternalFrameEvent;
@@ -72,8 +76,9 @@ public final class ProjectEditor extends AbstractAssetEditorWindow implements In
     private JRadioButton eightBySix;
     private JRadioButton tenBySeven;
     private JRadioButton customRes;
-    private JTextField customResWidth;
-    private JTextField customResHeight;
+
+    private JSpinner customResWidthSpinner;
+    private JSpinner customResHeightSpinner;
 
     /**
      * Opens an existing project
@@ -98,20 +103,6 @@ public final class ProjectEditor extends AbstractAssetEditorWindow implements In
 
     @Override
     public void save() throws Exception {
-        if (sixByFour.isSelected()) {
-            project.setResolutionWidth(640);
-            project.setResolutionHeight(480);
-        } else if (eightBySix.isSelected()) {
-            project.setResolutionWidth(800);
-            project.setResolutionHeight(600);
-        } else if (tenBySeven.isSelected()) {
-            project.setResolutionWidth(1024);
-            project.setResolutionHeight(768);
-        } else {
-            project.setResolutionWidth(Integer.parseInt(customResWidth.getText()));
-            project.setResolutionHeight(Integer.parseInt(customResHeight.getText()));
-        }
-
         save(project);
         setTitle(project.getName());
     }
@@ -316,14 +307,57 @@ public final class ProjectEditor extends AbstractAssetEditorWindow implements In
         fullScreen.setSelected(project.isFullScreen());
         fullScreen.addActionListener((ActionEvent e) -> {
             project.setIsFullScreen(fullScreen.isSelected());
+            setNeedSave(true);
         });
 
         sixByFour = new JRadioButton("640 x 480");
+        sixByFour.addActionListener((e) -> {
+            customResWidthSpinner.setEnabled(false);
+            customResHeightSpinner.setEnabled(false);
+            project.setResolutionWidth(640);
+            project.setResolutionHeight(480);
+            setNeedSave(true);
+        });
         eightBySix = new JRadioButton("800 x 600");
+        eightBySix.addActionListener((e) -> {
+            customResWidthSpinner.setEnabled(false);
+            customResHeightSpinner.setEnabled(false);
+            project.setResolutionWidth(800);
+            project.setResolutionHeight(600);
+            setNeedSave(true);
+        });
         tenBySeven = new JRadioButton("1024 x 768");
+        tenBySeven.addActionListener((e) -> {
+            customResWidthSpinner.setEnabled(false);
+            customResHeightSpinner.setEnabled(false);
+            project.setResolutionWidth(1024);
+            project.setResolutionHeight(768);
+            setNeedSave(true);
+        });
         customRes = new JRadioButton("Custom");
-        customResWidth = new JTextField(Long.toString(this.project.getResolutionWidth()));
-        customResHeight = new JTextField(Long.toString(this.project.getResolutionHeight()));
+        customRes.addActionListener((e) -> {
+            customResWidthSpinner.setEnabled(true);
+            customResHeightSpinner.setEnabled(true);
+            setNeedSave(true);
+        });
+
+        customResWidthSpinner = new JSpinner();
+        customResWidthSpinner.setModel(new SpinnerNumberModel(this.project.getResolutionWidth(), 320, 3200, 1));
+        customResWidthSpinner.addChangeListener((ChangeEvent e) -> {
+            int value = (Integer) customResWidthSpinner.getValue();
+            project.setResolutionWidth(value);
+            setNeedSave(true);
+        });
+        customResWidthSpinner.setEnabled(false);
+
+        customResHeightSpinner = new JSpinner();
+        customResHeightSpinner.setModel(new SpinnerNumberModel(this.project.getResolutionHeight(), 240, 2400, 1));
+        customResHeightSpinner.addChangeListener((ChangeEvent e) -> {
+            int value = (Integer) customResHeightSpinner.getValue();
+            project.setResolutionHeight(value);
+            setNeedSave(true);
+        });
+        customResHeightSpinner.setEnabled(false);
 
         ButtonGroup resolutionGroup = new ButtonGroup();
         resolutionGroup.add(this.sixByFour);
@@ -341,6 +375,8 @@ public final class ProjectEditor extends AbstractAssetEditorWindow implements In
             tenBySeven.setSelected(true);
         } else {
             customRes.setSelected(true);
+            customResWidthSpinner.setEnabled(true);
+            customResHeightSpinner.setEnabled(true);
         }
 
         JLabel customResWarningLabel = new JLabel("Please note that not all " + "video cards support all resolutions");
@@ -388,18 +424,16 @@ public final class ProjectEditor extends AbstractAssetEditorWindow implements In
 
         customResLayout.setHorizontalGroup(customResLayout.createParallelGroup().addComponent(customResWarningLabel)
                 .addGroup(customResLayout.createSequentialGroup().addComponent(customResX)
-                        .addComponent(this.customResWidth).addComponent(customResY)
-                        .addComponent(this.customResHeight)));
+                        .addComponent(this.customResWidthSpinner).addComponent(customResY)
+                        .addComponent(this.customResHeightSpinner)));
 
-        customResLayout.linkSize(SwingConstants.VERTICAL, this.customResWidth, this.customResHeight);
+        customResLayout.linkSize(SwingConstants.VERTICAL, this.customResWidthSpinner, this.customResHeightSpinner);
 
-        customResLayout
-                .setVerticalGroup(customResLayout.createSequentialGroup().addComponent(customResWarningLabel)
-                        .addGroup(customResLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
-                                .addComponent(customResX)
-                                .addComponent(this.customResWidth, GuiHelper.JTF_HEIGHT, GuiHelper.JTF_HEIGHT,
-                                        GuiHelper.JTF_HEIGHT)
-                                .addComponent(customResY).addComponent(this.customResHeight)));
+        customResLayout.setVerticalGroup(customResLayout.createSequentialGroup().addComponent(customResWarningLabel)
+                .addGroup(customResLayout.createParallelGroup(GroupLayout.Alignment.CENTER).addComponent(customResX)
+                        .addComponent(this.customResWidthSpinner, GuiHelper.JTF_HEIGHT, GuiHelper.JTF_HEIGHT,
+                                GuiHelper.JTF_HEIGHT)
+                        .addComponent(customResY).addComponent(this.customResHeightSpinner)));
 
         layout.setHorizontalGroup(layout.createParallelGroup().addComponent(screenPanel, 515, 515, 515));
 

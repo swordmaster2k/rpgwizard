@@ -21,6 +21,7 @@ import javax.swing.SwingWorker;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.pluginsystem.Engine;
 import org.apache.commons.io.FileUtils;
+import org.rpgwizard.common.assets.Project;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ro.fortsoft.pf4j.PluginManager;
@@ -43,9 +44,11 @@ public class RunAction extends AbstractAction {
             instance.getMainToolBar().getRunButton().setEnabled(false);
             instance.getMainToolBar().getSaveAllButton().doClick();
 
-            String projectName = instance.getTitle();
-            int projectWidth = instance.getActiveProject().getResolutionWidth();
-            int projectHeight = instance.getActiveProject().getResolutionHeight();
+            Project project = instance.getActiveProject();
+            String projectName = project.getName();
+            int projectWidth = project.getResolutionWidth();
+            int projectHeight = project.getResolutionHeight();
+            boolean isFullScreen = project.isFullScreen();
 
             // Make a temporary copy of the user's project for the engine to
             // use.
@@ -64,7 +67,7 @@ public class RunAction extends AbstractAction {
                 worker = new SwingWorker<Void, Void>() {
                     @Override
                     protected Void doInBackground() throws Exception {
-                        runEngine(engines.get(0), projectName, dimensions, projectCopy, progressMonitor);
+                        runEngine(engines.get(0), projectName, dimensions, isFullScreen, projectCopy, progressMonitor);
                         return null;
                     }
 
@@ -82,9 +85,10 @@ public class RunAction extends AbstractAction {
         }
     }
 
-    private void runEngine(Engine engine, String projectName, Dimension dimensions, File projectCopy,
-            ProgressMonitor progressMonitor) throws InterruptedException, InvocationTargetException, Exception {
-        engine.run(projectName, dimensions.width, dimensions.height, projectCopy, progressMonitor);
+    private void runEngine(Engine engine, String projectName, Dimension dimensions, boolean isFullScreen,
+            File projectCopy, ProgressMonitor progressMonitor)
+            throws InterruptedException, InvocationTargetException, Exception {
+        engine.run(projectName, dimensions.width, dimensions.height, isFullScreen, projectCopy, progressMonitor);
     }
 
 }

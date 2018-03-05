@@ -28,11 +28,15 @@ public class EastPanelAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         MainWindow mainWindow = MainWindow.getInstance();
         JPanel panel = mainWindow.getEastPanel();
-        JTabbedPane westLowerTabbedPane = mainWindow.getWestLowerTabbedPane();
+        JTabbedPane eastUpperTabbedPane = mainWindow.getEastUpperTabbedPane();
         JTabbedPane eastLowerTabbedPane = mainWindow.getEastLowerTabbedPane();
+        JTabbedPane westUpperTabbedPane = mainWindow.getWestUpperTabbedPane();
+        JTabbedPane westLowerTabbedPane = mainWindow.getWestLowerTabbedPane();
         if (panel.isVisible()) {
+            moveTab(eastUpperTabbedPane, westUpperTabbedPane, 0);
             moveTab(eastLowerTabbedPane, westLowerTabbedPane, 0);
         } else {
+            moveTab(westUpperTabbedPane, eastUpperTabbedPane, 1);
             moveTab(westLowerTabbedPane, eastLowerTabbedPane, 1);
         }
         panel.setVisible(!panel.isVisible());

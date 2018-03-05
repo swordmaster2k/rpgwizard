@@ -34,7 +34,7 @@ public class EngineRunnable implements Runnable {
 
     @Override
     public void run() {
-        server = new Server(new InetSocketAddress("localhost", 8080));
+        server = new Server(new InetSocketAddress(System.getProperty("host", "0.0.0.0"), 8080));
         server.setStopAtShutdown(true);
 
         EngineRestService restService = new EngineRestService(resourceBase);

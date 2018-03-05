@@ -14,6 +14,8 @@ function ScreenRenderer() {
 }
 
 ScreenRenderer.prototype.renderBoard = function (context) {
+    context.imageSmoothingEnabled = false;
+    
     var xShift = rpgwizard.craftyBoard.xShift;
     var yShift = rpgwizard.craftyBoard.yShift;
     var x = rpgwizard.craftyBoard.x + xShift;

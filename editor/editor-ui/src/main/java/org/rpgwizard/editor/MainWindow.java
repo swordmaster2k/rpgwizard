@@ -74,6 +74,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.rpgwizard.common.assets.Item;
 import org.rpgwizard.editor.editors.ItemEditor;
 import org.rpgwizard.editor.editors.ProgramEditor;
+import org.rpgwizard.editor.ui.ProjectPanel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ro.fortsoft.pf4j.PluginManager;
@@ -106,7 +107,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
     private final JTabbedPane eastUpperTabbedPane;
     private final JTabbedPane eastLowerTabbedPane;
 
-    // private final ProjectPanel projectPanel;
+    private final ProjectPanel projectPanel;
     private final TileSetTabbedPane tileSetPanel;
     private final PropertiesPanel propertiesPanel;
     private final LayerPanel layerPanel;
@@ -146,12 +147,15 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
         // / tileSetPanel
         // /
         tileSetPanel = new TileSetTabbedPane();
-        // this.projectPanel = new ProjectPanel();
+        // /
+        // / projectPanel
+        // /
+        projectPanel = new ProjectPanel();
         // /
         // / westUpperTabbedPane
         // /
         westUpperTabbedPane = new JTabbedPane();
-        // this.upperTabbedPane.addTab("Project", this.projectPanel); // TODO:
+        westUpperTabbedPane.addTab("Project", this.projectPanel);
         westUpperTabbedPane.addTab("Tileset", tileSetPanel);
         // /
         // / layerPanel
@@ -283,6 +287,10 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
         return westPanel;
     }
 
+    public JTabbedPane getWestUpperTabbedPane() {
+        return westUpperTabbedPane;
+    }
+    
     public JTabbedPane getWestLowerTabbedPane() {
         return westLowerTabbedPane;
     }
@@ -291,6 +299,10 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
         return eastPanel;
     }
 
+    public JTabbedPane getEastUpperTabbedPane() {
+        return eastUpperTabbedPane;
+    }
+    
     public JTabbedPane getEastLowerTabbedPane() {
         return eastLowerTabbedPane;
     }
@@ -367,7 +379,9 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
             propertiesPanel.setModel(editor.getAnimation());
         } else if (window instanceof BoardEditor) {
             BoardEditor editor = (BoardEditor) window;
-            westUpperTabbedPane.setSelectedComponent(tileSetPanel);
+            if (westUpperTabbedPane.indexOfComponent(tileSetPanel) > -1) {
+                westUpperTabbedPane.setSelectedComponent(tileSetPanel);
+            }
             westLowerTabbedPane.setSelectedComponent(layerPanel);
             propertiesPanel.setModel(editor.getBoard());
         } else if (window instanceof CharacterEditor) {
@@ -898,7 +912,9 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
             }
 
             tileSetPanel.addTileSet(tileSet);
-            westUpperTabbedPane.setSelectedComponent(tileSetPanel);
+            if (westUpperTabbedPane.indexOfComponent(tileSetPanel) > -1) {
+                westUpperTabbedPane.setSelectedComponent(tileSetPanel);
+            }
         } catch (IOException ex) {
             LOGGER.error("Failed to open {} file=[{}].", TileSet.class.getSimpleName(), file, ex);
         }
@@ -938,6 +954,8 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
         // Will create any missing directories.
         FileTools.createAssetDirectories(System.getProperty("project.path"));
 
+        projectPanel.setup(EditorFileManager.getProjectPath());
+        
         ProjectEditor projectEditor = new ProjectEditor(activeProject);
         this.desktopPane.add(projectEditor, BorderLayout.CENTER);
 

@@ -67,8 +67,8 @@ public class Html5EnginePlugin extends Plugin {
         }
 
         @Override
-        public void run(String projectName, int width, int height, File projectCopy, ProgressMonitor progressMonitor)
-                throws Exception {
+        public void run(String projectName, int width, int height, boolean isFullScreen, File projectCopy,
+                ProgressMonitor progressMonitor) throws Exception {
             // Ensure the engine isn't already running.
             try {
                 stop(null);
@@ -81,7 +81,7 @@ public class Html5EnginePlugin extends Plugin {
 
             // 75%
             updateProgress(progressMonitor, 75);
-            openEmbeddedBrowser(projectName, width, height);
+            openEmbeddedBrowser(projectName, width, height, isFullScreen);
 
             // 100%
             updateProgress(progressMonitor, 100);
@@ -121,12 +121,13 @@ public class Html5EnginePlugin extends Plugin {
             ENGINE_THREAD.start();
         }
 
-        private void openEmbeddedBrowser(String projectName, int width, int height) {
+        private void openEmbeddedBrowser(String projectName, int width, int height, boolean isFullScreen) {
             SwingUtilities.invokeLater(() -> {
                 if (EMBEDDED_BROWSER != null) {
-                    EMBEDDED_BROWSER.display(URL, projectName, width, height);
+                    EMBEDDED_BROWSER.display(URL, projectName, width, height, isFullScreen);
                 } else {
-                    EMBEDDED_BROWSER = new EmbeddedBrowser(projectName, URL, OS.isLinux(), false, width, height);
+                    EMBEDDED_BROWSER = new EmbeddedBrowser(projectName, URL, OS.isLinux(), false, width, height,
+                            isFullScreen);
                     EMBEDDED_BROWSER.addWindowListener(new WindowAdapter() {
                         @Override
                         public void windowClosing(WindowEvent e) {

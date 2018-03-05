@@ -11,8 +11,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import org.cef.OS;
@@ -25,6 +23,8 @@ import org.rpgwizard.common.assets.files.FileAssetHandleResolver;
 import org.rpgwizard.common.assets.serialization.JsonProjectSerializer;
 import org.rpgwizard.html5.engine.plugin.EngineRunnable;
 import org.rpgwizard.html5.engine.plugin.browser.EmbeddedBrowser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -33,11 +33,23 @@ import org.rpgwizard.html5.engine.plugin.browser.EmbeddedBrowser;
  */
 public class Standalone {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Standalone.class);
+
     public static boolean STANDALONE_MODE = false;
 
     private static Thread ENGINE_THREAD;
     private static EngineRunnable ENGINE_RUNNABLE;
     private static EmbeddedBrowser EMBEDDED_BROWSER;
+
+    public static void redirectUncaughtExceptions() {
+        try {
+            Thread.setDefaultUncaughtExceptionHandler((Thread t, Throwable e) -> {
+                LOGGER.error("Uncaught Exception detected in thread {}", t, e);
+            });
+        } catch (SecurityException e) {
+            LOGGER.error("Could not set the Default Uncaught Exception Handler", e);
+        }
+    }
 
     private static void showErrorDialog(String title, String message) {
         JOptionPane.showMessageDialog(new JFrame(), message, title, JOptionPane.ERROR_MESSAGE);
@@ -60,7 +72,7 @@ public class Standalone {
         javax.swing.SwingUtilities.invokeLater(() -> {
             // Show the JCEF browser window.
             EMBEDDED_BROWSER = new EmbeddedBrowser(project.getName(), "http://localhost:8080", OS.isLinux(), false,
-                    project.getResolutionWidth(), project.getResolutionHeight());
+                    project.getResolutionWidth(), project.getResolutionHeight(), project.isFullScreen());
             EMBEDDED_BROWSER.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
@@ -68,7 +80,7 @@ public class Standalone {
                         ENGINE_RUNNABLE.stop();
                         EMBEDDED_BROWSER.stop();
                     } catch (Exception ex) {
-                        Logger.getLogger(Standalone.class.getName()).log(Level.SEVERE, null, ex);
+                        LOGGER.error("Could not close game window!", ex);
                     }
 
                     // JCEF keeps hanging.
@@ -93,7 +105,7 @@ public class Standalone {
                 project = openProject(projectFile);
                 start(resourceBase, project);
             } catch (AssetException | IOException ex) {
-                Logger.getLogger(Standalone.class.getName()).log(Level.SEVERE, null, ex);
+                LOGGER.error("Could not open default.game!", ex);
                 showErrorDialog("Error on Game Start", "Could not open default.game!");
                 Runtime.getRuntime().halt(1);
             }

@@ -39,6 +39,7 @@ function RPGcode() {
     this.rgba = {r: 255, g: 255, b: 255, a: 1.0};
     this.font = "14px Arial";
     this.globalAlpha = 1.0;
+    this.imageSmoothingEnabled = false;
 
     this.dialogPosition = {
         NORTH: "NORTH",
@@ -475,6 +476,7 @@ RPGcode.prototype.drawCircle = function (x, y, radius, canvasId) {
     var instance = rpgcode.canvases[canvasId];
     if (instance) {
         var context = instance.canvas.getContext("2d");
+        context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
         var rgba = rpgcode.rgba;
         context.globalAlpha = rpgcode.globalAlpha;
         context.strokeStyle = "rgba(" + rgba.r + "," + rgba.g + "," + rgba.b + "," + rgba.a + ")";
@@ -510,6 +512,7 @@ RPGcode.prototype.drawLine = function (x1, y1, x2, y2, lineWidth, canvasId) {
     var instance = rpgcode.canvases[canvasId];
     if (instance) {
         var context = instance.canvas.getContext("2d");
+        context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
         var rgba = rpgcode.rgba;
         context.globalAlpha = rpgcode.globalAlpha;
         context.lineWidth = lineWidth;
@@ -600,6 +603,7 @@ RPGcode.prototype.drawRect = function (x, y, width, height, lineWidth, canvasId)
     var instance = rpgcode.canvases[canvasId];
     if (instance) {
         var context = instance.canvas.getContext("2d");
+        context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
         var rgba = rpgcode.rgba;
         context.globalAlpha = rpgcode.globalAlpha;
         context.lineWidth = lineWidth;
@@ -636,6 +640,7 @@ RPGcode.prototype.drawText = function (x, y, text, canvasId) {
     var instance = rpgcode.canvases[canvasId];
     if (instance) {
         var context = instance.canvas.getContext("2d");
+        context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
         var rgba = rpgcode.rgba;
         context.globalAlpha = rpgcode.globalAlpha;
         context.fillStyle = "rgba(" + rgba.r + "," + rgba.g + "," + rgba.b + "," + rgba.a + ")";
@@ -690,6 +695,7 @@ RPGcode.prototype.fillCircle = function (x, y, radius, canvasId) {
     var instance = rpgcode.canvases[canvasId];
     if (instance) {
         var context = instance.canvas.getContext("2d");
+        context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
         var rgba = rpgcode.rgba;
         context.globalAlpha = rpgcode.globalAlpha;
         context.fillStyle = "rgba(" + rgba.r + "," + rgba.g + "," + rgba.b + "," + rgba.a + ")";
@@ -724,6 +730,7 @@ RPGcode.prototype.fillRect = function (x, y, width, height, canvasId) {
     var instance = rpgcode.canvases[canvasId];
     if (instance) {
         var context = instance.canvas.getContext("2d");
+        context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
         var rgba = rpgcode.rgba;
         context.globalAlpha = rpgcode.globalAlpha;
         context.fillStyle = "rgba(" + rgba.r + "," + rgba.g + "," + rgba.b + "," + rgba.a + ")";
@@ -986,6 +993,7 @@ RPGcode.prototype.getPixel = function (x, y, canvasId) {
     var instance = rpgcode.canvases[canvasId];
     if (instance) {
         var context = instance.canvas.getContext("2d");
+        context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
         return context.getImageData(x, y, 1, 1);
     }
     return null;
@@ -1006,6 +1014,25 @@ RPGcode.prototype.getPixel = function (x, y, canvasId) {
  */
 RPGcode.prototype.getImage = function (fileName) {
     return Crafty.asset(Crafty.__paths.images + fileName);
+};
+
+/**
+ * Gets the item object and returns it to the caller
+ * 
+ * @example
+ * rpgcode.getItem("apple.item", function(item) {
+ *  rpgcode.log(item);
+ * });
+ * 
+ * @param {String} fileName The relative path to the item.
+ * @param {Callback} callback Invoked when the item has finished loading.
+ * @returns {Object} Item object or undefined if none available.
+ */
+RPGcode.prototype.getItem = function (fileName, callback) {
+    if (callback) { // Use a callback to future proof for async loading.
+        callback(new Item(PATH_ITEM + fileName));
+    }
+    return undefined;
 };
 
 /**
@@ -1180,14 +1207,13 @@ RPGcode.prototype.giveItem = function (filename, characterId, callback) {
     rpgwizard.loadItem(item);
     rpgwizard.loadCraftyAssets(function (e) {
         if (!e) {
+            if (!rpgwizard.craftyCharacter.character.inventory[filename]) {
+                rpgwizard.craftyCharacter.character.inventory[filename] = [];
+            }
+            rpgwizard.craftyCharacter.character.inventory[filename].push(item);
             callback();
         }
     });
-
-    if (!rpgwizard.craftyCharacter.character.inventory[filename]) {
-        rpgwizard.craftyCharacter.character.inventory[filename] = [];
-    }
-    rpgwizard.craftyCharacter.character.inventory[filename].push(item);
 };
 
 /**
@@ -1473,6 +1499,7 @@ RPGcode.prototype.moveSprite = function (spriteId, direction, distance) {
 RPGcode.prototype.measureText = function (text) {
     var instance = rpgcode.canvases["renderNowCanvas"];
     var context = instance.canvas.getContext("2d");
+    context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
     context.globalAlpha = rpgcode.globalAlpha;
     context.font = rpgcode.font;
     return {width: context.measureText(text).width, height: parseInt(context.font)};
@@ -2087,6 +2114,7 @@ RPGcode.prototype.setImage = function (fileName, x, y, width, height, canvasId) 
         var image = Crafty.asset(Crafty.__paths.images + fileName);
         if (image) {
             var context = instance.canvas.getContext("2d");
+            context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
             context.globalAlpha = rpgcode.globalAlpha;
             context.drawImage(image, x, y, width, height);
         }
@@ -2118,6 +2146,7 @@ RPGcode.prototype.setPixel = function (x, y, canvasId) {
     var instance = rpgcode.canvases[canvasId];
     if (instance) {
         var context = instance.canvas.getContext("2d");
+        context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
         var imageData = context.getImageData(x, y, 1, 1);
         var rgba = rpgcode.rgba;
         imageData.data[0] = rgba.r;

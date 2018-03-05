@@ -108,9 +108,9 @@ RPGWizard.prototype.setup = function (filename) {
     if (this.project.isFullScreen) {
         var bodyWidth = engineUtil.getBodyWidth();
         var bodyHeight = engineUtil.getBodyHeight();
-        scale = bodyWidth / this.project.resolutionWidth;
+        scale = (bodyWidth / this.project.resolutionWidth).toFixed(2);
         if (this.project.resolutionHeight * scale > bodyHeight) {
-            scale = bodyHeight / this.project.resolutionHeight;
+            scale = (bodyHeight / this.project.resolutionHeight).toFixed(2);
         }
     }
 
@@ -125,6 +125,7 @@ RPGWizard.prototype.setup = function (filename) {
     Crafty.viewport.init(width, height);
     Crafty.paths({audio: PATH_MEDIA, images: PATH_BITMAP});
     Crafty.viewport.scale(scale);
+    
 
     // Setup run time keys.
     this.keyboardHandler = new Keyboard();
@@ -165,6 +166,7 @@ RPGWizard.prototype.setup = function (filename) {
         this.craftyCharacter.activationVector.y = this.craftyCharacter.y;
 
         // Setup the viewport to smoothly follow the player object
+        Crafty.viewport.x = 0; Crafty.viewport.y = 0;
         Crafty.viewport.clampToEntities = true;
 
         this.loadCraftyAssets(this.loadScene);
@@ -390,11 +392,13 @@ RPGWizard.prototype.createCraftyBoard = function (board) {
         height = vHeight;
     }
 
-    console.log("width=" + width);
-    console.log("height=" + height);
-    console.log("xShift=" + xShift);
-    console.log("yShift=" + yShift);
-
+    if (rpgwizard.debugEnabled) {
+        console.debug("width=" + width);
+        console.debug("height=" + height);
+        console.debug("xShift=" + xShift);
+        console.debug("yShift=" + yShift);
+    }
+    
     Crafty.c("Board", {
         ready: true,
         width: width,
@@ -444,6 +448,7 @@ RPGWizard.prototype.loadBoard = function (board) {
          * Setup vectors.
          */
         boardLayer.vectors.forEach(function (vector) {
+            var id = vector.id;
             var type = vector.type;
             var points = vector.points;
             var events = vector.events;
@@ -453,7 +458,7 @@ RPGWizard.prototype.loadBoard = function (board) {
             for (var i = 0; i < len; i++) {
                 collision.push(points[i].x, points[i].y);
             }
-            this.createVectorPolygon(collision, layer, type, events);
+            this.createVectorPolygon(id, collision, layer, type, events);
         }, this);
 
         /*
@@ -748,7 +753,7 @@ RPGWizard.prototype.endProgram = function (nextProgram) {
     }
 };
 
-RPGWizard.prototype.createVectorPolygon = function (points, layer, type, events) {
+RPGWizard.prototype.createVectorPolygon = function (id, points, layer, type, events) {
     var minX = maxX = points[0];
     var minY = maxY = points[1];
     var currentX, currentY;
@@ -775,6 +780,7 @@ RPGWizard.prototype.createVectorPolygon = function (points, layer, type, events)
     var width = Math.abs(maxX - minX) + 1;
     var height = Math.abs(maxY - minY) + 1;
     var attr = {x: minX, y: minY, w: width, h: height};
+    attr.vectorId = id;
     attr.layer = layer;
     attr.vectorType = type;
     attr.events = events;

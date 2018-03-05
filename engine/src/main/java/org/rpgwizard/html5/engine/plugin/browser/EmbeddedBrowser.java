@@ -36,8 +36,8 @@ public final class EmbeddedBrowser extends JFrame {
     private final Component browserUI;
     private Component devToolsUI;
 
-    public EmbeddedBrowser(String title, String startURL, boolean useOSR, boolean isTransparent, int width,
-            int height) {
+    public EmbeddedBrowser(String title, String startURL, boolean useOSR, boolean isTransparent, int width, int height,
+            boolean isFullScreen) {
         CefApp.addAppHandler(new CefAppHandlerAdapter(null) {
             @Override
             public void stateHasChanged(org.cef.CefApp.CefAppState state) {
@@ -113,7 +113,9 @@ public final class EmbeddedBrowser extends JFrame {
         });
 
         browserUI.setPreferredSize(new Dimension(width, height));
-
+        if (isFullScreen) {
+            setExtendedState(JFrame.MAXIMIZED_BOTH);
+        }
         getContentPane().add(browserUI, BorderLayout.CENTER);
         setTitle(title);
         validate();
@@ -143,15 +145,20 @@ public final class EmbeddedBrowser extends JFrame {
         return browserUI;
     }
 
-    public void display(String url, String projectName, int newWidth, int newHeight) {
+    public void display(String url, String projectName, int newWidth, int newHeight, boolean isFullScreen) {
         getCefBrowser().loadURL(url);
         setTitle(projectName);
         getBrowserUI().setPreferredSize(new Dimension(newWidth, newHeight));
         setSize(new Dimension(newWidth, newHeight));
+        if (isFullScreen) {
+            setExtendedState(JFrame.MAXIMIZED_BOTH);
+        }
         revalidate();
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
+        toFront();
+        requestFocus();
     }
 
     public void conceal() {
@@ -169,7 +176,7 @@ public final class EmbeddedBrowser extends JFrame {
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(() -> {
             EmbeddedBrowser test = new EmbeddedBrowser("Test", "http://localhost:8080/index.html", OS.isLinux(), false,
-                    640, 480);
+                    640, 480, false);
             test.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {

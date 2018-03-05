@@ -48,13 +48,15 @@ public interface Engine extends ExtensionPoint {
      *            width of the game window
      * @param projectHeight
      *            height of the game window
+     * @param isFullScreen
+     *            should the frame be maximized
      * @param projectCopy
      *            path to the project copy for engine use
      * @param progressMonitor
      *            for tracking engine startup progress
      * @throws java.lang.Exception
      */
-    public void run(String projectName, int projectWidth, int projectHeight, File projectCopy,
+    public void run(String projectName, int projectWidth, int projectHeight, boolean isFullScreen, File projectCopy,
             ProgressMonitor progressMonitor) throws Exception;
 
     /**

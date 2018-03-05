@@ -52,6 +52,44 @@ public final class Icons {
     public static final ImageIcon getLargeIcon(String name) {
         return getIcon(name, Size.LARGE);
     }
+    
+    public static final ImageIcon getDefaultIcon(String name) {
+        switch (name.toLowerCase()) {
+            case "animation":
+                return getIcon("animation");
+            case "board":
+                return getIcon("board");
+            case "character":
+                return getIcon("character");
+            case "enemy":
+                return getIcon("enemy");
+            case "item":
+                return getIcon("item");
+            case "js":
+                return getIcon("program");
+            case "npc":
+                return getIcon("npc");
+            case "game":
+                return getIcon("project");
+            case "folder":
+                return getIcon("open");
+            case "jpg":
+            case "png":
+            case "gif":
+                return getIcon("image");
+            case "wav":
+            case "ogg":
+            case "mp3":
+                return getIcon("sound");
+            case "tileset":
+                return getIcon("tileset");
+            case "ttf":
+            case "otf":
+                return getIcon("font");
+            default:
+                return null;
+        }
+    }
 
     public static final BufferedImage toBufferedImage(ImageIcon icon) {
         BufferedImage bufferedImage = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(),

@@ -85,6 +85,7 @@ public class MainMenuBar extends JMenuBar {
 
     public void enableMenus(boolean enable) {
         fileMenu.doEnableItems();
+        editMenu.doEnableItems();
     }
 
 }

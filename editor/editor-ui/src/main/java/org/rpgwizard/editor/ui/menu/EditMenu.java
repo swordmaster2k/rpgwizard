@@ -13,6 +13,14 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
+import org.rpgwizard.editor.ui.actions.CopyAction;
+import org.rpgwizard.editor.ui.actions.CutAction;
+import org.rpgwizard.editor.ui.actions.FindAction;
+import org.rpgwizard.editor.ui.actions.PasteAction;
+import org.rpgwizard.editor.ui.actions.RedoAction;
+import org.rpgwizard.editor.ui.actions.ReplaceAction;
+import org.rpgwizard.editor.ui.actions.SelectAllAction;
+import org.rpgwizard.editor.ui.actions.UndoAction;
 import org.rpgwizard.editor.ui.resources.Icons;
 
 /**
@@ -27,7 +35,6 @@ public final class EditMenu extends JMenu {
     private JMenuItem copyMenuItem;
     private JMenuItem pasteMenuItem;
     private JMenuItem selectAllMenuItem;
-    private JMenuItem commentMenuItem;
     private JMenuItem findMenuItem;
     private JMenuItem quickReplaceMenuItem;
 
@@ -42,7 +49,6 @@ public final class EditMenu extends JMenu {
         configureCopyMenuItem();
         configurePasteMenuItem();
         configureSelectAllMenuItem();
-        configureCommentMenuItem();
         configureFindMenuItem();
         configureQuickReplaceMenuItem();
 
@@ -54,14 +60,29 @@ public final class EditMenu extends JMenu {
         add(pasteMenuItem);
         add(new JSeparator());
         add(selectAllMenuItem);
-        add(commentMenuItem);
         add(new JSeparator());
         add(findMenuItem);
         add(quickReplaceMenuItem);
     }
 
+    /**
+     * Enable all the menu items after a project has been opened.
+     */
+    public void doEnableItems() {
+        undoMenuItem.setEnabled(true);
+        redoMenuItem.setEnabled(true);
+        cutMenuItem.setEnabled(true);
+        copyMenuItem.setEnabled(true);
+        pasteMenuItem.setEnabled(true);
+        selectAllMenuItem.setEnabled(true);
+        findMenuItem.setEnabled(true);
+        quickReplaceMenuItem.setEnabled(true);
+    }
+
     public void configureUndoMenuItem() {
         undoMenuItem = new JMenuItem("Undo");
+        undoMenuItem.setAction(new UndoAction());
+        undoMenuItem.setText("Undo");
         undoMenuItem.setIcon(Icons.getSmallIcon("undo"));
         undoMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK));
         undoMenuItem.setMnemonic(KeyEvent.VK_U);
@@ -71,6 +92,8 @@ public final class EditMenu extends JMenu {
 
     public void configureRedoMenuItem() {
         redoMenuItem = new JMenuItem("Redo");
+        redoMenuItem.setAction(new RedoAction());
+        redoMenuItem.setText("Redo");
         redoMenuItem.setIcon(Icons.getSmallIcon("redo"));
         redoMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK));
         redoMenuItem.setMnemonic(KeyEvent.VK_R);
@@ -80,6 +103,8 @@ public final class EditMenu extends JMenu {
 
     public void configureCutMenuItem() {
         cutMenuItem = new JMenuItem("Cut");
+        cutMenuItem.setAction(new CutAction());
+        cutMenuItem.setText("Cut");
         cutMenuItem.setIcon(Icons.getSmallIcon("cut"));
         cutMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
         cutMenuItem.setMnemonic(KeyEvent.VK_T);
@@ -89,6 +114,8 @@ public final class EditMenu extends JMenu {
 
     public void configureCopyMenuItem() {
         copyMenuItem = new JMenuItem("Copy");
+        copyMenuItem.setAction(new CopyAction());
+        copyMenuItem.setText("Copy");
         copyMenuItem.setIcon(Icons.getSmallIcon("copy"));
         copyMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         copyMenuItem.setMnemonic(KeyEvent.VK_C);
@@ -98,6 +125,8 @@ public final class EditMenu extends JMenu {
 
     public void configurePasteMenuItem() {
         pasteMenuItem = new JMenuItem("Paste");
+        pasteMenuItem.setAction(new PasteAction());
+        pasteMenuItem.setText("Paste");
         pasteMenuItem.setIcon(Icons.getSmallIcon("paste"));
         pasteMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK));
         pasteMenuItem.setMnemonic(KeyEvent.VK_P);
@@ -107,23 +136,18 @@ public final class EditMenu extends JMenu {
 
     public void configureSelectAllMenuItem() {
         selectAllMenuItem = new JMenuItem("Select All");
+        selectAllMenuItem.setAction(new SelectAllAction());
+        selectAllMenuItem.setText("Select All");
         selectAllMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         selectAllMenuItem.setMnemonic(KeyEvent.VK_A);
 
         selectAllMenuItem.setEnabled(false);
     }
 
-    public void configureCommentMenuItem() {
-        commentMenuItem = new JMenuItem("Un/Comment Selected");
-        commentMenuItem
-                .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
-        commentMenuItem.setMnemonic(KeyEvent.VK_M);
-
-        commentMenuItem.setEnabled(false);
-    }
-
     public void configureFindMenuItem() {
         findMenuItem = new JMenuItem("Quick Find");
+        findMenuItem.setAction(new FindAction());
+        findMenuItem.setText("Find...");
         findMenuItem.setIcon(Icons.getSmallIcon("find"));
         findMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK));
         findMenuItem.setMnemonic(KeyEvent.VK_F);
@@ -133,6 +157,8 @@ public final class EditMenu extends JMenu {
 
     public void configureQuickReplaceMenuItem() {
         quickReplaceMenuItem = new JMenuItem("Quick Replace");
+        quickReplaceMenuItem.setAction(new ReplaceAction());
+        quickReplaceMenuItem.setText("Replace...");
         quickReplaceMenuItem.setIcon(Icons.getSmallIcon("replace"));
         quickReplaceMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, ActionEvent.CTRL_MASK));
         quickReplaceMenuItem.setMnemonic(KeyEvent.VK_R);

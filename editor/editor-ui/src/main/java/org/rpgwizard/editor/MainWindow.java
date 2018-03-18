@@ -71,6 +71,11 @@ import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.rpgwizard.editor.utilities.FileTools;
 import org.rpgwizard.editor.editors.tileset.TileSetUtil;
 import org.apache.commons.io.FilenameUtils;
+import org.fife.rsta.ui.search.FindDialog;
+import org.fife.rsta.ui.search.ReplaceDialog;
+import org.fife.rsta.ui.search.SearchEvent;
+import org.fife.rsta.ui.search.SearchListener;
+import org.fife.ui.rtextarea.SearchContext;
 import org.rpgwizard.common.assets.Item;
 import org.rpgwizard.editor.editors.ItemEditor;
 import org.rpgwizard.editor.editors.ProgramEditor;
@@ -86,7 +91,7 @@ import ro.fortsoft.pf4j.PluginManager;
  * @author Geoff Wilson
  * @author Joshua Michael Daly
  */
-public final class MainWindow extends JFrame implements InternalFrameListener {
+public final class MainWindow extends JFrame implements InternalFrameListener, SearchListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MainWindow.class);
 
@@ -122,6 +127,10 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
     private boolean snapToGrid;
     private AbstractBrush currentBrush;
     private Tile lastSelectedTile;
+
+    // Program Related.
+    private final FindDialog findDialog;
+    private final ReplaceDialog replaceDialog;
 
     // Listeners.
     private final TileSetSelectionListener tileSetSelectionListener;
@@ -208,6 +217,16 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
         lastSelectedTile = new Tile();
 
         tileSetSelectionListener = new TileSetSelectionListener();
+        ///
+        /// findDialog
+        ///
+        findDialog = new FindDialog(this, this);
+        ///
+        /// replaceDialog
+        ///
+        replaceDialog = new ReplaceDialog(this, this);
+        SearchContext context = findDialog.getSearchContext();
+        replaceDialog.setSearchContext(context);
         // /
         // / this
         // /
@@ -319,11 +338,14 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
         return this.propertiesPanel;
     }
 
+    public JInternalFrame getCurrentFrame() {
+        return desktopPane.getSelectedFrame();
+    }
+
     public BoardEditor getCurrentBoardEditor() {
         if (this.desktopPane.getSelectedFrame() instanceof BoardEditor) {
             return (BoardEditor) this.desktopPane.getSelectedFrame();
         }
-
         return null;
     }
 
@@ -349,6 +371,14 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
 
     public ProjectPanel getProjectPanel() {
         return projectPanel;
+    }
+
+    public FindDialog getFindDialog() {
+        return findDialog;
+    }
+
+    public ReplaceDialog getReplaceDialog() {
+        return replaceDialog;
     }
 
     public void updateEditorMap(File previous, File current, AbstractAssetEditorWindow editor) {
@@ -527,6 +557,23 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
                 propertiesPanel.setModel(null);
             }
         }
+    }
+
+    @Override
+    public void searchEvent(SearchEvent se) {
+        if (getCurrentFrame() instanceof ProgramEditor) {
+            ProgramEditor editor = (ProgramEditor) getCurrentFrame();
+            editor.searchEvent(se);
+        }
+    }
+
+    @Override
+    public String getSelectedText() {
+        if (getCurrentFrame() instanceof ProgramEditor) {
+            ProgramEditor editor = (ProgramEditor) getCurrentFrame();
+            return editor.getSelectedText();
+        }
+        return "";
     }
 
     /**

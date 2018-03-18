@@ -17,12 +17,16 @@ import org.rpgwizard.editor.properties.EditorProperty;
 import org.rpgwizard.editor.ui.EditorButton;
 import org.rpgwizard.editor.ui.actions.BucketAction;
 import org.rpgwizard.editor.ui.actions.CompileAction;
+import org.rpgwizard.editor.ui.actions.CopyAction;
+import org.rpgwizard.editor.ui.actions.CutAction;
 import org.rpgwizard.editor.ui.actions.EraserAction;
 import org.rpgwizard.editor.ui.actions.HelpAction;
 import org.rpgwizard.editor.ui.actions.LayerImageAction;
 import org.rpgwizard.editor.ui.actions.LightAction;
 import org.rpgwizard.editor.ui.actions.OpenFileAction;
+import org.rpgwizard.editor.ui.actions.PasteAction;
 import org.rpgwizard.editor.ui.actions.PencilAction;
+import org.rpgwizard.editor.ui.actions.RedoAction;
 import org.rpgwizard.editor.ui.actions.RunAction;
 import org.rpgwizard.editor.ui.actions.SaveAction;
 import org.rpgwizard.editor.ui.actions.SaveAllAction;
@@ -30,6 +34,7 @@ import org.rpgwizard.editor.ui.actions.SelectionAction;
 import org.rpgwizard.editor.ui.actions.SpriteAction;
 import org.rpgwizard.editor.ui.actions.StartPositionAction;
 import org.rpgwizard.editor.ui.actions.StopAction;
+import org.rpgwizard.editor.ui.actions.UndoAction;
 import org.rpgwizard.editor.ui.actions.VectorAction;
 import org.rpgwizard.editor.ui.actions.ZoomInAction;
 import org.rpgwizard.editor.ui.actions.ZoomOutAction;
@@ -39,7 +44,7 @@ import org.rpgwizard.editor.ui.resources.Icons;
  *
  * @author Joshua Michael Daly
  */
-public class MainToolBar extends JToolBar {
+public final class MainToolBar extends JToolBar {
 
     private final JPopupMenu popupMenu;
     private final JMenuItem newAnimationMenu;
@@ -112,16 +117,19 @@ public class MainToolBar extends JToolBar {
         saveAllButton.setToolTipText(EditorProperties.getProperty(EditorProperty.EDITOR_UI_TOOLTIP_SAVE_ALL));
 
         cutButton = new EditorButton();
+        cutButton.setAction(new CutAction());
         cutButton.setIcon(Icons.getSmallIcon("cut"));
         cutButton.setToolTipText(EditorProperties.getProperty(EditorProperty.EDITOR_UI_TOOLTIP_CUT));
         cutButton.setEnabled(false);
 
         copyButton = new EditorButton();
+        copyButton.setAction(new CopyAction());
         copyButton.setIcon(Icons.getSmallIcon("copy"));
         copyButton.setToolTipText(EditorProperties.getProperty(EditorProperty.EDITOR_UI_TOOLTIP_COPY));
         copyButton.setEnabled(false);
 
         pasteButton = new EditorButton();
+        pasteButton.setAction(new PasteAction());
         pasteButton.setIcon(Icons.getSmallIcon("paste"));
         pasteButton.setToolTipText(EditorProperties.getProperty(EditorProperty.EDITOR_UI_TOOLTIP_PASTE));
         pasteButton.setEnabled(false);
@@ -132,11 +140,13 @@ public class MainToolBar extends JToolBar {
         deleteButton.setEnabled(false);
 
         undoButton = new EditorButton();
+        undoButton.setAction(new UndoAction());
         undoButton.setIcon(Icons.getSmallIcon("undo"));
         undoButton.setToolTipText(EditorProperties.getProperty(EditorProperty.EDITOR_UI_TOOLTIP_UNDO));
         undoButton.setEnabled(false);
 
         redoButton = new EditorButton();
+        redoButton.setAction(new RedoAction());
         redoButton.setIcon(Icons.getSmallIcon("redo"));
         redoButton.setToolTipText(EditorProperties.getProperty(EditorProperty.EDITOR_UI_TOOLTIP_REDO));
         redoButton.setEnabled(false);
@@ -380,12 +390,12 @@ public class MainToolBar extends JToolBar {
         openButton.setEnabled(enable);
         saveButton.setEnabled(enable);
         saveAllButton.setEnabled(enable);
-        // cutButton.setEnabled(enable);
-        // copyButton.setEnabled(enable);
-        // pasteButton.setEnabled(enable);
-        // deleteButton.setEnabled(enable);
-        // undoButton.setEnabled(enable);
-        // redoButton.setEnabled(enable);
+        cutButton.setEnabled(enable);
+        copyButton.setEnabled(enable);
+        pasteButton.setEnabled(enable);
+        deleteButton.setEnabled(enable);
+        undoButton.setEnabled(enable);
+        redoButton.setEnabled(enable);
         pencilButton.setEnabled(enable);
         selectionButton.setEnabled(enable);
         bucketButton.setEnabled(enable);

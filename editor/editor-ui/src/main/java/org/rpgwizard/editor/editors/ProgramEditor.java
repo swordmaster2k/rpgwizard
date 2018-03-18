@@ -5,22 +5,20 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.rpgwizard.editor.editors;
 
+import org.rpgwizard.editor.editors.program.RpgCodeCompletionProvider;
 import java.awt.BorderLayout;
 import java.io.File;
 import java.io.IOException;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.ToolTipManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import org.fife.rsta.ac.LanguageSupportFactory;
 import org.fife.rsta.ac.js.JavaScriptLanguageSupport;
+import org.fife.ui.autocomplete.AutoCompletion;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.Program;
@@ -28,6 +26,7 @@ import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 import org.rpgwizard.editor.ui.resources.Icons;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.RTextScrollPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,7 +79,7 @@ public final class ProgramEditor extends AbstractAssetEditorWindow {
         LanguageSupportFactory languageFactory = LanguageSupportFactory.get();
         JavaScriptLanguageSupport languageSupport = (JavaScriptLanguageSupport) languageFactory
                 .getSupportFor(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
-
+        languageSupport.setAutoActivationEnabled(true);
         try {
             languageSupport.getJarManager().addCurrentJreClassFileSource();
         } catch (IOException ex) {
@@ -115,6 +114,19 @@ public final class ProgramEditor extends AbstractAssetEditorWindow {
         });
         ToolTipManager.sharedInstance().registerComponent(textArea);
 
+        AutoCompletion autoCompletion = new AutoCompletion(new RpgCodeCompletionProvider());
+        autoCompletion.setDescriptionWindowSize(650, 325);
+        autoCompletion.setAutoActivationEnabled(true);
+        autoCompletion.setShowDescWindow(true);
+        autoCompletion.install(textArea);
+
+        try {
+            Theme theme = Theme.load(getClass().getResourceAsStream("/org/fife/ui/rsyntaxtextarea/themes/dark.xml"));
+            theme.apply(textArea);
+        } catch (IOException ex) { // Never happens
+            LOGGER.error("Failed to set theme.", ex);
+        }
+
         RTextScrollPane scrollPane = new RTextScrollPane(textArea);
         panel.add(scrollPane);
 
@@ -126,6 +138,18 @@ public final class ProgramEditor extends AbstractAssetEditorWindow {
 
     public void cleanUp() {
         LanguageSupportFactory.get().unregister(textArea);
+    }
+
+    public static void main(String[] args) {
+        ProgramEditor editor = new ProgramEditor(new Program(null));
+        editor.setVisible(true);
+
+        JFrame frame = new JFrame("Test InternalJFrame");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.add(editor);
+        frame.setSize(1024, 768);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 
 }

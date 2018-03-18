@@ -157,6 +157,7 @@ public class Driver {
                         // Write out user preferences.
                         UserPreferencesProperties.save();
                         LOGGER.info("Stopping the RPGWizard Editor...");
+                        Runtime.getRuntime().exit(0);
                     }
                 });
                 mainWindow.setVisible(true);

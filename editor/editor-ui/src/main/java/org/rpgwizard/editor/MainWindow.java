@@ -290,7 +290,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
     public JTabbedPane getWestUpperTabbedPane() {
         return westUpperTabbedPane;
     }
-    
+
     public JTabbedPane getWestLowerTabbedPane() {
         return westLowerTabbedPane;
     }
@@ -302,7 +302,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
     public JTabbedPane getEastUpperTabbedPane() {
         return eastUpperTabbedPane;
     }
-    
+
     public JTabbedPane getEastLowerTabbedPane() {
         return eastLowerTabbedPane;
     }
@@ -347,6 +347,10 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
         return editorMap.values();
     }
 
+    public ProjectPanel getProjectPanel() {
+        return projectPanel;
+    }
+
     public void updateEditorMap(File previous, File current, AbstractAssetEditorWindow editor) {
         if (current == null) {
             return;
@@ -357,6 +361,11 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
         }
 
         editorMap.put(current, editor);
+    }
+
+    public void tearDown() {
+        closeAllFrames();
+        projectPanel.tearDown();
     }
 
     public void closeAllFrames() {
@@ -955,7 +964,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener {
         FileTools.createAssetDirectories(System.getProperty("project.path"));
 
         projectPanel.setup(EditorFileManager.getProjectPath());
-        
+
         ProjectEditor projectEditor = new ProjectEditor(activeProject);
         this.desktopPane.add(projectEditor, BorderLayout.CENTER);
 

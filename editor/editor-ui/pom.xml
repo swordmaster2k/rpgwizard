@@ -20,7 +20,8 @@
     <properties>
         <rsyntaxtextarea.version>2.6.1</rsyntaxtextarea.version>
         <languagesupport.version>2.6.0</languagesupport.version>
-        <substance.version>7.3</substance.version>
+        <substance.version>8.0.00-rc</substance.version>
+        <trident.version>1.5.00-rc</trident.version>
     </properties>
 
     <dependencies>
@@ -50,9 +51,14 @@
             <version>${languagesupport.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.github.insubstantial</groupId>
+            <groupId>org.pushingpixels.substance</groupId>
             <artifactId>substance</artifactId>
             <version>${substance.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.pushingpixels.substance</groupId>
+            <artifactId>trident</artifactId>
+            <version>${trident.version}</version>
         </dependency>
     </dependencies>
     

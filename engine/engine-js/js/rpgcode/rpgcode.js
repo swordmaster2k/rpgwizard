@@ -780,7 +780,7 @@ RPGcode.prototype.fireRaycast = function (origin, direction, maxDistance) {
     } else {
         hits = Crafty.raycast(origin, direction, -1, "Raycastable");
     }
-    var layerCheck = { obj: { layer: rpgwizard.craftyCharacter.character.layer } };
+    var layerCheck = {obj: {layer: rpgwizard.craftyCharacter.character.layer}};
     hits.forEach(function (hit) {
         if (hit.obj.sprite) {
             if (hit.obj.sprite.npc) {
@@ -2108,15 +2108,18 @@ RPGcode.prototype.setImage = function (fileName, x, y, width, height, canvasId) 
     if (!canvasId) {
         canvasId = "renderNowCanvas";
     }
-
     var instance = rpgcode.canvases[canvasId];
     if (instance) {
         var image = Crafty.asset(Crafty.__paths.images + fileName);
         if (image) {
-            var context = instance.canvas.getContext("2d");
-            context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
-            context.globalAlpha = rpgcode.globalAlpha;
-            context.drawImage(image, x, y, width, height);
+            try {
+                var context = instance.canvas.getContext("2d");
+                context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
+                context.globalAlpha = rpgcode.globalAlpha;
+                context.drawImage(image, x, y, width, height);
+            } catch (err) {
+                console.log("Failed to setImage err=[%s]", err);
+            }
         }
     }
 };

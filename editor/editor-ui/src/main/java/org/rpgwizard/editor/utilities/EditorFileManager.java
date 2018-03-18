@@ -89,7 +89,7 @@ public class EditorFileManager {
     public static String getRelativePath(File fullPath, File relativeTo) {
         return fullPath.getPath().replace(relativeTo.getPath() + File.separator, "");
     }
-    
+
     public static File getProjectPath() {
         return new File(System.getProperty("project.path"));
     }

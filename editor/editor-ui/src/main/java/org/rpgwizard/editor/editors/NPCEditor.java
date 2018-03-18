@@ -114,7 +114,7 @@ public final class NPCEditor extends AbstractSpriteEditor implements SpriteChang
     public static void main(String[] args) {
         JFrame frame = new JFrame("Test InternalJFrame");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(new NPCEditor(null));
+        frame.add(new NPCEditor(new NPC(null)));
         frame.setSize(440, 360);
         frame.setVisible(true);
     }

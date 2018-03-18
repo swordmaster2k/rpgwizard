@@ -32,7 +32,7 @@
         <!-- I/O Libraries -->
         <script src="js/io/keyboard.js"></script>
         <script src="js/io/mouse.js"></script>
-        
+
         <!-- Engine Utilities -->
         <script src="js/util/util.js"></script>
 
@@ -54,6 +54,9 @@
         <!-- RPGCode API-->
         <script src="js/rpgcode/rpgcode.js"></script>
 
+        <!-- Default Systems -->
+        <script src="js/rpgcode/defaults/dialog.js"></script>
+
         <!-- Import the engine game logic. -->
         <script src="js/engine.js"></script>
     </head>
@@ -61,17 +64,15 @@
         <div id="progress">
             <div id="bar"></div>
         </div>
-
         <div id="container">
             <div id="cr-stage" class="screen"></div>
         </div>
 
         <script type="text/javascript">
             // Default error handler.
-            window.onerror = function (msg, url, linenumber) {
-                alert("Error message: " + msg + "\n\n"
-                        + "URL: " + url + "\n\n"
-                        + "Line Number: " + linenumber);
+            window.onerror = function (msg, url, line) {
+                console.error("Uncaught error msg=[%s], url=[%s], line=[%s]", msg, url, line);
+                alert("Error message: " + msg + "\n\n" + "URL: " + url + "\n\n" + "Line Number: " + line + "\n\n");
                 return true;
             };
 

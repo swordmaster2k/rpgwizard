@@ -28,7 +28,10 @@ nbproject/
 # Node JS
 node_modules/
 out/
+
+# Compiled
 *.jar
+!/unmanaged_dependencies/*.jar
 *.exe
 
 # Distribution

@@ -57,6 +57,9 @@
         <maven.formatter.version>2.7.1</maven.formatter.version>
         <maven.resources.version>3.0.2</maven.resources.version>
         <maven.clean.version>3.0.0</maven.clean.version>
+        <maven.install.version>2.5.1</maven.install.version>
+        <substance.version>8.0.00</substance.version>
+        <trident.version>1.5.00</trident.version>
     </properties>
 
     <dependencies>
@@ -199,6 +202,46 @@
                         </fileset>
                     </filesets>
                 </configuration>
+            </plugin>
+            
+            <!-- Install Substance -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>${maven.install.version}</version>
+                <inherited>false</inherited>
+                <executions>
+                    <execution>
+                        <id>install-substance</id>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <phase>validate</phase>
+                        <configuration>
+                            <groupId>org.pushingpixels.substance</groupId>
+                            <artifactId>substance</artifactId>
+                            <version>${substance.version}</version>
+                            <packaging>jar</packaging>
+                            <file>${basedir}/unmanaged_dependencies/substance-${substance.version}.jar</file>
+                            <generatePom>true</generatePom>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>install-trident</id>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <phase>validate</phase>
+                        <configuration>
+                            <groupId>org.pushingpixels.substance</groupId>
+                            <artifactId>trident</artifactId>
+                            <version>${trident.version}</version>
+                            <packaging>jar</packaging>
+                            <file>${basedir}/unmanaged_dependencies/trident-${trident.version}.jar</file>
+                            <generatePom>true</generatePom>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

@@ -1,3 +1,15 @@
-mvn install:install-file -Dfile=substance-8.0.00-rc.jar -DgroupId=org.pushingpixels.substance -DartifactId=substance -Dversion=8.0.00-rc -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file 
+-Dfile=substance-8.0.00-rc.jar 
+-DgroupId=org.pushingpixels.substance 
+-DartifactId=substance 
+-Dversion=8.0.00-rc 
+-Dpackaging=jar 
+-DgeneratePom=true
 
-mvn install:install-file -Dfile=trident-1.5.00-rc.jar -DgroupId=org.pushingpixels.substance -DartifactId=trident -Dversion=1.5.00-rc -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file 
+-Dfile=trident-1.5.00-rc.jar 
+-DgroupId=org.pushingpixels.substance 
+-DartifactId=trident 
+-Dversion=1.5.00-rc 
+-Dpackaging=jar 
+-DgeneratePom=true

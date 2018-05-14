@@ -10,9 +10,9 @@
 -->
 <!DOCTYPE api SYSTEM "CompletionXml.dtd">
 <api language="RPGCode">
-    <environment paramStartChar="(" paramEndChar=")" paramSeparator=", " terminal=";"/>
+    <!--<environment paramStartChar="(" paramEndChar=")" paramSeparator=", " terminal=";"/>-->
     <keywords>
-        <keyword name="rpgcode.addRunTimeProgram" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.addRunTimeProgram(filename)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Adds a program that will be called at run time for each game frame. You should avoid doing any lengthy operations with these programs to save freezing the browser window. 
 </div> 
@@ -42,7 +42,7 @@
 <h3>Example</h3> 
 <pre class="prettyprint"><code>rpgcode.addRunTimeProgram("UI/HUD.js");</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.addSprite" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.addSprite(sprite, callback)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Dynamically adds a sprite to the current board, when the sprite has been added the callback function will be invoked, if any. Useful for spawning item pickups or enemies. 
 </div> 
@@ -97,7 +97,7 @@ rpgcode.addSprite(sprite, function() {
  rpgcode.log("Sprite added to board.");
 });</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.animateCharacter" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.animateCharacter(characterId, animationId, callback)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Animates the character using the requested animation. The animationId must be available for the character. 
 </div> 
@@ -139,7 +139,7 @@ rpgcode.animateCharacter("Hero", "HURT_SOUTH", function(){
  rpgcode.log("Animated Hero!");
 });</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.animateSprite" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.animateSprite(spriteId, animationId, callback)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Animates the sprite using the requested animation. The animationId must be available for the sprite. 
 </div> 
@@ -179,7 +179,7 @@ rpgcode.animateSprite(spriteId, animationId, function() {
  rpgcode.log("Finished dancing");
 });</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.changeCharacterGraphics" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.changeCharacterGraphics(characterId, swaps)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Changes a characters visible graphics at runtime by swapping the values stored in the left-hand slots with those on the right. These keys can be reversed to restore the previous values. 
 </div> 
@@ -237,7 +237,7 @@ var changes = {
 };
 rpgcode.changeCharacterGraphics("Hero", changes);</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.clearCanvas" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.clearCanvas(canvasId)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Clears an entire canvas and triggers a redraw. 
 </div> 
@@ -272,7 +272,7 @@ rpgcode.delay(5000, function(){
  rpgcode.clearCanvas(canvas); 
 });</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.clearDialog" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.clearDialog()" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Clears and hides the dialog box. 
 </div>  
@@ -285,7 +285,7 @@ rpgcode.delay(5000, function(){
  rpgcode.clearDialog();
 });</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.createCanvas" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.createCanvas(width, height, canvasId)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Creates a canvas with the specified width, height, and ID. This canvas will not be drawn until renderNow is called with its ID. 
 </div> 
@@ -325,7 +325,7 @@ rpgcode.createCanvas(640, 480, canvas);
 rpgcode.drawText(270, 300, "Hello world!", canvas);
 rpgcode.renderNow(canvas); </code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.delay" type="function" returnType="Object" definedIn="rpgcode.js">
+        <keyword name="rpgcode.delay(ms, callback, loop)" type="function" returnType="Object" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Delays a programs execution for a specified number of milliseconds, after which the callback function is invoked. 
 </div> 
@@ -368,7 +368,7 @@ rpgcode.delay(5000, function(){
  rpgcode.showDialog("Hello world!");
 });</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.destroyCanvas" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.destroyCanvas(canvasId)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Destroys the canvas with the specified ID removing it from the engine. 
 </div> 
@@ -401,7 +401,7 @@ rpgcode.renderNow(canvas);
 // Destroys the canvas that we just created.
 rpgcode.destroyCanvas(canvas);</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.destroySprite" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.destroySprite(spriteId)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Destroys a particular sprite instance and removes it from the engine. 
 </div> 
@@ -427,7 +427,7 @@ rpgcode.destroyCanvas(canvas);</code></pre>]]></desc>
 <h3>Example</h3> 
 <pre class="prettyprint"><code>rpgcode.destroySprite("evil-eye-1");</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.drawCircle" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.drawCircle(x, y, radius, canvasId)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Draws a circle onto the canvas. 
 </div> 
@@ -473,7 +473,7 @@ rpgcode.setColor(255, 0, 0, 1.0);
 rpgcode.drawCircle(100, 100, 25, canvas);
 rpgcode.renderNow(canvas); </code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.drawLine" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.drawLine(x1, y1, x2, y2, lineWidth, canvasId)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Draws a line onto the canvas. 
 </div> 
@@ -529,7 +529,7 @@ rpgcode.setColor(255, 0, 0, 1.0);
 rpgcode.drawLine(25, 25, 50, 50, 1, canvas);
 rpgcode.renderNow(canvas); </code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.drawOntoCanvas" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.drawOntoCanvas(sourceId, x, y, width, height, targetId)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Draws the source canvas onto the target canvas. 
 </div> 
@@ -609,7 +609,7 @@ rpgcode.loadAssets(assets, function () {
  rpgcode.renderNow(buffer);
 });</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.drawRect" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.drawRect(x, y, width, height, lineWidth, canvasId)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Draws a rectangle onto the canvas. 
 </div> 
@@ -665,7 +665,7 @@ rpgcode.setColor(255, 0, 0, 1.0);
 rpgcode.drawRect(0, 0, 100, 100, 1, canvas);
 rpgcode.renderNow(canvas); </code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.drawText" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.drawText(x, y, text, canvasId)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Draws the text on the canvas starting at the specified (x, y) position, if no canvas is specified it defaults to the "renderNowCanvas". 
 </div> 
@@ -714,7 +714,7 @@ rpgcode.createCanvas(640, 480, canvas);
 rpgcode.drawText(270, 300, "Hello world!", canvas);
 rpgcode.renderNow(canvas); </code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.endProgram" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.endProgram(nextProgram)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Ends the current program and releases control back to the main game loop. If nextProgram is specified the main loop will not resume. Execution will be immediately passed to the program the user specified. 
 </div> 
@@ -744,7 +744,7 @@ rpgcode.endProgram();
 // End the current program, then run another.
 rpgcode.endProgram("MyProgram.js");</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.fillCircle" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.fillCircle(x, y, radius, canvasId)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Fills a solid circle onto the canvas. 
 </div> 
@@ -790,7 +790,7 @@ rpgcode.setColor(255, 0, 0, 1.0);
 rpgcode.fillCircle(100, 100, 25, canvas);
 rpgcode.renderNow(canvas); </code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.fillRect" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.fillRect(x, y, width, height, canvasId)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Fills a solid rectangle on the canvas. 
 </div> 
@@ -841,7 +841,7 @@ rpgcode.setColor(255, 0, 0, 1.0);
 rpgcode.fillRect(0, 0, 100, 100, canvas);
 rpgcode.renderNow(canvas); </code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.fireRaycast" type="function" returnType="Object" definedIn="rpgcode.js">
+        <keyword name="rpgcode.fireRaycast(origin, direction, maxDistance)" type="function" returnType="Object" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Fires a ray from its origin in the direction and report entities that intersect with it, given the parameter constraints. This will return any characters, enemies, NPCs, and SOLID vectors caught in the path of the raycast enclosing them inside an object. 
 </div> 
@@ -899,7 +899,7 @@ rpgcode.renderNow(canvas); </code></pre>]]></desc>
  });
  rpgcode.endProgram();</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.getAngleBetweenPoints" type="function" returnType="Number" definedIn="rpgcode.js">
+        <keyword name="rpgcode.getAngleBetweenPoints(x1, y1, x2, y2)" type="function" returnType="Number" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Gets the angle between two points in radians. 
 </div> 
@@ -945,7 +945,7 @@ rpgcode.renderNow(canvas); </code></pre>]]></desc>
 <pre class="prettyprint"><code>// Get the angle in radians between two points.
 var angle = rpgcode.getAngleBetweenPoints(location.x, location.y, this.x, this.y);</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.getBoard" type="function" returnType="String" definedIn="rpgcode.js">
+        <keyword name="rpgcode.getBoard()" type="function" returnType="String" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Gets the current board, useful for accessing certain properties e.g. name, description etc. 
 </div> 
@@ -957,7 +957,7 @@ var angle = rpgcode.getAngleBetweenPoints(location.x, location.y, this.x, this.y
 <pre class="prettyprint"><code>var board = rpgcode.getBoard();
 rpgcode.log(board);</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.getBoardName" type="function" returnType="String" definedIn="rpgcode.js">
+        <keyword name="rpgcode.getBoardName()" type="function" returnType="String" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Gets the current board's name and returns it. 
 </div> 
@@ -969,7 +969,7 @@ rpgcode.log(board);</code></pre>]]></desc>
 <pre class="prettyprint"><code>var boardName = rpgcode.getBoardName();
 rpgcode.log(boardName);</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.getCharacter" type="function" returnType="Object" definedIn="rpgcode.js">
+        <keyword name="rpgcode.getCharacter()" type="function" returnType="Object" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Gets the active character object. 
 </div> 
@@ -981,7 +981,7 @@ rpgcode.log(boardName);</code></pre>]]></desc>
 <pre class="prettyprint"><code>var character = rpgcode.getCharacter();
 rpgcode.log(character);</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.getCharacterDirection" type="function" returnType="String" definedIn="rpgcode.js">
+        <keyword name="rpgcode.getCharacterDirection()" type="function" returnType="String" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Gets the character's current direction. var direction = rpgcode.getCharacterDirection(); rpgcode.log(direction); 
 </div> 
@@ -990,7 +990,7 @@ rpgcode.log(character);</code></pre>]]></desc>
  <span class="param-type">String</span> - A NORTH, SOUTH, EAST, or WEST value. 
 </div>]]></desc>
         </keyword>
-        <keyword name="rpgcode.getCharacterLocation" type="function" returnType="Object" definedIn="rpgcode.js">
+        <keyword name="rpgcode.getCharacterLocation(inTiles, includeOffset)" type="function" returnType="Object" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Gets the character's current location, optionally including the visual offset that happens when boards are smaller than the viewport dimensions. 
 </div> 
@@ -1026,7 +1026,7 @@ rpgcode.log(character);</code></pre>]]></desc>
 <pre class="prettyprint"><code>var location = rpgcode.getCharacterLocation();
 rpgcode.log(location);</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.getDistanceBetweenPoints" type="function" returnType="Number" definedIn="rpgcode.js">
+        <keyword name="rpgcode.getDistanceBetweenPoints(x1, y1, x2, y2)" type="function" returnType="Number" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Gets the straight line distance between two points in pixels. 
 </div> 
@@ -1072,7 +1072,7 @@ rpgcode.log(location);</code></pre>]]></desc>
 <pre class="prettyprint"><code>// Get the distance between two points in pixels.
 var distance = rpgcode.getDistanceBetweenPoints(location.x, location.y, this.x, this.y);</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.getGlobal" type="function" returnType="Object" definedIn="rpgcode.js">
+        <keyword name="rpgcode.getGlobal(id)" type="function" returnType="Object" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Gets the value of global variable. 
 </div> 
@@ -1103,7 +1103,7 @@ var distance = rpgcode.getDistanceBetweenPoints(location.x, location.y, this.x, 
 <pre class="prettyprint"><code>var swordActive = rpgcode.getGlobal("swordActive");
 rpgcode.log(swordActive);</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.getImage" type="function" returnType="Object" definedIn="rpgcode.js">
+        <keyword name="rpgcode.getImage(fileName)" type="function" returnType="Object" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Gets the image object if it has been loaded into the engine already, otherwise it returns undefined. 
 </div> 
@@ -1136,7 +1136,7 @@ var image = rpgcode.getImage("life.png");
 rpgcode.log(image.width);
 rpgcode.log(image.height);</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.getPixel" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.getPixel(x, y, canvasId)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Gets the pixel ImageData at the (x, y) coordinate on the canvas. 
 </div> 
@@ -1179,7 +1179,7 @@ rpgcode.renderNow();
 var imageData = rpgcode.getPixel(50, 50);
 rpgcode.log(imageData);</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.getRandom" type="function" returnType="Number" definedIn="rpgcode.js">
+        <keyword name="rpgcode.getRandom(min, max)" type="function" returnType="Number" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Gets a random number between the min and max inclusive. 
 </div> 
@@ -1215,7 +1215,7 @@ rpgcode.log(imageData);</code></pre>]]></desc>
 <pre class="prettyprint"><code>var result = rpgcode.getRandom(1, 10);
 rpgcode.log(result); // Will be between 1 and 10.</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.getRunningProgram" type="function" returnType="Object" definedIn="rpgcode.js">
+        <keyword name="rpgcode.getRunningProgram()" type="function" returnType="Object" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Gets the current running program as an Object. 
 </div> 
@@ -1227,7 +1227,7 @@ rpgcode.log(result); // Will be between 1 and 10.</code></pre>]]></desc>
 <pre class="prettyprint"><code>var program = rpgcode.getRunningProgram();
 rpgcode.log(program);</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.getScale" type="function" returnType="Number" definedIn="rpgcode.js">
+        <keyword name="rpgcode.getScale()" type="function" returnType="Number" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Gets the current scale factor that the renderer has been drawn with, useful for creating responsive and scalable UIs. 
 </div> 
@@ -1239,7 +1239,7 @@ rpgcode.log(program);</code></pre>]]></desc>
 <pre class="prettyprint"><code>var scale = rpgcode.getScale();
 rpgcode.log(scale);</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.getSprite" type="function" returnType="Entity" definedIn="rpgcode.js">
+        <keyword name="rpgcode.getSprite(spriteId)" type="function" returnType="Entity" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Gets the sprite associated with the ID set in the Board editor. 
 </div> 
@@ -1269,7 +1269,7 @@ rpgcode.log(scale);</code></pre>]]></desc>
 <h3>Example</h3> 
 <pre class="prettyprint"><code>var sprite = rpgcode.getSprite("MySprite");</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.getSpriteDirection" type="function" returnType="String" definedIn="rpgcode.js">
+        <keyword name="rpgcode.getSpriteDirection(spriteId)" type="function" returnType="String" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Gets the sprites's current direction. var direction = rpgcode.getSpriteDirection(); rpgcode.log(direction); 
 </div> 
@@ -1297,7 +1297,7 @@ rpgcode.log(scale);</code></pre>]]></desc>
  <span class="param-type">String</span> - A NORTH, SOUTH, EAST, or WEST value. 
 </div>]]></desc>
         </keyword>
-        <keyword name="rpgcode.getSpriteLocation" type="function" returnType="Object" definedIn="rpgcode.js">
+        <keyword name="rpgcode.getSpriteLocation(spriteId, inTiles, includeOffset)" type="function" returnType="Object" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Gets the sprites's current location, optionally including the visual offset that happens when boards are smaller than the viewport dimensions. 
 </div> 
@@ -1338,7 +1338,7 @@ rpgcode.log(scale);</code></pre>]]></desc>
 <pre class="prettyprint"><code>var location = rpgcode.getSpriteLocation("rat");
 rpgcode.log(location);</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.getViewport" type="function" returnType="Object" definedIn="rpgcode.js">
+        <keyword name="rpgcode.getViewport()" type="function" returnType="Object" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Gets the viewport object, this is useful for calculating the position of characters or sprites on the board relative to the RPGcode screen. The viewport contains the (x, y) values of the upper left corner of screen relative to a board's (x, y). It also returns the width and height of the viewport. 
 </div> 
@@ -1353,7 +1353,7 @@ rpgcode.log(viewport.y);
 rpgcode.log(viewport.width);
 rpgcode.log(viewport.height);</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.giveItem" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.giveItem(filename, characterId, callback)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Gives an item to a character, placing it in their inventory. 
 </div> 
@@ -1391,7 +1391,7 @@ rpgcode.log(viewport.height);</code></pre>]]></desc>
  <span class="param-type">undefined</span> 
 </div>]]></desc>
         </keyword>
-        <keyword name="rpgcode.hitCharacter" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.hitCharacter(characterId, damage, animationId, callback)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Hits the character dealing the requested damage while playing the corresponding animation. Optionally a callback can be invoked when the hit animation has finished playing. 
 </div> 
@@ -1438,7 +1438,7 @@ rpgcode.hitCharacter("Hero", 1, "DEFEND", function() {
  // The animation has ended, do something.
 });</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.hitEnemy" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.hitEnemy(spriteId, damage, animationId, callback)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Hits the enemy dealing the requested damage while playing the corresponding animation. Optionally a callback can be invoked when the hit animation has finished playing. 
 </div> 
@@ -1489,7 +1489,7 @@ rpgcode.hitEnemy("rat-1", 1, "DEFEND", function() {
  // The animation has ended, do something.
 });</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.isAssetLoaded" type="function" returnType="Boolean" definedIn="rpgcode.js">
+        <keyword name="rpgcode.isAssetLoaded(asset, type)" type="function" returnType="Boolean" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Returns a true/false value indicating whether an asset has been loaded. 
 </div> 
@@ -1525,7 +1525,7 @@ rpgcode.hitEnemy("rat-1", 1, "DEFEND", function() {
 <pre class="prettyprint"><code>rpgcode.log(rpgcode.isAssetLoaded("Hero/attack_east.png", "image")); // logs true
 rpgcode.log(rpgcode.isAssetLoaded("intro", "audio")); // logs true</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.isControlEnabled" type="function" returnType="Boolean" definedIn="rpgcode.js">
+        <keyword name="rpgcode.isControlEnabled()" type="function" returnType="Boolean" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Returns a true/false value indicating whether standard movement controls are currently enabled in the engine. 
 </div> 
@@ -1534,7 +1534,7 @@ rpgcode.log(rpgcode.isAssetLoaded("intro", "audio")); // logs true</code></pre>]
  <span class="param-type">Boolean</span> 
 </div>]]></desc>
         </keyword>
-        <keyword name="rpgcode.loadAssets" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.loadAssets(assets, onLoad)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Loads the requested assets into the engine, when all of the assets have been loaded the onLoad callback is invoked. 
 </div> 
@@ -1581,7 +1581,7 @@ rpgcode.loadAssets(assets, function () {
  // Assets we need are ready, continue on...
 });</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.loadJSON" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.loadJSON(path, successCallback, failureCallback)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Loads the requested JSON file data from the requested path and returns the JSON text as it appears in the file. 
 </div> 
@@ -1631,7 +1631,7 @@ rpgcode.loadAssets(assets, function () {
      }
  );</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.log" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.log(message)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Log a message to the console. 
 </div> 
@@ -1657,7 +1657,7 @@ rpgcode.loadAssets(assets, function () {
 <h3>Example</h3> 
 <pre class="prettyprint"><code>rpgcode.log("Hello world!");</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.measureText" type="function" returnType="Object" definedIn="rpgcode.js">
+        <keyword name="rpgcode.measureText(text)" type="function" returnType="Object" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Measures text as it would appear on a canvas using the current font, returning the width and height of the text in pixels. 
 </div> 
@@ -1689,7 +1689,7 @@ rpgcode.loadAssets(assets, function () {
 rpgcode.log(dimensions.width);
 rpgcode.log(dimensions.height);</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.moveCharacter" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.moveCharacter(characterId, direction, distance)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Moves the character by n pixels in the given direction. 
 </div> 
@@ -1726,7 +1726,7 @@ rpgcode.log(dimensions.height);</code></pre>]]></desc>
 <pre class="prettyprint"><code>// Move the character with the "Hero" ID north 50 pixels.
 rpgcode.moveCharacter("Hero", "NORTH", 50);</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.moveCharacterTo" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.moveCharacterTo(characterId, x, y, duration, callback)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Moves the character to the (x, y) position, the character will travel for the supplied duration (milliseconds). A short duration will result in the character arriving quicker and vice versa. 
 </div> 
@@ -1777,7 +1777,7 @@ var y = 150;
 var delay = 50;
 rpgcode.moveCharacterTo(characterId, x, y, delay);</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.moveSprite" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.moveSprite(spriteId, direction, distance)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Moves the sprite by the requested number of pixels in the given direction. 
 </div> 
@@ -1817,7 +1817,7 @@ var direction = "NORTH";
 var distancePx = 50;
 rpgcode.moveSprite(spriteId, direction, distancePx);</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.moveSpriteTo" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.moveSpriteTo(spriteId, x, y, duration, callback)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Moves the sprite to the (x, y) position, the sprite will travel for the supplied duration (milliseconds). A short duration will result in the sprite arriving quicker and vice versa. 
 </div> 
@@ -1868,7 +1868,7 @@ var y = 150;
 var delay = 50;
 rpgcode.moveSpriteTo(spriteId, x, y, delay);</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.playSound" type="function" returnType="Object" definedIn="rpgcode.js">
+        <keyword name="rpgcode.playSound(file, loop, volume)" type="function" returnType="Object" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Plays the supplied sound file, up to five sound channels can be active at once. 
 </div> 
@@ -1919,7 +1919,7 @@ rpgcode.loadAssets(assets, function () {
  rpgcode.playSound("intro", true);
 }); </code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.registerKeyDown" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.registerKeyDown(key, callback, globalScope)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Registers a keyDown listener for a specific key, for a list of valid key values see: http://craftyjs.com/api/Crafty-keys.html The callback function will continue to be invoked for every keyDown event until it is unregistered. 
 </div> 
@@ -1957,7 +1957,7 @@ rpgcode.loadAssets(assets, function () {
  rpgcode.log("Enter key is down!");
 });</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.registerKeyUp" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.registerKeyUp(key, callback, globalScope)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Registers a keyUp listener for a specific key, for a list of valid key values see: http://craftyjs.com/api/Crafty-keys.html The callback function will continue to be invoked for every keyUp event until it is unregistered. 
 </div> 
@@ -1995,7 +1995,7 @@ rpgcode.loadAssets(assets, function () {
  rpgcode.log("Enter key is up!");
 });</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.registerMouseClick" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.registerMouseClick(callback, globalScope)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Registers a mouse move event callback, when the mouse is moved the supplied callback function will be called and provided with the current mouse state. The callback function will continue to be invoked for every mouse move event until it is unregistered. 
 </div> 
@@ -2037,7 +2037,7 @@ rpgcode.loadAssets(assets, function () {
  rpgcode.log(e.mouseButton); // LEFT: 0, MIDDLE: 1, RIGHT: 2
 });</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.registerMouseDoubleClick" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.registerMouseDoubleClick(callback, globalScope)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Registers a mouse move event callback, when the mouse is moved the supplied callback function will be called and provided with the current mouse state. The callback function will continue to be invoked for every mouse move event until it is unregistered. 
 </div> 
@@ -2079,7 +2079,7 @@ rpgcode.loadAssets(assets, function () {
  rpgcode.log(e.mouseButton); // LEFT: 0, MIDDLE: 1, RIGHT: 2
 });</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.registerMouseDown" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.registerMouseDown(callback, globalScope)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Registers a mouse down event callback, when the mouse is pressed down the supplied callback function will be called and provided with the current mouse state. The callback function will continue to be invoked for every mouse move event until it is unregistered. 
 </div> 
@@ -2121,7 +2121,7 @@ rpgcode.loadAssets(assets, function () {
  rpgcode.log(e.mouseButton); // LEFT: 0, MIDDLE: 1, RIGHT: 2
 });</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.registerMouseMove" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.registerMouseMove(callback, globalScope)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Registers a mouse move event callback, when the mouse is moved the supplied callback function will be called and provided with the current mouse state. The callback function will continue to be invoked for every mouse move event until it is unregistered. 
 </div> 
@@ -2160,7 +2160,7 @@ rpgcode.loadAssets(assets, function () {
  rpgcode.log(e.realY);
 });</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.registerMouseUp" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.registerMouseUp(callback, globalScope)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Registers a mouse move event callback, when the mouse is moved the supplied callback function will be called and provided with the current mouse state. The callback function will continue to be invoked for every mouse move event until it is unregistered. 
 </div> 
@@ -2202,7 +2202,7 @@ rpgcode.loadAssets(assets, function () {
  rpgcode.log(e.mouseButton); // LEFT: 0, MIDDLE: 1, RIGHT: 2
 });</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.removeAssets" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.removeAssets(assets)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Removes assets from the engine and frees up the memory allocated to them. 
 </div> 
@@ -2235,7 +2235,7 @@ var assets = {
 
 rpgcode.removeAssets(assets); </code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.removeGlobal" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.removeGlobal(id)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Removes a globally scoped variable from the engine. 
 </div> 
@@ -2263,7 +2263,7 @@ rpgcode.removeAssets(assets); </code></pre>]]></desc>
  <span class="param-type">undefined</span> 
 </div>]]></desc>
         </keyword>
-        <keyword name="rpgcode.removeRunTimeProgram" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.removeRunTimeProgram(filename)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Removes a run time program from the engine, if the program is currently executing it will be allowed to finish first. 
 </div> 
@@ -2293,7 +2293,7 @@ rpgcode.removeAssets(assets); </code></pre>]]></desc>
 <h3>Example</h3> 
 <pre class="prettyprint"><code>rpgcode.removeRunTimeProgram("UI/HUD.js");</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.removeTile" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.removeTile(tileX, tileY, layer)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Removes the specified tile from the board. 
 </div> 
@@ -2330,7 +2330,7 @@ rpgcode.removeAssets(assets); </code></pre>]]></desc>
 <pre class="prettyprint"><code>// Removes the tile at (x: 11, y: 9, z: 1).
 rpgcode.removeTile(11, 9, 1); </code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.renderNow" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.renderNow(canvasId)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Renders the specified canvas, if none then the "renderNowCanvas" is shown. 
 </div> 
@@ -2366,7 +2366,7 @@ rpgcode.setColor(255, 0, 0, 1.0);
 rpgcode.fillRect(0, 0, 100, 100, canvas);
 rpgcode.renderNow(canvas);  </code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.replaceTile" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.replaceTile(tileX, tileY, layer, tileSet, tileIndex)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Replaces a tile at the supplied (x, y, z) position. 
 </div> 
@@ -2414,7 +2414,7 @@ rpgcode.renderNow(canvas);  </code></pre>]]></desc>
 // from the tileset "tileset1.tileset".
 rpgcode.replaceTile(11, 10, 0, "tileset1.tileset", 81);</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.resetActivationChecks" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.resetActivationChecks(characterId)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Resets activation checks for the requested character, useful for cases where you want continually check a program activation. 
 </div> 
@@ -2466,14 +2466,14 @@ if (!rpgcode.getGlobal("dungeonState").room2.doorOpened &amp;&amp; direction ===
  rpgcode.endProgram();
 }</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.restart" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.restart()" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Restarts the game by refreshing the browser page. 
 </div>  
 <h3>Example</h3> 
 <pre class="prettyprint"><code>rpgcode.restart(); // Will refresh the browser page.</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.runProgram" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.runProgram(filename)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Runs the requested program, movement is disabled for the programs duration. 
 </div> 
@@ -2499,7 +2499,7 @@ if (!rpgcode.getGlobal("dungeonState").room2.doorOpened &amp;&amp; direction ===
 <h3>Example</h3> 
 <pre class="prettyprint"><code>rpgcode.runProgram("MyProgram.js");</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.saveJSON" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.saveJSON(data, successCallback, failureCallback)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Saves the requested JSON data to the file specified, if the file does not exist it is created. If the file does exist it is overwritten. 
 </div> 
@@ -2554,7 +2554,7 @@ if (!rpgcode.getGlobal("dungeonState").room2.doorOpened &amp;&amp; direction ===
  }
 );</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.sendToBoard" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.sendToBoard(boardName, tileX, tileY, layer)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Sends the character to a board and places them at the given (x, y) position in tiles. 
 </div> 
@@ -2595,7 +2595,7 @@ if (!rpgcode.getGlobal("dungeonState").room2.doorOpened &amp;&amp; direction ===
 <h3>Example</h3> 
 <pre class="prettyprint"><code>rpgcode.sendToBoard("Room1.board", 11.5, 18);</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.setCanvasPosition" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.setCanvasPosition(x, y, canvasId)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Sets the position of a canvas relative to its parent. 
 </div> 
@@ -2643,7 +2643,7 @@ rpgcode.renderNow(canvas);
 // Now move it to a new position relative to its parent.
 rpgcode.setCanvasPosition(100, 100, canvas);</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.setCharacterLocation" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.setCharacterLocation(characterId, x, y, layer, isTiles)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Sets the character's location without triggering any animation. 
 </div> 
@@ -2694,7 +2694,7 @@ var layer = 1;
 var isTiles = true;
 rpgcode.setCharacterLocation(characterId, x, y, layer, isTiles);</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.setCharacterSpeed" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.setCharacterSpeed(characterId, change)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Sets the character speed by proportionally applying the change, can be used to increase or decrease the character speed by some factor i.e. 3 times faster or 3 times slower. Positive change values are interpreted as an increase and negative values as a decrease. 
 </div> 
@@ -2729,7 +2729,7 @@ rpgcode.setCharacterSpeed("Hero", 3);
 // Decrease the character's movement speed by 3 times, returning it to normal.
 rpgcode.setCharacterSpeed("Hero", -3);</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.setCharacterStance" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.setCharacterStance(characterId, stanceId)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Sets the character's current stance, uses the first frame in the animation. 
 </div> 
@@ -2763,7 +2763,7 @@ var characterId = "Hero";
 var stanceId = "IDLE";
 rpgcode.setCharacterStance(characterId, stanceId); </code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.setColor" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.setColor(r, g, b, a)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Sets the RGBA color for all drawing operations to use. 
 </div> 
@@ -2805,7 +2805,7 @@ rpgcode.setCharacterStance(characterId, stanceId); </code></pre>]]></desc>
 <pre class="prettyprint"><code>// Set the color to red.
 rpgcode.setColor(255, 0, 0, 1.0);</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.setDialogDimensions" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.setDialogDimensions(profileDimensions, dialogDimensions)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Sets the dialog box's profile and text area dimensions. 
 </div> 
@@ -2839,7 +2839,7 @@ var profileDimensions = {width: 100, height: 100};
 var dialogDimensions = {width: 640, height: 480};
 rpgcode.setDialogDimensions(profileDimensions, dialogDimensions);</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.setDialogGraphics" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.setDialogGraphics(profileImage, backgroundImage)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Sets the dialog box's speaker profile image and the background image. 
 </div> 
@@ -2871,7 +2871,7 @@ rpgcode.setDialogDimensions(profileDimensions, dialogDimensions);</code></pre>]]
 <pre class="prettyprint"><code>// Set the profile picture to use and the background dialog image.
 rpgcode.setDialogGraphics("sword_profile_1_small.png", "mwin_small.png");</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.setDialogPadding" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.setDialogPadding(padding)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Sets the padding from the top left corner of the dialog window for the x and/or y values. This can be used to prevent text from overlapping the start or end of the dialog window graphics. The default padding value is 5px for both x and y. 
 </div> 
@@ -2908,7 +2908,7 @@ rpgcode.setDialogPadding({y: 10});
 // Set both.
 rpgcode.setDialogPadding({x: 10, y: 10});</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.setDialogPosition" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.setDialogPosition(position)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Sets the position of the dialog window for the next call to showDialog. The dialog window can either appear at the top of the screen i.e. "NORTH", or the bottom of the screen i.e. "SOUTH". The default position is "SOUTH". 
 </div> 
@@ -2945,7 +2945,7 @@ rpgcode.delay(5000, function() {
  rpgcode.showDialog("Hello south!");
 });</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.setGlobal" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.setGlobal(id, value)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Sets a global value in the engine, if it doesn't exist it is created. 
 </div> 
@@ -2984,7 +2984,7 @@ rpgcode.setGlobal("name", "Bob");
 rpgcode.setGlobal("shield", {def: 10, price: 100}); 
   </code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.setGlobalAlpha" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.setGlobalAlpha(alpha)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Sets the global drawing alpha for all subsequent canvas drawing operation. Useful for drawing transparent elements to a canvas. For more details see: https://www.w3schools.com/Tags/canvas_globalalpha.asp 
 </div> 
@@ -3012,7 +3012,7 @@ rpgcode.setGlobal("shield", {def: 10, price: 100});
  <span class="param-type">undefined</span> 
 </div>]]></desc>
         </keyword>
-        <keyword name="rpgcode.setImage" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.setImage(fileName, x, y, width, height, canvasId)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Sets an image on the canvas specified or the default if none. 
 </div> 
@@ -3064,7 +3064,7 @@ rpgcode.setGlobal("shield", {def: 10, price: 100});
 <pre class="prettyprint"><code>// Set the image on the smaller canvas.
 rpgcode.setImage("life.png", 0, 0, 32, 32, lifeIcon);</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.setPixel" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.setPixel(x, y, canvasId)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Sets the pixel ImageData at the (x, y) coordinate on the canvas. 
 </div> 
@@ -3107,7 +3107,7 @@ rpgcode.renderNow();
 rpgcode.setColor(0, 255, 0, 1.0);
 rpgcode.setPixel(50, 50);</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.setSpriteLocation" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.setSpriteLocation(spriteId, x, y, layer, inTiles)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Sets the location of the sprite. 
 </div> 
@@ -3159,7 +3159,7 @@ var layer = 1;
 var inTiles = true;
 rpgcode.setSpriteLocation(spriteId, x, y, layer, inTiles);</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.setSpriteStance" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.setSpriteStance(spriteId, stanceId)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Sets the sprite's current stance, uses the first frame in the animation. 
 </div> 
@@ -3193,7 +3193,7 @@ var spriteId = "mysprite";
 var stanceId = "IDLE";
 rpgcode.setSpriteStance(spriteId, stanceId);</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.showDialog" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.showDialog(dialog)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Shows the dialog window and adds the dialog to it if it is already visible the dialog is just appended to the current window. Note the dialog window is drawn on the default "renderNowCanvas". 
 </div> 
@@ -3219,7 +3219,7 @@ rpgcode.setSpriteStance(spriteId, stanceId);</code></pre>]]></desc>
 <h3>Example</h3> 
 <pre class="prettyprint"><code>rpgcode.showDialog("Pssst, Over here");</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.stopSound" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.stopSound(file)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Stop playing a specific sound file, if no file is set stop all sounds. 
 </div> 
@@ -3245,7 +3245,7 @@ rpgcode.setSpriteStance(spriteId, stanceId);</code></pre>]]></desc>
 <h3>Example</h3> 
 <pre class="prettyprint"><code>rpgcode.stopSound("intro");</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.takeItem" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.takeItem(filename, characterId)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Takes the item from the specified character's inventory. 
 </div> 
@@ -3278,7 +3278,7 @@ rpgcode.setSpriteStance(spriteId, stanceId);</code></pre>]]></desc>
  <span class="param-type">undefined</span> 
 </div>]]></desc>
         </keyword>
-        <keyword name="rpgcode.unregisterKeyDown" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.unregisterKeyDown(key, globalScope)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Removes a previously registered KeyDown listener. 
 </div> 
@@ -3309,7 +3309,7 @@ rpgcode.setSpriteStance(spriteId, stanceId);</code></pre>]]></desc>
 <h3>Example</h3> 
 <pre class="prettyprint"><code>rpgcode.unregisterKeyDown("ENTER");</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.unregisterKeyUp" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.unregisterKeyUp(key, globalScope)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Removes a previously registered KeyUp listener. 
 </div> 
@@ -3340,7 +3340,7 @@ rpgcode.setSpriteStance(spriteId, stanceId);</code></pre>]]></desc>
 <h3>Example</h3> 
 <pre class="prettyprint"><code>rpgcode.unregisterKeyUp("ENTER");</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.unregisterMouseClick" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.unregisterMouseClick(globalScope)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Removes a previously registered mouse click handler. 
 </div> 
@@ -3374,7 +3374,7 @@ rpgcode.unregisterMouseClick();
 // Removes the global engine mouse click handler.
 rpgcode.unregisterMouseClick(true);</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.unregisterMouseDoubleClick" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.unregisterMouseDoubleClick(globalScope)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Removes a previously registered mouse double click handler. 
 </div> 
@@ -3408,7 +3408,7 @@ rpgcode.unregisterMouseDoubleClick();
 // Removes the global engine mouse double click handler.
 rpgcode.unregisterMouseDoubleClick(true);</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.unregisterMouseDown" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.unregisterMouseDown(globalScope)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Removes a previously registered mouse down handler. 
 </div> 
@@ -3442,7 +3442,7 @@ rpgcode.unregisterMouseDown();
 // Removes the global engine mouse down handler.
 rpgcode.unregisterMouseDown(true);</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.unregisterMouseMove" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.unregisterMouseMove(globalScope)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Removes a previously registered mouse move handler. 
 </div> 
@@ -3476,7 +3476,7 @@ rpgcode.unregisterMouseMove();
 // Removes the global engine mouse move handler.
 rpgcode.unregisterMouseMove(true);</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.unregisterMouseUp" type="function" returnType="undefined" definedIn="rpgcode.js">
+        <keyword name="rpgcode.unregisterMouseUp(globalScope)" type="function" returnType="undefined" definedIn="rpgcode.js">
             <desc><![CDATA[<div class="description">
   Removes a previously registered mouse up handler. 
 </div> 

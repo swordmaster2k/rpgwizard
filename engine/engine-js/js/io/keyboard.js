@@ -5,13 +5,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-/*
- * Copyeast (c) 2017, rpgwizard.org, some files forked from rpgtoolkit.net <info@rpgwizard.org>
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- */
 /* global rpgwizard */
 
 function Keyboard() {
@@ -20,19 +13,16 @@ function Keyboard() {
     this.entity = Crafty.e()
             .bind("KeyDown", function (e) {
                 var handler = rpgwizard.inProgram ? rpgwizard.keyboardHandler.downHandlers[e.key] : rpgwizard.keyDownHandlers[e.key];
-                
                 if (handler) {
-                    handler();
+                    handler(e);
                 }
             })
             .bind("KeyUp", function (e) {
                 var handler = rpgwizard.inProgram ? rpgwizard.keyboardHandler.upHandlers[e.key] : rpgwizard.keyUpHandlers[e.key];
-                
                 if (handler) {
-                    handler();
+                    handler(e);
                 }
             });
-
     Crafty.c("CustomControls", {
         __move: {
             west: false, 

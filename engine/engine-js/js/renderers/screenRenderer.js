@@ -50,7 +50,7 @@ ScreenRenderer.prototype.renderBoard = function (context) {
             var boardLayer = this.board.layers[i];
             
             /*
-             * Render this layer. 
+             * Render layer tiles. 
              */
             context.drawImage(this.board.layerCache[i], 0, 0, width, height, x, y, width, height);
 
@@ -173,8 +173,7 @@ ScreenRenderer.prototype.sortSprites = function (layer, player) {
     var board = this.board;
     Object.keys(this.board.sprites).forEach(function (key) {
         var entity = board.sprites[key];
-        var sprite = entity.sprite;
-        var asset = sprite.enemy !== undefined ? sprite.enemy : sprite.npc;
+        var asset = rpgcode._getSpriteType(key);
         if (layer === entity.layer && asset.renderReady) {
             asset.x = entity.x;
             asset.y = entity.y;

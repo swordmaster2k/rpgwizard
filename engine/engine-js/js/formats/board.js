@@ -11,7 +11,7 @@ function Board(filename) {
     if (rpgwizard.debugEnabled) {
         console.debug("Loading Board filename=[%s]", filename);
     }
-    
+
     // TODO: Make the changes here that chrome suggests.
     var req = new XMLHttpRequest();
     req.open("GET", filename, false);
@@ -22,7 +22,6 @@ function Board(filename) {
     for (var property in board) {
         this[property] = board[property];
     }
-
     this.layerCache = [];
 }
 
@@ -32,56 +31,66 @@ Board.prototype.setReady = function () {
     }
 };
 
+Board.prototype.addLayer = function (layer) {
+    if (rpgwizard.debugEnabled) {
+        console.debug("Adding layer dynamically to Board name=[%s]", this.name);
+    }
+    this._addCachedLayer(layer);
+    this.layers.push(layer);
+};
+
+Board.prototype.removeLayer = function (index) {
+    if (rpgwizard.debugEnabled) {
+        console.debug("Removing layer dynamically from Board name=[%s]", this.name);
+    }
+    if (this.layers.length > 1) { // Can't remove the last layer
+        this.layers.splice(index, 1);
+        this.layerCache.splice(index, 1);
+    }
+};
+
 Board.prototype.generateLayerCache = function () {
     if (rpgwizard.debugEnabled) {
         console.debug("Generating the layer cache for Board name=[%s]", this.name);
     }
-    
     this.layerCache = [];
-
-    // Loop through layers
-    var board = this;
     this.layers.forEach(function (layer) {
-        var cnvLayer = document.createElement("canvas");
-        cnvLayer.width = board.width * board.tileWidth;
-        cnvLayer.height = board.height * board.tileHeight;
-        var context = cnvLayer.getContext("2d");
+        this._addCachedLayer(layer);
+    }.bind(this));
+};
 
-        // Render the layer tiles
-        var tiles = layer.tiles.slice();
-        for (var y = 0; y < board.height; y++) {
-            for (var x = 0; x < board.width; x++) {
+Board.prototype._addCachedLayer = function (layer) {
+    var cnvLayer = document.createElement("canvas");
+    cnvLayer.width = this.width * this.tileWidth;
+    cnvLayer.height = this.height * this.tileHeight;
+    var context = cnvLayer.getContext("2d");
+    // Render the layer tiles
+    var tiles = layer.tiles.slice();
+    if (tiles.length > 0) {
+        for (var y = 0; y < this.height; y++) {
+            for (var x = 0; x < this.width; x++) {
                 var tile = tiles.shift().split(":");
                 var tileSetIndex = parseInt(tile[0]);
                 var tileIndex = parseInt(tile[1]);
-                
                 if (tileSetIndex === -1 || tileIndex === -1) {
                     continue; // Blank tile.
                 }
-
-                var tileSet = board.tileSets[tileSetIndex];
+                var tileSet = this.tileSets[tileSetIndex]; // Render tile to board canvas
                 var renderer = new TilesetRenderer(rpgwizard.tilesets[tileSet]);
-
-                // Render tile to board canvas
-                renderer.renderTile(
-                        context, tileIndex,
-                        x * board.tileWidth, y * board.tileHeight);
+                renderer.renderTile(context, tileIndex, x * this.tileWidth, y * this.tileHeight);
             }
         }
-
-        board.layerCache.push(cnvLayer);
-    });
+    }
+    this.layerCache.push(cnvLayer);
 };
 
-Board.prototype.replaceTile = function(x, y, layer, newTile) {
+Board.prototype.replaceTile = function (x, y, layer, newTile) {
     var context = this.layerCache[layer].getContext("2d");
-    
     context.putImageData(newTile, x * this.tileWidth, y * this.tileHeight);
 };
 
-Board.prototype.removeTile = function(x, y, layer) {
+Board.prototype.removeTile = function (x, y, layer) {
     var context = this.layerCache[layer].getContext("2d");
-    
     context.clearRect(x * this.tileWidth, y * this.tileHeight, this.tileWidth, this.tileHeight);
 };
   

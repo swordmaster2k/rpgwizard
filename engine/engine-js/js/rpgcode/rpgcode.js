@@ -37,6 +37,7 @@ function RPGcode() {
     this.globals = {};
 
     this.rgba = {r: 255, g: 255, b: 255, a: 1.0};
+    this.gradient = null;
     this.font = "14px Arial";
     this.globalAlpha = 1.0;
     this.imageSmoothingEnabled = false;
@@ -103,6 +104,8 @@ RPGcode.prototype._getSpriteType = function (spriteId) {
             return entity.sprite.enemy;
         } else if (entity.sprite.npc) {
             return entity.sprite.npc;
+        } else if (entity.sprite.character) {
+            return entity.sprite.character;
         }
     }
     return null;
@@ -613,6 +616,53 @@ RPGcode.prototype.drawRect = function (x, y, width, height, lineWidth, canvasId)
 };
 
 /**
+ * Draws a rectangle with rounded edges onto the canvas.
+ * 
+ * @example
+ * // Create a canvas and draw a red rectangle on it.
+ * var canvas = "myCanvas";
+ * rpgcode.createCanvas(640, 480, canvas);
+ * rpgcode.setColor(255, 0, 0, 1.0);
+ * rpgcode.drawRoundedRect(0, 0, 100, 100, 1, 5, canvas);
+ * rpgcode.renderNow(canvas); 
+ * 
+ * @param {Number} x The start x postion.
+ * @param {Number} y The start y postion.
+ * @param {Number} width In pixels.
+ * @param {Number} height In pixels.
+ * @param {Number} lineWidth In pixels.
+ * @param {Number} radius In pixels.
+ * @param {String} canvasId The ID of the canvas to draw on, defaults to "renderNowCanvas" if none specified.
+ */
+RPGcode.prototype.drawRoundedRect = function (x, y, width, height, lineWidth, radius, canvasId) {
+    if (!canvasId) {
+        canvasId = "renderNowCanvas";
+    }
+
+    var instance = rpgcode.canvases[canvasId];
+    if (instance) {
+        var context = instance.canvas.getContext("2d");
+        context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
+        var rgba = rpgcode.rgba;
+        context.globalAlpha = rpgcode.globalAlpha;
+        context.lineWidth = lineWidth;
+        context.strokeStyle = "rgba(" + rgba.r + "," + rgba.g + "," + rgba.b + "," + rgba.a + ")";
+        context.beginPath();
+        context.moveTo(x + radius, y);
+        context.lineTo(x + width - radius, y);
+        context.quadraticCurveTo(x + width, y, x + width, y + radius);
+        context.lineTo(x + width, y + height - radius);
+        context.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+        context.lineTo(x + radius, y + height);
+        context.quadraticCurveTo(x, y + height, x, y + height - radius);
+        context.lineTo(x, y + radius);
+        context.quadraticCurveTo(x, y, x + radius, y);
+        context.closePath();
+        context.stroke();
+    }
+};
+
+/**
  * Draws the text on the canvas starting at the specified (x, y) position, if no 
  * canvas is specified it defaults to the "renderNowCanvas".
  * 
@@ -643,7 +693,7 @@ RPGcode.prototype.drawText = function (x, y, text, canvasId) {
         context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
         var rgba = rpgcode.rgba;
         context.globalAlpha = rpgcode.globalAlpha;
-        context.fillStyle = "rgba(" + rgba.r + "," + rgba.g + "," + rgba.b + "," + rgba.a + ")";
+        context.fillStyle = rpgcode.gradient ? rpgcode.gradient : "rgba(" + rgba.r + "," + rgba.g + "," + rgba.b + "," + rgba.a + ")";
         context.font = rpgcode.font;
         context.fillText(text, x, y);
     }
@@ -698,7 +748,7 @@ RPGcode.prototype.fillCircle = function (x, y, radius, canvasId) {
         context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
         var rgba = rpgcode.rgba;
         context.globalAlpha = rpgcode.globalAlpha;
-        context.fillStyle = "rgba(" + rgba.r + "," + rgba.g + "," + rgba.b + "," + rgba.a + ")";
+        context.fillStyle = rpgcode.gradient ? rpgcode.gradient : "rgba(" + rgba.r + "," + rgba.g + "," + rgba.b + "," + rgba.a + ")";
         context.beginPath();
         context.arc(x, y, radius, 0, 2 * Math.PI);
         context.fill();
@@ -733,8 +783,53 @@ RPGcode.prototype.fillRect = function (x, y, width, height, canvasId) {
         context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
         var rgba = rpgcode.rgba;
         context.globalAlpha = rpgcode.globalAlpha;
-        context.fillStyle = "rgba(" + rgba.r + "," + rgba.g + "," + rgba.b + "," + rgba.a + ")";
+        context.fillStyle = rpgcode.gradient ? rpgcode.gradient : "rgba(" + rgba.r + "," + rgba.g + "," + rgba.b + "," + rgba.a + ")";
         context.fillRect(x, y, width, height);
+    }
+};
+
+/**
+ * Fills a solid rounded rectangle on the canvas.
+ * 
+ * @example
+ * // Create a canvas and draw a red rectangle on it.
+ * var canvas = "myCanvas";
+ * rpgcode.createCanvas(640, 480, canvas);
+ * rpgcode.setColor(255, 0, 0, 1.0);
+ * rpgcode.fillRoundedRect(0, 0, 100, 100, 5, canvas);
+ * rpgcode.renderNow(canvas); 
+ * 
+ * @param {Number} x The start x postion.
+ * @param {Number} y The start y postion.
+ * @param {Number} width In pixels.
+ * @param {Number} height In pixels.
+ * @param {Number} radius In pixels. 
+ * @param {String} canvasId The ID of the canvas to draw on, defaults to "renderNowCanvas" if none specified.
+ */
+RPGcode.prototype.fillRoundedRect = function (x, y, width, height, radius, canvasId) {
+    if (!canvasId) {
+        canvasId = "renderNowCanvas";
+    }
+
+    var instance = rpgcode.canvases[canvasId];
+    if (instance) {
+        var context = instance.canvas.getContext("2d");
+        context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
+        var rgba = rpgcode.rgba;
+        context.globalAlpha = rpgcode.globalAlpha;
+        context.fillStyle = rpgcode.gradient ? rpgcode.gradient : "rgba(" + rgba.r + "," + rgba.g + "," + rgba.b + "," + rgba.a + ")";
+        context.beginPath();
+        context.moveTo(x + radius, y);
+        context.lineTo(x + width - radius, y);
+        context.quadraticCurveTo(x + width, y, x + width, y + radius);
+        context.lineTo(x + width, y + height - radius);
+        context.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+        context.lineTo(x + radius, y + height);
+        context.quadraticCurveTo(x, y + height, x, y + height - radius);
+        context.lineTo(x, y + radius);
+        context.quadraticCurveTo(x, y, x + radius, y);
+        context.closePath();
+        context.fill();
     }
 };
 
@@ -1633,8 +1728,8 @@ RPGcode.prototype.resetActivationChecks = function (characterId) {
  * is unregistered.
  * 
  * @example 
- * rpgcode.registerKeyDown("ENTER", function() {
- *  rpgcode.log("Enter key is down!");
+ * rpgcode.registerKeyDown("ENTER", function(e) {
+ *  rpgcode.log(e.key + " key is down!");
  * });
  * 
  * @param {String} key The key to listen to.

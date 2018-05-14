@@ -57,7 +57,7 @@ public class AnimationModelPanel extends AbstractModelPanel implements Animation
         ///
         File directory = new File(System.getProperty("project.path") + File.separator
                 + CoreProperties.getProperty("toolkit.directory.sounds") + File.separator);
-        String[] exts = new String[] { "wav", "mp3" };
+        String[] exts = new String[] { "wav", "mp3", "ogg" };
         soundEffectComboBox = GuiHelper.getFileListJComboBox(new File[] { directory }, exts, true);
         soundEffectComboBox.setSelectedItem(animation.getSoundEffect());
         soundEffectComboBox.addActionListener((ActionEvent e) -> {

@@ -311,10 +311,14 @@ RPGWizard.prototype.loadCraftyAssets = function (callback) {
                 callback();
             },
             function (e) {  // progress 
-                callback({"type": "loading", "value": e});
+                if (callback && callback.length) {
+                    callback({"type": "loading", "value": e});
+                }
             },
             function (e) { // uh oh, error loading
-                callback({"type": "error", "value": e});
+                if (callback && callback.length) {
+                    callback({"type": "error", "value": e});
+                }
             }
     );
 };
@@ -590,19 +594,22 @@ RPGWizard.prototype.loadSprite = function (sprite) {
     if (rpgwizard.debugEnabled) {
         console.debug("Loading sprite=[%s]", JSON.stringify(sprite));
     }
+    var asset;
     if (sprite.name.endsWith(".enemy")) {
-        sprite.enemy = new Enemy(PATH_ENEMY + sprite.name);
+        asset = sprite.enemy = new Enemy(PATH_ENEMY + sprite.name);
         sprite.collisionPoints = sprite.enemy.collisionPoints;
-    } else {
-        sprite.npc = new NPC(PATH_NPC + sprite.name);
+    } else if(sprite.name.endsWith(".enemy"))  {
+        asset = sprite.npc = new NPC(PATH_NPC + sprite.name);
         sprite.collisionPoints = sprite.npc.collisionPoints;
+    } else {
+        asset = sprite.character = new Character(PATH_CHARACTER + sprite.name);
+        sprite.collisionPoints = sprite.character.collisionPoints;
     }
     sprite.x = sprite.startingPosition.x;
     sprite.y = sprite.startingPosition.y;
     sprite.layer = sprite.startingPosition.layer;
 
     var isEnemy = sprite.enemy !== undefined;
-    var asset = isEnemy ? sprite.enemy : sprite.npc;
     // TODO: width and height of npc must contain the collision polygon.
     if (sprite.thread) {
         sprite.thread = this.openProgram(PATH_PROGRAM + sprite.thread);

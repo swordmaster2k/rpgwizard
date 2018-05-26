@@ -26,20 +26,23 @@ if (!swordActive) {
                 ]};
     rpgcode.loadAssets(assets, function () {
         canvas = "renderNowCanvas";
-        rpgcode.showDialog("NOW TAKE MY POWER");
-        rpgcode.delay(2000, part1);
+        var config = {
+            position: "BOTTOM",
+            nextMarkerImage: "next_marker.png",
+            profileImage: "sword_profile_1_small.png",
+            typingSound: "typing_loop.wav",
+            text: "NOW TAKE MY POWER"
+         };
+        dialog.show(config, part1);
     });
 } else {
     rpgcode.endProgram();
 }
 
 function part1(x) {
-    rpgcode.clearDialog();
-
     if (x === 12) {
         rpgcode.pushPlayer("EAST");
     }
-
     rpgcode.delay(delay, animate);
 }
 
@@ -62,25 +65,33 @@ function part4() {
     rpgcode.removeTile(12, 9, 1);
 
     rpgcode.setGlobal("swordActive", true);
-    rpgcode.showDialog("I have been here for so many years, cursed by that wizard");
-    rpgcode.showDialog("to live in the form of a sword.");
-    rpgcode.delay(4000, part5);
+    var config = {
+            position: "BOTTOM",
+            nextMarkerImage: "next_marker.png",
+            profileImage: "sword_profile_1_small.png",
+            typingSound: "typing_loop.wav",
+            text: "I have been here for so many years, cursed by that wizard to live in the form of a sword."
+         };
+    dialog.show(config, part5);
 }
 
 function part5() {
-    rpgcode.showDialog("Let's go kill a wizard. I need my revenge.");
-    rpgcode.delay(3000, finish);
+   var config = {
+            position: "BOTTOM",
+            nextMarkerImage: "next_marker.png",
+            profileImage: "sword_profile_1_small.png",
+            typingSound: "typing_loop.wav",
+            text: "Let's go kill a wizard. I need my revenge."
+         };
+    dialog.show(config, finish);
 }
 
 function finish() {
-    rpgcode.clearDialog();
+    rpgcode.clearCanvas();
     rpgcode.removeAssets(assets); // Clean up any loaded assets!
-    
     // Give the character the ability to use the sword.
     rpgcode.registerKeyDown("SPACE", function () {
         rpgcode.runProgram("SwordSlash.js");
     }, true);
-
-
     rpgcode.endProgram();
 }

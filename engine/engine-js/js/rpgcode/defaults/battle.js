@@ -18,14 +18,16 @@ function Battle() {
     };
 }
 
-/*****************************************************************************
- * General Functions
- *****************************************************************************/
+//
+// General Functions
+//
 
-Battle.prototype.start = function (config, callback) {
+Battle.prototype.show = function (config, callback) {
     if (!config.enemies || !config.characters || config.enemies.length < 1 || config.characters.length < 1) {
         rpgcode.endProgram();
     } else {
+        this.config = config;
+        this.callback = callback;
         config.enemies = config.enemies.slice(0, 4);
         config.characters = config.characters.slice(0, 4);
         this._loadAssets(config, function (config) {
@@ -39,7 +41,7 @@ Battle.prototype.start = function (config, callback) {
     }
 };
 
-Battle.prototype._end = function (config, callback) {
+Battle.prototype._end = function () {
     clearInterval(this._state.drawInterval);
     clearInterval(this._state.flashInterval);
     this._state.characters.forEach(function (character) {
@@ -52,7 +54,11 @@ Battle.prototype._end = function (config, callback) {
     rpgcode.getBoard().removeLayer(-1);
     rpgcode.stopSound("battle.stage");
     rpgcode.playSound(rpgcode.getBoard().backgroundMusic, true, 1.0);
-    rpgcode.endProgram();
+    if (this.callback) {
+        this.callback();
+    } else {
+        rpgcode.endProgram();
+    }
 };
 
 Battle.prototype._setup = function (config) {
@@ -68,14 +74,12 @@ Battle.prototype._setup = function (config) {
         }
     };
     this.window = {
-        canvasId: "battle.windowCanvas",
         width: 640, height: 140,
         x: 100, y: 100,
         radius: 15,
         linePadding: 10,
         borderWidth: 5,
         area: {
-            canvasId: "battle.areaCanvas",
             width: 490, height: 140,
             x: 0, y: 0,
             padding: {
@@ -87,7 +91,6 @@ Battle.prototype._setup = function (config) {
             selectedIndex: 1
         },
         menu: {
-            canvasId: "battle.menuCanvas",
             width: 150, height: 140,
             x: 490, y: 0,
             padding: {
@@ -101,14 +104,27 @@ Battle.prototype._setup = function (config) {
     this.window.y = Math.floor(rpgcode.getViewport().height - this.window.height);
     rpgcode.createCanvas(this.stage.width, this.stage.height, this.stage.canvasId);
     rpgcode.createCanvas(this.stage.cursor.width, this.stage.cursor.height, this.stage.cursor.canvasId);
-    rpgcode.createCanvas(this.window.width, this.window.height, this.window.canvasId);
-    rpgcode.createCanvas(this.window.area.width, this.window.area.height, this.window.area.canvasId);
-    rpgcode.createCanvas(this.window.menu.width, this.window.menu.height, this.window.menu.canvasId);
     rpgcode.setCanvasPosition(0, 0, this.stage.canvasId);
     rpgcode.setCanvasPosition(0, 0, this.stage.cursor.canvasId);
-    rpgcode.setCanvasPosition(this.window.x, this.window.y, this.window.canvasId);
-    rpgcode.setCanvasPosition(0, 0, this.window.area.canvasId);
-    rpgcode.setCanvasPosition(0, 0, this.window.menu.canvasId);
+
+    this.areaFrame = gui.createFrame({
+        id: "Battle.areaFrameCanvas",
+        width: 490,
+        height: 140,
+        x: 0,
+        y: 340
+    });
+    this.areaFrame.setVisible(true);
+
+    this.menuFrame = gui.createFrame({
+        id: "Battle.menuFrameCanvas",
+        width: 150,
+        height: 140,
+        x: rpgcode.getViewport().width - 150,
+        y: 340
+    });
+    this.menuFrame.setVisible(true);
+
     this._state = {
         stageLayer: rpgcode.getBoard().layers.length,
         turnsTaken: 0,
@@ -178,7 +194,7 @@ Battle.prototype._loadSprite = function (file, type, index, callback) {
         "name": file,
         "id": type + "-" + index,
         "thread": "",
-        "startingPosition": {"x": 100, "y": 100, "layer": rpgcode.getBoard().layers.length},
+        "startingPosition": {"x": -100, "y": 100, "layer": rpgcode.getBoard().layers.length},
         "events": []
     };
     rpgcode.addSprite(sprite, function () {
@@ -191,7 +207,7 @@ Battle.prototype._createStage = function (config) {
     var layer = {
         "tiles": [],
         "vectors": [],
-        "images": [{"src": "defaults/battle/Battleback_veldt_a.png", "x": viewport.x, "y": viewport.y, "id": "battle.background"}],
+        "images": [{"src": config.backgroundImage, "x": -Crafty.viewport._x - rpgwizard.craftyBoard.xShift, "y": -Crafty.viewport._y - rpgwizard.craftyBoard.yShift, "id": "battle.background"}],
         "name": "battle.stage"
     };
     rpgcode.getBoard().addLayer(layer);
@@ -276,9 +292,9 @@ Battle.prototype._getCurrentSelection = function () {
     return selection;
 };
 
-/*****************************************************************************
- * Additional Setup Functions
- *****************************************************************************/
+//
+// Additional Setup Functions
+//
 
 Battle.prototype._placeEnemies = function (enemies) {
     var grid = {
@@ -299,8 +315,10 @@ Battle.prototype._placeEnemies = function (enemies) {
             {x: grid.width * 0.50, y: grid.height * 0.50, center: {x: grid.width * 0.75, y: grid.height * 0.70}}
         ];
     }
+    var xShift = -Crafty.viewport._x - rpgwizard.craftyBoard.xShift;
+    var yShift = -Crafty.viewport._y - rpgwizard.craftyBoard.yShift
     for (var i = 0; i < enemies.length; i++) {
-        rpgcode.setSpriteLocation(enemies[i].id, cells[i].center.x, cells[i].center.y, this._state.stageLayer, false);
+        rpgcode.setSpriteLocation(enemies[i].id, cells[i].center.x + xShift, cells[i].center.y + yShift, this._state.stageLayer, false);
         rpgcode.setSpriteStance(enemies[i].id, "EAST");
     }
 };
@@ -324,16 +342,18 @@ Battle.prototype._placeCharacters = function (characters) {
             {x: grid.width * 0.75, y: grid.height * 0.50, center: {x: grid.width * 0.90, y: grid.height * 0.80}}
         ];
     }
+    var xShift = -Crafty.viewport._x - rpgwizard.craftyBoard.xShift;
+    var yShift = -Crafty.viewport._y - rpgwizard.craftyBoard.yShift
     for (var i = 0; i < characters.length; i++) {
-        rpgcode.setSpriteLocation(characters[i].id, cells[i].center.x, cells[i].center.y, this._state.stageLayer, false);
+        rpgcode.setSpriteLocation(characters[i].id, cells[i].center.x + xShift, cells[i].center.y + yShift, this._state.stageLayer, false);
         rpgcode.setSpriteStance(characters[i].id, "WEST");
     }
     rpgcode.moveSprite(this._state.characters[this._state.selectedCharacterIndex - 1].id, "WEST", 50);
 };
 
-/*****************************************************************************
- * Battle Functions
- *****************************************************************************/
+//
+// Battle Functions
+//
 
 Battle.prototype._checkEndConditions = function () {
     return this._state.characters.length < 1 || this._state.enemies.length < 1;
@@ -399,7 +419,7 @@ Battle.prototype._attackCharacter = function () {
     var enemy = this._state.enemies[this._state.selectedEnemyIndex - 1];
     var character = this._state.characters[this._state.selectedCharacterIndex - 1];
     var attackPower = this._determineAttackPower(enemy.data.attack);
-    var location = rpgcode.getSpriteLocation(character.id, false, false);
+    var location = rpgcode.getSpriteLocation(character.id, false, true);
     this._showToastMessage({text: attackPower, x: location.x, y: location.y});
     var playing = 2;
     var callback = function () {
@@ -428,7 +448,7 @@ Battle.prototype._attackEnemy = function () {
     var enemy = this._state.enemies[this._state.selectedEnemyIndex - 1];
     var character = this._state.characters[this._state.selectedCharacterIndex - 1];
     var attackPower = this._determineAttackPower(character.data.attack);
-    var location = rpgcode.getSpriteLocation(enemy.id, false, false);
+    var location = rpgcode.getSpriteLocation(enemy.id, false, true);
     this._showToastMessage({text: attackPower, x: location.x, y: location.y});
     var playing = 2;
     var callback = function () {
@@ -457,9 +477,9 @@ Battle.prototype._flee = function () {
     this._end();
 };
 
-/*****************************************************************************
- * Item Functions
- *****************************************************************************/
+//
+// Item Functions
+//
 
 Battle.prototype._useItem = function () {
     var selectedItem = this._state.items[this._state.selectedItemIndex - 1];
@@ -489,17 +509,17 @@ Battle.prototype._useItem = function () {
     }
 };
 
-/*****************************************************************************
- * AI Functions
- *****************************************************************************/
+//
+// AI Functions
+//
 
 Battle.prototype._determineAttackPower = function (attack) {
     return Math.round(Math.random() * ((attack * 1.1) - (attack * 0.6)) + (attack * 0.6));
 };
 
-/*****************************************************************************
- * Input Functions
- *****************************************************************************/
+//
+// Input Functions
+//
 
 Battle.prototype._handleInput = function (e) {
     if (!this._state.playerTurn || this._state.processingInput) {
@@ -589,34 +609,22 @@ Battle.prototype._endItemSelection = function (advance) {
 };
 
 
-/*****************************************************************************
- * Drawing Functions
- *****************************************************************************/
+//
+// Drawing Functions
+//
 
 Battle.prototype._clearCanvases = function () {
     rpgcode.clearCanvas(this.stage.canvasId);
     rpgcode.clearCanvas(this.stage.cursor.canvasId);
     rpgcode.clearCanvas(this.window.canvasId);
-    rpgcode.clearCanvas(this.window.menu.canvasId);
-    rpgcode.clearCanvas(this.window.area.canvasId);
-};
-
-Battle.prototype._setGradient = function (x1, y1, x2, y2, colorStops, canvasId) {
-    var instance = rpgcode.canvases[canvasId];
-    var context = instance.canvas.getContext("2d");
-    var gradient = context.createLinearGradient(x1, y1, x2, y2);
-    for (var i = 0; i < colorStops.length; i++) {
-        gradient.addColorStop(i, colorStops[i]);
-    }
-    rpgcode.gradient = gradient;
-};
-
-Battle.prototype._removeGradient = function () {
-    rpgcode.gradient = null;
+    rpgcode.clearCanvas(this.areaFrame.id);
+    rpgcode.clearCanvas(this.menuFrame.id);
 };
 
 Battle.prototype._draw = function () {
     this._clearCanvases();
+    this.areaFrame.draw();
+    this.menuFrame.draw();
     this._drawMenu(this._getMenuItems());
     if (this._state.currentContext === this.context.ITEM_SELECTION) {
         this._drawInventory(this._getInventoryItems());
@@ -625,21 +633,17 @@ Battle.prototype._draw = function () {
     }
     this._drawSelection();
     this._drawMessages();
-    rpgcode.renderNow(this.window.canvasId);
+    rpgcode.renderNow(this.areaFrame.id);
+    rpgcode.renderNow(this.menuFrame.id);
     rpgcode.renderNow(this.stage.canvasId);
 };
 
 Battle.prototype._drawStats = function (statItems) {
-    this._setGradient(this.window.area.width / 2, 0, this.window.area.width / 2, this.window.area.height * 1.75, gui.getBackgroundGradient(), this.window.area.canvasId);
-    rpgcode.fillRect(0, 0, this.window.area.width, this.window.area.height, this.window.area.canvasId);
-    this._removeGradient();
-    gui.prepareTextColor();
-    rpgcode.drawRoundedRect(0, 0, this.window.area.width, this.window.area.height, this.window.borderWidth, this.window.radius, this.window.area.canvasId);
     this._drawStatSelection();
     for (var i = 0; i < statItems.length; i++) {
         this._drawStatItem(statItems[i], i);
     }
-    rpgcode.drawOntoCanvas(this.window.area.canvasId, this.window.area.x, this.window.area.y, this.window.area.width, this.window.area.height, this.window.canvasId);
+    rpgcode.drawOntoCanvas(this.areaFrame.id, this.window.area.x, this.window.area.y, this.window.area.width, this.window.area.height, this.window.canvasId);
 };
 
 Battle.prototype._drawStatItem = function (item, index) {
@@ -650,7 +654,7 @@ Battle.prototype._drawStatItem = function (item, index) {
         this._drawStatBar(bar, x, y);
     }.bind(this));
     gui.prepareTextColor();
-    rpgcode.drawText(x, y, item.text, this.window.area.canvasId);
+    rpgcode.drawText(x, y, item.text, this.areaFrame.id);
 };
 
 Battle.prototype._drawStatBar = function (bar, x, y) {
@@ -661,7 +665,7 @@ Battle.prototype._drawStatBar = function (bar, x, y) {
     var barX = x + (bar.position * charWidth);
     var barY = y - (height / 2);
     gui.prepareStatBarColor();
-    rpgcode.fillRect(barX, barY, width, height, this.window.area.canvasId);
+    rpgcode.fillRect(barX, barY, width, height, this.areaFrame.id);
 };
 
 Battle.prototype._drawStatSelection = function () {
@@ -670,22 +674,17 @@ Battle.prototype._drawStatSelection = function () {
     var y = this.window.area.padding.y + ((gui.getFontSize() + this.window.linePadding) * (this.window.area.selectedIndex - 1)) - gui.getFontSize() - (this.window.linePadding / 4);
     var width = this.window.area.width - this.window.area.padding.x;
     var height = gui.getFontSize() + (this.window.linePadding);
-    rpgcode.fillRect(x, y, width, height, this.window.area.canvasId);
+    rpgcode.fillRect(x, y, width, height, this.areaFrame.id);
 };
 
 Battle.prototype._drawInventory = function (inventoryItems) {
-    this._setGradient(this.window.area.width / 2, 0, this.window.area.width / 2, this.window.area.height * 1.75, gui.getBackgroundGradient(), this.window.area.canvasId);
-    rpgcode.fillRect(0, 0, this.window.area.width, this.window.area.height, this.window.area.canvasId);
-    this._removeGradient();
-    gui.prepareTextColor();
-    rpgcode.drawRoundedRect(0, 0, this.window.area.width, this.window.area.height, this.window.borderWidth, this.window.radius, this.window.area.canvasId);
     this._drawInventorySelection();
     var i = 0;
     for (; i < inventoryItems.length; i++) {
         this._drawInventoryItem(inventoryItems[i], i);
     }
     this._drawInventoryItem({text: "<- Back"}, i);
-    rpgcode.drawOntoCanvas(this.window.area.canvasId, this.window.area.x, this.window.area.y, this.window.area.width, this.window.area.height, this.window.canvasId);
+    rpgcode.drawOntoCanvas(this.areaFrame.id, this.window.area.x, this.window.area.y, this.window.area.width, this.window.area.height, this.window.canvasId);
 };
 
 Battle.prototype._drawInventoryItem = function (item, index) {
@@ -693,7 +692,7 @@ Battle.prototype._drawInventoryItem = function (item, index) {
     var x = index < 4 ? this.window.area.padding.x : this.window.area.padding.x + (this.window.area.width / 2);
     var y = this.window.area.padding.y + ((gui.getFontSize() + this.window.linePadding) * (index < 4 ? index : index - 4));
     gui.prepareTextColor();
-    rpgcode.drawText(x, y, item.text, this.window.area.canvasId);
+    rpgcode.drawText(x, y, item.text, this.areaFrame.id);
 };
 
 Battle.prototype._drawInventorySelection = function () {
@@ -703,22 +702,17 @@ Battle.prototype._drawInventorySelection = function () {
     var y = this.window.area.padding.y + ((gui.getFontSize() + this.window.linePadding) * (index < 4 ? index : index - 4)) - gui.getFontSize() - (this.window.linePadding / 4);
     var width = (this.window.area.width / 2) - (this.window.area.padding.x * 2);
     var height = gui.getFontSize() + (this.window.linePadding);
-    rpgcode.fillRect(x, y, width, height, this.window.area.canvasId);
+    rpgcode.fillRect(x, y, width, height, this.areaFrame.id);
 };
 
 Battle.prototype._drawMenu = function (menuItems) {
-    this._setGradient(this.window.menu.width / 2, 0, this.window.menu.width / 2, this.window.menu.height * 1.75, gui.getBackgroundGradient(), this.window.menu.canvasId);
-    rpgcode.fillRect(0, 0, this.window.menu.width, this.window.menu.height, this.window.menu.canvasId);
-    this._removeGradient();
-    gui.prepareTextColor();
-    rpgcode.drawRoundedRect(0, 0, this.window.menu.width, this.window.menu.height, this.window.borderWidth, this.window.radius, this.window.menu.canvasId);
     if (this._state.flashMenuSelection && this._state.currentContext !== this.context.ENEMY_TURN) {
         this._drawMenuSelection();
     }
     for (var i = 0; i < menuItems.length; i++) {
         this._drawMenuItem(menuItems[i], i);
     }
-    rpgcode.drawOntoCanvas(this.window.menu.canvasId, this.window.menu.x, this.window.menu.y, this.window.menu.width, this.window.menu.height, this.window.canvasId);
+    rpgcode.drawOntoCanvas(this.menuFrame.id, this.window.menu.x, this.window.menu.y, this.window.menu.width, this.window.menu.height, this.window.canvasId);
 };
 
 Battle.prototype._drawMenuItem = function (item, index) {
@@ -726,7 +720,7 @@ Battle.prototype._drawMenuItem = function (item, index) {
     gui.prepareTextColor();
     var x = this.window.menu.padding.x;
     var y = this.window.menu.padding.y + ((gui.getFontSize() + this.window.linePadding) * index);
-    rpgcode.drawText(x, y, item.text, this.window.menu.canvasId);
+    rpgcode.drawText(x, y, item.text, this.menuFrame.id);
 };
 
 Battle.prototype._drawMenuSelection = function () {
@@ -735,7 +729,7 @@ Battle.prototype._drawMenuSelection = function () {
     var y = this.window.menu.padding.y + ((gui.getFontSize() + this.window.linePadding) * (this.window.menu.selectedIndex - 1)) - gui.getFontSize() - (this.window.linePadding / 4);
     var width = this.window.menu.width - this.window.menu.padding.x;
     var height = gui.getFontSize() + (this.window.linePadding);
-    rpgcode.fillRect(x, y, width, height, this.window.menu.canvasId);
+    rpgcode.fillRect(x, y, width, height, this.menuFrame.id);
 };
 
 Battle.prototype._drawSelection = function () {

@@ -598,7 +598,7 @@ RPGWizard.prototype.loadSprite = function (sprite) {
     if (sprite.name.endsWith(".enemy")) {
         asset = sprite.enemy = new Enemy(PATH_ENEMY + sprite.name);
         sprite.collisionPoints = sprite.enemy.collisionPoints;
-    } else if(sprite.name.endsWith(".enemy"))  {
+    } else if(sprite.name.endsWith(".npc"))  {
         asset = sprite.npc = new NPC(PATH_NPC + sprite.name);
         sprite.collisionPoints = sprite.npc.collisionPoints;
     } else {

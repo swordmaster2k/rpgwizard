@@ -1,2 +1,0 @@
-rpgcode.clearDialog();
-rpgcode.endProgram();

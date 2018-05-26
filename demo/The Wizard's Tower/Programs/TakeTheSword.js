@@ -89,9 +89,5 @@ function part5() {
 function finish() {
     rpgcode.clearCanvas();
     rpgcode.removeAssets(assets); // Clean up any loaded assets!
-    // Give the character the ability to use the sword.
-    rpgcode.registerKeyDown("SPACE", function () {
-        rpgcode.runProgram("SwordSlash.js");
-    }, true);
     rpgcode.endProgram();
 }

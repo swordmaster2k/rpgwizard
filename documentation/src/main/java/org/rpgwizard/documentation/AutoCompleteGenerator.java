@@ -52,18 +52,24 @@ public class AutoCompleteGenerator {
                 Element main = document.getElementById("main");
                 Element section = main.getElementsByTag("section").first();
                 Element article = section.getElementsByTag("article").first();
-                Element dl = article.getElementsByTag("dl").get(1);
-                Elements children = dl.children();
-                List<Element> list = children.subList(0, children.size());
+                for (Element dl : article.getElementsByTag("dl")) {
+                    Elements children = dl.children();
+                    List<Element> list = children.subList(0, children.size());
 
-                int i = 0;
-                int size = list.size();
-                while (i < size - 1) {
-                    Element dt = list.get(i);
-                    Element dd = list.get(i + 1);
-                    keywords += new Keyword(dt, dd).toXml();
-                    i += 2;
+                    int i = 0;
+                    int size = list.size();
+                    while (i < size - 1) {
+                        Element dt = list.get(i);
+                        Element dd = list.get(i + 1);
+                        try {
+                            keywords += new Keyword(htmlFile.getName().replace(".html", "").toLowerCase(), dt, dd).toXml();
+                        } catch (Exception ex) {
+                            // Ignore it.
+                        }
+                        i += 2;
+                    }
                 }
+                
             }
 
             FileUtils.writeStringToFile(new File(OUTPUT + "rpgcode.xml"), toXml(keywords), "UTF-8");

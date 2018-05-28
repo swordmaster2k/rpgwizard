@@ -94,9 +94,11 @@ public final class NPCEditor extends AbstractSpriteEditor implements SpriteChang
 
         npcName = new JTextField(npc.getName());
         npcName.setColumns(DEFAULT_INPUT_COLUMNS);
+        npcName.getDocument().addDocumentListener(saveDocumentListener);
 
         npcDescription = new JTextField(npc.getDescription());
         npcDescription.setColumns(DEFAULT_INPUT_COLUMNS);
+        npcDescription.getDocument().addDocumentListener(saveDocumentListener);
 
         List<Component> inputs = new ArrayList<>();
         inputs.add(npcName);

@@ -98,8 +98,8 @@ public final class CharacterEditor extends AbstractSpriteEditor implements Sprit
         player.setMaxMagic(maxMagic.getValue());
 
         // Update all player variables from graphics panel.
-        player.setIdleTimeBeforeStanding(idleTimeoutField.getValue());
-        player.setFrameRate(stepRateField.getValue());
+        // player.setIdleTimeBeforeStanding(idleTimeoutField.getValue());
+        // player.setFrameRate(stepRateField.getValue());
 
         save(player);
     }
@@ -148,42 +148,55 @@ public final class CharacterEditor extends AbstractSpriteEditor implements Sprit
 
         name = new JTextField(player.getName());
         name.setColumns(DEFAULT_INPUT_COLUMNS);
+        name.getDocument().addDocumentListener(saveDocumentListener);
 
         level = new IntegerField(player.getLevel());
         level.setColumns(DEFAULT_INPUT_COLUMNS);
+        level.getDocument().addDocumentListener(saveDocumentListener);
 
         maxLevel = new IntegerField(player.getMaxLevel());
         maxLevel.setColumns(DEFAULT_INPUT_COLUMNS);
+        maxLevel.getDocument().addDocumentListener(saveDocumentListener);
 
         experience = new DoubleField(player.getMaxExperience());
         experience.setColumns(DEFAULT_INPUT_COLUMNS);
+        experience.getDocument().addDocumentListener(saveDocumentListener);
 
         maxExperience = new DoubleField(player.getMaxExperience());
         maxExperience.setColumns(DEFAULT_INPUT_COLUMNS);
+        maxExperience.getDocument().addDocumentListener(saveDocumentListener);
 
         health = new DoubleField(player.getHealth());
         health.setColumns(DEFAULT_INPUT_COLUMNS);
+        health.getDocument().addDocumentListener(saveDocumentListener);
 
         maxHealth = new DoubleField(player.getMaxHealth());
         maxHealth.setColumns(DEFAULT_INPUT_COLUMNS);
+        maxHealth.getDocument().addDocumentListener(saveDocumentListener);
 
         attack = new DoubleField(player.getAttack());
         attack.setColumns(DEFAULT_INPUT_COLUMNS);
+        attack.getDocument().addDocumentListener(saveDocumentListener);
 
         maxAttack = new DoubleField(player.getMaxAttack());
         maxAttack.setColumns(DEFAULT_INPUT_COLUMNS);
+        maxAttack.getDocument().addDocumentListener(saveDocumentListener);
 
         defence = new DoubleField(player.getDefence());
         defence.setColumns(DEFAULT_INPUT_COLUMNS);
+        defence.getDocument().addDocumentListener(saveDocumentListener);
 
         maxDefence = new DoubleField(player.getMaxDefence());
         maxDefence.setColumns(DEFAULT_INPUT_COLUMNS);
+        maxDefence.getDocument().addDocumentListener(saveDocumentListener);
 
         magic = new DoubleField(player.getMagic());
         magic.setColumns(DEFAULT_INPUT_COLUMNS);
+        magic.getDocument().addDocumentListener(saveDocumentListener);
 
         maxMagic = new DoubleField(player.getMaxMagic());
         maxMagic.setColumns(DEFAULT_INPUT_COLUMNS);
+        maxMagic.getDocument().addDocumentListener(saveDocumentListener);
 
         List<Component> inputs = new ArrayList<>();
         inputs.add(name);

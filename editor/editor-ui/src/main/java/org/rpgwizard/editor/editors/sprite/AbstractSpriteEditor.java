@@ -22,7 +22,6 @@ import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -35,7 +34,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.event.InternalFrameEvent;
-import javax.swing.event.InternalFrameListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
@@ -74,6 +72,9 @@ public abstract class AbstractSpriteEditor extends AbstractAssetEditorWindow imp
     protected static final List<String> STANDING_PLACE_HOLDERS = Arrays.asList("SOUTH_IDLE", "NORTH_IDLE", "EAST_IDLE",
             "WEST_IDLE", "NORTH_WEST_IDLE", "NORTH_EAST_IDLE", "SOUTH_WEST_IDLE", "SOUTH_EAST_IDLE");
 
+    // Default dimensions.
+    private static final Dimension PROFILE_DIMENSION = new Dimension(100, 100);
+
     // Tabs.
     protected final JTabbedPane tabbedPane;
 
@@ -106,7 +107,7 @@ public abstract class AbstractSpriteEditor extends AbstractAssetEditorWindow imp
         statsPanel = new JPanel();
         animationsPanel = new JPanel();
 
-        profilePanel = new ImagePanel();
+        profilePanel = new ImagePanel(PROFILE_DIMENSION);
         statsEditPanel = new JPanel();
 
         defaultEtchedBorder = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
@@ -261,9 +262,6 @@ public abstract class AbstractSpriteEditor extends AbstractAssetEditorWindow imp
     }
 
     protected void buildStatsPanel(List<Component> labels, List<Component> inputs) {
-        // Configure the necessary Panels
-        statsEditPanel.setBorder(BorderFactory.createTitledBorder(defaultEtchedBorder, "Starting Stats"));
-
         // Create Layout for top level panel
         GroupLayout layout = GuiHelper.createGroupLayout(statsPanel);
 
@@ -294,21 +292,27 @@ public abstract class AbstractSpriteEditor extends AbstractAssetEditorWindow imp
 
         statsLayout.linkSize(SwingConstants.VERTICAL, labels.toArray(new Component[inputs.size()]));
 
-        JPanel configPanel = new JPanel(new BorderLayout());
-        configPanel.add(statsEditPanel, BorderLayout.NORTH);
+        JPanel rightPanel = new JPanel(new BorderLayout());
+        rightPanel.add(statsEditPanel, BorderLayout.NORTH);
+        rightPanel.setPreferredSize(new Dimension(250, 500));
+        rightPanel.setBorder(BorderFactory.createTitledBorder(defaultEtchedBorder, "Starting Stats"));
+
+        JPanel leftPanel = new JPanel(new BorderLayout());
+        leftPanel.add(profilePanel, BorderLayout.NORTH);
+        leftPanel.setMaximumSize(PROFILE_DIMENSION);
+        leftPanel.setBorder(BorderFactory.createTitledBorder(defaultEtchedBorder, "Profile (100x100)"));
 
         if (!profileImagePath.isEmpty()) {
-            profilePanel.addImage(new File(EditorFileManager.getGraphicsPath() + profileImagePath));
+            // profilePanel.addImage(new File(EditorFileManager.getGraphicsPath() + profileImagePath));
         }
 
         // Configure STATS PANEL layout
-        layout.setHorizontalGroup(layout.createSequentialGroup().addComponent(profilePanel).addComponent(configPanel));
+        layout.setHorizontalGroup(layout.createSequentialGroup().addComponent(leftPanel).addComponent(rightPanel));
 
-        layout.linkSize(SwingConstants.VERTICAL, profilePanel, configPanel);
+        // layout.linkSize(SwingConstants.VERTICAL, leftPanel, rightPanel);
 
-        layout.setVerticalGroup(
-                layout.createSequentialGroup().addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(profilePanel).addComponent(configPanel)));
+        layout.setVerticalGroup(layout.createSequentialGroup().addGroup(layout
+                .createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(leftPanel).addComponent(rightPanel)));
     }
 
     protected void buildAnimationsPanel() {
@@ -365,16 +369,16 @@ public abstract class AbstractSpriteEditor extends AbstractAssetEditorWindow imp
         configurationPanel.add(browseButton);
         configurationPanel.add(removeButton);
 
-        configurationPanel.add(new JLabel("Idle Timeout: "));
-        idleTimeoutField = new DoubleField(sprite.getIdleTimeBeforeStanding());
-        configurationPanel.add(idleTimeoutField);
+        // configurationPanel.add(new JLabel("Idle Timeout: "));
+        // idleTimeoutField = new DoubleField(sprite.getIdleTimeBeforeStanding());
+        // configurationPanel.add(idleTimeoutField);
 
-        configurationPanel.add(new JLabel("Step Rate: "));
-        stepRateField = new DoubleField(sprite.getFrameRate());
-        configurationPanel.add(stepRateField);
+        // configurationPanel.add(new JLabel("Step Rate: "));
+        // stepRateField = new DoubleField(sprite.getFrameRate());
+        // configurationPanel.add(stepRateField);
 
         // Fix the size of this panel to stop the JTable growing beyond the Window.
-        AnimationsTablePanel southPanel = new AnimationsTablePanel(profilePanel);
+        AnimationsTablePanel southPanel = new AnimationsTablePanel(500);
         southPanel.add(animationScrollPane, BorderLayout.CENTER);
         southPanel.add(configurationPanel, BorderLayout.SOUTH);
 

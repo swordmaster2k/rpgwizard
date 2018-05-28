@@ -137,24 +137,31 @@ public final class EnemyEditor extends AbstractSpriteEditor implements SpriteCha
         // Configure Class scope components
         enemyName = new JTextField(enemy.getName());
         enemyName.setColumns(DEFAULT_INPUT_COLUMNS);
+        enemyName.getDocument().addDocumentListener(saveDocumentListener);
 
         health = new DoubleField(enemy.getHealth());
         health.setColumns(DEFAULT_INPUT_COLUMNS);
+        health.getDocument().addDocumentListener(saveDocumentListener);
 
         attack = new DoubleField(enemy.getAttack());
         attack.setColumns(DEFAULT_INPUT_COLUMNS);
+        attack.getDocument().addDocumentListener(saveDocumentListener);
 
         defence = new DoubleField(enemy.getDefence());
         defence.setColumns(DEFAULT_INPUT_COLUMNS);
+        defence.getDocument().addDocumentListener(saveDocumentListener);
 
         magic = new DoubleField(enemy.getMagic());
         magic.setColumns(DEFAULT_INPUT_COLUMNS);
+        magic.getDocument().addDocumentListener(saveDocumentListener);
 
         experienceReward = new DoubleField(enemy.getExperienceReward());
         experienceReward.setColumns(DEFAULT_INPUT_COLUMNS);
+        experienceReward.getDocument().addDocumentListener(saveDocumentListener);
 
         goldReward = new DoubleField(enemy.getGoldReward());
         goldReward.setColumns(DEFAULT_INPUT_COLUMNS);
+        goldReward.getDocument().addDocumentListener(saveDocumentListener);
 
         List<Component> inputs = new ArrayList<>();
         inputs.add(enemyName);

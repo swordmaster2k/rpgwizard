@@ -21,9 +21,9 @@ public class Keyword {
     private final String definedIn;
     private final String desc;
 
-    public Keyword(Element dt, Element dd) {
+    public Keyword(String prefix, Element dt, Element dd) {
         Element h4 = dt.getElementsByTag("h4").first();
-        name = "rpgcode." + h4.ownText() + h4.getElementsByClass("signature").first().text() + ";";
+        name = prefix + "." + h4.ownText() + h4.getElementsByClass("signature").first().text() + ";";
         type = "function";
 
         Element details = dd.getElementsByClass("details").first();

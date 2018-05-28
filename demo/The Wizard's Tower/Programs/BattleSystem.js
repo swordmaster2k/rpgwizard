@@ -1,9 +1,5 @@
 var items = [
-   "apple.item", "apple.item", "apple.item",
-   "potion.item", "potion.item", "potion.item", "potion.item", "potion.item",
-   "potion.item", "potion.item", "potion.item", "potion.item", "potion.item", 
-   "potion.item", "potion.item", "potion.item", "potion.item", "potion.item",
-   "strength_potion.item", "magic_potion.item", "stamina_potion.item"
+   "apple.item", "apple.item", "apple.item"
 ];
 loadItems();
 
@@ -27,7 +23,7 @@ function start() {
       itemSoundEffect: "item.ogg"
    }
    battle.show(config, function(result) {
-      rpgcode.log("The battle has ended!");
+      rpgcode.log("The battle has ended, result.status=" + result.status);
       rpgcode.destroySprite("evil-eye-1");
       rpgcode.endProgram();   
    });

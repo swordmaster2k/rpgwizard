@@ -9,6 +9,14 @@
 
 var battle = new Battle();
 
+/**
+ * The builtin turn-based battle system.
+ * 
+ * @class
+ * @constructor
+ * 
+ * @returns {Battle}
+ */
 function Battle() {
     this.context = {
         MENU: "MENU",
@@ -18,10 +26,29 @@ function Battle() {
     };
 }
 
-//
-// General Functions
-//
-
+/**
+ *  Shows the default turn-based battle system based the supplied config.
+ *  
+ *  Currently battles ranging from 1v1 to 4v4 are supported, the same enemy or
+ *  character can be used multiple times.
+ * 
+ * @example
+ * var config = {
+ *  enemies: ["evil-eye.enemy", "evil-eye.enemy", "evil-eye.enemy" "evil-eye.enemy"],
+ *  characters: ["Hero.character", "Hero.character", "Hero.character", "Hero.character"],
+ *  backgroundImage: "battle-background.png",
+ *  battleMusic: "Battle.ogg",
+ *  itemSoundEffect: "item.ogg"
+ * }
+ * battle.show(config, function(result) {
+ *  rpgcode.log("The battle has ended! result.status=" + result.status);
+ *  rpgcode.endProgram();   
+ * });
+ * 
+ * @param {Object} config
+ * @param {Callback} callback
+ * @returns {undefined}
+ */
 Battle.prototype.show = function (config, callback) {
     if (!config.enemies || !config.characters || config.enemies.length < 1 || config.characters.length < 1) {
         rpgcode.endProgram();
@@ -41,7 +68,7 @@ Battle.prototype.show = function (config, callback) {
     }
 };
 
-Battle.prototype._end = function () {
+Battle.prototype._end = function (status) {
     clearInterval(this._state.drawInterval);
     clearInterval(this._state.flashInterval);
     this._state.characters.forEach(function (character) {
@@ -55,7 +82,7 @@ Battle.prototype._end = function () {
     rpgcode.stopSound("battle.stage");
     rpgcode.playSound(rpgcode.getBoard().backgroundMusic, true, 1.0);
     if (this.callback) {
-        this.callback();
+        this.callback({status: status});
     } else {
         rpgcode.endProgram();
     }
@@ -216,7 +243,6 @@ Battle.prototype._createStage = function (config) {
 Battle.prototype._getMenuItems = function () {
     return [
         {text: "Attack", execute: this._startEnemySelection.bind(this)},
-//      {text: "Magic", execute: function() {}.bind(this)}, 
         {text: "Item", execute: this._startItemSelection.bind(this)},
         {text: "Flee", execute: this._flee.bind(this)}
     ];
@@ -361,7 +387,7 @@ Battle.prototype._checkEndConditions = function () {
 
 Battle.prototype._endTurn = function () {
     if (this._checkEndConditions()) {
-        this._end();
+        this._end(this._state.characters.length < 1 ? "LOSE" : "WIN");
     } else {
         if (this._state.playerTurn) {
             this._endCharacterTurn();
@@ -474,7 +500,7 @@ Battle.prototype._removeEnemy = function (enemy, arrIndex) {
 };
 
 Battle.prototype._flee = function () {
-    this._end();
+    this._end("FLEE");
 };
 
 //

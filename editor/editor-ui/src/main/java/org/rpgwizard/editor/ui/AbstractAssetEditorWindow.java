@@ -10,6 +10,8 @@ package org.rpgwizard.editor.ui;
 import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 import org.rpgwizard.common.assets.AbstractAsset;
@@ -26,6 +28,22 @@ public abstract class AbstractAssetEditorWindow extends JInternalFrame implement
 
     protected boolean needSave;
 
+    protected DocumentListener saveDocumentListener = new DocumentListener() {
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+        }
+
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+            setNeedSave(true);
+        }
+
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+            setNeedSave(true);
+        }
+    };
+
     public AbstractAssetEditorWindow() {
 
     }
@@ -36,7 +54,6 @@ public abstract class AbstractAssetEditorWindow extends JInternalFrame implement
         setDefaultCloseOperation(JInternalFrame.DO_NOTHING_ON_CLOSE);
         addInternalFrameListener(this);
         setFrameIcon(icon);
-
     }
 
     public abstract AbstractAsset getAsset();

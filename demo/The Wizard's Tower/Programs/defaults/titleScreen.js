@@ -9,16 +9,41 @@
 
 var titleScreen = new TitleScreen();
 
+/**
+ * The builtin title screen system.
+ * 
+ * @class
+ * @constructor
+ * 
+ * @returns {TitleScreen}
+ */
 function TitleScreen() {
     this.context = {
         MENU: "MENU"
     };
 }
 
-//
-// General Functions
-//
-
+/**
+ *  Shows the default title screen system based the supplied config.
+ * 
+ * @example
+ * var config = {
+ *  "backgroundImage": "startscreen.png", 
+ *  "titleScreenMusic": "intro.ogg"
+ * };
+ * titleScreen.show(config, function() {
+ *  // Show the intro when the user has passed the title screen.
+ *  if (playIntro) {
+ *      showIntro();
+ *  } else {
+ *      finish();
+ *  }
+ * }); 
+ * 
+ * @param {Object} config
+ * @param {Callback} callback
+ * @returns {undefined}
+ */
 TitleScreen.prototype.show = function (config, callback) {
     this._loadAssets(config, function () {
         this._callback = callback;

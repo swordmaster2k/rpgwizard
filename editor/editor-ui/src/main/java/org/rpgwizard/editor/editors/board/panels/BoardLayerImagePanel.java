@@ -21,6 +21,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.rpgwizard.common.assets.board.BoardLayerImage;
 import org.rpgwizard.common.assets.board.model.BoardModelEvent;
 import org.rpgwizard.editor.MainWindow;
+import org.rpgwizard.editor.editors.board.BoardLayerView;
 import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.rpgwizard.editor.utilities.GuiHelper;
 
@@ -41,6 +42,11 @@ public class BoardLayerImagePanel extends BoardModelPanel {
 
     private final JSpinner ySpinner;
     private final JLabel yLabel;
+
+    private final JSpinner layerSpinner;
+    private final JLabel layerLabel;
+
+    private int lastSpinnerLayer; // Used to ensure that the selection is valid.
 
     public BoardLayerImagePanel(final BoardLayerImage boardLayerImage) {
         ///
@@ -124,14 +130,43 @@ public class BoardLayerImagePanel extends BoardModelPanel {
             }
         });
         ///
+        /// layerSpinner
+        ///
+        layerSpinner = getJSpinner(((BoardLayerImage) model).getLayer());
+        layerSpinner.addChangeListener((ChangeEvent e) -> {
+            BoardLayerImage image = (BoardLayerImage) model;
+
+            BoardLayerView lastLayerView = getBoardEditor().getBoardView().getLayer((int) image.getLayer());
+
+            BoardLayerView newLayerView = getBoardEditor().getBoardView().getLayer((int) layerSpinner.getValue());
+
+            // Make sure this is a valid move.
+            if (lastLayerView != null && newLayerView != null) {
+                // Do the swap.
+                image.setLayer((int) layerSpinner.getValue());
+                newLayerView.getLayer().getImages().add(image);
+                lastLayerView.getLayer().getImages().remove(image);
+                updateCurrentBoardView();
+
+                // Store new layer selection index.
+                lastSpinnerLayer = (int) layerSpinner.getValue();
+
+                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+            } else {
+                // Not a valid layer revert selection.
+                layerSpinner.setValue(lastSpinnerLayer);
+            }
+        });
+        ///
         /// this
         ///
-        horizontalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addComponent(fileLabel = getJLabel("Image")).addComponent(idLabel = getJLabel("ID"))
-                .addComponent(xLabel = getJLabel("X")).addComponent(yLabel = getJLabel("Y")));
+        horizontalGroup.addGroup(
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(fileLabel = getJLabel("Image"))
+                        .addComponent(idLabel = getJLabel("ID")).addComponent(xLabel = getJLabel("X"))
+                        .addComponent(yLabel = getJLabel("Y")).addComponent(layerLabel = getJLabel("Layer")));
 
         horizontalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(fileComboBox)
-                .addComponent(idField).addComponent(xSpinner).addComponent(ySpinner));
+                .addComponent(idField).addComponent(xSpinner).addComponent(ySpinner).addComponent(layerSpinner));
 
         layout.setHorizontalGroup(horizontalGroup);
 
@@ -146,6 +181,9 @@ public class BoardLayerImagePanel extends BoardModelPanel {
 
         verticalGroup.addGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(yLabel).addComponent(ySpinner));
+
+        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(layerLabel)
+                .addComponent(layerSpinner));
 
         layout.setVerticalGroup(verticalGroup);
     }

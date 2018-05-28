@@ -9,6 +9,16 @@
 // For debugging.
 var playIntro = true;
 
+var assets = {
+  "programs": [
+      // Default systems.
+      "defaults/gui.js",
+      "defaults/battle.js",
+      "defaults/dialog.js",
+      "defaults/titleScreen.js"
+  ]
+}
+
 // Set the game globals.
 rpgcode.setGlobal("swordactive", false);
 
@@ -22,42 +32,44 @@ var introText =
 "sister of a knight. " + 
 "Without delay he grabs his armour and heads to the tower.....";
 
-// Configure and show the title screen.
-var config = {
-"backgroundImage": "startscreen.png", 
-"titleScreenMusic": "intro.ogg"
-};
-titleScreen.show(config, function() {
-   // Show the intro when the user has passed the title screen.
-   if (playIntro) {
-      showIntro();
-   } else {
-      finish();
-   }
-}); 
-
-function showIntro() {
-   // Show the intro text.
+rpgcode.loadAssets(assets, function() {
+   // Configure and show the title screen.
    var config = {
-      position: "CENTER",
-      nextMarkerImage: "next_marker.png",
-      profileImage: "sword_profile_1_small.png",
-      typingSound: "typing_loop.wav",
-      text: introText
+   "backgroundImage": "startscreen.png", 
+   "titleScreenMusic": "intro.ogg"
    };
-   dialog.show(config, finish);
-}
-
-function finish() {
-   rpgcode.log("Running finish");
-
-   // Register the menu key program
-   rpgcode.registerKeyDown("ENTER", function() {
-      rpgcode.runProgram("MenuSystem.js");
-   }, true);
-
-   // Increase character walk speed.
-   rpgcode.setCharacterSpeed("Hero", 1.5);
-
-   rpgcode.endProgram();
-}
+   titleScreen.show(config, function() {
+      // Show the intro when the user has passed the title screen.
+      if (playIntro) {
+         showIntro();
+      } else {
+         finish();
+      }
+   }); 
+   
+   function showIntro() {
+      // Show the intro text.
+      var config = {
+         position: "CENTER",
+         nextMarkerImage: "next_marker.png",
+         profileImage: rpgcode.getCharacter().graphics["PROFILE"],
+         typingSound: "typing_loop.wav",
+         text: introText
+      };
+      dialog.show(config, finish);
+   }
+   
+   function finish() {
+      rpgcode.log("Running finish");
+   
+      // Register the menu key program
+      rpgcode.registerKeyDown("ENTER", function() {
+         rpgcode.runProgram("MenuSystem.js");
+      }, true);
+   
+      // Increase character walk speed.
+      rpgcode.setCharacterSpeed("Hero", 1.5);
+   
+      rpgcode.endProgram();
+   }
+});

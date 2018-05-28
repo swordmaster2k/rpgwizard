@@ -19,11 +19,11 @@ import org.rpgwizard.editor.ui.AnimatedPanel;
  */
 public class AnimationsTablePanel extends JPanel {
 
-    private final ImagePanel profilePanel;
+    private final int referenceHeight;
 
-    public AnimationsTablePanel(ImagePanel profilePanel) {
+    public AnimationsTablePanel(int height) {
         super(new BorderLayout());
-        this.profilePanel = profilePanel;
+        this.referenceHeight = height;
     }
 
     @Override
@@ -43,7 +43,7 @@ public class AnimationsTablePanel extends JPanel {
     }
 
     private Dimension calculateDimensions(int width) {
-        int height = profilePanel.getHeight() - AnimatedPanel.DEFAULT_HEIGHT;
+        int height = referenceHeight - AnimatedPanel.DEFAULT_HEIGHT;
 
         return new Dimension(width, height);
     }

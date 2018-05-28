@@ -9,10 +9,44 @@
 
 var dialog = new Dialog();
 
+/**
+ * The builtin dialog window system.
+ * 
+ * @class
+ * @constructor
+ * 
+ * @returns {Dialog}
+ */
 function Dialog() {
     
 }
 
+/**
+ * Shows the default dialog window based the supplied config. 
+ * 
+ * The dialog window can be set to appear at the "TOP", "CENTER", or "BOTTOM" 
+ * of the screen. It can also be supplied with an image for the blinking next 
+ * marker, a profile image of the speaker, and a typing sound that plays while 
+ * it is animating.
+ *  
+ * Note: The current hardcoded next key is "E".
+ * 
+ * @example
+ * var config = {
+ *  position: "CENTER",
+ *  nextMarkerImage: "next_marker.png",
+ *  profileImage: rpgcode.getCharacter().graphics["PROFILE"],
+ *  typingSound: "typing_loop.wav",
+ *  text: "Hello, this text will be wrote to the window like a type-writer."
+ * };
+ * dialog.show(config, function() {
+ *  // Dialog has ended, do something else.
+ * });
+ * 
+ * @param {Object} config
+ * @param {Callback} callback
+ * @returns {undefined}
+ */
 Dialog.prototype.show = function (config, callback) {
     this._loadAssets(config, function () {
         this._setup(config);

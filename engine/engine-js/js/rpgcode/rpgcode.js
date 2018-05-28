@@ -38,7 +38,33 @@ function RPGcode() {
 
     this.rgba = {r: 255, g: 255, b: 255, a: 1.0};
     this.gradient = null;
+    /**
+     * Font that will be used for all drawing operations.
+     * 
+     * @example 
+     * // Normal
+     * rpgcode.font = "20px Lucida Console"
+     * //Bold
+     * rpgcode.font = "bold 20px Lucida Console"
+     * // Italic
+     * rpgcode.font = "italic 20px Lucida Console"
+     * // Both.
+     * rpgcode.font = "italic bold 20px Lucida Console"
+     * 
+     * @type {String}
+     */
     this.font = "14px Arial";
+    /**
+     * Alpha value that will be used for all drawing operations.
+     * 
+     * @example 
+     * // 50% Alpha
+     * rpgcode.globalAlpha = 0.5
+     * // 100% Alpha
+     * rpgcode.globalAlpha = 1.0
+     * 
+     * @type {Number}
+     */
     this.globalAlpha = 1.0;
     this.imageSmoothingEnabled = false;
 
@@ -112,9 +138,8 @@ RPGcode.prototype._getSpriteType = function (spriteId) {
 };
 
 /**
- * Adds a program that will be called at run time for each game frame. You 
- * should avoid doing any lengthy operations with these programs to save
- * freezing the browser window.
+ * Adds a program that will be called at runtime for each frame. You 
+ * should avoid doing any lengthy operations with these programs.
  * 
  * @example
  * rpgcode.addRunTimeProgram("UI/HUD.js");
@@ -155,8 +180,8 @@ RPGcode.prototype.addRunTimeProgram = function (filename) {
  *  rpgcode.log("Sprite added to board.");
  * });
  * 
- * @param {type} sprite BoardSprite object to add.
- * @param {type} callback If defined, the function to invoke after the sprite has been added.
+ * @param {Object} sprite BoardSprite object to add.
+ * @param {Callback} callback If defined, the function to invoke after the sprite has been added.
  * @returns {undefined}
  */
 RPGcode.prototype.addSprite = function (sprite, callback) {
@@ -370,8 +395,8 @@ RPGcode.prototype.clearDialog = function () {
 };
 
 /**
- * Creates a canvas with the specified width, height, and ID. This canvas will not
- * be drawn until renderNow is called with its ID.
+ * Creates a canvas with the specified width, height, and ID. This canvas will 
+ * not be drawn until renderNow is called with its ID.
  * 
  * @example
  * // Create a simple canvas and write some text on it.
@@ -397,8 +422,8 @@ RPGcode.prototype.createCanvas = function (width, height, canvasId) {
 };
 
 /**
- * Delays a programs execution for a specified number of milliseconds, after which the 
- * callback function is invoked.
+ * Delays a programs execution for a specified number of milliseconds, after 
+ * which the callback function is invoked.
  * 
  * @example 
  * // Shows a dialog window after 5 seconds.
@@ -2131,7 +2156,6 @@ RPGcode.prototype.sendToBoard = function (boardName, tileX, tileY, layer) {
         // Backwards compatability check.
         layer = rpgwizard.craftyCharacter.character.layer;
     }
-
     rpgwizard.switchBoard(boardName, tileX, tileY, layer);
 };
 

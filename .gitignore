@@ -39,3 +39,5 @@ distribution/builds/
 jre/
 launch4j/
 *.zip
+engine/engine-js/package-lock.json
+documentation/src/main/resources/autocomplete/input/*

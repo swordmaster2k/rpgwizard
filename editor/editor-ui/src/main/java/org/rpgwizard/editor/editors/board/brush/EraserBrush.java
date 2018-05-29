@@ -211,7 +211,9 @@ public class EraserBrush extends AbstractBrush {
 
     @Override
     public void doMouseButton1Dragged(Point point, Point origin, AbstractAssetEditorWindow editor) {
-
+        if (editor instanceof BoardEditor) {
+            ((BoardEditor) editor).doPaint(this, point, null);
+        }
     }
 
     @Override

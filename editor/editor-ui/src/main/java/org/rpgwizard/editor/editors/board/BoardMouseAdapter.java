@@ -191,8 +191,6 @@ public class BoardMouseAdapter extends MouseAdapter {
         editor.setCursorLocation(new Point(x, y));
 
         brush.doMouseButton1Dragged(point, origin, editor);
-
-        editor.doPaint(brush, point, null);
     }
 
     /**
@@ -221,7 +219,7 @@ public class BoardMouseAdapter extends MouseAdapter {
     private boolean checkBrushValid(AbstractBrush brush) {
         if (brush instanceof ShapeBrush) {
             ShapeBrush shapeBrush = (ShapeBrush) brush;
-            if (shapeBrush.getTile() == null) {
+            if (shapeBrush.getTile() == null || shapeBrush.getTile().getTileSet() == null) {
                 return false;
             }
 
@@ -229,7 +227,7 @@ public class BoardMouseAdapter extends MouseAdapter {
         } else if (brush instanceof BucketBrush) {
             BucketBrush bucketBrush = (BucketBrush) brush;
 
-            if (bucketBrush.getPourTile() == null) {
+            if (bucketBrush.getPourTile() == null || bucketBrush.getPourTile().getTileSet() == null) {
                 return false;
             }
 
@@ -252,8 +250,7 @@ public class BoardMouseAdapter extends MouseAdapter {
     }
 
     private boolean isSameTileSize(Board board, Tile tile) {
-        return board.getTileWidth() == tile.getTileSet().getTileWidth()
-                && board.getTileHeight() == tile.getTileSet().getTileHeight();
+        return board.getTileWidth() == tile.getTileSet().getTileWidth() && board.getTileHeight() == tile.getTileSet().getTileHeight();
     }
 
 }

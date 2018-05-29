@@ -13,6 +13,7 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 
 import org.rpgwizard.common.assets.Tile;
+import org.rpgwizard.editor.editors.BoardEditor;
 import org.rpgwizard.editor.editors.board.AbstractBoardView;
 import org.rpgwizard.editor.editors.board.BoardLayerView;
 import org.rpgwizard.editor.editors.board.MultiLayerContainer;
@@ -202,6 +203,9 @@ public class CustomBrush extends AbstractBrush {
 
     @Override
     public void doMouseButton1Dragged(Point point, Point origin, AbstractAssetEditorWindow editor) {
+        if (editor instanceof BoardEditor) {
+            ((BoardEditor) editor).doPaint(this, point, null);
+        }
     }
 
     @Override

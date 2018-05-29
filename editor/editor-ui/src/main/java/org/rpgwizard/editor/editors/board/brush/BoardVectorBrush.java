@@ -185,8 +185,9 @@ public class BoardVectorBrush extends AbstractBrush {
                 coordinates = MainWindow.getInstance().getCurrentBoardEditor().calculateSnapCoordinates(x, y);
             }
 
-            boardVector.addPoint(coordinates[0], coordinates[1]);
-            boardLayerView.getLayer().getBoard().fireBoardChanged();
+            if (boardVector.addPoint(coordinates[0], coordinates[1])) {
+                boardLayerView.getLayer().getBoard().fireBoardChanged();
+            }
         }
 
         return null;

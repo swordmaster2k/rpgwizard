@@ -134,10 +134,18 @@ public class BoardVector implements Cloneable, Selectable {
      *
      * @param xVal
      * @param yVal
+     * @return Was the point added
      */
-    public void addPoint(long xVal, long yVal) {
+    public boolean addPoint(long xVal, long yVal) {
+        if (!points.isEmpty()) {
+            final Point last = points.get(points.size() - 1);
+            if (last.x == xVal && last.y == yVal) {
+                return false; // Don't allow for duplicate points one after the other.
+            }
+        }
         points.add(new Point((int) xVal, (int) yVal));
         polygon.addPoint((int) xVal, (int) yVal);
+        return true;
     }
 
     /**

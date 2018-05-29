@@ -149,30 +149,22 @@ public final class BoardView2D extends AbstractBoardView {
         // Draw background first.
         TransparentDrawer.drawTransparentBackground(g, (board.getWidth() * board.getTileWidth()),
                 (board.getHeight() * board.getTileHeight()));
-        paintLayers(g);
+        paintLayers(g, tilesOnly);
 
         if (!tilesOnly) {
-            paintImages(g);
-            paintSprites(g);
             paintStartPostion(g);
-
             // Reset an opcaity changes in the layers.
             g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, 1.0f));
-
             if (MainWindow.getInstance().isShowGrid()) {
                 paintGrid(g);
             }
-
             if (boardEditor.getSelection() != null) {
                 paintSelection(g);
             }
-
             paintCursor(g);
-
             if (MainWindow.getInstance().isShowVectors()) {
                 paintVectors(g);
             }
-
             paintBrushPreview(g);
         }
     }
@@ -203,13 +195,16 @@ public final class BoardView2D extends AbstractBoardView {
      *            The graphics context to draw on.
      */
     @Override
-    protected void paintLayers(Graphics2D g) {
+    protected void paintLayers(Graphics2D g, boolean tilesOnly) {
         ArrayList<BoardLayerView> layers = getLayerArrayList();
-
         for (BoardLayerView layer : layers) {
             if (layer.isVisible()) {
                 try {
                     layer.drawTiles(g);
+                    if (!tilesOnly) {
+                        layer.drawImages(g);
+                        layer.drawSprites(g);
+                    }
                 } catch (TilePixelOutOfRangeException ex) {
                     LOGGER.error("Failed to paint tiles on layer=[{}]", layer, ex);
                 }

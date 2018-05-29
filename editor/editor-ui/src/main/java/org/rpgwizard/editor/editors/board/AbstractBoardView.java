@@ -445,8 +445,10 @@ public abstract class AbstractBoardView extends JPanel implements MultiLayerCont
      *
      * @param g
      *            The graphics context to draw on.
+     * @param tilesOnly
+     *            Indicates whether only tile information should be painted.
      */
-    protected abstract void paintLayers(Graphics2D g);
+    protected abstract void paintLayers(Graphics2D g, boolean tilesOnly);
 
     /**
      * A concrete BoardView will implement its own grid drawing code here.

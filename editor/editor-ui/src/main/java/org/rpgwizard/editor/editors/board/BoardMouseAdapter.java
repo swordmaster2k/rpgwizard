@@ -250,7 +250,8 @@ public class BoardMouseAdapter extends MouseAdapter {
     }
 
     private boolean isSameTileSize(Board board, Tile tile) {
-        return board.getTileWidth() == tile.getTileSet().getTileWidth() && board.getTileHeight() == tile.getTileSet().getTileHeight();
+        return board.getTileWidth() == tile.getTileSet().getTileWidth()
+                && board.getTileHeight() == tile.getTileSet().getTileHeight();
     }
 
 }

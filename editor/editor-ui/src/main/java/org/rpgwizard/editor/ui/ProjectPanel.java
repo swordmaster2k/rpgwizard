@@ -106,7 +106,7 @@ public final class ProjectPanel extends JPanel {
                     watchService.close();
                 }
                 while (watchThread.isAlive()) {
-                    // Busy wait.
+                    LOGGER.info("Waiting for Watch Thread to die.");
                 }
             } catch (IOException ex) {
 

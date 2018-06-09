@@ -141,7 +141,7 @@ public class Driver {
                 mainWindow.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(WindowEvent windowEvent) {
-                        mainWindow.closeAllFrames();
+                        mainWindow.tearDown();
                         mainWindow.dispose();
 
                         // Quietly stop any engines.
@@ -157,7 +157,6 @@ public class Driver {
                         // Write out user preferences.
                         UserPreferencesProperties.save();
                         LOGGER.info("Stopping the RPGWizard Editor...");
-                        Runtime.getRuntime().exit(0);
                     }
                 });
                 mainWindow.setVisible(true);

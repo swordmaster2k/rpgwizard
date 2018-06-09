@@ -87,7 +87,7 @@ public final class Icons {
         case "otf":
             return getIcon("font");
         default:
-            return null;
+            return getIcon("open");
         }
     }
 

@@ -356,7 +356,7 @@ Sprite.prototype.getActiveFrame = function () {
     var animation = this.spriteGraphics.active;
     var spriteSheet = animation.spriteSheet;
 
-    if (!animation.spriteSheet.ctx) {
+    if (!animation.spriteSheet.ctx || !spriteSheet.frames[index]) {
         // First time rendering.
         this.prepareActiveAnimation();
     }

@@ -14,7 +14,6 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import javax.swing.event.InternalFrameListener;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.Enemy;
@@ -86,10 +85,6 @@ public final class EnemyEditor extends AbstractSpriteEditor implements SpriteCha
         enemy.setMagic(magic.getValue());
         enemy.setExperienceReward(experienceReward.getValue());
         enemy.setGoldReward(goldReward.getValue());
-
-        // Update all enemy variables from graphics panel.
-        enemy.setIdleTimeBeforeStanding(idleTimeoutField.getValue());
-        enemy.setFrameRate(stepRateField.getValue());
 
         save(enemy);
     }

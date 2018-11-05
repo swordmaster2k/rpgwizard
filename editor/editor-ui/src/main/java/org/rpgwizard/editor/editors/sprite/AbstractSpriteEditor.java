@@ -90,8 +90,6 @@ public abstract class AbstractSpriteEditor extends AbstractAssetEditorWindow imp
     protected JTable animationsTable;
     protected AnimationsTableModel animationsTableModel;
     protected Animation selectedAnim;
-    protected DoubleField idleTimeoutField;
-    protected DoubleField stepRateField;
 
     protected final Border defaultEtchedBorder;
 
@@ -175,22 +173,6 @@ public abstract class AbstractSpriteEditor extends AbstractAssetEditorWindow imp
 
     public void setSelectedAnim(Animation selectedAnim) {
         this.selectedAnim = selectedAnim;
-    }
-
-    public DoubleField getIdleTimeoutField() {
-        return idleTimeoutField;
-    }
-
-    public void setIdleTimeoutField(DoubleField idleTimeoutField) {
-        this.idleTimeoutField = idleTimeoutField;
-    }
-
-    public DoubleField getStepRateField() {
-        return stepRateField;
-    }
-
-    public void setStepRateField(DoubleField stepRateField) {
-        this.stepRateField = stepRateField;
     }
 
     @Override

@@ -97,10 +97,6 @@ public final class CharacterEditor extends AbstractSpriteEditor implements Sprit
         player.setMagic(magic.getValue());
         player.setMaxMagic(maxMagic.getValue());
 
-        // Update all player variables from graphics panel.
-        // player.setIdleTimeBeforeStanding(idleTimeoutField.getValue());
-        // player.setFrameRate(stepRateField.getValue());
-
         save(player);
     }
 

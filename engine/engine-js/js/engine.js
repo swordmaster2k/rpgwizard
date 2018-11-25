@@ -8,6 +8,7 @@
 /* global PATH_BITMAP, PATH_MEDIA, PATH_PROGRAM, PATH_BOARD, PATH_CHARACTER, PATH_NPC, jailed, rpgcode, PATH_TILESET, PATH_ENEMY, Crafty, engineUtil */
 
 var rpgwizard = new RPGWizard();
+const AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
 
 function RPGWizard() {
     this.dt = 0; // Craftyjs time step since last frame.
@@ -97,7 +98,7 @@ function RPGWizard() {
  * @param {type} filename
  * @returns {undefined}
  */
-RPGWizard.prototype.setup = function (filename) {
+RPGWizard.prototype.setup = async function (filename) {
     if (rpgwizard.debugEnabled) {
         console.debug("Starting engine with filename=[%s]", filename);
     }
@@ -153,8 +154,8 @@ RPGWizard.prototype.setup = function (filename) {
     // Select the startup mode.
     if (this.project.initialCharacter && this.project.initialBoard) {
         // Load the initial character and board.
-        this.loadCharacter(new Character(PATH_CHARACTER + this.project.initialCharacter));
-        this.loadBoard(new Board(PATH_BOARD + this.project.initialBoard));
+        await this.loadCharacter(new Character(PATH_CHARACTER + this.project.initialCharacter));
+        await this.loadBoard(new Board(PATH_BOARD + this.project.initialBoard));
 
         // Setup up the Character's starting position.
         this.craftyCharacter.character.x = this.craftyBoard.board.startingPosition["x"];
@@ -432,7 +433,7 @@ RPGWizard.prototype.createCraftyBoard = function (board) {
     return this.craftyBoard;
 };
 
-RPGWizard.prototype.loadBoard = function (board) {
+RPGWizard.prototype.loadBoard = async function (board) {
     if (rpgwizard.debugEnabled) {
         console.debug("Loading board=[%s]", JSON.stringify(board));
     }
@@ -480,7 +481,7 @@ RPGWizard.prototype.loadBoard = function (board) {
     var len = board.sprites.length;
     for (var i = 0; i < len; i++) {
         var sprite = board.sprites[i];
-        sprites[sprite.id] = this.loadSprite(sprite);
+        sprites[sprite.id] = await this.loadSprite(sprite);
     }
 
     // Change board sprites to an object set.
@@ -497,7 +498,7 @@ RPGWizard.prototype.loadBoard = function (board) {
     this.queueCraftyAssets(assets, craftyBoard.board);
 };
 
-RPGWizard.prototype.switchBoard = function (boardName, tileX, tileY, layer) {
+RPGWizard.prototype.switchBoard = async function (boardName, tileX, tileY, layer) {
     if (rpgwizard.debugEnabled) {
         console.debug("Switching board to boardName=[%s], tileX=[%d], tileY=[%d], layer=[%d]",
                 boardName, tileX, tileY);
@@ -513,7 +514,7 @@ RPGWizard.prototype.switchBoard = function (boardName, tileX, tileY, layer) {
     if (rpgwizard.craftyBoard.board) {
         rpgwizard.lastBackgroundMusic = rpgwizard.craftyBoard.board.backgroundMusic;
     }
-    this.loadBoard(new Board(PATH_BOARD + boardName));
+    await this.loadBoard(new Board(PATH_BOARD + boardName));
     var tileWidth = this.craftyBoard.board.tileWidth;
     var tileHeight = this.craftyBoard.board.tileHeight;
     this.craftyCharacter.x = parseInt((tileX * tileWidth) + tileWidth / 2);
@@ -528,7 +529,7 @@ RPGWizard.prototype.switchBoard = function (boardName, tileX, tileY, layer) {
     this.loadCraftyAssets(this.loadScene);
 };
 
-RPGWizard.prototype.loadCharacter = function (character) {
+RPGWizard.prototype.loadCharacter = async function (character) {
     if (rpgwizard.debugEnabled) {
         console.debug("Loading character=[%s]", JSON.stringify(character));
     }
@@ -587,10 +588,11 @@ RPGWizard.prototype.loadCharacter = function (character) {
             });
 
     this.craftyCharacter.visible = false;
-    this.queueCraftyAssets(this.craftyCharacter.character.load(), character);
+    const assets = await this.craftyCharacter.character.load();
+    this.queueCraftyAssets(assets, character);
 };
 
-RPGWizard.prototype.loadSprite = function (sprite) {
+RPGWizard.prototype.loadSprite = async function (sprite) {
     if (rpgwizard.debugEnabled) {
         console.debug("Loading sprite=[%s]", JSON.stringify(sprite));
     }
@@ -680,7 +682,9 @@ RPGWizard.prototype.loadSprite = function (sprite) {
                         asset.hitOffCollision(hitData, entity);
                     }
             );
-    this.queueCraftyAssets(asset.load(), asset);
+    
+    const assets = await asset.load();
+    this.queueCraftyAssets(assets, asset);
 
     return entity;
 };
@@ -704,7 +708,7 @@ RPGWizard.prototype.openProgram = function (filename) {
         req.overrideMimeType("text/plain; charset=x-user-defined");
         req.send(null);
 
-        program = new Function(req.responseText);
+        program = new AsyncFunction(req.responseText);
         rpgwizard.programCache[filename] = program;
     }
 

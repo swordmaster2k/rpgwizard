@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-/* global rpgwizard, PATH_ANIMATION, PATH_PROGRAM */
+/* global rpgwizard, PATH_ANIMATION, PATH_PROGRAM, Promise */
 
 function Sprite() {
     this.x = 0;
@@ -91,19 +91,19 @@ Sprite.prototype.calculateActivationPoints = function () {
     this.activationPoints = points;
 };
 
-Sprite.prototype.load = function () {
+Sprite.prototype.load = async function () {
     if (rpgwizard.debugEnabled) {
         console.debug("Loading Sprite name=[%s]", this.name);
     }
 
-    var frames = this.loadAnimations();
+    var frames = await this.loadAnimations();
     var soundEffects = this.loadSoundEffects();
 
     // Return the assets that need to be loaded.
     return {"images": frames, "audio": soundEffects};
 };
 
-Sprite.prototype.loadAnimations = function () {
+Sprite.prototype.loadAnimations = async function () {
     if (rpgwizard.debugEnabled) {
         console.debug("Loading Sprite animations name=[%s]", this.name);
     }
@@ -111,41 +111,69 @@ Sprite.prototype.loadAnimations = function () {
     // Load up the standard animations.
     var standardKeys = this.StandardKeys;
 
-    this.spriteGraphics.south = this._loadAnimation(this.animations[standardKeys[0]]);
-    this.spriteGraphics.north = this._loadAnimation(this.animations[standardKeys[1]]);
-    this.spriteGraphics.east = this._loadAnimation(this.animations[standardKeys[2]]);
-    this.spriteGraphics.west = this._loadAnimation(this.animations[standardKeys[3]]);
-    this.spriteGraphics.northEast = this._loadAnimation(this.animations[standardKeys[4]]);
+    const [south, north, east, west, northEast, northWest, southEast, southWest,
+        attack, defend, specialMove, die, rest, southIdle, northIdle, eastIdle,
+        westIdle, northEastIdle, northWestIdle, southEastIdle, southWestIdle
+    ] = await Promise.all(
+            [
+                this._loadAnimation(this.animations[standardKeys[0]]),
+                this._loadAnimation(this.animations[standardKeys[1]]),
+                this._loadAnimation(this.animations[standardKeys[2]]),
+                this._loadAnimation(this.animations[standardKeys[3]]),
+                this._loadAnimation(this.animations[standardKeys[4]]),
+                this._loadAnimation(this.animations[standardKeys[5]]),
+                this._loadAnimation(this.animations[standardKeys[6]]),
+                this._loadAnimation(this.animations[standardKeys[7]]),
+                this._loadAnimation(this.animations[standardKeys[8]]),
+                this._loadAnimation(this.animations[standardKeys[9]]),
+                this._loadAnimation(this.animations[standardKeys[10]]),
+                this._loadAnimation(this.animations[standardKeys[11]]),
+                this._loadAnimation(this.animations[standardKeys[12]]),
+                this._loadAnimation(this.animations[standardKeys[13]]),
+                this._loadAnimation(this.animations[standardKeys[14]]),
+                this._loadAnimation(this.animations[standardKeys[15]]),
+                this._loadAnimation(this.animations[standardKeys[16]]),
+                this._loadAnimation(this.animations[standardKeys[17]]),
+                this._loadAnimation(this.animations[standardKeys[18]]),
+                this._loadAnimation(this.animations[standardKeys[19]]),
+                this._loadAnimation(this.animations[standardKeys[20]])
+            ]
+            );
+
+    this.spriteGraphics.south = south;
+    this.spriteGraphics.north = north;
+    this.spriteGraphics.east = east;
+    this.spriteGraphics.west = west;
+    this.spriteGraphics.northEast = northEast;
+    this.spriteGraphics.northWest = northWest;
+    this.spriteGraphics.southEast = southEast;
+    this.spriteGraphics.southWest = southWest;
+    this.spriteGraphics.attack = attack;
+    this.spriteGraphics.defend = defend;
+    this.spriteGraphics.specialMove = specialMove;
+    this.spriteGraphics.die = die;
+    this.spriteGraphics.rest = rest;
+    this.spriteGraphics.southIdle = southIdle;
+    this.spriteGraphics.northIdle = northIdle;
+    this.spriteGraphics.eastIdle = eastIdle;
+    this.spriteGraphics.westIdle = westIdle;
+    this.spriteGraphics.northEastIdle = northEastIdle;
+    this.spriteGraphics.northWestIdle = northWestIdle;
+    this.spriteGraphics.southEastIdle = southEastIdle;
+    this.spriteGraphics.southWestIdle = southWestIdle;
+
     if (this.spriteGraphics.northEast === null) {
         this.spriteGraphics.northEast = this.spriteGraphics.east;
     }
-    this.spriteGraphics.northWest = this._loadAnimation(this.animations[standardKeys[5]]);
     if (this.spriteGraphics.northWest === null) {
         this.spriteGraphics.northWest = this.spriteGraphics.west;
     }
-    this.spriteGraphics.southEast = this._loadAnimation(this.animations[standardKeys[6]]);
     if (this.spriteGraphics.southEast === null) {
         this.spriteGraphics.southEast = this.spriteGraphics.east;
     }
-    this.spriteGraphics.southWest = this._loadAnimation(this.animations[standardKeys[7]]);
     if (this.spriteGraphics.southWest === null) {
         this.spriteGraphics.southWest = this.spriteGraphics.west;
     }
-    this.spriteGraphics.attack = this._loadAnimation(this.animations[standardKeys[8]]);
-    this.spriteGraphics.defend = this._loadAnimation(this.animations[standardKeys[9]]);
-    this.spriteGraphics.specialMove = this._loadAnimation(this.animations[standardKeys[10]]);
-    this.spriteGraphics.die = this._loadAnimation(this.animations[standardKeys[11]]);
-    this.spriteGraphics.rest = this._loadAnimation(this.animations[standardKeys[12]]);
-
-    // Load up the idle animations.
-    this.spriteGraphics.southIdle = this._loadAnimation(this.animations[standardKeys[13]]);
-    this.spriteGraphics.northIdle = this._loadAnimation(this.animations[standardKeys[14]]);
-    this.spriteGraphics.eastIdle = this._loadAnimation(this.animations[standardKeys[15]]);
-    this.spriteGraphics.westIdle = this._loadAnimation(this.animations[standardKeys[16]]);
-    this.spriteGraphics.northEastIdle = this._loadAnimation(this.animations[standardKeys[17]]);
-    this.spriteGraphics.northWestIdle = this._loadAnimation(this.animations[standardKeys[18]]);
-    this.spriteGraphics.southEastIdle = this._loadAnimation(this.animations[standardKeys[19]]);
-    this.spriteGraphics.southWestIdle = this._loadAnimation(this.animations[standardKeys[20]]);
 
     // Get a copy of the animations for the next step;
     var animations = {};
@@ -158,28 +186,34 @@ Sprite.prototype.loadAnimations = function () {
         delete animations[key];
     });
 
-    // Load up the custom graphics.
-    for (var animation in animations) {
-        this.spriteGraphics.custom[animation] = this._loadAnimation(animations[animation]);
+    // Load up the custom animations.
+    var customPromises = [];
+    for (animation in animations) {
+        customPromises.push(this._loadAnimation(animations[animation]));
     }
-
-    return this.loadFrames();
+    const customAnimations = await Promise.all(customPromises);
+    for (var i = 0; i < customAnimations.length; i++) {
+        this.spriteGraphics.custom[Object.keys(animations)[i]] = customAnimations[i];
+    }
+    
+    const frames = await this.loadFrames();
+    return frames;
 };
 
-Sprite.prototype._loadAnimation = function (fileName) {
+Sprite.prototype._loadAnimation = async function (fileName) {
     if (rpgwizard.debugEnabled) {
         console.debug("Loading Sprite animation name=[%s], fileName=[%s]", this.name, fileName);
     }
 
     if (fileName) {
         var animation = new Animation(PATH_ANIMATION + fileName);
-        return animation;
+        return await animation.load();
     } else {
         return null;
     }
 };
 
-Sprite.prototype.loadFrames = function () {
+Sprite.prototype.loadFrames = async function () {
     if (rpgwizard.debugEnabled) {
         console.debug("Loading Sprite frames name=[%s]", this.name);
     }
@@ -237,7 +271,7 @@ Sprite.prototype.setReady = function () {
 
 Sprite.prototype.animate = function (step) {
     try {
-        if (!step || !this.spriteGraphics.active.spriteSheet.canvas) {
+        if (!step || !this.renderReady || !this.spriteGraphics.active.spriteSheet.canvas) {
             return;
         }
         this.spriteGraphics.elapsed += step;

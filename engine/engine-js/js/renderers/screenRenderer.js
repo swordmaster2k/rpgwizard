@@ -71,7 +71,7 @@ ScreenRenderer.prototype.renderBoard = function (context) {
              * Render sprites.
              */
             layerSprites.forEach(function (sprite) {
-                if (sprite.layer === i) {
+                if (sprite.layer === i && sprite.renderReady) {
                     var frame = sprite.getActiveFrame();
                     if (frame) {
                         var x = parseInt(sprite.x - (frame.width / 2) + xShift);

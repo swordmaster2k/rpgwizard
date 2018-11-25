@@ -184,8 +184,8 @@ RPGcode.prototype.addRunTimeProgram = function (filename) {
  * @param {Callback} callback If defined, the function to invoke after the sprite has been added.
  * @returns {undefined}
  */
-RPGcode.prototype.addSprite = function (sprite, callback) {
-    rpgwizard.craftyBoard.board.sprites[sprite.id] = rpgwizard.loadSprite(sprite);
+RPGcode.prototype.addSprite = async function (sprite, callback) {
+    rpgwizard.craftyBoard.board.sprites[sprite.id] = await rpgwizard.loadSprite(sprite);
     rpgwizard.loadCraftyAssets(callback);
 };
 
@@ -2151,12 +2151,12 @@ RPGcode.prototype.saveJSON = function (data, successCallback, failureCallback) {
  * @param {Number} tileY The y position to place the character at, in tiles.
  * @param {Number} layer The layer to place the character on.
  */
-RPGcode.prototype.sendToBoard = function (boardName, tileX, tileY, layer) {
+RPGcode.prototype.sendToBoard = async function (boardName, tileX, tileY, layer) {
     if (!layer) {
         // Backwards compatability check.
         layer = rpgwizard.craftyCharacter.character.layer;
     }
-    rpgwizard.switchBoard(boardName, tileX, tileY, layer);
+    await rpgwizard.switchBoard(boardName, tileX, tileY, layer);
 };
 
 /**

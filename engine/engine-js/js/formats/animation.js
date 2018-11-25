@@ -11,19 +11,25 @@ Animation.prototype.constructor = Animation;
 
 function Animation(filename) {
     if (rpgwizard.debugEnabled) {
+        console.debug("Creating Animation filename=[%s]", filename);
+    }
+    this.filename = filename;
+}
+
+Animation.prototype.load = async function () {
+    if (rpgwizard.debugEnabled) {
         console.debug("Loading Animation filename=[%s]", filename);
     }
     
-    // TODO: Make the changes here that chrome suggests.
-    var req = new XMLHttpRequest();
-    req.open("GET", filename, false);
-    req.overrideMimeType("text/plain; charset=x-user-defined");
-    req.send(null);
-
-    var animation = JSON.parse(req.responseText);
-    for (var property in animation) {
-        this[property] = animation[property];
+    let response = await fetch(this.filename);
+    response = await response.json();
+    for (var property in response) {
+        this[property] = response[property];
     }
-}
-
-
+    
+    if (rpgwizard.debugEnabled) {
+        console.debug("Finished loading Animation filename=[%s]", filename);
+    }
+    
+    return this;
+};

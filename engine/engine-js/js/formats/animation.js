@@ -18,7 +18,7 @@ function Animation(filename) {
 
 Animation.prototype.load = async function () {
     if (rpgwizard.debugEnabled) {
-        console.debug("Loading Animation filename=[%s]", filename);
+        console.debug("Loading Animation filename=[%s]", this.filename);
     }
     
     let response = await fetch(this.filename);
@@ -28,7 +28,7 @@ Animation.prototype.load = async function () {
     }
     
     if (rpgwizard.debugEnabled) {
-        console.debug("Finished loading Animation filename=[%s]", filename);
+        console.debug("Finished loading Animation filename=[%s]", this.filename);
     }
     
     return this;

@@ -1148,9 +1148,10 @@ RPGcode.prototype.getImage = function (fileName) {
  * @param {Callback} callback Invoked when the item has finished loading.
  * @returns {Object} Item object or undefined if none available.
  */
-RPGcode.prototype.getItem = function (fileName, callback) {
+RPGcode.prototype.getItem = async function (fileName, callback) {
     if (callback) { // Use a callback to future proof for async loading.
-        callback(new Item(PATH_ITEM + fileName));
+        var item = await new Item(PATH_ITEM + fileName).load();
+        callback(item);
     }
     return undefined;
 };
@@ -1321,8 +1322,8 @@ RPGcode.prototype.getViewport = function () {
  * @param {Callback} callback Invoked when the item has finished loading assets.
  * @returns {undefined}
  */
-RPGcode.prototype.giveItem = function (filename, characterId, callback) {
-    var item = new Item(PATH_ITEM + filename);
+RPGcode.prototype.giveItem = async function (filename, characterId, callback) {
+    var item = await new Item(PATH_ITEM + filename).load();
 
     rpgwizard.loadItem(item);
     rpgwizard.loadCraftyAssets(function (e) {
@@ -1514,23 +1515,21 @@ RPGcode.prototype.loadAssets = function (assets, onLoad) {
  * @param {Callback} failureCallback Invoked if the load failed.
  * @returns {undefined}
  */
-RPGcode.prototype.loadJSON = function (path, successCallback, failureCallback) {
-    var data = JSON.stringify({
-        "path": path
-    });
-    var xhr = new XMLHttpRequest();
-    xhr.withCredentials = true;
-    xhr.addEventListener("readystatechange", function () {
-        if (this.readyState === 4 && this.status === 200) {
-            successCallback(this.responseText);
-        } else {
-            failureCallback(this.responseText);
-        }
-    });
-    xhr.open("POST", "http://localhost:8080/engine/load");
-    xhr.setRequestHeader("content-type", "application/json");
-    xhr.setRequestHeader("cache-control", "no-cache");
-    xhr.send(data);
+RPGcode.prototype.loadJSON = async function (path, successCallback, failureCallback) {
+    try {
+        var response = await fetch("http://localhost:8080/engine/load", {
+            method: "POST",
+            credentials: "include",
+            body: JSON.stringify({"path": path}),
+            headers: {
+                "Content-Type": "application/json",
+                "Cache-Control": "no-cache"
+            }
+        });
+        successCallback(await response.json());
+    } catch (err) {
+        failureCallback(err);
+    }
 };
 
 /**
@@ -2109,7 +2108,7 @@ RPGcode.prototype.setCanvasPosition = function (x, y, canvasId) {
  *  },
  *  function(response) {
  *     // Success callback.
- *     console.log(success);
+ *     console.log(response);
  *     rpgcode.endProgram();
  *  }, 
  *  function(response) {
@@ -2124,20 +2123,21 @@ RPGcode.prototype.setCanvasPosition = function (x, y, canvasId) {
  * @param {Callback} failureCallback Invoked if the file save failed.
  * @returns {undefined}
  */
-RPGcode.prototype.saveJSON = function (data, successCallback, failureCallback) {
-    var xhr = new XMLHttpRequest();
-    xhr.withCredentials = true;
-    xhr.addEventListener("readystatechange", function () {
-        if (this.readyState === 4 && this.status === 200) {
-            successCallback(this.responseText);
-        } else {
-            failureCallback(this.responseText);
-        }
-    });
-    xhr.open("POST", "http://localhost:8080/engine/save");
-    xhr.setRequestHeader("content-type", "application/json");
-    xhr.setRequestHeader("cache-control", "no-cache");
-    xhr.send(JSON.stringify(data));
+RPGcode.prototype.saveJSON = async function (data, successCallback, failureCallback) {
+    try {
+        await fetch("http://localhost:8080/engine/save", {
+            method: "POST",
+            credentials: "include",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json",
+                "Cache-Control": "no-cache"
+            }
+        });
+        successCallback("success");
+    } catch (err) {
+        failureCallback(err);
+    }
 };
 
 /**

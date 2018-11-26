@@ -11,23 +11,31 @@ Item.prototype.constructor = Item;
 
 function Item(filename) {
     if (rpgwizard.debugEnabled) {
-        console.debug("Loading Item filename=[%s]", filename);
+        console.debug("Creating Item filename=[%s]", filename);
     }
-    
-    // TODO: Make the changes here that chrome suggests.
-    var req = new XMLHttpRequest();
-    req.open("GET", filename, false);
-    req.overrideMimeType("text/plain; charset=x-user-defined");
-    req.send(null);
-
-    var item = JSON.parse(req.responseText);
-    item.fileName = filename.replace(PATH_ITEM, "");
-    for (var property in item) {
-        this[property] = item[property];
-    }
+    this.filename = filename;
 }
 
-Item.prototype.load = function () {
+Item.prototype.load = async function () {
+    if (rpgwizard.debugEnabled) {
+        console.debug("Creating Item filename=[%s]", this.filename);
+    }
+    
+    let response = await fetch(this.filename);
+    response = await response.json();
+    response.fileName = this.filename.replace(PATH_ITEM, "");
+    for (var property in response) {
+        this[property] = response[property];
+    }
+    
+    if (rpgwizard.debugEnabled) {
+        console.debug("Creating loading Item filename=[%s]", this.filename);
+    }
+    
+    return this;
+};
+
+Item.prototype.loadAssets = function () {
     if (rpgwizard.debugEnabled) {
         console.debug("Loading Item name=[%s]", this.name);
     }

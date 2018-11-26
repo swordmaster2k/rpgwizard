@@ -91,7 +91,7 @@ Sprite.prototype.calculateActivationPoints = function () {
     this.activationPoints = points;
 };
 
-Sprite.prototype.load = async function () {
+Sprite.prototype.loadAssets = async function () {
     if (rpgwizard.debugEnabled) {
         console.debug("Loading Sprite name=[%s]", this.name);
     }

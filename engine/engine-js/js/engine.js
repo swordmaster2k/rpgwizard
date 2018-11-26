@@ -5,10 +5,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-/* global PATH_BITMAP, PATH_MEDIA, PATH_PROGRAM, PATH_BOARD, PATH_CHARACTER, PATH_NPC, jailed, rpgcode, PATH_TILESET, PATH_ENEMY, Crafty, engineUtil */
+/* global PATH_BITMAP, PATH_MEDIA, PATH_PROGRAM, PATH_BOARD, PATH_CHARACTER, PATH_NPC, jailed, rpgcode, PATH_TILESET, PATH_ENEMY, Crafty, engineUtil, Promise */
 
 var rpgwizard = new RPGWizard();
-const AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
+const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
 
 function RPGWizard() {
     this.dt = 0; // Craftyjs time step since last frame.
@@ -103,7 +103,7 @@ RPGWizard.prototype.setup = async function (filename) {
         console.debug("Starting engine with filename=[%s]", filename);
     }
 
-    this.project = new Project(filename);
+    this.project = await new Project(filename).load();
 
     var scale = 1;
     if (this.project.isFullScreen) {
@@ -126,7 +126,7 @@ RPGWizard.prototype.setup = async function (filename) {
     Crafty.viewport.init(width, height);
     Crafty.paths({audio: PATH_MEDIA, images: PATH_BITMAP});
     Crafty.viewport.scale(scale);
-    
+
 
     // Setup run time keys.
     this.keyboardHandler = new Keyboard();
@@ -154,8 +154,10 @@ RPGWizard.prototype.setup = async function (filename) {
     // Select the startup mode.
     if (this.project.initialCharacter && this.project.initialBoard) {
         // Load the initial character and board.
-        await this.loadCharacter(new Character(PATH_CHARACTER + this.project.initialCharacter));
-        await this.loadBoard(new Board(PATH_BOARD + this.project.initialBoard));
+        var character = await new Character(PATH_CHARACTER + this.project.initialCharacter).load();
+        await this.loadCharacter(character);
+        var board = await new Board(PATH_BOARD + this.project.initialBoard).load();
+        await this.loadBoard(board);
 
         // Setup up the Character's starting position.
         this.craftyCharacter.character.x = this.craftyBoard.board.startingPosition["x"];
@@ -167,12 +169,14 @@ RPGWizard.prototype.setup = async function (filename) {
         this.craftyCharacter.activationVector.y = this.craftyCharacter.y;
 
         // Setup the viewport to smoothly follow the player object
-        Crafty.viewport.x = 0; Crafty.viewport.y = 0;
+        Crafty.viewport.x = 0;
+        Crafty.viewport.y = 0;
         Crafty.viewport.clampToEntities = true;
 
         this.loadCraftyAssets(this.loadScene);
     } else if (this.project.initialCharacter && this.project.startupProgram) {
-        this.loadCharacter(new Character(PATH_CHARACTER + this.project.initialCharacter));
+        var character = await new Character(PATH_CHARACTER + this.project.initialCharacter).load();
+        await this.loadCharacter(character);
         rpgwizard.runProgram(
                 PATH_PROGRAM + rpgwizard.project.startupProgram,
                 {});
@@ -403,7 +407,7 @@ RPGWizard.prototype.createCraftyBoard = function (board) {
         console.debug("xShift=" + xShift);
         console.debug("yShift=" + yShift);
     }
-    
+
     Crafty.c("Board", {
         ready: true,
         width: width,
@@ -419,8 +423,8 @@ RPGWizard.prototype.createCraftyBoard = function (board) {
             this.bind("Draw", function (e) {
                 if (e.ctx) {
                     // Excute the user specified runtime programs first.
-                    rpgcode.runTimePrograms.forEach(function (filename) {
-                        var program = rpgwizard.openProgram(PATH_PROGRAM + filename);
+                    rpgcode.runTimePrograms.forEach(async function (filename) {
+                        var program = await rpgwizard.openProgram(PATH_PROGRAM + filename);
                         program();
                     });
                     rpgwizard.screen.renderBoard(e.ctx);
@@ -440,11 +444,11 @@ RPGWizard.prototype.loadBoard = async function (board) {
     var craftyBoard = this.createCraftyBoard(board);
     var assets = {"images": [], "audio": {}};
 
-    craftyBoard.board.tileSets.forEach(function (file) {
-        var tileSet = new TileSet(PATH_TILESET + file);
+    await Promise.all(craftyBoard.board.tileSets.map(async (file) => {
+        var tileSet = await new TileSet(PATH_TILESET + file).load();
         rpgwizard.tilesets[tileSet.name] = tileSet;
         rpgwizard.queueCraftyAssets({"images": [tileSet.image]}, tileSet);
-    });
+    }));
 
     for (var layer = 0; layer < board.layers.length; layer++) {
         var boardLayer = board.layers[layer];
@@ -514,7 +518,8 @@ RPGWizard.prototype.switchBoard = async function (boardName, tileX, tileY, layer
     if (rpgwizard.craftyBoard.board) {
         rpgwizard.lastBackgroundMusic = rpgwizard.craftyBoard.board.backgroundMusic;
     }
-    await this.loadBoard(new Board(PATH_BOARD + boardName));
+    var board = await new Board(PATH_BOARD + boardName).load();
+    await this.loadBoard(board);
     var tileWidth = this.craftyBoard.board.tileWidth;
     var tileHeight = this.craftyBoard.board.tileHeight;
     this.craftyCharacter.x = parseInt((tileX * tileWidth) + tileWidth / 2);
@@ -588,7 +593,7 @@ RPGWizard.prototype.loadCharacter = async function (character) {
             });
 
     this.craftyCharacter.visible = false;
-    const assets = await this.craftyCharacter.character.load();
+    const assets = await this.craftyCharacter.character.loadAssets();
     this.queueCraftyAssets(assets, character);
 };
 
@@ -598,13 +603,13 @@ RPGWizard.prototype.loadSprite = async function (sprite) {
     }
     var asset;
     if (sprite.name.endsWith(".enemy")) {
-        asset = sprite.enemy = new Enemy(PATH_ENEMY + sprite.name);
+        asset = sprite.enemy = await new Enemy(PATH_ENEMY + sprite.name).load();
         sprite.collisionPoints = sprite.enemy.collisionPoints;
-    } else if(sprite.name.endsWith(".npc"))  {
-        asset = sprite.npc = new NPC(PATH_NPC + sprite.name);
+    } else if (sprite.name.endsWith(".npc")) {
+        asset = sprite.npc = await new NPC(PATH_NPC + sprite.name).load();
         sprite.collisionPoints = sprite.npc.collisionPoints;
     } else {
-        asset = sprite.character = new Character(PATH_CHARACTER + sprite.name);
+        asset = sprite.character = await new Character(PATH_CHARACTER + sprite.name).load();
         sprite.collisionPoints = sprite.character.collisionPoints;
     }
     sprite.x = sprite.startingPosition.x;
@@ -614,7 +619,7 @@ RPGWizard.prototype.loadSprite = async function (sprite) {
     var isEnemy = sprite.enemy !== undefined;
     // TODO: width and height of npc must contain the collision polygon.
     if (sprite.thread) {
-        sprite.thread = this.openProgram(PATH_PROGRAM + sprite.thread);
+        sprite.thread = await this.openProgram(PATH_PROGRAM + sprite.thread);
     }
     var entity;
     var activationVector = Crafty.e("2D, Canvas, ActivationVector")
@@ -682,8 +687,8 @@ RPGWizard.prototype.loadSprite = async function (sprite) {
                         asset.hitOffCollision(hitData, entity);
                     }
             );
-    
-    const assets = await asset.load();
+
+    const assets = await asset.loadAssets();
     this.queueCraftyAssets(assets, asset);
 
     return entity;
@@ -693,29 +698,25 @@ RPGWizard.prototype.loadItem = function (item) {
     if (rpgwizard.debugEnabled) {
         console.debug("Loading item=[%s]", JSON.stringify(item));
     }
-    this.queueCraftyAssets(item.load(), item);
+    this.queueCraftyAssets(item.loadAssets(), item);
 };
 
-RPGWizard.prototype.openProgram = function (filename) {
+RPGWizard.prototype.openProgram = async function (filename) {
     if (rpgwizard.debugEnabled) {
         console.debug("Opening program=[%s]", filename);
     }
     var program = rpgwizard.programCache[filename];
     if (!program) {
-        // TODO: Make the changes here that chrome suggests.
-        var req = new XMLHttpRequest();
-        req.open("GET", filename, false);
-        req.overrideMimeType("text/plain; charset=x-user-defined");
-        req.send(null);
-
-        program = new AsyncFunction(req.responseText);
+        let response = await fetch(filename);
+        response = await response.text();
+        program = new AsyncFunction(response);
         rpgwizard.programCache[filename] = program;
     }
 
     return program;
 };
 
-RPGWizard.prototype.runProgram = function (filename, source, callback) {
+RPGWizard.prototype.runProgram = async function (filename, source, callback) {
     if (rpgwizard.debugEnabled) {
         console.debug("Running program=[%s]", filename);
     }
@@ -733,7 +734,7 @@ RPGWizard.prototype.runProgram = function (filename, source, callback) {
     rpgwizard.mouseHandler.mouseDoubleClickHandler = null;
     rpgwizard.mouseHandler.mouseMoveHandler = null;
 
-    var program = rpgwizard.openProgram(filename);
+    var program = await rpgwizard.openProgram(filename);
     program.apply(source);
 };
 

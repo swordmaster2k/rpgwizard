@@ -9,17 +9,26 @@
 
 function Project(filename) {
     if (rpgwizard.debugEnabled) {
-        console.debug("Loading Project filename=[%s]", filename);
+        console.debug("Creating Project filename=[%s]", filename);
     }
-    
-    // TODO: Make the changes here that chrome suggests.
-    var req = new XMLHttpRequest();
-    req.open("GET", filename, false);
-    req.overrideMimeType("text/plain; charset=x-user-defined");
-    req.send(null);
-
-    var project = JSON.parse(req.responseText);
-    for (var property in project) {
-        this[property] = project[property];
-    }
+    this.filename = filename;
 }
+
+Project.prototype.load = async function () {
+    if (rpgwizard.debugEnabled) {
+        console.debug("Loading Project filename=[%s]", this.filename);
+    }
+
+    let response = await fetch(this.filename);
+    response = await response.json();
+    for (var property in response) {
+        this[property] = response[property];
+    }
+
+    if (rpgwizard.debugEnabled) {
+        console.debug("Finished Project Project filename=[%s]", this.filename);
+    }
+
+    return this;
+};
+

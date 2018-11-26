@@ -9,20 +9,28 @@
 
 function TileSet(filename) {
     if (rpgwizard.debugEnabled) {
-        console.debug("Loading Tileset filename=[%s]", filename);
+        console.debug("Creating Tileset filename=[%s]", filename);
     }
-    
-    // TODO: Make the changes here that chrome suggests.
-    var req = new XMLHttpRequest();
-    req.open("GET", filename, false);
-    req.overrideMimeType("text/plain; charset=x-user-defined");
-    req.send(null);
-
-    var tileSet = JSON.parse(req.responseText);
-    for (var property in tileSet) {
-        this[property] = tileSet[property];
-    }
+    this.filename = filename;
 }
+
+TileSet.prototype.load = async function () {
+    if (rpgwizard.debugEnabled) {
+        console.debug("Loading Tileset filename=[%s]", this.filename);
+    }
+
+    let response = await fetch(this.filename);
+    response = await response.json();
+    for (var property in response) {
+        this[property] = response[property];
+    }
+
+    if (rpgwizard.debugEnabled) {
+        console.debug("Finished loading Tileset filename=[%s]", this.filename);
+    }
+
+    return this;
+};
 
 TileSet.prototype.setReady = function () {
     if (rpgwizard.debugEnabled) {

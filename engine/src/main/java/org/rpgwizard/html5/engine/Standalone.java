@@ -11,6 +11,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import org.cef.OS;
@@ -49,6 +50,15 @@ public class Standalone {
         } catch (SecurityException e) {
             LOGGER.error("Could not set the Default Uncaught Exception Handler", e);
         }
+    }
+
+    public static void addLibraryPath(String pathToAdd) throws Exception {
+        String path = System.getProperty("org.rpgwizard.execution.path");
+        path += File.separator + pathToAdd;
+        System.setProperty("java.library.path", path);
+        Field fieldSysPath = ClassLoader.class.getDeclaredField("sys_paths");
+        fieldSysPath.setAccessible(true);
+        fieldSysPath.set(null, null);
     }
 
     private static void showErrorDialog(String title, String message) {
@@ -90,8 +100,9 @@ public class Standalone {
         });
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         Standalone.STANDALONE_MODE = true;
+        addLibraryPath("lib/jcef-win");
 
         // System.setProperty("org.rpgwizard.execution.path", "D:/Documents/Software
         // Development/rpgwizard/distribution/target/rpgwizard-1.1.0-windows/rpgwizard-1.1.0/builds/RPGWizard 1.1.0 -

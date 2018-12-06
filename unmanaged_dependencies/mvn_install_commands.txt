@@ -13,3 +13,19 @@ mvn install:install-file
 -Dversion=1.5.00-rc 
 -Dpackaging=jar 
 -DgeneratePom=true
+
+mvn install:install-file 
+-Dpackaging=jar 
+-Dfile=jcef-win32.jar 
+-DgroupId=org.cef 
+-DartifactId=jcef-win32 
+-Dversion=67.0 
+-DgeneratePom=true
+
+mvn install:install-file 
+-Dpackaging=jar 
+-Dfile=jcef-win64.jar 
+-DgroupId=org.cef 
+-DartifactId=jcef-win64 
+-Dversion=67.0 
+-DgeneratePom=true

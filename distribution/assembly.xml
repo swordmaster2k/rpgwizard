@@ -12,6 +12,7 @@
             <directory>builds/</directory>
             <outputDirectory>.</outputDirectory>
             <includes>
+                <include>lib/</include>
                 <include>plugins/</include>
                 <include>projects/</include>
                 <include>*.exe</include>
@@ -22,10 +23,10 @@
             <outputDirectory>.</outputDirectory>
             <includes>
                 <include>jre/</include>
-				<include>launch4j/</include>
-				<include>editor.ico</include>
-				<include>launch4j-config.xml</include>
-				<include>package.bat</include>
+                <include>launch4j/</include>
+                <include>editor.ico</include>
+                <include>launch4j-config.xml</include>
+                <include>package.bat</include>
                 <include>license.txt</include>
                 <include>README.txt</include>
             </includes>

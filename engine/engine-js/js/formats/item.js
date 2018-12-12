@@ -18,7 +18,7 @@ function Item(filename) {
 
 Item.prototype.load = async function () {
     if (rpgwizard.debugEnabled) {
-        console.debug("Creating Item filename=[%s]", this.filename);
+        console.debug("Loading Item filename=[%s]", this.filename);
     }
     
     let response = await fetch(this.filename);
@@ -29,7 +29,7 @@ Item.prototype.load = async function () {
     }
     
     if (rpgwizard.debugEnabled) {
-        console.debug("Creating loading Item filename=[%s]", this.filename);
+        console.debug("Finished loading Item filename=[%s]", this.filename);
     }
     
     return this;
@@ -37,7 +37,7 @@ Item.prototype.load = async function () {
 
 Item.prototype.loadAssets = function () {
     if (rpgwizard.debugEnabled) {
-        console.debug("Loading Item name=[%s]", this.name);
+        console.debug("Loading Item assets name=[%s]", this.name);
     }
 
     // Return the assets that need to be loaded.

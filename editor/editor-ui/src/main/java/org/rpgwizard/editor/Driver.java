@@ -9,6 +9,7 @@ package org.rpgwizard.editor;
 
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.lang.reflect.Field;
 import java.net.URISyntaxException;
 import java.util.List;
 import javax.swing.JDialog;
@@ -123,6 +124,15 @@ public class Driver {
         }
     }
 
+    public static void addLibraryPath(String pathToAdd) throws Exception {
+        String path = FileTools.getExecutionPath(Driver.class);
+        path += File.separator + pathToAdd;
+        System.setProperty("java.library.path", path);
+        Field fieldSysPath = ClassLoader.class.getDeclaredField("sys_paths");
+        fieldSysPath.setAccessible(true);
+        fieldSysPath.set(null, null);
+    }
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             try {
@@ -134,6 +144,7 @@ public class Driver {
                 registerSerializers();
                 PluginManager pluginManager = registerPlugins();
                 loadUserPreferences();
+                addLibraryPath("lib/jcef-win");
 
                 MainWindow mainWindow = MainWindow.getInstance();
                 mainWindow.setPluginManager(pluginManager);
@@ -160,7 +171,7 @@ public class Driver {
                     }
                 });
                 mainWindow.setVisible(true);
-            } catch (URISyntaxException ex) {
+            } catch (Exception ex) {
                 LOGGER.error("Failed to start the editor!", ex);
             }
         });

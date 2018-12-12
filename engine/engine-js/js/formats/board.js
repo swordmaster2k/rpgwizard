@@ -9,21 +9,29 @@
 
 function Board(filename) {
     if (rpgwizard.debugEnabled) {
-        console.debug("Loading Board filename=[%s]", filename);
+        console.debug("Creating Board filename=[%s]", filename);
     }
-
-    // TODO: Make the changes here that chrome suggests.
-    var req = new XMLHttpRequest();
-    req.open("GET", filename, false);
-    req.overrideMimeType("text/plain; charset=x-user-defined");
-    req.send(null);
-
-    var board = JSON.parse(req.responseText);
-    for (var property in board) {
-        this[property] = board[property];
-    }
+    this.filename = filename;
     this.layerCache = [];
 }
+
+Board.prototype.load = async function () {
+    if (rpgwizard.debugEnabled) {
+        console.debug("Loading Board filename=[%s]", this.filename);
+    }
+    
+    let response = await fetch(this.filename);
+    response = await response.json();
+    for (var property in response) {
+        this[property] = response[property];
+    }
+    
+    if (rpgwizard.debugEnabled) {
+        console.debug("Finished loading Board filename=[%s]", this.filename);
+    }
+    
+    return this;
+};
 
 Board.prototype.setReady = function () {
     if (rpgwizard.debugEnabled) {

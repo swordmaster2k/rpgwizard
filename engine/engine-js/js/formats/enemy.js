@@ -12,25 +12,31 @@ Enemy.prototype.constructor = Enemy;
 
 function Enemy(filename) {
     if (rpgwizard.debugEnabled) {
-        console.info("Loading Enemy filename=[%s]", filename);
+        console.info("Creating Enemy filename=[%s]", filename);
     }
-    
+    this.filename = filename;
     Sprite.call(this);
+}
 
-    // TODO: Make the changes here that chrome suggests.
-    var req = new XMLHttpRequest();
-    req.open("GET", filename, false);
-    req.overrideMimeType("text/plain; charset=x-user-defined");
-    req.send(null);
-
-    var npc = JSON.parse(req.responseText);
-    for (var property in npc) {
-        this[property] = npc[property];
+Enemy.prototype.load = async function () {
+    if (rpgwizard.debugEnabled) {
+        console.debug("Loading Enemy filename=[%s]", this.filename);
     }
 
+    let response = await fetch(this.filename);
+    response = await response.json();
+    for (var property in response) {
+        this[property] = response[property];
+    }
     this.calculateCollisionPoints();
     this.calculateActivationPoints();
-}
+
+    if (rpgwizard.debugEnabled) {
+        console.debug("Finished loading Enemy filename=[%s]", this.filename);
+    }
+
+    return this;
+};
 
 Enemy.prototype.hitOnCollision = function (hitData, entity) {
     var sprite = this;

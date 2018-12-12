@@ -88,11 +88,57 @@
             <id>32bit</id>
             <dependencies>
                 <dependency>
-                    <groupId>org.bitbucket.johness</groupId>
-                    <artifactId>java-cef</artifactId>
-                    <version>49.87.win32.2</version>
+                    <groupId>org.cef</groupId>
+                    <artifactId>jcef-win32</artifactId>
+                    <version>67.0</version>
                 </dependency>
             </dependencies>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>${maven.resources.version}</version>
+                        <executions>
+                            <execution>
+                                <id>cef-lib-copy</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>../distribution/builds/lib/jcef-win</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.build.directory}/classes/lib/jcef-win32</directory>
+                                            <includes>
+                                                <include>*</include>
+                                            </includes>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>distribution-copy</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>../distribution/builds/plugins</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.build.directory}</directory>
+                                            <includes>
+                                                <include>html5-engine-jar-with-dependencies.jar</include>
+                                            </includes>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
         <profile>
             <id>64bit</id>
@@ -101,11 +147,57 @@
             </activation>
             <dependencies>
                 <dependency>
-                    <groupId>org.bitbucket.johness</groupId>
-                    <artifactId>java-cef</artifactId>
-                    <version>49.87.win64.2</version>
+                    <groupId>org.cef</groupId>
+                    <artifactId>jcef-win64</artifactId>
+                    <version>67.0</version>
                 </dependency>
             </dependencies>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>${maven.resources.version}</version>
+                        <executions>
+                            <execution>
+                                <id>cef-lib-copy</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>../editor/editor-ui/target/classes/lib/jcef-win</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.build.directory}/classes/lib/jcef-win64</directory>
+                                            <includes>
+                                                <include>*</include>
+                                            </includes>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>editor-debug-copy</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>../editor/editor-ui/target/classes/plugins</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.build.directory}</directory>
+                                            <includes>
+                                                <include>html5-engine-jar-with-dependencies.jar</include>
+                                            </includes>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 
@@ -125,6 +217,9 @@
                             <Plugin-Dependencies>${plugin.dependencies}</Plugin-Dependencies>
                         </manifestEntries>
                     </archive>
+                    <excludes>
+                        <exclude>lib/**</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
             <plugin>
@@ -173,48 +268,6 @@
                         <goals>
                             <goal>single</goal>
                         </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>${maven.resources.version}</version>
-                <executions>
-                    <execution>
-                        <id>editor-debug-copy</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>../editor/editor-ui/target/classes/plugins</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${project.build.directory}</directory>
-                                    <includes>
-                                        <include>html5-engine-jar-with-dependencies.jar</include>
-                                    </includes>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>distribution-copy</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>../distribution/builds/plugins</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${project.build.directory}</directory>
-                                    <includes>
-                                        <include>html5-engine-jar-with-dependencies.jar</include>
-                                    </includes>
-                                </resource>
-                            </resources>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>

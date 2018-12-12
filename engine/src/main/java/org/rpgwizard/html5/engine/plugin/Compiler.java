@@ -32,6 +32,7 @@ public class Compiler {
     private static final String PLUGINS_DIRECTORY = "plugins";
     private static final String BUILDS_DIRECTORY = "builds";
     private static final String JRE_DIRECTORY = "jre";
+    private static final String LIB_DIRECTORY = "lib";
     private static final String OUTPUT_DIRECTORY = "output";
     private static final String DATA_DIRECTORY = "data";
     private static final String ENGINE_PLUGIN = "html5-engine-jar-with-dependencies.jar";
@@ -95,6 +96,7 @@ public class Compiler {
             File pluginsDirectory = new File(executionPath, PLUGINS_DIRECTORY);
             File buildsDirectory = new File(executionPath, BUILDS_DIRECTORY);
             File jreDirectory = new File(executionPath, JRE_DIRECTORY);
+            File libDirectory = new File(executionPath, LIB_DIRECTORY);
 
             // 1: Create the output directory for this build.
             outputDirectory = new File(buildsDirectory, OUTPUT_DIRECTORY);
@@ -105,32 +107,36 @@ public class Compiler {
             FileUtils.copyDirectoryToDirectory(jreDirectory, outputDirectory);
             updateProgress(progressMonitor, 20);
 
-            // 3: Copy the HTML5 engine plugin into the output directory.
+            // 3: Copy the lib into the output directory.
+            FileUtils.copyDirectoryToDirectory(libDirectory, outputDirectory);
+            updateProgress(progressMonitor, 30);
+
+            // 4: Copy the HTML5 engine plugin into the output directory.
             File html5Engine = new File(pluginsDirectory, ENGINE_PLUGIN);
             File html5EngineCopy = new File(outputDirectory, ENGINE_PLUGIN);
             FileUtils.copyFile(html5Engine, html5EngineCopy);
-            updateProgress(progressMonitor, 30);
+            updateProgress(progressMonitor, 40);
 
-            // 4: Copy the project supplied by the editor into the output
+            // 5: Copy the project supplied by the editor into the output
             // directory.
             File dataDirectory = new File(outputDirectory, DATA_DIRECTORY);
             FileUtils.copyDirectory(projectCopy, dataDirectory);
-            updateProgress(progressMonitor, 40);
-
-            // 5: Embed the HTML5 engine framework into the project copy.
-            embedEngine(projectName, dataDirectory, progressMonitor, true);
             updateProgress(progressMonitor, 50);
 
-            // 6: Invoke Launch4J to create the executable.
+            // 6: Embed the HTML5 engine framework into the project copy.
+            embedEngine(projectName, dataDirectory, progressMonitor, true);
+            updateProgress(progressMonitor, 60);
+
+            // 7: Invoke Launch4J to create the executable.
             Process process = Runtime.getRuntime().exec("cmd /c start /B package.bat", null, executionPath);
             int exitCode = process.waitFor();
             if (exitCode != 0) {
                 throw new Exception(getErrorFromStream(process.getErrorStream()));
             }
 
-            updateProgress(progressMonitor, 60);
+            updateProgress(progressMonitor, 70);
 
-            // 7: Wait for 60 seconds for the EXE to exist.
+            // 8: Wait for 60 seconds for the EXE to exist.
             File exeFile = new File(outputDirectory, "engine.exe");
             long start = System.currentTimeMillis();
             long last = start;
@@ -143,9 +149,9 @@ public class Compiler {
                 throw new Exception("Timed out waiting for game EXE file to be created!");
             }
 
-            updateProgress(progressMonitor, 70);
+            updateProgress(progressMonitor, 80);
 
-            // 8: Create directory to copy to.
+            // 9: Create directory to copy to.
             resultDirectory = new File(outputDirectory.getParentFile(), randomName);
             while (resultDirectory.exists()) {
                 randomName = projectName + "-" + System.currentTimeMillis();
@@ -153,9 +159,9 @@ public class Compiler {
             }
             FileUtils.forceMkdir(resultDirectory);
 
-            updateProgress(progressMonitor, 80);
+            updateProgress(progressMonitor, 90);
 
-            // 9: Try to copy the outputDirectory contents to the
+            // 10: Try to copy the outputDirectory contents to the
             // resultDirectory.
             boolean copied = false;
             while (!copied && last - start < timeOut) {
@@ -174,7 +180,7 @@ public class Compiler {
                 throw new Exception("Could not copy outputDirectory to resultDirectory!");
             }
 
-            updateProgress(progressMonitor, 90);
+            updateProgress(progressMonitor, 95);
 
             return resultDirectory;
         } catch (Exception ex) {

@@ -64,7 +64,8 @@ public class EngineRestService {
             JSONObject object = new JSONObject(json);
             File targetPath = new File(projectPath.getAbsoluteFile() + File.separator + object.getString("path"));
 
-            switch (object.getString("type").toLowerCase()) {
+            final String type = object.has("type") ? object.getString("type").toLowerCase() : "UNKNOWN";
+            switch (type) {
             case "board":
             default:
                 FileUtils.writeStringToFile(targetPath, object.getJSONObject("data").toString(), false);

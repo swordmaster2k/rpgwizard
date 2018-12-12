@@ -13,6 +13,8 @@ import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.lang.reflect.Field;
+import java.util.Arrays;
 
 import javax.swing.JFrame;
 
@@ -22,10 +24,12 @@ import org.cef.CefClient;
 import org.cef.CefSettings;
 import org.cef.OS;
 import org.cef.browser.CefBrowser;
+import org.cef.browser.CefFrame;
 import org.cef.handler.CefAppHandlerAdapter;
 import org.cef.handler.CefKeyboardHandler;
 import org.cef.handler.CefKeyboardHandlerAdapter;
 import org.cef.handler.CefLoadHandler;
+import org.cef.network.CefRequest;
 
 public final class EmbeddedBrowser extends JFrame {
 
@@ -64,15 +68,15 @@ public final class EmbeddedBrowser extends JFrame {
 
         cefClient.addLoadHandler(new CefLoadHandler() {
             @Override
-            public void onLoadingStateChange(CefBrowser arg0, boolean arg1, boolean arg2, boolean arg3) {
+            public void onLoadingStateChange(CefBrowser cb, boolean bln, boolean bln1, boolean bln2) {
             }
 
             @Override
-            public void onLoadStart(CefBrowser arg0, int arg1) {
+            public void onLoadStart(CefBrowser cb, CefFrame cf, CefRequest.TransitionType tt) {
             }
 
             @Override
-            public void onLoadEnd(CefBrowser arg0, int arg1, int arg2) {
+            public void onLoadEnd(CefBrowser arg0, CefFrame cf, int arg2) {
                 cefClient.addKeyboardHandler(new CefKeyboardHandlerAdapter() {
                     @Override
                     public boolean onKeyEvent(CefBrowser browser, CefKeyboardHandler.CefKeyEvent event) {
@@ -107,8 +111,7 @@ public final class EmbeddedBrowser extends JFrame {
             }
 
             @Override
-            public void onLoadError(CefBrowser arg0, int arg1, CefLoadHandler.ErrorCode arg2, String arg3,
-                    String arg4) {
+            public void onLoadError(CefBrowser cb, CefFrame cf, ErrorCode ec, String string, String string1) {
             }
         });
 
@@ -172,8 +175,8 @@ public final class EmbeddedBrowser extends JFrame {
         }
         // dispose(); // This crashes everything.
     }
-
-    public static void main(String[] args) {
+    
+    public static void main(String[] args) throws Exception {
         javax.swing.SwingUtilities.invokeLater(() -> {
             EmbeddedBrowser test = new EmbeddedBrowser("Test", "http://localhost:8080/index.html", OS.isLinux(), false,
                     640, 480, false);

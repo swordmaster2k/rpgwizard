@@ -12,25 +12,31 @@ Character.prototype.constructor = Character;
 
 function Character(filename) {
     if (rpgwizard.debugEnabled) {
-        console.debug("Loading Character filename=[%s]", filename);
+        console.debug("Creating Character filename=[%s]", filename);
     }
-
+    this.filename = filename;
     Sprite.call(this);
+}
 
-    // TODO: Make the changes here that chrome suggests.
-    var req = new XMLHttpRequest();
-    req.open("GET", filename, false);
-    req.overrideMimeType("text/plain; charset=x-user-defined");
-    req.send(null);
-
-    var character = JSON.parse(req.responseText);
-    for (var property in character) {
-        this[property] = character[property];
+Character.prototype.load = async function () {
+    if (rpgwizard.debugEnabled) {
+        console.debug("Loading Character filename=[%s]", this.filename);
     }
 
+    let response = await fetch(this.filename);
+    response = await response.json();
+    for (var property in response) {
+        this[property] = response[property];
+    }
     this.calculateCollisionPoints();
     this.calculateActivationPoints();
-}
+
+    if (rpgwizard.debugEnabled) {
+        console.debug("Finished loading Character filename=[%s]", this.filename);
+    }
+
+    return this;
+};
 
 Character.prototype.hitOnCollision = function (hitData, entity) {
     var sprite = this;

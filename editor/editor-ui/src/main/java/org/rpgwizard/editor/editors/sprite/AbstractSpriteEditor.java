@@ -11,6 +11,8 @@ import org.rpgwizard.editor.ui.ImagePanel;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,7 +50,6 @@ import org.rpgwizard.editor.editors.sprite.listener.AnimationListSelectionListen
 import org.rpgwizard.editor.editors.sprite.listener.BrowseAnimationActionListener;
 import org.rpgwizard.editor.editors.sprite.listener.RemoveAnimationActionListener;
 import org.rpgwizard.editor.ui.AnimatedPanel;
-import org.rpgwizard.editor.ui.DoubleField;
 import org.rpgwizard.editor.utilities.GuiHelper;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.utilities.EditorFileManager;
@@ -340,6 +341,17 @@ public abstract class AbstractSpriteEditor extends AbstractAssetEditorWindow imp
         };
 
         animationsTable.getModel().addTableModelListener(tableModelListener);
+        
+        // Enable double click on table rows
+        animationsTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent mouseEvent) {
+                JTable table = (JTable) mouseEvent.getSource();
+                if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {
+                    browseButton.doClick();
+                }
+            }
+        });
 
         browseButton.addActionListener(new BrowseAnimationActionListener(this));
         addButton.addActionListener(new AddAnimationActionListener(this));

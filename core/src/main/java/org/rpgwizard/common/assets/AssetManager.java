@@ -128,7 +128,6 @@ public class AssetManager {
         }
 
         return handle;
-
     }
 
     public AssetHandle deserialize(AssetDescriptor descriptor) throws IOException, AssetException {

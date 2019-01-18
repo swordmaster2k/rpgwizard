@@ -341,7 +341,7 @@ public abstract class AbstractSpriteEditor extends AbstractAssetEditorWindow imp
         };
 
         animationsTable.getModel().addTableModelListener(tableModelListener);
-        
+
         // Enable double click on table rows
         animationsTable.addMouseListener(new MouseAdapter() {
             @Override

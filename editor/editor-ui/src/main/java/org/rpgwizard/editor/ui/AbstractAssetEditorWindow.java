@@ -80,12 +80,12 @@ public abstract class AbstractAssetEditorWindow extends JInternalFrame implement
             if (!selectDescriptor(asset)) {
                 return; // Save was aborted by the user.
             }
-        } else {
+        } else if (asset.exists()) { // May not exist for a "Save As".
             // This will throw an exception if it can't make a backup.
             backup = EditorFileManager.backupFile(new File(asset.getDescriptor().getURI()));
         }
-
         original = new File(asset.getDescriptor().getURI());
+
         try {
             AssetManager.getInstance().serialize(AssetManager.getInstance().getHandle(asset));
             setTitle(original.getName());

@@ -51,6 +51,10 @@ public abstract class AbstractAsset implements Asset {
         descriptor = assetDescriptor;
     }
 
+    public boolean exists() {
+        return descriptor != null && new File(descriptor.getURI()).exists();
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;

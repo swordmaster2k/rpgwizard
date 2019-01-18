@@ -175,7 +175,7 @@ public final class EmbeddedBrowser extends JFrame {
         }
         // dispose(); // This crashes everything.
     }
-    
+
     public static void main(String[] args) throws Exception {
         javax.swing.SwingUtilities.invokeLater(() -> {
             EmbeddedBrowser test = new EmbeddedBrowser("Test", "http://localhost:8080/index.html", OS.isLinux(), false,

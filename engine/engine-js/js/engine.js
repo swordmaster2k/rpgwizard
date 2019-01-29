@@ -61,6 +61,7 @@ function RPGWizard() {
     // Engine program states.
     this.inProgram = false;
     this.currentProgram = null;
+    this.haveRunStartup = false;
 
     // Audio states.
     this.lastBackgroundMusic = "";
@@ -177,13 +178,13 @@ RPGWizard.prototype.setup = async function (filename) {
     } else if (this.project.initialCharacter && this.project.startupProgram) {
         var character = await new Character(PATH_CHARACTER + this.project.initialCharacter).load();
         await this.loadCharacter(character);
-        rpgwizard.runProgram(
-                PATH_PROGRAM + rpgwizard.project.startupProgram,
-                {});
+        rpgwizard.runProgram(PATH_PROGRAM + rpgwizard.project.startupProgram, {}, function() {
+            rpgwizard.haveRunStartup = true;
+        });
     } else if (this.project.startupProgram) {
-        rpgwizard.runProgram(
-                PATH_PROGRAM + rpgwizard.project.startupProgram,
-                {});
+        rpgwizard.runProgram(PATH_PROGRAM + rpgwizard.project.startupProgram, {}, function() {
+            rpgwizard.haveRunStartup = true;
+        });
     } else {
         throw "No setup paramets provided, please specifiy an Initial Character" +
                 " and Initial Board, or alternatively a Startup program!";
@@ -203,11 +204,12 @@ RPGWizard.prototype.loadScene = function (e) {
     } else {
         engineUtil.hideProgress();
         // Run the startup program before the game logic loop.
-        if (rpgwizard.project.startupProgram && rpgwizard.firstScene) {
+        if (rpgwizard.project.startupProgram && rpgwizard.firstScene && !rpgwizard.haveRunStartup) {
             rpgwizard.runProgram(
                     PATH_PROGRAM + rpgwizard.project.startupProgram,
                     {},
                     function () {
+                        rpgwizard.haveRunStartup = true;
                         rpgwizard.inProgram = false;
                         rpgwizard.currentProgram = null;
                         rpgwizard.controlEnabled = true;

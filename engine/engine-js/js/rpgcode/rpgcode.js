@@ -2402,6 +2402,7 @@ RPGcode.prototype.setSpriteLocation = function (spriteId, x, y, layer, inTiles) 
         entity.x = x;
         entity.y = y;
         entity.layer = layer;
+        entity.sprite.layer = layer;
         Crafty.trigger("Invalidate");
     }
 };

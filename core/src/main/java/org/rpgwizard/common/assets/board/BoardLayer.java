@@ -73,6 +73,23 @@ public class BoardLayer implements Cloneable {
     }
 
     /**
+     * Copy constructor.
+     * 
+     * @param boardLayer
+     * @param board
+     */
+    public BoardLayer(BoardLayer boardLayer, Board board) {
+        this(board);
+        images = (ArrayList<BoardLayerImage>) boardLayer.images.clone();
+        lights = (ArrayList<BoardLight>) boardLayer.lights.clone();
+        name = boardLayer.name;
+        number = boardLayer.number;
+        sprites = (ArrayList<BoardSprite>) boardLayer.sprites.clone();
+        tiles = (Tile[][]) boardLayer.tiles.clone();
+        vectors = (ArrayList<BoardVector>) boardLayer.vectors.clone();
+    }
+
+    /**
      * Gets the layer name.
      *
      * @return layer name

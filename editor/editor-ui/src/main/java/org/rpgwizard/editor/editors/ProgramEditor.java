@@ -201,6 +201,16 @@ public final class ProgramEditor extends AbstractAssetEditorWindow implements Se
     }
 
     @Override
+    public boolean canUndo() {
+        return textArea.canUndo();
+    }
+
+    @Override
+    public boolean canRedo() {
+        return textArea.canRedo();
+    }
+
+    @Override
     public void handle(UndoAction action) {
         textArea.undoLastAction();
     }

@@ -80,6 +80,7 @@ import org.rpgwizard.common.assets.Item;
 import org.rpgwizard.editor.editors.ItemEditor;
 import org.rpgwizard.editor.editors.ProgramEditor;
 import org.rpgwizard.editor.ui.ProjectPanel;
+import org.rpgwizard.editor.ui.actions.ActionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ro.fortsoft.pf4j.PluginManager;
@@ -488,6 +489,20 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
 
         AbstractAssetEditorWindow window = (AbstractAssetEditorWindow) e.getInternalFrame();
         updateEditorMap(null, window.getAsset().getFile(), window);
+
+        // Enable or Disable undo/redo buttons.
+        boolean canUndo = false;
+        boolean canRedo = false;
+        if (window instanceof ActionHandler) {
+            final ActionHandler handler = (ActionHandler) window;
+            canUndo = handler.canUndo();
+            canRedo = handler.canRedo();
+        }
+        menuBar.getEditMenu().getUndoMenuItem().setEnabled(canUndo);
+        toolBar.getUndoButton().setEnabled(canUndo);
+        menuBar.getEditMenu().getRedoMenuItem().setEnabled(canRedo);
+        toolBar.getRedoButton().setEnabled(canRedo);
+
         if (window instanceof AnimationEditor) {
             AnimationEditor editor = (AnimationEditor) window;
             propertiesPanel.setModel(editor.getAnimation());
@@ -1023,6 +1038,16 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
 
         menuBar.enableMenus(true);
         toolBar.toggleButtonStates(true);
+    }
+
+    public void enableUndo(boolean enable) {
+        menuBar.getEditMenu().getUndoMenuItem().setEnabled(enable);
+        toolBar.getUndoButton().setEnabled(enable);
+    }
+
+    public void enableRedo(boolean enable) {
+        menuBar.getEditMenu().getRedoMenuItem().setEnabled(enable);
+        toolBar.getRedoButton().setEnabled(enable);
     }
 
     private void selectToolkitWindow(AbstractAssetEditorWindow window) {

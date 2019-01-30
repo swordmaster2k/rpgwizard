@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.ListIterator;
 import javax.swing.JPanel;
+import org.rpgwizard.common.assets.AssetDescriptor;
 
 import org.rpgwizard.common.assets.listeners.BoardChangeListener;
 import org.rpgwizard.common.assets.events.BoardChangedEvent;
@@ -98,7 +99,8 @@ public abstract class AbstractBoardView extends JPanel implements MultiLayerCont
      *            The parent BoardEditor for this view.
      */
     public AbstractBoardView(BoardEditor boardEditor) {
-        board = new Board(null);
+        AssetDescriptor descriptor = null;
+        board = new Board(descriptor);
         this.boardEditor = boardEditor;
         init();
     }
@@ -743,6 +745,18 @@ public abstract class AbstractBoardView extends JPanel implements MultiLayerCont
     }
 
     /**
+     * Updates the BoardView based on the new board provided.
+     * 
+     * @param board
+     */
+    public void update(Board board) {
+        this.board = board;
+        this.board.removeBoardChangeListener(this);
+        init();
+        repaint();
+    }
+
+    /**
      * Initializes a BoardView, it sets most of the BoardView's members but it does not do anything with regard to the
      * board model or parent editor.
      */
@@ -756,7 +770,7 @@ public abstract class AbstractBoardView extends JPanel implements MultiLayerCont
         zoomLevel = ZOOM_NORMALSIZE;
         affineTransform = new AffineTransform();
 
-        loadTiles(board);
+        loadBoardLayerViews(board);
         setPreferredSize(
                 new Dimension((board.getWidth() * board.getTileWidth()), (board.getHeight() * board.getTileHeight())));
 
@@ -791,7 +805,7 @@ public abstract class AbstractBoardView extends JPanel implements MultiLayerCont
      * @param board
      *            The Toolkit board we want to load tiles for.
      */
-    private void loadTiles(Board board) {
+    private void loadBoardLayerViews(Board board) {
         for (BoardLayer layer : board.getLayers()) {
             BoardLayerView layerView = new BoardLayerView(layer);
             addLayerView(layerView);

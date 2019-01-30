@@ -30,10 +30,18 @@ import org.rpgwizard.common.assets.TileSet;
 import org.rpgwizard.common.assets.events.BoardChangedEvent;
 import org.rpgwizard.common.assets.listeners.BoardChangeListener;
 import org.rpgwizard.editor.MainWindow;
+import org.rpgwizard.editor.state.UndoRedoManager;
 import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
+import org.rpgwizard.editor.ui.actions.ActionHandler;
+import org.rpgwizard.editor.ui.actions.CopyAction;
+import org.rpgwizard.editor.ui.actions.CutAction;
+import org.rpgwizard.editor.ui.actions.PasteAction;
+import org.rpgwizard.editor.ui.actions.RedoAction;
 import org.rpgwizard.editor.ui.actions.RemoveLayerImageAction;
 import org.rpgwizard.editor.ui.actions.RemoveSpriteAction;
 import org.rpgwizard.editor.ui.actions.RemoveVectorAction;
+import org.rpgwizard.editor.ui.actions.SelectAllAction;
+import org.rpgwizard.editor.ui.actions.UndoAction;
 import org.rpgwizard.editor.ui.resources.Icons;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +52,8 @@ import org.slf4j.LoggerFactory;
  * @author Geoff Wilson
  * @author Joshua Michael Daly
  */
-public final class BoardEditor extends AbstractAssetEditorWindow implements BoardChangeListener, KeyListener {
+public final class BoardEditor extends AbstractAssetEditorWindow
+        implements BoardChangeListener, KeyListener, ActionHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BoardEditor.class);
 
@@ -62,6 +71,8 @@ public final class BoardEditor extends AbstractAssetEditorWindow implements Boar
     private Tile[][] selectedTiles;
 
     private Selectable selectedObject;
+
+    private UndoRedoManager undoRedoManager;
 
     /**
      * Default Constructor.
@@ -399,51 +410,61 @@ public final class BoardEditor extends AbstractAssetEditorWindow implements Boar
 
     @Override
     public void boardChanged(BoardChangedEvent e) {
+        undoRedoManager.push(board);
         setNeedSave(true);
     }
 
     @Override
     public void boardLayerAdded(BoardChangedEvent e) {
+        undoRedoManager.push(board);
         setNeedSave(true);
     }
 
     @Override
     public void boardLayerMovedUp(BoardChangedEvent e) {
+        undoRedoManager.push(board);
         setNeedSave(true);
     }
 
     @Override
     public void boardLayerMovedDown(BoardChangedEvent e) {
+        undoRedoManager.push(board);
         setNeedSave(true);
     }
 
     @Override
     public void boardLayerCloned(BoardChangedEvent e) {
+        undoRedoManager.push(board);
         setNeedSave(true);
     }
 
     @Override
     public void boardLayerDeleted(BoardChangedEvent e) {
+        undoRedoManager.push(board);
         setNeedSave(true);
     }
 
     @Override
     public void boardSpriteAdded(BoardChangedEvent e) {
+        undoRedoManager.push(board);
         setNeedSave(true);
     }
 
     @Override
     public void boardSpriteRemoved(BoardChangedEvent e) {
+        undoRedoManager.push(board);
         setNeedSave(true);
     }
 
     @Override
     public void boardLayerImageAdded(BoardChangedEvent e) {
+        undoRedoManager.push(board);
         setNeedSave(true);
     }
 
     @Override
     public void boardLayerImageRemoved(BoardChangedEvent e) {
+        undoRedoManager.push(board);
         setNeedSave(true);
     }
 
@@ -476,6 +497,56 @@ public final class BoardEditor extends AbstractAssetEditorWindow implements Boar
         }
     }
 
+    @Override
+    public boolean canUndo() {
+        return undoRedoManager.canUndo();
+    }
+
+    @Override
+    public boolean canRedo() {
+        return undoRedoManager.canRedo();
+    }
+
+    @Override
+    public void handle(UndoAction action) {
+        try {
+            board = undoRedoManager.undo();
+            boardView.update(board);
+        } catch (IllegalStateException ex) {
+            // Ignore it
+        }
+    }
+
+    @Override
+    public void handle(RedoAction action) {
+        try {
+            board = undoRedoManager.redo();
+            boardView.update(board);
+        } catch (IllegalStateException ex) {
+            // Ignore it
+        }
+    }
+
+    @Override
+    public void handle(CutAction action) {
+        // Not implemented yet
+    }
+
+    @Override
+    public void handle(CopyAction action) {
+        // Not implemented yet
+    }
+
+    @Override
+    public void handle(PasteAction action) {
+        // Not implemented yet
+    }
+
+    @Override
+    public void handle(SelectAllAction action) {
+        // Not implemented yet
+    }
+
     private void init(Board board, String fileName) {
         boardView = new BoardView2D(this, board);
         boardView.addMouseListener(boardMouseAdapter);
@@ -490,6 +561,8 @@ public final class BoardEditor extends AbstractAssetEditorWindow implements Boar
 
         cursorTileLocation = new Point(0, 0);
         cursorLocation = new Point(0, 0);
+
+        undoRedoManager = new UndoRedoManager(new Board(board));
 
         setFocusable(false);
         setTitle(fileName);

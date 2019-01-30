@@ -394,8 +394,6 @@ public final class MainToolBar extends JToolBar {
         copyButton.setEnabled(enable);
         pasteButton.setEnabled(enable);
         deleteButton.setEnabled(enable);
-        undoButton.setEnabled(enable);
-        redoButton.setEnabled(enable);
         pencilButton.setEnabled(enable);
         selectionButton.setEnabled(enable);
         bucketButton.setEnabled(enable);

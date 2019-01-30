@@ -65,12 +65,18 @@ public final class EditMenu extends JMenu {
         add(quickReplaceMenuItem);
     }
 
+    public JMenuItem getUndoMenuItem() {
+        return undoMenuItem;
+    }
+
+    public JMenuItem getRedoMenuItem() {
+        return redoMenuItem;
+    }
+
     /**
-     * Enable all the menu items after a project has been opened.
+     * Enable all the menu items after a project has been opened except undo/redo.
      */
     public void doEnableItems() {
-        undoMenuItem.setEnabled(true);
-        redoMenuItem.setEnabled(true);
         cutMenuItem.setEnabled(true);
         copyMenuItem.setEnabled(true);
         pasteMenuItem.setEnabled(true);

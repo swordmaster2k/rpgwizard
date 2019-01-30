@@ -13,6 +13,10 @@ package org.rpgwizard.editor.ui.actions;
  */
 public interface ActionHandler {
 
+    public boolean canUndo();
+
+    public boolean canRedo();
+
     public void handle(UndoAction action);
 
     public void handle(RedoAction action);

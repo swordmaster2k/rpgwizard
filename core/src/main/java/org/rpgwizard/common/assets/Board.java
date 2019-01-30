@@ -101,6 +101,37 @@ public final class Board extends AbstractAsset implements Selectable {
     }
 
     /**
+     * Copy constructor.
+     * 
+     * @param board
+     */
+    public Board(Board board) {
+        super(board.descriptor);
+        backgroundMusic = board.backgroundMusic;
+        boardChangeListeners = board.boardChangeListeners;
+        boardDimensions = board.boardDimensions; // No need to deep copy
+        description = board.description;
+        firstRunProgram = board.firstRunProgram;
+        width = board.width;
+        height = board.height;
+
+        // Need to deep copy these
+        LinkedList<BoardLayer> layerClones = new LinkedList<>();
+        for (BoardLayer layer : board.layers) {
+            layerClones.add(new BoardLayer(layer, this));
+        }
+        layers = layerClones;
+
+        name = board.name;
+        perspective = board.perspective;
+        selectedState = board.selectedState;
+        startingPosition = board.startingPosition;
+        tileWidth = board.tileWidth;
+        tileHeight = board.tileHeight;
+        tileSets = board.tileSets; // No need to deep copy
+    }
+
+    /**
      * Gets this boards layers.
      *
      * @return the board layers

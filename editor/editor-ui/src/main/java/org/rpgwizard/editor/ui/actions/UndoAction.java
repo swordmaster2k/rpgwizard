@@ -11,8 +11,6 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.JInternalFrame;
 import org.rpgwizard.editor.MainWindow;
-import org.rpgwizard.editor.editors.ProgramEditor;
-import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 
 /**
  *
@@ -24,11 +22,13 @@ public class UndoAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         MainWindow instance = MainWindow.getInstance();
         JInternalFrame frame = instance.getCurrentFrame();
-        if (frame instanceof AbstractAssetEditorWindow) {
-            if (frame instanceof ProgramEditor) {
-                ProgramEditor editor = (ProgramEditor) frame;
-                editor.handle(this);
-            }
+        if (frame instanceof ActionHandler) {
+            final ActionHandler handler = (ActionHandler) frame;
+            handler.handle(this);
+
+            final MainWindow mainWindow = MainWindow.getInstance();
+            mainWindow.enableUndo(handler.canUndo());
+            mainWindow.enableRedo(handler.canRedo());
         }
     }
 

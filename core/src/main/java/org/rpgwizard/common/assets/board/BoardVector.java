@@ -53,6 +53,33 @@ public class BoardVector implements Cloneable, Selectable {
     }
 
     /**
+     * Copy constructor.
+     * 
+     * @param boardVector
+     */
+    public BoardVector(BoardVector boardVector) {
+        id = boardVector.id;
+        type = boardVector.type;
+        isClosed = boardVector.isClosed;
+
+        final ArrayList<Point> newPoints = new ArrayList<>(boardVector.points.size());
+        for (Point point : boardVector.points) {
+            newPoints.add(new Point(point));
+        }
+        points = newPoints;
+
+        final ArrayList<Event> newEvents = new ArrayList<>(boardVector.events.size());
+        for (Event event : boardVector.events) {
+            newEvents.add(new Event(event));
+        }
+        events = newEvents;
+
+        layer = boardVector.layer;
+        polygon = boardVector.polygon;
+        selected = boardVector.selected;
+    }
+
+    /**
      *
      * @return
      */

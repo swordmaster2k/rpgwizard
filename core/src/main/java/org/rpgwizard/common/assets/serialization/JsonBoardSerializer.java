@@ -217,7 +217,8 @@ public class JsonBoardSerializer extends AbstractJsonSerializer {
         TileSet tileSet;
         int length = array.length();
         for (int i = 0; i < length; i++) {
-            tileSet = new TileSet();
+            AssetDescriptor descriptor = null;
+            tileSet = new TileSet(descriptor);
             String name = array.getString(i);
             tileSet.setName(name);
 

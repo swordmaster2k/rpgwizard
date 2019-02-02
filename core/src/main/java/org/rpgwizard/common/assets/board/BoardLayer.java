@@ -12,6 +12,7 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 import org.rpgwizard.common.assets.Board;
 import org.rpgwizard.common.assets.Tile;
 
@@ -80,13 +81,25 @@ public class BoardLayer implements Cloneable {
      */
     public BoardLayer(BoardLayer boardLayer, Board board) {
         this(board);
-        images = (ArrayList<BoardLayerImage>) boardLayer.images.clone();
-        lights = (ArrayList<BoardLight>) boardLayer.lights.clone();
+
         name = boardLayer.name;
         number = boardLayer.number;
-        sprites = (ArrayList<BoardSprite>) boardLayer.sprites.clone();
-        tiles = (Tile[][]) boardLayer.tiles.clone();
-        vectors = (ArrayList<BoardVector>) boardLayer.vectors.clone();
+        images = new ArrayList<>(
+                boardLayer.images.stream().map(item -> new BoardLayerImage(item)).collect(Collectors.toList()));
+        lights = new ArrayList<>(
+                boardLayer.lights.stream().map(item -> new BoardLight(item)).collect(Collectors.toList()));
+        sprites = new ArrayList<>(
+                boardLayer.sprites.stream().map(item -> new BoardSprite(item)).collect(Collectors.toList()));
+        vectors = new ArrayList<>(
+                boardLayer.vectors.stream().map(item -> new BoardVector(item)).collect(Collectors.toList()));
+        Tile[][] tilesCopy = new Tile[boardLayer.tiles.length][];
+        for (int i = 0; i < boardLayer.tiles.length; i++) {
+            Tile[] row = boardLayer.tiles[i];
+            int length = row.length;
+            tilesCopy[i] = new Tile[length];
+            System.arraycopy(row, 0, tilesCopy[i], 0, length);
+        }
+        tiles = tilesCopy;
     }
 
     /**
@@ -269,6 +282,25 @@ public class BoardLayer implements Cloneable {
             if (y >= 0 && y < tiles[x].length) {
                 tiles[x][y] = tile;
                 board.fireBoardChanged();
+            }
+        }
+    }
+
+    /**
+     * Pours the tile at the specified coordinates
+     *
+     * @param x
+     *            x position of tile
+     * @param y
+     *            y position of tile
+     * @param tile
+     *            the tile
+     * @param lastTile
+     */
+    public void pourTileAt(int x, int y, Tile tile) {
+        if (x >= 0 && x < tiles.length) {
+            if (y >= 0 && y < tiles[x].length) {
+                tiles[x][y] = tile;
             }
         }
     }

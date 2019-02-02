@@ -37,7 +37,9 @@ public class UndoRedoManager extends Stack<Board> {
 
     @Override
     public Board push(Board value) {
-        MainWindow.getInstance().enableUndo(true);
+        final MainWindow mainWindow = MainWindow.getInstance();
+        mainWindow.enableUndo(true);
+        mainWindow.enableRedo(false);
         if (!super.isEmpty()) {
             undoStack.push(super.pop());
         }

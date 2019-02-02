@@ -23,6 +23,17 @@ public class StartingPosition {
         layer = 0;
     }
 
+    /**
+     * Copy constructor.
+     * 
+     * @param startingPosition
+     */
+    public StartingPosition(StartingPosition startingPosition) {
+        x = startingPosition.x;
+        y = startingPosition.y;
+        layer = startingPosition.layer;
+    }
+
     public StartingPosition(int x, int y, int layer) {
         this.x = x;
         this.y = y;

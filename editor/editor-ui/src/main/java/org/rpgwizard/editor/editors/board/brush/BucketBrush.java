@@ -13,6 +13,7 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.util.Stack;
 import org.rpgwizard.common.assets.Tile;
+import org.rpgwizard.common.assets.board.BoardLayer;
 import org.rpgwizard.editor.editors.board.AbstractBoardView;
 import org.rpgwizard.editor.editors.board.BoardLayerView;
 import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
@@ -129,17 +130,12 @@ public class BucketBrush extends AbstractBrush {
      */
     @Override
     public Rectangle doPaint(int x, int y, Rectangle selection) {
-        BoardLayerView layer = affectedContainer.getLayer(currentLayer);
-
-        if (layer == null) {
+        BoardLayerView layerView = affectedContainer.getLayer(currentLayer);
+        if (layerView == null || pourTile.getTileSet() == null) {
             return null;
         }
-        if (pourTile.getTileSet() == null) {
-            return null;
-        }
-
-        oldTile = layer.getLayer().getTileAt(x, y);
-
+        BoardLayer layer = layerView.getLayer();
+        oldTile = layer.getTileAt(x, y);
         if (oldTile == pourTile) {
             return null;
         }
@@ -148,33 +144,30 @@ public class BucketBrush extends AbstractBrush {
             if (selection.contains(x, y)) {
                 for (int y2 = selection.y; y2 < selection.height + selection.y; y2++) {
                     for (int x2 = selection.x; x2 < selection.width + selection.x; x2++) {
-                        layer.getLayer().setTileAt(x2, y2, pourTile);
+                        layer.pourTileAt(x2, y2, pourTile);
                     }
                 }
             }
+            layer.getBoard().fireBoardChanged();
             return selection;
         } else {
             Rectangle area = new Rectangle(new Point(x, y));
             Stack<Point> stack = new Stack<>();
-
             stack.push(new Point(x, y));
-
             while (!stack.empty()) {
                 // Remove the next tile from the stack.
                 Point point = stack.pop();
 
-                if (layer.getLayer().contains(point.x, point.y)
-                        && layer.getLayer().getTileAt(point.x, point.y).equals(oldTile)) {
-                    layer.getLayer().setTileAt(point.x, point.y, pourTile);
+                if (layer.contains(point.x, point.y) && layer.getTileAt(point.x, point.y).equals(oldTile)) {
+                    layer.pourTileAt(point.x, point.y, pourTile);
                     area.add(point);
-
                     stack.push(new Point(point.x, point.y - 1));
                     stack.push(new Point(point.x, point.y + 1));
                     stack.push(new Point(point.x + 1, point.y));
                     stack.push(new Point(point.x - 1, point.y));
                 }
             }
-
+            layer.getBoard().fireBoardChanged();
             return new Rectangle(area.x, area.y, area.width + 1, area.height + 1);
         }
     }

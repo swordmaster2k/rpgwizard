@@ -7,7 +7,10 @@
  */
 package org.rpgwizard.common.utilities;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -27,6 +30,24 @@ import org.slf4j.LoggerFactory;
 public class CoreUtil {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CoreUtil.class);
+
+    /**
+     * Based on:
+     * 
+     * https://stackoverflow.com/a/3514297
+     * 
+     * @param source
+     * @return
+     */
+    public static BufferedImage copy(BufferedImage source) {
+        if (source == null) {
+            return source;
+        }
+        ColorModel cm = source.getColorModel();
+        boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
+        WritableRaster raster = source.copyData(null);
+        return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
+    }
 
     public static BufferedImage loadBufferedImage(String fileName) throws IOException {
         LOGGER.info("Loading image fileName=[{}]", fileName);

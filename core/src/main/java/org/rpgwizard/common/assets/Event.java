@@ -24,6 +24,16 @@ public class Event {
         this.program = program;
     }
 
+    /**
+     * Copy constructor.
+     * 
+     * @param event
+     */
+    public Event(Event event) {
+        type = event.type;
+        program = event.program;
+    }
+
     public EventType getType() {
         return type;
     }

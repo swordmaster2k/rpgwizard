@@ -156,14 +156,14 @@ public class EraserBrush extends AbstractBrush {
 
         if (selection != null && selection.contains(x, y)) {
             BoardLayerView layer = affectedContainer.getLayer(currentLayer);
-
             if (layer == null) {
                 return null;
             }
+
             if (selection.contains(x, y)) {
                 for (int y2 = selection.y; y2 < selection.height + selection.y; y2++) {
                     for (int x2 = selection.x; x2 < selection.width + selection.x; x2++) {
-                        layer.getLayer().setTileAt(x2, y2, paintTile);
+                        layer.getLayer().pourTileAt(x2, y2, paintTile);
                     }
                 }
             }
@@ -172,21 +172,18 @@ public class EraserBrush extends AbstractBrush {
             Rectangle shapeBounds = shape.getBounds();
             int centerX = x - shapeBounds.width / 2;
             int centerY = y - shapeBounds.height / 2;
-
             for (int layer = 0; layer < affectedLayers; layer++) {
                 BoardLayerView boardLayer = affectedContainer.getLayer(currentLayer + layer);
-
                 if (boardLayer != null) {
                     for (int i = 0; i <= shapeBounds.height + 1; i++) {
                         for (int j = 0; j <= shapeBounds.width + 1; j++) {
                             if (shape.contains(i, j)) {
-                                boardLayer.getLayer().setTileAt(j + centerX, i + centerY, paintTile);
+                                boardLayer.getLayer().pourTileAt(j + centerX, i + centerY, paintTile);
                             }
                         }
                     }
                 }
             }
-
             return new Rectangle(centerX, centerY, shapeBounds.width, shapeBounds.height);
         }
     }

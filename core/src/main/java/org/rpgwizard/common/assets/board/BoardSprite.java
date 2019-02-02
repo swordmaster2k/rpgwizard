@@ -68,6 +68,25 @@ public class BoardSprite extends AbstractBoardModel implements Cloneable, Select
     }
 
     /**
+     * Copy constructor.
+     * 
+     * @param boardSprite
+     */
+    public BoardSprite(BoardSprite boardSprite) {
+        sprite = boardSprite.sprite;
+        fileName = boardSprite.fileName;
+        id = boardSprite.id;
+        x = boardSprite.x;
+        y = boardSprite.y;
+        layer = boardSprite.layer;
+        eventType = boardSprite.eventType;
+        eventProgram = boardSprite.eventProgram;
+        thread = boardSprite.thread;
+        activationKey = boardSprite.activationKey;
+        selected = boardSprite.selected;
+    }
+
+    /**
      *
      * @return
      */

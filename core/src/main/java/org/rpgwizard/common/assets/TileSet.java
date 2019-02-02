@@ -29,8 +29,8 @@ public class TileSet extends AbstractAsset {
 
     private LinkedList<Tile> tiles;
 
-    public TileSet() {
-        super(null);
+    public TileSet(AssetDescriptor descriptor) {
+        super(descriptor);
         image = null;
         tiles = new LinkedList<>();
     }

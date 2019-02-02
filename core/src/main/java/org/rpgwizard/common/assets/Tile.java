@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
 import java.util.Objects;
+import org.rpgwizard.common.utilities.CoreUtil;
 
 /**
  *
@@ -31,6 +32,18 @@ public class Tile extends WritableRaster {
      */
     public Tile() {
         super(ColorModel.getRGBdefault().createCompatibleSampleModel(32, 32), new Point(0, 0));
+    }
+
+    /**
+     * Copy constructor.
+     * 
+     * @param tile
+     */
+    public Tile(Tile tile) {
+        super(tile.sampleModel, new Point(0, 0));
+        tileSet = tile.tileSet;
+        index = tile.index;
+        tileImage = CoreUtil.copy(tile.tileImage);
     }
 
     public Tile(int width, int height) {
@@ -162,6 +175,11 @@ public class Tile extends WritableRaster {
         }
 
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Tile{" + "tileSet=" + tileSet + ", index=" + index + ", tileImage=" + tileImage + '}';
     }
 
 }

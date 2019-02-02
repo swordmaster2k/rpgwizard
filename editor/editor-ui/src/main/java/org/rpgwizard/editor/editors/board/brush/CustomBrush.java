@@ -172,10 +172,10 @@ public class CustomBrush extends AbstractBrush {
                     break;
                 }
 
-                layer.getLayer().setTileAt(offsetX, offsetY, tiles[offsetX - centerX][offsetY - centerY]);
+                layer.getLayer().pourTileAt(offsetX, offsetY, tiles[offsetX - centerX][offsetY - centerY]);
             }
         }
-
+        layer.getLayer().getBoard().fireBoardChanged();
         return new Rectangle(centerX, centerY, bounds.width, bounds.height);
     }
 

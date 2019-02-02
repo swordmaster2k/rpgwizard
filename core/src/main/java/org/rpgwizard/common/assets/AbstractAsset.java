@@ -16,6 +16,16 @@ public abstract class AbstractAsset implements Asset {
 
     protected AssetDescriptor descriptor;
 
+    /**
+     * Copy constructor.
+     * 
+     * @param abstractAsset
+     */
+    public AbstractAsset(AbstractAsset abstractAsset) {
+        version = abstractAsset.version;
+        descriptor = abstractAsset.descriptor;
+    }
+
     public AbstractAsset(AssetDescriptor descriptor) {
         this.descriptor = descriptor;
     }

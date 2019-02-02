@@ -25,7 +25,7 @@ import org.rpgwizard.common.assets.listeners.SpriteChangeListener;
 public abstract class AbstractSprite extends AbstractAsset {
 
     // Non-IO
-    protected final LinkedList<SpriteChangeListener> spriteChangeListeners = new LinkedList<>();
+    protected LinkedList<SpriteChangeListener> spriteChangeListeners = new LinkedList<>();
 
     protected String name;
 
@@ -45,10 +45,32 @@ public abstract class AbstractSprite extends AbstractAsset {
     protected Point baseVectorOffset;
     protected Point activationVectorOffset;
 
+    /**
+     * Copy constructor.
+     * 
+     * @param abstractSprite
+     */
+    public AbstractSprite(AbstractSprite abstractSprite) {
+        super(abstractSprite);
+
+        spriteChangeListeners = abstractSprite.spriteChangeListeners;
+        name = abstractSprite.name;
+        idleTimeBeforeStanding = abstractSprite.idleTimeBeforeStanding;
+        frameRate = abstractSprite.frameRate;
+        loopSpeed = abstractSprite.loopSpeed;
+        animations = (LinkedHashMap<String, String>) abstractSprite.animations.clone();
+        graphics = (LinkedHashMap<String, String>) abstractSprite.graphics.clone();
+        standardGraphicsAnimations = (ArrayList<Animation>) abstractSprite.standardGraphicsAnimations.clone();
+        baseVector = abstractSprite.baseVector;
+        activationVector = abstractSprite.activationVector;
+        baseVectorOffset = abstractSprite.baseVectorOffset;
+        activationVector = abstractSprite.activationVector;
+    }
+
     public AbstractSprite(AssetDescriptor descriptor) {
         super(descriptor);
 
-        name = "";
+        name = "Undefined";
         idleTimeBeforeStanding = 3;
 
         // Insert the default animations.
@@ -64,8 +86,6 @@ public abstract class AbstractSprite extends AbstractAsset {
         }
 
         standardGraphicsAnimations = new ArrayList<>();
-
-        name = "Undefined";
 
         baseVector = new BoardVector();
         baseVector.addPoint(0, 0);

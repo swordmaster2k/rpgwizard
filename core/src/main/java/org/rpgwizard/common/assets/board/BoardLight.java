@@ -33,6 +33,23 @@ public class BoardLight implements Cloneable {
     }
 
     /**
+     * Copy constructor.
+     * 
+     * @param boardLight
+     */
+    public BoardLight(BoardLight boardLight) {
+        layer = boardLight.layer;
+        type = boardLight.type;
+        color = boardLight.color;
+        colors = (ArrayList<Color>) colors.clone();
+        final ArrayList<Point> newPoints = new ArrayList<>(boardLight.points.size());
+        for (Point point : boardLight.points) {
+            newPoints.add(new Point(point));
+        }
+        points = newPoints;
+    }
+
+    /**
      * Gets the associated layer.
      *
      * @return layer index

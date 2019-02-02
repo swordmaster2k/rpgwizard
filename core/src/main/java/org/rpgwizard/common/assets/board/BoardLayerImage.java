@@ -38,12 +38,28 @@ public class BoardLayerImage extends AbstractBoardModel implements Selectable {
 
     public BoardLayerImage() {
         id = UUID.randomUUID().toString();
-        this.src = "";
-        this.x = 0;
-        this.y = 0;
-        this.image = null;
-        this.layer = 0;
+        src = "";
+        x = 0;
+        y = 0;
+        image = null;
+        layer = 0;
         selected = false;
+    }
+
+    /**
+     * Copy constructor.
+     * 
+     * @param boardLayerImage
+     */
+    public BoardLayerImage(BoardLayerImage boardLayerImage) {
+        changeListeners = boardLayerImage.changeListeners;
+        id = boardLayerImage.id;
+        src = boardLayerImage.src;
+        x = boardLayerImage.x;
+        y = boardLayerImage.y;
+        image = CoreUtil.copy(boardLayerImage.image);
+        layer = boardLayerImage.layer;
+        selected = boardLayerImage.selected;
     }
 
     public BoardLayerImage(int x, int y, int layer) {

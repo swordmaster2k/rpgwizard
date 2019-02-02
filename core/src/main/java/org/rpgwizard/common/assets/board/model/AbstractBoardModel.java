@@ -16,7 +16,7 @@ import java.util.LinkedList;
  */
 public class AbstractBoardModel {
 
-    private final LinkedList<BoardModelChangeListener> changeListeners = new LinkedList<>();
+    protected LinkedList<BoardModelChangeListener> changeListeners = new LinkedList<>();
 
     /**
      * Add a new <code>BoardChangeListener</code> for this board.

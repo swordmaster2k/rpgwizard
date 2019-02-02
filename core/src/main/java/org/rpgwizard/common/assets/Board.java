@@ -107,6 +107,7 @@ public final class Board extends AbstractAsset implements Selectable {
      */
     public Board(Board board) {
         super(board.descriptor);
+
         backgroundMusic = board.backgroundMusic;
         boardChangeListeners = board.boardChangeListeners;
         boardDimensions = board.boardDimensions; // No need to deep copy
@@ -116,16 +117,16 @@ public final class Board extends AbstractAsset implements Selectable {
         height = board.height;
 
         // Need to deep copy these
-        LinkedList<BoardLayer> layerClones = new LinkedList<>();
-        for (BoardLayer layer : board.layers) {
-            layerClones.add(new BoardLayer(layer, this));
-        }
-        layers = layerClones;
+        LinkedList<BoardLayer> layersCopy = new LinkedList<>();
+        board.layers.forEach((layer) -> {
+            layersCopy.add(new BoardLayer(layer, this));
+        });
+        layers = layersCopy;
 
         name = board.name;
         perspective = board.perspective;
         selectedState = board.selectedState;
-        startingPosition = board.startingPosition;
+        startingPosition = new StartingPosition(board.startingPosition);
         tileWidth = board.tileWidth;
         tileHeight = board.tileHeight;
         tileSets = board.tileSets; // No need to deep copy

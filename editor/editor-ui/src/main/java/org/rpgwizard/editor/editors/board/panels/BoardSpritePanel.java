@@ -8,7 +8,6 @@
 package org.rpgwizard.editor.editors.board.panels;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import javax.swing.GroupLayout;
 import javax.swing.JComboBox;
@@ -86,15 +85,11 @@ public class BoardSpritePanel extends BoardModelPanel {
         fileComboBox.setSelectedItem(boardSprite.getFileName());
         fileComboBox.addActionListener((ActionEvent e) -> {
             String fileName = (String) fileComboBox.getSelectedItem();
-
             if (fileName == null) {
                 return;
             }
-
             boardSprite.setFileName((String) fileComboBox.getSelectedItem());
-            updateCurrentBoardView();
-
-            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+            updateCurrentBoardEditor();
         });
         ///
         /// idField
@@ -157,11 +152,9 @@ public class BoardSpritePanel extends BoardModelPanel {
         xSpinner.setValue(((BoardSprite) model).getX());
         xSpinner.addChangeListener((ChangeEvent e) -> {
             BoardSprite sprite = (BoardSprite) model;
-
             if (sprite.getX() != (int) xSpinner.getValue()) {
                 sprite.setX((int) xSpinner.getValue());
-                updateCurrentBoardView();
-                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+                updateCurrentBoardEditor();
             }
         });
         ///
@@ -171,11 +164,9 @@ public class BoardSpritePanel extends BoardModelPanel {
         ySpinner.setValue(((BoardSprite) model).getY());
         ySpinner.addChangeListener((ChangeEvent e) -> {
             BoardSprite sprite = (BoardSprite) model;
-
             if (sprite.getY() != (int) ySpinner.getValue()) {
                 sprite.setY((int) ySpinner.getValue());
-                updateCurrentBoardView();
-                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+                updateCurrentBoardEditor();
             }
         });
         ///
@@ -184,9 +175,7 @@ public class BoardSpritePanel extends BoardModelPanel {
         layerSpinner = getJSpinner(((BoardSprite) model).getLayer());
         layerSpinner.addChangeListener((ChangeEvent e) -> {
             BoardSprite sprite = (BoardSprite) model;
-
             BoardLayerView lastLayerView = getBoardEditor().getBoardView().getLayer((int) sprite.getLayer());
-
             BoardLayerView newLayerView = getBoardEditor().getBoardView().getLayer((int) layerSpinner.getValue());
 
             // Make sure this is a valid move.
@@ -195,39 +184,14 @@ public class BoardSpritePanel extends BoardModelPanel {
                 sprite.setLayer((int) layerSpinner.getValue());
                 newLayerView.getLayer().getSprites().add(sprite);
                 lastLayerView.getLayer().getSprites().remove(sprite);
-                updateCurrentBoardView();
+                updateCurrentBoardEditor();
 
                 // Store new layer selection index.
                 lastSpinnerLayer = (int) layerSpinner.getValue();
-
-                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
             } else {
                 // Not a valid layer revert selection.
                 layerSpinner.setValue(lastSpinnerLayer);
             }
-        });
-        ///
-        /// typeComboBox
-        ///
-        eventComboBox = new JComboBox(EVENT_TYPES);
-        eventComboBox.setSelectedItem(boardSprite.getEventType().toString());
-        eventComboBox.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String selected = eventComboBox.getSelectedItem().toString();
-
-                if (selected.equalsIgnoreCase(EventType.OVERLAP.toString())) {
-                    boardSprite.setEventType(EventType.OVERLAP);
-                    MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
-                    keyComboBox.setEnabled(false);
-                } else if (selected.equalsIgnoreCase(EventType.KEYPRESS.toString())) {
-                    boardSprite.setEventType(EventType.KEYPRESS);
-                    MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
-                    keyComboBox.setEnabled(true);
-                }
-            }
-
         });
         ///
         /// keyComboBox
@@ -239,14 +203,27 @@ public class BoardSpritePanel extends BoardModelPanel {
         } else {
             keyComboBox.setEnabled(false);
         }
-        keyComboBox.addActionListener(new ActionListener() {
+        keyComboBox.addActionListener((ActionEvent e) -> {
+            ((BoardSprite) model).setActivationKey(keyComboBox.getSelectedItem().toString());
+            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+        });
+        ///
+        /// typeComboBox
+        ///
+        eventComboBox = new JComboBox(EVENT_TYPES);
+        eventComboBox.setSelectedItem(boardSprite.getEventType().toString());
+        eventComboBox.addActionListener((ActionEvent e) -> {
+            String selected = eventComboBox.getSelectedItem().toString();
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ((BoardSprite) model).setActivationKey(keyComboBox.getSelectedItem().toString());
+            if (selected.equalsIgnoreCase(EventType.OVERLAP.toString())) {
+                boardSprite.setEventType(EventType.OVERLAP);
                 MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+                keyComboBox.setEnabled(false);
+            } else if (selected.equalsIgnoreCase(EventType.KEYPRESS.toString())) {
+                boardSprite.setEventType(EventType.KEYPRESS);
+                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+                keyComboBox.setEnabled(true);
             }
-
         });
         ///
         /// this

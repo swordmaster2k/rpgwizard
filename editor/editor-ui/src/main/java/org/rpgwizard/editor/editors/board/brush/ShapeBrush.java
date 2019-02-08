@@ -173,7 +173,11 @@ public class ShapeBrush extends AbstractBrush {
                 for (int i = 0; i <= shapeBounds.height + 1; i++) {
                     for (int j = 0; j <= shapeBounds.width + 1; j++) {
                         if (shape.contains(i, j)) {
-                            boardLayer.getLayer().setTileAt(j + centerX, i + centerY, paintTile);
+                            boolean tileEffected = boardLayer.getLayer().pourTileAt(j + centerX, i + centerY,
+                                    paintTile);
+                            if (!changedEntity && tileEffected) {
+                                changedEntity = true;
+                            }
                         }
                     }
                 }
@@ -188,6 +192,10 @@ public class ShapeBrush extends AbstractBrush {
         if (editor instanceof BoardEditor) {
             BoardEditor boardEditor = (BoardEditor) editor;
             boardEditor.setSelection(null);
+            ((BoardEditor) editor).doPaint(this, point, null);
+            if (changedEntity) {
+                boardEditor.getBoard().fireBoardChanged();
+            }
         }
     }
 
@@ -202,15 +210,17 @@ public class ShapeBrush extends AbstractBrush {
     }
 
     @Override
-    public void doMouseButton1Dragged(Point point, Point origin, AbstractAssetEditorWindow editor) {
+    public boolean doMouseButton1Dragged(Point point, Point origin, AbstractAssetEditorWindow editor) {
         if (editor instanceof BoardEditor) {
             ((BoardEditor) editor).doPaint(this, point, null);
+            return changedEntity;
         }
+        return false;
     }
 
     @Override
-    public void doMouseButton3Dragged(Point point, Point origin, AbstractAssetEditorWindow editor) {
-
+    public boolean doMouseButton3Dragged(Point point, Point origin, AbstractAssetEditorWindow editor) {
+        return false;
     }
 
     @Override

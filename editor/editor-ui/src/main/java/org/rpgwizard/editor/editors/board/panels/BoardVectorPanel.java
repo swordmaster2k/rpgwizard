@@ -8,7 +8,6 @@
 package org.rpgwizard.editor.editors.board.panels;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.File;
@@ -19,7 +18,6 @@ import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import org.rpgwizard.editor.editors.board.BoardLayerView;
 import org.rpgwizard.common.assets.board.BoardVector;
@@ -75,30 +73,24 @@ public class BoardVectorPanel extends BoardModelPanel {
         /// layerSpinner
         ///
         layerSpinner = getJSpinner(((BoardVector) model).getLayer());
-        layerSpinner.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                BoardLayerView lastLayerView = getBoardEditor().getBoardView()
-                        .getLayer(((BoardVector) model).getLayer());
+        layerSpinner.addChangeListener((ChangeEvent e) -> {
+            BoardLayerView lastLayerView = getBoardEditor().getBoardView().getLayer(((BoardVector) model).getLayer());
 
-                BoardLayerView newLayerView = getBoardEditor().getBoardView().getLayer((int) layerSpinner.getValue());
+            BoardLayerView newLayerView = getBoardEditor().getBoardView().getLayer((int) layerSpinner.getValue());
 
-                // Make sure this is a valid move.
-                if (lastLayerView != null && newLayerView != null) {
-                    // Do the swap.
-                    ((BoardVector) model).setLayer((int) layerSpinner.getValue());
-                    newLayerView.getLayer().getVectors().add((BoardVector) model);
-                    lastLayerView.getLayer().getVectors().remove((BoardVector) model);
-                    updateCurrentBoardView();
+            // Make sure this is a valid move.
+            if (lastLayerView != null && newLayerView != null) {
+                // Do the swap.
+                ((BoardVector) model).setLayer((int) layerSpinner.getValue());
+                newLayerView.getLayer().getVectors().add((BoardVector) model);
+                lastLayerView.getLayer().getVectors().remove((BoardVector) model);
+                updateCurrentBoardEditor();
 
-                    // Store new layer selection index.
-                    lastSpinnerLayer = (int) layerSpinner.getValue();
-
-                    MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
-                } else {
-                    // Not a valid layer revert selection.
-                    layerSpinner.setValue(lastSpinnerLayer);
-                }
+                // Store new layer selection index.
+                lastSpinnerLayer = (int) layerSpinner.getValue();
+            } else {
+                // Not a valid layer revert selection.
+                layerSpinner.setValue(lastSpinnerLayer);
             }
         });
 
@@ -109,14 +101,9 @@ public class BoardVectorPanel extends BoardModelPanel {
         ///
         isClosedCheckBox = new JCheckBox();
         isClosedCheckBox.setSelected(((BoardVector) model).isClosed());
-        isClosedCheckBox.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ((BoardVector) model).setClosed(isClosedCheckBox.isSelected());
-                updateCurrentBoardView();
-                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
-            }
+        isClosedCheckBox.addActionListener((ActionEvent e) -> {
+            ((BoardVector) model).setClosed(isClosedCheckBox.isSelected());
+            updateCurrentBoardEditor();
         });
         ///
         /// idTextField
@@ -151,48 +138,17 @@ public class BoardVectorPanel extends BoardModelPanel {
             break;
         }
 
-        typeComboBox.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                switch (typeComboBox.getSelectedIndex()) {
-                case 0:
-                    ((BoardVector) model).setType(BoardVectorType.PASSABLE);
-                    break;
-                case 1:
-                    ((BoardVector) model).setType(BoardVectorType.SOLID);
-                    break;
-                }
-
-                updateCurrentBoardView();
-                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
-            }
-        });
-        ///
-        /// eventComboBox
-        ///
-        eventComboBox = new JComboBox<>(EVENT_TYPES);
-        eventComboBox.setEnabled(true);
-        eventComboBox.setSelectedItem(((BoardVector) model).getEvents().get(0).getType().toString());
-        eventComboBox.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Event event = ((BoardVector) model).getEvents().get(0);
-                String selected = eventComboBox.getSelectedItem().toString();
-
-                if (selected.equals(EventType.OVERLAP.toString())) {
-                    event = new Event(EventType.OVERLAP, event.getProgram());
-                    event.setType(EventType.OVERLAP);
-                    keyComboBox.setEnabled(false);
-                } else if (selected.equals(EventType.KEYPRESS.toString())) {
-                    event = new KeyPressEvent(event.getProgram(), selected);
-                    keyComboBox.setEnabled(true);
-                }
-                ((BoardVector) model).getEvents().set(0, event);
-                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+        typeComboBox.addActionListener((ActionEvent e) -> {
+            switch (typeComboBox.getSelectedIndex()) {
+            case 0:
+                ((BoardVector) model).setType(BoardVectorType.PASSABLE);
+                break;
+            case 1:
+                ((BoardVector) model).setType(BoardVectorType.SOLID);
+                break;
             }
 
+            updateCurrentBoardEditor();
         });
         ///
         /// keyComboBox
@@ -206,16 +162,32 @@ public class BoardVectorPanel extends BoardModelPanel {
         } else {
             keyComboBox.setEnabled(false);
         }
-        keyComboBox.addActionListener(new ActionListener() {
+        keyComboBox.addActionListener((ActionEvent e) -> {
+            KeyPressEvent event = (KeyPressEvent) ((BoardVector) model).getEvents().get(0);
+            event.setKey(keyComboBox.getSelectedItem().toString());
+            ((BoardVector) model).getEvents().set(0, event);
+            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+        });
+        ///
+        /// eventComboBox
+        ///
+        eventComboBox = new JComboBox<>(EVENT_TYPES);
+        eventComboBox.setEnabled(true);
+        eventComboBox.setSelectedItem(((BoardVector) model).getEvents().get(0).getType().toString());
+        eventComboBox.addActionListener((ActionEvent e) -> {
+            Event event = ((BoardVector) model).getEvents().get(0);
+            String selected = eventComboBox.getSelectedItem().toString();
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                KeyPressEvent event = (KeyPressEvent) ((BoardVector) model).getEvents().get(0);
-                event.setKey(keyComboBox.getSelectedItem().toString());
-                ((BoardVector) model).getEvents().set(0, event);
-                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+            if (selected.equals(EventType.OVERLAP.toString())) {
+                event = new Event(EventType.OVERLAP, event.getProgram());
+                event.setType(EventType.OVERLAP);
+                keyComboBox.setEnabled(false);
+            } else if (selected.equals(EventType.KEYPRESS.toString())) {
+                event = new KeyPressEvent(event.getProgram(), selected);
+                keyComboBox.setEnabled(true);
             }
-
+            ((BoardVector) model).getEvents().set(0, event);
+            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
         });
         ///
         /// eventProgramComboBox
@@ -225,21 +197,16 @@ public class BoardVectorPanel extends BoardModelPanel {
         String[] exts = new String[] { "program", "js" };
         eventProgramComboBox = GuiHelper.getFileListJComboBox(new File[] { directory }, exts, true);
         eventProgramComboBox.setSelectedItem(((BoardVector) model).getEvents().get(0).getProgram());
-        eventProgramComboBox.addActionListener(new ActionListener() {
+        eventProgramComboBox.addActionListener((ActionEvent e) -> {
+            Event event = ((BoardVector) model).getEvents().get(0);
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Event event = ((BoardVector) model).getEvents().get(0);
-
-                if (eventProgramComboBox.getSelectedItem() == null) {
-                    event.setProgram("");
-                } else {
-                    event.setProgram((String) eventProgramComboBox.getSelectedItem());
-                }
-                ((BoardVector) model).getEvents().set(0, event);
-                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+            if (eventProgramComboBox.getSelectedItem() == null) {
+                event.setProgram("");
+            } else {
+                event.setProgram((String) eventProgramComboBox.getSelectedItem());
             }
-
+            ((BoardVector) model).getEvents().set(0, event);
+            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
         });
         ///
         /// this

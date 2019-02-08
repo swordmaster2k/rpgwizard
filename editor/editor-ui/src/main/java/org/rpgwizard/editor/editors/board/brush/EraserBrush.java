@@ -171,7 +171,10 @@ public class EraserBrush extends AbstractBrush {
     public void doMouseButton1Pressed(Point point, AbstractAssetEditorWindow editor) {
         if (editor instanceof BoardEditor) {
             BoardEditor boardEditor = (BoardEditor) editor;
-            boardEditor.setSelection(null);
+            boardEditor.doPaint(this, point, boardEditor.getSelectionExpaned());
+            if (changedEntity) {
+                boardEditor.getBoard().fireBoardChanged();
+            }
         }
     }
 
@@ -186,15 +189,17 @@ public class EraserBrush extends AbstractBrush {
     }
 
     @Override
-    public void doMouseButton1Dragged(Point point, Point origin, AbstractAssetEditorWindow editor) {
+    public boolean doMouseButton1Dragged(Point point, Point origin, AbstractAssetEditorWindow editor) {
         if (editor instanceof BoardEditor) {
             ((BoardEditor) editor).doPaint(this, point, null);
+            return changedEntity;
         }
+        return false;
     }
 
     @Override
-    public void doMouseButton3Dragged(Point point, Point origin, AbstractAssetEditorWindow editor) {
-
+    public boolean doMouseButton3Dragged(Point point, Point origin, AbstractAssetEditorWindow editor) {
+        return false;
     }
 
     private Rectangle handleSelection(final BoardLayer layer, final Rectangle selection, final Point origin) {
@@ -203,19 +208,15 @@ public class EraserBrush extends AbstractBrush {
             return null;
         }
 
-        boolean changed = false;
         if (selection.contains(origin.x, origin.y)) {
             for (int y2 = selection.y; y2 < selection.height + selection.y; y2++) {
                 for (int x2 = selection.x; x2 < selection.width + selection.x; x2++) {
                     boolean tileEffected = layer.pourTileAt(x2, y2, paintTile);
-                    if (!changed && tileEffected) {
-                        changed = true;
+                    if (!changedEntity && tileEffected) {
+                        changedEntity = true;
                     }
                 }
             }
-        }
-        if (changed && layer != null) {
-            layer.getBoard().fireBoardChanged();
         }
 
         return selection;
@@ -225,19 +226,15 @@ public class EraserBrush extends AbstractBrush {
         Rectangle shapeBounds = shape.getBounds();
         int centerX = origin.x - shapeBounds.width / 2;
         int centerY = origin.y - shapeBounds.height / 2;
-        boolean changed = false;
         for (int i = 0; i <= shapeBounds.height + 1; i++) {
             for (int j = 0; j <= shapeBounds.width + 1; j++) {
                 if (shape.contains(i, j)) {
                     boolean tileEffected = layer.pourTileAt(j + centerX, i + centerY, paintTile);
-                    if (!changed && tileEffected) {
-                        changed = true;
+                    if (!changedEntity && tileEffected) {
+                        changedEntity = true;
                     }
                 }
             }
-        }
-        if (changed && layer != null) {
-            layer.getBoard().fireBoardChanged();
         }
 
         return new Rectangle(centerX, centerY, shapeBounds.width, shapeBounds.height);

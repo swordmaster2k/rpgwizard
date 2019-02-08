@@ -38,10 +38,10 @@ public class BoardModelPanel extends AbstractModelPanel implements BoardModelCha
         return MainWindow.getInstance().getCurrentBoardEditor();
     }
 
-    public void updateCurrentBoardView() {
+    public void updateCurrentBoardEditor() {
         BoardEditor editor = MainWindow.getInstance().getCurrentBoardEditor();
-
         if (editor != null) {
+            editor.getBoard().fireBoardChanged();
             editor.getBoardView().repaint();
         }
     }

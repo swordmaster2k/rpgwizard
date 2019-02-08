@@ -7,6 +7,7 @@
  */
 package org.rpgwizard.common.assets.board;
 
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -205,6 +206,14 @@ public class BoardSprite extends AbstractBoardModel implements Cloneable, Select
      */
     public void setY(int y) {
         this.y = y;
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public Point getPosition() {
+        return new Point(x, y);
     }
 
     /**

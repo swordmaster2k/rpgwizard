@@ -32,6 +32,9 @@ public class BoardMouseAdapter extends MouseAdapter {
     private Point origin;
     private final BoardEditor editor;
 
+    private boolean draggingEntity;
+    private boolean changedEntity;
+
     /**
      *
      *
@@ -39,6 +42,8 @@ public class BoardMouseAdapter extends MouseAdapter {
      */
     public BoardMouseAdapter(BoardEditor boardEditor) {
         editor = boardEditor;
+        draggingEntity = false;
+        changedEntity = false;
     }
 
     /**
@@ -71,6 +76,28 @@ public class BoardMouseAdapter extends MouseAdapter {
             default:
                 break;
             }
+        }
+    }
+
+    /**
+     * 
+     * @param e
+     */
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        int button = e.getButton();
+        switch (button) {
+        case MouseEvent.BUTTON1:
+        case MouseEvent.BUTTON3:
+            if (draggingEntity) {
+                draggingEntity = false;
+            }
+            if (changedEntity) {
+                changedEntity = false;
+                editor.getBoard().fireBoardChanged();
+            }
+        default:
+            break;
         }
     }
 
@@ -133,8 +160,6 @@ public class BoardMouseAdapter extends MouseAdapter {
 
         origin = point;
         brush.doMouseButton1Pressed(point, editor);
-
-        editor.doPaint(brush, point, selection);
     }
 
     /**
@@ -191,7 +216,7 @@ public class BoardMouseAdapter extends MouseAdapter {
         editor.setCursorTileLocation(point);
         editor.setCursorLocation(new Point(x, y));
 
-        brush.doMouseButton1Dragged(point, origin, editor);
+        changedEntity = brush.doMouseButton1Dragged(point, origin, editor) || changedEntity;
     }
 
     /**
@@ -214,7 +239,12 @@ public class BoardMouseAdapter extends MouseAdapter {
         editor.setCursorTileLocation(point);
         editor.setCursorLocation(new Point(x, y));
 
-        brush.doMouseButton3Dragged(point, origin, editor);
+        changedEntity = brush.doMouseButton3Dragged(point, origin, editor) || changedEntity;
+
+        // Set the dragging flag if required.
+        if (!draggingEntity) {
+            draggingEntity = true;
+        }
     }
 
     private boolean checkBrushValid(AbstractBrush brush) {

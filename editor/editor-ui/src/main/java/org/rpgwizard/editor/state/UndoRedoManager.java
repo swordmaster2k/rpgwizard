@@ -11,6 +11,8 @@ package org.rpgwizard.editor.state;
 import java.util.Stack;
 import org.rpgwizard.common.assets.Board;
 import org.rpgwizard.editor.MainWindow;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Simple Undo/Redo management system.
@@ -21,7 +23,10 @@ import org.rpgwizard.editor.MainWindow;
  */
 public class UndoRedoManager extends Stack<Board> {
 
+    private static final int MAX_UNDO = 10;
     private final Stack<Board> undoStack;
+
+    private static final int MAX_REDO = 10;
     private final Stack<Board> redoStack;
 
     public UndoRedoManager() {
@@ -40,11 +45,14 @@ public class UndoRedoManager extends Stack<Board> {
         final MainWindow mainWindow = MainWindow.getInstance();
         mainWindow.enableUndo(true);
         mainWindow.enableRedo(false);
+        ensureCapacities();
+
         if (!super.isEmpty()) {
             undoStack.push(super.pop());
         }
         super.push(new Board(value));
         redoStack.clear();
+
         return super.peek();
     }
 
@@ -64,6 +72,7 @@ public class UndoRedoManager extends Stack<Board> {
         if (!canUndo()) {
             throw new IllegalStateException("Nothing to undo!");
         }
+        ensureCapacities();
         redoStack.push(super.pop());
         super.push(undoStack.pop());
         return new Board(super.peek());
@@ -77,9 +86,19 @@ public class UndoRedoManager extends Stack<Board> {
         if (!canRedo()) {
             throw new IllegalStateException("Nothing to redo!");
         }
+        ensureCapacities();
         undoStack.push(super.pop());
         super.push(redoStack.pop());
         return new Board(super.peek());
+    }
+
+    private void ensureCapacities() {
+        while (undoStack.size() > MAX_UNDO) {
+            undoStack.remove(0);
+        }
+        while (redoStack.size() > MAX_REDO) {
+            redoStack.remove(0);
+        }
     }
 
 }

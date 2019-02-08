@@ -12,6 +12,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import org.rpgwizard.common.assets.Board;
+import org.rpgwizard.editor.editors.BoardEditor;
 import org.rpgwizard.editor.editors.board.AbstractBoardView;
 import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 
@@ -63,7 +64,8 @@ public class StartPositionBrush extends AbstractBrush {
 
     @Override
     public void doMouseButton1Pressed(Point point, AbstractAssetEditorWindow editor) {
-
+        BoardEditor boardEditor = (BoardEditor) editor;
+        boardEditor.doPaint(this, point, null);
     }
 
     @Override
@@ -77,13 +79,13 @@ public class StartPositionBrush extends AbstractBrush {
     }
 
     @Override
-    public void doMouseButton1Dragged(Point point, Point origin, AbstractAssetEditorWindow editor) {
-
+    public boolean doMouseButton1Dragged(Point point, Point origin, AbstractAssetEditorWindow editor) {
+        return false;
     }
 
     @Override
-    public void doMouseButton3Dragged(Point point, Point origin, AbstractAssetEditorWindow editor) {
-
+    public boolean doMouseButton3Dragged(Point point, Point origin, AbstractAssetEditorWindow editor) {
+        return false;
     }
 
     @Override

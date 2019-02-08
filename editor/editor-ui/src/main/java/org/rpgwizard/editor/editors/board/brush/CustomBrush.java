@@ -172,10 +172,13 @@ public class CustomBrush extends AbstractBrush {
                     break;
                 }
 
-                layer.getLayer().pourTileAt(offsetX, offsetY, tiles[offsetX - centerX][offsetY - centerY]);
+                boolean tileEffected = layer.getLayer().pourTileAt(offsetX, offsetY,
+                        tiles[offsetX - centerX][offsetY - centerY]);
+                if (!changedEntity && tileEffected) {
+                    changedEntity = true;
+                }
             }
         }
-        layer.getLayer().getBoard().fireBoardChanged();
         return new Rectangle(centerX, centerY, bounds.width, bounds.height);
     }
 
@@ -188,7 +191,8 @@ public class CustomBrush extends AbstractBrush {
 
     @Override
     public void doMouseButton1Pressed(Point point, AbstractAssetEditorWindow editor) {
-
+        BoardEditor boardEditor = (BoardEditor) editor;
+        boardEditor.doPaint(this, point, null);
     }
 
     @Override
@@ -202,15 +206,17 @@ public class CustomBrush extends AbstractBrush {
     }
 
     @Override
-    public void doMouseButton1Dragged(Point point, Point origin, AbstractAssetEditorWindow editor) {
+    public boolean doMouseButton1Dragged(Point point, Point origin, AbstractAssetEditorWindow editor) {
         if (editor instanceof BoardEditor) {
             ((BoardEditor) editor).doPaint(this, point, null);
+            return changedEntity;
         }
+        return false;
     }
 
     @Override
-    public void doMouseButton3Dragged(Point point, Point origin, AbstractAssetEditorWindow editor) {
-
+    public boolean doMouseButton3Dragged(Point point, Point origin, AbstractAssetEditorWindow editor) {
+        return false;
     }
 
     @Override

@@ -512,6 +512,8 @@ public final class BoardEditor extends AbstractAssetEditorWindow
         try {
             board = undoRedoManager.undo();
             boardView.update(board);
+            setSelectedObject(board);
+            MainWindow.getInstance().getLayerPanel().setBoardView(boardView);
         } catch (IllegalStateException ex) {
             // Ignore it
         }
@@ -522,6 +524,8 @@ public final class BoardEditor extends AbstractAssetEditorWindow
         try {
             board = undoRedoManager.redo();
             boardView.update(board);
+            setSelectedObject(board);
+            MainWindow.getInstance().getLayerPanel().setBoardView(boardView);
         } catch (IllegalStateException ex) {
             // Ignore it
         }

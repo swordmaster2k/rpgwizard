@@ -335,6 +335,10 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         return this.toolBar;
     }
 
+    public LayerPanel getLayerPanel() {
+        return layerPanel;
+    }
+
     public PropertiesPanel getPropertiesPanel() {
         return this.propertiesPanel;
     }

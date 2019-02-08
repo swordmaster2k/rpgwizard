@@ -223,12 +223,12 @@ public class BoardVectorBrush extends AbstractBrush {
 
     @Override
     public void doMouseButton1Pressed(Point point, AbstractAssetEditorWindow editor) {
-
+        BoardEditor boardEditor = (BoardEditor) editor;
+        boardEditor.doPaint(this, point, null);
     }
 
     @Override
     public void doMouseButton2Pressed(Point point, AbstractAssetEditorWindow editor) {
-
         if (editor instanceof BoardEditor) {
             BoardEditor boardEditor = (BoardEditor) editor;
             if (stillDrawing) {
@@ -237,36 +237,32 @@ public class BoardVectorBrush extends AbstractBrush {
             RemoveVectorAction action = new RemoveVectorAction(boardEditor, point.x, point.y);
             action.actionPerformed(null);
         }
-
     }
 
     @Override
     public void doMouseButton3Pressed(Point point, AbstractAssetEditorWindow editor) {
-
         if (editor instanceof BoardEditor) {
             BoardEditor boardEditor = (BoardEditor) editor;
-
-            // We are drawing a vector, so lets finish it.
             if (stillDrawing) {
+                // We are drawing a vector, so lets finish it.
                 finish();
-            } else // We want to select a vector.
-            {
+            } else {
+                // We want to select a vector.
                 selectVector(
                         boardEditor.getBoardView().getCurrentSelectedLayer().getLayer().findVectorAt(point.x, point.y),
                         boardEditor);
             }
         }
-
     }
 
     @Override
-    public void doMouseButton1Dragged(Point point, Point origin, AbstractAssetEditorWindow editor) {
-
+    public boolean doMouseButton1Dragged(Point point, Point origin, AbstractAssetEditorWindow editor) {
+        return false;
     }
 
     @Override
-    public void doMouseButton3Dragged(Point point, Point origin, AbstractAssetEditorWindow editor) {
-
+    public boolean doMouseButton3Dragged(Point point, Point origin, AbstractAssetEditorWindow editor) {
+        return false;
     }
 
     @Override
@@ -282,11 +278,9 @@ public class BoardVectorBrush extends AbstractBrush {
     private void selectVector(BoardVector vector, BoardEditor editor) {
         if (vector != null) {
             vector.setSelectedState(true);
-
             if (editor.getSelectedObject() != null) {
                 editor.getSelectedObject().setSelectedState(false);
             }
-
             editor.setSelectedObject(vector);
         } else if (editor.getSelectedObject() != null) {
             editor.getSelectedObject().setSelectedState(false);

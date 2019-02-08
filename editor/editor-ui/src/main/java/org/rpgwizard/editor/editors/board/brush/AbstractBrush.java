@@ -44,6 +44,11 @@ public abstract class AbstractBrush implements Brush {
     protected int currentLayer;
 
     /**
+     * 
+     */
+    protected boolean changedEntity;
+
+    /**
     *
     */
     public AbstractBrush() {
@@ -97,6 +102,7 @@ public abstract class AbstractBrush implements Brush {
         if (!isPainting) {
             throw new Exception("Attempted to call doPaint() without calling" + "startPaint() beforehand.");
         }
+        changedEntity = false;
 
         return null;
     }
@@ -121,9 +127,9 @@ public abstract class AbstractBrush implements Brush {
 
     public abstract void doMouseButton3Pressed(Point point, AbstractAssetEditorWindow editor);
 
-    public abstract void doMouseButton1Dragged(Point point, Point origin, AbstractAssetEditorWindow editor);
+    public abstract boolean doMouseButton1Dragged(Point point, Point origin, AbstractAssetEditorWindow editor);
 
-    public abstract void doMouseButton3Dragged(Point point, Point origin, AbstractAssetEditorWindow editor);
+    public abstract boolean doMouseButton3Dragged(Point point, Point origin, AbstractAssetEditorWindow editor);
 
     public abstract boolean isPixelBased();
 

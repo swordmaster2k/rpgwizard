@@ -68,9 +68,7 @@ public class BoardLayerImagePanel extends BoardModelPanel {
             }
 
             boardLayerImage.loadImage((String) fileComboBox.getSelectedItem());
-            updateCurrentBoardView();
-
-            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+            updateCurrentBoardEditor();
         });
         ///
         /// idField
@@ -111,8 +109,7 @@ public class BoardLayerImagePanel extends BoardModelPanel {
 
             if (image.getX() != (int) xSpinner.getValue()) {
                 image.setX((int) xSpinner.getValue());
-                updateCurrentBoardView();
-                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+                updateCurrentBoardEditor();
             }
         });
         ///
@@ -125,8 +122,7 @@ public class BoardLayerImagePanel extends BoardModelPanel {
 
             if (image.getY() != (int) ySpinner.getValue()) {
                 image.setY((int) ySpinner.getValue());
-                updateCurrentBoardView();
-                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+                updateCurrentBoardEditor();
             }
         });
         ///
@@ -146,12 +142,10 @@ public class BoardLayerImagePanel extends BoardModelPanel {
                 image.setLayer((int) layerSpinner.getValue());
                 newLayerView.getLayer().getImages().add(image);
                 lastLayerView.getLayer().getImages().remove(image);
-                updateCurrentBoardView();
+                updateCurrentBoardEditor();
 
                 // Store new layer selection index.
                 lastSpinnerLayer = (int) layerSpinner.getValue();
-
-                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
             } else {
                 // Not a valid layer revert selection.
                 layerSpinner.setValue(lastSpinnerLayer);

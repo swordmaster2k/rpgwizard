@@ -137,7 +137,8 @@ public class BoardSpriteBrush extends AbstractBrush {
 
     @Override
     public void doMouseButton1Pressed(Point point, AbstractAssetEditorWindow editor) {
-
+        BoardEditor boardEditor = (BoardEditor) editor;
+        boardEditor.doPaint(this, point, null);
     }
 
     @Override
@@ -162,12 +163,12 @@ public class BoardSpriteBrush extends AbstractBrush {
     }
 
     @Override
-    public void doMouseButton1Dragged(Point point, Point origin, AbstractAssetEditorWindow editor) {
-
+    public boolean doMouseButton1Dragged(Point point, Point origin, AbstractAssetEditorWindow editor) {
+        return false;
     }
 
     @Override
-    public void doMouseButton3Dragged(Point point, Point origin, AbstractAssetEditorWindow editor) {
+    public boolean doMouseButton3Dragged(Point point, Point origin, AbstractAssetEditorWindow editor) {
         if (editor instanceof BoardEditor) {
             BoardEditor boardEditor = (BoardEditor) editor;
             if (boardEditor.getSelectedObject() == boardSprite) {
@@ -176,11 +177,16 @@ public class BoardSpriteBrush extends AbstractBrush {
                     if (MainWindow.getInstance().isSnapToGrid()) {
                         point = getSnapPoint(boardEditor.getBoard(), point.x, point.y);
                     }
-                    boardSprite.setPosition(point.x, point.y);
+                    final Point current = boardSprite.getPosition();
+                    if (!current.equals(point)) {
+                        boardSprite.setPosition(point.x, point.y);
+                    }
                     boardEditor.getBoardView().repaint();
+                    return true;
                 }
             }
         }
+        return false;
     }
 
     @Override

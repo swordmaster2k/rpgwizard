@@ -98,6 +98,7 @@ public class BoardMouseAdapter extends MouseAdapter {
                 doMouseButton3Dragged(brush, x, y);
             }
         }
+        editor.getBoardView().repaint();
     }
 
     /**

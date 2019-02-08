@@ -9,6 +9,7 @@ package org.rpgwizard.common.assets;
 
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
+import java.util.Objects;
 
 /**
  * This class is responsible for managing a tilset inside the editor It stores all of the tiles in the set in a big
@@ -126,6 +127,40 @@ public class TileSet extends AbstractAsset {
      */
     public void addTile(Tile newTile) {
         tiles.add(newTile);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 83 * hash + Objects.hashCode(this.name);
+        hash = 83 * hash + this.tileWidth;
+        hash = 83 * hash + this.tileHeight;
+        hash = 83 * hash + Objects.hashCode(this.image);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final TileSet other = (TileSet) obj;
+        if (this.tileWidth != other.tileWidth) {
+            return false;
+        }
+        if (this.tileHeight != other.tileHeight) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        return Objects.equals(this.image, other.image);
     }
 
 }

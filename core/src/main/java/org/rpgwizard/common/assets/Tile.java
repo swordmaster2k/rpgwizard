@@ -170,11 +170,7 @@ public class Tile extends WritableRaster {
         if (this.tileSet == null && other.tileSet == null) {
             return true;
         }
-        if ((!this.tileSet.getName().equals(other.tileSet.getName())) || this.index != other.index) {
-            return false;
-        }
-
-        return true;
+        return !((!this.tileSet.getName().equals(other.tileSet.getName())) || this.index != other.index);
     }
 
     @Override

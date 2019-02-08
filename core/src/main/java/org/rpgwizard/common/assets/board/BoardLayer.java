@@ -276,14 +276,19 @@ public class BoardLayer implements Cloneable {
      *            y position of tile
      * @param tile
      *            the tile
+     * @return
      */
-    public void setTileAt(int x, int y, Tile tile) {
+    public boolean setTileAt(int x, int y, Tile tile) {
         if (x >= 0 && x < tiles.length) {
             if (y >= 0 && y < tiles[x].length) {
-                tiles[x][y] = tile;
-                board.fireBoardChanged();
+                if (!tiles[x][y].equals(tile)) {
+                    tiles[x][y] = tile;
+                    board.fireBoardChanged();
+                    return true;
+                }
             }
         }
+        return false;
     }
 
     /**
@@ -295,14 +300,18 @@ public class BoardLayer implements Cloneable {
      *            y position of tile
      * @param tile
      *            the tile
-     * @param lastTile
+     * @return
      */
-    public void pourTileAt(int x, int y, Tile tile) {
+    public boolean pourTileAt(int x, int y, Tile tile) {
         if (x >= 0 && x < tiles.length) {
             if (y >= 0 && y < tiles[x].length) {
-                tiles[x][y] = tile;
+                if (!tiles[x][y].equals(tile)) {
+                    tiles[x][y] = tile;
+                    return true;
+                }
             }
         }
+        return false;
     }
 
     /**

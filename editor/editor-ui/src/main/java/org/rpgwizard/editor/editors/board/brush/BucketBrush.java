@@ -130,45 +130,20 @@ public class BucketBrush extends AbstractBrush {
      */
     @Override
     public Rectangle doPaint(int x, int y, Rectangle selection) {
-        BoardLayerView layerView = affectedContainer.getLayer(currentLayer);
-        if (layerView == null || pourTile.getTileSet() == null) {
+        final BoardLayerView layerView = affectedContainer.getLayer(currentLayer);
+        if (layerView == null || pourTile == null || pourTile.getTileSet() == null) {
             return null;
         }
-        BoardLayer layer = layerView.getLayer();
+        final BoardLayer layer = layerView.getLayer();
+        if (layer == null || layer.getTileAt(x, y) == pourTile) {
+            return null;
+        }
+
         oldTile = layer.getTileAt(x, y);
-        if (oldTile == pourTile) {
-            return null;
-        }
-
         if (selection != null && selection.contains(x, y)) {
-            if (selection.contains(x, y)) {
-                for (int y2 = selection.y; y2 < selection.height + selection.y; y2++) {
-                    for (int x2 = selection.x; x2 < selection.width + selection.x; x2++) {
-                        layer.pourTileAt(x2, y2, pourTile);
-                    }
-                }
-            }
-            layer.getBoard().fireBoardChanged();
-            return selection;
+            return handleSelection(layer, selection, new Point(x, y));
         } else {
-            Rectangle area = new Rectangle(new Point(x, y));
-            Stack<Point> stack = new Stack<>();
-            stack.push(new Point(x, y));
-            while (!stack.empty()) {
-                // Remove the next tile from the stack.
-                Point point = stack.pop();
-
-                if (layer.contains(point.x, point.y) && layer.getTileAt(point.x, point.y).equals(oldTile)) {
-                    layer.pourTileAt(point.x, point.y, pourTile);
-                    area.add(point);
-                    stack.push(new Point(point.x, point.y - 1));
-                    stack.push(new Point(point.x, point.y + 1));
-                    stack.push(new Point(point.x + 1, point.y));
-                    stack.push(new Point(point.x - 1, point.y));
-                }
-            }
-            layer.getBoard().fireBoardChanged();
-            return new Rectangle(area.x, area.y, area.width + 1, area.height + 1);
+            return handleArea(layer, new Point(x, y));
         }
     }
 
@@ -200,6 +175,43 @@ public class BucketBrush extends AbstractBrush {
     @Override
     public boolean isPixelBased() {
         return false;
+    }
+
+    private Rectangle handleSelection(final BoardLayer layer, final Rectangle selection, final Point origin) {
+        if (selection.contains(origin.x, origin.y)) {
+            for (int y = selection.y; y < selection.height + selection.y; y++) {
+                for (int x = selection.x; x < selection.width + selection.x; x++) {
+                    layer.pourTileAt(x, y, pourTile);
+                }
+            }
+            layer.getBoard().fireBoardChanged();
+        }
+        return selection;
+    }
+
+    private Rectangle handleArea(final BoardLayer layer, final Point origin) {
+        final Rectangle area = new Rectangle(new Point(origin));
+        final Stack<Point> stack = new Stack<>();
+        stack.push(new Point(origin));
+        boolean changed = false;
+        while (!stack.empty()) {
+            Point point = stack.pop(); // Remove the next tile from the stack.
+            if (layer.contains(point.x, point.y) && layer.getTileAt(point.x, point.y).equals(oldTile)) {
+                if (!changed) {
+                    changed = true;
+                }
+                layer.pourTileAt(point.x, point.y, pourTile);
+                area.add(point);
+                stack.push(new Point(point.x, point.y - 1));
+                stack.push(new Point(point.x, point.y + 1));
+                stack.push(new Point(point.x + 1, point.y));
+                stack.push(new Point(point.x - 1, point.y));
+            }
+        }
+        if (changed) {
+            layer.getBoard().fireBoardChanged();
+        }
+        return new Rectangle(area.x, area.y, area.width + 1, area.height + 1);
     }
 
 }

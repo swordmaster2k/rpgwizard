@@ -15,6 +15,7 @@ import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import org.rpgwizard.common.assets.Tile;
+import org.rpgwizard.common.assets.board.BoardLayer;
 import org.rpgwizard.editor.editors.BoardEditor;
 import org.rpgwizard.editor.editors.board.AbstractBoardView;
 import org.rpgwizard.editor.editors.board.BoardLayerView;
@@ -153,38 +154,16 @@ public class EraserBrush extends AbstractBrush {
     @Override
     public Rectangle doPaint(int x, int y, Rectangle selection) throws Exception {
         super.doPaint(x, y, selection);
+        BoardLayerView layerView = affectedContainer.getLayer(currentLayer);
+        if (layerView == null || layerView.getLayer() == null) {
+            return null;
+        }
 
+        final BoardLayer layer = layerView.getLayer();
         if (selection != null && selection.contains(x, y)) {
-            BoardLayerView layer = affectedContainer.getLayer(currentLayer);
-            if (layer == null) {
-                return null;
-            }
-
-            if (selection.contains(x, y)) {
-                for (int y2 = selection.y; y2 < selection.height + selection.y; y2++) {
-                    for (int x2 = selection.x; x2 < selection.width + selection.x; x2++) {
-                        layer.getLayer().pourTileAt(x2, y2, paintTile);
-                    }
-                }
-            }
-            return selection;
+            return handleSelection(layer, selection, new Point(x, y));
         } else {
-            Rectangle shapeBounds = shape.getBounds();
-            int centerX = x - shapeBounds.width / 2;
-            int centerY = y - shapeBounds.height / 2;
-            for (int layer = 0; layer < affectedLayers; layer++) {
-                BoardLayerView boardLayer = affectedContainer.getLayer(currentLayer + layer);
-                if (boardLayer != null) {
-                    for (int i = 0; i <= shapeBounds.height + 1; i++) {
-                        for (int j = 0; j <= shapeBounds.width + 1; j++) {
-                            if (shape.contains(i, j)) {
-                                boardLayer.getLayer().pourTileAt(j + centerX, i + centerY, paintTile);
-                            }
-                        }
-                    }
-                }
-            }
-            return new Rectangle(centerX, centerY, shapeBounds.width, shapeBounds.height);
+            return handleArea(layer, new Point(x, y));
         }
     }
 
@@ -216,6 +195,52 @@ public class EraserBrush extends AbstractBrush {
     @Override
     public void doMouseButton3Dragged(Point point, Point origin, AbstractAssetEditorWindow editor) {
 
+    }
+
+    private Rectangle handleSelection(final BoardLayer layer, final Rectangle selection, final Point origin) {
+        BoardLayerView layerView = affectedContainer.getLayer(currentLayer);
+        if (layerView == null) {
+            return null;
+        }
+
+        boolean changed = false;
+        if (selection.contains(origin.x, origin.y)) {
+            for (int y2 = selection.y; y2 < selection.height + selection.y; y2++) {
+                for (int x2 = selection.x; x2 < selection.width + selection.x; x2++) {
+                    boolean tileEffected = layer.pourTileAt(x2, y2, paintTile);
+                    if (!changed && tileEffected) {
+                        changed = true;
+                    }
+                }
+            }
+        }
+        if (changed && layer != null) {
+            layer.getBoard().fireBoardChanged();
+        }
+
+        return selection;
+    }
+
+    private Rectangle handleArea(final BoardLayer layer, final Point origin) {
+        Rectangle shapeBounds = shape.getBounds();
+        int centerX = origin.x - shapeBounds.width / 2;
+        int centerY = origin.y - shapeBounds.height / 2;
+        boolean changed = false;
+        for (int i = 0; i <= shapeBounds.height + 1; i++) {
+            for (int j = 0; j <= shapeBounds.width + 1; j++) {
+                if (shape.contains(i, j)) {
+                    boolean tileEffected = layer.pourTileAt(j + centerX, i + centerY, paintTile);
+                    if (!changed && tileEffected) {
+                        changed = true;
+                    }
+                }
+            }
+        }
+        if (changed && layer != null) {
+            layer.getBoard().fireBoardChanged();
+        }
+
+        return new Rectangle(centerX, centerY, shapeBounds.width, shapeBounds.height);
     }
 
 }

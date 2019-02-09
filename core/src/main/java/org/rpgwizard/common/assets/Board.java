@@ -544,6 +544,18 @@ public final class Board extends AbstractAsset implements Selectable {
 
     /**
      * Fires the <code>BoardChangedEvent</code> informs all the listeners that this board has changed.
+     * 
+     * @param event
+     */
+    public void fireBoardChanged(BoardChangedEvent event) {
+        Iterator iterator = boardChangeListeners.iterator();
+        while (iterator.hasNext()) {
+            ((BoardChangeListener) iterator.next()).boardChanged(event);
+        }
+    }
+
+    /**
+     * Fires the <code>BoardChangedEvent</code> informs all the listeners that this board has changed.
      *
      * @param layer
      *            new layer

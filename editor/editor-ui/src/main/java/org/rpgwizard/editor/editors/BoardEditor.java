@@ -30,7 +30,9 @@ import org.rpgwizard.common.assets.TileSet;
 import org.rpgwizard.common.assets.events.BoardChangedEvent;
 import org.rpgwizard.common.assets.listeners.BoardChangeListener;
 import org.rpgwizard.editor.MainWindow;
-import org.rpgwizard.editor.state.UndoRedoManager;
+import org.rpgwizard.editor.editors.board.state.UndoRedoManager;
+import org.rpgwizard.editor.editors.board.state.UndoRedoState;
+import org.rpgwizard.editor.editors.board.state.UndoRedoType;
 import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 import org.rpgwizard.editor.ui.actions.ActionHandler;
 import org.rpgwizard.editor.ui.actions.CopyAction;
@@ -410,61 +412,63 @@ public final class BoardEditor extends AbstractAssetEditorWindow
 
     @Override
     public void boardChanged(BoardChangedEvent e) {
-        undoRedoManager.push(board);
-        setNeedSave(true);
+        if (!e.isOpacityChanged()) {
+            undoRedoManager.push(new UndoRedoState(board, UndoRedoType.GENERAL));
+            setNeedSave(true);
+        }
     }
 
     @Override
     public void boardLayerAdded(BoardChangedEvent e) {
-        undoRedoManager.push(board);
+        undoRedoManager.push(new UndoRedoState(board, UndoRedoType.LAYER));
         setNeedSave(true);
     }
 
     @Override
     public void boardLayerMovedUp(BoardChangedEvent e) {
-        undoRedoManager.push(board);
+        undoRedoManager.push(new UndoRedoState(board, UndoRedoType.LAYER));
         setNeedSave(true);
     }
 
     @Override
     public void boardLayerMovedDown(BoardChangedEvent e) {
-        undoRedoManager.push(board);
+        undoRedoManager.push(new UndoRedoState(board, UndoRedoType.LAYER));
         setNeedSave(true);
     }
 
     @Override
     public void boardLayerCloned(BoardChangedEvent e) {
-        undoRedoManager.push(board);
+        undoRedoManager.push(new UndoRedoState(board, UndoRedoType.LAYER));
         setNeedSave(true);
     }
 
     @Override
     public void boardLayerDeleted(BoardChangedEvent e) {
-        undoRedoManager.push(board);
+        undoRedoManager.push(new UndoRedoState(board, UndoRedoType.LAYER));
         setNeedSave(true);
     }
 
     @Override
     public void boardSpriteAdded(BoardChangedEvent e) {
-        undoRedoManager.push(board);
+        undoRedoManager.push(new UndoRedoState(board, UndoRedoType.SPRITE));
         setNeedSave(true);
     }
 
     @Override
     public void boardSpriteRemoved(BoardChangedEvent e) {
-        undoRedoManager.push(board);
+        undoRedoManager.push(new UndoRedoState(board, UndoRedoType.SPRITE));
         setNeedSave(true);
     }
 
     @Override
     public void boardLayerImageAdded(BoardChangedEvent e) {
-        undoRedoManager.push(board);
+        undoRedoManager.push(new UndoRedoState(board, UndoRedoType.IMAGE));
         setNeedSave(true);
     }
 
     @Override
     public void boardLayerImageRemoved(BoardChangedEvent e) {
-        undoRedoManager.push(board);
+        undoRedoManager.push(new UndoRedoState(board, UndoRedoType.IMAGE));
         setNeedSave(true);
     }
 
@@ -510,10 +514,20 @@ public final class BoardEditor extends AbstractAssetEditorWindow
     @Override
     public void handle(UndoAction action) {
         try {
-            board = undoRedoManager.undo();
+            UndoRedoType oldType = UndoRedoType.GENERAL;
+            if (!undoRedoManager.isEmpty()) {
+                oldType = undoRedoManager.peek().getType();
+            }
+
+            final UndoRedoState newState = undoRedoManager.undo();
+            board = newState.getBoard();
             boardView.update(board);
             setSelectedObject(board);
-            MainWindow.getInstance().getLayerPanel().setBoardView(boardView);
+
+            if (oldType == UndoRedoType.LAYER || newState.getType() == UndoRedoType.LAYER) {
+                // Something layer based likely changed, tell the panel to update itself.
+                MainWindow.getInstance().getLayerPanel().setBoardView(boardView);
+            }
         } catch (IllegalStateException ex) {
             // Ignore it
         }
@@ -522,10 +536,20 @@ public final class BoardEditor extends AbstractAssetEditorWindow
     @Override
     public void handle(RedoAction action) {
         try {
-            board = undoRedoManager.redo();
+            UndoRedoType oldType = UndoRedoType.GENERAL;
+            if (!undoRedoManager.isEmpty()) {
+                oldType = undoRedoManager.peek().getType();
+            }
+
+            final UndoRedoState newState = undoRedoManager.redo();
+            board = newState.getBoard();
             boardView.update(board);
             setSelectedObject(board);
-            MainWindow.getInstance().getLayerPanel().setBoardView(boardView);
+
+            if (oldType == UndoRedoType.LAYER || newState.getType() == UndoRedoType.LAYER) {
+                // Something layer based likely changed, tell the panel to update itself.
+                MainWindow.getInstance().getLayerPanel().setBoardView(boardView);
+            }
         } catch (IllegalStateException ex) {
             // Ignore it
         }
@@ -566,7 +590,7 @@ public final class BoardEditor extends AbstractAssetEditorWindow
         cursorTileLocation = new Point(0, 0);
         cursorLocation = new Point(0, 0);
 
-        undoRedoManager = new UndoRedoManager(new Board(board));
+        undoRedoManager = new UndoRedoManager(new UndoRedoState(new Board(board), UndoRedoType.GENERAL));
 
         setFocusable(false);
         setTitle(fileName);

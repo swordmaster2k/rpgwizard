@@ -24,6 +24,8 @@ public class BoardChangedEvent extends EventObject {
     private BoardSprite boardSprite;
     private BoardLayerImage boardLayerImage;
 
+    private boolean opacityChanged;
+
     /**
      * Creates a new event.
      *
@@ -77,6 +79,14 @@ public class BoardChangedEvent extends EventObject {
 
     public void setBoardLayerImage(BoardLayerImage boardLayerImage) {
         this.boardLayerImage = boardLayerImage;
+    }
+
+    public boolean isOpacityChanged() {
+        return opacityChanged;
+    }
+
+    public void setOpacityChanged(boolean opacityChanged) {
+        this.opacityChanged = opacityChanged;
     }
 
 }

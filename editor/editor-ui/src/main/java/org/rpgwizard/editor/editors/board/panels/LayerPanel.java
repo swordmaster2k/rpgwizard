@@ -75,6 +75,7 @@ public class LayerPanel extends JPanel implements ChangeListener, ListSelectionL
         if (boardView.getBoard().getLayers().size() > 0) {
             layerTable.changeSelection(0, 0, false, false);
         }
+        opacitySlider.setValue(100);
     }
 
     /**

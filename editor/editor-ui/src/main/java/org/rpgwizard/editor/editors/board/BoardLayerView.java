@@ -25,6 +25,7 @@ import org.rpgwizard.common.assets.board.BoardSprite;
 import org.rpgwizard.common.assets.board.BoardVector;
 import org.rpgwizard.common.assets.Tile;
 import org.rpgwizard.common.assets.TilePixelOutOfRangeException;
+import org.rpgwizard.common.assets.events.BoardChangedEvent;
 import org.rpgwizard.editor.ui.resources.Icons;
 import org.rpgwizard.editor.utilities.GuiHelper;
 
@@ -229,7 +230,10 @@ public class BoardLayerView {
             this.opacity = opacity;
 
             if (isVisible() && layer != null) {
-                layer.getBoard().fireBoardChanged();
+                final Board board = layer.getBoard();
+                final BoardChangedEvent event = new BoardChangedEvent(board);
+                event.setOpacityChanged(true);
+                board.fireBoardChanged(event);
             }
         }
     }

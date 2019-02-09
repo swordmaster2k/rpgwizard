@@ -6,13 +6,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package org.rpgwizard.editor.state;
+package org.rpgwizard.editor.editors.board.state;
 
 import java.util.Stack;
 import org.rpgwizard.common.assets.Board;
 import org.rpgwizard.editor.MainWindow;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Simple Undo/Redo management system.
@@ -21,27 +19,27 @@ import org.slf4j.LoggerFactory;
  *
  * @author Joshua Michael Daly
  */
-public class UndoRedoManager extends Stack<Board> {
+public class UndoRedoManager extends Stack<UndoRedoState> {
 
     private static final int MAX_UNDO = 10;
-    private final Stack<Board> undoStack;
+    private final Stack<UndoRedoState> undoStack;
 
     private static final int MAX_REDO = 10;
-    private final Stack<Board> redoStack;
+    private final Stack<UndoRedoState> redoStack;
 
     public UndoRedoManager() {
         undoStack = new Stack();
         redoStack = new Stack();
     }
 
-    public UndoRedoManager(Board value) {
-        super.push(value);
+    public UndoRedoManager(UndoRedoState state) {
+        super.push(state);
         undoStack = new Stack();
         redoStack = new Stack();
     }
 
     @Override
-    public Board push(Board value) {
+    public UndoRedoState push(UndoRedoState value) {
         final MainWindow mainWindow = MainWindow.getInstance();
         mainWindow.enableUndo(true);
         mainWindow.enableRedo(false);
@@ -50,15 +48,15 @@ public class UndoRedoManager extends Stack<Board> {
         if (!super.isEmpty()) {
             undoStack.push(super.pop());
         }
-        super.push(new Board(value));
+        super.push(new UndoRedoState(value));
         redoStack.clear();
 
         return super.peek();
     }
 
     @Override
-    public Board pop() {
-        Board value = super.pop();
+    public UndoRedoState pop() {
+        UndoRedoState value = super.pop();
         undoStack.push(value);
         redoStack.clear();
         return value;
@@ -68,28 +66,28 @@ public class UndoRedoManager extends Stack<Board> {
         return !undoStack.isEmpty();
     }
 
-    public Board undo() throws IllegalStateException {
+    public UndoRedoState undo() throws IllegalStateException {
         if (!canUndo()) {
             throw new IllegalStateException("Nothing to undo!");
         }
         ensureCapacities();
         redoStack.push(super.pop());
         super.push(undoStack.pop());
-        return new Board(super.peek());
+        return new UndoRedoState(super.peek());
     }
 
     public boolean canRedo() {
         return !redoStack.isEmpty();
     }
 
-    public Board redo() throws IllegalStateException {
+    public UndoRedoState redo() throws IllegalStateException {
         if (!canRedo()) {
             throw new IllegalStateException("Nothing to redo!");
         }
         ensureCapacities();
         undoStack.push(super.pop());
         super.push(redoStack.pop());
-        return new Board(super.peek());
+        return new UndoRedoState(super.peek());
     }
 
     private void ensureCapacities() {

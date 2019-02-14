@@ -18,8 +18,8 @@
     <name>RPGWizard Editor (UI)</name>
     
     <properties>
-        <rsyntaxtextarea.version>2.6.1</rsyntaxtextarea.version>
-        <languagesupport.version>2.6.0</languagesupport.version>
+        <rsyntaxtextarea.version>3.0.0</rsyntaxtextarea.version>
+        <languagesupport.version>3.0.0</languagesupport.version>
     </properties>
 
     <dependencies>

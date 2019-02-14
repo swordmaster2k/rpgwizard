@@ -1,0 +1,31 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+    <id>linux</id>
+    <formats>
+        <format>tar.gz</format>
+    </formats>
+    <includeBaseDirectory>true</includeBaseDirectory>
+    <baseDirectory>rpgwizard-${project.version}</baseDirectory>
+    <fileSets>
+        <fileSet>
+            <directory>builds/</directory>
+            <outputDirectory>.</outputDirectory>
+            <includes>
+                <include>plugins/</include>
+                <include>projects/</include>
+                <include>editor-ui-*</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>resources/</directory>
+            <outputDirectory>.</outputDirectory>
+            <includes>
+                <include>rpgwizard.sh</include>
+                <include>editor.ico</include>
+                <include>license.txt</include>
+                <include>README.txt</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+</assembly>

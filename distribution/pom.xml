@@ -67,7 +67,7 @@
                                         <opts>
                                             <opt>-Dorg.rpgwizard.execution.path=&quot;%EXEDIR%&quot;</opt>
                                         </opts>
-										<maxHeapSize>500</maxHeapSize>
+                                        <maxHeapSize>500</maxHeapSize>
                                     </jre>
                                     <versionInfo>
                                         <fileVersion>${file.version}</fileVersion>
@@ -88,7 +88,7 @@
                         <artifactId>maven-assembly-plugin</artifactId>
                         <executions>
                             <execution>
-                                <id>assembly</id>
+                                <id>assembly-windows</id>
                                 <phase>package</phase>
                                 <goals>
                                     <goal>single</goal>
@@ -96,7 +96,20 @@
                                 <configuration>
                                     <finalName>rpgwizard-${project.version}</finalName>
                                     <descriptors>
-                                        <descriptor>assembly.xml</descriptor>
+                                        <descriptor>assembly-windows.xml</descriptor>
+                                    </descriptors>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>assembly-linux</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                                <configuration>
+                                    <finalName>rpgwizard-${project.version}</finalName>
+                                    <descriptors>
+                                        <descriptor>assembly-linux.xml</descriptor>
                                     </descriptors>
                                 </configuration>
                             </execution>

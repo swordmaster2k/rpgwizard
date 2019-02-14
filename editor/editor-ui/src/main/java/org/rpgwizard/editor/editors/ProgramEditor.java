@@ -94,11 +94,6 @@ public final class ProgramEditor extends AbstractAssetEditorWindow implements Se
         JavaScriptLanguageSupport languageSupport = (JavaScriptLanguageSupport) languageFactory
                 .getSupportFor(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
         languageSupport.setAutoActivationEnabled(true);
-        try {
-            languageSupport.getJarManager().addCurrentJreClassFileSource();
-        } catch (IOException ex) {
-            LOGGER.error("Failed to load language support!", ex);
-        }
 
         String code = program.getProgramBuffer().toString();
         textArea = new RSyntaxTextArea(code, 30, 90);

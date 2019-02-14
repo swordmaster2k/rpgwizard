@@ -54,13 +54,19 @@ public final class FileTools {
 
     public static String getExecutionPath(Class clazz) throws URISyntaxException {
         String executionPath = System.getProperty("org.rpgwizard.execution.path");
-
         if (executionPath == null) {
-            System.setProperty("org.rpgwizard.execution.path",
-                    new File(clazz.getProtectionDomain().getCodeSource().getLocation().toURI().getPath())
-                            .getAbsolutePath());
+            final String path = clazz.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+            if (path.endsWith(".jar")) {
+                // It identified the JAR file, instead get its parent.
+                System.setProperty("org.rpgwizard.execution.path",
+                        new File(clazz.getProtectionDomain().getCodeSource().getLocation().toURI().getPath())
+                                .getParentFile().getAbsolutePath());
+            } else {
+                System.setProperty("org.rpgwizard.execution.path",
+                        new File(clazz.getProtectionDomain().getCodeSource().getLocation().toURI().getPath())
+                                .getAbsolutePath());
+            }
         }
-
         return System.getProperty("org.rpgwizard.execution.path");
     }
 

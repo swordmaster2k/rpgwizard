@@ -1,0 +1,1 @@
+docker run -v "d:/Documents/Software Development/rpgwizard/distribution:/headless/Desktop/rpwizard" --name rpgwizard --rm -d -p 5901:5901 -p 6901:6901 -e VNC_RESOLUTION=1600x900 rpgwizard/xubuntu

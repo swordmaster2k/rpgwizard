@@ -7,13 +7,18 @@
  */
 package org.rpgwizard.html5.engine.plugin;
 
+import java.awt.Desktop;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import javax.swing.ProgressMonitor;
 import javax.swing.SwingUtilities;
 import org.rpgwizard.pluginsystem.Engine;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.cef.OS;
 import org.rpgwizard.html5.engine.plugin.browser.EmbeddedBrowser;
 import org.slf4j.Logger;
@@ -81,7 +86,28 @@ public class Html5EnginePlugin extends Plugin {
 
             // 75%
             updateProgress(progressMonitor, 75);
-            openEmbeddedBrowser(projectName, width, height, isFullScreen);
+            if (SystemUtils.IS_OS_WINDOWS) {
+                openEmbeddedBrowser(projectName, width, height, isFullScreen);
+            } else {
+                LOGGER.info("Running on os.name=[{}], trying default browser.", System.getProperty("os.name"));
+                final String url = "http://localhost:8080/index.html";
+                if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+                    final Desktop desktop = Desktop.getDesktop();
+                    try {
+                        desktop.browse(new URI(url));
+                    } catch (IOException | URISyntaxException ex) {
+                        LOGGER.error("Could not start desktop browser!", ex);
+                    }
+                } else {
+                    LOGGER.warn("Desktop not supported, falling back to xdg-open.");
+                    final Runtime runtime = Runtime.getRuntime();
+                    try {
+                        runtime.exec("xdg-open " + url);
+                    } catch (IOException ex) {
+                        LOGGER.error("Could not run xdg-open!", ex);
+                    }
+                }
+            }
 
             // 100%
             updateProgress(progressMonitor, 100);

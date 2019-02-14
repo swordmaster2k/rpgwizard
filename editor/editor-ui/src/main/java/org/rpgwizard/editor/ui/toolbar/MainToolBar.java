@@ -12,6 +12,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import org.apache.commons.lang3.SystemUtils;
 import org.rpgwizard.editor.properties.EditorProperties;
 import org.rpgwizard.editor.properties.EditorProperty;
 import org.rpgwizard.editor.ui.EditorButton;
@@ -407,7 +408,10 @@ public final class MainToolBar extends JToolBar {
         zoomOutButton.setEnabled(enable);
         runButton.setEnabled(enable);
         // stopButton.setEnabled(enable);
-        compileButton.setEnabled(enable);
+        if (SystemUtils.IS_OS_WINDOWS && enable) {
+            // Only enable this feature on Windows for now.
+            compileButton.setEnabled(enable);
+        }
         // helpButton.setEnabled(enable);
     }
 

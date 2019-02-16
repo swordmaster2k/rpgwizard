@@ -13,8 +13,11 @@ import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.lang.reflect.Field;
-import java.util.Arrays;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 
 import javax.swing.JFrame;
 
@@ -41,7 +44,7 @@ public final class EmbeddedBrowser extends JFrame {
     private Component devToolsUI;
 
     public EmbeddedBrowser(String title, String startURL, boolean useOSR, boolean isTransparent, int width, int height,
-            boolean isFullScreen) {
+            boolean isFullScreen, File iconFile) {
         CefApp.addAppHandler(new CefAppHandlerAdapter(null) {
             @Override
             public void stateHasChanged(org.cef.CefApp.CefAppState state) {
@@ -119,6 +122,16 @@ public final class EmbeddedBrowser extends JFrame {
         if (isFullScreen) {
             setExtendedState(JFrame.MAXIMIZED_BOTH);
         }
+
+        // Try to set the image icon for the JFrame.
+        if (iconFile != null && iconFile.exists()) {
+            try {
+                setIconImage(ImageIO.read(iconFile));
+            } catch (IOException ex) {
+                Logger.getLogger(EmbeddedBrowser.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
         getContentPane().add(browserUI, BorderLayout.CENTER);
         setTitle(title);
         validate();
@@ -179,7 +192,7 @@ public final class EmbeddedBrowser extends JFrame {
     public static void main(String[] args) throws Exception {
         javax.swing.SwingUtilities.invokeLater(() -> {
             EmbeddedBrowser test = new EmbeddedBrowser("Test", "http://localhost:8080/index.html", OS.isLinux(), false,
-                    640, 480, false);
+                    640, 480, false, null);
             test.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {

@@ -66,14 +66,14 @@ public class Html5EnginePlugin extends Plugin {
         }
 
         @Override
-        public File compile(String projectName, File projectCopy, File executionPath, ProgressMonitor progressMonitor)
-                throws Exception {
-            return Compiler.compile(projectName, projectCopy, executionPath, progressMonitor);
+        public File compile(String projectName, File projectCopy, File executionPath, ProgressMonitor progressMonitor,
+                File projectIcon) throws Exception {
+            return Compiler.compile(projectName, projectCopy, executionPath, progressMonitor, projectIcon);
         }
 
         @Override
         public void run(String projectName, int width, int height, boolean isFullScreen, File projectCopy,
-                ProgressMonitor progressMonitor) throws Exception {
+                ProgressMonitor progressMonitor, File projectIcon) throws Exception {
             // Ensure the engine isn't already running.
             try {
                 stop(null);
@@ -87,7 +87,7 @@ public class Html5EnginePlugin extends Plugin {
             // 75%
             updateProgress(progressMonitor, 75);
             if (SystemUtils.IS_OS_WINDOWS) {
-                openEmbeddedBrowser(projectName, width, height, isFullScreen);
+                openEmbeddedBrowser(projectName, width, height, isFullScreen, projectIcon);
             } else {
                 LOGGER.info("Running on os.name=[{}], trying default browser.", System.getProperty("os.name"));
                 final String url = "http://localhost:8080/index.html";
@@ -147,13 +147,14 @@ public class Html5EnginePlugin extends Plugin {
             ENGINE_THREAD.start();
         }
 
-        private void openEmbeddedBrowser(String projectName, int width, int height, boolean isFullScreen) {
+        private void openEmbeddedBrowser(String projectName, int width, int height, boolean isFullScreen,
+                File projectIcon) {
             SwingUtilities.invokeLater(() -> {
                 if (EMBEDDED_BROWSER != null) {
                     EMBEDDED_BROWSER.display(URL, projectName, width, height, isFullScreen);
                 } else {
                     EMBEDDED_BROWSER = new EmbeddedBrowser(projectName, URL, OS.isLinux(), false, width, height,
-                            isFullScreen);
+                            isFullScreen, projectIcon);
                     EMBEDDED_BROWSER.addWindowListener(new WindowAdapter() {
                         @Override
                         public void windowClosing(WindowEvent e) {

@@ -22,6 +22,7 @@ public class Project extends AbstractAsset {
     private String initialCharacter;
     private String startupProgram;
     private String gameOverProgram;
+    private String projectIcon;
 
     public Project(AssetDescriptor descriptor) {
         super(descriptor);
@@ -33,6 +34,7 @@ public class Project extends AbstractAsset {
         gameOverProgram = "";
         resolutionWidth = 640;
         resolutionHeight = 480;
+        projectIcon = "";
     }
 
     public Project(AssetDescriptor descriptor, String name) {
@@ -104,6 +106,14 @@ public class Project extends AbstractAsset {
         this.gameOverProgram = gameOverProgram;
     }
 
+    public String getProjectIcon() {
+        return projectIcon;
+    }
+
+    public void setProjectIcon(String projectIcon) {
+        this.projectIcon = projectIcon;
+    }
+
     @Override
     public void reset() {
         isFullScreen = false;
@@ -113,6 +123,7 @@ public class Project extends AbstractAsset {
         gameOverProgram = "";
         resolutionWidth = 0;
         resolutionHeight = 0;
+        projectIcon = "";
     }
 
 }

@@ -22,6 +22,7 @@ import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.pluginsystem.Engine;
 import org.apache.commons.io.FileUtils;
 import org.rpgwizard.common.assets.Project;
+import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ro.fortsoft.pf4j.PluginManager;
@@ -45,7 +46,6 @@ public class RunAction extends AbstractAction {
             instance.getMainToolBar().getSaveAllButton().doClick();
 
             Project project = instance.getActiveProject();
-            String projectName = project.getName();
             int projectWidth = project.getResolutionWidth();
             int projectHeight = project.getResolutionHeight();
             boolean isFullScreen = project.isFullScreen();
@@ -67,7 +67,7 @@ public class RunAction extends AbstractAction {
                 worker = new SwingWorker<Void, Void>() {
                     @Override
                     protected Void doInBackground() throws Exception {
-                        runEngine(engines.get(0), projectName, dimensions, isFullScreen, projectCopy, progressMonitor);
+                        runEngine(engines.get(0), project, dimensions, isFullScreen, projectCopy, progressMonitor);
                         return null;
                     }
 
@@ -85,10 +85,15 @@ public class RunAction extends AbstractAction {
         }
     }
 
-    private void runEngine(Engine engine, String projectName, Dimension dimensions, boolean isFullScreen,
-            File projectCopy, ProgressMonitor progressMonitor)
-            throws InterruptedException, InvocationTargetException, Exception {
-        engine.run(projectName, dimensions.width, dimensions.height, isFullScreen, projectCopy, progressMonitor);
+    private void runEngine(Engine engine, Project project, Dimension dimensions, boolean isFullScreen, File projectCopy,
+            ProgressMonitor progressMonitor) throws InterruptedException, InvocationTargetException, Exception {
+        // Get the project icon if available.
+        File projectIcon = null;
+        if (!project.getProjectIcon().isEmpty()) {
+            projectIcon = new File(EditorFileManager.getGraphicsPath() + project.getProjectIcon());
+        }
+        engine.run(project.getName(), dimensions.width, dimensions.height, isFullScreen, projectCopy, progressMonitor,
+                projectIcon);
     }
 
 }

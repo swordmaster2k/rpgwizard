@@ -8,17 +8,21 @@
 package org.rpgwizard.html5.engine.plugin;
 
 import java.awt.Desktop;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Collection;
+import javax.imageio.ImageIO;
 import javax.swing.ProgressMonitor;
 import javax.swing.SwingUtilities;
 import net.lingala.zip4j.core.ZipFile;
+import net.sf.image4j.codec.ico.ICOEncoder;
 import org.apache.commons.io.FileExistsException;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -36,6 +40,8 @@ public class Compiler {
     private static final String OUTPUT_DIRECTORY = "output";
     private static final String DATA_DIRECTORY = "data";
     private static final String ENGINE_PLUGIN = "html5-engine-jar-with-dependencies.jar";
+
+    private static final String PROJECT_ICO_NAME = "game.ico";
 
     public static void embedEngine(String title, File destination, ProgressMonitor progressMonitor,
             boolean isCompileMode) throws Exception {
@@ -87,7 +93,7 @@ public class Compiler {
     }
 
     public static File compile(String projectName, File projectCopy, File executionPath,
-            ProgressMonitor progressMonitor) throws Exception {
+            ProgressMonitor progressMonitor, File projectIcon) throws Exception {
         String randomName = projectName + "-" + System.currentTimeMillis();
         File resultDirectory = null;
         File outputDirectory = null;
@@ -127,7 +133,20 @@ public class Compiler {
             embedEngine(projectName, dataDirectory, progressMonitor, true);
             updateProgress(progressMonitor, 60);
 
-            // 7: Invoke Launch4J to create the executable.
+            // 7: Create game .ico file for Launch4J
+            if (projectIcon != null && projectIcon.exists()) {
+                if (FilenameUtils.getExtension(projectIcon.getName()).equals("ico")) {
+                    // Probably the editor ico file being used as the default.
+                    FileUtils.copyFile(projectIcon, new File(outputDirectory + File.separator + PROJECT_ICO_NAME));
+                } else {
+                    // Try and create an ico from the supplied image file.
+                    ICOEncoder.write(ImageIO.read(projectIcon),
+                            new File(outputDirectory + File.separator + PROJECT_ICO_NAME));
+                }
+            }
+            updateProgress(progressMonitor, 65);
+
+            // 8: Invoke Launch4J to create the executable.
             Process process = Runtime.getRuntime().exec("cmd /c start /B package.bat", null, executionPath);
             int exitCode = process.waitFor();
             if (exitCode != 0) {
@@ -136,7 +155,7 @@ public class Compiler {
 
             updateProgress(progressMonitor, 70);
 
-            // 8: Wait for 60 seconds for the EXE to exist.
+            // 9: Wait for 60 seconds for the EXE to exist.
             File exeFile = new File(outputDirectory, "engine.exe");
             long start = System.currentTimeMillis();
             long last = start;
@@ -151,7 +170,7 @@ public class Compiler {
 
             updateProgress(progressMonitor, 80);
 
-            // 9: Create directory to copy to.
+            // 10: Create directory to copy to.
             resultDirectory = new File(outputDirectory.getParentFile(), randomName);
             while (resultDirectory.exists()) {
                 randomName = projectName + "-" + System.currentTimeMillis();
@@ -161,7 +180,7 @@ public class Compiler {
 
             updateProgress(progressMonitor, 90);
 
-            // 10: Try to copy the outputDirectory contents to the
+            // 11: Try to copy the outputDirectory contents to the
             // resultDirectory.
             boolean copied = false;
             while (!copied && last - start < timeOut) {
@@ -220,7 +239,7 @@ public class Compiler {
         File projectCopy = new File("D:/Desktop/standalone/builds/output/jfowjfwjfowjf");
 
         File result = Compiler.compile("Test", projectCopy, executionPath,
-                new ProgressMonitor(null, "Test", "Test", 0, 0));
+                new ProgressMonitor(null, "Test", "Test", 0, 0), null);
 
         Desktop.getDesktop().open(result);
     }

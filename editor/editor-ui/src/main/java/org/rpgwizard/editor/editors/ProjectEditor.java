@@ -7,6 +7,7 @@
  */
 package org.rpgwizard.editor.editors;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import javax.swing.BorderFactory;
@@ -36,6 +37,7 @@ import org.rpgwizard.common.assets.Character;
 import org.rpgwizard.common.assets.Program;
 import org.rpgwizard.common.assets.Project;
 import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
+import org.rpgwizard.editor.ui.ImagePanel;
 import org.rpgwizard.editor.ui.resources.Icons;
 import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.rpgwizard.editor.utilities.GuiHelper;
@@ -60,6 +62,7 @@ public final class ProjectEditor extends AbstractAssetEditorWindow implements In
 
     // PROJECT SETTINGS
     private JTextField projectName;
+    private ImagePanel projectIcon;
 
     // STARTUP SETTINGS
     private JComboBox initialBoard;
@@ -169,8 +172,18 @@ public final class ProjectEditor extends AbstractAssetEditorWindow implements In
             }
         });
 
+        projectIcon = new ImagePanel(new Dimension(48, 48));
+        if (!project.getProjectIcon().isEmpty()) {
+            projectIcon.addImage(new File(EditorFileManager.getGraphicsPath() + project.getProjectIcon()));
+        }
+        projectIcon.addImageListener(() -> {
+            project.setProjectIcon(projectIcon.getImagePath());
+            setNeedSave(true);
+        });
+
         // Configure function Scope Components
         JLabel projectNameLabel = new JLabel("Project Name");
+        JLabel projectIconLabel = new JLabel("Project Icon (48x48)");
 
         // Configure the necessary Panels
         JPanel projectInfoPanel = new JPanel();
@@ -180,12 +193,19 @@ public final class ProjectEditor extends AbstractAssetEditorWindow implements In
         GroupLayout projectInfoLayout = GuiHelper.createGroupLayout(projectInfoPanel);
 
         // Configure the PROJECT INFO PANEL layout
-        projectInfoLayout.setHorizontalGroup(projectInfoLayout.createSequentialGroup().addComponent(projectNameLabel)
-                .addComponent(this.projectName));
+        projectInfoLayout.setHorizontalGroup(projectInfoLayout.createParallelGroup()
+                .addGroup(projectInfoLayout.createSequentialGroup().addComponent(projectNameLabel)
+                        .addComponent(projectName))
+                .addGroup(projectInfoLayout.createSequentialGroup().addComponent(projectIconLabel)
+                        .addComponent(projectIcon)));
 
-        projectInfoLayout.setVerticalGroup(projectInfoLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
-                .addComponent(projectNameLabel)
-                .addComponent(this.projectName, GuiHelper.JTF_HEIGHT, GuiHelper.JTF_HEIGHT, GuiHelper.JTF_HEIGHT));
+        projectInfoLayout.linkSize(SwingConstants.HORIZONTAL, projectNameLabel, projectIconLabel);
+
+        projectInfoLayout.setVerticalGroup(projectInfoLayout.createSequentialGroup()
+                .addGroup(projectInfoLayout.createParallelGroup().addComponent(projectNameLabel)
+                        .addComponent(projectName, GuiHelper.JTF_HEIGHT, GuiHelper.JTF_HEIGHT, GuiHelper.JTF_HEIGHT))
+                .addGroup(projectInfoLayout.createParallelGroup().addComponent(projectIconLabel)
+                        .addComponent(projectIcon, 48, 48, 48)));
 
         JLabel initialBoardLabel = new JLabel("Initial Board");
         String[] exts = EditorFileManager.getTypeExtensions(Board.class);

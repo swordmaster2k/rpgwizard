@@ -82,7 +82,7 @@ public class Standalone {
         javax.swing.SwingUtilities.invokeLater(() -> {
             // Show the JCEF browser window.
             EMBEDDED_BROWSER = new EmbeddedBrowser(project.getName(), "http://localhost:8080", OS.isLinux(), false,
-                    project.getResolutionWidth(), project.getResolutionHeight(), project.isFullScreen());
+                    project.getResolutionWidth(), project.getResolutionHeight(), project.isFullScreen(), null);
             EMBEDDED_BROWSER.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {

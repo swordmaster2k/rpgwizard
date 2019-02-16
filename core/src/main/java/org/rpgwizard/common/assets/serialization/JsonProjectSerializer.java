@@ -48,6 +48,11 @@ public class JsonProjectSerializer extends AbstractJsonSerializer {
         project.setStartupProgram(json.getString("startupProgram"));
         project.setGameOverProgram(json.getString("gameOverProgram"));
 
+        // Version 1.5.0
+        if (json.has("projectIcon")) {
+            project.setProjectIcon(json.getString("projectIcon"));
+        }
+
         handle.setAsset(project);
     }
 
@@ -65,6 +70,7 @@ public class JsonProjectSerializer extends AbstractJsonSerializer {
         json.put("initialCharacter", serializePath(project.getInitialCharacter()));
         json.put("startupProgram", serializePath(project.getStartupProgram()));
         json.put("gameOverProgram", serializePath(project.getGameOverProgram()));
+        json.put("projectIcon", serializePath(project.getProjectIcon()));
     }
 
 }

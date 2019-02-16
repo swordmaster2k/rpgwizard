@@ -18,6 +18,7 @@ import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import org.apache.commons.lang3.SystemUtils;
 import org.pushingpixels.substance.api.skin.SubstanceGraphiteAquaLookAndFeel;
 import org.pushingpixels.substance.api.skin.SubstanceNebulaLookAndFeel;
 import org.rpgwizard.common.assets.AssetManager;
@@ -144,7 +145,11 @@ public class Driver {
                 registerSerializers();
                 PluginManager pluginManager = registerPlugins();
                 loadUserPreferences();
-                addLibraryPath("lib/jcef-win");
+
+                // Add the correct lib based on the platform.
+                if (SystemUtils.IS_OS_WINDOWS) {
+                    addLibraryPath("lib/jcef-win");
+                }
 
                 MainWindow mainWindow = MainWindow.getInstance();
                 mainWindow.setPluginManager(pluginManager);

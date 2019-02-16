@@ -31,11 +31,13 @@ public interface Engine extends ExtensionPoint {
      *            editors current execution path
      * @param progressMonitor
      *            for tracking engine startup progress
+     * @param projectIcon
+     *            icon file to be used for the game
      * @return system path containing the result of the compile process
      * @throws java.lang.Exception
      */
-    public File compile(String projectName, File projectCopy, File executionPath, ProgressMonitor progressMonitor)
-            throws Exception;
+    public File compile(String projectName, File projectCopy, File executionPath, ProgressMonitor progressMonitor,
+            File projectIcon) throws Exception;
 
     /**
      * Runs the project located at the specified path. An engine implementation should take a copy of the project rather
@@ -54,10 +56,12 @@ public interface Engine extends ExtensionPoint {
      *            path to the project copy for engine use
      * @param progressMonitor
      *            for tracking engine startup progress
+     * @param projectIcon
+     *            icon file to be used for the game
      * @throws java.lang.Exception
      */
     public void run(String projectName, int projectWidth, int projectHeight, boolean isFullScreen, File projectCopy,
-            ProgressMonitor progressMonitor) throws Exception;
+            ProgressMonitor progressMonitor, File projectIcon) throws Exception;
 
     /**
      * Requests that the engine instance stop as soon as possible. In this case there is no need for UI feedback as the

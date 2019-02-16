@@ -126,6 +126,7 @@ public final class ProgramEditor extends AbstractAssetEditorWindow implements Se
         AutoCompletion autoCompletion = new AutoCompletion(new RpgCodeCompletionProvider());
         autoCompletion.setDescriptionWindowSize(650, 325);
         autoCompletion.setAutoActivationEnabled(true);
+        autoCompletion.setAutoCompleteSingleChoices(false);
         autoCompletion.setShowDescWindow(true);
         autoCompletion.install(textArea);
 

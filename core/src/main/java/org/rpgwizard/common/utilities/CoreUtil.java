@@ -10,6 +10,7 @@ package org.rpgwizard.common.utilities;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
+import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.FileInputStream;
@@ -43,10 +44,10 @@ public class CoreUtil {
         if (source == null) {
             return source;
         }
-        ColorModel cm = source.getColorModel();
-        boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
-        WritableRaster raster = source.copyData(null);
-        return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
+        final ColorModel colorModel = source.getColorModel();
+        final boolean isAlphaPremultiplied = colorModel.isAlphaPremultiplied();
+        final WritableRaster raster = source.copyData(source.getRaster().createCompatibleWritableRaster());
+        return new BufferedImage(colorModel, raster, isAlphaPremultiplied, null);
     }
 
     public static BufferedImage loadBufferedImage(String fileName) throws IOException {

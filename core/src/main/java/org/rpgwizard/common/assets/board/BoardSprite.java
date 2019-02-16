@@ -27,6 +27,7 @@ import org.rpgwizard.common.assets.AssetManager;
 import org.rpgwizard.common.assets.EventType;
 import org.rpgwizard.common.assets.board.model.AbstractBoardModel;
 import org.rpgwizard.common.utilities.CoreProperties;
+import org.rpgwizard.common.utilities.CoreUtil;
 
 /**
  * A board sprite.
@@ -84,7 +85,8 @@ public class BoardSprite extends AbstractBoardModel implements Cloneable, Select
         eventProgram = boardSprite.eventProgram;
         thread = boardSprite.thread;
         activationKey = boardSprite.activationKey;
-        selected = boardSprite.selected;
+        selected = false;
+        southImage = CoreUtil.copy(boardSprite.southImage);
     }
 
     /**
@@ -108,7 +110,7 @@ public class BoardSprite extends AbstractBoardModel implements Cloneable, Select
      * @return
      */
     public int getX() {
-        return (int) x;
+        return x;
     }
 
     /**
@@ -116,7 +118,7 @@ public class BoardSprite extends AbstractBoardModel implements Cloneable, Select
      * @return
      */
     public int getY() {
-        return (int) y;
+        return y;
     }
 
     /**

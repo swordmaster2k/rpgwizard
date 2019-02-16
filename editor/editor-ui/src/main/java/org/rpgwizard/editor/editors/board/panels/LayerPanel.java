@@ -71,10 +71,12 @@ public class LayerPanel extends JPanel implements ChangeListener, ListSelectionL
     public void setBoardView(AbstractBoardView boardView) {
         this.boardView = boardView;
         layerTable.setModel(new BoardLayersTableModel(boardView));
-
-        if (boardView.getBoard().getLayers().size() > 0) {
-            layerTable.changeSelection(0, 0, false, false);
+        int selectedLayer = boardView.getCurrentSelectedLayer().getLayer().getNumber();
+        selectedLayer = Math.abs(selectedLayer - (boardView.getLayerArrayList().size() - 1));
+        if (selectedLayer < 0 || layerTable.getRowCount() < selectedLayer) {
+            selectedLayer = 0;
         }
+        layerTable.changeSelection(selectedLayer, 0, false, false);
         opacitySlider.setValue(100);
     }
 

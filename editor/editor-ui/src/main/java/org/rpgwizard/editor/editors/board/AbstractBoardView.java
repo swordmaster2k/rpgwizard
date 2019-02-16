@@ -783,7 +783,9 @@ public abstract class AbstractBoardView extends JPanel implements MultiLayerCont
 
         startPositionImage = Icons.getLargeIcon("icons8-finish-flag-48").getImage();
 
-        if (!layers.isEmpty()) {
+        if (currentSelectedLayer != null && currentSelectedLayer.getLayer().getNumber() < layers.size()) {
+            currentSelectedLayer = layers.get(currentSelectedLayer.getLayer().getNumber());
+        } else {
             currentSelectedLayer = layers.get(0);
         }
     }

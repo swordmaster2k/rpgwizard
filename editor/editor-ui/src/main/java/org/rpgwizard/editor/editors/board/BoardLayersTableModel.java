@@ -254,12 +254,10 @@ public class BoardLayersTableModel extends AbstractTableModel implements BoardCh
 
     @Override
     public void boardSpriteAdded(BoardChangedEvent e) {
-        fireTableDataChanged();
     }
 
     @Override
     public void boardSpriteRemoved(BoardChangedEvent e) {
-        fireTableDataChanged();
     }
 
     @Override

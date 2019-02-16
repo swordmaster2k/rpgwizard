@@ -59,7 +59,7 @@ public class BoardLayerImage extends AbstractBoardModel implements Selectable {
         y = boardLayerImage.y;
         image = CoreUtil.copy(boardLayerImage.image);
         layer = boardLayerImage.layer;
-        selected = boardLayerImage.selected;
+        selected = false;
     }
 
     public BoardLayerImage(int x, int y, int layer) {

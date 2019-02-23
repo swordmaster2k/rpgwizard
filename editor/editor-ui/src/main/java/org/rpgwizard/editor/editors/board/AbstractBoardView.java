@@ -752,12 +752,12 @@ public abstract class AbstractBoardView extends JPanel implements MultiLayerCont
     public void update(Board board) {
         this.board = board;
         this.board.removeBoardChangeListener(this);
-        
+
         // Store old zoom levels.
         final int oldZoomLevel = zoomLevel;
-        
+
         init();
-        
+
         // Restore previous zoom level.
         if (oldZoomLevel < zoomLevel) {
             while (zoomLevel != oldZoomLevel) {
@@ -768,7 +768,7 @@ public abstract class AbstractBoardView extends JPanel implements MultiLayerCont
                 zoomIn();
             }
         }
-        
+
         repaint();
     }
 

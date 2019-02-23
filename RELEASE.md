@@ -1,23 +1,18 @@
-# Release 1.4.0 - (09/06/2018)
+# Release 1.5.0 - (23/02/2019)
 
 ## New
 
-* Added a "Project" panel to the editor for viewing and opening project files.
-* New default dialog, battle, and titlescreen systems included with the demo project see:
-  * Programs/defaults/dialog.js
-  * Programs/defaults/battle.js
-  * Programs/defaults/titleScreen.js
-
+* #23 - Linux is now a supported development platform!
+* #22 - Undo/Redo is now supported for actions on the Board Editor.
+* #26 - Now possible to use "Save As" functionality to quickly duplicate assets.
+* #18 - Can set a custom game icon that will be used when playing your game.
 
 ## Improvements
 
-* Code completion added to the code editor for the default libraries.
-* Find, Replace, Cut, Copy, Paste, etc. now available for code editor only.
-* Updated the code editor UI to a dark theme.
+* #21,#30 - Decreased engine asset loading times by using JavaScript async functions.
+* #29 - Added a double click listener for animation settings in the Sprite Editors.
 
 ## Fixes
 
-* #16 Adding duplicate points to a BoardVector breaks collisions
-  * No longer possible to add duplicate points to a vector sequentially.
-* #12 BoardSprites in the BoardEditor are being drawn above everything
-  * Sprites are now drawn correctly on a per-layer basis.
+* #34 Lowered sensitivity of autocomplete in the code editor
+* #17 Fixed a bug with saving enemy files in the editor.

@@ -14,6 +14,7 @@ import java.util.Objects;
 import org.rpgwizard.common.Selectable;
 import org.rpgwizard.common.assets.Event;
 import org.rpgwizard.common.assets.EventType;
+import org.rpgwizard.common.assets.KeyPressEvent;
 
 /**
  *
@@ -70,7 +71,11 @@ public class BoardVector implements Cloneable, Selectable {
 
         final ArrayList<Event> newEvents = new ArrayList<>(boardVector.events.size());
         for (Event event : boardVector.events) {
-            newEvents.add(new Event(event));
+            if (event instanceof KeyPressEvent) {
+                newEvents.add(new KeyPressEvent((KeyPressEvent) event));
+            } else {
+                newEvents.add(new Event(event));
+            }
         }
         events = newEvents;
 

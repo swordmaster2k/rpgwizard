@@ -259,7 +259,10 @@ public class BoardLayerView {
             isVisible = visible;
 
             if (layer != null) {
-                layer.getBoard().fireBoardChanged();
+                final Board board = layer.getBoard();
+                final BoardChangedEvent event = new BoardChangedEvent(board);
+                event.setLayerVisibilityToggled(true);
+                board.fireBoardChanged(event);
             }
         }
     }

@@ -25,6 +25,7 @@ public class BoardChangedEvent extends EventObject {
     private BoardLayerImage boardLayerImage;
 
     private boolean opacityChanged;
+    private boolean layerVisibilityToggled;
 
     /**
      * Creates a new event.
@@ -87,6 +88,14 @@ public class BoardChangedEvent extends EventObject {
 
     public void setOpacityChanged(boolean opacityChanged) {
         this.opacityChanged = opacityChanged;
+    }
+
+    public boolean isLayerVisibilityToggled() {
+        return layerVisibilityToggled;
+    }
+
+    public void setLayerVisibilityToggled(boolean layerVisibilityToggled) {
+        this.layerVisibilityToggled = layerVisibilityToggled;
     }
 
 }

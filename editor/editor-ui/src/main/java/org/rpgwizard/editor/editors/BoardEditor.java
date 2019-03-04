@@ -412,7 +412,7 @@ public final class BoardEditor extends AbstractAssetEditorWindow
 
     @Override
     public void boardChanged(BoardChangedEvent e) {
-        if (!e.isOpacityChanged()) {
+        if (!e.isOpacityChanged() && !e.isLayerVisibilityToggled()) {
             undoRedoManager.push(new UndoRedoState(board, UndoRedoType.GENERAL));
             setNeedSave(true);
         }

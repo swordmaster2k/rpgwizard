@@ -20,6 +20,11 @@ public class KeyPressEvent extends Event {
         this.key = key;
     }
 
+    public KeyPressEvent(KeyPressEvent event) {
+        super(EventType.KEYPRESS, event.getProgram());
+        this.key = event.getKey();
+    }
+
     public String getKey() {
         return key;
     }

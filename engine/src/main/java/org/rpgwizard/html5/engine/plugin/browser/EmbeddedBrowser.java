@@ -161,13 +161,22 @@ public final class EmbeddedBrowser extends JFrame {
         return browserUI;
     }
 
-    public void display(String url, String projectName, int newWidth, int newHeight, boolean isFullScreen) {
+    public void display(String url, String projectName, int newWidth, int newHeight, boolean isFullScreen,
+            File iconFile) {
         getCefBrowser().loadURL(url);
         setTitle(projectName);
         getBrowserUI().setPreferredSize(new Dimension(newWidth, newHeight));
         setSize(new Dimension(newWidth, newHeight));
         if (isFullScreen) {
             setExtendedState(JFrame.MAXIMIZED_BOTH);
+        }
+        // Try to set the image icon for the JFrame.
+        if (iconFile != null && iconFile.exists()) {
+            try {
+                setIconImage(ImageIO.read(iconFile));
+            } catch (IOException ex) {
+                Logger.getLogger(EmbeddedBrowser.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         revalidate();
         pack();

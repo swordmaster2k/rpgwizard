@@ -151,7 +151,7 @@ public class Html5EnginePlugin extends Plugin {
                 File projectIcon) {
             SwingUtilities.invokeLater(() -> {
                 if (EMBEDDED_BROWSER != null) {
-                    EMBEDDED_BROWSER.display(URL, projectName, width, height, isFullScreen);
+                    EMBEDDED_BROWSER.display(URL, projectName, width, height, isFullScreen, projectIcon);
                 } else {
                     EMBEDDED_BROWSER = new EmbeddedBrowser(projectName, URL, OS.isLinux(), false, width, height,
                             isFullScreen, projectIcon);

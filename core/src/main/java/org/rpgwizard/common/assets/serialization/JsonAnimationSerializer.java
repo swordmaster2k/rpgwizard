@@ -44,7 +44,8 @@ public class JsonAnimationSerializer extends AbstractJsonSerializer {
 
         JSONObject object = json.getJSONObject("spriteSheet");
         animation.setSpriteSheet(new SpriteSheet(object.getString("image"), object.getInt("x"), object.getInt("y"),
-                object.getInt("width"), object.getInt("height")));
+                object.getInt("width"), object.getInt("height"), animation.getAnimationWidth(),
+                animation.getAnimationHeight()));
 
         animation.setSoundEffect(json.getString("soundEffect"));
 

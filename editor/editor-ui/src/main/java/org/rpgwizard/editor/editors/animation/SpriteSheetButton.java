@@ -17,9 +17,14 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import org.rpgwizard.common.assets.Animation;
 import org.rpgwizard.common.assets.SpriteSheet;
+import org.rpgwizard.common.utilities.CoreProperties;
+import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.rpgwizard.editor.utilities.GuiHelper;
 import org.rpgwizard.editor.utilities.TransparentDrawer;
@@ -28,16 +33,16 @@ import org.rpgwizard.editor.utilities.TransparentDrawer;
  *
  * @author Joshua Michael Daly
  */
-public class SpriteSheetImage extends JPanel implements MouseListener {
+public class SpriteSheetButton extends JPanel implements MouseListener {
 
     protected Animation animation;
-    private SpriteSheet spriteSheet;
+    private final SpriteSheet spriteSheet;
 
     protected Dimension dimension;
 
     private boolean entered;
 
-    public SpriteSheetImage() {
+    public SpriteSheetButton() {
         animation = null;
         spriteSheet = null;
         entered = false;
@@ -46,7 +51,7 @@ public class SpriteSheetImage extends JPanel implements MouseListener {
         addMouseListener(this);
     }
 
-    public SpriteSheetImage(Animation animation, SpriteSheet sheet) {
+    public SpriteSheetButton(Animation animation, SpriteSheet sheet) {
         this.animation = animation;
         spriteSheet = sheet;
         entered = false;
@@ -74,11 +79,11 @@ public class SpriteSheetImage extends JPanel implements MouseListener {
     public void paint(Graphics g) {
         TransparentDrawer.drawTransparentBackground(g, dimension.width, dimension.height);
 
-        BufferedImage image = spriteSheet.getImage();
+        BufferedImage image = spriteSheet.getSelection();
         if (image != null) {
             g.drawImage(image, 0, 0, null);
-            GuiHelper.drawGrid((Graphics2D) g, animation.getAnimationWidth(), animation.getAnimationHeight(),
-                    new Rectangle(dimension.width, dimension.height));
+            GuiHelper.drawGrid((Graphics2D) g, animation.getSpriteSheet().getTileWidth(),
+                    animation.getSpriteSheet().getTileHeight(), new Rectangle(dimension.width, dimension.height));
         }
 
         if (entered) {
@@ -90,19 +95,27 @@ public class SpriteSheetImage extends JPanel implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
-            File imageFile = EditorFileManager.browseLocationBySubdir(EditorFileManager.getGraphicsSubdirectory(),
-                    EditorFileManager.getImageFilterDescription(), EditorFileManager.getImageExtensions());
+            try {
+                SpriteSheetDialog dialog = new SpriteSheetDialog(MainWindow.getInstance(), animation.getSpriteSheet());
+                dialog.display();
+                if (dialog.getValue() == null) {
+                    return;
+                }
 
-            if (imageFile != null) {
+                File imageFile = new File(System.getProperty("project.path") + File.separator
+                        + CoreProperties.getProperty("toolkit.directory.graphics") + File.separator
+                        + animation.getSpriteSheet().getFileName());
                 if (EditorFileManager.validatePathStartsWith(imageFile,
                         new File(EditorFileManager.getGraphicsPath()))) {
-                    String remove = EditorFileManager.getGraphicsPath();
-                    String path = imageFile.getAbsolutePath().replace(remove, "");
-
-                    spriteSheet = new SpriteSheet(path, 0, 0, dimension.width, dimension.height);
-                    animation.setSpriteSheet(spriteSheet);
+                    animation.setSpriteSheet(dialog.getValue());
+                    animation.setAnimationWidth(animation.getSpriteSheet().getTileWidth());
+                    animation.setAnimationHeight(animation.getSpriteSheet().getTileHeight());
                     repaint();
                 }
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(MainWindow.getInstance(), "Error loading sprite sheet!", "Error on Load",
+                        JOptionPane.ERROR_MESSAGE);
+                Logger.getLogger(SpriteSheetButton.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else if (e.getButton() == MouseEvent.BUTTON2) {
             animation.removeSpriteSheet();
@@ -130,7 +143,7 @@ public class SpriteSheetImage extends JPanel implements MouseListener {
     }
 
     public BufferedImage loadImage() throws IOException {
-        BufferedImage image = spriteSheet.loadImage();
+        BufferedImage image = spriteSheet.loadSelection();
         dimension = new Dimension(image.getWidth() + 1, image.getHeight() + 1);
         return image;
     }

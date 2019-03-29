@@ -11,15 +11,12 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import org.rpgwizard.common.assets.Animation;
-import org.rpgwizard.common.assets.SpriteSheet;
+import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.rpgwizard.editor.ui.resources.Icons;
@@ -29,7 +26,7 @@ import org.rpgwizard.editor.utilities.TransparentDrawer;
  *
  * @author Joshua Michael Daly
  */
-public class AddSpriteSheetButton extends SpriteSheetImage {
+public class AddSpriteSheetButton extends SpriteSheetButton {
 
     public AddSpriteSheetButton(Animation animation) {
         this.animation = animation;
@@ -49,28 +46,25 @@ public class AddSpriteSheetButton extends SpriteSheetImage {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        File imageFile = EditorFileManager.browseLocationBySubdir(EditorFileManager.getGraphicsSubdirectory(),
-                EditorFileManager.getImageFilterDescription(), EditorFileManager.getImageExtensions());
-
-        if (imageFile != null) {
-            if (EditorFileManager.validatePathStartsWith(imageFile, new File(EditorFileManager.getGraphicsPath()))) {
-                try {
-                    BufferedImage image = ImageIO.read(imageFile);
-
-                    // TODO: Work around until user can specifiy region.
-                    int x = 0;
-                    int y = 0;
-                    int width = image.getWidth();
-                    int height = image.getHeight();
-
-                    String remove = EditorFileManager.getGraphicsPath();
-                    String path = imageFile.getAbsolutePath().replace(remove, "");
-                    animation.setSpriteSheet(new SpriteSheet(path, x, y, width, height));
-                    animation.setAnimationHeight(height); // Save the user an extra step.
-                } catch (IOException ex) {
-                    Logger.getLogger(AddSpriteSheetButton.class.getName()).log(Level.SEVERE, null, ex);
-                }
+        try {
+            SpriteSheetDialog dialog = new SpriteSheetDialog(MainWindow.getInstance(), animation.getSpriteSheet());
+            dialog.display();
+            if (dialog.getValue() == null) {
+                return;
             }
+
+            File imageFile = new File(System.getProperty("project.path") + File.separator
+                    + CoreProperties.getProperty("toolkit.directory.graphics") + File.separator
+                    + animation.getSpriteSheet().getFileName());
+            if (EditorFileManager.validatePathStartsWith(imageFile, new File(EditorFileManager.getGraphicsPath()))) {
+                animation.setSpriteSheet(dialog.getValue());
+                animation.setAnimationWidth(animation.getSpriteSheet().getTileWidth());
+                animation.setAnimationHeight(animation.getSpriteSheet().getTileHeight());
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(MainWindow.getInstance(), "Error loading sprite sheet!", "Error on Load",
+                    JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(AddSpriteSheetButton.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

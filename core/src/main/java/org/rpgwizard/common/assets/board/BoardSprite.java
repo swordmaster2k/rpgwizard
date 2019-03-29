@@ -383,7 +383,7 @@ public class BoardSprite extends AbstractBoardModel implements Cloneable, Select
 
                     if (animation != null) {
                         if (!animation.getSpriteSheet().getFileName().isEmpty()) {
-                            animation.getSpriteSheet().loadImage();
+                            animation.getSpriteSheet().loadSelection();
                             image = animation.getFrame(0);
                         }
                     }

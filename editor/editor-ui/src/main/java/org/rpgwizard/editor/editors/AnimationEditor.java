@@ -25,7 +25,7 @@ import org.rpgwizard.common.assets.SpriteSheet;
 import org.rpgwizard.common.assets.events.AnimationChangedEvent;
 import org.rpgwizard.common.assets.listeners.AnimationChangeListener;
 import org.rpgwizard.editor.editors.animation.AddSpriteSheetButton;
-import org.rpgwizard.editor.editors.animation.SpriteSheetImage;
+import org.rpgwizard.editor.editors.animation.SpriteSheetButton;
 import org.rpgwizard.editor.ui.AnimatedPanel;
 import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 import org.rpgwizard.editor.ui.resources.Icons;
@@ -138,10 +138,11 @@ public final class AnimationEditor extends AbstractAssetEditorWindow
         try {
             SpriteSheet spriteSheet = animation.getSpriteSheet();
             if (!spriteSheet.getFileName().isEmpty()) {
-                SpriteSheetImage spriteSheetImage = new SpriteSheetImage(animation, spriteSheet);
-                spriteSheetImage.loadImage();
+                spriteSheet.loadSelection();
+                SpriteSheetButton spriteSheetButton = new SpriteSheetButton(animation, spriteSheet);
+                spriteSheetButton.loadImage();
                 animatedPanel.setAnimation(animation);
-                timelinePanel.add(spriteSheetImage);
+                timelinePanel.add(spriteSheetButton);
             } else {
                 timelinePanel.add(new AddSpriteSheetButton(animation));
             }

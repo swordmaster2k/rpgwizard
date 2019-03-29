@@ -360,13 +360,7 @@ public final class BoardView2D extends AbstractBoardView {
         int tileHeight = board.getTileHeight();
 
         Rectangle selection = boardEditor.getSelection();
-
-        g.setColor(new Color(100, 100, 255));
-        g.drawRect(selection.x * tileWidth, selection.y * tileHeight, (selection.width + 1) * tileWidth,
-                (selection.height + 1) * tileHeight);
-        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, 0.2f));
-        g.fillRect(selection.x * tileWidth + 1, selection.y * tileHeight + 1, (selection.width + 1) * tileWidth - 1,
-                (selection.height + 1) * tileHeight - 1);
+        GuiHelper.drawSelection(g, tileWidth, tileHeight, selection, 1);
     }
 
     /**

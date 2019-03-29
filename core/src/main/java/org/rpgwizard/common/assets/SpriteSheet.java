@@ -27,21 +27,18 @@ public class SpriteSheet {
 
     // Non-IO.
     private BufferedImage image;
+    private BufferedImage selection;
+    private final int tileWidth;
+    private final int tileHeight;
 
-    public SpriteSheet() {
-        fileName = "";
-        x = 0;
-        y = 0;
-        width = 0;
-        height = 0;
-    }
-
-    public SpriteSheet(String image, int x, int y, int width, int height) {
+    public SpriteSheet(String image, int x, int y, int width, int height, int tileWidth, int tileHeight) {
         this.fileName = image;
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.tileWidth = tileWidth;
+        this.tileHeight = tileHeight;
     }
 
     public String getFileName() {
@@ -68,32 +65,51 @@ public class SpriteSheet {
         return image;
     }
 
+    public BufferedImage getSelection() {
+        return selection;
+    }
+
+    public int getTileWidth() {
+        return tileWidth;
+    }
+
+    public int getTileHeight() {
+        return tileHeight;
+    }
+
     public BufferedImage loadImage() throws IOException {
         File file = new File(System.getProperty("project.path") + File.separator
                 + CoreProperties.getProperty("toolkit.directory.graphics") + File.separator + fileName);
         image = ImageIO.read(file);
-
         return image;
     }
 
+    public BufferedImage loadSelection() throws IOException {
+        File file = new File(System.getProperty("project.path") + File.separator
+                + CoreProperties.getProperty("toolkit.directory.graphics") + File.separator + fileName);
+        BufferedImage temp = ImageIO.read(file);
+        selection = temp.getSubimage(x, y, width, height);
+        return selection;
+    }
+
     public BufferedImage getFrame(int index, int width, int height) {
-        if (width > image.getWidth()) {
-            width = image.getWidth();
+        if (width > selection.getWidth()) {
+            width = selection.getWidth();
         }
-        if (height > image.getHeight()) {
-            height = image.getHeight();
+        if (height > selection.getHeight()) {
+            height = selection.getHeight();
         }
 
-        int columns = Math.round(image.getWidth() / width);
+        int columns = Math.round(selection.getWidth() / width);
         int x1 = (index % columns) * width;
         int y1 = (Math.round(index / columns)) * height;
 
-        return image.getSubimage(x1, y1, width, height);
+        return selection.getSubimage(x1, y1, width, height);
     }
 
     public int getFrameCount(int width, int height) {
-        int columns = Math.round(image.getWidth() / width);
-        int rows = Math.round(image.getHeight() / height);
+        int columns = Math.round(selection.getWidth() / width);
+        int rows = Math.round(selection.getHeight() / height);
 
         if (columns == 0) {
             columns = 1;

@@ -601,6 +601,11 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
      * @param editor
      */
     public void addToolkitEditorWindow(AbstractAssetEditorWindow editor) {
+        // Ensure it shows up in the center of editor.
+        int width = (desktopPane.getWidth() - editor.getWidth()) / 2;
+        int height = (desktopPane.getHeight() - editor.getWidth()) / 2;
+        editor.setLocation(width, height);
+
         editor.addInternalFrameListener(this);
         editor.setVisible(true);
         editor.toFront();
@@ -1032,12 +1037,8 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         projectPanel.setup(EditorFileManager.getProjectPath());
 
         ProjectEditor projectEditor = new ProjectEditor(activeProject);
-        this.desktopPane.add(projectEditor, BorderLayout.CENTER);
+        addToolkitEditorWindow(projectEditor);
 
-        projectEditor.addInternalFrameListener(this);
-        projectEditor.toFront();
-
-        selectToolkitWindow(projectEditor);
         setTitle(EditorProperties.getProperty(EditorProperty.EDITOR_UI_TITLE) + " - " + activeProject.getName());
 
         menuBar.enableMenus(true);

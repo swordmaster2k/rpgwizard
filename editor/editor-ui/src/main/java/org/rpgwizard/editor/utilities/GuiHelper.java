@@ -7,6 +7,7 @@
  */
 package org.rpgwizard.editor.utilities;
 
+import java.awt.AlphaComposite;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -196,6 +197,31 @@ public abstract class GuiHelper {
         for (int y = startY; y < endY; y += tileHeight) {
             g2d.drawLine(clipRectangle.x, y, clipRectangle.x + clipRectangle.width - 1, y);
         }
+    }
+
+    /**
+     * Draws the standard selection box around the requested area.
+     * 
+     * @param g
+     * @param tileWidth
+     * @param tileHeight
+     * @param selection
+     * @param modifier
+     */
+    public static void drawSelection(Graphics2D g, int tileWidth, int tileHeight, Rectangle selection, int modifier) {
+        g.setColor(new Color(100, 100, 255));
+        g.drawRect(selection.x * tileWidth, selection.y * tileHeight, (selection.width + modifier) * tileWidth,
+                (selection.height + modifier) * tileHeight);
+        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, 0.2f));
+        g.fillRect(selection.x * tileWidth + 1, selection.y * tileHeight + 1,
+                (selection.width + modifier) * tileWidth - 1, (selection.height + modifier) * tileHeight - 1);
+    }
+
+    public static boolean checkSelectionBounds(int maxX, int maxY, int x, int y) {
+        if (x > maxX || y > maxY) {
+            return false;
+        }
+        return !(x < 0 || y < 0);
     }
 
     public static int[] ensureVectorVisible(Board board, int x1, int y1, int x2, int y2) {

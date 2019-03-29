@@ -29,6 +29,7 @@ import org.rpgwizard.common.assets.Board;
 import org.rpgwizard.common.assets.TilePixelOutOfRangeException;
 import org.rpgwizard.editor.editors.BoardEditor;
 import org.rpgwizard.editor.ui.resources.Icons;
+import org.rpgwizard.editor.utilities.GuiHelper;
 
 /**
  * This class is an Abstract model for the visual representation of a RPG-Toolkit board file. It deals with initializing
@@ -418,10 +419,7 @@ public abstract class AbstractBoardView extends JPanel implements MultiLayerCont
      * @return
      */
     public boolean checkTileInBounds(int x, int y) {
-        if (x >= board.getWidth() || y >= board.getHeight()) {
-            return false;
-        }
-        return !(x < 0 || y < 0);
+        return GuiHelper.checkSelectionBounds(board.getWidth(), board.getHeight(), x, y);
     }
 
     /**

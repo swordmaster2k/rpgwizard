@@ -117,8 +117,8 @@ public class AssetSerializerTest {
         Assert.assertEquals("attack1_north.png", spriteSheet.getFileName());
         Assert.assertEquals(0, spriteSheet.getX());
         Assert.assertEquals(0, spriteSheet.getY());
-        Assert.assertEquals(100, spriteSheet.getWidth());
-        Assert.assertEquals(25, spriteSheet.getHeight());
+        Assert.assertEquals(55, spriteSheet.getWidth());
+        Assert.assertEquals(90, spriteSheet.getHeight());
 
         Assert.assertEquals("hit.wav", asset.getSoundEffect());
     }

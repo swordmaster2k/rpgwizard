@@ -36,11 +36,11 @@ public class Animation extends AbstractAsset {
     }
 
     public BufferedImage getFrame(int index) {
-        return spriteSheet.getFrame(index, animationWidth, animationHeight);
+        return spriteSheet.getFrame(index, spriteSheet.getTileWidth(), spriteSheet.getTileHeight());
     }
 
     public int getFrameCount() {
-        return spriteSheet.getFrameCount(animationWidth, animationHeight);
+        return spriteSheet.getFrameCount(spriteSheet.getTileWidth(), spriteSheet.getTileHeight());
     }
 
     /**
@@ -225,7 +225,7 @@ public class Animation extends AbstractAsset {
         animationWidth = 50;
         animationHeight = 50;
         frameRate = 2;
-        spriteSheet = new SpriteSheet();
+        spriteSheet = new SpriteSheet("", 0, 0, 50, 50, 50, 50);
         soundEffect = "";
     }
 

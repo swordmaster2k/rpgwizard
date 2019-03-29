@@ -1,12 +1,12 @@
 {
-   "version": 4.0,
+   "version": 1.5,
    "frameRate":0.2,
    "spriteSheet": {  
          "image":"attack1_north.png",
          "x":0,
          "y":0,
-         "width":100,
-         "height":25
+         "width":55,
+         "height":90
     },
    "height":90,
    "soundEffect":"hit.wav",

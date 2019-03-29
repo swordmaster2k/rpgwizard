@@ -93,7 +93,7 @@ public class AnimatedPanel extends AbstractImagePanel implements AnimationChange
             timer = null;
             frameImage = null;
         } else if (animation.getSpriteSheet() != null) {
-            animation.getSpriteSheet().loadImage();
+            animation.getSpriteSheet().loadSelection();
             frameImage = animation.getFrame(0);
         }
 

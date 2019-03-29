@@ -21,7 +21,7 @@ import org.rpgwizard.editor.utilities.TransparentDrawer;
  *
  * @author Joshua Michael Daly
  */
-public class ImagePanel extends AbstractImagePanel {
+public final class ImagePanel extends AbstractImagePanel {
 
     private final Image defaultImage;
 

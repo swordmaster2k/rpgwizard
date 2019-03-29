@@ -31,12 +31,6 @@ public class AnimationModelPanel extends AbstractModelPanel implements Animation
     private final JComboBox soundEffectComboBox;
     private final JLabel soundEffectLabel;
 
-    private final JSpinner widthSpinner;
-    private final JLabel widthLabel;
-
-    private final JSpinner heightSpinner;
-    private final JLabel heightLabel;
-
     private final JSpinner frameRateSpinner;
     private final JLabel frameRateLabel;
 
@@ -64,34 +58,6 @@ public class AnimationModelPanel extends AbstractModelPanel implements Animation
             animation.setSoundEffect((String) soundEffectComboBox.getSelectedItem());
         });
         ///
-        /// widthSpinner
-        ///
-        widthSpinner = getJSpinner(animation.getAnimationWidth());
-        widthSpinner.setModel(new SpinnerNumberModel(animation.getAnimationWidth(), 1, 1000, 1));
-        widthSpinner.addChangeListener((ChangeEvent e) -> {
-            int value = (int) widthSpinner.getValue();
-
-            if (value > 0 && value != animation.getAnimationWidth()) {
-                animation.setAnimationWidth(value);
-            } else {
-                widthSpinner.setValue(animation.getAnimationWidth());
-            }
-        });
-        ///
-        /// heightSpinner
-        ///
-        heightSpinner = getJSpinner(animation.getAnimationHeight());
-        heightSpinner.setModel(new SpinnerNumberModel(animation.getAnimationHeight(), 1, 1000, 1));
-        heightSpinner.addChangeListener((ChangeEvent e) -> {
-            int value = (int) heightSpinner.getValue();
-
-            if (value > 0 && value != animation.getAnimationHeight()) {
-                animation.setAnimationHeight(value);
-            } else {
-                heightSpinner.setValue(animation.getAnimationHeight());
-            }
-        });
-        ///
         /// frameRateSpinner
         ///
         frameRateSpinner = getJSpinner(animation.getFrameRate());
@@ -110,23 +76,15 @@ public class AnimationModelPanel extends AbstractModelPanel implements Animation
         ///
         horizontalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addComponent(soundEffectLabel = getJLabel("Sound Effect"))
-                .addComponent(widthLabel = getJLabel("Width")).addComponent(heightLabel = getJLabel("Height"))
                 .addComponent(frameRateLabel = getJLabel("FPS")));
 
-        horizontalGroup
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(soundEffectComboBox)
-                        .addComponent(widthSpinner).addComponent(heightSpinner).addComponent(frameRateSpinner));
+        horizontalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addComponent(soundEffectComboBox).addComponent(frameRateSpinner));
 
         layout.setHorizontalGroup(horizontalGroup);
 
         verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(soundEffectLabel)
                 .addComponent(soundEffectComboBox));
-
-        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(widthLabel)
-                .addComponent(widthSpinner));
-
-        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(heightLabel)
-                .addComponent(heightSpinner));
 
         verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(frameRateLabel)
                 .addComponent(frameRateSpinner));
@@ -139,12 +97,6 @@ public class AnimationModelPanel extends AbstractModelPanel implements Animation
         Animation source = (Animation) e.getSource();
         if (!animation.equals(source)) {
             return;
-        }
-        if (((int) widthSpinner.getValue()) != source.getAnimationWidth()) {
-            widthSpinner.setValue(source.getAnimationWidth());
-        }
-        if (((int) heightSpinner.getValue()) != source.getAnimationHeight()) {
-            heightSpinner.setValue(source.getAnimationHeight());
         }
         if (((int) frameRateSpinner.getValue()) != source.getFrameRate()) {
             frameRateSpinner.setValue(source.getFrameCount());

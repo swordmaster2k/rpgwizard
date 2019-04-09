@@ -7,18 +7,14 @@
  */
 package org.rpgwizard.editor.editors.board.panels;
 
+import java.awt.GridBagLayout;
 import org.rpgwizard.editor.ui.AbstractModelPanel;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import org.rpgwizard.common.assets.Board;
@@ -31,22 +27,13 @@ import org.rpgwizard.editor.utilities.GuiHelper;
  *
  * @author Joshua Micahel Daly
  */
-public class BoardPanel extends AbstractModelPanel {
+public final class BoardPanel extends AbstractModelPanel {
 
     private final JTextField descriptionField;
-    private final JLabel descriptionLabel;
-
     private final JSpinner widthSpinner;
-    private final JLabel widthLabel;
-
     private final JSpinner heightSpinner;
-    private final JLabel heightLabel;
-
     private final JComboBox musicFileComboBox;
-    private final JLabel musicLabel;
-
     private final JComboBox entryProgramComboBox;
-    private final JLabel entryProgramLabel;
 
     public BoardPanel(final Board board) {
         // /
@@ -82,26 +69,16 @@ public class BoardPanel extends AbstractModelPanel {
         // /
         widthSpinner = getJSpinner(board.getWidth());
         widthSpinner.setEnabled(false);
-        widthSpinner.addChangeListener(new ChangeListener() {
-
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
-            }
-
+        widthSpinner.addChangeListener((ChangeEvent e) -> {
+            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
         });
         // /
         // / heightSpinner
         // /
         heightSpinner = getJSpinner(board.getHeight());
         heightSpinner.setEnabled(false);
-        heightSpinner.addChangeListener(new ChangeListener() {
-
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
-            }
-
+        heightSpinner.addChangeListener((ChangeEvent e) -> {
+            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
         });
         // /
         // / musicTextField
@@ -111,14 +88,9 @@ public class BoardPanel extends AbstractModelPanel {
         String[] exts = new String[] { "wav", "mp3", "ogg" };
         musicFileComboBox = GuiHelper.getFileListJComboBox(new File[] { directory }, exts, true);
         musicFileComboBox.setSelectedItem(board.getBackgroundMusic());
-        musicFileComboBox.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                board.setBackgroundMusic((String) musicFileComboBox.getSelectedItem());
-                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
-            }
-
+        musicFileComboBox.addActionListener((ActionEvent e) -> {
+            board.setBackgroundMusic((String) musicFileComboBox.getSelectedItem());
+            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
         });
         // /
         // / entryProgramComboBox
@@ -128,45 +100,20 @@ public class BoardPanel extends AbstractModelPanel {
         exts = new String[] { "program", "js" };
         entryProgramComboBox = GuiHelper.getFileListJComboBox(new File[] { directory }, exts, true);
         entryProgramComboBox.setSelectedItem(board.getFirstRunProgram());
-        entryProgramComboBox.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                board.setFirstRunProgram((String) entryProgramComboBox.getSelectedItem());
-                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
-            }
-
+        entryProgramComboBox.addActionListener((ActionEvent e) -> {
+            board.setFirstRunProgram((String) entryProgramComboBox.getSelectedItem());
+            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
         });
         // /
         // / this
         // /
-        horizontalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addComponent(descriptionLabel = getJLabel("Description")).addComponent(widthLabel = getJLabel("Width"))
-                .addComponent(heightLabel = getJLabel("Height")).addComponent(musicLabel = getJLabel("Music"))
-                .addComponent(entryProgramLabel = getJLabel("Entry Program")));
+        setLayout(new GridBagLayout());
 
-        horizontalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addComponent(descriptionField).addComponent(widthSpinner).addComponent(heightSpinner)
-                .addComponent(musicFileComboBox).addComponent(entryProgramComboBox));
-
-        layout.setHorizontalGroup(horizontalGroup);
-
-        verticalGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE).addComponent(descriptionLabel)
-                .addComponent(descriptionField));
-
-        verticalGroup.addGroup(
-                layout.createParallelGroup(Alignment.BASELINE).addComponent(widthLabel).addComponent(widthSpinner));
-
-        verticalGroup.addGroup(
-                layout.createParallelGroup(Alignment.BASELINE).addComponent(heightLabel).addComponent(heightSpinner));
-
-        verticalGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE).addComponent(musicLabel)
-                .addComponent(musicFileComboBox));
-
-        verticalGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE).addComponent(entryProgramLabel)
-                .addComponent(entryProgramComboBox));
-
-        layout.setVerticalGroup(verticalGroup);
+        insert(getJLabel("Description"), descriptionField);
+        insert(getJLabel("Width"), widthSpinner);
+        insert(getJLabel("Height"), heightSpinner);
+        insert(getJLabel("Music"), musicFileComboBox);
+        insert(getJLabel("Entry Program"), entryProgramComboBox);
     }
 
 }

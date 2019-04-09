@@ -9,9 +9,7 @@ package org.rpgwizard.editor.editors.board.panels;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
-import javax.swing.GroupLayout;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
@@ -29,22 +27,13 @@ import org.rpgwizard.editor.utilities.GuiHelper;
  *
  * @author Joshua Michael Daly
  */
-public class BoardLayerImagePanel extends BoardModelPanel {
+public final class BoardLayerImagePanel extends BoardModelPanel {
 
     private final JComboBox fileComboBox;
-    private final JLabel fileLabel;
-
     private final JTextField idField;
-    private final JLabel idLabel;
-
     private final JSpinner xSpinner;
-    private final JLabel xLabel;
-
     private final JSpinner ySpinner;
-    private final JLabel yLabel;
-
     private final JSpinner layerSpinner;
-    private final JLabel layerLabel;
 
     private int lastSpinnerLayer; // Used to ensure that the selection is valid.
 
@@ -102,8 +91,7 @@ public class BoardLayerImagePanel extends BoardModelPanel {
         ///
         /// xSpinner
         ///
-        xSpinner = new JSpinner();
-        xSpinner.setValue(((BoardLayerImage) model).getX());
+        xSpinner = getJSpinner(((BoardLayerImage) model).getX());
         xSpinner.addChangeListener((ChangeEvent e) -> {
             BoardLayerImage image = (BoardLayerImage) model;
 
@@ -115,8 +103,7 @@ public class BoardLayerImagePanel extends BoardModelPanel {
         ///
         /// ySpinner
         ///
-        ySpinner = new JSpinner();
-        ySpinner.setValue(((BoardLayerImage) model).getY());
+        ySpinner = getJSpinner(((BoardLayerImage) model).getY());
         ySpinner.addChangeListener((ChangeEvent e) -> {
             BoardLayerImage image = (BoardLayerImage) model;
 
@@ -154,32 +141,11 @@ public class BoardLayerImagePanel extends BoardModelPanel {
         ///
         /// this
         ///
-        horizontalGroup.addGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(fileLabel = getJLabel("Image"))
-                        .addComponent(idLabel = getJLabel("ID")).addComponent(xLabel = getJLabel("X"))
-                        .addComponent(yLabel = getJLabel("Y")).addComponent(layerLabel = getJLabel("Layer")));
-
-        horizontalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(fileComboBox)
-                .addComponent(idField).addComponent(xSpinner).addComponent(ySpinner).addComponent(layerSpinner));
-
-        layout.setHorizontalGroup(horizontalGroup);
-
-        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(fileLabel)
-                .addComponent(fileComboBox));
-
-        verticalGroup.addGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(idLabel).addComponent(idField));
-
-        verticalGroup.addGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(xLabel).addComponent(xSpinner));
-
-        verticalGroup.addGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(yLabel).addComponent(ySpinner));
-
-        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(layerLabel)
-                .addComponent(layerSpinner));
-
-        layout.setVerticalGroup(verticalGroup);
+        insert(getJLabel("Image"), fileComboBox);
+        insert(getJLabel("ID"), idField);
+        insert(getJLabel("X"), xSpinner);
+        insert(getJLabel("Y"), ySpinner);
+        insert(getJLabel("Layer"), layerSpinner);
     }
 
     @Override

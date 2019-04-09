@@ -9,9 +9,7 @@ package org.rpgwizard.editor.editors.board.panels;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
-import javax.swing.GroupLayout;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
@@ -35,39 +33,20 @@ import org.rpgwizard.editor.utilities.GuiHelper;
  *
  * @author Joshua Michael Daly
  */
-public class BoardSpritePanel extends BoardModelPanel {
+public final class BoardSpritePanel extends BoardModelPanel {
 
     private final JComboBox fileComboBox;
-    private final JLabel fileLabel;
-
     private final JTextField idField;
-    private final JLabel idLabel;
-
     private final JComboBox eventProgramComboBox;
-    private final JLabel eventProgramLabel;
-
     private final JComboBox threadComboBox;
-    private final JLabel threadLabel;
-
     private final JSpinner xSpinner;
-    private final JLabel xLabel;
-
     private final JSpinner ySpinner;
-    private final JLabel yLabel;
-
     private final JSpinner layerSpinner;
-    private final JLabel layerLabel;
-
     private int lastSpinnerLayer; // Used to ensure that the selection is valid.
-
     private final JComboBox eventComboBox;
-    private final JLabel eventLabel;
-
     private static final String[] EVENT_TYPES = EventType.toStringArray();
-
     private static final String[] KEY_TYPES = KeyType.toStringArray();
     private final JComboBox<String> keyComboBox;
-    private final JLabel keyLabel;
 
     public BoardSpritePanel(final BoardSprite boardSprite) {
         ///
@@ -148,7 +127,7 @@ public class BoardSpritePanel extends BoardModelPanel {
         ///
         /// xSpinner
         ///
-        xSpinner = new JSpinner();
+        xSpinner = getJSpinner(((BoardSprite) model).getX());
         xSpinner.setValue(((BoardSprite) model).getX());
         xSpinner.addChangeListener((ChangeEvent e) -> {
             BoardSprite sprite = (BoardSprite) model;
@@ -160,8 +139,7 @@ public class BoardSpritePanel extends BoardModelPanel {
         ///
         /// ySpinner
         ///
-        ySpinner = new JSpinner();
-        ySpinner.setValue(((BoardSprite) model).getY());
+        ySpinner = getJSpinner(((BoardSprite) model).getY());
         ySpinner.addChangeListener((ChangeEvent e) -> {
             BoardSprite sprite = (BoardSprite) model;
             if (sprite.getY() != (int) ySpinner.getValue()) {
@@ -228,48 +206,15 @@ public class BoardSpritePanel extends BoardModelPanel {
         ///
         /// this
         ///
-        horizontalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addComponent(fileLabel = getJLabel("Sprite File")).addComponent(idLabel = getJLabel("ID"))
-                .addComponent(xLabel = getJLabel("X")).addComponent(yLabel = getJLabel("Y"))
-                .addComponent(layerLabel = getJLabel("Layer")).addComponent(eventLabel = getJLabel("Event"))
-                .addComponent(keyLabel = getJLabel("Key")).addComponent(eventProgramLabel = getJLabel("Event Program"))
-                .addComponent(threadLabel = getJLabel("Thread")));
-
-        horizontalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(fileComboBox)
-                .addComponent(idField).addComponent(xSpinner).addComponent(ySpinner).addComponent(layerSpinner)
-                .addComponent(eventComboBox).addComponent(keyComboBox).addComponent(eventProgramComboBox)
-                .addComponent(threadComboBox));
-
-        layout.setHorizontalGroup(horizontalGroup);
-
-        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(fileLabel)
-                .addComponent(fileComboBox));
-
-        verticalGroup.addGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(idLabel).addComponent(idField));
-
-        verticalGroup.addGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(xLabel).addComponent(xSpinner));
-
-        verticalGroup.addGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(yLabel).addComponent(ySpinner));
-
-        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(layerLabel)
-                .addComponent(layerSpinner));
-
-        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(eventLabel)
-                .addComponent(eventComboBox));
-
-        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(keyLabel)
-                .addComponent(keyComboBox));
-
-        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(eventProgramLabel).addComponent(eventProgramComboBox));
-
-        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(threadLabel)
-                .addComponent(threadComboBox));
-
-        layout.setVerticalGroup(verticalGroup);
+        insert(getJLabel("Sprite File"), fileComboBox);
+        insert(getJLabel("ID"), idField);
+        insert(getJLabel("X"), xSpinner);
+        insert(getJLabel("Y"), ySpinner);
+        insert(getJLabel("Layer"), layerSpinner);
+        insert(getJLabel("Event"), eventComboBox);
+        insert(getJLabel("Key"), keyComboBox);
+        insert(getJLabel("Event Program"), eventProgramComboBox);
+        insert(getJLabel("Thread"), threadComboBox);
     }
 
     @Override

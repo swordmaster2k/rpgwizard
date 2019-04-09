@@ -11,10 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.File;
-import javax.swing.GroupLayout;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
@@ -35,32 +33,18 @@ import org.rpgwizard.editor.utilities.GuiHelper;
  *
  * @author Joshua Michael Daly
  */
-public class BoardVectorPanel extends BoardModelPanel {
+public final class BoardVectorPanel extends BoardModelPanel {
 
     private final JSpinner layerSpinner;
-    private final JLabel layerLabel;
-
     private final JCheckBox isClosedCheckBox;
-    private final JLabel isClosedLabel;
-
     private final JTextField idTextField;
-    private final JLabel idLabel;
-
     private final JComboBox<String> typeComboBox;
-    private final JLabel typeLabel;
-
     private static final String[] VECTOR_TYPES = BoardVectorType.toStringArray();
-
     private static final String[] EVENT_TYPES = EventType.toStringArray();
     private final JComboBox<String> eventComboBox;
-    private final JLabel eventLabel;
-
     private static final String[] KEY_TYPES = KeyType.toStringArray();
     private final JComboBox<String> keyComboBox;
-    private final JLabel keyLabel;
-
     private final JComboBox eventProgramComboBox;
-    private final JLabel eventProgramLabel;
 
     private int lastSpinnerLayer; // Used to ensure that the selection is valid.
 
@@ -211,39 +195,12 @@ public class BoardVectorPanel extends BoardModelPanel {
         ///
         /// this
         ///
-        horizontalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addComponent(idLabel = getJLabel("ID")).addComponent(isClosedLabel = getJLabel("Is Closed"))
-                .addComponent(layerLabel = getJLabel("Layer")).addComponent(typeLabel = getJLabel("Type"))
-                .addComponent(eventLabel = getJLabel("Event")).addComponent(keyLabel = getJLabel("Key"))
-                .addComponent(eventProgramLabel = getJLabel("Event Program")));
-
-        horizontalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(idTextField)
-                .addComponent(isClosedCheckBox).addComponent(layerSpinner).addComponent(typeComboBox)
-                .addComponent(eventComboBox).addComponent(keyComboBox).addComponent(eventProgramComboBox));
-
-        layout.setHorizontalGroup(horizontalGroup);
-
-        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(idLabel)
-                .addComponent(idTextField));
-
-        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(isClosedLabel)
-                .addComponent(isClosedCheckBox));
-
-        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(layerLabel)
-                .addComponent(layerSpinner));
-
-        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(typeLabel)
-                .addComponent(typeComboBox));
-
-        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(eventLabel)
-                .addComponent(eventComboBox));
-
-        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(keyLabel)
-                .addComponent(keyComboBox));
-
-        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(eventProgramLabel).addComponent(eventProgramComboBox));
-
-        layout.setVerticalGroup(verticalGroup);
+        insert(getJLabel("ID"), idTextField);
+        insert(getJLabel("Is Closed"), isClosedCheckBox);
+        insert(getJLabel("Layer"), layerSpinner);
+        insert(getJLabel("Type"), typeComboBox);
+        insert(getJLabel("Event"), eventComboBox);
+        insert(getJLabel("Key"), keyComboBox);
+        insert(getJLabel("Event Program"), eventProgramComboBox);
     }
 }

@@ -8,13 +8,16 @@
 package org.rpgwizard.editor.ui;
 
 import java.awt.Font;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.SequentialGroup;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 
 /**
@@ -28,21 +31,18 @@ public abstract class AbstractModelPanel extends JPanel {
     protected Object model;
     protected Font font;
 
-    protected GroupLayout layout;
-    protected SequentialGroup horizontalGroup;
-    protected SequentialGroup verticalGroup;
+    protected GridBagLayout layout;
+
+    protected static final Insets DEFAULT_INSETS = new Insets(10, 10, 10, 10);
+    protected final GridBagConstraints constraints;
+    protected int row;
 
     public AbstractModelPanel(Object model) {
         this.model = model;
         font = new JLabel().getFont();
-
-        layout = new GroupLayout(this);
-        layout.setAutoCreateGaps(true);
-        layout.setAutoCreateContainerGaps(true);
-
-        horizontalGroup = layout.createSequentialGroup();
-        verticalGroup = layout.createSequentialGroup();
-
+        layout = new GridBagLayout();
+        constraints = new GridBagConstraints();
+        row = 0;
         setLayout(layout);
     }
 
@@ -77,8 +77,32 @@ public abstract class AbstractModelPanel extends JPanel {
         return spinner;
     }
 
+    public final JSpinner getJSpinner(Integer value) {
+        JSpinner spinner = new JSpinner(
+                new SpinnerNumberModel(value, new Integer(0), new Integer(Integer.MAX_VALUE), new Integer(1)));
+        spinner.setFont(font);
+        return spinner;
+    }
+
     public void tearDown() {
         // Do nothing by default, let children override it.
+    }
+
+    protected void insert(JLabel label, JComponent component) {
+        constraints.gridx = 0;
+        constraints.gridy = row;
+        constraints.insets = DEFAULT_INSETS;
+        constraints.anchor = GridBagConstraints.LINE_START;
+        add(label, constraints);
+
+        constraints.gridx = 1;
+        constraints.gridy = row;
+        constraints.weightx = 1;
+        constraints.insets = DEFAULT_INSETS;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        add(component, constraints);
+
+        row++;
     }
 
 }

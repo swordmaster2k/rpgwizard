@@ -9,9 +9,7 @@ package org.rpgwizard.editor.editors.animation;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
-import javax.swing.GroupLayout;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
@@ -26,13 +24,10 @@ import org.rpgwizard.editor.utilities.GuiHelper;
  *
  * @author Joshua Michael Daly
  */
-public class AnimationModelPanel extends AbstractModelPanel implements AnimationChangeListener {
+public final class AnimationModelPanel extends AbstractModelPanel implements AnimationChangeListener {
 
     private final JComboBox soundEffectComboBox;
-    private final JLabel soundEffectLabel;
-
     private final JSpinner frameRateSpinner;
-    private final JLabel frameRateLabel;
 
     private final Animation animation;
 
@@ -74,22 +69,8 @@ public class AnimationModelPanel extends AbstractModelPanel implements Animation
         ///
         /// this
         ///
-        horizontalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addComponent(soundEffectLabel = getJLabel("Sound Effect"))
-                .addComponent(frameRateLabel = getJLabel("FPS")));
-
-        horizontalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addComponent(soundEffectComboBox).addComponent(frameRateSpinner));
-
-        layout.setHorizontalGroup(horizontalGroup);
-
-        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(soundEffectLabel)
-                .addComponent(soundEffectComboBox));
-
-        verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(frameRateLabel)
-                .addComponent(frameRateSpinner));
-
-        layout.setVerticalGroup(verticalGroup);
+        insert(getJLabel("Sound Effect"), soundEffectComboBox);
+        insert(getJLabel("FPS"), frameRateSpinner);
     }
 
     @Override

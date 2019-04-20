@@ -71,7 +71,7 @@ ScreenRenderer.prototype.renderBoard = function (context) {
              * Render sprites.
              */
             layerSprites.forEach(function (sprite) {
-                if (sprite.layer === i && sprite.renderReady) {
+                if (sprite && sprite.layer === i && sprite.renderReady) {
                     var frame = sprite.getActiveFrame();
                     if (frame) {
                         var x = parseInt(sprite.x - (frame.width / 2) + xShift);
@@ -166,7 +166,7 @@ ScreenRenderer.prototype.renderUI = function (context) {
 
 ScreenRenderer.prototype.sortSprites = function (layer, player) {
     var layerSprites = [];
-    if (player.layer === layer && player.renderReady) {
+    if (player && player.layer === layer && player.renderReady) {
         layerSprites.push(player);
     }
 
@@ -174,7 +174,7 @@ ScreenRenderer.prototype.sortSprites = function (layer, player) {
     Object.keys(this.board.sprites).forEach(function (key) {
         var entity = board.sprites[key];
         var asset = rpgcode._getSpriteType(key);
-        if (layer === entity.layer && asset.renderReady) {
+        if (layer === entity.layer && asset && asset.renderReady) {
             asset.x = entity.x;
             asset.y = entity.y;
             asset.layer = entity.layer;

@@ -18,15 +18,19 @@ function Character(filename) {
     Sprite.call(this);
 }
 
-Character.prototype.load = async function () {
+Character.prototype.load = async function (json) {
     if (rpgwizard.debugEnabled) {
         console.debug("Loading Character filename=[%s]", this.filename);
     }
 
-    let response = await fetch(this.filename);
-    response = await response.json();
-    for (var property in response) {
-        this[property] = response[property];
+    if (!json) {
+        let response = await fetch(this.filename);
+        json = await response.json();
+        rpgwizard.characters[this.filename] = JSON.stringify(json);
+    }
+    
+    for (var property in json) {
+        this[property] = json[property];
     }
     this.calculateCollisionPoints();
     this.calculateActivationPoints();
@@ -89,9 +93,9 @@ Character.prototype.processCollision = function (collision, entity) {
 
 Character.prototype.processActivation = function (collision, entity, entering) {
     if (rpgwizard.debugEnabled) {
-        console.debug("Processing activation for Character name=[%s]", this.name);
+        console.debug("Processing activation for Character name=[%s], collision.obj=[%s], entity=[%s], entering=[%s]", this.name, collision.obj, entity, entering);
     }
-    if (!this.onSameLayer(collision)) {
+    if (!this.onSameLayer(collision) || !rpgwizard.controlEnabled) {
         return;
     }
 

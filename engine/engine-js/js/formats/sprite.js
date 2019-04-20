@@ -206,8 +206,14 @@ Sprite.prototype._loadAnimation = async function (fileName) {
     }
 
     if (fileName) {
-        var animation = new Animation(PATH_ANIMATION + fileName);
-        return await animation.load();
+        if (rpgwizard.animations[fileName]) {
+            return rpgwizard.animations[fileName];
+        } else {
+            var animation = new Animation(PATH_ANIMATION + fileName);
+            var result = await animation.load();
+            rpgwizard.animations[fileName] = result;
+            return result;
+        }
     } else {
         return null;
     }

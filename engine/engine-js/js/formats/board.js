@@ -15,15 +15,19 @@ function Board(filename) {
     this.layerCache = [];
 }
 
-Board.prototype.load = async function () {
+Board.prototype.load = async function (json) {
     if (rpgwizard.debugEnabled) {
         console.debug("Loading Board filename=[%s]", this.filename);
     }
     
-    let response = await fetch(this.filename);
-    response = await response.json();
-    for (var property in response) {
-        this[property] = response[property];
+    if (!json) {
+        let response = await fetch(this.filename);
+        json = await response.json();
+        rpgwizard.boards[this.filename] = JSON.stringify(json);
+    }
+    
+    for (var property in json) {
+        this[property] = json[property];
     }
     
     if (rpgwizard.debugEnabled) {
@@ -61,10 +65,15 @@ Board.prototype.generateLayerCache = function () {
     if (rpgwizard.debugEnabled) {
         console.debug("Generating the layer cache for Board name=[%s]", this.name);
     }
-    this.layerCache = [];
-    this.layers.forEach(function (layer) {
-        this._addCachedLayer(layer);
-    }.bind(this));
+    if (rpgwizard.layerCache[this.filename]) {
+        this.layerCache = rpgwizard.layerCache[this.filename];
+    } else {
+        this.layerCache = [];
+        this.layers.forEach(function (layer) {
+            this._addCachedLayer(layer);
+        }.bind(this));
+        rpgwizard.layerCache[this.filename] = this.layerCache;
+    }
 };
 
 Board.prototype._addCachedLayer = function (layer) {

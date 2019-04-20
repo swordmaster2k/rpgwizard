@@ -38,27 +38,32 @@ TileSet.prototype.setReady = function () {
     }
     
     this.img = Crafty.assets[Crafty.__paths.images + this.image];
-
     this.tileRows = Math.floor(this.img.height / this.tileHeight);
     this.tileColumns = Math.floor(this.img.width / this.tileWidth);
     this.count = this.tileRows * this.tileColumns;
+    
+    this._prepareTiles();
+};
 
-    this.canvas = document.createElement("canvas");
-    this.canvas.width = this.img.width;
-    this.canvas.height = this.img.height;
-
-    this.ctx = this.canvas.getContext("2d");
-    this.ctx.drawImage(this.img, 0, 0);
+TileSet.prototype._prepareTiles = function () {
+    const canvas = document.createElement("canvas");
+    canvas.width = this.img.width;
+    canvas.height = this.img.height;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(this.img, 0, 0);
+    
+    this.tiles = [];
+    for (var i = 0; i < this.count; i++) {
+        // Converted 1D index to 2D cooridnates.
+        var x = i % this.tileColumns;
+        var y = Math.floor(i / this.tileColumns);
+        var tile = ctx.getImageData(
+                x * this.tileWidth, y * this.tileHeight,
+                this.tileWidth, this.tileHeight);
+        this.tiles.push(tile);
+    }
 };
 
 TileSet.prototype.getTile = function (index) {
-    // Converted 1D index to 2D cooridnates.
-    var x = index % this.tileColumns;
-    var y = Math.floor(index / this.tileColumns);
-
-    var tile = this.ctx.getImageData(
-            x * this.tileWidth, y * this.tileHeight,
-            this.tileWidth, this.tileHeight);
-
-    return tile;
+    return this.tiles[index];
 };

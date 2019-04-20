@@ -26,12 +26,19 @@ function RPGWizard() {
     this.craftyCharacter = {};
     this.craftyRPGcodeScreen = {};
 
-    // TileSets.
-    this.tilesets = {};
+    // Default tile size
     this.tileSize = 32;
 
-    // Program cache, stores programs as Function objects.
+    // In-Memory asset Cache
+    this.boards = {};
+    this.tilesets = {};
+    this.layerCache = {};
+    this.animations = {};
+    this.enemies = {};
+    this.npcs = {};
+    this.characters = {};
     this.programCache = {};
+    
     this.activePrograms = 0;
     this.endProgramCallback = null;
     requirejs.config({
@@ -157,7 +164,13 @@ RPGWizard.prototype.setup = async function (filename) {
         // Load the initial character and board.
         var character = await new Character(PATH_CHARACTER + this.project.initialCharacter).load();
         await this.loadCharacter(character);
-        var board = await new Board(PATH_BOARD + this.project.initialBoard).load();
+        
+        var json;
+        var board = new Board(PATH_BOARD + this.project.initialBoard);
+        if (rpgwizard.boards[board.filename]) {
+            json = JSON.parse(rpgwizard.boards[board.filename]);
+        }
+        board = await board.load(json);
         await this.loadBoard(board);
 
         // Setup up the Character's starting position.
@@ -447,9 +460,11 @@ RPGWizard.prototype.loadBoard = async function (board) {
     var assets = {"images": [], "audio": {}};
 
     await Promise.all(craftyBoard.board.tileSets.map(async (file) => {
-        var tileSet = await new TileSet(PATH_TILESET + file).load();
-        rpgwizard.tilesets[tileSet.name] = tileSet;
-        rpgwizard.queueCraftyAssets({"images": [tileSet.image]}, tileSet);
+        if (!rpgwizard.tilesets[file]) {
+            var tileSet = await new TileSet(PATH_TILESET + file).load();
+            rpgwizard.tilesets[tileSet.name] = tileSet;
+            rpgwizard.queueCraftyAssets({"images": [tileSet.image]}, tileSet);
+        }
     }));
 
     for (var layer = 0; layer < board.layers.length; layer++) {
@@ -509,6 +524,7 @@ RPGWizard.prototype.switchBoard = async function (boardName, tileX, tileY, layer
         console.debug("Switching board to boardName=[%s], tileX=[%d], tileY=[%d], layer=[%d]",
                 boardName, tileX, tileY);
     }
+    this.craftyBoard.show = false;
     this.controlEnabled = false;
 
     Crafty("SOLID").destroy();
@@ -520,13 +536,21 @@ RPGWizard.prototype.switchBoard = async function (boardName, tileX, tileY, layer
     if (rpgwizard.craftyBoard.board) {
         rpgwizard.lastBackgroundMusic = rpgwizard.craftyBoard.board.backgroundMusic;
     }
-    var board = await new Board(PATH_BOARD + boardName).load();
-    await this.loadBoard(board);
+    
+    // Move the character first to avoid triggering vectors on next board, in same position.
     var tileWidth = this.craftyBoard.board.tileWidth;
     var tileHeight = this.craftyBoard.board.tileHeight;
     this.craftyCharacter.x = parseInt((tileX * tileWidth) + tileWidth / 2);
     this.craftyCharacter.y = parseInt((tileY * tileHeight) + tileHeight / 2);
     this.craftyCharacter.character.layer = layer;
+    
+    var json;
+    var board = new Board(PATH_BOARD + boardName);
+    if (rpgwizard.boards[board.filename]) {
+        json = JSON.parse(rpgwizard.boards[board.filename]);
+    }
+    board = await board.load(json);
+    await this.loadBoard(board);
 
     if (rpgwizard.debugEnabled) {
         console.debug("Switching board player location set to x=[%d], y=[%d], layer=[%d]",
@@ -605,13 +629,28 @@ RPGWizard.prototype.loadSprite = async function (sprite) {
     }
     var asset;
     if (sprite.name.endsWith(".enemy")) {
-        asset = sprite.enemy = await new Enemy(PATH_ENEMY + sprite.name).load();
+        var json;
+        const newEnemy = new Enemy(PATH_ENEMY + sprite.name);
+        if (this.enemies[newEnemy.filename]) {
+            json = JSON.parse(this.enemies[newEnemy.filename]);
+        }
+        asset = sprite.enemy = await newEnemy.load(json);
         sprite.collisionPoints = sprite.enemy.collisionPoints;
     } else if (sprite.name.endsWith(".npc")) {
-        asset = sprite.npc = await new NPC(PATH_NPC + sprite.name).load();
+        var json;
+        const newNpc = new NPC(PATH_NPC + sprite.name);
+        if (this.npcs[newNpc.filename]) {
+            json = JSON.parse(this.npcs[newNpc.filename]);
+        }
+        asset = sprite.npc = await newNpc.load(json);
         sprite.collisionPoints = sprite.npc.collisionPoints;
     } else {
-        asset = sprite.character = await new Character(PATH_CHARACTER + sprite.name).load();
+        var json;
+        const newCharacter = new Character(PATH_CHARACTER + sprite.name);
+        if (this.characters[newCharacter.filename]) {
+            json = JSON.parse(this.characters[newCharacter.filename]);
+        }
+        asset = sprite.character = await newCharacter.load(json);
         sprite.collisionPoints = sprite.character.collisionPoints;
     }
     sprite.x = sprite.startingPosition.x;

@@ -18,15 +18,19 @@ function Enemy(filename) {
     Sprite.call(this);
 }
 
-Enemy.prototype.load = async function () {
+Enemy.prototype.load = async function (json) {
     if (rpgwizard.debugEnabled) {
         console.debug("Loading Enemy filename=[%s]", this.filename);
     }
 
-    let response = await fetch(this.filename);
-    response = await response.json();
-    for (var property in response) {
-        this[property] = response[property];
+    if (!json) {
+        let response = await fetch(this.filename);
+        json = await response.json();
+        rpgwizard.enemies[this.filename] = JSON.stringify(json);
+    }
+    
+    for (var property in json) {
+        this[property] = json[property];
     }
     this.calculateCollisionPoints();
     this.calculateActivationPoints();

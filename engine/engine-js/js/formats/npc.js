@@ -18,15 +18,19 @@ function NPC(filename) {
     Sprite.call(this);
 }
 
-NPC.prototype.load = async function () {
+NPC.prototype.load = async function (json) {
     if (rpgwizard.debugEnabled) {
         console.debug("Loading NPC filename=[%s]", this.filename);
     }
 
-    let response = await fetch(this.filename);
-    response = await response.json();
-    for (var property in response) {
-        this[property] = response[property];
+    if (!json) {
+        let response = await fetch(this.filename);
+        json = await response.json();
+        rpgwizard.npcs[this.filename] = JSON.stringify(json);
+    }
+    
+    for (var property in json) {
+        this[property] = json[property];
     }
     this.calculateCollisionPoints();
     this.calculateActivationPoints();

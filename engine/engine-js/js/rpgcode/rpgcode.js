@@ -125,7 +125,7 @@ RPGcode.prototype._convertCraftyId = function (craftyId) {
 
 RPGcode.prototype._getSpriteType = function (spriteId) {
     var entity = rpgwizard.craftyBoard.board.sprites[spriteId];
-    if (entity) {
+    if (entity && entity.sprite) {
         if (entity.sprite.enemy) {
             return entity.sprite.enemy;
         } else if (entity.sprite.npc) {

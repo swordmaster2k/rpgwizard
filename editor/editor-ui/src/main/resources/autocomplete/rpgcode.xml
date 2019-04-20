@@ -891,7 +891,7 @@ dialog.show(config, function() {
         </keyword>
         <keyword name="rpgcode.fireRaycast(origin, direction, maxDistance);" type="function" returnType="Object" definedIn="engine/engine-js/js/rpgcode/rpgcode.js">
             <desc><![CDATA[<div class="description">
-  Fires a ray from its origin in the direction and report entities that intersect with it, given the parameter constraints. This will return any characters, enemies, NPCs, and SOLID vectors caught in the path of the raycast enclosing them inside an object. 
+  Fires a ray from its origin in the direction and report entities that intersect with it, given the parameter constraints. This will return any characters, enemies, NPCs, and SOLID vectors caught in the path of the raycast enclosing them inside an object. If no layer is specified, the origin layer will be the player's current. 
 </div> 
 <div class="container-params"> 
  <h3>Parameters:</h3> 
@@ -907,7 +907,7 @@ dialog.show(config, function() {
    <tr> 
     <td class="name"><code>origin</code></td> 
     <td class="type"> <span class="param-type">type</span> </td> 
-    <td class="description last">The point of origin from which the ray will be cast. The object must contain the properties _x and _y</td> 
+    <td class="description last">The point of origin from which the ray will be cast. The object must contain the properties _x, _y, and optionally _layer.</td> 
    </tr> 
    <tr> 
     <td class="name"><code>direction</code></td> 
@@ -927,7 +927,7 @@ dialog.show(config, function() {
  <span class="param-type">Object</span> - An object containing all of the entities in the path of the raycast. 
 </div>  
 <h3>Example</h3> 
-<pre class="prettyprint"><code>var hits = rpgcode.fireRaycast({    _x: location.x,    _y: location.y }, vector, 13); hits["characters"].forEach(function(character) {     rpgcode.log(character); }); hits["enemies"].forEach(function(sprite) {     rpgcode.log(sprite.enemy); }); hits["npcs"].forEach(function(sprite) {     rpgcode.log(sprite.npc); }); hits["solids"].forEach(function(solid) {     rpgcode.log(solid.distance);     rpgcode.log(solid.x);     rpgcode.log(solid.y); }); rpgcode.endProgram();</code></pre>]]></desc>
+<pre class="prettyprint"><code>var hits = rpgcode.fireRaycast({    _x: location.x,    _y: location.y,    _layer: location.layer // Optional }, vector, 13); hits["characters"].forEach(function(character) {     rpgcode.log(character); }); hits["enemies"].forEach(function(sprite) {     rpgcode.log(sprite.enemy); }); hits["npcs"].forEach(function(sprite) {     rpgcode.log(sprite.npc); }); hits["solids"].forEach(function(solid) {     rpgcode.log(solid.distance);     rpgcode.log(solid.x);     rpgcode.log(solid.y); }); rpgcode.endProgram();</code></pre>]]></desc>
         </keyword>
         <keyword name="rpgcode.getAngleBetweenPoints(x1, y1, x2, y2);" type="function" returnType="Number" definedIn="engine/engine-js/js/rpgcode/rpgcode.js">
             <desc><![CDATA[<div class="description">
@@ -2432,7 +2432,7 @@ dialog.show(config, function() {
  <span class="param-type">undefined</span> 
 </div>  
 <h3>Example</h3> 
-<pre class="prettyprint"><code>rpgcode.saveJSON( {     path: "Boards/start2.board", // Subdirectory and file to save.     data: {"Test": "Hello world!"} // JSON data to store. }, function(response) {    // Success callback.    console.log(success);    rpgcode.endProgram(); },  function(response) {    // Failure callback.    console.log(response);    rpgcode.endProgram(); });</code></pre>]]></desc>
+<pre class="prettyprint"><code>rpgcode.saveJSON( {     path: "Boards/start2.board", // Subdirectory and file to save.     data: {"Test": "Hello world!"} // JSON data to store. }, function(response) {    // Success callback.    console.log(response);    rpgcode.endProgram(); },  function(response) {    // Failure callback.    console.log(response);    rpgcode.endProgram(); });</code></pre>]]></desc>
         </keyword>
         <keyword name="rpgcode.sendToBoard(boardName, tileX, tileY, layer);" type="function" returnType="undefined" definedIn="engine/engine-js/js/rpgcode/rpgcode.js">
             <desc><![CDATA[<div class="description">

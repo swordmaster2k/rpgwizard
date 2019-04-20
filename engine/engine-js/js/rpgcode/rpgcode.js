@@ -865,10 +865,13 @@ RPGcode.prototype.fillRoundedRect = function (x, y, width, height, radius, canva
  * This will return any characters, enemies, NPCs, and SOLID vectors caught in the path of the 
  * raycast enclosing them inside an object.
  * 
+ * If no layer is specified, the origin layer will be the player's current.
+ * 
  * @example
  * var hits = rpgcode.fireRaycast({
  *     _x: location.x,
- *     _y: location.y
+ *     _y: location.y,
+ *     _layer: location.layer // Optional
  *  }, vector, 13);
  *  hits["characters"].forEach(function(character) {
  *      rpgcode.log(character);
@@ -886,7 +889,7 @@ RPGcode.prototype.fillRoundedRect = function (x, y, width, height, radius, canva
  *  });
  *  rpgcode.endProgram();
  * 
- * @param {type} origin The point of origin from which the ray will be cast. The object must contain the properties _x and _y
+ * @param {type} origin The point of origin from which the ray will be cast. The object must contain the properties _x, _y, and optionally _layer.
  * @param {type} direction The direction the ray will be cast. It must be normalized. The object must contain the properties x and y.
  * @param {type} maxDistance The maximum distance up to which intersections will be found. This is an optional parameter defaulting to Infinity. If it's Infinity find all intersections. If it's negative find only first intersection (if there is one). If it's positive find all intersections up to that distance.
  * @returns {Object} An object containing all of the entities in the path of the raycast. 
@@ -900,7 +903,11 @@ RPGcode.prototype.fireRaycast = function (origin, direction, maxDistance) {
     } else {
         hits = Crafty.raycast(origin, direction, -1, "Raycastable");
     }
-    var layerCheck = {obj: {layer: rpgwizard.craftyCharacter.character.layer}};
+    var layerCheck = {
+        obj: {
+            layer: origin._layer === undefined || origin._layer === null ? rpgwizard.craftyCharacter.character.layer : origin._layer
+        }
+    };
     hits.forEach(function (hit) {
         if (hit.obj.sprite) {
             if (hit.obj.sprite.npc) {

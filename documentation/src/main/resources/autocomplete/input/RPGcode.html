@@ -4555,7 +4555,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line894">line 894</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line897">line 897</a></code>
             </div>
             
         </h4>
@@ -4567,7 +4567,7 @@
 
     
     <div class="description">
-        Fires a ray from its origin in the direction and report entities that intersect with it, given the parameter constraints.This will return any characters, enemies, NPCs, and SOLID vectors caught in the path of the raycast enclosing them inside an object.
+        Fires a ray from its origin in the direction and report entities that intersect with it, given the parameter constraints.This will return any characters, enemies, NPCs, and SOLID vectors caught in the path of the raycast enclosing them inside an object.If no layer is specified, the origin layer will be the player's current.
     </div>
     
 
@@ -4619,7 +4619,7 @@
 
             
 
-            <td class="description last">The point of origin from which the ray will be cast. The object must contain the properties _x and _y</td>
+            <td class="description last">The point of origin from which the ray will be cast. The object must contain the properties _x, _y, and optionally _layer.</td>
         </tr>
 
     
@@ -4748,7 +4748,7 @@
     
         <h5>Example</h5>
         
-    <pre class="prettyprint"><code>var hits = rpgcode.fireRaycast({    _x: location.x,    _y: location.y }, vector, 13); hits["characters"].forEach(function(character) {     rpgcode.log(character); }); hits["enemies"].forEach(function(sprite) {     rpgcode.log(sprite.enemy); }); hits["npcs"].forEach(function(sprite) {     rpgcode.log(sprite.npc); }); hits["solids"].forEach(function(solid) {     rpgcode.log(solid.distance);     rpgcode.log(solid.x);     rpgcode.log(solid.y); }); rpgcode.endProgram();</code></pre>
+    <pre class="prettyprint"><code>var hits = rpgcode.fireRaycast({    _x: location.x,    _y: location.y,    _layer: location.layer // Optional }, vector, 13); hits["characters"].forEach(function(character) {     rpgcode.log(character); }); hits["enemies"].forEach(function(sprite) {     rpgcode.log(sprite.enemy); }); hits["npcs"].forEach(function(sprite) {     rpgcode.log(sprite.npc); }); hits["solids"].forEach(function(solid) {     rpgcode.log(solid.distance);     rpgcode.log(solid.x);     rpgcode.log(solid.y); }); rpgcode.endProgram();</code></pre>
 
     
 
@@ -4766,7 +4766,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line969">line 969</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line976">line 976</a></code>
             </div>
             
         </h4>
@@ -5000,7 +5000,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line939">line 939</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line946">line 946</a></code>
             </div>
             
         </h4>
@@ -5115,7 +5115,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line952">line 952</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line959">line 959</a></code>
             </div>
             
         </h4>
@@ -5230,7 +5230,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line984">line 984</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line991">line 991</a></code>
             </div>
             
         </h4>
@@ -5345,7 +5345,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line996">line 996</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1003">line 1003</a></code>
             </div>
             
         </h4>
@@ -5455,7 +5455,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1032">line 1032</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1039">line 1039</a></code>
             </div>
             
         </h4>
@@ -5643,7 +5643,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1071">line 1071</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1078">line 1078</a></code>
             </div>
             
         </h4>
@@ -5877,7 +5877,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1087">line 1087</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1094">line 1094</a></code>
             </div>
             
         </h4>
@@ -6042,7 +6042,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1135">line 1135</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1142">line 1142</a></code>
             </div>
             
         </h4>
@@ -6207,7 +6207,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1151">line 1151</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1158">line 1158</a></code>
             </div>
             
         </h4>
@@ -6395,7 +6395,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1108">line 1108</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1115">line 1115</a></code>
             </div>
             
         </h4>
@@ -6585,7 +6585,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1169">line 1169</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1177">line 1177</a></code>
             </div>
             
         </h4>
@@ -6773,7 +6773,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1182">line 1182</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1190">line 1190</a></code>
             </div>
             
         </h4>
@@ -6888,7 +6888,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1235">line 1235</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1243">line 1243</a></code>
             </div>
             
         </h4>
@@ -7001,7 +7001,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1248">line 1248</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1256">line 1256</a></code>
             </div>
             
         </h4>
@@ -7164,7 +7164,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1261">line 1261</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1269">line 1269</a></code>
             </div>
             
         </h4>
@@ -7324,7 +7324,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1199">line 1199</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1207">line 1207</a></code>
             </div>
             
         </h4>
@@ -7535,7 +7535,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1307">line 1307</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1315">line 1315</a></code>
             </div>
             
         </h4>
@@ -7648,7 +7648,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1324">line 1324</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1332">line 1332</a></code>
             </div>
             
         </h4>
@@ -7852,7 +7852,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1358">line 1358</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1366">line 1366</a></code>
             </div>
             
         </h4>
@@ -8065,7 +8065,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1393">line 1393</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1401">line 1401</a></code>
             </div>
             
         </h4>
@@ -8297,7 +8297,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1420">line 1420</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1428">line 1428</a></code>
             </div>
             
         </h4>
@@ -8483,7 +8483,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1437">line 1437</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1445">line 1445</a></code>
             </div>
             
         </h4>
@@ -8591,7 +8591,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1467">line 1467</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1475">line 1475</a></code>
             </div>
             
         </h4>
@@ -8758,7 +8758,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1517">line 1517</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1525">line 1525</a></code>
             </div>
             
         </h4>
@@ -8967,7 +8967,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1544">line 1544</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1550">line 1550</a></code>
             </div>
             
         </h4>
@@ -9111,7 +9111,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1619">line 1619</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1625">line 1625</a></code>
             </div>
             
         </h4>
@@ -9276,7 +9276,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1639">line 1639</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1645">line 1645</a></code>
             </div>
             
         </h4>
@@ -9466,7 +9466,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1665">line 1665</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1671">line 1671</a></code>
             </div>
             
         </h4>
@@ -9702,7 +9702,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1589">line 1589</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1595">line 1595</a></code>
             </div>
             
         </h4>
@@ -9892,7 +9892,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1700">line 1700</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1706">line 1706</a></code>
             </div>
             
         </h4>
@@ -10128,7 +10128,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1570">line 1570</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1576">line 1576</a></code>
             </div>
             
         </h4>
@@ -10339,7 +10339,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1764">line 1764</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1770">line 1770</a></code>
             </div>
             
         </h4>
@@ -10529,7 +10529,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1788">line 1788</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1794">line 1794</a></code>
             </div>
             
         </h4>
@@ -10719,7 +10719,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1875">line 1875</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1881">line 1881</a></code>
             </div>
             
         </h4>
@@ -10905,7 +10905,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1904">line 1904</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1910">line 1910</a></code>
             </div>
             
         </h4>
@@ -11091,7 +11091,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1817">line 1817</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1823">line 1823</a></code>
             </div>
             
         </h4>
@@ -11277,7 +11277,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1930">line 1930</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1936">line 1936</a></code>
             </div>
             
         </h4>
@@ -11463,7 +11463,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1846">line 1846</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1852">line 1852</a></code>
             </div>
             
         </h4>
@@ -11649,7 +11649,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1953">line 1953</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1959">line 1959</a></code>
             </div>
             
         </h4>
@@ -11793,7 +11793,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1963">line 1963</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1969">line 1969</a></code>
             </div>
             
         </h4>
@@ -11951,7 +11951,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2028">line 2028</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2034">line 2034</a></code>
             </div>
             
         </h4>
@@ -12114,7 +12114,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2047">line 2047</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2053">line 2053</a></code>
             </div>
             
         </h4>
@@ -12304,7 +12304,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1987">line 1987</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1993">line 1993</a></code>
             </div>
             
         </h4>
@@ -12448,7 +12448,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2013">line 2013</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2019">line 2019</a></code>
             </div>
             
         </h4>
@@ -12684,7 +12684,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1742">line 1742</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line1748">line 1748</a></code>
             </div>
             
         </h4>
@@ -12847,7 +12847,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2057">line 2057</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2063">line 2063</a></code>
             </div>
             
         </h4>
@@ -12941,7 +12941,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2069">line 2069</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2075">line 2075</a></code>
             </div>
             
         </h4>
@@ -13085,7 +13085,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2127">line 2127</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2133">line 2133</a></code>
             </div>
             
         </h4>
@@ -13276,7 +13276,7 @@
     
         <h5>Example</h5>
         
-    <pre class="prettyprint"><code>rpgcode.saveJSON( {     path: "Boards/start2.board", // Subdirectory and file to save.     data: {"Test": "Hello world!"} // JSON data to store. }, function(response) {    // Success callback.    console.log(success);    rpgcode.endProgram(); },  function(response) {    // Failure callback.    console.log(response);    rpgcode.endProgram(); });</code></pre>
+    <pre class="prettyprint"><code>rpgcode.saveJSON( {     path: "Boards/start2.board", // Subdirectory and file to save.     data: {"Test": "Hello world!"} // JSON data to store. }, function(response) {    // Success callback.    console.log(response);    rpgcode.endProgram(); },  function(response) {    // Failure callback.    console.log(response);    rpgcode.endProgram(); });</code></pre>
 
     
 
@@ -13294,7 +13294,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2154">line 2154</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2161">line 2161</a></code>
             </div>
             
         </h4>
@@ -13507,7 +13507,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2092">line 2092</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2098">line 2098</a></code>
             </div>
             
         </h4>
@@ -13716,7 +13716,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2447">line 2447</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2455">line 2455</a></code>
             </div>
             
         </h4>
@@ -13952,7 +13952,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2476">line 2476</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2484">line 2484</a></code>
             </div>
             
         </h4>
@@ -14119,7 +14119,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2502">line 2502</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2510">line 2510</a></code>
             </div>
             
         </h4>
@@ -14286,7 +14286,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2174">line 2174</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2181">line 2181</a></code>
             </div>
             
         </h4>
@@ -14499,7 +14499,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2294">line 2294</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2301">line 2301</a></code>
             </div>
             
         </h4>
@@ -14666,7 +14666,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2309">line 2309</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2316">line 2316</a></code>
             </div>
             
         </h4>
@@ -14833,7 +14833,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2333">line 2333</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2340">line 2340</a></code>
             </div>
             
         </h4>
@@ -14996,7 +14996,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2364">line 2364</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2371">line 2371</a></code>
             </div>
             
         </h4>
@@ -15159,7 +15159,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2194">line 2194</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2201">line 2201</a></code>
             </div>
             
         </h4>
@@ -15326,7 +15326,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2208">line 2208</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2215">line 2215</a></code>
             </div>
             
         </h4>
@@ -15484,7 +15484,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2226">line 2226</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2233">line 2233</a></code>
             </div>
             
         </h4>
@@ -15743,7 +15743,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2263">line 2263</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2270">line 2270</a></code>
             </div>
             
         </h4>
@@ -15933,7 +15933,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2394">line 2394</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2401">line 2401</a></code>
             </div>
             
         </h4>
@@ -16169,7 +16169,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2421">line 2421</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2429">line 2429</a></code>
             </div>
             
         </h4>
@@ -16336,7 +16336,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2520">line 2520</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2528">line 2528</a></code>
             </div>
             
         </h4>
@@ -16480,7 +16480,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2564">line 2564</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2572">line 2572</a></code>
             </div>
             
         </h4>
@@ -16624,7 +16624,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2579">line 2579</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2587">line 2587</a></code>
             </div>
             
         </h4>
@@ -16805,7 +16805,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2598">line 2598</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2606">line 2606</a></code>
             </div>
             
         </h4>
@@ -16972,7 +16972,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2615">line 2615</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2623">line 2623</a></code>
             </div>
             
         </h4>
@@ -17139,7 +17139,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2678">line 2678</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2686">line 2686</a></code>
             </div>
             
         </h4>
@@ -17302,7 +17302,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2699">line 2699</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2707">line 2707</a></code>
             </div>
             
         </h4>
@@ -17465,7 +17465,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2636">line 2636</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2644">line 2644</a></code>
             </div>
             
         </h4>
@@ -17628,7 +17628,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2720">line 2720</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2728">line 2728</a></code>
             </div>
             
         </h4>
@@ -17791,7 +17791,7 @@
             
             <div class="container-source members">
                 <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html">engine/engine-js/js/rpgcode/rpgcode.js</a></code>,
-                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2657">line 2657</a></code>
+                <code><a href="engine_engine-js_js_rpgcode_rpgcode.js.html#line2665">line 2665</a></code>
             </div>
             
         </h4>

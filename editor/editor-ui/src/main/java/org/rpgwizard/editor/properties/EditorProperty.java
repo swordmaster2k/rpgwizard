@@ -32,19 +32,20 @@ public enum EditorProperty {
                                                                             "editor.ui.tooltip.drawtile"), EDITOR_UI_TOOLTIP_SELECT_REGION(
                                                                                     "editor.ui.tooltip.selectregion"), EDITOR_UI_TOOLTIP_FILL_REGION(
                                                                                             "editor.ui.tooltip.fillregion"), EDITOR_UI_TOOLTIP_ERASE_REGION(
-                                                                                                    "editor.ui.tooltip.eraseregion"), EDITOR_UI_TOOLTIP_DRAW_VECTOR(
-                                                                                                            "editor.ui.tooltip.drawvector"), EDITOR_UI_TOOLTIP_DRAW_PROGRAM(
-                                                                                                                    "editor.ui.tooltip.drawprogram"), EDITOR_UI_TOOLTIP_SET_BOARD_SPRITE(
-                                                                                                                            "editor.ui.tooltip.setboardsprite"), EDITOR_UI_TOOLTIP_SET_BOARD_IMAGE(
-                                                                                                                                    "editor.ui.tooltip.setboardimage"), EDITOR_UI_TOOLTIP_SET_BOARD_LIGHT(
-                                                                                                                                            "editor.ui.tooltip.setboardlight"), EDITOR_UI_TOOLTIP_SET_START_POSITION(
-                                                                                                                                                    "editor.ui.tooltip.setstartposition"), EDITOR_UI_TOOLTIP_ZOOM_IN(
-                                                                                                                                                            "editor.ui.tooltip.zoomin"), EDITOR_UI_TOOLTIP_ZOOM_OUT(
-                                                                                                                                                                    "editor.ui.tooltip.zoomout"), EDITOR_UI_TOOLTIP_RUN_GAME(
-                                                                                                                                                                            "editor.ui.tooltip.rungame"), EDITOR_UI_TOOLTIP_STOP_GAME(
-                                                                                                                                                                                    "editor.ui.tooltip.stopgame"), EDITOR_UI_TOOLTIP_COMPILE_GAME(
-                                                                                                                                                                                            "editor.ui.tooltip.compilegame"), EDITOR_UI_TOOLTIP_HELP(
-                                                                                                                                                                                                    "editor.ui.tooltip.help");
+                                                                                                    "editor.ui.tooltip.eraseregion"), EDITOR_UI_TOOLTIP_DRAW_VECTOR_AREA(
+                                                                                                            "editor.ui.tooltip.drawvectorarea"), EDITOR_UI_TOOLTIP_DRAW_VECTOR(
+                                                                                                                    "editor.ui.tooltip.drawvector"), EDITOR_UI_TOOLTIP_DRAW_PROGRAM(
+                                                                                                                            "editor.ui.tooltip.drawprogram"), EDITOR_UI_TOOLTIP_SET_BOARD_SPRITE(
+                                                                                                                                    "editor.ui.tooltip.setboardsprite"), EDITOR_UI_TOOLTIP_SET_BOARD_IMAGE(
+                                                                                                                                            "editor.ui.tooltip.setboardimage"), EDITOR_UI_TOOLTIP_SET_BOARD_LIGHT(
+                                                                                                                                                    "editor.ui.tooltip.setboardlight"), EDITOR_UI_TOOLTIP_SET_START_POSITION(
+                                                                                                                                                            "editor.ui.tooltip.setstartposition"), EDITOR_UI_TOOLTIP_ZOOM_IN(
+                                                                                                                                                                    "editor.ui.tooltip.zoomin"), EDITOR_UI_TOOLTIP_ZOOM_OUT(
+                                                                                                                                                                            "editor.ui.tooltip.zoomout"), EDITOR_UI_TOOLTIP_RUN_GAME(
+                                                                                                                                                                                    "editor.ui.tooltip.rungame"), EDITOR_UI_TOOLTIP_STOP_GAME(
+                                                                                                                                                                                            "editor.ui.tooltip.stopgame"), EDITOR_UI_TOOLTIP_COMPILE_GAME(
+                                                                                                                                                                                                    "editor.ui.tooltip.compilegame"), EDITOR_UI_TOOLTIP_HELP(
+                                                                                                                                                                                                            "editor.ui.tooltip.help");
 
     private final String name;
 

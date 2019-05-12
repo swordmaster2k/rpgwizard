@@ -79,6 +79,7 @@ import org.fife.ui.rtextarea.SearchContext;
 import org.rpgwizard.common.assets.Item;
 import org.rpgwizard.editor.editors.ItemEditor;
 import org.rpgwizard.editor.editors.ProgramEditor;
+import org.rpgwizard.editor.editors.board.brush.BoardVectorAreaBrush;
 import org.rpgwizard.editor.ui.ProjectPanel;
 import org.rpgwizard.editor.ui.actions.ActionHandler;
 import org.slf4j.Logger;
@@ -558,9 +559,13 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
             // board after it has been deactivated.
             if (currentBrush instanceof BoardVectorBrush) {
                 BoardVectorBrush brush = (BoardVectorBrush) currentBrush;
-
                 if (brush.isDrawing() && brush.getBoardVector() != null) {
-                    brush.finish();
+                    brush.abort();
+                }
+            } else if (currentBrush instanceof BoardVectorAreaBrush) {
+                BoardVectorAreaBrush brush = (BoardVectorAreaBrush) currentBrush;
+                if (brush.isDrawing() && brush.getBoardVector() != null) {
+                    brush.abort();
                 }
             }
         } else if (frame instanceof CharacterEditor) {

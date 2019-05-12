@@ -37,6 +37,7 @@ import org.rpgwizard.editor.ui.actions.StartPositionAction;
 import org.rpgwizard.editor.ui.actions.StopAction;
 import org.rpgwizard.editor.ui.actions.UndoAction;
 import org.rpgwizard.editor.ui.actions.VectorAction;
+import org.rpgwizard.editor.ui.actions.VectorAreaAction;
 import org.rpgwizard.editor.ui.actions.ZoomInAction;
 import org.rpgwizard.editor.ui.actions.ZoomOutAction;
 import org.rpgwizard.editor.ui.resources.Icons;
@@ -70,6 +71,7 @@ public final class MainToolBar extends JToolBar {
     private final JToggleButton bucketButton;
     private final JToggleButton eraserButton;
 
+    private final JToggleButton vectorAreaButton;
     private final JToggleButton vectorButton;
     private final JToggleButton spriteButton;
     private final JToggleButton imageButton;
@@ -176,6 +178,13 @@ public final class MainToolBar extends JToolBar {
         eraserButton.setIcon(Icons.getSmallIcon("eraser"));
         eraserButton.setToolTipText(EditorProperties.getProperty(EditorProperty.EDITOR_UI_TOOLTIP_ERASE_REGION));
 
+        vectorAreaButton = new JToggleButton();
+        vectorAreaButton.setFocusable(false);
+        vectorAreaButton.setAction(new VectorAreaAction());
+        vectorAreaButton.setIcon(Icons.getSmallIcon("layer-select"));
+        vectorAreaButton
+                .setToolTipText(EditorProperties.getProperty(EditorProperty.EDITOR_UI_TOOLTIP_DRAW_VECTOR_AREA));
+
         vectorButton = new JToggleButton();
         vectorButton.setFocusable(false);
         vectorButton.setAction(new VectorAction());
@@ -250,6 +259,7 @@ public final class MainToolBar extends JToolBar {
         toolButtonGroup.add(selectionButton);
         toolButtonGroup.add(bucketButton);
         toolButtonGroup.add(eraserButton);
+        toolButtonGroup.add(vectorAreaButton);
         toolButtonGroup.add(vectorButton);
         toolButtonGroup.add(spriteButton);
         toolButtonGroup.add(imageButton);
@@ -273,6 +283,7 @@ public final class MainToolBar extends JToolBar {
         add(selectionButton);
         add(bucketButton);
         add(eraserButton);
+        add(vectorAreaButton);
         add(vectorButton);
         add(spriteButton);
         add(imageButton);
@@ -399,6 +410,7 @@ public final class MainToolBar extends JToolBar {
         selectionButton.setEnabled(enable);
         bucketButton.setEnabled(enable);
         eraserButton.setEnabled(enable);
+        vectorAreaButton.setEnabled(enable);
         vectorButton.setEnabled(enable);
         spriteButton.setEnabled(enable);
         imageButton.setEnabled(enable);

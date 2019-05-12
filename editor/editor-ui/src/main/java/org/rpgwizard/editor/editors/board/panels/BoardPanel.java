@@ -43,8 +43,7 @@ public final class BoardPanel extends AbstractModelPanel {
         // /
         // / descriptionField
         // /
-        descriptionField = new JTextField();
-        descriptionField.setText(board.getDescription());
+        descriptionField = getJTextField(board.getDescription());
         descriptionField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void changedUpdate(DocumentEvent e) {

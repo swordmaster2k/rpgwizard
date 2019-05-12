@@ -28,7 +28,7 @@ import org.rpgwizard.editor.utilities.GuiHelper;
  *
  * @author Joshua Michael Daly
  */
-public class BoardVectorBrush extends AbstractBrush {
+public class BoardVectorAreaBrush extends AbstractBrush {
 
     /**
      *
@@ -48,7 +48,7 @@ public class BoardVectorBrush extends AbstractBrush {
     /**
      *
      */
-    public BoardVectorBrush() {
+    public BoardVectorAreaBrush() {
         boardVector = new BoardVector();
         stillDrawing = false;
         previewColor = Color.WHITE;
@@ -137,7 +137,9 @@ public class BoardVectorBrush extends AbstractBrush {
         int[] points = GuiHelper.ensureVectorVisible(view.getBoard(), lastVectorPoint.x, lastVectorPoint.y,
                 coordinates[0], coordinates[1]);
 
-        g2d.drawLine(points[0], points[1], points[2], points[3]);
+        int width = Math.abs(points[2] - points[0]);
+        int height = Math.abs(points[3] - points[1]);
+        g2d.drawRect(points[0], points[1], width, height);
     }
 
     /**
@@ -148,7 +150,7 @@ public class BoardVectorBrush extends AbstractBrush {
      */
     @Override
     public boolean equals(Brush brush) {
-        return brush instanceof BoardVectorBrush && ((BoardVectorBrush) brush).boardVector.equals(boardVector);
+        return brush instanceof BoardVectorAreaBrush && ((BoardVectorAreaBrush) brush).boardVector.equals(boardVector);
     }
 
     /**
@@ -175,16 +177,7 @@ public class BoardVectorBrush extends AbstractBrush {
                 affectedContainer.getLayer(currentLayer).getLayer().getVectors().add(boardVector);
             }
 
-            if (MainWindow.getInstance().isSnapToGrid()) {
-                MainWindow.getInstance().getCurrentBoardEditor().calculateSnapCoordinates(x, y);
-            }
-
-            int[] coordinates = { x, y };
-
-            if (MainWindow.getInstance().isSnapToGrid()) {
-                coordinates = MainWindow.getInstance().getCurrentBoardEditor().calculateSnapCoordinates(x, y);
-            }
-
+            int[] coordinates = calculateCoordinates(x, y);
             if (boardVector.addPoint(coordinates[0], coordinates[1])) {
                 boardLayerView.getLayer().getBoard().fireBoardChanged();
             }
@@ -193,16 +186,30 @@ public class BoardVectorBrush extends AbstractBrush {
         return null;
     }
 
-    public void finish() {
-        if (boardVector.getPointCount() < 2) {
-            affectedContainer.getLayer(currentLayer).getLayer().getVectors().remove(boardVector);
-        }
+    public void abort() {
         boardVector = new BoardVector();
         stillDrawing = false;
     }
 
-    public void abort() {
-        finish();
+    public void finish(int x, int y) {
+        // Top-left
+        Point p1 = boardVector.getPoints().get(0);
+        // Bottom-right
+        int[] coordinates = calculateCoordinates(x, y);
+        Point p3 = new Point(coordinates[0], coordinates[1]);
+        // Top-right
+        Point p2 = new Point(p3.x, p1.y);
+        // Bottom-left
+        Point p4 = new Point(p1.x, p3.y);
+
+        // Add the remaining points to the board vector rectangle
+        boardVector.addPoint(p2.x, p2.y);
+        boardVector.addPoint(p3.x, p3.y);
+        boardVector.addPoint(p4.x, p4.y);
+        boardVector.setClosed(true);
+
+        boardVector = new BoardVector();
+        stillDrawing = false;
     }
 
     /**
@@ -223,8 +230,12 @@ public class BoardVectorBrush extends AbstractBrush {
 
     @Override
     public void doMouseButton1Pressed(Point point, AbstractAssetEditorWindow editor) {
-        BoardEditor boardEditor = (BoardEditor) editor;
-        boardEditor.doPaint(this, point, null);
+        if (stillDrawing) {
+            finish(point.x, point.y);
+        } else {
+            BoardEditor boardEditor = (BoardEditor) editor;
+            boardEditor.doPaint(this, point, null);
+        }
     }
 
     @Override
@@ -232,7 +243,7 @@ public class BoardVectorBrush extends AbstractBrush {
         if (editor instanceof BoardEditor) {
             BoardEditor boardEditor = (BoardEditor) editor;
             if (stillDrawing) {
-                finish();
+                finish(point.x, point.y);
             }
             RemoveVectorAction action = new RemoveVectorAction(boardEditor, point.x, point.y);
             action.actionPerformed(null);
@@ -244,8 +255,8 @@ public class BoardVectorBrush extends AbstractBrush {
         if (editor instanceof BoardEditor) {
             BoardEditor boardEditor = (BoardEditor) editor;
             if (stillDrawing) {
-                // We are drawing a vector, so lets finish it.
-                finish();
+                // We are drawing a vector, so lets abort it.
+                abort();
             } else {
                 // We want to select a vector.
                 selectVector(
@@ -286,6 +297,20 @@ public class BoardVectorBrush extends AbstractBrush {
             editor.getSelectedObject().setSelectedState(false);
             editor.setSelectedObject(null);
         }
+    }
+
+    private int[] calculateCoordinates(int x, int y) {
+        if (MainWindow.getInstance().isSnapToGrid()) {
+            MainWindow.getInstance().getCurrentBoardEditor().calculateSnapCoordinates(x, y);
+        }
+
+        int[] coordinates = { x, y };
+
+        if (MainWindow.getInstance().isSnapToGrid()) {
+            coordinates = MainWindow.getInstance().getCurrentBoardEditor().calculateSnapCoordinates(x, y);
+        }
+
+        return coordinates;
     }
 
 }

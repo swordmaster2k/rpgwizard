@@ -73,8 +73,7 @@ public final class BoardSpritePanel extends BoardModelPanel {
         ///
         /// idField
         ///
-        idField = new JTextField();
-        idField.setText(((BoardSprite) model).getId());
+        idField = getJTextField(((BoardSprite) model).getId());
         idField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void changedUpdate(DocumentEvent e) {

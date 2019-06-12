@@ -193,6 +193,9 @@ public class CustomBrush extends AbstractBrush {
     public void doMouseButton1Pressed(Point point, AbstractAssetEditorWindow editor) {
         BoardEditor boardEditor = (BoardEditor) editor;
         boardEditor.doPaint(this, point, null);
+        if (changedEntity) {
+            boardEditor.getBoard().fireBoardChanged();
+        }
     }
 
     @Override

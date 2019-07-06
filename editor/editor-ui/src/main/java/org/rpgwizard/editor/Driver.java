@@ -22,6 +22,7 @@ import org.apache.commons.lang3.SystemUtils;
 import org.pushingpixels.substance.api.skin.SubstanceGraphiteAquaLookAndFeel;
 import org.pushingpixels.substance.api.skin.SubstanceNebulaLookAndFeel;
 import org.rpgwizard.common.assets.AssetManager;
+import org.rpgwizard.common.assets.Project;
 import org.rpgwizard.common.assets.files.FileAssetHandleResolver;
 import org.rpgwizard.common.assets.serialization.JsonAnimationSerializer;
 import org.rpgwizard.common.assets.serialization.JsonBoardSerializer;
@@ -33,12 +34,14 @@ import org.rpgwizard.common.assets.serialization.JsonProjectSerializer;
 import org.rpgwizard.common.assets.serialization.JsonSpecialMoveSerializer;
 import org.rpgwizard.common.assets.serialization.JsonTileSetSerializer;
 import org.rpgwizard.common.assets.serialization.TextProgramSerializer;
+import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.editor.properties.EditorProperties;
 import org.rpgwizard.editor.properties.EditorProperty;
 import org.rpgwizard.editor.properties.user.UserPreference;
 import org.rpgwizard.editor.properties.user.UserPreferencesProperties;
 import org.rpgwizard.editor.ui.Theme;
 import org.rpgwizard.editor.utilities.FileTools;
+import org.rpgwizard.editor.utilities.ProjectUpgrader;
 import org.rpgwizard.pluginsystem.Engine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -104,7 +107,7 @@ public class Driver {
         return pluginManager;
     }
 
-    public static void loadUserPreferences() {
+    public static void loadUserTheme() {
         Theme theme = Theme
                 .valueOf(UserPreferencesProperties.getProperty(UserPreference.USER_PREFERENCE_THEME).toUpperCase());
         final LookAndFeel laf;
@@ -122,6 +125,36 @@ public class Driver {
             JDialog.setDefaultLookAndFeelDecorated(true);
         } catch (UnsupportedLookAndFeelException ex) {
             LOGGER.error("Failed to set look and feel theme=[{}]!", ex, theme);
+        }
+    }
+
+    public static void loadLastProject() {
+        String lastProject = UserPreferencesProperties.getProperty(UserPreference.LAST_OPEN_PROJECT);
+        File file = new File(lastProject);
+        if (lastProject.equals("The Wizard's Tower")) {
+            // Load default from "projects" directory.
+            file = new File(FileTools.getProjectsDirectory() + File.separator + "The Wizard's Tower" + File.separator
+                    + "The Wizard's Tower" + CoreProperties.getDefaultExtension(Project.class));
+        }
+        if (file.exists()) {
+            MainWindow mainWindow = MainWindow.getInstance();
+            Project project = mainWindow.openProject(file);
+            if (project != null) {
+                mainWindow.setProjectPath(file.getParent());
+                ProjectUpgrader.upgrade(file.getParentFile());
+                mainWindow.setupProject(project);
+            } else {
+                LOGGER.warn("Could not find previous, lastProject=[{}]", lastProject);
+            }
+        }
+    }
+
+    public static void saveLastProject() {
+        Project project = MainWindow.getInstance().getActiveProject();
+        if (project != null && project.getFile() != null) {
+            String lastProject = project.getFile().getAbsolutePath();
+            LOGGER.info("Saving last open project, lastProject=[{}]", lastProject);
+            UserPreferencesProperties.setProperty(UserPreference.LAST_OPEN_PROJECT, lastProject);
         }
     }
 
@@ -144,7 +177,7 @@ public class Driver {
                 registerResolvers();
                 registerSerializers();
                 PluginManager pluginManager = registerPlugins();
-                loadUserPreferences();
+                loadUserTheme();
 
                 // Add the correct lib based on the platform.
                 if (SystemUtils.IS_OS_WINDOWS) {
@@ -155,6 +188,15 @@ public class Driver {
                 mainWindow.setPluginManager(pluginManager);
                 mainWindow.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
                 mainWindow.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowOpened(WindowEvent e) {
+                        try {
+                            loadLastProject();
+                        } catch (Exception ex) {
+                            LOGGER.error("Failed to open last project! reason=[{}]", ex.getMessage());
+                        }
+                    }
+
                     @Override
                     public void windowClosing(WindowEvent windowEvent) {
                         mainWindow.tearDown();
@@ -171,6 +213,7 @@ public class Driver {
                         });
 
                         // Write out user preferences.
+                        saveLastProject();
                         UserPreferencesProperties.save();
                         LOGGER.info("Stopping the RPGWizard Editor...");
                     }

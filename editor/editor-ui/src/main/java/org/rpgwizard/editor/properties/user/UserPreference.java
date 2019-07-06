@@ -16,7 +16,8 @@ import org.rpgwizard.editor.ui.Theme;
  */
 public enum UserPreference {
 
-    USER_PREFERENCE_THEME("editor.user.preference.theme", Theme.DARK.toString());
+    USER_PREFERENCE_THEME("editor.user.preference.theme",
+            Theme.DARK.toString()), LAST_OPEN_PROJECT("editor.user.preference.project", "The Wizard's Tower");
 
     private final String name;
     private final String defaultValue;

@@ -69,7 +69,7 @@ Enemy.prototype.checkCollisions = function (collision, entity) {
         console.debug("Checking collisions for Enemy name=[%s], collision.obj=[%s], entity=[%s]", this.name, collision.obj, entity);
     }
 
-    if (!this.onSameLayer(collision) || this.baseVectorDisabled) {
+    if (!this.onSameLayer(collision) || this.baseVectorDisabled || !this.isOtherCollidable(collision.obj)) {
         entity.resetHitChecks();
         return;
     }

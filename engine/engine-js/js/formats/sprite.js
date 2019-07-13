@@ -422,6 +422,52 @@ Sprite.prototype.isEnabled = function() {
     return !(this.baseVectorDisabled || this.activationVectorDisabled);
 };
 
+Sprite.prototype.isOtherCollidable = function (other) {
+    if (other) {
+        if (other.sprite) {
+            if (other.sprite.character) {
+                return !other.sprite.character.baseVectorDisabled;
+            } else if (other.sprite.enemy) {
+                return !other.sprite.enemy.baseVectorDisabled;
+            } else if (other.sprite.npc) {
+                return !other.sprite.npc.baseVectorDisabled;
+            }
+        } else {
+            if (other.character) {
+                return !other.character.baseVectorDisabled;
+            } else if (other.enemy) {
+                return !other.enemy.baseVectorDisabled;
+            } else if (other.npc) {
+                return !other.npc.baseVectorDisabled;
+            }
+        }
+    }
+    return other !== undefined && other !== null;
+};
+
+Sprite.prototype.isOtherActivatable = function (other) {
+    if (other) {
+        if (other.sprite) {
+            if (other.sprite.character) {
+                return !other.sprite.character.activationVectorDisabled;
+            } else if (other.sprite.enemy) {
+                return !other.sprite.enemy.activationVectorDisabled;
+            } else if (other.sprite.npc) {
+                return !other.sprite.npc.activationVectorDisabled;
+            }
+        } else {
+            if (other.character) {
+                return !other.character.activationVectorDisabled;
+            } else if (other.enemy) {
+                return !other.enemy.activationVectorDisabled;
+            } else if (other.npc) {
+                return !other.npc.activationVectorDisabled;
+            }
+        }
+    }
+    return other !== undefined && other !== null;
+};
+
 Sprite.prototype.checkCollisions = function (collision, entity) {
     // Not used yet.
 };

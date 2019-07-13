@@ -55,6 +55,7 @@
          }
       ]
    },
+   "activationVectorDisabled": true,
    "activationVector":{
       "points":[
          {

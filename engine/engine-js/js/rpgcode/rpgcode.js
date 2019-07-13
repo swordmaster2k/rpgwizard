@@ -911,16 +911,16 @@ RPGcode.prototype.fireRaycast = function (origin, direction, maxDistance) {
     hits.forEach(function (hit) {
         if (hit.obj.sprite) {
             if (hit.obj.sprite.npc) {
-                if (hit.obj.sprite.npc.onSameLayer(layerCheck)) {
+                if (hit.obj.sprite.npc.onSameLayer(layerCheck) && hit.obj.sprite.npc.isEnabled()) {
                     results.npcs.push(hit.obj.sprite);
                 }
             } else if (hit.obj.sprite.enemy) {
-                if (hit.obj.sprite.enemy.onSameLayer(layerCheck)) {
+                if (hit.obj.sprite.enemy.onSameLayer(layerCheck) && hit.obj.sprite.enemy.isEnabled()) {
                     results.enemies.push(hit.obj.sprite);
                 }
             }
         } else if (hit.obj.character) {
-            if (hit.obj.character.onSameLayer(layerCheck)) {
+            if (hit.obj.character.onSameLayer(layerCheck) && hit.obj.character.isEnabled()) {
                 results.characters.push(hit.obj.character);
             }
         } else if (hit.obj.vectorType === "SOLID") {

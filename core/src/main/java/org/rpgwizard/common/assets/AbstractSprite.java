@@ -39,7 +39,10 @@ public abstract class AbstractSprite extends AbstractAsset {
     protected double frameRate; // Seconds between each step
     protected int loopSpeed;
 
+    protected boolean baseVectorDisabled;
     protected BoardVector baseVector;
+
+    protected boolean activationVectorDisabled;
     protected BoardVector activationVector;
 
     protected Point baseVectorOffset;
@@ -166,6 +169,14 @@ public abstract class AbstractSprite extends AbstractAsset {
         this.frameRate = frameRate;
     }
 
+    public boolean isBaseVectorDisabled() {
+        return baseVectorDisabled;
+    }
+
+    public void setBaseVectorDisabled(boolean baseVectorDisabled) {
+        this.baseVectorDisabled = baseVectorDisabled;
+    }
+
     public BoardVector getBaseVector() {
         return baseVector;
     }
@@ -181,6 +192,14 @@ public abstract class AbstractSprite extends AbstractAsset {
         if (fire) {
             fireSpriteChanged();
         }
+    }
+
+    public boolean isActivationVectorDisabled() {
+        return activationVectorDisabled;
+    }
+
+    public void setActivationVectorDisabled(boolean activationVectorDisabled) {
+        this.activationVectorDisabled = activationVectorDisabled;
     }
 
     public BoardVector getActivationVector() {

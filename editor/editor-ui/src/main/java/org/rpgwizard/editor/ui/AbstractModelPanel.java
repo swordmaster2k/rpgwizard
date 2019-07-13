@@ -12,6 +12,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -82,6 +83,13 @@ public abstract class AbstractModelPanel extends JPanel {
                 new SpinnerNumberModel(value, new Integer(0), new Integer(Integer.MAX_VALUE), new Integer(1)));
         spinner.setFont(font);
         return spinner;
+    }
+
+    public final JCheckBox getJCheckBox(boolean value) {
+        JCheckBox checkBox = new JCheckBox();
+        checkBox.setSelected(value);
+        checkBox.setFont(font);
+        return checkBox;
     }
 
     public void tearDown() {

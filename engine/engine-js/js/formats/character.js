@@ -70,10 +70,10 @@ Character.prototype.hitOffActivation = function (hitData, entity) {
 
 Character.prototype.processCollision = function (collision, entity) {
     if (rpgwizard.debugEnabled) {
-        console.debug("Processing collision for Character name=[%s]", this.name);
+        console.debug("Processing collision for Character name=[%s], collision.obj=[%s], entity=[%s]", this.name, collision.obj, entity);
     }
-    
-    if (this.onSameLayer(collision)) {
+
+    if (this.onSameLayer(collision) && !this.baseVectorDisabled) {
         var object = collision.obj;
         switch (object.vectorType) {
             case "NPC":
@@ -95,7 +95,7 @@ Character.prototype.processActivation = function (collision, entity, entering) {
     if (rpgwizard.debugEnabled) {
         console.debug("Processing activation for Character name=[%s], collision.obj=[%s], entity=[%s], entering=[%s]", this.name, collision.obj, entity, entering);
     }
-    if (!this.onSameLayer(collision) || !rpgwizard.controlEnabled) {
+    if (!this.onSameLayer(collision) || !rpgwizard.controlEnabled || this.activationVectorDisabled) {
         return;
     }
 

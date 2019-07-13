@@ -66,10 +66,10 @@ NPC.prototype.hitOffActivation = function (hitData, entity) {
 
 NPC.prototype.checkCollisions = function (collision, entity) {
     if (rpgwizard.debugEnabled) {
-        console.debug("Checking collisions for NPC name=[%s]", this.name);
+        console.debug("Checking collisions for NPC name=[%s], collision.obj=[%s], entity=[%s]", this.name, collision.obj, entity);
     }
     
-    if (!this.onSameLayer(collision)) {
+    if (!this.onSameLayer(collision) || this.baseVectorDisabled) {
         entity.resetHitChecks();
         return;
     }

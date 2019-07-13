@@ -272,10 +272,12 @@ public class AssetSerializerTest {
         ArrayList<Event> events = new ArrayList<>();
         events.add(new Event(EventType.OVERLAP, "myprogram"));
 
+        Assert.assertTrue(asset.isBaseVectorDisabled());
         BoardVector expectedBaseVector = buildBoardVector(BoardVectorType.SOLID, false, "", 0, points, events);
         expectedBaseVector.setPoints(points);
         Assert.assertEquals(expectedBaseVector, asset.getBaseVector());
 
+        Assert.assertFalse(asset.isActivationVectorDisabled());
         points = new ArrayList<>();
         points.add(new Point(0, 0));
         points.add(new Point(37, 0));
@@ -337,10 +339,12 @@ public class AssetSerializerTest {
         ArrayList<Event> events = new ArrayList<>();
         events.add(new Event(EventType.OVERLAP, "myprogram"));
 
+        Assert.assertTrue(asset.isBaseVectorDisabled());
         BoardVector expectedBaseVector = buildBoardVector(BoardVectorType.SOLID, false, "", 0, points, events);
         expectedBaseVector.setPoints(points);
         Assert.assertEquals(expectedBaseVector, asset.getBaseVector());
 
+        Assert.assertFalse(asset.isActivationVectorDisabled());
         points = new ArrayList<>();
         points.add(new Point(0, 0));
         points.add(new Point(37, 0));
@@ -396,10 +400,12 @@ public class AssetSerializerTest {
         ArrayList<Event> events = new ArrayList<>();
         events.add(new Event(EventType.OVERLAP, "myprogram"));
 
+        Assert.assertFalse(asset.isBaseVectorDisabled());
         BoardVector expectedBaseVector = buildBoardVector(BoardVectorType.SOLID, false, "", 0, points, events);
         expectedBaseVector.setPoints(points);
         Assert.assertEquals(expectedBaseVector, asset.getBaseVector());
 
+        Assert.assertTrue(asset.isActivationVectorDisabled());
         points = new ArrayList<>();
         points.add(new Point(0, 0));
         points.add(new Point(37, 0));

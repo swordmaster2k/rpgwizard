@@ -66,10 +66,10 @@ Enemy.prototype.hitOffActivation = function (hitData, entity) {
 
 Enemy.prototype.checkCollisions = function (collision, entity) {
     if (rpgwizard.debugEnabled) {
-        console.debug("Checking collisions for Enemy name=[%s]", this.name);
+        console.debug("Checking collisions for Enemy name=[%s], collision.obj=[%s], entity=[%s]", this.name, collision.obj, entity);
     }
 
-    if (!this.onSameLayer(collision)) {
+    if (!this.onSameLayer(collision) || this.baseVectorDisabled) {
         entity.resetHitChecks();
         return;
     }

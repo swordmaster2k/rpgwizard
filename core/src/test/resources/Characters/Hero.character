@@ -40,6 +40,7 @@
       "SOUTH_WEST_IDLE":"",
       "SOUTH_EAST_IDLE":""
    },
+   "baseVectorDisabled": true,
    "baseVector":{
       "points":[
          {
@@ -66,6 +67,7 @@
          }
       ]
    },
+   "activationVectorDisabled": false,
    "activationVector":{
       "points":[
          {

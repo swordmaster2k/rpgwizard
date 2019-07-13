@@ -35,6 +35,7 @@
       "SOUTH_WEST_IDLE":"",
       "SOUTH_EAST_IDLE":""
    },
+   "baseVectorDisabled": true,
    "baseVector":{
       "type":"SOLID",
       "isClosed":true,

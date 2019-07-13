@@ -418,6 +418,10 @@ Sprite.prototype.onSameLayer = function (collision) {
     return false;
 };
 
+Sprite.prototype.isEnabled = function() {
+    return !(this.baseVectorDisabled || this.activationVectorDisabled);
+};
+
 Sprite.prototype.checkCollisions = function (collision, entity) {
     // Not used yet.
 };

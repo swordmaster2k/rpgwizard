@@ -161,6 +161,7 @@
                                 <exclude>engine-js/js/lib/**</exclude>
                                 <exclude>src/main/resources/lib/**</exclude>
                                 <exclude>src/test/resources/**</exclude>
+                                <exclude>src/main/resources/program/templates/**</exclude>
                             </excludes>
                         </configuration>
                         <goals>

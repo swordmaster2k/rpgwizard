@@ -26,10 +26,10 @@ import org.rpgwizard.common.assets.Project;
 import org.rpgwizard.common.assets.files.FileAssetHandleResolver;
 import org.rpgwizard.common.assets.serialization.JsonAnimationSerializer;
 import org.rpgwizard.common.assets.serialization.JsonBoardSerializer;
-import org.rpgwizard.common.assets.serialization.JsonEnemySerializer;
-import org.rpgwizard.common.assets.serialization.JsonNPCSerializer;
 import org.rpgwizard.common.assets.serialization.JsonCharacterSerializer;
+import org.rpgwizard.common.assets.serialization.JsonEnemySerializer;
 import org.rpgwizard.common.assets.serialization.JsonItemSerializer;
+import org.rpgwizard.common.assets.serialization.JsonNPCSerializer;
 import org.rpgwizard.common.assets.serialization.JsonProjectSerializer;
 import org.rpgwizard.common.assets.serialization.JsonSpecialMoveSerializer;
 import org.rpgwizard.common.assets.serialization.JsonTileSetSerializer;
@@ -199,7 +199,10 @@ public class Driver {
 
                     @Override
                     public void windowClosing(WindowEvent windowEvent) {
-                        mainWindow.tearDown();
+                        if (!mainWindow.tearDown()) {
+                            LOGGER.info("User cancelled close!");
+                            return;
+                        }
                         mainWindow.dispose();
 
                         // Quietly stop any engines.

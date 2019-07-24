@@ -7,8 +7,6 @@
  */
 package org.rpgwizard.editor.editors;
 
-import org.rpgwizard.editor.ui.actions.ActionHandler;
-import org.rpgwizard.editor.editors.program.RpgCodeCompletionProvider;
 import java.awt.BorderLayout;
 import java.io.File;
 import java.io.IOException;
@@ -24,11 +22,6 @@ import org.fife.rsta.ac.js.JavaScriptLanguageSupport;
 import org.fife.rsta.ui.search.SearchEvent;
 import org.fife.rsta.ui.search.SearchListener;
 import org.fife.ui.autocomplete.AutoCompletion;
-import org.rpgwizard.common.assets.AbstractAsset;
-import org.rpgwizard.common.assets.AssetDescriptor;
-import org.rpgwizard.common.assets.Program;
-import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
-import org.rpgwizard.editor.ui.resources.Icons;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rsyntaxtextarea.Theme;
@@ -36,12 +29,19 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 import org.fife.ui.rtextarea.SearchContext;
 import org.fife.ui.rtextarea.SearchEngine;
 import org.fife.ui.rtextarea.SearchResult;
+import org.rpgwizard.common.assets.AbstractAsset;
+import org.rpgwizard.common.assets.AssetDescriptor;
+import org.rpgwizard.common.assets.Program;
+import org.rpgwizard.editor.editors.program.RpgCodeCompletionProvider;
+import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
+import org.rpgwizard.editor.ui.actions.ActionHandler;
 import org.rpgwizard.editor.ui.actions.CopyAction;
 import org.rpgwizard.editor.ui.actions.CutAction;
 import org.rpgwizard.editor.ui.actions.PasteAction;
 import org.rpgwizard.editor.ui.actions.RedoAction;
 import org.rpgwizard.editor.ui.actions.SelectAllAction;
 import org.rpgwizard.editor.ui.actions.UndoAction;
+import org.rpgwizard.editor.ui.resources.Icons;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -142,7 +142,6 @@ public final class ProgramEditor extends AbstractAssetEditorWindow implements Se
 
         setContentPane(panel);
         setTitle(fileName);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
         pack();
     }
 
@@ -184,18 +183,6 @@ public final class ProgramEditor extends AbstractAssetEditorWindow implements Se
         return textArea.getSelectedText();
     }
 
-    public static void main(String[] args) {
-        ProgramEditor editor = new ProgramEditor(new Program(null));
-        editor.setVisible(true);
-
-        JFrame frame = new JFrame("Test InternalJFrame");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(editor);
-        frame.setSize(1024, 768);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-    }
-
     @Override
     public boolean canUndo() {
         return textArea.canUndo();
@@ -234,6 +221,18 @@ public final class ProgramEditor extends AbstractAssetEditorWindow implements Se
     @Override
     public void handle(SelectAllAction action) {
         textArea.selectAll();
+    }
+
+    public static void main(String[] args) {
+        ProgramEditor editor = new ProgramEditor(new Program(null));
+        editor.setVisible(true);
+
+        JFrame frame = new JFrame("Test InternalJFrame");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.add(editor);
+        frame.setSize(1024, 768);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 
 }

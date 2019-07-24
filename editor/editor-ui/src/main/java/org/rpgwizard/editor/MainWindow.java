@@ -27,61 +27,61 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
-import org.rpgwizard.common.assets.Animation;
-import org.rpgwizard.common.assets.AssetDescriptor;
-import org.rpgwizard.common.assets.AssetException;
-import org.rpgwizard.common.assets.AssetHandle;
-import org.rpgwizard.common.assets.AssetManager;
-import org.rpgwizard.common.assets.Board;
-import org.rpgwizard.common.assets.Enemy;
-import org.rpgwizard.common.assets.NPC;
-import org.rpgwizard.common.assets.Character;
-import org.rpgwizard.common.assets.Program;
-import org.rpgwizard.common.assets.Project;
-import org.rpgwizard.common.assets.SpecialMove;
-import org.rpgwizard.common.assets.Tile;
-import org.rpgwizard.common.assets.TileSet;
-import org.rpgwizard.editor.editors.AnimationEditor;
-import org.rpgwizard.editor.editors.BoardEditor;
-import org.rpgwizard.editor.editors.board.brush.AbstractBrush;
-import org.rpgwizard.editor.editors.board.brush.ShapeBrush;
-import org.rpgwizard.editor.editors.board.brush.BoardVectorBrush;
-import org.rpgwizard.editor.editors.ProjectEditor;
-import org.rpgwizard.editor.ui.listeners.TileSelectionListener;
-import org.rpgwizard.editor.editors.board.NewBoardDialog;
-import org.rpgwizard.editor.ui.resources.Icons;
-import org.rpgwizard.common.utilities.CoreProperties;
-import org.rpgwizard.common.utilities.TileSetCache;
-import org.rpgwizard.editor.editors.CharacterEditor;
-import org.rpgwizard.editor.editors.EnemyEditor;
-import org.rpgwizard.editor.editors.NPCEditor;
-import org.rpgwizard.editor.editors.tileset.NewTilesetDialog;
-import org.rpgwizard.editor.properties.EditorProperties;
-import org.rpgwizard.editor.properties.EditorProperty;
-import org.rpgwizard.editor.ui.EditorFactory;
-import org.rpgwizard.editor.editors.board.panels.LayerPanel;
-import org.rpgwizard.editor.ui.menu.MainMenuBar;
-import org.rpgwizard.editor.ui.toolbar.MainToolBar;
-import org.rpgwizard.editor.ui.PropertiesPanel;
-import org.rpgwizard.editor.ui.TileSetTabbedPane;
-import org.rpgwizard.editor.ui.ToolkitDesktopManager;
-import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
-import org.rpgwizard.editor.ui.listeners.TileSetSelectionListener;
-import org.rpgwizard.editor.utilities.EditorFileManager;
-import org.rpgwizard.editor.utilities.FileTools;
-import org.rpgwizard.editor.editors.tileset.TileSetUtil;
 import org.apache.commons.io.FilenameUtils;
 import org.fife.rsta.ui.search.FindDialog;
 import org.fife.rsta.ui.search.ReplaceDialog;
 import org.fife.rsta.ui.search.SearchEvent;
 import org.fife.rsta.ui.search.SearchListener;
 import org.fife.ui.rtextarea.SearchContext;
+import org.rpgwizard.common.assets.Animation;
+import org.rpgwizard.common.assets.AssetDescriptor;
+import org.rpgwizard.common.assets.AssetException;
+import org.rpgwizard.common.assets.AssetHandle;
+import org.rpgwizard.common.assets.AssetManager;
+import org.rpgwizard.common.assets.Board;
+import org.rpgwizard.common.assets.Character;
+import org.rpgwizard.common.assets.Enemy;
 import org.rpgwizard.common.assets.Item;
+import org.rpgwizard.common.assets.NPC;
+import org.rpgwizard.common.assets.Program;
+import org.rpgwizard.common.assets.Project;
+import org.rpgwizard.common.assets.SpecialMove;
+import org.rpgwizard.common.assets.Tile;
+import org.rpgwizard.common.assets.TileSet;
+import org.rpgwizard.common.utilities.CoreProperties;
+import org.rpgwizard.common.utilities.TileSetCache;
+import org.rpgwizard.editor.editors.AnimationEditor;
+import org.rpgwizard.editor.editors.BoardEditor;
+import org.rpgwizard.editor.editors.CharacterEditor;
+import org.rpgwizard.editor.editors.EnemyEditor;
 import org.rpgwizard.editor.editors.ItemEditor;
+import org.rpgwizard.editor.editors.NPCEditor;
 import org.rpgwizard.editor.editors.ProgramEditor;
+import org.rpgwizard.editor.editors.ProjectEditor;
+import org.rpgwizard.editor.editors.board.NewBoardDialog;
+import org.rpgwizard.editor.editors.board.brush.AbstractBrush;
 import org.rpgwizard.editor.editors.board.brush.BoardVectorAreaBrush;
+import org.rpgwizard.editor.editors.board.brush.BoardVectorBrush;
+import org.rpgwizard.editor.editors.board.brush.ShapeBrush;
+import org.rpgwizard.editor.editors.board.panels.LayerPanel;
+import org.rpgwizard.editor.editors.tileset.NewTilesetDialog;
+import org.rpgwizard.editor.editors.tileset.TileSetUtil;
+import org.rpgwizard.editor.properties.EditorProperties;
+import org.rpgwizard.editor.properties.EditorProperty;
+import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
+import org.rpgwizard.editor.ui.EditorFactory;
 import org.rpgwizard.editor.ui.ProjectPanel;
+import org.rpgwizard.editor.ui.PropertiesPanel;
+import org.rpgwizard.editor.ui.TileSetTabbedPane;
+import org.rpgwizard.editor.ui.ToolkitDesktopManager;
 import org.rpgwizard.editor.ui.actions.ActionHandler;
+import org.rpgwizard.editor.ui.listeners.TileSelectionListener;
+import org.rpgwizard.editor.ui.listeners.TileSetSelectionListener;
+import org.rpgwizard.editor.ui.menu.MainMenuBar;
+import org.rpgwizard.editor.ui.resources.Icons;
+import org.rpgwizard.editor.ui.toolbar.MainToolBar;
+import org.rpgwizard.editor.utilities.EditorFileManager;
+import org.rpgwizard.editor.utilities.FileTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ro.fortsoft.pf4j.PluginManager;
@@ -138,6 +138,9 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
     private final TileSetSelectionListener tileSetSelectionListener;
 
     private PluginManager pluginManager;
+
+    // Simple flag that can be set to cancel closing of application.
+    private boolean cancelClose;
 
     private MainWindow() {
         // /
@@ -241,7 +244,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         add(westPanel, BorderLayout.WEST);
         add(eastPanel, BorderLayout.EAST);
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setSize(new Dimension(1024, 768));
         setLocationByPlatform(true);
@@ -399,19 +402,23 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         editorMap.put(current, editor);
     }
 
-    public void tearDown() {
-        closeAllFrames();
+    public boolean tearDown() {
+        if (!closeAllFrames()) {
+            return false;
+        }
         projectPanel.tearDown();
+        return true;
     }
 
-    public void closeAllFrames() {
+    public boolean closeAllFrames() {
+        cancelClose = false;
         for (JInternalFrame frame : desktopPane.getAllFrames()) {
-            try {
-                frame.setClosed(true);
-            } catch (PropertyVetoException ex) {
-                LOGGER.error("Failed to close internal frame.", ex);
+            frame.doDefaultCloseAction();
+            if (cancelClose) {
+                return false;
             }
         }
+        return true;
     }
 
     @Override
@@ -451,9 +458,13 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
                     window.save();
                 case 1:
                     window.dispose();
+                    cancelClose = false;
                     break;
                 case 2:
-                    break;
+                default:
+                    // User cancelled close.
+                    cancelClose = true;
+                    return;
                 }
             } catch (Exception ex) {
                 LOGGER.error("Failed to close window=[{}].", window, ex);

@@ -31,6 +31,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.text.DefaultFormatter;
 import org.rpgwizard.common.assets.SpriteSheet;
+import org.rpgwizard.editor.ui.listeners.ImagePanelChangeListener;
 
 /**
  *
@@ -64,11 +65,21 @@ public final class SpriteSheetDialog extends JDialog {
 
         spriteSheetImagePanel = new SpriteSheetImagePanel(sheet, sheet.getTileWidth(), sheet.getTileHeight(),
                 new Dimension(640, 480), okButton);
-        spriteSheetImagePanel.addImageListener(() -> {
-            okButton.setEnabled(true);
+        spriteSheetImagePanel.addImageListener(new ImagePanelChangeListener() {
+            @Override
+            public void addedImage() {
+                int width = spriteSheetImagePanel.getSpriteSheetImage().getWidth(null);
+                int height = spriteSheetImagePanel.getSpriteSheetImage().getHeight(null);
+                tileWidthSpinner.setModel(new SpinnerNumberModel(16, 16, width, 1));
+                tileHeightSpinner.setModel(new SpinnerNumberModel(16, 16, height, 1));
+                spriteSheetImagePanel.setTileWidth(16);
+                spriteSheetImagePanel.setTileHeight(16);
+                spriteSheetImagePanel.updateDimension();
+                okButton.setEnabled(true);
+            }
         });
 
-        tileWidthSpinner = new JSpinner(new SpinnerNumberModel(sheet.getTileWidth(), 16, 512, 1));
+        tileWidthSpinner = new JSpinner(new SpinnerNumberModel(sheet.getTileWidth(), 16, sheet.getWidth(), 1));
         ((JSpinner.DefaultEditor) tileWidthSpinner.getEditor()).getTextField().setColumns(7);
         JFormattedTextField tileWidthField = (JFormattedTextField) tileWidthSpinner.getEditor().getComponent(0);
         ((DefaultFormatter) tileWidthField.getFormatter()).setCommitsOnValidEdit(true);
@@ -78,7 +89,7 @@ public final class SpriteSheetDialog extends JDialog {
             okButton.setEnabled(false);
         });
 
-        tileHeightSpinner = new JSpinner(new SpinnerNumberModel(sheet.getTileHeight(), 16, 512, 1));
+        tileHeightSpinner = new JSpinner(new SpinnerNumberModel(sheet.getTileHeight(), 16, sheet.getHeight(), 1));
         ((JSpinner.DefaultEditor) tileHeightSpinner.getEditor()).getTextField().setColumns(7);
         JFormattedTextField tileHeightField = (JFormattedTextField) tileHeightSpinner.getEditor().getComponent(0);
         ((DefaultFormatter) tileHeightField.getFormatter()).setCommitsOnValidEdit(true);

@@ -116,7 +116,7 @@ public abstract class AbstractImagePanel extends JPanel implements MouseListener
     public void mouseExited(MouseEvent e) {
     }
 
-    private void fireAddedImage() {
+    protected void fireAddedImage() {
         listeners.forEach((listener) -> {
             listener.addedImage();
         });

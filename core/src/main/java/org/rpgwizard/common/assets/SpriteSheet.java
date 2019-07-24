@@ -88,7 +88,26 @@ public class SpriteSheet {
         File file = new File(System.getProperty("project.path") + File.separator
                 + CoreProperties.getProperty("toolkit.directory.graphics") + File.separator + fileName);
         BufferedImage temp = ImageIO.read(file);
-        selection = temp.getSubimage(x, y, width, height);
+
+        // Ensure it does not go out of bounds, and throw a raster exception
+        int requestedWidth = width;
+        int requestedHeight = height;
+        if (temp.getWidth() < requestedWidth) {
+            requestedWidth = temp.getWidth();
+        }
+        if (temp.getHeight() < requestedHeight) {
+            requestedHeight = temp.getHeight();
+        }
+        int requestedX = x;
+        int requestedY = y;
+        if (temp.getWidth() < requestedWidth + x) {
+            requestedX = 0;
+        }
+        if (temp.getHeight() < requestedHeight + y) {
+            requestedY = 0;
+        }
+
+        selection = temp.getSubimage(requestedX, requestedY, requestedWidth, requestedHeight);
         return selection;
     }
 

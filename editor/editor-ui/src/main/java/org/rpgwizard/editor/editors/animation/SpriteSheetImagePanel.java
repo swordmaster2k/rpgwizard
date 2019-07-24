@@ -17,6 +17,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
@@ -27,12 +28,16 @@ import org.rpgwizard.editor.ui.resources.Icons;
 import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.rpgwizard.editor.utilities.GuiHelper;
 import org.rpgwizard.editor.utilities.TransparentDrawer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Joshua Michael Daly
  */
 public final class SpriteSheetImagePanel extends AbstractImagePanel implements MouseMotionListener {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SpriteSheetImagePanel.class);
 
     private final SpriteSheet spriteSheet;
     private String fileName;
@@ -189,8 +194,6 @@ public final class SpriteSheetImagePanel extends AbstractImagePanel implements M
                     }
 
                     addImage(imageFile);
-
-                    spriteSheetImage = bufferedImages.getFirst();
                     updateDimension();
                 }
             }
@@ -236,6 +239,20 @@ public final class SpriteSheetImagePanel extends AbstractImagePanel implements M
     public void mouseReleased(MouseEvent e) {
         if (SwingUtilities.isLeftMouseButton(e) && spriteSheetImage != null) {
 
+        }
+    }
+
+    @Override
+    public void addImage(File file) {
+        if (file != null) {
+            try {
+                this.file = file;
+                bufferedImages.add(ImageIO.read(file));
+                spriteSheetImage = bufferedImages.getFirst();
+                fireAddedImage();
+            } catch (IOException ex) {
+                LOGGER.error("Failed to add image file=[{}]", file, ex);
+            }
         }
     }
 

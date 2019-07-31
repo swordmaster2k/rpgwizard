@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package org.rpgwizard.editor.editors.program.generation;
+package org.rpgwizard.editor.editors.board.generation;
 
 import com.google.common.io.Resources;
 import java.io.File;
@@ -23,6 +23,8 @@ import org.rpgwizard.common.assets.AssetException;
 import org.rpgwizard.common.assets.AssetManager;
 import org.rpgwizard.common.assets.Program;
 import org.rpgwizard.editor.utilities.EditorFileManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -30,21 +32,25 @@ import org.rpgwizard.editor.utilities.EditorFileManager;
  */
 public class ProgramGenerator {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProgramGenerator.class);
+
     private static final String TEMPLATE_DIR = "program/templates";
     private static final String AUTO_GENERATED_DIR = "auto_generated";
     private static final String TEMPLATE_EXT = ".js";
 
-    public static void generate(Map<String, Object> placeHolders, ProgramType type)
+    public static String generate(Map<String, Object> placeHolders, ProgramType type)
             throws IOException, AssetException, URISyntaxException {
         String id = type.toString() + "_" + UUID.randomUUID().toString();
-        generate(id, placeHolders, type);
+        return generate(id, placeHolders, type);
     }
 
-    public static void generate(String id, Map<String, Object> parameters, ProgramType type)
+    public static String generate(String id, Map<String, Object> parameters, ProgramType type)
             throws IOException, AssetException, URISyntaxException {
+        LOGGER.info("Generating program, id=[{}], parameters=[{}], type=[{}]", id, parameters, type);
+
         String template = readTemplate(type.toString());
         String code = applyPlaceHolders(parameters, template);
-        saveProgram(id, code);
+        return saveProgram(id, code);
     }
 
     private static String readTemplate(String template) throws IOException, URISyntaxException {
@@ -65,7 +71,7 @@ public class ProgramGenerator {
         return template;
     }
 
-    private static void saveProgram(String id, String code) throws IOException, AssetException {
+    private static String saveProgram(String id, String code) throws IOException, AssetException {
         String typeExt = EditorFileManager.getTypeExtensions(Program.class)[0];
         String typeDir = EditorFileManager.getTypeSubdirectory(Program.class);
         File projectPath = EditorFileManager.getPath(typeDir);
@@ -76,6 +82,8 @@ public class ProgramGenerator {
         program.update(code);
 
         AssetManager.getInstance().serialize(AssetManager.getInstance().getHandle(program));
+
+        return program.getFileName();
     }
 
     public static void main(String[] args) throws Exception {
@@ -85,7 +93,7 @@ public class ProgramGenerator {
         input.put("tileY", 15);
         input.put("layer", 1);
 
-        generate(input, ProgramType.WARP);
+        generate(input, ProgramType.BOARD_LINK);
     }
 
 }

@@ -7,6 +7,7 @@
  */
 package org.rpgwizard.editor;
 
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.lang.reflect.Field;
@@ -187,7 +188,7 @@ public class Driver {
                 MainWindow mainWindow = MainWindow.getInstance();
                 mainWindow.setPluginManager(pluginManager);
                 mainWindow.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-                mainWindow.addWindowListener(new java.awt.event.WindowAdapter() {
+                mainWindow.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowOpened(WindowEvent e) {
                         try {

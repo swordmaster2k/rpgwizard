@@ -10,23 +10,22 @@ package org.rpgwizard.editor.editors.board.panels;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.io.File;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
-
-import org.rpgwizard.editor.editors.board.BoardLayerView;
-import org.rpgwizard.common.assets.board.BoardVector;
-import org.rpgwizard.common.assets.board.BoardVectorType;
 import org.rpgwizard.common.assets.Event;
 import org.rpgwizard.common.assets.EventType;
 import org.rpgwizard.common.assets.KeyPressEvent;
 import org.rpgwizard.common.assets.KeyType;
-import org.rpgwizard.common.utilities.CoreProperties;
+import org.rpgwizard.common.assets.board.BoardVector;
+import org.rpgwizard.common.assets.board.BoardVectorType;
 import org.rpgwizard.editor.MainWindow;
-import org.rpgwizard.editor.utilities.GuiHelper;
+import org.rpgwizard.editor.editors.board.BoardLayerView;
+import org.rpgwizard.editor.editors.board.generation.ProgramDialog;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -35,16 +34,18 @@ import org.rpgwizard.editor.utilities.GuiHelper;
  */
 public final class BoardVectorPanel extends BoardModelPanel {
 
+    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(BoardVectorPanel.class);
+
     private final JSpinner layerSpinner;
     private final JCheckBox isClosedCheckBox;
     private final JTextField idTextField;
     private final JComboBox<String> typeComboBox;
     private static final String[] VECTOR_TYPES = BoardVectorType.toStringArray();
     private static final String[] EVENT_TYPES = EventType.toStringArray();
+    private final JButton configureEventButton;
     private final JComboBox<String> eventComboBox;
     private static final String[] KEY_TYPES = KeyType.toStringArray();
     private final JComboBox<String> keyComboBox;
-    private final JComboBox eventProgramComboBox;
 
     private int lastSpinnerLayer; // Used to ensure that the selection is valid.
 
@@ -174,23 +175,25 @@ public final class BoardVectorPanel extends BoardModelPanel {
             MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
         });
         ///
-        /// eventProgramComboBox
+        /// configureEventButton
         ///
-        File directory = new File(System.getProperty("project.path") + File.separator
-                + CoreProperties.getProperty("toolkit.directory.program") + File.separator);
-        String[] exts = new String[] { "program", "js" };
-        eventProgramComboBox = GuiHelper.getFileListJComboBox(new File[] { directory }, exts, true);
-        eventProgramComboBox.setSelectedItem(((BoardVector) model).getEvents().get(0).getProgram());
-        eventProgramComboBox.addActionListener((ActionEvent e) -> {
-            Event event = ((BoardVector) model).getEvents().get(0);
+        configureEventButton = new JButton("Configure");
+        configureEventButton.addActionListener((ActionEvent e) -> {
+            try {
+                Event event = ((BoardVector) model).getEvents().get(0);
+                String program = event.getProgram();
+                ProgramDialog dialog = new ProgramDialog(MainWindow.getInstance(), program);
+                dialog.display();
 
-            if (eventProgramComboBox.getSelectedItem() == null) {
-                event.setProgram("");
-            } else {
-                event.setProgram((String) eventProgramComboBox.getSelectedItem());
+                String newProgram = dialog.getNewValue();
+                if (newProgram != null) {
+                    event.setProgram(newProgram);
+                    ((BoardVector) model).getEvents().set(0, event);
+                    MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+                }
+            } catch (Exception ex) {
+                LOGGER.error("Caught exception while setting new event!", ex);
             }
-            ((BoardVector) model).getEvents().set(0, event);
-            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
         });
         ///
         /// this
@@ -201,6 +204,6 @@ public final class BoardVectorPanel extends BoardModelPanel {
         insert(getJLabel("Type"), typeComboBox);
         insert(getJLabel("Event"), eventComboBox);
         insert(getJLabel("Key"), keyComboBox);
-        insert(getJLabel("Event Program"), eventProgramComboBox);
+        insert(getJLabel("Event Program"), configureEventButton);
     }
 }

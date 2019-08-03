@@ -26,6 +26,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -34,6 +35,7 @@ import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
+import javax.swing.text.DefaultFormatter;
 import org.rpgwizard.common.assets.Board;
 import org.rpgwizard.editor.ui.listeners.PopupListFilesListener;
 
@@ -187,6 +189,9 @@ public abstract class GuiHelper {
         JSpinner spinner = new JSpinner(
                 new SpinnerNumberModel(value, new Integer(0), new Integer(Integer.MAX_VALUE), new Integer(1)));
         spinner.setFont(new JLabel().getFont());
+        JFormattedTextField field = ((JSpinner.DefaultEditor) spinner.getEditor()).getTextField();
+        DefaultFormatter formatter = (DefaultFormatter) field.getFormatter();
+        formatter.setCommitsOnValidEdit(true);
         return spinner;
     }
 

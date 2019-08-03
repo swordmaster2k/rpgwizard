@@ -7,7 +7,6 @@
  */
 package org.rpgwizard.editor.utilities;
 
-import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -19,12 +18,14 @@ import javax.swing.JFileChooser;
 import static javax.swing.JFileChooser.SAVE_DIALOG;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import org.apache.commons.io.FileUtils;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.Animation;
 import org.rpgwizard.common.assets.Board;
-import org.rpgwizard.common.assets.Enemy;
-import org.rpgwizard.common.assets.NPC;
 import org.rpgwizard.common.assets.Character;
+import org.rpgwizard.common.assets.Enemy;
+import org.rpgwizard.common.assets.Item;
+import org.rpgwizard.common.assets.NPC;
 import org.rpgwizard.common.assets.Program;
 import org.rpgwizard.common.assets.Project;
 import org.rpgwizard.common.assets.SpecialMove;
@@ -33,8 +34,6 @@ import org.rpgwizard.common.assets.TileSet;
 import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.ui.SingleRootFileSystemView;
-import org.apache.commons.io.FileUtils;
-import org.rpgwizard.common.assets.Item;
 
 /**
  *

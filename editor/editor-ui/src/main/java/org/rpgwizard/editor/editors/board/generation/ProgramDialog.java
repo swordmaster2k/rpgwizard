@@ -13,6 +13,7 @@ import java.awt.Window;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -26,6 +27,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 import javax.swing.SwingConstants;
+import org.apache.commons.lang3.tuple.Pair;
 import org.rpgwizard.common.assets.AssetException;
 import org.rpgwizard.common.assets.AssetManager;
 import org.rpgwizard.common.assets.files.FileAssetHandleResolver;
@@ -33,6 +35,8 @@ import org.rpgwizard.common.assets.serialization.TextProgramSerializer;
 import org.rpgwizard.editor.editors.board.generation.panel.AbstractProgramPanel;
 import org.rpgwizard.editor.editors.board.generation.panel.BoardLinkPanel;
 import org.rpgwizard.editor.editors.board.generation.panel.CustomPanel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -40,47 +44,42 @@ import org.rpgwizard.editor.editors.board.generation.panel.CustomPanel;
  */
 public final class ProgramDialog extends JDialog {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProgramDialog.class);
+
     private final JComboBox<String> programTypeCombo;
 
     private final JButton okButton;
     private final JButton cancelButton;
 
-    private JScrollPane centerPane;
+    private final JScrollPane centerPane;
     private AbstractProgramPanel programPanel;
 
-    private String value;
+    private final String oldValue;
+    private String newValue;
 
     public ProgramDialog(Window owner, String program) {
-        super(owner, "Generate Program", JDialog.ModalityType.APPLICATION_MODAL);
-        this.value = program;
+        super(owner, "Configure Event", JDialog.ModalityType.APPLICATION_MODAL);
+        this.oldValue = program;
+        this.newValue = null;
 
-        programPanel = new CustomPanel();
-        centerPane = new JScrollPane(programPanel);
+        centerPane = new JScrollPane();
         centerPane.getViewport().setScrollMode(JViewport.SIMPLE_SCROLL_MODE);
         centerPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
         List<String> types = Arrays.asList(ProgramType.values()).stream().map(ProgramType::name)
                 .collect(Collectors.toList());
         programTypeCombo = new JComboBox<>(types.toArray(new String[0]));
+        Pair<ProgramType, Map<String, Object>> pair = ProgramInterpreter.interpret(oldValue);
+        switchPanel(pair.getKey(), pair.getValue());
         programTypeCombo.addActionListener((e) -> {
             String selected = (String) programTypeCombo.getSelectedItem();
             ProgramType type = ProgramType.valueOf(selected);
-
-            switch (type) {
-            case BOARD_LINK:
-                programPanel = new BoardLinkPanel();
-                break;
-            default:
-                programPanel = new CustomPanel();
-            }
-
-            centerPane.setViewportView(programPanel);
-            centerPane.getViewport().revalidate();
-            pack();
+            switchPanel(type, new HashMap<>());
         });
 
         okButton = new JButton("OK");
         okButton.addActionListener((e) -> {
+            newValue = collect();
             dispose();
         });
 
@@ -113,26 +112,64 @@ public final class ProgramDialog extends JDialog {
         pack();
     }
 
-    public void display() throws IOException {
-        JPanel replacementPanel = new CustomPanel();
-        centerPane.add(replacementPanel);
-        revalidate();
-        repaint();
+    public String getOldValue() {
+        return oldValue;
+    }
 
+    public String getNewValue() {
+        return newValue;
+    }
+
+    public void display() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
     }
 
-    private String collect() throws IOException, AssetException, URISyntaxException {
-        ProgramType programType = programPanel.getProgramType();
+    private String collect() {
+        try {
+            ProgramType programType = programPanel.getProgramType();
 
-        Map<String, Object> values = programPanel.collect();
-        if (programType == ProgramType.CUSTOM) {
-            return (String) values.get("program");
+            Map<String, Object> values = programPanel.collect();
+            if (programType == ProgramType.CUSTOM) {
+                return (String) values.get("program");
+            }
+
+            if (oldValue.contains(ProgramGenerator.AUTO_GENERATED_DIR)) {
+                // Replace old auto-generated program
+                String id = oldValue.replace(ProgramGenerator.AUTO_GENERATED_DIR + "/", "")
+                        .replace(ProgramGenerator.TEMPLATE_EXT, "");
+                return ProgramGenerator.generate(id, values, programType);
+            } else {
+                // Generate a new program.
+                return ProgramGenerator.generate(values, programType);
+            }
+        } catch (IOException | AssetException | URISyntaxException ex) {
+            LOGGER.error("Failed to collect new value!", ex);
+            return null;
         }
+    }
 
-        return ProgramGenerator.generate(values, programType);
+    private void switchPanel(ProgramType programType, Map<String, Object> parameters) {
+        switch (programType) {
+        case BOARD_LINK:
+            if (parameters.isEmpty()) {
+                programPanel = new BoardLinkPanel();
+            } else {
+                programPanel = new BoardLinkPanel(parameters);
+            }
+            break;
+        default:
+            if (parameters.isEmpty()) {
+                programPanel = new CustomPanel();
+            } else {
+                programPanel = new CustomPanel(parameters);
+            }
+        }
+        programTypeCombo.setSelectedItem(programType.name());
+        centerPane.setViewportView(programPanel);
+        centerPane.getViewport().revalidate();
+        pack();
     }
 
     public static void main(String[] args) throws Exception {

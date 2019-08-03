@@ -15,6 +15,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import org.apache.commons.lang3.StringUtils;
 import org.rpgwizard.common.assets.Program;
 import org.rpgwizard.editor.editors.board.generation.ProgramType;
 import org.rpgwizard.editor.utilities.EditorFileManager;
@@ -34,7 +35,8 @@ public final class CustomPanel extends AbstractProgramPanel {
     }
 
     public CustomPanel(Map<String, Object> parameters) {
-        this();
+        super(ProgramType.CUSTOM);
+        init(parameters.get("program").toString());
     }
 
     private void init(String program) {
@@ -48,6 +50,9 @@ public final class CustomPanel extends AbstractProgramPanel {
         String[] exts = EditorFileManager.getTypeExtensions(Program.class);
         programCombo = GuiHelper.getFileListJComboBox(new File[] { EditorFileManager.getFullPath(Program.class) }, exts,
                 true);
+        if (StringUtils.isNotBlank(program)) {
+            programCombo.setSelectedItem(program);
+        }
         add(programCombo);
     }
 

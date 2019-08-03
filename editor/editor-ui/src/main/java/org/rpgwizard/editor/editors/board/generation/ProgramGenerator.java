@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.AssetException;
 import org.rpgwizard.common.assets.AssetManager;
@@ -34,13 +35,13 @@ public class ProgramGenerator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProgramGenerator.class);
 
-    private static final String TEMPLATE_DIR = "program/templates";
-    private static final String AUTO_GENERATED_DIR = "auto_generated";
-    private static final String TEMPLATE_EXT = ".js";
+    public static final String TEMPLATE_DIR = "program/templates";
+    public static final String AUTO_GENERATED_DIR = "auto_generated";
+    public static final String TEMPLATE_EXT = ".js";
 
     public static String generate(Map<String, Object> placeHolders, ProgramType type)
             throws IOException, AssetException, URISyntaxException {
-        String id = type.toString() + "_" + UUID.randomUUID().toString();
+        String id = System.currentTimeMillis() + "_" + UUID.randomUUID().toString();
         return generate(id, placeHolders, type);
     }
 
@@ -83,7 +84,8 @@ public class ProgramGenerator {
 
         AssetManager.getInstance().serialize(AssetManager.getInstance().getHandle(program));
 
-        return program.getFileName();
+        return FilenameUtils.separatorsToUnix(
+                program.getFile().getAbsolutePath().replace(projectPath.getAbsolutePath() + File.separator, ""));
     }
 
     public static void main(String[] args) throws Exception {

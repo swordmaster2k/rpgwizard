@@ -20,12 +20,16 @@ import org.rpgwizard.common.assets.Board;
 import org.rpgwizard.editor.editors.board.generation.ProgramType;
 import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.rpgwizard.editor.utilities.GuiHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Joshua Michael Daly
  */
 public final class BoardLinkPanel extends AbstractProgramPanel {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(BoardLinkPanel.class);
 
     private JComboBox boardCombo;
     private JSpinner tileXSpinner;
@@ -38,11 +42,18 @@ public final class BoardLinkPanel extends AbstractProgramPanel {
     }
 
     public BoardLinkPanel(Map<String, Object> parameters) {
-        this();
+        super(ProgramType.BOARD_LINK);
         this.parameters = parameters;
+        String boardName = String.valueOf(parameters.get("boardName"));
+        int x = Integer.valueOf(String.valueOf(parameters.get("tileX")));
+        int y = Integer.valueOf(String.valueOf(parameters.get("tileY")));
+        int layer = Integer.valueOf(String.valueOf(parameters.get("layer")));
+        init(boardName, x, y, layer);
     }
 
     private void init(String board, int x, int y, int layer) {
+        LOGGER.info("Setting up panel, board=[{}], x=[{}], y=[{}], layer=[{}]", board, x, y, layer);
+
         GridLayout gridLayout = new GridLayout(0, 2);
         gridLayout.setVgap(5);
         setLayout(gridLayout);
@@ -54,19 +65,20 @@ public final class BoardLinkPanel extends AbstractProgramPanel {
         String[] exts = EditorFileManager.getTypeExtensions(Board.class);
         boardCombo = GuiHelper.getFileListJComboBox(new File[] { EditorFileManager.getFullPath(Board.class) }, exts,
                 true);
+        boardCombo.setSelectedItem(board);
         add(boardCombo);
 
         add(new JLabel("X", SwingConstants.LEFT));
         tileXSpinner = GuiHelper.getJSpinner(x);
-        add(GuiHelper.getJSpinner(x));
+        add(tileXSpinner);
 
         add(new JLabel("Y", SwingConstants.LEFT));
         tileYSpinner = GuiHelper.getJSpinner(y);
-        add(GuiHelper.getJSpinner(y));
+        add(tileYSpinner);
 
         add(new JLabel("Layer", SwingConstants.LEFT));
         layerSpinner = GuiHelper.getJSpinner(layer);
-        add(GuiHelper.getJSpinner(layer));
+        add(layerSpinner);
     }
 
     @Override

@@ -43,7 +43,6 @@ public final class BoardLinkPanel extends AbstractProgramPanel {
 
     public BoardLinkPanel(Map<String, Object> parameters) {
         super(ProgramType.BOARD_LINK);
-        this.parameters = parameters;
         String boardName = String.valueOf(parameters.get("boardName"));
         int x = Integer.valueOf(String.valueOf(parameters.get("tileX")));
         int y = Integer.valueOf(String.valueOf(parameters.get("tileY")));

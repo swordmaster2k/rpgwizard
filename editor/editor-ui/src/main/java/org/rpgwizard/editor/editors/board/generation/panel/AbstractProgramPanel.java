@@ -18,7 +18,6 @@ import org.rpgwizard.editor.editors.board.generation.ProgramType;
 public abstract class AbstractProgramPanel extends JPanel {
 
     protected final ProgramType programType;
-    protected Map<String, Object> parameters;
 
     public AbstractProgramPanel(ProgramType programType) {
         this.programType = programType;

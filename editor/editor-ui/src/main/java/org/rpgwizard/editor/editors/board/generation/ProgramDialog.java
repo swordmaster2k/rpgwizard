@@ -23,6 +23,7 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
@@ -79,8 +80,13 @@ public final class ProgramDialog extends JDialog {
 
         okButton = new JButton("OK");
         okButton.addActionListener((e) -> {
-            newValue = collect();
-            dispose();
+            int result = JOptionPane.showConfirmDialog(this,
+                    "Are you sure? This will replace any previously auto-generated events.", "Generate event?",
+                    JOptionPane.YES_NO_OPTION);
+            if (result == 0) {
+                newValue = collect();
+                dispose();
+            }
         });
 
         cancelButton = new JButton("Cancel");
@@ -93,7 +99,7 @@ public final class ProgramDialog extends JDialog {
 
         JPanel selectionPanel = new JPanel(gridLayout);
         selectionPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        selectionPanel.add(new JLabel("Program Type", SwingConstants.LEFT));
+        selectionPanel.add(new JLabel("Event Type", SwingConstants.LEFT));
         selectionPanel.add(programTypeCombo);
 
         JPanel buttonPanel = new JPanel(new GridLayout(0, 2));
@@ -146,6 +152,8 @@ public final class ProgramDialog extends JDialog {
             }
         } catch (IOException | AssetException | URISyntaxException ex) {
             LOGGER.error("Failed to collect new value!", ex);
+            JOptionPane.showMessageDialog(this, "Failed to auto-generate event!", "Generate Error",
+                    JOptionPane.ERROR_MESSAGE);
             return null;
         }
     }

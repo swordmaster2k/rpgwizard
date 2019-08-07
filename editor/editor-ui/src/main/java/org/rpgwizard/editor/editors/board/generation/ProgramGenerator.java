@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
@@ -86,16 +85,6 @@ public class ProgramGenerator {
 
         return FilenameUtils.separatorsToUnix(
                 program.getFile().getAbsolutePath().replace(projectPath.getAbsolutePath() + File.separator, ""));
-    }
-
-    public static void main(String[] args) throws Exception {
-        Map<String, Object> input = new HashMap<>();
-        input.put("boardName", "test.board");
-        input.put("tileX", 10);
-        input.put("tileY", 15);
-        input.put("layer", 1);
-
-        generate(input, ProgramType.BOARD_LINK);
     }
 
 }

@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.rpgwizard.common.assets.Program;
@@ -40,23 +41,24 @@ public class ProgramInterpreter {
         Map<String, Object> defaultParameters = new HashMap<>();
         defaultParameters.put("program", child);
 
-        try {
-            File parent = EditorFileManager.getFullPath(Program.class);
-            File file = new File(parent, child);
+        if (StringUtils.isNotBlank(child)) {
+            try {
+                File parent = EditorFileManager.getFullPath(Program.class);
+                File file = new File(parent, child);
 
-            Program program = MainWindow.getInstance().openProgram(file);
-            String code = program.getProgramBuffer().toString();
-            Matcher matcher = TYPE_PATTERN.matcher(code);
-            if (matcher.find()) {
-                ProgramType programType = ProgramType.valueOf(matcher.group(GROUP_NAME));
-                switch (programType) {
-                case BOARD_LINK:
-                    return new ImmutablePair<>(programType, interpretBoardLink(code));
+                Program program = MainWindow.getInstance().openProgram(file);
+                String code = program.getProgramBuffer().toString();
+                Matcher matcher = TYPE_PATTERN.matcher(code);
+                if (matcher.find()) {
+                    ProgramType programType = ProgramType.valueOf(matcher.group(GROUP_NAME));
+                    switch (programType) {
+                    case BOARD_LINK:
+                        return new ImmutablePair<>(programType, interpretBoardLink(code));
+                    }
                 }
+            } catch (Exception ex) {
+                LOGGER.error("Failed to interpret child=[{}], ex=[{}]", child, ex);
             }
-        } catch (Exception ex) {
-            LOGGER.error("Failed to interpret child=[{}], ex=[{}]", child, ex);
-            return new ImmutablePair<>(ProgramType.CUSTOM, defaultParameters);
         }
 
         return new ImmutablePair<>(ProgramType.CUSTOM, defaultParameters);

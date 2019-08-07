@@ -25,6 +25,7 @@ import org.rpgwizard.common.assets.board.BoardVectorType;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.editors.board.BoardLayerView;
 import org.rpgwizard.editor.editors.board.generation.ProgramDialog;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -34,7 +35,7 @@ import org.slf4j.LoggerFactory;
  */
 public final class BoardVectorPanel extends BoardModelPanel {
 
-    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(BoardVectorPanel.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BoardVectorPanel.class);
 
     private final JSpinner layerSpinner;
     private final JCheckBox isClosedCheckBox;

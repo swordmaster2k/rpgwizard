@@ -9,6 +9,7 @@ package org.rpgwizard.editor.editors.board.panels;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
@@ -16,17 +17,20 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import org.apache.commons.lang3.ArrayUtils;
-import org.rpgwizard.common.assets.board.BoardSprite;
 import org.rpgwizard.common.assets.Enemy;
 import org.rpgwizard.common.assets.EventType;
 import org.rpgwizard.common.assets.KeyType;
 import org.rpgwizard.common.assets.NPC;
 import org.rpgwizard.common.assets.Program;
+import org.rpgwizard.common.assets.board.BoardSprite;
 import org.rpgwizard.common.assets.board.model.BoardModelEvent;
-import org.rpgwizard.editor.editors.board.BoardLayerView;
 import org.rpgwizard.editor.MainWindow;
+import org.rpgwizard.editor.editors.board.BoardLayerView;
+import org.rpgwizard.editor.editors.board.generation.ProgramDialog;
 import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.rpgwizard.editor.utilities.GuiHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -35,9 +39,10 @@ import org.rpgwizard.editor.utilities.GuiHelper;
  */
 public final class BoardSpritePanel extends BoardModelPanel {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(BoardSpritePanel.class);
+
     private final JComboBox fileComboBox;
     private final JTextField idField;
-    private final JComboBox eventProgramComboBox;
     private final JComboBox threadComboBox;
     private final JSpinner xSpinner;
     private final JSpinner ySpinner;
@@ -45,6 +50,7 @@ public final class BoardSpritePanel extends BoardModelPanel {
     private int lastSpinnerLayer; // Used to ensure that the selection is valid.
     private final JComboBox eventComboBox;
     private static final String[] EVENT_TYPES = EventType.toStringArray();
+    private final JButton configureEventButton;
     private static final String[] KEY_TYPES = KeyType.toStringArray();
     private final JComboBox<String> keyComboBox;
 
@@ -99,16 +105,22 @@ public final class BoardSpritePanel extends BoardModelPanel {
             }
         });
         ///
-        /// activationComboBox
+        /// configureEventButton
         ///
-        exts = EditorFileManager.getTypeExtensions(Program.class);
-        eventProgramComboBox = GuiHelper
-                .getFileListJComboBox(new File[] { EditorFileManager.getFullPath(Program.class) }, exts, true);
-        eventProgramComboBox.setSelectedItem(boardSprite.getEventProgram());
-        eventProgramComboBox.addActionListener((ActionEvent e) -> {
-            if (eventProgramComboBox.getSelectedItem() != null) {
-                boardSprite.setEventProgram((String) eventProgramComboBox.getSelectedItem());
-                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+        configureEventButton = new JButton("Configure");
+        configureEventButton.addActionListener((ActionEvent e) -> {
+            try {
+                String program = boardSprite.getEventProgram();
+                ProgramDialog dialog = new ProgramDialog(MainWindow.getInstance(), program);
+                dialog.display();
+
+                String newProgram = dialog.getNewValue();
+                if (newProgram != null) {
+                    boardSprite.setEventProgram(newProgram);
+                    MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+                }
+            } catch (Exception ex) {
+                LOGGER.error("Caught exception while setting new event!", ex);
             }
         });
         ///
@@ -212,7 +224,7 @@ public final class BoardSpritePanel extends BoardModelPanel {
         insert(getJLabel("Layer"), layerSpinner);
         insert(getJLabel("Event"), eventComboBox);
         insert(getJLabel("Key"), keyComboBox);
-        insert(getJLabel("Event Program"), eventProgramComboBox);
+        insert(getJLabel("Event Program"), configureEventButton);
         insert(getJLabel("Thread"), threadComboBox);
     }
 

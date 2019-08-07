@@ -101,6 +101,41 @@ dialog.show(config, function() {
  // Dialog has ended, do something else.
 });</code></pre>]]></desc>
         </keyword>
+        <keyword name="rpgcode.addLayerImage(image, layer);" type="function" returnType="undefined" definedIn="engine/engine-js/js/rpgcode/rpgcode.js">
+            <desc><![CDATA[<div class="description">
+  Adds the layer image to the requested layer, it will be rendered immediately after being added to the board. Note: Layers added this way will be lost the moment the board is reloaded. 
+</div> 
+<div class="container-params"> 
+ <h3>Parameters:</h3> 
+ <table class="params"> 
+  <thead> 
+   <tr> 
+    <th>Name</th> 
+    <th>Type</th> 
+    <th class="last">Description</th> 
+   </tr> 
+  </thead> 
+  <tbody> 
+   <tr> 
+    <td class="name"><code>image</code></td> 
+    <td class="type"> <span class="param-type">Object</span> </td> 
+    <td class="description last">The layer image to add to the board.</td> 
+   </tr> 
+   <tr> 
+    <td class="name"><code>layer</code></td> 
+    <td class="type"> <span class="param-type">Number</span> </td> 
+    <td class="description last">Layer index on the board, first layer starts at 0.</td> 
+   </tr> 
+  </tbody> 
+ </table> 
+</div> 
+<div class="container-returns"> 
+ <h3>Returns:</h3> 
+ <span class="param-type">undefined</span> 
+</div>  
+<h3>Example</h3> 
+<pre class="prettyprint"><code>var image = { "src": "battle-background.png", // pre-loaded asset image "x": 50,                        // x location on board in pixels "y": 100,                       // y location on board in pixels "id": "battle.background"       // unique for this layer image}rpgcode.addLayerImage(image, 1); // Adds the image to layer 1 on the current board</code></pre>]]></desc>
+        </keyword>
         <keyword name="rpgcode.addRunTimeProgram(filename);" type="function" returnType="undefined" definedIn="engine/engine-js/js/rpgcode/rpgcode.js">
             <desc><![CDATA[<div class="description">
   Adds a program that will be called at runtime for each frame. You should avoid doing any lengthy operations with these programs. 
@@ -2192,6 +2227,41 @@ dialog.show(config, function() {
  <h3>Returns:</h3> 
  <span class="param-type">undefined</span> 
 </div>]]></desc>
+        </keyword>
+        <keyword name="rpgcode.removeLayerImage(id, layer);" type="function" returnType="undefined" definedIn="engine/engine-js/js/rpgcode/rpgcode.js">
+            <desc><![CDATA[<div class="description">
+  Removes the layer image with the ID on the specified layer. If the image does not exist on the layer then there is no effect. 
+</div> 
+<div class="container-params"> 
+ <h3>Parameters:</h3> 
+ <table class="params"> 
+  <thead> 
+   <tr> 
+    <th>Name</th> 
+    <th>Type</th> 
+    <th class="last">Description</th> 
+   </tr> 
+  </thead> 
+  <tbody> 
+   <tr> 
+    <td class="name"><code>id</code></td> 
+    <td class="type"> <span class="param-type">String</span> </td> 
+    <td class="description last">Unique ID of the layer image to remove.</td> 
+   </tr> 
+   <tr> 
+    <td class="name"><code>layer</code></td> 
+    <td class="type"> <span class="param-type">Number</span> </td> 
+    <td class="description last">Layer index on the board, first layer starts at 0.</td> 
+   </tr> 
+  </tbody> 
+ </table> 
+</div> 
+<div class="container-returns"> 
+ <h3>Returns:</h3> 
+ <span class="param-type">undefined</span> 
+</div>  
+<h3>Example</h3> 
+<pre class="prettyprint"><code>rpgcode.removeLayerImage("battle.background", 1); // Remove the image with ID "battle.background" on layer 1 </code></pre>]]></desc>
         </keyword>
         <keyword name="rpgcode.removeRunTimeProgram(filename);" type="function" returnType="undefined" definedIn="engine/engine-js/js/rpgcode/rpgcode.js">
             <desc><![CDATA[<div class="description">

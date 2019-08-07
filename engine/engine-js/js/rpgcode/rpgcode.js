@@ -138,6 +138,32 @@ RPGcode.prototype._getSpriteType = function (spriteId) {
 };
 
 /**
+ * Adds the layer image to the requested layer, it will be rendered immediately
+ * after being added to the board.
+ * 
+ * Note: Layers added this way will be lost the moment the board is reloaded.
+ * 
+ * @example
+ * var image = {
+ *  "src": "battle-background.png", // pre-loaded asset image
+ *  "x": 50,                        // x location on board in pixels
+ *  "y": 100,                       // y location on board in pixels
+ *  "id": "battle.background"       // unique for this layer image
+ * }
+ * 
+ * rpgcode.addLayerImage(image, 1); // Adds the image to layer 1 on the current board
+ * 
+ * @param {Object} image The layer image to add to the board.
+ * @param {Number} layer Layer index on the board, first layer starts at 0.
+ * @returns {undefined}
+ */
+RPGcode.prototype.addLayerImage = function (image, layer) {
+    if (layer < rpgwizard.craftyBoard.board.layers.length) {
+        rpgwizard.craftyBoard.board.layers[layer].images.push(image);
+    }
+};
+
+/**
  * Adds a program that will be called at runtime for each frame. You 
  * should avoid doing any lengthy operations with these programs.
  * 
@@ -2019,6 +2045,30 @@ RPGcode.prototype.renderNow = function (canvasId) {
 RPGcode.prototype.replaceTile = function (tileX, tileY, layer, tileSet, tileIndex) {
     var tile = rpgwizard.tilesets[tileSet].getTile(tileIndex);
     rpgwizard.craftyBoard.board.replaceTile(tileX, tileY, layer, tile);
+};
+
+/**
+ * Removes the layer image with the ID on the specified layer. If the image does
+ * not exist on the layer then there is no effect.
+ * 
+ * @example
+ * rpgcode.removeLayerImage("battle.background", 1); // Remove the image with ID "battle.background" on layer 1 
+ * 
+ * @param {String} id Unique ID of the layer image to remove.
+ * @param {Number} layer Layer index on the board, first layer starts at 0.
+ * @returns {undefined}
+ */
+RPGcode.prototype.removeLayerImage = function (id, layer) {
+    if (layer < rpgwizard.craftyBoard.board.layers.length) {
+        var boardLayer = rpgwizard.craftyBoard.board.layers[layer];
+        var length = boardLayer.length;
+        for (var i = 0; i < length; i++) {
+            var image = boardLayer.images[i];
+            if (image.id === id) {
+                boardLayer.images.splice(i, 1); 
+            }
+        }
+    }
 };
 
 /**

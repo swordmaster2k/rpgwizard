@@ -44,13 +44,13 @@ public final class BoardLinkPanel extends AbstractProgramPanel {
     public BoardLinkPanel(Map<String, Object> parameters) {
         super(ProgramType.BOARD_LINK);
         String boardName = String.valueOf(parameters.get("boardName"));
-        int x = Integer.valueOf(String.valueOf(parameters.get("tileX")));
-        int y = Integer.valueOf(String.valueOf(parameters.get("tileY")));
+        double x = Double.valueOf(String.valueOf(parameters.get("tileX")));
+        double y = Double.valueOf(String.valueOf(parameters.get("tileY")));
         int layer = Integer.valueOf(String.valueOf(parameters.get("layer")));
         init(boardName, x, y, layer);
     }
 
-    private void init(String board, int x, int y, int layer) {
+    private void init(String board, double x, double y, int layer) {
         LOGGER.info("Setting up panel, board=[{}], x=[{}], y=[{}], layer=[{}]", board, x, y, layer);
 
         GridLayout gridLayout = new GridLayout(0, 2);
@@ -68,11 +68,11 @@ public final class BoardLinkPanel extends AbstractProgramPanel {
         add(boardCombo);
 
         add(new JLabel("X", SwingConstants.LEFT));
-        tileXSpinner = GuiHelper.getJSpinner(x);
+        tileXSpinner = GuiHelper.getJSpinner(Double.valueOf(x));
         add(tileXSpinner);
 
         add(new JLabel("Y", SwingConstants.LEFT));
-        tileYSpinner = GuiHelper.getJSpinner(y);
+        tileYSpinner = GuiHelper.getJSpinner(Double.valueOf(y));
         add(tileYSpinner);
 
         add(new JLabel("Layer", SwingConstants.LEFT));
@@ -84,8 +84,8 @@ public final class BoardLinkPanel extends AbstractProgramPanel {
     public Map<String, Object> collect() {
         Map<String, Object> values = new HashMap<>();
         values.put("boardName", String.valueOf(boardCombo.getSelectedItem()));
-        values.put("tileX", Integer.valueOf(tileXSpinner.getValue().toString()));
-        values.put("tileY", Integer.valueOf(tileYSpinner.getValue().toString()));
+        values.put("tileX", Double.valueOf(tileXSpinner.getValue().toString()));
+        values.put("tileY", Double.valueOf(tileYSpinner.getValue().toString()));
         values.put("layer", Integer.valueOf(layerSpinner.getValue().toString()));
         return values;
     }

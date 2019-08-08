@@ -181,13 +181,30 @@ public abstract class GuiHelper {
     }
 
     /**
+     * Gets a JSpinner for editing Integer values.
      * 
      * @param value
-     * @return
+     * @return spinner
      */
     public static JSpinner getJSpinner(Integer value) {
         JSpinner spinner = new JSpinner(
                 new SpinnerNumberModel(value, new Integer(0), new Integer(Integer.MAX_VALUE), new Integer(1)));
+        spinner.setFont(new JLabel().getFont());
+        JFormattedTextField field = ((JSpinner.DefaultEditor) spinner.getEditor()).getTextField();
+        DefaultFormatter formatter = (DefaultFormatter) field.getFormatter();
+        formatter.setCommitsOnValidEdit(true);
+        return spinner;
+    }
+
+    /**
+     * Gets a JSpinner for editing Double values.
+     *
+     * @param value
+     * @return spinner
+     */
+    public static JSpinner getJSpinner(Double value) {
+        JSpinner spinner = new JSpinner(
+                new SpinnerNumberModel(value, new Double(0), new Double(Integer.MAX_VALUE), new Double(1)));
         spinner.setFont(new JLabel().getFont());
         JFormattedTextField field = ((JSpinner.DefaultEditor) spinner.getEditor()).getTextField();
         DefaultFormatter formatter = (DefaultFormatter) field.getFormatter();

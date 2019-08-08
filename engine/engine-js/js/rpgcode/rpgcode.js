@@ -2209,7 +2209,7 @@ RPGcode.prototype.saveJSON = async function (data, successCallback, failureCallb
  * @param {Number} layer The layer to place the character on.
  */
 RPGcode.prototype.sendToBoard = async function (boardName, tileX, tileY, layer) {
-    if (!layer) {
+    if (layer === undefined || layer === null || layer < 0) {
         // Backwards compatability check.
         layer = rpgwizard.craftyCharacter.character.layer;
     }

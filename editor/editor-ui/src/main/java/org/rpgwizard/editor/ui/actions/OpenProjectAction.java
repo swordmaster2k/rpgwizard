@@ -46,7 +46,7 @@ public class OpenProjectAction extends AbstractAction {
             mainWindow.setProjectPath(file.getParent());
             ProjectUpgrader.upgrade(file.getParentFile());
             Project project = mainWindow.openProject(file);
-            mainWindow.setupProject(project);
+            mainWindow.setupProject(project, true);
         }
     }
 

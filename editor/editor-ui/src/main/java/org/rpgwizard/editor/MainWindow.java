@@ -704,7 +704,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
                     // Write out new project file.
                     AssetManager.getInstance().serialize(AssetManager.getInstance().getHandle(project));
                     setProjectPath(file.getParent());
-                    setupProject(project);
+                    setupProject(project, true);
                 } catch (IOException | AssetException ex) {
                     LOGGER.error("Failed to create new {} projectName=[{}].", Project.class, projectName, ex);
                 }
@@ -1045,7 +1045,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         LOGGER.info("Project path set to project.path=[{}].", System.getProperty("project.path"));
     }
 
-    public void setupProject(Project project) {
+    public void setupProject(Project project, boolean showProjectEditor) {
         // Clean up previous project.
         closeAllFrames();
         tileSetPanel.removeTileSets();
@@ -1058,8 +1058,10 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
 
         projectPanel.setup(EditorFileManager.getProjectPath());
 
-        ProjectEditor projectEditor = new ProjectEditor(activeProject);
-        addToolkitEditorWindow(projectEditor);
+        if (showProjectEditor) {
+            ProjectEditor projectEditor = new ProjectEditor(activeProject);
+            addToolkitEditorWindow(projectEditor);
+        }
 
         setTitle(EditorProperties.getProperty(EditorProperty.EDITOR_UI_TITLE) + " - " + activeProject.getName());
 

@@ -11,6 +11,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.util.List;
 import javax.swing.JDialog;
@@ -143,7 +144,7 @@ public class Driver {
             if (project != null) {
                 mainWindow.setProjectPath(file.getParent());
                 ProjectUpgrader.upgrade(file.getParentFile());
-                mainWindow.setupProject(project);
+                mainWindow.setupProject(project, false);
             } else {
                 LOGGER.warn("Could not find previous, lastProject=[{}]", lastProject);
             }
@@ -168,64 +169,72 @@ public class Driver {
         fieldSysPath.set(null, null);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            try {
-                LOGGER.info("Starting the RPGWizard Editor...");
-                redirectUncaughtExceptions();
+    public static void main(String[] args) throws InterruptedException, InvocationTargetException {
+        SwingUtilities.invokeAndWait(() -> {
+            LOGGER.info("Starting the RPGWizard Editor...");
+            redirectUncaughtExceptions();
+            logSystemInfo();
 
-                logSystemInfo();
-                registerResolvers();
-                registerSerializers();
-                PluginManager pluginManager = registerPlugins();
-                loadUserTheme();
+            SplashScreen splashScreen = new SplashScreen();
+            splashScreen.display();
 
-                // Add the correct lib based on the platform.
-                if (SystemUtils.IS_OS_WINDOWS) {
-                    addLibraryPath("lib/jcef-win");
-                }
+            SwingUtilities.invokeLater(() -> {
+                try {
+                    registerResolvers();
+                    registerSerializers();
+                    PluginManager pluginManager = registerPlugins();
+                    loadUserTheme();
 
-                MainWindow mainWindow = MainWindow.getInstance();
-                mainWindow.setPluginManager(pluginManager);
-                mainWindow.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-                mainWindow.addWindowListener(new WindowAdapter() {
-                    @Override
-                    public void windowOpened(WindowEvent e) {
-                        try {
-                            loadLastProject();
-                        } catch (Exception ex) {
-                            LOGGER.error("Failed to open last project! reason=[{}]", ex.getMessage());
-                        }
+                    // Add the correct lib based on the platform.
+                    if (SystemUtils.IS_OS_WINDOWS) {
+                        addLibraryPath("lib/jcef-win");
                     }
 
-                    @Override
-                    public void windowClosing(WindowEvent windowEvent) {
-                        if (!mainWindow.tearDown()) {
-                            LOGGER.info("User cancelled close!");
-                            return;
+                    MainWindow mainWindow = MainWindow.getInstance();
+                    mainWindow.setPluginManager(pluginManager);
+                    mainWindow.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                    mainWindow.addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowOpened(WindowEvent e) {
+                            splashScreen.dispose();
                         }
-                        mainWindow.dispose();
 
-                        // Quietly stop any engines.
-                        List<Engine> engines = pluginManager.getExtensions(Engine.class);
-                        engines.forEach((engine) -> {
-                            try {
-                                engine.stop();
-                            } catch (Exception ex) {
-                                LOGGER.warn("Failed to stop engine! reason=[{}]", ex.getMessage());
+                        @Override
+                        public void windowClosing(WindowEvent windowEvent) {
+                            if (!mainWindow.tearDown()) {
+                                LOGGER.info("User cancelled close!");
+                                return;
                             }
-                        });
+                            mainWindow.dispose();
 
-                        // Write out user preferences.
-                        saveLastProject();
-                        UserPreferencesProperties.save();
-                        LOGGER.info("Stopping the RPGWizard Editor...");
+                            // Quietly stop any engines.
+                            List<Engine> engines = pluginManager.getExtensions(Engine.class);
+                            engines.forEach((engine) -> {
+                                try {
+                                    engine.stop();
+                                } catch (Exception ex) {
+                                    LOGGER.warn("Failed to stop engine! reason=[{}]", ex.getMessage());
+                                }
+                            });
+
+                            // Write out user preferences.
+                            saveLastProject();
+                            UserPreferencesProperties.save();
+                            LOGGER.info("Stopping the RPGWizard Editor...");
+                        }
+                    });
+
+                    try {
+                        loadLastProject();
+                    } catch (Exception ex) {
+                        LOGGER.error("Failed to open last project! reason=[{}]", ex.getMessage());
                     }
-                });
-                mainWindow.setVisible(true);
-            } catch (Exception ex) {
-                LOGGER.error("Failed to start the editor!", ex);
-            }
+
+                    mainWindow.setVisible(true);
+                } catch (Exception ex) {
+                    LOGGER.error("Failed to start the editor!", ex);
+                }
+            });
         });
 
     }

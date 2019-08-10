@@ -254,6 +254,29 @@ public abstract class GuiHelper {
                 (selection.width + modifier) * tileWidth - 1, (selection.height + modifier) * tileHeight - 1);
     }
 
+    /**
+     * Check that the selection is within the bounds of either x or y.
+     * 
+     * @param max
+     * @param actual
+     * @return
+     */
+    public static boolean checkSelectionBounds(int max, int actual) {
+        if (actual > max) {
+            return false;
+        }
+        return !(actual < 0);
+    }
+
+    /**
+     * Check that the selection is within the bounds of both x and y.
+     * 
+     * @param maxX
+     * @param maxY
+     * @param x
+     * @param y
+     * @return
+     */
     public static boolean checkSelectionBounds(int maxX, int maxY, int x, int y) {
         if (x > maxX || y > maxY) {
             return false;

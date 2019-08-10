@@ -158,7 +158,7 @@ public final class SpriteSheetDialog extends JDialog {
 
     public static void main(String[] args) throws IOException {
         System.setProperty("project.path",
-                "D:\\OneDrive\\Desktop\\rpgwizard-1.5.1-windows\\rpgwizard-1.5.1\\projects\\BlackVoid");
+                "D:\\OneDrive\\Desktop\\rpgwizard-1.6.0-windows\\rpgwizard-1.6.0\\projects\\BlackVoid");
 
         SpriteSheet sheet = new SpriteSheet(null, 0, 0, 4 * 24, 1 * 24, 24, 24);
         SpriteSheetDialog dialog = new SpriteSheetDialog(null, sheet);

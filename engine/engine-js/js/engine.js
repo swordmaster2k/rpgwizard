@@ -537,19 +537,21 @@ RPGWizard.prototype.switchBoard = async function (boardName, tileX, tileY, layer
         rpgwizard.lastBackgroundMusic = rpgwizard.craftyBoard.board.backgroundMusic;
     }
     
-    // Move the character first to avoid triggering vectors on next board, in same position.
-    var tileWidth = this.craftyBoard.board.tileWidth;
-    var tileHeight = this.craftyBoard.board.tileHeight;
-    this.craftyCharacter.x = parseInt((tileX * tileWidth) + tileWidth / 2);
-    this.craftyCharacter.y = parseInt((tileY * tileHeight) + tileHeight / 2);
-    this.craftyCharacter.character.layer = layer;
-    
+    // Load in the next board.
     var json;
     var board = new Board(PATH_BOARD + boardName);
     if (rpgwizard.boards[board.filename]) {
         json = JSON.parse(rpgwizard.boards[board.filename]);
     }
     board = await board.load(json);
+    
+    // Move the character first to avoid triggering vectors on next board, in same position.
+    var tileWidth = board.tileWidth;
+    var tileHeight = board.tileHeight;
+    this.craftyCharacter.x = parseInt((tileX * tileWidth) + tileWidth / 2);
+    this.craftyCharacter.y = parseInt((tileY * tileHeight) + tileHeight / 2);
+    this.craftyCharacter.character.layer = layer;
+    
     await this.loadBoard(board);
 
     if (rpgwizard.debugEnabled) {

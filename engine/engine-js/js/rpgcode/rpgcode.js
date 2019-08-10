@@ -2061,11 +2061,12 @@ RPGcode.prototype.replaceTile = function (tileX, tileY, layer, tileSet, tileInde
 RPGcode.prototype.removeLayerImage = function (id, layer) {
     if (layer < rpgwizard.craftyBoard.board.layers.length) {
         var boardLayer = rpgwizard.craftyBoard.board.layers[layer];
-        var length = boardLayer.length;
+        var length = boardLayer.images.length;
         for (var i = 0; i < length; i++) {
             var image = boardLayer.images[i];
             if (image.id === id) {
                 boardLayer.images.splice(i, 1); 
+                break;
             }
         }
     }

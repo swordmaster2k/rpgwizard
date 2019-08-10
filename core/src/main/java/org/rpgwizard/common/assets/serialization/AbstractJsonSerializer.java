@@ -9,7 +9,6 @@ package org.rpgwizard.common.assets.serialization;
 
 import java.awt.Point;
 import java.io.IOException;
-
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.channels.ReadableByteChannel;
@@ -20,21 +19,19 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.rpgwizard.common.assets.AbstractAssetSerializer;
-import org.rpgwizard.common.assets.AssetException;
-import org.rpgwizard.common.assets.AssetHandle;
-import org.rpgwizard.common.assets.board.BoardVector;
-import org.rpgwizard.common.assets.board.BoardVectorType;
-import org.rpgwizard.common.assets.Event;
-import org.rpgwizard.common.assets.EventType;
 import org.apache.commons.io.FilenameUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
-
 import org.json.JSONObject;
-import org.rpgwizard.common.assets.board.BoardLayerImage;
+import org.rpgwizard.common.assets.AbstractAssetSerializer;
+import org.rpgwizard.common.assets.AssetException;
+import org.rpgwizard.common.assets.AssetHandle;
+import org.rpgwizard.common.assets.Event;
+import org.rpgwizard.common.assets.EventType;
 import org.rpgwizard.common.assets.KeyPressEvent;
+import org.rpgwizard.common.assets.board.BoardLayerImage;
+import org.rpgwizard.common.assets.board.BoardVector;
+import org.rpgwizard.common.assets.board.BoardVectorType;
 
 /**
  * Abstract base class for implementing asset serializers that load or store their contents using JSON encoding.
@@ -46,7 +43,7 @@ import org.rpgwizard.common.assets.KeyPressEvent;
 public abstract class AbstractJsonSerializer extends AbstractAssetSerializer {
 
     public static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
-    public static final double FILE_FORMAT_VERSION = 1.5;
+    public static final double FILE_FORMAT_VERSION = 1.6;
 
     @Override
     public void serialize(AssetHandle handle) throws IOException, AssetException {

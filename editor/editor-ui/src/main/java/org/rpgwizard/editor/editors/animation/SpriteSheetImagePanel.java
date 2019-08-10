@@ -225,12 +225,24 @@ public final class SpriteSheetImagePanel extends AbstractImagePanel implements M
                 scrollRectToVisible(new Rectangle(e.getX(), e.getY(), 1, 1));
             }
 
-            if (!GuiHelper.checkSelectionBounds(spriteSheetImage.getWidth(this), spriteSheetImage.getHeight(this),
-                    e.getX(), e.getY())) {
-                return;
+            int maxX = spriteSheetImage.getWidth(this);
+            int x = e.getX();
+            if (x < 1) {
+                x = tileWidth;
+            } else if (maxX < x) {
+                x = maxX;
             }
+
+            int maxY = spriteSheetImage.getHeight(this);
+            int y = e.getY();
+            if (y < 1) {
+                y = tileHeight;
+            } else if (maxY < y) {
+                y = maxY;
+            }
+
             selection = new Rectangle(selection.x, selection.y, 1, 1);
-            selection.add(e.getX() / tileWidth, e.getY() / tileHeight);
+            selection.add(x / tileWidth, y / tileHeight);
             repaint();
         }
     }

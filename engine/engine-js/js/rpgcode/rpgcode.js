@@ -1132,11 +1132,15 @@ RPGcode.prototype.getGlobal = function (id) {
  * 
  * // Get the red pixel at (50, 50) from the rectangle.
  * var imageData = rpgcode.getPixel(50, 50);
- * rpgcode.log(imageData);
+ * var rgba = imageData.data;
+ * 
+ * // Show the RGBA values of the pixel
+ * alert("R, G, B, A (" + rgba[0] + ", " + rgba[1] + ", " + rgba[2] + ", " + rgba[3] + ")");
  * 
  * @param {Number} x In pixels.
  * @param {Number} y In pixels.
  * @param {String} canvasId The ID of the canvas to draw on, defaults to "renderNowCanvas" if none specified.
+ * @returns {Object} An ImageData object
  */
 RPGcode.prototype.getPixel = function (x, y, canvasId) {
     if (!canvasId) {
@@ -2294,6 +2298,44 @@ RPGcode.prototype.setImage = function (fileName, x, y, width, height, canvasId) 
                 context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
                 context.globalAlpha = rpgcode.globalAlpha;
                 context.drawImage(image, x, y, width, height);
+            } catch (err) {
+                console.log("Failed to setImage err=[%s]", err);
+            }
+        }
+    }
+};
+
+/**
+ * Sets part of an image on the canvas specified or the default if none.
+ * 
+ * @example
+ * // Set part of the image onto the smaller canvas.
+ * rpgcode.setImagePart("objects.png", 64, 0, 16, 16, 8, 8, 16, 16);
+ * 
+ * @param {String} fileName The relative path to the image.
+ * @param {Number} srcX The start position x in pixels from the source image.
+ * @param {Number} srcY The start position y in pixels from the source image.
+ * @param {Number} srcWidth In pixels from the source image.
+ * @param {Number} srcHeight In pixels from the source image.
+ * @param {Number} destX The start position x in pixels on the destination canvas.
+ * @param {Number} destY The start position y in pixels on the destination canvas.
+ * @param {Number} destWidth In pixels on the destination canvas.
+ * @param {Number} destHeight In pixels on the destination canvas.
+ * @param {String} canvasId The ID of the canvas to put the image on.
+ */
+RPGcode.prototype.setImagePart = function (fileName, srcX, srcY, srcWidth, srcHeight, destX, destY, destWidth, destHeight, canvasId) {
+    if (!canvasId) {
+        canvasId = "renderNowCanvas";
+    }
+    var instance = rpgcode.canvases[canvasId];
+    if (instance) {
+        var image = Crafty.asset(Crafty.__paths.images + fileName);
+        if (image) {
+            try {
+                var context = instance.canvas.getContext("2d");
+                context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
+                context.globalAlpha = rpgcode.globalAlpha;
+                context.drawImage(image, srcX, srcY, srcWidth, srcHeight, destX, destY, destWidth, destHeight);
             } catch (err) {
                 console.log("Failed to setImage err=[%s]", err);
             }

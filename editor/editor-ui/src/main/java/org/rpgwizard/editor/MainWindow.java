@@ -54,7 +54,6 @@ import org.rpgwizard.editor.editors.AnimationEditor;
 import org.rpgwizard.editor.editors.BoardEditor;
 import org.rpgwizard.editor.editors.CharacterEditor;
 import org.rpgwizard.editor.editors.EnemyEditor;
-import org.rpgwizard.editor.editors.ItemEditor;
 import org.rpgwizard.editor.editors.NPCEditor;
 import org.rpgwizard.editor.editors.ProgramEditor;
 import org.rpgwizard.editor.editors.ProjectEditor;
@@ -623,11 +622,8 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
      * @param editor
      */
     public void addToolkitEditorWindow(AbstractAssetEditorWindow editor) {
-        // Ensure it shows up in the center of editor.
-        int width = (desktopPane.getWidth() - editor.getWidth()) / 2;
-        int height = (desktopPane.getHeight() - editor.getWidth()) / 2;
-        editor.setLocation(width, height);
-
+        // Inset 10 pixels (x, y)
+        editor.setLocation(10, 10);
         editor.addInternalFrameListener(this);
         editor.setVisible(true);
         editor.toFront();
@@ -716,7 +712,6 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
 
     public void createNewProgram() {
         LOGGER.info("Creating new {}.", Program.class.getSimpleName());
-
         addToolkitEditorWindow(EditorFactory.getEditor(new Program(null)));
     }
 
@@ -780,13 +775,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         if (dialog.getValue() != null) {
             Board board = new Board(null, dialog.getValue()[0], dialog.getValue()[1], dialog.getValue()[2],
                     dialog.getValue()[3]);
-            BoardEditor boardEditor = new BoardEditor(board);
-            boardEditor.addInternalFrameListener(this);
-            boardEditor.setVisible(true);
-            boardEditor.toFront();
-
-            this.desktopPane.add(boardEditor);
-            this.selectToolkitWindow(boardEditor);
+            addToolkitEditorWindow(EditorFactory.getEditor(board));
         }
     }
 
@@ -818,17 +807,9 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
 
     public void createNewEnemy() {
         LOGGER.info("Creating new {}.", Enemy.class.getSimpleName());
-
         Enemy enemy = new Enemy(null);
         enemy.setName("Untitled");
-
-        EnemyEditor enemyEditor = new EnemyEditor(enemy);
-        enemyEditor.addInternalFrameListener(this);
-        enemyEditor.setVisible(true);
-        enemyEditor.toFront();
-
-        this.desktopPane.add(enemyEditor);
-        this.selectToolkitWindow(enemyEditor);
+        addToolkitEditorWindow(EditorFactory.getEditor(enemy));
     }
 
     /**
@@ -856,17 +837,9 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
 
     public void createNewItem() {
         LOGGER.info("Creating new {}.", Item.class.getSimpleName());
-
         Item item = new Item(null);
         item.setName("Untitled");
-
-        ItemEditor itemEditor = new ItemEditor(item);
-        itemEditor.addInternalFrameListener(this);
-        itemEditor.setVisible(true);
-        itemEditor.toFront();
-
-        desktopPane.add(itemEditor);
-        selectToolkitWindow(itemEditor);
+        addToolkitEditorWindow(EditorFactory.getEditor(item));
     }
 
     public Item openItem(File file) {
@@ -888,17 +861,9 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
 
     public void createNewNPC() {
         LOGGER.info("Creating new {}.", NPC.class.getSimpleName());
-
         NPC npc = new NPC(null);
         npc.setName("Untitled");
-
-        NPCEditor npcEditor = new NPCEditor(npc);
-        npcEditor.addInternalFrameListener(this);
-        npcEditor.setVisible(true);
-        npcEditor.toFront();
-
-        desktopPane.add(npcEditor);
-        selectToolkitWindow(npcEditor);
+        addToolkitEditorWindow(EditorFactory.getEditor(npc));
     }
 
     public NPC openNPC(File file) {
@@ -920,17 +885,9 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
 
     public void createNewCharacter() {
         LOGGER.info("Creating new {}.", Character.class.getSimpleName());
-
-        Character player = new Character(null);
-        player.setName("Untitled");
-
-        CharacterEditor characterEditor = new CharacterEditor(player);
-        characterEditor.addInternalFrameListener(this);
-        characterEditor.setVisible(true);
-        characterEditor.toFront();
-
-        this.desktopPane.add(characterEditor);
-        this.selectToolkitWindow(characterEditor);
+        Character character = new Character(null);
+        character.setName("Untitled");
+        addToolkitEditorWindow(EditorFactory.getEditor(character));
     }
 
     /**

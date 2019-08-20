@@ -7,17 +7,16 @@
  */
 package org.rpgwizard.editor.editors.board.generation;
 
-import com.google.common.io.Resources;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.AssetException;
 import org.rpgwizard.common.assets.AssetManager;
@@ -54,9 +53,10 @@ public class ProgramGenerator {
     }
 
     private static String readTemplate(String template) throws IOException, URISyntaxException {
-        URL url = Resources.getResource(TEMPLATE_DIR + File.separator + template + TEMPLATE_EXT);
-        File file = new File(url.toURI());
-        return FileUtils.readFileToString(file, StandardCharsets.UTF_8.name());
+        try (InputStream in = ProgramGenerator.class
+                .getResourceAsStream("/" + TEMPLATE_DIR + "/" + template + TEMPLATE_EXT)) {
+            return IOUtils.toString(in, StandardCharsets.UTF_8);
+        }
     }
 
     private static String applyPlaceHolders(Map<String, Object> placeHolders, String template) {
@@ -85,6 +85,12 @@ public class ProgramGenerator {
 
         return FilenameUtils.separatorsToUnix(
                 program.getFile().getAbsolutePath().replace(projectPath.getAbsolutePath() + File.separator, ""));
+    }
+
+    public static void main(String[] args) throws Exception {
+        InputStream in = ProgramGenerator.class
+                .getResourceAsStream("/" + TEMPLATE_DIR + "/" + "board_link" + TEMPLATE_EXT);
+        System.out.println(IOUtils.toString(in, StandardCharsets.UTF_8));
     }
 
 }

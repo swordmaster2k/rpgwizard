@@ -93,6 +93,7 @@ Dialog.prototype._setup = function (config) {
     this.maxLines = 3;
     this.nextMarkerImage = config.nextMarkerImage;
     this.typingSound = "dialog.typingSound";
+    this.skipMode = false
     
     this.padding = {
         x: 0,
@@ -183,9 +184,13 @@ Dialog.prototype._printCharacters = function (characters, callback) {
     dialog._cursorX += rpgcode.measureText(character).width;
 
     if (characters.length) {
-        rpgcode.delay(dialog.characterDelay, function () {
+      if (dialog.skipMode) {
+         dialog._printCharacters(characters, callback);
+      } else {
+         rpgcode.delay(dialog.characterDelay, function () {
             dialog._printCharacters(characters, callback);
-        });
+         });
+      }
     } else {
         callback();
     }
@@ -195,11 +200,16 @@ Dialog.prototype._printLines = function (lines, callback) {
     rpgcode.font = gui.getFont();
     gui.prepareTextColor();
 
+   rpgcode.registerKeyDown(dialog.advancementKey, function () {
+      dialog.skipMode = true;
+   }, false);
+
     var line = lines.shift();
     this._printCharacters(line.split(""), function () {
         if (lines.length) {
             dialog._currentLines++;
             if (dialog._currentLines > dialog.maxLines) {
+                dialog.skipMode = false;
                 dialog._stopTypingSound();
                 dialog._blink = true;
                 dialog._blinkNextMarker();

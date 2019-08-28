@@ -65,7 +65,7 @@ public abstract class AbstractSpriteModelPanel extends AbstractModelPanel {
             boardVector.addPoint(0, height1);
             boardVector.setClosed(true);
             sprite.setBaseVector(boardVector, true);
-            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+            MainWindow.getInstance().markWindowForSaving();
         });
         // /
         // / baseVectorHeightSpinner
@@ -85,7 +85,7 @@ public abstract class AbstractSpriteModelPanel extends AbstractModelPanel {
             boardVector.addPoint(0, height1);
             boardVector.setClosed(true);
             sprite.setBaseVector(boardVector, true);
-            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+            MainWindow.getInstance().markWindowForSaving();
         });
         // /
         // / baseVectorOffsetXSpinner
@@ -97,7 +97,7 @@ public abstract class AbstractSpriteModelPanel extends AbstractModelPanel {
             int x1 = ((Double) baseVectorOffsetXSpinner.getValue()).intValue();
             int y1 = (int) sprite.getBaseVectorOffset().getY();
             sprite.setBaseVectorOffset(new Point(x1, y1), true);
-            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+            MainWindow.getInstance().markWindowForSaving();
         });
         // /
         // / baseVectorOffsetYSpinner
@@ -109,7 +109,7 @@ public abstract class AbstractSpriteModelPanel extends AbstractModelPanel {
             int x1 = (int) sprite.getBaseVectorOffset().getX();
             int y1 = ((Double) baseVectorOffsetYSpinner.getValue()).intValue();
             sprite.setBaseVectorOffset(new Point(x1, y1), true);
-            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+            MainWindow.getInstance().markWindowForSaving();
         });
         // /
         // / baseVectorDisableCheckBox
@@ -122,7 +122,7 @@ public abstract class AbstractSpriteModelPanel extends AbstractModelPanel {
             baseVectorOffsetXSpinner.setEnabled(!disabled);
             baseVectorOffsetYSpinner.setEnabled(!disabled);
             sprite.setBaseVectorDisabled(disabled);
-            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+            MainWindow.getInstance().markWindowForSaving();
         });
         // /
         // / activationVectorWidthSpinner
@@ -143,7 +143,7 @@ public abstract class AbstractSpriteModelPanel extends AbstractModelPanel {
             boardVector.addPoint(0, height1);
             boardVector.setClosed(true);
             sprite.setActivationVector(boardVector, true);
-            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+            MainWindow.getInstance().markWindowForSaving();
         });
         // /
         // / baseVectorHeightSpinner
@@ -164,7 +164,7 @@ public abstract class AbstractSpriteModelPanel extends AbstractModelPanel {
             boardVector.addPoint(0, height1);
             boardVector.setClosed(true);
             sprite.setActivationVector(boardVector, true);
-            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+            MainWindow.getInstance().markWindowForSaving();
         });
         // /
         // / activationVectorOffsetXSpinner
@@ -177,7 +177,7 @@ public abstract class AbstractSpriteModelPanel extends AbstractModelPanel {
             int x1 = ((Double) activationVectorOffsetXSpinner.getValue()).intValue();
             int y1 = (int) sprite.getActivationVectorOffset().getY();
             sprite.setActivationVectorOffset(new Point(x1, y1), true);
-            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+            MainWindow.getInstance().markWindowForSaving();
         });
         // /
         // / activationVectorOffsetYSpinner
@@ -190,7 +190,7 @@ public abstract class AbstractSpriteModelPanel extends AbstractModelPanel {
             int x1 = (int) sprite.getActivationVectorOffset().getX();
             int y1 = ((Double) activationVectorOffsetYSpinner.getValue()).intValue();
             sprite.setActivationVectorOffset(new Point(x1, y1), true);
-            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+            MainWindow.getInstance().markWindowForSaving();
         });
         // /
         // / baseVectorDisableCheckBox
@@ -203,7 +203,7 @@ public abstract class AbstractSpriteModelPanel extends AbstractModelPanel {
             activationVectorOffsetXSpinner.setEnabled(!disabled);
             activationVectorOffsetYSpinner.setEnabled(!disabled);
             sprite.setActivationVectorDisabled(disabled);
-            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+            MainWindow.getInstance().markWindowForSaving();
         });
         // /
         // / this

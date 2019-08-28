@@ -84,24 +84,24 @@ public final class BoardSpritePanel extends BoardModelPanel {
             @Override
             public void changedUpdate(DocumentEvent e) {
                 updateSpriteId();
-                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+                MainWindow.getInstance().markWindowForSaving();
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
                 updateSpriteId();
-                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+                MainWindow.getInstance().markWindowForSaving();
             }
 
             @Override
             public void insertUpdate(DocumentEvent e) {
                 updateSpriteId();
-                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+                MainWindow.getInstance().markWindowForSaving();
             }
 
             private void updateSpriteId() {
                 ((BoardSprite) model).setId(idField.getText());
-                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+                MainWindow.getInstance().markWindowForSaving();
             }
         });
         ///
@@ -117,7 +117,7 @@ public final class BoardSpritePanel extends BoardModelPanel {
                 String newProgram = dialog.getNewValue();
                 if (newProgram != null) {
                     boardSprite.setEventProgram(newProgram);
-                    MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+                    MainWindow.getInstance().markWindowForSaving();
                 }
             } catch (Exception ex) {
                 LOGGER.error("Caught exception while setting new event!", ex);
@@ -132,7 +132,7 @@ public final class BoardSpritePanel extends BoardModelPanel {
         threadComboBox.addActionListener((ActionEvent e) -> {
             if (threadComboBox.getSelectedItem() != null) {
                 boardSprite.setThread((String) threadComboBox.getSelectedItem());
-                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+                MainWindow.getInstance().markWindowForSaving();
             }
         });
         ///
@@ -194,7 +194,7 @@ public final class BoardSpritePanel extends BoardModelPanel {
         }
         keyComboBox.addActionListener((ActionEvent e) -> {
             ((BoardSprite) model).setActivationKey(keyComboBox.getSelectedItem().toString());
-            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+            MainWindow.getInstance().markWindowForSaving();
         });
         ///
         /// typeComboBox
@@ -206,11 +206,11 @@ public final class BoardSpritePanel extends BoardModelPanel {
 
             if (selected.equalsIgnoreCase(EventType.OVERLAP.toString())) {
                 boardSprite.setEventType(EventType.OVERLAP);
-                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+                MainWindow.getInstance().markWindowForSaving();
                 keyComboBox.setEnabled(false);
             } else if (selected.equalsIgnoreCase(EventType.KEYPRESS.toString())) {
                 boardSprite.setEventType(EventType.KEYPRESS);
-                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+                MainWindow.getInstance().markWindowForSaving();
                 keyComboBox.setEnabled(true);
             }
         });
@@ -234,7 +234,7 @@ public final class BoardSpritePanel extends BoardModelPanel {
             BoardSprite sprite = (BoardSprite) e.getSource();
             xSpinner.setValue(sprite.getX());
             ySpinner.setValue(sprite.getY());
-            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+            MainWindow.getInstance().markWindowForSaving();
         }
     }
 

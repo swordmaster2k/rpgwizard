@@ -8,7 +8,6 @@
 package org.rpgwizard.editor.editors.board.panels;
 
 import java.awt.GridBagLayout;
-import org.rpgwizard.editor.ui.AbstractModelPanel;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import javax.swing.JComboBox;
@@ -20,6 +19,7 @@ import javax.swing.event.DocumentListener;
 import org.rpgwizard.common.assets.Board;
 import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.editor.MainWindow;
+import org.rpgwizard.editor.ui.AbstractModelPanel;
 import org.rpgwizard.editor.utilities.GuiHelper;
 
 /**
@@ -48,19 +48,19 @@ public final class BoardPanel extends AbstractModelPanel {
             @Override
             public void changedUpdate(DocumentEvent e) {
                 board.setDescription(descriptionField.getText());
-                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+                MainWindow.getInstance().markWindowForSaving();
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
                 board.setDescription(descriptionField.getText());
-                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+                MainWindow.getInstance().markWindowForSaving();
             }
 
             @Override
             public void insertUpdate(DocumentEvent e) {
                 board.setDescription(descriptionField.getText());
-                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+                MainWindow.getInstance().markWindowForSaving();
             }
         });
         // /
@@ -69,7 +69,7 @@ public final class BoardPanel extends AbstractModelPanel {
         widthSpinner = getJSpinner(board.getWidth());
         widthSpinner.setEnabled(false);
         widthSpinner.addChangeListener((ChangeEvent e) -> {
-            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+            MainWindow.getInstance().markWindowForSaving();
         });
         // /
         // / heightSpinner
@@ -77,7 +77,7 @@ public final class BoardPanel extends AbstractModelPanel {
         heightSpinner = getJSpinner(board.getHeight());
         heightSpinner.setEnabled(false);
         heightSpinner.addChangeListener((ChangeEvent e) -> {
-            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+            MainWindow.getInstance().markWindowForSaving();
         });
         // /
         // / musicTextField
@@ -89,7 +89,7 @@ public final class BoardPanel extends AbstractModelPanel {
         musicFileComboBox.setSelectedItem(board.getBackgroundMusic());
         musicFileComboBox.addActionListener((ActionEvent e) -> {
             board.setBackgroundMusic((String) musicFileComboBox.getSelectedItem());
-            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+            MainWindow.getInstance().markWindowForSaving();
         });
         // /
         // / entryProgramComboBox
@@ -101,7 +101,7 @@ public final class BoardPanel extends AbstractModelPanel {
         entryProgramComboBox.setSelectedItem(board.getFirstRunProgram());
         entryProgramComboBox.addActionListener((ActionEvent e) -> {
             board.setFirstRunProgram((String) entryProgramComboBox.getSelectedItem());
-            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+            MainWindow.getInstance().markWindowForSaving();
         });
         // /
         // / this

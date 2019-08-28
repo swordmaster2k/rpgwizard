@@ -361,6 +361,10 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         return activeProject;
     }
 
+    public void setActiveProject(Project project) {
+        this.activeProject = project;
+    }
+
     public TileSelectionListener getTileSetSelectionListener() {
         return tileSetSelectionListener;
     }
@@ -629,6 +633,15 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         editor.toFront();
         desktopPane.add(editor);
         selectToolkitWindow(editor);
+    }
+
+    /**
+     * If the current window is an AbstractAssetEditorWindow it will be marked as needing saving.
+     */
+    public void markWindowForSaving() {
+        if (this.desktopPane.getSelectedFrame() instanceof AbstractAssetEditorWindow) {
+            ((AbstractAssetEditorWindow) this.desktopPane.getSelectedFrame()).setNeedSave(true);
+        }
     }
 
     public void openAssetEditor(File file) {

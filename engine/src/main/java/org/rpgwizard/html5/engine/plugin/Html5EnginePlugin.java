@@ -16,14 +16,13 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import javax.swing.ProgressMonitor;
 import javax.swing.SwingUtilities;
-import org.rpgwizard.pluginsystem.Engine;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.cef.OS;
 import org.rpgwizard.html5.engine.plugin.browser.EmbeddedBrowser;
+import org.rpgwizard.pluginsystem.Engine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import ro.fortsoft.pf4j.Extension;
 import ro.fortsoft.pf4j.Plugin;
 import ro.fortsoft.pf4j.PluginWrapper;
@@ -159,7 +158,7 @@ public class Html5EnginePlugin extends Plugin {
                         @Override
                         public void windowClosing(WindowEvent e) {
                             EMBEDDED_BROWSER.setVisible(false);
-                            EMBEDDED_BROWSER.getCefBrowser().loadURL("http://www.rpgwizard.org");
+                            EMBEDDED_BROWSER.getCefBrowser().loadURL("http://localhost:8080/loading.html");
                         }
                     });
                 }

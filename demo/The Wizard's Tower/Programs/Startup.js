@@ -13,8 +13,10 @@ var assets = {
   "programs": [
       // Default systems.
       "defaults/gui.js",
+      "defaults/hud.js",
       "defaults/battle.js",
       "defaults/dialog.js",
+      "defaults/weather.js",
       "defaults/inventory.js",
       "defaults/titleScreen.js"
   ]
@@ -70,7 +72,25 @@ rpgcode.loadAssets(assets, function() {
    
       // Increase character walk speed.
       rpgcode.setCharacterSpeed("Hero", 2.0);
-   
+
+      // Setup HUD
+      var config = {
+         life: {
+            image: "life.png",
+            width: 32,
+            height: 32
+         }
+      };
+      hud.show(config, function() {}) ;
+
+      // Setup weather
+      var config = {
+         rain: {
+            sound: "rain.wav"
+         }
+      };
+      weather.show(config, function() {});
+
       rpgcode.endProgram();
    }
 });

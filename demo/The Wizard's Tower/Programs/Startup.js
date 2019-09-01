@@ -15,6 +15,7 @@ var assets = {
       "defaults/gui.js",
       "defaults/battle.js",
       "defaults/dialog.js",
+      "defaults/inventory.js",
       "defaults/titleScreen.js"
   ]
 }
@@ -63,12 +64,12 @@ rpgcode.loadAssets(assets, function() {
       rpgcode.log("Running finish");
    
       // Register the menu key program
-      rpgcode.registerKeyDown("ENTER", function() {
-         rpgcode.runProgram("MenuSystem.js");
+      rpgcode.registerKeyDown("Q", function() {
+         rpgcode.runProgram("ToggleInventory.js");
       }, true);
    
       // Increase character walk speed.
-      rpgcode.setCharacterSpeed("Hero", 1.5);
+      rpgcode.setCharacterSpeed("Hero", 2.0);
    
       rpgcode.endProgram();
    }

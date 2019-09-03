@@ -73,15 +73,7 @@ rpgcode.loadAssets(assets, function() {
       // Increase character walk speed.
       rpgcode.setCharacterSpeed("Hero", 2.0);
 
-      // Setup HUD
-      var config = {
-         life: {
-            image: "life.png",
-            width: 32,
-            height: 32
-         }
-      };
-      hud.show(config, function() {}) ;
+      
 
       // Setup weather
       var config = {
@@ -89,8 +81,19 @@ rpgcode.loadAssets(assets, function() {
             sound: "rain.wav"
          }
       };
-      weather.show(config, function() {});
+      weather.show(config, function() {
+         // Setup HUD after to ensure it appears above
+         // any weather effects
+         var config = {
+            life: {
+               image: "life.png",
+               width: 32,
+               height: 32
+            }
+         };
+         hud.show(config, function() {});
 
-      rpgcode.endProgram();
+         rpgcode.endProgram();
+      });
    }
 });

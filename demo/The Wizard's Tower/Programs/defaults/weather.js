@@ -64,9 +64,14 @@ Weather.prototype.show = function(config, callback) {
    this._loadAssets(config, function() {
       this._callback = callback;
       this._setup(config);
+      callback();
    }.bind(this));
 };
 
+/**
+ * Closes down the weather system, and destroys any canvases. 
+ * Only use this if you want to free up resources.
+ */
 Weather.prototype.close = function() {
    if (this._isRaining) {
       this.rain(false);

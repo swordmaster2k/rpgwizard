@@ -21,18 +21,27 @@ public class RemoveVectorAction extends AbstractAction {
     private final BoardEditor boardEditor;
     private final int x;
     private final int y;
+    private final boolean deleteKey;
 
-    public RemoveVectorAction(BoardEditor boardEditor, int x, int y) {
+    public RemoveVectorAction(BoardEditor boardEditor, int x, int y, boolean deleteKey) {
         this.boardEditor = boardEditor;
         this.x = x;
         this.y = y;
+        this.deleteKey = deleteKey;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        BoardVector result = boardEditor.getBoardView().getCurrentSelectedLayer().getLayer().removeVectorAt(x, y);
+        BoardVector removed;
 
-        if (result == boardEditor.getSelectedObject()) {
+        if (deleteKey && boardEditor.getSelectedObject() instanceof BoardVector) {
+            BoardVector selected = (BoardVector) boardEditor.getSelectedObject();
+            removed = boardEditor.getBoardView().getCurrentSelectedLayer().getLayer().removeVector(selected);
+        } else {
+            removed = boardEditor.getBoardView().getCurrentSelectedLayer().getLayer().removeVectorAt(x, y);
+        }
+
+        if (removed != null && removed == boardEditor.getSelectedObject()) {
             boardEditor.getSelectedObject().setSelectedState(false);
             boardEditor.setSelectedObject(null);
         }

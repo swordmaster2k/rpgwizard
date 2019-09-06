@@ -7,8 +7,6 @@
  */
 package org.rpgwizard.editor.editors;
 
-import org.rpgwizard.editor.editors.board.BoardView2D;
-import org.rpgwizard.editor.editors.board.BoardMouseAdapter;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
@@ -16,20 +14,22 @@ import java.awt.event.KeyListener;
 import java.io.File;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
-import org.rpgwizard.common.assets.Tile;
-import org.rpgwizard.common.assets.Board;
-import org.rpgwizard.editor.editors.board.brush.AbstractBrush;
 import org.rpgwizard.common.Selectable;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.AssetDescriptor;
+import org.rpgwizard.common.assets.Board;
+import org.rpgwizard.common.assets.Tile;
+import org.rpgwizard.common.assets.TileSet;
 import org.rpgwizard.common.assets.board.BoardLayer;
 import org.rpgwizard.common.assets.board.BoardLayerImage;
 import org.rpgwizard.common.assets.board.BoardSprite;
 import org.rpgwizard.common.assets.board.BoardVector;
-import org.rpgwizard.common.assets.TileSet;
 import org.rpgwizard.common.assets.events.BoardChangedEvent;
 import org.rpgwizard.common.assets.listeners.BoardChangeListener;
 import org.rpgwizard.editor.MainWindow;
+import org.rpgwizard.editor.editors.board.BoardMouseAdapter;
+import org.rpgwizard.editor.editors.board.BoardView2D;
+import org.rpgwizard.editor.editors.board.brush.AbstractBrush;
 import org.rpgwizard.editor.editors.board.state.UndoRedoManager;
 import org.rpgwizard.editor.editors.board.state.UndoRedoState;
 import org.rpgwizard.editor.editors.board.state.UndoRedoType;
@@ -495,7 +495,7 @@ public final class BoardEditor extends AbstractAssetEditorWindow
             } else if (selectedObject instanceof BoardVector) {
                 BoardVector boardVector = (BoardVector) selectedObject;
                 Point point = boardVector.getPoints().get(0);
-                RemoveVectorAction action = new RemoveVectorAction(this, point.x, point.y);
+                RemoveVectorAction action = new RemoveVectorAction(this, point.x, point.y, true);
                 action.actionPerformed(null);
             }
         }

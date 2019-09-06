@@ -123,10 +123,11 @@ GUI.prototype.createFrame = function(config) {
       };
 
       var setVisible = function(visible) {
-         if (_visible !== visible) {
+         _visible = visible;
+         if (_visible) {
             draw();
-            rpgcode.canvases[id].render = _visible = visible;
-            Crafty.trigger("Invalidate");
+         } else {
+            rpgcode.clearCanvas(id);
          }
       };
 

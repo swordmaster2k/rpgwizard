@@ -474,6 +474,20 @@ public class BoardLayer implements Cloneable {
     }
 
     /**
+     * Removes the matching vector from the board layer (if any).
+     *
+     * @param vector
+     * @return removed the vector, or null
+     */
+    public BoardVector removeVector(BoardVector vector) {
+        if (vectors.remove(vector)) {
+            board.fireBoardChanged();
+            return vector;
+        }
+        return null;
+    }
+
+    /**
      * Finds a sprite at the coordinates based on a small bounding box around the mouse click.
      *
      * @param x

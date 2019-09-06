@@ -53,7 +53,7 @@ function Weather() {
  *       sound: "rain.wav"
  *    }
  * };
- * weather.show(config, function() {console.log("weather stopped");});
+ * weather.show(config, function() {console.log("weather started");});
  * rpgcode.endProgram();
  * 
  * @param {Object} config

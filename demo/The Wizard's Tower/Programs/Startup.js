@@ -13,8 +13,11 @@ var assets = {
   "programs": [
       // Default systems.
       "defaults/gui.js",
+      "defaults/hud.js",
       "defaults/battle.js",
       "defaults/dialog.js",
+      "defaults/weather.js",
+      "defaults/inventory.js",
       "defaults/titleScreen.js"
   ]
 }
@@ -31,6 +34,15 @@ var introText =
 "And this time is no different, apart from the fact that the girl that is missing is the " +
 "sister of a knight. " + 
 "Without delay he grabs his armour and heads to the tower.....";
+
+var startingItems = [
+   "apple.item",
+   "apple.item",
+   "apple.item",
+   "potion.item",
+   "magic_potion.item",
+   "strength_potion.item"
+];
 
 rpgcode.loadAssets(assets, function() {
    // Configure and show the title screen.
@@ -58,18 +70,53 @@ rpgcode.loadAssets(assets, function() {
       };
       dialog.show(config, finish);
    }
+
+   function setupItems() {
+      if (startingItems.length === 0) {
+         // No more items to add, setup inventory key, and return
+         rpgcode.registerKeyDown("Q", function() {
+            rpgcode.runProgram("ToggleInventory.js");
+         }, true);
+         return;
+      } else {
+         // Keep adding items
+         rpgcode.giveItem(startingItems.pop(), "Hero", setupItems);
+      }
+   }
    
    function finish() {
       rpgcode.log("Running finish");
    
       // Register the menu key program
-      rpgcode.registerKeyDown("ENTER", function() {
-         rpgcode.runProgram("MenuSystem.js");
+      rpgcode.registerKeyDown("Q", function() {
+         rpgcode.runProgram("ToggleInventory.js");
       }, true);
    
       // Increase character walk speed.
-      rpgcode.setCharacterSpeed("Hero", 1.5);
-   
-      rpgcode.endProgram();
+      rpgcode.setCharacterSpeed("Hero", 2.0);
+
+      // Setup weather
+      var config = {
+         rain: {
+            sound: "rain.wav"
+         }
+      };
+      weather.show(config, function() {
+         // Setup HUD after to ensure it appears above
+         // any weather effects
+         var config = {
+            life: {
+               image: "life.png",
+               width: 32,
+               height: 32
+            }
+         };
+         hud.show(config, function() {});
+
+         // Setup starting inventory items
+         setupItems();
+
+         rpgcode.endProgram();
+      });
    }
 });

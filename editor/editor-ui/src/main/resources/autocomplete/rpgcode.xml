@@ -1226,7 +1226,7 @@ dialog.show(config, function() {
 <h3>Example</h3> 
 <pre class="prettyprint"><code>rpgcode.getItem("apple.item", function(item) { rpgcode.log(item);});</code></pre>]]></desc>
         </keyword>
-        <keyword name="rpgcode.getPixel(x, y, canvasId);" type="function" returnType="undefined" definedIn="engine/engine-js/js/rpgcode/rpgcode.js">
+        <keyword name="rpgcode.getPixel(x, y, canvasId);" type="function" returnType="Object" definedIn="engine/engine-js/js/rpgcode/rpgcode.js">
             <desc><![CDATA[<div class="description">
   Gets the pixel ImageData at the (x, y) coordinate on the canvas. 
 </div> 
@@ -1258,9 +1258,13 @@ dialog.show(config, function() {
    </tr> 
   </tbody> 
  </table> 
+</div> 
+<div class="container-returns"> 
+ <h3>Returns:</h3> 
+ <span class="param-type">Object</span> - An ImageData object 
 </div>  
 <h3>Example</h3> 
-<pre class="prettyprint"><code>// Draw a rectangle on the default canvas and render it.rpgcode.setColor(255, 0, 0, 1.0);rpgcode.fillRect(0, 0, 100, 100);rpgcode.renderNow();// Get the red pixel at (50, 50) from the rectangle.var imageData = rpgcode.getPixel(50, 50);rpgcode.log(imageData);</code></pre>]]></desc>
+<pre class="prettyprint"><code>// Draw a rectangle on the default canvas and render it.rpgcode.setColor(255, 0, 0, 1.0);rpgcode.fillRect(0, 0, 100, 100);rpgcode.renderNow();// Get the red pixel at (50, 50) from the rectangle.var imageData = rpgcode.getPixel(50, 50);var rgba = imageData.data;// Show the RGBA values of the pixelalert("R, G, B, A (" + rgba[0] + ", " + rgba[1] + ", " + rgba[2] + ", " + rgba[3] + ")");</code></pre>]]></desc>
         </keyword>
         <keyword name="rpgcode.getRandom(min, max);" type="function" returnType="Number" definedIn="engine/engine-js/js/rpgcode/rpgcode.js">
             <desc><![CDATA[<div class="description">
@@ -2965,6 +2969,77 @@ dialog.show(config, function() {
 </div>  
 <h3>Example</h3> 
 <pre class="prettyprint"><code>// Set the image on the smaller canvas.rpgcode.setImage("life.png", 0, 0, 32, 32, lifeIcon);</code></pre>]]></desc>
+        </keyword>
+        <keyword name="rpgcode.setImagePart(fileName, srcX, srcY, srcWidth, srcHeight, destX, destY, destWidth, destHeight, canvasId);" type="function" returnType="undefined" definedIn="engine/engine-js/js/rpgcode/rpgcode.js">
+            <desc><![CDATA[<div class="description">
+  Sets part of an image on the canvas specified or the default if none. 
+</div> 
+<div class="container-params"> 
+ <h3>Parameters:</h3> 
+ <table class="params"> 
+  <thead> 
+   <tr> 
+    <th>Name</th> 
+    <th>Type</th> 
+    <th class="last">Description</th> 
+   </tr> 
+  </thead> 
+  <tbody> 
+   <tr> 
+    <td class="name"><code>fileName</code></td> 
+    <td class="type"> <span class="param-type">String</span> </td> 
+    <td class="description last">The relative path to the image.</td> 
+   </tr> 
+   <tr> 
+    <td class="name"><code>srcX</code></td> 
+    <td class="type"> <span class="param-type">Number</span> </td> 
+    <td class="description last">The start position x in pixels from the source image.</td> 
+   </tr> 
+   <tr> 
+    <td class="name"><code>srcY</code></td> 
+    <td class="type"> <span class="param-type">Number</span> </td> 
+    <td class="description last">The start position y in pixels from the source image.</td> 
+   </tr> 
+   <tr> 
+    <td class="name"><code>srcWidth</code></td> 
+    <td class="type"> <span class="param-type">Number</span> </td> 
+    <td class="description last">In pixels from the source image.</td> 
+   </tr> 
+   <tr> 
+    <td class="name"><code>srcHeight</code></td> 
+    <td class="type"> <span class="param-type">Number</span> </td> 
+    <td class="description last">In pixels from the source image.</td> 
+   </tr> 
+   <tr> 
+    <td class="name"><code>destX</code></td> 
+    <td class="type"> <span class="param-type">Number</span> </td> 
+    <td class="description last">The start position x in pixels on the destination canvas.</td> 
+   </tr> 
+   <tr> 
+    <td class="name"><code>destY</code></td> 
+    <td class="type"> <span class="param-type">Number</span> </td> 
+    <td class="description last">The start position y in pixels on the destination canvas.</td> 
+   </tr> 
+   <tr> 
+    <td class="name"><code>destWidth</code></td> 
+    <td class="type"> <span class="param-type">Number</span> </td> 
+    <td class="description last">In pixels on the destination canvas.</td> 
+   </tr> 
+   <tr> 
+    <td class="name"><code>destHeight</code></td> 
+    <td class="type"> <span class="param-type">Number</span> </td> 
+    <td class="description last">In pixels on the destination canvas.</td> 
+   </tr> 
+   <tr> 
+    <td class="name"><code>canvasId</code></td> 
+    <td class="type"> <span class="param-type">String</span> </td> 
+    <td class="description last">The ID of the canvas to put the image on.</td> 
+   </tr> 
+  </tbody> 
+ </table> 
+</div>  
+<h3>Example</h3> 
+<pre class="prettyprint"><code>// Set part of the image onto the smaller canvas.rpgcode.setImagePart("objects.png", 64, 0, 16, 16, 8, 8, 16, 16);</code></pre>]]></desc>
         </keyword>
         <keyword name="rpgcode.setPixel(x, y, canvasId);" type="function" returnType="undefined" definedIn="engine/engine-js/js/rpgcode/rpgcode.js">
             <desc><![CDATA[<div class="description">

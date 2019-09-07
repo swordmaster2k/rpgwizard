@@ -68,24 +68,24 @@ public final class BoardLayerImagePanel extends BoardModelPanel {
             @Override
             public void changedUpdate(DocumentEvent e) {
                 updateImageId();
-                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+                MainWindow.getInstance().markWindowForSaving();
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
                 updateImageId();
-                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+                MainWindow.getInstance().markWindowForSaving();
             }
 
             @Override
             public void insertUpdate(DocumentEvent e) {
                 updateImageId();
-                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+                MainWindow.getInstance().markWindowForSaving();
             }
 
             private void updateImageId() {
                 ((BoardLayerImage) model).setId(idField.getText());
-                MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+                MainWindow.getInstance().markWindowForSaving();
             }
         });
         ///
@@ -154,7 +154,7 @@ public final class BoardLayerImagePanel extends BoardModelPanel {
             BoardLayerImage sprite = (BoardLayerImage) e.getSource();
             xSpinner.setValue(sprite.getX());
             ySpinner.setValue(sprite.getY());
-            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+            MainWindow.getInstance().markWindowForSaving();
         }
     }
 }

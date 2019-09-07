@@ -106,7 +106,7 @@ public final class BoardVectorPanel extends BoardModelPanel {
             public void focusLost(FocusEvent e) {
                 if (!((BoardVector) model).getId().equals(idTextField.getText())) {
                     ((BoardVector) model).setId(idTextField.getText());
-                    MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+                    MainWindow.getInstance().markWindowForSaving();
                 }
             }
         });
@@ -152,7 +152,7 @@ public final class BoardVectorPanel extends BoardModelPanel {
             KeyPressEvent event = (KeyPressEvent) ((BoardVector) model).getEvents().get(0);
             event.setKey(keyComboBox.getSelectedItem().toString());
             ((BoardVector) model).getEvents().set(0, event);
-            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+            MainWindow.getInstance().markWindowForSaving();
         });
         ///
         /// eventComboBox
@@ -173,7 +173,7 @@ public final class BoardVectorPanel extends BoardModelPanel {
                 keyComboBox.setEnabled(true);
             }
             ((BoardVector) model).getEvents().set(0, event);
-            MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+            MainWindow.getInstance().markWindowForSaving();
         });
         ///
         /// configureEventButton
@@ -190,7 +190,7 @@ public final class BoardVectorPanel extends BoardModelPanel {
                 if (newProgram != null) {
                     event.setProgram(newProgram);
                     ((BoardVector) model).getEvents().set(0, event);
-                    MainWindow.getInstance().getCurrentBoardEditor().setNeedSave(true);
+                    MainWindow.getInstance().markWindowForSaving();
                 }
             } catch (Exception ex) {
                 LOGGER.error("Caught exception while setting new event!", ex);

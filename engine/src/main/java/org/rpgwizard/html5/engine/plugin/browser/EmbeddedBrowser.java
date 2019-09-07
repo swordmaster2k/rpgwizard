@@ -18,9 +18,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-
 import javax.swing.JFrame;
-
 import org.cef.CefApp;
 import org.cef.CefApp.CefAppState;
 import org.cef.CefClient;
@@ -72,10 +70,12 @@ public final class EmbeddedBrowser extends JFrame {
         cefClient.addLoadHandler(new CefLoadHandler() {
             @Override
             public void onLoadingStateChange(CefBrowser cb, boolean bln, boolean bln1, boolean bln2) {
+                // Not implemented
             }
 
             @Override
             public void onLoadStart(CefBrowser cb, CefFrame cf, CefRequest.TransitionType tt) {
+                // Not implemented
             }
 
             @Override
@@ -118,27 +118,16 @@ public final class EmbeddedBrowser extends JFrame {
             }
         });
 
+        getContentPane().add(browserUI, BorderLayout.CENTER);
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+
+        setTitle(title);
         browserUI.setPreferredSize(new Dimension(width, height));
         if (isFullScreen) {
             setExtendedState(JFrame.MAXIMIZED_BOTH);
         }
-
-        // Try to set the image icon for the JFrame.
-        if (iconFile != null && iconFile.exists()) {
-            try {
-                setIconImage(ImageIO.read(iconFile));
-            } catch (IOException ex) {
-                Logger.getLogger(EmbeddedBrowser.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
-        getContentPane().add(browserUI, BorderLayout.CENTER);
-        setTitle(title);
-        validate();
-        pack();
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        setVisible(true);
+        setFrameIcon(iconFile);
+        bringToFront(true);
     }
 
     public static long getSerialVersionUID() {
@@ -161,15 +150,7 @@ public final class EmbeddedBrowser extends JFrame {
         return browserUI;
     }
 
-    public void display(String url, String projectName, int newWidth, int newHeight, boolean isFullScreen,
-            File iconFile) {
-        getCefBrowser().loadURL(url);
-        setTitle(projectName);
-        getBrowserUI().setPreferredSize(new Dimension(newWidth, newHeight));
-        setSize(new Dimension(newWidth, newHeight));
-        if (isFullScreen) {
-            setExtendedState(JFrame.MAXIMIZED_BOTH);
-        }
+    public void setFrameIcon(File iconFile) {
         // Try to set the image icon for the JFrame.
         if (iconFile != null && iconFile.exists()) {
             try {
@@ -178,17 +159,24 @@ public final class EmbeddedBrowser extends JFrame {
                 Logger.getLogger(EmbeddedBrowser.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        revalidate();
-        pack();
-        setLocationRelativeTo(null);
-        setVisible(true);
-        toFront();
-        requestFocus();
+    }
+
+    public void display(String url, String projectName, int newWidth, int newHeight, boolean isFullScreen,
+            File iconFile) {
+        cefBrowser.loadURL(url);
+        setTitle(projectName);
+        browserUI.setPreferredSize(new Dimension(newWidth, newHeight));
+        setSize(new Dimension(newWidth, newHeight));
+        if (isFullScreen) {
+            setExtendedState(JFrame.MAXIMIZED_BOTH);
+        }
+        setFrameIcon(iconFile);
+        bringToFront(false);
     }
 
     public void conceal() {
         setVisible(false);
-        cefBrowser.loadURL("http://localhost");
+        cefBrowser.loadURL("http://localhost:8080/loading.html");
     }
 
     public void stop() {
@@ -196,6 +184,20 @@ public final class EmbeddedBrowser extends JFrame {
             cefApp.dispose();
         }
         // dispose(); // This crashes everything.
+    }
+
+    private void bringToFront(boolean validate) {
+        if (validate) {
+            validate();
+        } else {
+            revalidate();
+        }
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
+        setAlwaysOnTop(true);
+        toFront();
+        requestFocus();
     }
 
     public static void main(String[] args) throws Exception {
@@ -210,4 +212,5 @@ public final class EmbeddedBrowser extends JFrame {
             });
         });
     }
+
 }

@@ -13,7 +13,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
-
 import org.rpgwizard.common.assets.board.BoardVector;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.editors.BoardEditor;
@@ -245,7 +244,7 @@ public class BoardVectorAreaBrush extends AbstractBrush {
             if (stillDrawing) {
                 finish(point.x, point.y);
             }
-            RemoveVectorAction action = new RemoveVectorAction(boardEditor, point.x, point.y);
+            RemoveVectorAction action = new RemoveVectorAction(boardEditor, point.x, point.y, false);
             action.actionPerformed(null);
         }
     }

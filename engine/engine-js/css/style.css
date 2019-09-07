@@ -3,6 +3,18 @@ body {
     color: white;
 }
 
+#play {
+    background-image: url("../images/animation-play.png");
+    position: fixed;
+    width: 100px;
+    height: 100px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    visibility: visible;
+}
+
 #progress {
     width: 25%;
     height: 30px;

@@ -36,6 +36,7 @@ import org.rpgwizard.common.assets.Board;
 import org.rpgwizard.common.assets.Character;
 import org.rpgwizard.common.assets.Program;
 import org.rpgwizard.common.assets.Project;
+import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 import org.rpgwizard.editor.ui.ImagePanel;
 import org.rpgwizard.editor.ui.resources.Icons;
@@ -107,6 +108,8 @@ public final class ProjectEditor extends AbstractAssetEditorWindow implements In
     public void save() throws Exception {
         save(project);
         setTitle(project.getName());
+        // Update current project instance with any new settings.
+        MainWindow.getInstance().setActiveProject(project);
     }
 
     /**

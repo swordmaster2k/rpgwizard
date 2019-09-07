@@ -49,8 +49,12 @@ if (!String.prototype.padStart) {
     };
 }
 
-async function start() {
+// Don't start the game until the user has interacted with the window
+let play = document.getElementById("play");
+let playGame = async function() {
+    console.info("Starting the game...");
+    play.style.visibility = "hidden";
     await rpgwizard.setup("default.game");
-}
-
-start();
+};
+play.addEventListener("click", playGame, {once: true});
+console.info("Awaiting user input...");

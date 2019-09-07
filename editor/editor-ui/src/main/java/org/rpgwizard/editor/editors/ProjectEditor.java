@@ -21,7 +21,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
@@ -363,8 +362,7 @@ public final class ProjectEditor extends AbstractAssetEditorWindow implements In
             setNeedSave(true);
         });
 
-        customResWidthSpinner = new JSpinner();
-        customResWidthSpinner.setModel(new SpinnerNumberModel(this.project.getResolutionWidth(), 320, 3200, 1));
+        customResWidthSpinner = GuiHelper.getJSpinner(this.project.getResolutionWidth(), 320, 3200, 1);
         customResWidthSpinner.addChangeListener((ChangeEvent e) -> {
             int value = (Integer) customResWidthSpinner.getValue();
             project.setResolutionWidth(value);
@@ -372,8 +370,7 @@ public final class ProjectEditor extends AbstractAssetEditorWindow implements In
         });
         customResWidthSpinner.setEnabled(false);
 
-        customResHeightSpinner = new JSpinner();
-        customResHeightSpinner.setModel(new SpinnerNumberModel(this.project.getResolutionHeight(), 240, 2400, 1));
+        customResHeightSpinner = GuiHelper.getJSpinner(this.project.getResolutionHeight(), 240, 2400, 1);
         customResHeightSpinner.addChangeListener((ChangeEvent e) -> {
             int value = (Integer) customResHeightSpinner.getValue();
             project.setResolutionHeight(value);

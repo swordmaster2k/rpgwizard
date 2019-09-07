@@ -1,23 +1,21 @@
-# Release 1.6.0 - (10/08/2019)
+# Release 1.6.1 - (07/09/2019)
 
 ## New
 
-* #13 - Add a "Link/Warp" Type to Boards for the Editor and Engine
-* #38 - Add RPGcode Functions for dynamically adding/removing layer images
-* #00 - New SpriteSheet Dialog Selection for Animations
-* #00 - Added new vector tool for drawing rectangles
-* #00 - Splash screen on startup while waiting for editor loading
+* #00 - Basic default inventory, HUD, and weather systems have been added
 
 ## Improvements
 
-* #37 - Editor should Auto-Open Last Project
-* #46 - Expand fireRaycast to Accept an Origin Layer
-* #47 - Should be able to Create BoardSprites without Collision and/or Activation Vectors
-* #00 - UX Improved Layout of Property Panels
-* #00 - Performance, improved engine board loading times by introducing an asset cache
+* #00 - Made it possible to skip dialog by pressing "E" while it is typing
+* #00 - All default UI systems now use consistently "E" as their action buttons
 
 ## Fixes
 
-* #50 - Editor should cancel closing if "Cancel" is selected on unsaved files
-* #51 - Setting dimensions in animation editor that exceed image size leads to breakage
-* #00 - Fixed a bug with custom sized brushes and undo/redo
+* #53 - Engine window appearing behind Editor Window on Run
+* #54 - Engine window should ask for user input when first run
+* #55 - Setting new game resolution doesn't work as expected
+* #56 - Not updating UI Base and Activation Vectors values when changed for Sprites
+* #57 - Unable to Maximize or Move Large Windows if the JInternalFrame moves Out of Bounds
+* #58 - BOARD_LINK Cannot read template: java.lang.IllegalArgumentException: URI is not hierarchical
+* #60 - Remove redirect to rpgwizard.org when running engine in the editor
+* #65 - Editor doesn't Correctly Delete Overlapping Vectors

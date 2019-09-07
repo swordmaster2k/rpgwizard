@@ -45,17 +45,7 @@
  <span class="param-type">undefined</span> 
 </div>  
 <h3>Example</h3> 
-<pre class="prettyprint"><code>var config = {
- enemies: ["evil-eye.enemy", "evil-eye.enemy", "evil-eye.enemy" "evil-eye.enemy"],
- characters: ["Hero.character", "Hero.character", "Hero.character", "Hero.character"],
- backgroundImage: "battle-background.png",
- battleMusic: "Battle.ogg",
- itemSoundEffect: "item.ogg"
-}
-battle.show(config, function(result) {
- rpgcode.log("The battle has ended! result.status=" + result.status);
- rpgcode.endProgram();   
-});</code></pre>]]></desc>
+<pre class="prettyprint"><code>var config = { enemies: ["evil-eye.enemy", "evil-eye.enemy", "evil-eye.enemy" "evil-eye.enemy"], characters: ["Hero.character", "Hero.character", "Hero.character", "Hero.character"], backgroundImage: "battle-background.png", battleMusic: "Battle.ogg", itemSoundEffect: "item.ogg"}battle.show(config, function(result) { rpgcode.log("The battle has ended! result.status=" + result.status); rpgcode.endProgram();   });</code></pre>]]></desc>
         </keyword>
         <keyword name="dialog.show(config, callback);" type="function" returnType="undefined" definedIn="demo/The Wizard's Tower/Programs/defaults/dialog.js">
             <desc><![CDATA[<div class="description">
@@ -90,16 +80,77 @@ battle.show(config, function(result) {
  <span class="param-type">undefined</span> 
 </div>  
 <h3>Example</h3> 
-<pre class="prettyprint"><code>var config = {
- position: "CENTER",
- nextMarkerImage: "next_marker.png",
- profileImage: rpgcode.getCharacter().graphics["PROFILE"],
- typingSound: "typing_loop.wav",
- text: "Hello, this text will be wrote to the window like a type-writer."
-};
-dialog.show(config, function() {
- // Dialog has ended, do something else.
-});</code></pre>]]></desc>
+<pre class="prettyprint"><code>var config = { position: "CENTER", nextMarkerImage: "next_marker.png", profileImage: rpgcode.getCharacter().graphics["PROFILE"], typingSound: "typing_loop.wav", text: "Hello, this text will be wrote to the window like a type-writer."};dialog.show(config, function() { // Dialog has ended, do something else.});</code></pre>]]></desc>
+        </keyword>
+        <keyword name="hud.show(config, callback);" type="function" returnType="undefined" definedIn="demo/The Wizard's Tower/Programs/defaults/hud.js">
+            <desc><![CDATA[<div class="description">
+  Shows the default title screen system based the supplied config. 
+</div> 
+<div class="container-params"> 
+ <h3>Parameters:</h3> 
+ <table class="params"> 
+  <thead> 
+   <tr> 
+    <th>Name</th> 
+    <th>Type</th> 
+    <th class="last">Description</th> 
+   </tr> 
+  </thead> 
+  <tbody> 
+   <tr> 
+    <td class="name"><code>config</code></td> 
+    <td class="type"> <span class="param-type">Object</span> </td> 
+    <td class="description last"></td> 
+   </tr> 
+   <tr> 
+    <td class="name"><code>callback</code></td> 
+    <td class="type"> <span class="param-type">Callback</span> </td> 
+    <td class="description last"></td> 
+   </tr> 
+  </tbody> 
+ </table> 
+</div> 
+<div class="container-returns"> 
+ <h3>Returns:</h3> 
+ <span class="param-type">undefined</span> 
+</div>  
+<h3>Example</h3> 
+<pre class="prettyprint"><code>var config = {   life: {      image: "life.png",      width: 32,      height: 32   }};hud.show(config, function() {rpgcode.log("hud closed";});</code></pre>]]></desc>
+        </keyword>
+        <keyword name="inventory.show(config, callback);" type="function" returnType="undefined" definedIn="demo/The Wizard's Tower/Programs/defaults/inventory.js">
+            <desc><![CDATA[<div class="description">
+  Shows the default inventory system based the supplied config. 
+</div> 
+<div class="container-params"> 
+ <h3>Parameters:</h3> 
+ <table class="params"> 
+  <thead> 
+   <tr> 
+    <th>Name</th> 
+    <th>Type</th> 
+    <th class="last">Description</th> 
+   </tr> 
+  </thead> 
+  <tbody> 
+   <tr> 
+    <td class="name"><code>config</code></td> 
+    <td class="type"> <span class="param-type">Object</span> </td> 
+    <td class="description last"></td> 
+   </tr> 
+   <tr> 
+    <td class="name"><code>callback</code></td> 
+    <td class="type"> <span class="param-type">Callback</span> </td> 
+    <td class="description last"></td> 
+   </tr> 
+  </tbody> 
+ </table> 
+</div> 
+<div class="container-returns"> 
+ <h3>Returns:</h3> 
+ <span class="param-type">undefined</span> 
+</div>  
+<h3>Example</h3> 
+<pre class="prettyprint"><code>if (inventory.visible) {   // Close the inventory if it is visible   inventory.close();   rpgcode.endProgram();} else {   // Configure and show the inventory.   var config = {      "backgroundImage": "startscreen.png",       "inventoryMusic": "intro.ogg"   };   inventory.show(config, function() {      rpgcode.endProgram();   });}</code></pre>]]></desc>
         </keyword>
         <keyword name="rpgcode.addLayerImage(image, layer);" type="function" returnType="undefined" definedIn="engine/engine-js/js/rpgcode/rpgcode.js">
             <desc><![CDATA[<div class="description">
@@ -3484,18 +3535,57 @@ dialog.show(config, function() {
  <span class="param-type">undefined</span> 
 </div>  
 <h3>Example</h3> 
+<pre class="prettyprint"><code>var config = { "backgroundImage": "startscreen.png",  "titleScreenMusic": "intro.ogg"};titleScreen.show(config, function() { // Show the intro when the user has passed the title screen. if (playIntro) {     showIntro(); } else {     finish(); }}); </code></pre>]]></desc>
+        </keyword>
+        <keyword name="weather.close();" type="function" returnType="undefined" definedIn="demo/The Wizard's Tower/Programs/defaults/weather.js">
+            <desc><![CDATA[<div class="description">
+  Closes down the weather system, and destroys any canvases. Only use this if you want to free up resources. 
+</div> 
+<div class="container-returns"> 
+ <h3>Returns:</h3> 
+ <span class="param-type">undefined</span> 
+</div>]]></desc>
+        </keyword>
+        <keyword name="weather.show(config, callback);" type="function" returnType="undefined" definedIn="demo/The Wizard's Tower/Programs/defaults/weather.js">
+            <desc><![CDATA[<div class="description">
+  Shows the weather system based the supplied config. 
+</div> 
+<div class="container-params"> 
+ <h3>Parameters:</h3> 
+ <table class="params"> 
+  <thead> 
+   <tr> 
+    <th>Name</th> 
+    <th>Type</th> 
+    <th class="last">Description</th> 
+   </tr> 
+  </thead> 
+  <tbody> 
+   <tr> 
+    <td class="name"><code>config</code></td> 
+    <td class="type"> <span class="param-type">Object</span> </td> 
+    <td class="description last"></td> 
+   </tr> 
+   <tr> 
+    <td class="name"><code>callback</code></td> 
+    <td class="type"> <span class="param-type">Callback</span> </td> 
+    <td class="description last"></td> 
+   </tr> 
+  </tbody> 
+ </table> 
+</div> 
+<div class="container-returns"> 
+ <h3>Returns:</h3> 
+ <span class="param-type">undefined</span> 
+</div>  
+<h3>Example</h3> 
 <pre class="prettyprint"><code>var config = {
- "backgroundImage": "startscreen.png", 
- "titleScreenMusic": "intro.ogg"
+   rain: {
+      sound: "rain.wav"
+   }
 };
-titleScreen.show(config, function() {
- // Show the intro when the user has passed the title screen.
- if (playIntro) {
-     showIntro();
- } else {
-     finish();
- }
-}); </code></pre>]]></desc>
+weather.show(config, function() {console.log("weather started");});
+rpgcode.endProgram();</code></pre>]]></desc>
         </keyword>
     </keywords>
 </api>

@@ -73,6 +73,7 @@ public class AutoCompleteGenerator {
             }
 
             FileUtils.writeStringToFile(new File(OUTPUT + "rpgcode.xml"), toXml(keywords), "UTF-8");
+            FileUtils.copyFile(new File(OUTPUT + "rpgcode.xml"), new File("../editor/editor-ui/src/main/resources/autocomplete/rpgcode.xml"));
         } catch (IOException ex) {
             Logger.getLogger(AutoCompleteGenerator.class.getName()).log(Level.SEVERE, null, ex);
         }

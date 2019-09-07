@@ -22,6 +22,15 @@
 */
 var weather = new Weather();
 
+/**
+ * The builtin weather system.
+ * 
+ * @class
+ * @constructor
+ * 
+ * @returns {Weather}
+ */
+
 function Weather() {
    this._canvasId = "weather.canvas";
 
@@ -71,6 +80,8 @@ Weather.prototype.show = function(config, callback) {
 /**
  * Closes down the weather system, and destroys any canvases. 
  * Only use this if you want to free up resources.
+ * 
+ * @returns {undefined}
  */
 Weather.prototype.close = function() {
    if (this._isRaining) {

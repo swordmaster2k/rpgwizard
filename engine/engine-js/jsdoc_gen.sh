@@ -1,2 +1,3 @@
 npm install jsdoc
-node_modules/.bin/jsdoc -c jsdoc-conf.json js/rpgcode/rpgcode.js "../../demo/The Wizard's Tower/Programs/defaults/dialog.js" "../../demo/The Wizard's Tower/Programs/defaults/battle.js" "../../demo/The Wizard's Tower/Programs/defaults/titleScreen.js"
+node_modules/.bin/jsdoc -c jsdoc-conf.json js/rpgcode/rpgcode.js "../../demo/The Wizard's Tower/Programs/defaults/dialog.js" "../../demo/The Wizard's Tower/Programs/defaults/battle.js" "../../demo/The Wizard's Tower/Programs/defaults/titleScreen.js" "../../demo/The Wizard's Tower/Programs/defaults/weather.js" "../../demo/The Wizard's Tower/Programs/defaults/inventory.js" "../../demo/The Wizard's Tower/Programs/defaults/hud.js"
+cp out/{Battle.html,Dialog.html,Inventory.html,RPGcode.html,TitleScreen.html,Weather.html,HUD.html} ../../documentation/src/main/resources/autocomplete/input/

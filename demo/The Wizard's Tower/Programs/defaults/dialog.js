@@ -3,10 +3,10 @@ var dialog = new Dialog();
 
 /**
  * The builtin dialog window system.
- * 
+ *
  * @class
  * @constructor
- * 
+ *
  * @returns {Dialog}
  */
 function Dialog() {
@@ -14,15 +14,15 @@ function Dialog() {
 }
 
 /**
- * Shows the default dialog window based the supplied config. 
- * 
- * The dialog window can be set to appear at the "TOP", "CENTER", or "BOTTOM" 
- * of the screen. It can also be supplied with an image for the blinking next 
- * marker, a profile image of the speaker, and a typing sound that plays while 
+ * Shows the default dialog window based the supplied config.
+ *
+ * The dialog window can be set to appear at the "TOP", "CENTER", or "BOTTOM"
+ * of the screen. It can also be supplied with an image for the blinking next
+ * marker, a profile image of the speaker, and a typing sound that plays while
  * it is animating.
- *  
+ *
  * Note: The current hardcoded next key is "E".
- * 
+ *
  * @example
  * var config = {
  *  position: "CENTER",
@@ -34,7 +34,7 @@ function Dialog() {
  * dialog.show(config, function() {
  *  // Dialog has ended, do something else.
  * });
- * 
+ *
  * @param {Object} config
  * @param {Callback} callback
  * @returns {undefined}
@@ -94,6 +94,7 @@ Dialog.prototype._setup = function(config) {
    this.maxLines = 3;
    this.nextMarkerImage = config.nextMarkerImage;
    this.typingSound = "dialog.typingSound";
+   this.skipMode = false
 
    this.padding = {
       x: 0,
@@ -184,9 +185,13 @@ Dialog.prototype._printCharacters = function(characters, callback) {
    dialog._cursorX += rpgcode.measureText(character).width;
 
    if (characters.length) {
-      rpgcode.delay(dialog.characterDelay, function() {
+      if (dialog.skipMode) {
          dialog._printCharacters(characters, callback);
-      });
+      } else {
+         rpgcode.delay(dialog.characterDelay, function () {
+            dialog._printCharacters(characters, callback);
+         });
+      }
    } else {
       callback();
    }
@@ -196,11 +201,16 @@ Dialog.prototype._printLines = function(lines, callback) {
    rpgcode.font = gui.getFont();
    gui.prepareTextColor();
 
+   rpgcode.registerKeyDown(dialog.advancementKey, function () {
+      dialog.skipMode = true;
+   }, false);
+
    var line = lines.shift();
    this._printCharacters(line.split(""), function() {
       if (lines.length) {
          dialog._currentLines++;
          if (dialog._currentLines > dialog.maxLines) {
+            dialog.skipMode = false;
             dialog._stopTypingSound();
             dialog._blink = true;
             dialog._blinkNextMarker();

@@ -35,6 +35,15 @@ var introText =
 "sister of a knight. " + 
 "Without delay he grabs his armour and heads to the tower.....";
 
+var startingItems = [
+   "apple.item",
+   "apple.item",
+   "apple.item",
+   "potion.item",
+   "magic_potion.item",
+   "strength_potion.item"
+];
+
 rpgcode.loadAssets(assets, function() {
    // Configure and show the title screen.
    var config = {
@@ -61,6 +70,19 @@ rpgcode.loadAssets(assets, function() {
       };
       dialog.show(config, finish);
    }
+
+   function setupItems() {
+      if (startingItems.length === 0) {
+         // No more items to add, setup inventory key, and return
+         rpgcode.registerKeyDown("Q", function() {
+            rpgcode.runProgram("ToggleInventory.js");
+         }, true);
+         return;
+      } else {
+         // Keep adding items
+         rpgcode.giveItem(startingItems.pop(), "Hero", setupItems);
+      }
+   }
    
    function finish() {
       rpgcode.log("Running finish");
@@ -72,8 +94,6 @@ rpgcode.loadAssets(assets, function() {
    
       // Increase character walk speed.
       rpgcode.setCharacterSpeed("Hero", 2.0);
-
-      
 
       // Setup weather
       var config = {
@@ -92,6 +112,9 @@ rpgcode.loadAssets(assets, function() {
             }
          };
          hud.show(config, function() {});
+
+         // Setup starting inventory items
+         setupItems();
 
          rpgcode.endProgram();
       });

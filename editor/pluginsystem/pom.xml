@@ -14,7 +14,7 @@
     <name>RPGWizard Editor Plugin System</name>
     
     <properties>
-        <jetty.version>9.4.14.v20181114</jetty.version>
+        <jetty.version>9.4.17.v20190418</jetty.version>
     </properties>
     
     <dependencies>

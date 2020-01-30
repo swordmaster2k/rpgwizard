@@ -127,7 +127,7 @@ public final class BoardSpritePanel extends BoardModelPanel {
         /// multiTaskingTextField
         ///
         threadComboBox = GuiHelper.getFileListJComboBox(new File[] { EditorFileManager.getFullPath(Program.class) },
-                exts, true);
+                EditorFileManager.getTypeExtensions(Program.class), true);
         threadComboBox.setSelectedItem(boardSprite.getThread());
         threadComboBox.addActionListener((ActionEvent e) -> {
             if (threadComboBox.getSelectedItem() != null) {

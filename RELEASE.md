@@ -1,5 +1,9 @@
 # Release 1.6.1 - (07/09/2019)
 
+## Download
+* [Windows Download](http://rpgwizard.org/assets/downloads/rpgwizard-1.6.1-windows.zip)
+* [Linux Download](http://rpgwizard.org/assets/downloads/rpgwizard-1.6.1-linux.tar.gz)
+
 ## New
 
 * #00 - Basic default inventory, HUD, and weather systems have been added

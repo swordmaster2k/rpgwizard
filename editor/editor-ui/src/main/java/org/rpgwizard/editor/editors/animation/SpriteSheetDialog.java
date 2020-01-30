@@ -133,6 +133,20 @@ public final class SpriteSheetDialog extends JDialog {
 
     public void display() throws IOException {
         spriteSheetImagePanel.init();
+
+        int tileWidth, tileHeight, width, height;
+        tileWidth = tileHeight = width = height = 16;
+        if (spriteSheetImagePanel.getSpriteSheetImage() != null) {
+            tileWidth = spriteSheetImagePanel.getTileWidth();
+            tileHeight = spriteSheetImagePanel.getTileHeight();
+            width = spriteSheetImagePanel.getSpriteSheetImage().getWidth(null);
+            height = spriteSheetImagePanel.getSpriteSheetImage().getHeight(null);
+        }
+        tileWidthSpinner.setModel(new SpinnerNumberModel(tileWidth, 16, width, 1));
+        tileWidthSpinner.setValue(tileWidth);
+        tileHeightSpinner.setModel(new SpinnerNumberModel(tileHeight, 16, height, 1));
+        tileHeightSpinner.setValue(tileHeight);
+
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowActivated(WindowEvent e) {

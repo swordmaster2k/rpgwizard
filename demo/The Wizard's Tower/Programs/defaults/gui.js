@@ -92,6 +92,14 @@ GUI.prototype.removeGradient = function() {
    rpgcode.gradient = null;
 };
 
+GUI.prototype.scale = function(value) {
+   return value * rpgcode.getScale();
+};
+
+GUI.prototype.descale = function(value) {
+   return Math.round(value / rpgcode.getScale());
+};
+
 GUI.prototype.createFrame = function(config) {
    var frame = (function() {
       var _visible = false;
@@ -380,7 +388,7 @@ GUI.prototype.createFrame = function(config) {
          }
          gui.prepareGridBorderColor();
          rpgcode.drawRect(cell.x, cell.y, cell.width, cell.height, cell.lineWidth, id);
-      }
+      };
 
       var _drawGridSelection = function() {
          gui.prepareSelectionColor();
@@ -393,7 +401,7 @@ GUI.prototype.createFrame = function(config) {
          var width = _grid.cellWidth;
          var height = _grid.cellHeight;
          rpgcode.fillRect(x, y, width, height, id);
-      }
+      };
 
       return {
          id: id,

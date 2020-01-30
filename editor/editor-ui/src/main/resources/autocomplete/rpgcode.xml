@@ -1474,14 +1474,14 @@
         </keyword>
         <keyword name="rpgcode.getViewport();" type="function" returnType="Object" definedIn="engine/engine-js/js/rpgcode/rpgcode.js">
             <desc><![CDATA[<div class="description">
-  Gets the viewport object, this is useful for calculating the position of characters or sprites on the board relative to the RPGcode screen. The viewport contains the (x, y) values of the upper left corner of screen relative to a board's (x, y). It also returns the width and height of the viewport. 
+  Gets the viewport object, this is useful for calculating the position of characters or sprites on the board relative to the RPGcode screen. The viewport contains the (x, y) values of the upper left corner of screen relative to a board's (x, y). It also returns the width and height of the viewport, and the current visual offset (x, y) of the board and viewport. 
 </div> 
 <div class="container-returns"> 
  <h3>Returns:</h3> 
  <span class="param-type">Object</span> 
 </div>  
 <h3>Example</h3> 
-<pre class="prettyprint"><code>var viewport = rpgcode.getViewport();rpgcode.log(viewport.x);rpgcode.log(viewport.y);rpgcode.log(viewport.width);rpgcode.log(viewport.height);</code></pre>]]></desc>
+<pre class="prettyprint"><code>var viewport = rpgcode.getViewport();rpgcode.log(viewport.x);rpgcode.log(viewport.y);rpgcode.log(viewport.width);rpgcode.log(viewport.height);rpgcode.log(viewport.offsetX);rpgcode.log(viewport.offsetY);</code></pre>]]></desc>
         </keyword>
         <keyword name="rpgcode.giveItem(filename, characterId, callback);" type="function" returnType="undefined" definedIn="engine/engine-js/js/rpgcode/rpgcode.js">
             <desc><![CDATA[<div class="description">
@@ -2765,22 +2765,22 @@
   <tbody> 
    <tr> 
     <td class="name"><code>r</code></td> 
-    <td class="type"> <span class="param-type">number</span> </td> 
+    <td class="type"> <span class="param-type">Number</span> </td> 
     <td class="description last"></td> 
    </tr> 
    <tr> 
     <td class="name"><code>g</code></td> 
-    <td class="type"> <span class="param-type">number</span> </td> 
+    <td class="type"> <span class="param-type">Number</span> </td> 
     <td class="description last"></td> 
    </tr> 
    <tr> 
     <td class="name"><code>b</code></td> 
-    <td class="type"> <span class="param-type">number</span> </td> 
+    <td class="type"> <span class="param-type">Number</span> </td> 
     <td class="description last"></td> 
    </tr> 
    <tr> 
     <td class="name"><code>a</code></td> 
-    <td class="type"> <span class="param-type">number</span> </td> 
+    <td class="type"> <span class="param-type">Number</span> </td> 
     <td class="description last"></td> 
    </tr> 
   </tbody> 
@@ -2910,6 +2910,37 @@
 </div>  
 <h3>Example</h3> 
 <pre class="prettyprint"><code>rpgcode.setDialogPosition(rpgcode.dialogPosition.NORTH);rpgcode.showDialog("Hello north!");rpgcode.delay(5000, function() { rpgcode.clearDialog(); rpcode.setDialogPosition(rpgcode.dialogPosition.SOUTH); rpgcode.showDialog("Hello south!");});</code></pre>]]></desc>
+        </keyword>
+        <keyword name="rpgcode.setFont(size, family);" type="function" returnType="undefined" definedIn="engine/engine-js/js/rpgcode/rpgcode.js">
+            <desc><![CDATA[<div class="description">
+  Sets the engine font to the specified size, and font family. 
+</div> 
+<div class="container-params"> 
+ <h3>Parameters:</h3> 
+ <table class="params"> 
+  <thead> 
+   <tr> 
+    <th>Name</th> 
+    <th>Type</th> 
+    <th class="last">Description</th> 
+   </tr> 
+  </thead> 
+  <tbody> 
+   <tr> 
+    <td class="name"><code>size</code></td> 
+    <td class="type"> <span class="param-type">Number</span> </td> 
+    <td class="description last">in pixels</td> 
+   </tr> 
+   <tr> 
+    <td class="name"><code>family</code></td> 
+    <td class="type"> <span class="param-type">String</span> </td> 
+    <td class="description last">E.g. Arial, Comic Sans, etc.</td> 
+   </tr> 
+  </tbody> 
+ </table> 
+</div>  
+<h3>Example</h3> 
+<pre class="prettyprint"><code>// Set the global font to 8px Lucida Consolerpgcode.setFont(8, family);  </code></pre>]]></desc>
         </keyword>
         <keyword name="rpgcode.setGlobal(id, value);" type="function" returnType="undefined" definedIn="engine/engine-js/js/rpgcode/rpgcode.js">
             <desc><![CDATA[<div class="description">

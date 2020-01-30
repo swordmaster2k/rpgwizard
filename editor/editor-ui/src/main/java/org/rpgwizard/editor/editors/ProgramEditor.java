@@ -19,6 +19,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import org.fife.rsta.ac.LanguageSupportFactory;
 import org.fife.rsta.ac.js.JavaScriptLanguageSupport;
+import org.fife.rsta.ac.js.JsErrorParser;
 import org.fife.rsta.ui.search.SearchEvent;
 import org.fife.rsta.ui.search.SearchListener;
 import org.fife.ui.autocomplete.AutoCompletion;
@@ -93,6 +94,9 @@ public final class ProgramEditor extends AbstractAssetEditorWindow implements Se
         LanguageSupportFactory languageFactory = LanguageSupportFactory.get();
         JavaScriptLanguageSupport languageSupport = (JavaScriptLanguageSupport) languageFactory
                 .getSupportFor(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
+        languageSupport.setLanguageVersion(200); // https://github.com/mozilla/rhino/blob/bee350c9c0559dcbce0715d506d41d9cd95994cd/src/org/mozilla/javascript/Context.java#L131
+        languageSupport.setErrorParser(JsErrorParser.JSHINT);
+        languageSupport.setDefaultJsHintRCFile(new File("D:/Desktop/.jshintrc"));
         languageSupport.setAutoActivationEnabled(true);
 
         String code = program.getProgramBuffer().toString();

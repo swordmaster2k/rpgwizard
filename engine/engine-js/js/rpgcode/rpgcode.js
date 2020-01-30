@@ -66,6 +66,17 @@ function RPGcode() {
      * @type {Number}
      */
     this.globalAlpha = 1.0;
+    /**
+     * Controls whether or not all drawing operations will be scaled in fullscreen
+     * mode, default setting is true.
+     * 
+     * @example 
+     * // Turn global scaling of on all drawing operations
+     * rpgcode.scale = false;
+     * 
+     * @type {Boolean}
+     */
+    this.scale = true;
     this.imageSmoothingEnabled = false;
 
     this.dialogPosition = {
@@ -439,6 +450,11 @@ RPGcode.prototype.createCanvas = function (width, height, canvasId) {
     var canvas = document.createElement("canvas");
     canvas.width = width;
     canvas.height = height;
+    // Scale parameters
+    if (rpgcode.scale) {
+        canvas.width *= rpgcode.getScale();
+        canvas.height *= rpgcode.getScale();
+    }
     rpgcode.canvases[canvasId] = {
         canvas: canvas,
         render: false,
@@ -529,6 +545,13 @@ RPGcode.prototype.drawCircle = function (x, y, radius, canvasId) {
 
     var instance = rpgcode.canvases[canvasId];
     if (instance) {
+        // Scale parameters
+        if (rpgcode.scale) {
+            x *= rpgcode.getScale();
+            y *= rpgcode.getScale();
+            radius *= rpgcode.getScale();
+        }
+
         var context = instance.canvas.getContext("2d");
         context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
         var rgba = rpgcode.rgba;
@@ -565,6 +588,15 @@ RPGcode.prototype.drawLine = function (x1, y1, x2, y2, lineWidth, canvasId) {
 
     var instance = rpgcode.canvases[canvasId];
     if (instance) {
+        // Scale parameters
+        if (rpgcode.scale) {
+            x1 *= rpgcode.getScale();
+            y2 *= rpgcode.getScale();
+            x2 *= rpgcode.getScale();
+            y2 *= rpgcode.getScale();
+            lineWidth *= rpgcode.getScale();
+        }
+
         var context = instance.canvas.getContext("2d");
         context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
         var rgba = rpgcode.rgba;
@@ -625,6 +657,14 @@ RPGcode.prototype.drawOntoCanvas = function (sourceId, x, y, width, height, targ
     var target = rpgcode.canvases[targetId];
 
     if (source && target) {
+        // Scale parameters
+        if (rpgcode.scale) {
+            x *= rpgcode.getScale();
+            y *= rpgcode.getScale();
+            width *= rpgcode.getScale();
+            height *= rpgcode.getScale();
+        }
+
         var sourceCanvas = source.canvas;
         var targetContext = target.canvas.getContext("2d");
         targetContext.drawImage(sourceCanvas, x, y, width, height);
@@ -656,6 +696,15 @@ RPGcode.prototype.drawRect = function (x, y, width, height, lineWidth, canvasId)
 
     var instance = rpgcode.canvases[canvasId];
     if (instance) {
+        // Scale parameters
+        if (rpgcode.scale) {
+            x *= rpgcode.getScale();
+            y *= rpgcode.getScale();
+            width *= rpgcode.getScale();
+            height *= rpgcode.getScale();
+            lineWidth *= rpgcode.getScale();
+        }
+
         var context = instance.canvas.getContext("2d");
         context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
         var rgba = rpgcode.rgba;
@@ -692,6 +741,16 @@ RPGcode.prototype.drawRoundedRect = function (x, y, width, height, lineWidth, ra
 
     var instance = rpgcode.canvases[canvasId];
     if (instance) {
+        // Scale parameters
+        if (rpgcode.scale) {
+            x *= rpgcode.getScale();
+            y *= rpgcode.getScale();
+            width *= rpgcode.getScale();
+            height *= rpgcode.getScale();
+            lineWidth *= rpgcode.getScale();
+            radius *= rpgcode.getScale();
+        }
+
         var context = instance.canvas.getContext("2d");
         context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
         var rgba = rpgcode.rgba;
@@ -740,6 +799,12 @@ RPGcode.prototype.drawText = function (x, y, text, canvasId) {
 
     var instance = rpgcode.canvases[canvasId];
     if (instance) {
+        // Scale parameters
+        if (rpgcode.scale) {
+            x *= rpgcode.getScale();
+            y *= rpgcode.getScale();
+        }
+
         var context = instance.canvas.getContext("2d");
         context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
         var rgba = rpgcode.rgba;
@@ -795,6 +860,13 @@ RPGcode.prototype.fillCircle = function (x, y, radius, canvasId) {
 
     var instance = rpgcode.canvases[canvasId];
     if (instance) {
+        // Scale parameters
+        if (rpgcode.scale) {
+            x *= rpgcode.getScale();
+            y *= rpgcode.getScale();
+            radius *= rpgcode.getScale();
+        }
+
         var context = instance.canvas.getContext("2d");
         context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
         var rgba = rpgcode.rgba;
@@ -830,6 +902,14 @@ RPGcode.prototype.fillRect = function (x, y, width, height, canvasId) {
 
     var instance = rpgcode.canvases[canvasId];
     if (instance) {
+        // Scale parameters
+        if (rpgcode.scale) {
+            x *= rpgcode.getScale();
+            y *= rpgcode.getScale();
+            width *= rpgcode.getScale();
+            height *= rpgcode.getScale();
+        }
+
         var context = instance.canvas.getContext("2d");
         context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
         var rgba = rpgcode.rgba;
@@ -864,6 +944,15 @@ RPGcode.prototype.fillRoundedRect = function (x, y, width, height, radius, canva
 
     var instance = rpgcode.canvases[canvasId];
     if (instance) {
+        // Scale parameters
+        if (rpgcode.scale) {
+            x *= rpgcode.getScale();
+            y *= rpgcode.getScale();
+            width *= rpgcode.getScale();
+            height *= rpgcode.getScale();
+            radius *= rpgcode.getScale();
+        }
+
         var context = instance.canvas.getContext("2d");
         context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
         var rgba = rpgcode.rgba;
@@ -1146,6 +1235,12 @@ RPGcode.prototype.getPixel = function (x, y, canvasId) {
     if (!canvasId) {
         canvasId = "renderNowCanvas";
     }
+    
+    // Scale parameters
+    if (rpgcode.scale) {
+        x *= rpgcode.getScale();
+        y *= rpgcode.getScale();
+    }
 
     var instance = rpgcode.canvases[canvasId];
     if (instance) {
@@ -1331,7 +1426,7 @@ RPGcode.prototype.getSpriteDirection = function (spriteId) {
  * 
  * The viewport contains the (x, y) values of the upper left corner of screen
  * relative to a board's (x, y). It also returns the width and height of the
- * viewport.
+ * viewport, and the current visual offset (x, y) of the board and viewport.
  * 
  * @example
  * var viewport = rpgcode.getViewport();
@@ -1339,6 +1434,8 @@ RPGcode.prototype.getSpriteDirection = function (spriteId) {
  * rpgcode.log(viewport.y);
  * rpgcode.log(viewport.width);
  * rpgcode.log(viewport.height);
+ * rpgcode.log(viewport.offsetX);
+ * rpgcode.log(viewport.offsetY);
  * 
  * @returns {Object}
  */
@@ -1347,7 +1444,9 @@ RPGcode.prototype.getViewport = function () {
         x: -Crafty.viewport.x,
         y: -Crafty.viewport.y,
         width: Crafty.viewport.width,
-        height: Crafty.viewport.height
+        height: Crafty.viewport.height,
+        offsetX: Math.floor(rpgwizard.craftyBoard.xShift + Crafty.viewport._x),
+        offsetY: Math.floor(rpgwizard.craftyBoard.yShift + Crafty.viewport._y)
     };
 };
 
@@ -2069,7 +2168,7 @@ RPGcode.prototype.removeLayerImage = function (id, layer) {
         for (var i = 0; i < length; i++) {
             var image = boardLayer.images[i];
             if (image.id === id) {
-                boardLayer.images.splice(i, 1); 
+                boardLayer.images.splice(i, 1);
                 break;
             }
         }
@@ -2152,6 +2251,11 @@ RPGcode.prototype.runProgram = function (filename) {
  */
 RPGcode.prototype.setCanvasPosition = function (x, y, canvasId) {
     var rpgcodeCanvas = rpgcode.canvases[canvasId];
+    // Scale parameters
+    if (rpgcode.scale) {
+        x *= rpgcode.getScale();
+        y *= rpgcode.getScale();
+    }
     if (rpgcodeCanvas) {
         rpgcodeCanvas.x = x;
         rpgcodeCanvas.y = y;
@@ -2228,13 +2332,27 @@ RPGcode.prototype.sendToBoard = async function (boardName, tileX, tileY, layer) 
  * // Set the color to red.
  * rpgcode.setColor(255, 0, 0, 1.0);
  * 
- * @param {number} r
- * @param {number} g
- * @param {number} b
- * @param {number} a
+ * @param {Number} r
+ * @param {Number} g
+ * @param {Number} b
+ * @param {Number} a
  */
 RPGcode.prototype.setColor = function (r, g, b, a) {
     rpgcode.rgba = {r: r, g: g, b: b, a: a};
+};
+
+/**
+ * Sets the engine font to the specified size, and font family.
+ *
+ * @example
+ * // Set the global font to 8px Lucida Console
+ * rpgcode.setFont(8, family);
+ *   
+ * @param {Number} size in pixels
+ * @param {String} family E.g. Arial, Comic Sans, etc.
+ */
+RPGcode.prototype.setFont = function (size, family) {
+    rpgcode.font = Math.round(size * rpgcode.getScale()) + "px " + family;
 };
 
 /**
@@ -2289,6 +2407,13 @@ RPGcode.prototype.setImage = function (fileName, x, y, width, height, canvasId) 
     if (!canvasId) {
         canvasId = "renderNowCanvas";
     }
+    // Scale parameters
+    if (rpgcode.scale) {
+        x *= rpgcode.getScale();
+        y *= rpgcode.getScale();
+        width *= rpgcode.getScale();
+        height *= rpgcode.getScale();
+    }
     var instance = rpgcode.canvases[canvasId];
     if (instance) {
         var image = Crafty.asset(Crafty.__paths.images + fileName);
@@ -2327,6 +2452,13 @@ RPGcode.prototype.setImagePart = function (fileName, srcX, srcY, srcWidth, srcHe
     if (!canvasId) {
         canvasId = "renderNowCanvas";
     }
+    // Scale parameters
+    if (rpgcode.scale) {
+        destX *= rpgcode.getScale();
+        destY *= rpgcode.getScale();
+        destWidth *= rpgcode.getScale();
+        destHeight *= rpgcode.getScale();
+    }
     var instance = rpgcode.canvases[canvasId];
     if (instance) {
         var image = Crafty.asset(Crafty.__paths.images + fileName);
@@ -2364,7 +2496,11 @@ RPGcode.prototype.setPixel = function (x, y, canvasId) {
     if (!canvasId) {
         canvasId = "renderNowCanvas";
     }
-
+    // Scale parameters
+    if (rpgcode.scale) {
+        x *= rpgcode.getScale();
+        y *= rpgcode.getScale();
+    }
     var instance = rpgcode.canvases[canvasId];
     if (instance) {
         var context = instance.canvas.getContext("2d");

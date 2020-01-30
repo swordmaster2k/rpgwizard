@@ -18,8 +18,10 @@
     <name>RPGWizard Editor (UI)</name>
     
     <properties>
-        <rsyntaxtextarea.version>3.0.0</rsyntaxtextarea.version>
-        <languagesupport.version>3.0.0</languagesupport.version>
+        <rsyntaxtextarea.version>3.0.4</rsyntaxtextarea.version>
+        <rstaui.version>3.0.2</rstaui.version>
+        <autocomplete.version>3.0.2</autocomplete.version>
+        <languagesupport.version>3.0.1</languagesupport.version>
     </properties>
 
     <dependencies>
@@ -41,12 +43,12 @@
         <dependency>
             <groupId>com.fifesoft</groupId>
             <artifactId>rstaui</artifactId>
-            <version>${rsyntaxtextarea.version}</version>
+            <version>${rstaui.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fifesoft</groupId>
             <artifactId>autocomplete</artifactId>
-            <version>${rsyntaxtextarea.version}</version>
+            <version>${autocomplete.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fifesoft</groupId>
@@ -62,6 +64,11 @@
             <groupId>org.pushingpixels.substance</groupId>
             <artifactId>trident</artifactId>
             <version>${trident.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mozilla</groupId>
+            <artifactId>rhino</artifactId>
+            <version>1.7.11</version>
         </dependency>
     </dependencies>
     

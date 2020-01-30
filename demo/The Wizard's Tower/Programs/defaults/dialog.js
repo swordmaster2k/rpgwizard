@@ -44,7 +44,7 @@ Dialog.prototype.show = function(config, callback) {
       this._setup(config);
       var lines = this._sortLines(config.text);
       if (lines.length > 0) {
-         this._reset(rpgcode.measureText(lines[0]).height);
+         this._reset(gui.descale(rpgcode.measureText(lines[0]).height));
          this._printLines(lines, callback);
          this._playTypingSound();
       } else {
@@ -76,8 +76,6 @@ Dialog.prototype._loadAssets = function(config, callback) {
 };
 
 Dialog.prototype._setup = function(config) {
-   const scale = rpgcode.getScale();
-
    this._nextMarkerCanvas = "dialog.nextMarkerCanvas";
    this._nextMarkerVisible = false;
    this._currentLines = 1;
@@ -94,7 +92,7 @@ Dialog.prototype._setup = function(config) {
    this.maxLines = 3;
    this.nextMarkerImage = config.nextMarkerImage;
    this.typingSound = "dialog.typingSound";
-   this.skipMode = false
+   this.skipMode = false;
 
    this.padding = {
       x: 0,
@@ -106,18 +104,18 @@ Dialog.prototype._setup = function(config) {
    var height = 120;
    var profileWidth = height;
    var profileHeight = height;
-   var x = (rpgcode.getViewport().width / 2) - (width / 2) + (profileWidth / 2);
+   var x = Math.round((gui.descale(rpgcode.getViewport().width) / 2) - (width / 2) + (profileWidth / 2));
    var y = 0;
    switch (config.position ? config.position : "BOTTOM") {
       case "TOP":
          y = 0;
          break;
       case "CENTER":
-         y = Math.floor((rpgcode.getViewport().height) / 2) - Math.floor(height / 2);
+         y = Math.floor((gui.descale(rpgcode.getViewport().height)) / 2) - Math.floor(height / 2);
          break;
       case "BOTTOM":
       default:
-         y = Math.floor(rpgcode.getViewport().height - height);
+         y = Math.floor(gui.descale(rpgcode.getViewport().height) - height);
    }
 
    this.profileFrame = gui.createFrame({
@@ -141,12 +139,12 @@ Dialog.prototype._setup = function(config) {
 
    var image = rpgcode.getImage(this.nextMarkerImage);
    if (image && image.width > 0 && image.height > 0) {
-      var width = image.width * scale;
-      var height = image.height * scale;
-      var x = this.frame.x + (this.frame.width - (width + width / 4));
-      var y = this.frame.y + (this.frame.height - (height + height / 4));
-      rpgcode.createCanvas(width, height, this._nextMarkerCanvas);
-      rpgcode.setCanvasPosition(x, y, this._nextMarkerCanvas);
+      var widthTemp = image.width;
+      var heightTemp = image.height;
+      var xTemp = this.frame.x + (this.frame.width - (widthTemp + widthTemp / 4));
+      var yTemp = this.frame.y + (this.frame.height - (heightTemp + heightTemp / 4));
+      rpgcode.createCanvas(widthTemp, heightTemp, this._nextMarkerCanvas);
+      rpgcode.setCanvasPosition(xTemp, yTemp, this._nextMarkerCanvas);
    }
 };
 
@@ -158,14 +156,14 @@ Dialog.prototype._reset = function(lineHeight) {
 };
 
 Dialog.prototype._sortLines = function(text) {
-   rpgcode.font = gui.getFont();
+   rpgcode.setFont(gui.getFontSize(), gui.getFontFamily());
    var words = text.split(" ");
    var lines = [];
    var line = words[0];
 
    for (var i = 1; i < words.length; i++) {
       var newLine = line + " " + words[i];
-      if (rpgcode.measureText(newLine).width < this.frame.width - 45) {
+      if (gui.descale(rpgcode.measureText(newLine).width) < this.frame.width - 45) {
          line = newLine;
       } else {
          lines.push(line);
@@ -178,17 +176,17 @@ Dialog.prototype._sortLines = function(text) {
 };
 
 Dialog.prototype._printCharacters = function(characters, callback) {
-   rpgcode.font = gui.getFont();
+   rpgcode.setFont(gui.getFontSize(), gui.getFontFamily());
    var character = characters.shift();
    rpgcode.drawText(dialog._cursorX, dialog._cursorY, character, this.frame.id);
    rpgcode.renderNow(this.frame.id);
-   dialog._cursorX += rpgcode.measureText(character).width;
+   dialog._cursorX += gui.descale(rpgcode.measureText(character).width);
 
    if (characters.length) {
       if (dialog.skipMode) {
          dialog._printCharacters(characters, callback);
       } else {
-         rpgcode.delay(dialog.characterDelay, function () {
+         rpgcode.delay(dialog.characterDelay, function() {
             dialog._printCharacters(characters, callback);
          });
       }
@@ -198,10 +196,10 @@ Dialog.prototype._printCharacters = function(characters, callback) {
 };
 
 Dialog.prototype._printLines = function(lines, callback) {
-   rpgcode.font = gui.getFont();
+   rpgcode.setFont(gui.getFontSize(), gui.getFontFamily());
    gui.prepareTextColor();
 
-   rpgcode.registerKeyDown(dialog.advancementKey, function () {
+   rpgcode.registerKeyDown(dialog.advancementKey, function() {
       dialog.skipMode = true;
    }, false);
 
@@ -227,7 +225,7 @@ Dialog.prototype._printLines = function(lines, callback) {
             }
          } else {
             dialog._cursorX = dialog._defaultX + dialog.padding.x;
-            dialog._cursorY += rpgcode.measureText(line).height + dialog.padding.line;
+            dialog._cursorY += gui.descale(rpgcode.measureText(line).height) + dialog.padding.line;
             dialog._printLines(lines, callback);
          }
       } else {
@@ -270,9 +268,8 @@ Dialog.prototype._clearNextMarker = function() {
 Dialog.prototype._drawNextMarker = function() {
    var image = rpgcode.getImage(this.nextMarkerImage);
    if (image && image.width > 0 && image.height > 0) {
-      var scale = rpgcode.getScale();
-      var width = image.width * scale;
-      var height = image.height * scale;
+      var width = image.width;
+      var height = image.height;
       rpgcode.setImage(this.nextMarkerImage, 0, 0, width, height, this._nextMarkerCanvas);
       rpgcode.renderNow(this._nextMarkerCanvas);
       this._nextMarkerVisible = true;
@@ -296,11 +293,11 @@ Dialog.prototype._playTypingSound = function() {
 };
 
 Dialog.prototype._advance = function(lines, callback) {
-   rpgcode.font = this.font;
+   rpgcode.setFont(gui.getFontSize(), gui.getFontFamily());
    dialog._blink = false;
    dialog._clearNextMarker();
    rpgcode.unregisterKeyDown(dialog.advancementKey);
-   dialog._reset(rpgcode.measureText(lines[0]).height);
+   dialog._reset(gui.descale(rpgcode.measureText(lines[0]).height));
    dialog._printLines(lines, callback);
    dialog._playTypingSound();
 };

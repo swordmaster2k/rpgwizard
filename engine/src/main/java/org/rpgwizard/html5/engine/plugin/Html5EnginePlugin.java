@@ -19,13 +19,13 @@ import javax.swing.SwingUtilities;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.cef.OS;
+import org.pf4j.Extension;
+import org.pf4j.Plugin;
+import org.pf4j.PluginWrapper;
 import org.rpgwizard.html5.engine.plugin.browser.EmbeddedBrowser;
 import org.rpgwizard.pluginsystem.Engine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ro.fortsoft.pf4j.Extension;
-import ro.fortsoft.pf4j.Plugin;
-import ro.fortsoft.pf4j.PluginWrapper;
 
 /**
  *
@@ -36,33 +36,31 @@ public class Html5EnginePlugin extends Plugin {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Html5EnginePlugin.class);
 
-    private static final String URL = "http://localhost:8080";
-
-    private static EmbeddedBrowser EMBEDDED_BROWSER;
-    private static Thread ENGINE_THREAD;
-    private static EngineRunnable ENGINE_RUNNABLE;
-    private static File TEMP_PROJECT;
-
     public Html5EnginePlugin(PluginWrapper wrapper) {
         super(wrapper);
     }
 
     @Override
     public void start() {
-
+        LOGGER.info("Starting plugin...");
     }
 
     @Override
     public void stop() {
-
+        LOGGER.info("Stopping plugin...");
     }
 
     @Extension
     public static class Html5Engine implements Engine {
 
-        public Html5Engine() {
+        private static final Logger LOGGER = LoggerFactory.getLogger(Html5Engine.class);
 
-        }
+        private static final String URL = "http://localhost:8080";
+
+        private static EmbeddedBrowser EMBEDDED_BROWSER;
+        private static Thread ENGINE_THREAD;
+        private static EngineRunnable ENGINE_RUNNABLE;
+        private static File TEMP_PROJECT;
 
         @Override
         public File compile(String projectName, File projectCopy, File executionPath, ProgressMonitor progressMonitor,
@@ -164,14 +162,16 @@ public class Html5EnginePlugin extends Plugin {
                 }
             });
         }
+
+        private static void updateProgress(ProgressMonitor progressMonitor, int progress) {
+            if (progressMonitor == null) {
+                return;
+            }
+            SwingUtilities.invokeLater(() -> {
+                progressMonitor.setProgress(progress);
+            });
+        }
+
     }
 
-    private static void updateProgress(ProgressMonitor progressMonitor, int progress) {
-        if (progressMonitor == null) {
-            return;
-        }
-        SwingUtilities.invokeLater(() -> {
-            progressMonitor.setProgress(progress);
-        });
-    }
 }

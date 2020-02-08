@@ -83,7 +83,7 @@ import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.rpgwizard.editor.utilities.FileTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ro.fortsoft.pf4j.PluginManager;
+import org.pf4j.PluginManager;
 
 /**
  * Main UI, holds all Asset editors as InternalFrames. This class deals with opening existing assets and creating new

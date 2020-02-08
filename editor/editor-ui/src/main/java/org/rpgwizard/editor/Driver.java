@@ -47,8 +47,8 @@ import org.rpgwizard.editor.utilities.ProjectUpgrader;
 import org.rpgwizard.pluginsystem.Engine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ro.fortsoft.pf4j.JarPluginManager;
-import ro.fortsoft.pf4j.PluginManager;
+import org.pf4j.JarPluginManager;
+import org.pf4j.PluginManager;
 
 public class Driver {
 
@@ -72,6 +72,7 @@ public class Driver {
         LOGGER.info("Free Memory (bytes): {}", Runtime.getRuntime().freeMemory());
         LOGGER.info("Total Memory (bytes): {}", Runtime.getRuntime().totalMemory());
         LOGGER.info("Max Memory (bytes): {}", Runtime.getRuntime().maxMemory());
+        LOGGER.info("Java Version: {}", System.getProperty("java.version"));
         LOGGER.info("---------------------------------------------------------------------");
     }
 

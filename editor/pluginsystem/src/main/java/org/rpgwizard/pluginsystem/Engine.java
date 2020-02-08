@@ -9,7 +9,7 @@ package org.rpgwizard.pluginsystem;
 
 import java.io.File;
 import javax.swing.ProgressMonitor;
-import ro.fortsoft.pf4j.ExtensionPoint;
+import org.pf4j.ExtensionPoint;
 
 /**
  * A common interface for pluggable engines to implement.

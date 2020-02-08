@@ -17,7 +17,7 @@ import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.pluginsystem.Engine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ro.fortsoft.pf4j.PluginManager;
+import org.pf4j.PluginManager;
 
 /**
  *

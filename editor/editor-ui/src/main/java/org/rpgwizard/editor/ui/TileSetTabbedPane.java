@@ -7,7 +7,6 @@
  */
 package org.rpgwizard.editor.ui;
 
-import org.rpgwizard.editor.MainWindow;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -18,13 +17,14 @@ import javax.swing.JViewport;
 import javax.swing.event.ChangeEvent;
 import org.rpgwizard.common.assets.TileSet;
 import org.rpgwizard.common.utilities.CoreProperties;
+import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.editors.tileset.TileSetCanvas;
 
 /**
  *
  * @author Joshua Michael Daly
  */
-public final class TileSetTabbedPane extends JTabbedPane {
+public final class TileSetTabbedPane extends JClosableTabbedPane {
 
     public TileSetTabbedPane() {
         setFont(new Font(getFont().getFontName(), Font.PLAIN, 10));

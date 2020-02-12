@@ -33,6 +33,7 @@ import org.fife.rsta.ui.search.ReplaceDialog;
 import org.fife.rsta.ui.search.SearchEvent;
 import org.fife.rsta.ui.search.SearchListener;
 import org.fife.ui.rtextarea.SearchContext;
+import org.pf4j.PluginManager;
 import org.rpgwizard.common.assets.Animation;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.AssetException;
@@ -63,6 +64,7 @@ import org.rpgwizard.editor.editors.board.brush.BoardVectorAreaBrush;
 import org.rpgwizard.editor.editors.board.brush.BoardVectorBrush;
 import org.rpgwizard.editor.editors.board.brush.ShapeBrush;
 import org.rpgwizard.editor.editors.board.panels.LayerPanel;
+import org.rpgwizard.editor.editors.program.IssuesTablePanel;
 import org.rpgwizard.editor.editors.tileset.NewTilesetDialog;
 import org.rpgwizard.editor.editors.tileset.TileSetUtil;
 import org.rpgwizard.editor.properties.EditorProperties;
@@ -83,7 +85,6 @@ import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.rpgwizard.editor.utilities.FileTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.pf4j.PluginManager;
 
 /**
  * Main UI, holds all Asset editors as InternalFrames. This class deals with opening existing assets and creating new
@@ -112,6 +113,10 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
     private final JPanel eastPanel;
     private final JTabbedPane eastUpperTabbedPane;
     private final JTabbedPane eastLowerTabbedPane;
+
+    private final JPanel southPanel;
+    private final JTabbedPane southTabbedPane;
+    public final IssuesTablePanel noticesPanel;
 
     private final ProjectPanel projectPanel;
     private final TileSetTabbedPane tileSetPanel;
@@ -142,74 +147,89 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
     private boolean cancelClose;
 
     private MainWindow() {
-        // /
-        // / super
-        // /
+        ///
+        /// super
+        ///
         super(EditorProperties.getProperty(EditorProperty.EDITOR_UI_TITLE));
-        // /
-        // / desktopPane
-        // /
+        ///
+        /// desktopPane
+        ///
         desktopPane = new JDesktopPane();
         desktopPane.setBackground(Color.LIGHT_GRAY);
         desktopPane.setDesktopManager(new ToolkitDesktopManager());
-        // /
-        // / editorMap
-        // /
+        ///
+        /// editorMap
+        ///
         editorMap = new HashMap();
-        // /
-        // / tileSetPanel
-        // /
+        ///
+        /// tileSetPanel
+        ///
         tileSetPanel = new TileSetTabbedPane();
-        // /
-        // / projectPanel
-        // /
+        ///
+        /// projectPanel
+        ///
         projectPanel = new ProjectPanel();
-        // /
-        // / westUpperTabbedPane
-        // /
+        ///
+        /// westUpperTabbedPane
+        ///
         westUpperTabbedPane = new JTabbedPane();
         westUpperTabbedPane.addTab("Project", this.projectPanel);
         westUpperTabbedPane.addTab("Tileset", tileSetPanel);
-        // /
-        // / layerPanel
-        // /
+        ///
+        /// layerPanel
+        ///
         layerPanel = new LayerPanel();
-        // /
-        // / propertiesPanel
-        // /
+        ///
+        /// propertiesPanel
+        ///
         propertiesPanel = new PropertiesPanel();
-        // /
-        // / westLowerTabbedPane
-        // /
+        ///
+        /// westLowerTabbedPane
+        ///
         westLowerTabbedPane = new JTabbedPane();
         westLowerTabbedPane.addTab("Layers", layerPanel);
         westLowerTabbedPane.addTab("Properties", propertiesPanel);
-        // /
-        // / westPanel
-        // /
+        ///
+        /// westPanel
+        ///
         westPanel = new JPanel(new GridLayout(2, 1));
         westPanel.setPreferredSize(new Dimension(350, 0));
         westPanel.add(westUpperTabbedPane);
         westPanel.add(westLowerTabbedPane);
-        // /
-        // / eastUpperTabbedPane
-        // /
+        ///
+        /// eastUpperTabbedPane
+        ///
         eastUpperTabbedPane = new JTabbedPane();
-        // /
-        // / eastLowerTabbedPane
-        // /
+        ///
+        /// eastLowerTabbedPane
+        ///
         eastLowerTabbedPane = new JTabbedPane();
-        // /
-        // / eastPanel
-        // /
+        ///
+        /// eastPanel
+        ///
         eastPanel = new JPanel(new GridLayout(2, 1));
         eastPanel.setPreferredSize(new Dimension(350, 0));
         eastPanel.add(eastUpperTabbedPane);
         eastPanel.add(eastLowerTabbedPane);
         eastPanel.setVisible(false);
-        // /
-        // / Misc
-        // /
+        ///
+        /// noticesPanel
+        ///
+        noticesPanel = new IssuesTablePanel(200);
+        ///
+        ///
+        ///
+        southTabbedPane = new JTabbedPane();
+        southTabbedPane.addTab("Issues", noticesPanel);
+        ///
+        /// southPanel
+        ///
+        southPanel = new JPanel(new BorderLayout());
+        southPanel.add(southTabbedPane);
+        ///
+        ///
+        /// Misc
+        ///
         setIconImage(Icons.getLargeIcon("editor").getImage());
 
         menuBar = new MainMenuBar(this);
@@ -231,11 +251,12 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         replaceDialog = new ReplaceDialog(this, this);
         SearchContext context = findDialog.getSearchContext();
         replaceDialog.setSearchContext(context);
-        // /
-        // / this
-        // /
+        ///
+        /// this
+        ///
         JPanel parent = new JPanel(new BorderLayout());
         parent.add(desktopPane, BorderLayout.CENTER);
+        parent.add(southPanel, BorderLayout.SOUTH);
 
         setLayout(new BorderLayout());
         add(toolBar, BorderLayout.NORTH);

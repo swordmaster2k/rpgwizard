@@ -31,10 +31,12 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import javax.swing.JTable;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
+import javax.swing.table.TableColumn;
 import javax.swing.text.DefaultFormatter;
 import org.rpgwizard.common.assets.Board;
 import org.rpgwizard.editor.ui.listeners.PopupListFilesListener;
@@ -359,6 +361,29 @@ public abstract class GuiHelper {
 
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(configPanel)));
+    }
+
+    /**
+     * Utility to size columns of JTable based on percentages.
+     * 
+     * @param table
+     * @param preferredWidth
+     *            width of table
+     * @param percentages
+     *            size distribution of column widths
+     */
+    public static void setJTableColumnsWidth(JTable table, int preferredWidth, double... percentages) {
+        // Sum total percentages
+        double total = 0;
+        for (int i = 0; i < table.getColumnModel().getColumnCount(); i++) {
+            total += percentages[i];
+        }
+
+        // Apply preferred column width based on percentages
+        for (int i = 0; i < table.getColumnModel().getColumnCount(); i++) {
+            TableColumn column = table.getColumnModel().getColumn(i);
+            column.setPreferredWidth((int) (preferredWidth * (percentages[i] / total)));
+        }
     }
 
 }

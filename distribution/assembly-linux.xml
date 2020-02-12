@@ -21,6 +21,7 @@
             <directory>resources/</directory>
             <outputDirectory>.</outputDirectory>
             <includes>
+                <include>config/</include>
                 <include>rpgwizard.sh</include>
                 <include>editor.ico</include>
                 <include>license.txt</include>

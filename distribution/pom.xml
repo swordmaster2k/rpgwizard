@@ -141,6 +141,7 @@
                                         <resource>
                                             <directory>${project.basedir}/resources/</directory>
                                             <includes>
+                                                <include>config/</include>
                                                 <include>jre/</include>
                                                 <include>launch4j/</include>
                                                 <include>editor.ico</include>

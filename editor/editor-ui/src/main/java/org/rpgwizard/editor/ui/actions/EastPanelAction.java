@@ -13,6 +13,8 @@ import javax.swing.AbstractAction;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import org.rpgwizard.editor.MainWindow;
+import org.rpgwizard.editor.properties.user.UserPreference;
+import org.rpgwizard.editor.properties.user.UserPreferencesProperties;
 
 /**
  *
@@ -35,9 +37,11 @@ public class EastPanelAction extends AbstractAction {
         if (panel.isVisible()) {
             moveTab(eastUpperTabbedPane, westUpperTabbedPane, 0);
             moveTab(eastLowerTabbedPane, westLowerTabbedPane, 0);
+            UserPreferencesProperties.setProperty(UserPreference.EAST_PANEL_ACTIVE, "false");
         } else {
             moveTab(westUpperTabbedPane, eastUpperTabbedPane, 1);
             moveTab(westLowerTabbedPane, eastLowerTabbedPane, 1);
+            UserPreferencesProperties.setProperty(UserPreference.EAST_PANEL_ACTIVE, "true");
         }
         panel.setVisible(!panel.isVisible());
     }

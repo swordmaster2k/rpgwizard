@@ -7,6 +7,7 @@
  */
 package org.rpgwizard.editor.properties.user;
 
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -15,6 +16,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.Properties;
+import org.rpgwizard.editor.MainWindow;
+import org.rpgwizard.editor.ui.actions.EastPanelAction;
 import org.rpgwizard.editor.utilities.FileTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,6 +84,12 @@ public class UserPreferencesProperties {
 
     public static void save() {
         UserPreferencesProperties.save(INSTANCE.preferences, INSTANCE.properties);
+    }
+
+    public static void apply() {
+        if (UserPreferencesProperties.getProperty(UserPreference.EAST_PANEL_ACTIVE).equals("true")) {
+            new EastPanelAction().actionPerformed(new ActionEvent(MainWindow.getInstance(), 0, ""));
+        }
     }
 
     private static void setup(File preferences, Properties properties) throws FileNotFoundException, IOException {

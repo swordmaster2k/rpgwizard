@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-/* global rpgwizard, rpgcode, PATH_PROGRAM, PATH_ITEM, PATH_FONT, Crafty */
+/* global rpgwizard, rpgcode, PATH_PROGRAM, PATH_ITEM, PATH_FONT, Crafty, Promise */
 
 var rpgcode = null; // Setup inside of the engine.
 
@@ -1443,8 +1443,8 @@ RPGcode.prototype.getViewport = function () {
     return {
         x: -Crafty.viewport.x,
         y: -Crafty.viewport.y,
-        width: Crafty.viewport.width,
-        height: Crafty.viewport.height,
+        width: Math.round(Crafty.viewport.width / rpgcode.getScale()),
+        height: Math.round(Crafty.viewport.height / rpgcode.getScale()),
         offsetX: Math.floor(rpgwizard.craftyBoard.xShift + Crafty.viewport._x),
         offsetY: Math.floor(rpgwizard.craftyBoard.yShift + Crafty.viewport._y)
     };
@@ -1603,20 +1603,22 @@ RPGcode.prototype.isControlEnabled = function () {
  */
 RPGcode.prototype.loadAssets = function (assets, onLoad) {
     if (assets.fonts) {
-        assets.fonts.forEach(function (font) {
-            var url = PATH_FONT + font.file;
-            var newStyle = document.createElement('style');
-            newStyle.appendChild(document.createTextNode("\
-            @font-face {\
-                font-family: \"" + font.name + "\";\
-                src: url(\"" + url + "\");\
-            }\
-            "));
-            document.head.appendChild(newStyle);
+        var fontPromises = [];
+        for (const font of assets.fonts) {
+            fontPromises.push(new FontFace(font.name, `url(${PATH_FONT + font.file})`).load());
+        }
+        Promise.all(fontPromises).then(function () {
+            if (rpgwizard.debugEnabled) {
+                console.log(`loadedFonts=[${JSON.stringify(assets.fonts)}]`);
+            }
+            delete assets.fonts;
+            rpgcode.loadAssets(assets, onLoad);
+        }).catch(function() {
+            console.error(`Failed to load assets.fonts=[${JSON.stringify(assets.fonts)}]!`);
+            delete assets.fonts;
+            rpgcode.loadAssets(assets, onLoad);
         });
-        delete assets.fonts;
-    }
-    if (assets.programs) {
+    } else if (assets.programs) {
         assets.programs.forEach(function (program, i) {
             assets.programs[i] = program.replace(/\.[^/.]+$/, "");
         });
@@ -1757,7 +1759,10 @@ RPGcode.prototype.measureText = function (text) {
     context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
     context.globalAlpha = rpgcode.globalAlpha;
     context.font = rpgcode.font;
-    return {width: context.measureText(text).width, height: parseInt(context.font)};
+    return {
+        width: Math.round(context.measureText(text).width / rpgcode.getScale()), 
+        height: Math.round(parseInt(context.font) / rpgcode.getScale())
+    };
 };
 
 /**

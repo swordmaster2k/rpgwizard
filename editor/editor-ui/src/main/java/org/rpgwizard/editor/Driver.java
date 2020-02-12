@@ -21,6 +21,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.apache.commons.lang3.SystemUtils;
+import org.pf4j.JarPluginManager;
+import org.pf4j.PluginManager;
 import org.pushingpixels.substance.api.skin.SubstanceGraphiteAquaLookAndFeel;
 import org.pushingpixels.substance.api.skin.SubstanceNebulaLookAndFeel;
 import org.rpgwizard.common.assets.AssetManager;
@@ -47,8 +49,6 @@ import org.rpgwizard.editor.utilities.ProjectUpgrader;
 import org.rpgwizard.pluginsystem.Engine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.pf4j.JarPluginManager;
-import org.pf4j.PluginManager;
 
 public class Driver {
 
@@ -198,6 +198,7 @@ public class Driver {
                         @Override
                         public void windowOpened(WindowEvent e) {
                             splashScreen.dispose();
+                            UserPreferencesProperties.apply();
                         }
 
                         @Override

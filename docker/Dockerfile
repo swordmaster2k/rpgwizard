@@ -12,7 +12,7 @@ RUN apt-get -yq update
 RUN apt-get -yq install software-properties-common
 
 # Install a Java
-RUN add-apt-repository ppa:openjdk-r/ppa && apt-get -yq update && apt-get -yq install openjdk-10-jdk
+RUN add-apt-repository ppa:openjdk-r/ppa && apt-get -yq update && apt-get -yq install openjdk-11-jdk
 
 # Wwitch back to default user
 USER 1000

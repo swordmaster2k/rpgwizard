@@ -36,6 +36,11 @@ public class IssuesTableModel extends AbstractTableModel {
         fireTableDataChanged();
     }
 
+    public void clearNotices() {
+        notices.clear();
+        fireTableDataChanged();
+    }
+
     /**
      *
      *
@@ -92,7 +97,7 @@ public class IssuesTableModel extends AbstractTableModel {
         case 1:
             return notices.get(rowIndex).getMessage();
         case 2:
-            return notices.get(rowIndex).getLine();
+            return notices.get(rowIndex).getLine() + 1; // zero-bound
         default:
             return "NOT SUPPORTED";
         }

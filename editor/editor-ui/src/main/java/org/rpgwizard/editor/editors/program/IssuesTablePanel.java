@@ -9,7 +9,9 @@ package org.rpgwizard.editor.editors.program;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -40,7 +42,13 @@ public final class IssuesTablePanel extends JPanel {
 
     public void addNotices(List<ParserNotice> notices) {
         IssuesTableModel model = (IssuesTableModel) table.getModel();
-        model.setNotices(notices);
+        model.setNotices(notices.stream().distinct().sorted(Comparator.comparing(ParserNotice::getLevel).reversed())
+                .collect(Collectors.toList()));
+    }
+
+    public void clearNotices() {
+        IssuesTableModel model = (IssuesTableModel) table.getModel();
+        model.clearNotices();
     }
 
     @Override

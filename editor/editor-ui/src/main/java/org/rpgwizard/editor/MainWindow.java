@@ -116,7 +116,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
 
     private final JPanel southPanel;
     private final JTabbedPane southTabbedPane;
-    public final IssuesTablePanel noticesPanel;
+    private final IssuesTablePanel issuesPanel;
 
     private final ProjectPanel projectPanel;
     private final TileSetTabbedPane tileSetPanel;
@@ -213,14 +213,14 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         eastPanel.add(eastLowerTabbedPane);
         eastPanel.setVisible(false);
         ///
-        /// noticesPanel
+        /// issuesPanel
         ///
-        noticesPanel = new IssuesTablePanel(200);
+        issuesPanel = new IssuesTablePanel(200);
         ///
         ///
         ///
         southTabbedPane = new JTabbedPane();
-        southTabbedPane.addTab("Issues", noticesPanel);
+        southTabbedPane.addTab("Issues", issuesPanel);
         ///
         /// southPanel
         ///
@@ -361,6 +361,14 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
 
     public LayerPanel getLayerPanel() {
         return layerPanel;
+    }
+
+    public JPanel getSouthPanel() {
+        return southPanel;
+    }
+
+    public IssuesTablePanel getIssuesPanel() {
+        return issuesPanel;
     }
 
     public PropertiesPanel getPropertiesPanel() {
@@ -564,6 +572,9 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         } else if (window instanceof EnemyEditor) {
             EnemyEditor editor = (EnemyEditor) window;
             propertiesPanel.setModel(editor.getEnemy());
+        } else if (window instanceof ProgramEditor) {
+            ProgramEditor editor = (ProgramEditor) window;
+            editor.forceReparsing();
         }
     }
 
@@ -621,6 +632,8 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
             if (propertiesPanel.getModel() == editor.getEnemy()) {
                 propertiesPanel.setModel(null);
             }
+        } else if (frame instanceof ProgramEditor) {
+            issuesPanel.clearNotices();
         }
     }
 

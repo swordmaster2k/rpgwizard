@@ -18,6 +18,7 @@ import java.net.URISyntaxException;
 import java.util.Properties;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.ui.actions.EastPanelAction;
+import org.rpgwizard.editor.ui.actions.SouthPanelAction;
 import org.rpgwizard.editor.utilities.FileTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,6 +90,9 @@ public class UserPreferencesProperties {
     public static void apply() {
         if (UserPreferencesProperties.getProperty(UserPreference.EAST_PANEL_ACTIVE).equals("true")) {
             new EastPanelAction().actionPerformed(new ActionEvent(MainWindow.getInstance(), 0, ""));
+        }
+        if (UserPreferencesProperties.getProperty(UserPreference.SOUTH_PANEL_ACTIVE).equals("false")) {
+            new SouthPanelAction().actionPerformed(new ActionEvent(MainWindow.getInstance(), 0, ""));
         }
     }
 

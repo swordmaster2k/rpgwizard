@@ -23,7 +23,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import org.fife.rsta.ac.LanguageSupportFactory;
 import org.fife.rsta.ac.js.JavaScriptLanguageSupport;
-import org.fife.rsta.ac.js.JavaScriptParser;
 import org.fife.rsta.ac.js.JsErrorParser;
 import org.fife.rsta.ui.search.SearchEvent;
 import org.fife.rsta.ui.search.SearchListener;
@@ -99,6 +98,10 @@ public final class ProgramEditor extends AbstractAssetEditorWindow
         save();
     }
 
+    public void forceReparsing() {
+        textArea.forceReparsing(0);
+    }
+
     private void init(Program program, String fileName) {
         String code = program.getProgramBuffer().toString();
         textArea = new RSyntaxTextArea(code, 30, 90);
@@ -110,6 +113,7 @@ public final class ProgramEditor extends AbstractAssetEditorWindow
         textArea.setTabsEmulated(true);
         textArea.setTabSize(3);
         textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
+        textArea.addPropertyChangeListener(RSyntaxTextArea.PARSER_NOTICES_PROPERTY, this);
         textArea.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -154,8 +158,6 @@ public final class ProgramEditor extends AbstractAssetEditorWindow
         autoCompletion.setAutoCompleteSingleChoices(false);
         autoCompletion.setShowDescWindow(true);
         autoCompletion.install(textArea);
-
-        languageSupport.getJavaScriptParser().addPropertyChangeListener(JavaScriptParser.PROPERTY_AST, this);
 
         try {
             Theme theme = Theme.load(getClass().getResourceAsStream("/org/fife/ui/rsyntaxtextarea/themes/dark.xml"));
@@ -268,8 +270,12 @@ public final class ProgramEditor extends AbstractAssetEditorWindow
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        if (!MainWindow.getInstance().getSouthPanel().isVisible()) {
+            return;
+        }
+
         List<ParserNotice> notices = textArea.getParserNotices();
-        MainWindow.getInstance().noticesPanel.addNotices(notices);
+        MainWindow.getInstance().getIssuesPanel().addNotices(notices);
     }
 
 }

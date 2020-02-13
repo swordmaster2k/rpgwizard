@@ -15,6 +15,7 @@ import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
 import org.rpgwizard.editor.ui.Theme;
 import org.rpgwizard.editor.ui.actions.EastPanelAction;
+import org.rpgwizard.editor.ui.actions.SouthPanelAction;
 import org.rpgwizard.editor.ui.actions.ThemeAction;
 import org.rpgwizard.editor.ui.actions.WestPanelAction;
 import org.rpgwizard.editor.ui.resources.Icons;
@@ -27,6 +28,7 @@ public final class WindowMenu extends JMenu {
 
     private JMenuItem westPanel;
     private JMenuItem eastPanel;
+    private JMenuItem southPanel;
 
     private JMenu themesMenu;
     private JMenuItem lightTheme;
@@ -39,10 +41,12 @@ public final class WindowMenu extends JMenu {
 
         configureWestPanelMenuItem();
         configureEastPanelMenuItem();
+        configureSouthPanelMenuItem();
         configureThemeSubMenu();
 
         add(westPanel);
         add(eastPanel);
+        add(southPanel);
         add(new JSeparator());
         add(themesMenu);
     }
@@ -65,6 +69,12 @@ public final class WindowMenu extends JMenu {
         eastPanel.setAccelerator(
                 KeyStroke.getKeyStroke(KeyEvent.VK_CLOSE_BRACKET, ActionEvent.CTRL_MASK + ActionEvent.ALT_MASK));
         eastPanel.addActionListener(new EastPanelAction());
+    }
+
+    public void configureSouthPanelMenuItem() {
+        southPanel = new JMenuItem("South Panel");
+        southPanel.setIcon(Icons.getSmallIcon("application-bottom-bar"));
+        southPanel.addActionListener(new SouthPanelAction());
     }
 
     private void configureThemeSubMenu() {

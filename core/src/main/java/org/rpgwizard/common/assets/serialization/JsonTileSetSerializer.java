@@ -7,13 +7,15 @@
  */
 package org.rpgwizard.common.assets.serialization;
 
+import java.util.HashMap;
+import java.util.Map;
+import org.json.JSONObject;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.AssetException;
 import org.rpgwizard.common.assets.AssetHandle;
 import org.rpgwizard.common.assets.TileSet;
 import org.rpgwizard.common.io.Paths;
 import org.rpgwizard.common.utilities.CoreProperties;
-import org.json.JSONObject;
 
 /**
  *
@@ -38,8 +40,21 @@ public class JsonTileSetSerializer extends AbstractJsonSerializer {
                 json.optInt("tileHeight"));
 
         tileSet.setVersion(json.getDouble("version"));
-        tileSet.setName(json.optString("name"));
-        tileSet.setImage(json.optString("image"));
+        tileSet.setName(json.getString("name"));
+        tileSet.setImage(json.getString("image"));
+        if (json.has("tileData")) {
+            final Map<String, Map<String, String>> tileData = new HashMap<>();
+            JSONObject jsonObject = json.getJSONObject("tileData");
+            jsonObject.keySet().forEach((tileIndex) -> {
+                JSONObject tileEntry = jsonObject.getJSONObject(tileIndex);
+                Map<String, String> metaData = new HashMap<>();
+                tileEntry.keySet().forEach((k) -> {
+                    metaData.put(k, tileEntry.getString(k));
+                });
+                tileData.put(tileIndex, metaData);
+            });
+            tileSet.setTileData(tileData);
+        }
 
         handle.setAsset(tileSet);
     }
@@ -54,6 +69,7 @@ public class JsonTileSetSerializer extends AbstractJsonSerializer {
         json.put("tileWidth", tileSet.getTileWidth());
         json.put("tileHeight", tileSet.getTileHeight());
         json.put("image", serializePath(tileSet.getImage()));
+        json.put("tileData", tileSet.getTileData());
     }
 
 }

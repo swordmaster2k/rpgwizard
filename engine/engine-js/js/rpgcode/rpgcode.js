@@ -1421,6 +1421,44 @@ RPGcode.prototype.getSpriteDirection = function (spriteId) {
 };
 
 /**
+ * Gets the data associated with a tile on the board as set in the Editor's 
+ * Tileset properties. 
+ * 
+ * Returns "null" if no data can be found. 
+ * 
+ * Throws an exception if either the layer or tile is out-of-bounds.
+ * 
+ * @example
+ * // Get the tile data at (10, 5, 1), and log the output
+ * const tileData = rpgcode.getTileData(10, 5, 1);
+ * rpgcode.log(tileData.type);
+ * rpgcode.log(tileData.defence);
+ * rpgcode.log(tileData.custom);
+ * 
+ * @param {Number} tileX
+ * @param {Number} tileY
+ * @param {Number} layer
+ * @returns {Object} Containing the properties: "type", "defence", "custom".
+ * @throws "layer out of range" or "tile out of range"
+ */
+RPGcode.prototype.getTileData = function(tileX=0, tileY=0, layer=0) {
+    const board = rpgwizard.craftyBoard.board;
+    if (layer < 0 || board.layers.length < layer) {
+        throw "layer out of range";
+    }
+    
+    const boardLayer = board.layers[layer];
+    const tileIndex = (tileY * board.tileWidth) + tileX;
+    if (tileIndex < 0 || boardLayer.tiles.length < tileIndex) {
+        throw "tile out of range";
+    }
+    
+    const parts = boardLayer.tiles[tileIndex].split(":"); // tileSetIndex:tileIndex
+    const tileSet = rpgwizard.tilesets[board.tileSets[parts[0]]];
+    return tileSet.tileData && tileSet.tileData[parts[1]] ? tileSet.tileData[parts[1]] : null;
+};
+
+/**
  * Gets the viewport object, this is useful for calculating the position of 
  * characters or sprites on the board relative to the RPGcode screen.
  * 

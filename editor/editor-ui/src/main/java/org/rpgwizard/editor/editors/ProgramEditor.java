@@ -168,6 +168,9 @@ public final class ProgramEditor extends AbstractAssetEditorWindow
 
         RTextScrollPane scrollPane = new RTextScrollPane(textArea, true);
         ErrorStrip errorStrip = new ErrorStrip(textArea);
+        errorStrip.setShowMarkedOccurrences(false);
+        errorStrip.setShowMarkAll(false);
+        errorStrip.setFollowCaret(false);
 
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(scrollPane, BorderLayout.CENTER);

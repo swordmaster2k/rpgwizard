@@ -8,7 +8,9 @@
 package org.rpgwizard.common.assets;
 
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -21,19 +23,19 @@ import java.util.Objects;
 public class TileSet extends AbstractAsset {
 
     private String name;
-
     private int tileWidth;
     private int tileHeight;
-
     private String image;
-    private BufferedImage bufferedImage;
+    private Map<String, Map<String, String>> tileData;
 
+    private BufferedImage bufferedImage;
     private LinkedList<Tile> tiles;
 
     public TileSet(AssetDescriptor descriptor) {
         super(descriptor);
         image = null;
         tiles = new LinkedList<>();
+        tileData = new HashMap<>();
     }
 
     /**
@@ -49,6 +51,7 @@ public class TileSet extends AbstractAsset {
         this.tileHeight = tileHeight;
         image = null;
         tiles = new LinkedList<>();
+        tileData = new HashMap<>();
     }
 
     public String getName() {
@@ -107,6 +110,14 @@ public class TileSet extends AbstractAsset {
         this.image = image;
     }
 
+    public Map<String, Map<String, String>> getTileData() {
+        return tileData;
+    }
+
+    public void setTileData(Map<String, Map<String, String>> tileData) {
+        this.tileData = tileData;
+    }
+
     public BufferedImage getBufferedImage() {
         return bufferedImage;
     }
@@ -127,6 +138,29 @@ public class TileSet extends AbstractAsset {
      */
     public void addTile(Tile newTile) {
         tiles.add(newTile);
+    }
+
+    /**
+     * Add metadata about a tile to this tileset.
+     * 
+     * @param index
+     * @param data
+     */
+    public void addTileData(int index, Map<String, String> data) {
+        tileData.put(String.valueOf(index), data);
+    }
+
+    /**
+     * Read the tile metadata for the specific index, if any.
+     * 
+     * @param index
+     * @return
+     */
+    public Map<String, String> readTileData(int index) {
+        if (tileData.containsKey(String.valueOf(index))) {
+            return tileData.get(String.valueOf(index));
+        }
+        return Map.of();
     }
 
     @Override

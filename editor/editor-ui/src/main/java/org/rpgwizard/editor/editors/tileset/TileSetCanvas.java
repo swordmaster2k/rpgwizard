@@ -7,7 +7,6 @@
  */
 package org.rpgwizard.editor.editors.tileset;
 
-import org.rpgwizard.editor.ui.listeners.TileSelectionListener;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -27,9 +26,11 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.Scrollable;
-
+import javax.swing.SwingUtilities;
 import org.rpgwizard.common.assets.Tile;
 import org.rpgwizard.common.assets.TileSet;
+import org.rpgwizard.editor.MainWindow;
+import org.rpgwizard.editor.ui.listeners.TileSelectionListener;
 import org.rpgwizard.editor.utilities.GuiHelper;
 
 /**
@@ -386,6 +387,10 @@ public final class TileSetCanvas extends JPanel implements Scrollable {
 
             if (clickedTile != null) {
                 fireTileSelectionEvent(clickedTile);
+            }
+
+            if (SwingUtilities.isRightMouseButton(e)) {
+                MainWindow.getInstance().getPropertiesPanel().setModel(clickedTile);
             }
         }
 

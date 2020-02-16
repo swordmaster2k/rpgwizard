@@ -13,9 +13,11 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
@@ -92,8 +94,37 @@ public abstract class AbstractModelPanel extends JPanel {
         return checkBox;
     }
 
+    public final JComboBox getJComboBox(Object selected, String[] items) {
+        JComboBox comboBox = new JComboBox(items);
+        comboBox.setSelectedItem(selected);
+        comboBox.setFont(font);
+        return comboBox;
+    }
+
+    public final JSlider getJSlider(int min, int max, int value) {
+        JSlider slider = new JSlider(min, max, value);
+        slider.setMajorTickSpacing(1);
+        slider.setPaintLabels(true);
+        slider.setPaintTicks(true);
+        slider.setFont(font);
+        return slider;
+    }
+
     public void tearDown() {
         // Do nothing by default, let children override it.
+    }
+
+    protected void insert(JComponent component) {
+        constraints.gridx = 0;
+        constraints.gridy = row;
+        constraints.weightx = 0;
+        constraints.gridwidth = 2;
+        constraints.ipady = 20;
+        constraints.insets = new Insets(10, 100, 10, 100);
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        add(component, constraints);
+
+        row++;
     }
 
     protected void insert(JLabel label, JComponent component) {
@@ -105,10 +136,29 @@ public abstract class AbstractModelPanel extends JPanel {
 
         constraints.gridx = 1;
         constraints.gridy = row;
-        constraints.weightx = 1;
+        constraints.weightx = 0.5;
         constraints.insets = DEFAULT_INSETS;
         constraints.fill = GridBagConstraints.HORIZONTAL;
         add(component, constraints);
+
+        row++;
+    }
+
+    protected void insert(JComponent component1, JComponent component2) {
+        constraints.gridx = 0;
+        constraints.gridy = row;
+        constraints.weightx = 0.5;
+        constraints.insets = DEFAULT_INSETS;
+        constraints.anchor = GridBagConstraints.LINE_START;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        add(component1, constraints);
+
+        constraints.gridx = 1;
+        constraints.gridy = row;
+        constraints.weightx = 0.5;
+        constraints.insets = DEFAULT_INSETS;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        add(component2, constraints);
 
         row++;
     }

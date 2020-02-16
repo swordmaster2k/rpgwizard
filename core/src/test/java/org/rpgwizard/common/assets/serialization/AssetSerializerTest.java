@@ -12,31 +12,31 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import org.rpgwizard.common.assets.Animation;
-import org.rpgwizard.common.assets.AnimationEnum;
-import org.rpgwizard.common.assets.AssetManager;
-import org.rpgwizard.common.assets.Board;
-import org.rpgwizard.common.assets.board.BoardLayer;
-import org.rpgwizard.common.assets.board.BoardSprite;
-import org.rpgwizard.common.assets.board.BoardVector;
-import org.rpgwizard.common.assets.Enemy;
-import org.rpgwizard.common.assets.Project;
-import org.rpgwizard.common.assets.GraphicEnum;
-import org.rpgwizard.common.assets.NPC;
-import org.rpgwizard.common.assets.Character;
-import org.rpgwizard.common.assets.TileSet;
-import org.rpgwizard.common.assets.board.BoardVectorType;
-import org.rpgwizard.common.assets.Event;
-import org.rpgwizard.common.assets.EventType;
-import org.rpgwizard.common.assets.Program;
-import org.rpgwizard.common.assets.SpriteSheet;
-import org.rpgwizard.common.assets.files.FileAssetHandleResolver;
 import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.rpgwizard.common.assets.board.BoardLayerImage;
+import org.rpgwizard.common.assets.Animation;
+import org.rpgwizard.common.assets.AnimationEnum;
+import org.rpgwizard.common.assets.AssetManager;
+import org.rpgwizard.common.assets.Board;
+import org.rpgwizard.common.assets.Character;
+import org.rpgwizard.common.assets.Enemy;
+import org.rpgwizard.common.assets.Event;
+import org.rpgwizard.common.assets.EventType;
+import org.rpgwizard.common.assets.GraphicEnum;
 import org.rpgwizard.common.assets.Item;
+import org.rpgwizard.common.assets.NPC;
+import org.rpgwizard.common.assets.Program;
+import org.rpgwizard.common.assets.Project;
+import org.rpgwizard.common.assets.SpriteSheet;
+import org.rpgwizard.common.assets.TileSet;
+import org.rpgwizard.common.assets.board.BoardLayer;
+import org.rpgwizard.common.assets.board.BoardLayerImage;
+import org.rpgwizard.common.assets.board.BoardSprite;
+import org.rpgwizard.common.assets.board.BoardVector;
+import org.rpgwizard.common.assets.board.BoardVectorType;
+import org.rpgwizard.common.assets.files.FileAssetHandleResolver;
 
 /**
  * Some pretty basic checks to ensure the file serializers work.
@@ -216,6 +216,11 @@ public class AssetSerializerTest {
         Assert.assertEquals(32, asset.getTileWidth());
         Assert.assertEquals(32, asset.getTileHeight());
         Assert.assertEquals("source1.png", asset.getImage());
+        
+        Map<String, Map<String, String>> tileData = new HashMap<>();
+        tileData.put("10", Map.of("key1", "value1", "key2", "value2"));
+        tileData.put("42", Map.of("key1", "value1", "key2", "value2", "key3", "value3"));
+        Assert.assertEquals(tileData, asset.getTileData());
     }
 
     @Test

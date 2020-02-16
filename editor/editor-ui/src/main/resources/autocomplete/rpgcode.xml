@@ -1,13 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!--
-
-    Copyright (c) 2015, rpgwizard.org, some files forked from rpgtoolkit.net <info@rpgwizard.org>
-
-    This Source Code Form is subject to the terms of the Mozilla Public
-    License, v. 2.0. If a copy of the MPL was not distributed with this
-    file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
--->
 <!DOCTYPE api SYSTEM "CompletionXml.dtd">
 <api language="RPGCode">
     <environment paramStartChar="(" paramEndChar=")" paramSeparator=", " terminal=";"/>
@@ -1471,6 +1462,50 @@
 </div>  
 <h3>Example</h3> 
 <pre class="prettyprint"><code>var location = rpgcode.getSpriteLocation("rat");rpgcode.log(location);</code></pre>]]></desc>
+        </keyword>
+        <keyword name="rpgcode.getTileData(tileX, tileY, layer);" type="function" returnType="Object" definedIn="engine/engine-js/js/rpgcode/rpgcode.js">
+            <desc><![CDATA[<div class="description">
+  Gets the data associated with a tile on the board as set in the Editor's Tileset properties. Returns "null" if no data can be found. Throws an exception if either the layer or tile is out-of-bounds. 
+</div> 
+<div class="container-params"> 
+ <h3>Parameters:</h3> 
+ <table class="params"> 
+  <thead> 
+   <tr> 
+    <th>Name</th> 
+    <th>Type</th> 
+    <th class="last">Description</th> 
+   </tr> 
+  </thead> 
+  <tbody> 
+   <tr> 
+    <td class="name"><code>tileX</code></td> 
+    <td class="type"> <span class="param-type">Number</span> </td> 
+    <td class="description last"></td> 
+   </tr> 
+   <tr> 
+    <td class="name"><code>tileY</code></td> 
+    <td class="type"> <span class="param-type">Number</span> </td> 
+    <td class="description last"></td> 
+   </tr> 
+   <tr> 
+    <td class="name"><code>layer</code></td> 
+    <td class="type"> <span class="param-type">Number</span> </td> 
+    <td class="description last"></td> 
+   </tr> 
+  </tbody> 
+ </table> 
+</div> 
+<h3>Throws:</h3> 
+<div class="param-desc">
+  layer out of range or tile out of range 
+</div> 
+<div class="container-returns"> 
+ <h3>Returns:</h3> 
+ <span class="param-type">Object</span> - Containing the properties: "type", "defence", "custom". 
+</div>  
+<h3>Example</h3> 
+<pre class="prettyprint"><code>// Get the tile data at (10, 5, 1), and log the outputconst tileData = rpgcode.getTileData(10, 5, 1);rpgcode.log(tileData.type);rpgcode.log(tileData.defence);rpgcode.log(tileData.custom);</code></pre>]]></desc>
         </keyword>
         <keyword name="rpgcode.getViewport();" type="function" returnType="Object" definedIn="engine/engine-js/js/rpgcode/rpgcode.js">
             <desc><![CDATA[<div class="description">

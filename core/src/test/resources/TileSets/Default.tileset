@@ -3,5 +3,16 @@
     "name": "Default",
     "tileWidth": 32,
     "tileHeight": 32,
-    "image": "source1.png"
+    "image": "source1.png",
+    "tileData": {
+        "10": {
+            "key1": "value1",
+            "key2": "value2"
+        },
+        "42": {
+            "key1": "value1",
+            "key2": "value2",
+            "key3": "value3"
+        }
+    }
 }

@@ -1448,12 +1448,16 @@ RPGcode.prototype.getTileData = function(tileX=0, tileY=0, layer=0) {
     }
     
     const boardLayer = board.layers[layer];
-    const tileIndex = (tileY * board.tileWidth) + tileX;
+    const tileIndex = (tileY * board.width) + tileX;
     if (tileIndex < 0 || boardLayer.tiles.length < tileIndex) {
         throw "tile out of range";
     }
     
     const parts = boardLayer.tiles[tileIndex].split(":"); // tileSetIndex:tileIndex
+    if (parts[0] === "-1" || parts[1] === "-1") {
+        return null; // empty tile
+    }
+    
     const tileSet = rpgwizard.tilesets[board.tileSets[parts[0]]];
     return tileSet.tileData && tileSet.tileData[parts[1]] ? tileSet.tileData[parts[1]] : null;
 };

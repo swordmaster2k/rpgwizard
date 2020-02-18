@@ -7,5 +7,6 @@
    "initialBoard":"Room1.board",
    "initialCharacter":"Hero.character",
    "startupProgram":"Start.program",
-   "gameOverProgram":"GameOver.program"
+   "gameOverProgram":"GameOver.program",
+   "showVectors":true
 }

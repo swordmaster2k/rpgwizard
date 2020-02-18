@@ -90,6 +90,7 @@ public class AssetSerializerTest {
         Assert.assertEquals("Hero.character", asset.getInitialCharacter());
         Assert.assertEquals("Start.program", asset.getStartupProgram());
         Assert.assertEquals("GameOver.program", asset.getGameOverProgram());
+        Assert.assertEquals(true, asset.isShowVectors());
     }
 
     @Test

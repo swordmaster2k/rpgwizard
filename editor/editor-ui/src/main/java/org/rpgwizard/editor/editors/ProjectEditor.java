@@ -67,6 +67,7 @@ public final class ProjectEditor extends AbstractAssetEditorWindow implements In
     // STARTUP SETTINGS
     private JComboBox initialBoard;
     private JComboBox initialCharacter;
+    private JCheckBox showVectors;
 
     // CODE SETTINGS
     private JComboBox startupProgram;
@@ -233,20 +234,25 @@ public final class ProjectEditor extends AbstractAssetEditorWindow implements In
             }
         });
 
-        JLabel blankBoardNote = new JLabel("You may leave the initial board " + "blank if you wish");
+        showVectors = new JCheckBox("Show Vectors");
+        showVectors.setSelected(project.isShowVectors());
+        showVectors.addActionListener((ActionEvent e) -> {
+            project.setShowVectors(showVectors.isSelected());
+            setNeedSave(true);
+        });
 
         // Configure the necessary Panels
-        JPanel conditionsPanel = new JPanel();
-        conditionsPanel.setBorder(BorderFactory.createTitledBorder(defaultEtchedBorder, "Startup Settings"));
+        JPanel startupSettingsPanel = new JPanel();
+        startupSettingsPanel.setBorder(BorderFactory.createTitledBorder(defaultEtchedBorder, "Startup Settings"));
 
-        GroupLayout conditionsLayout = GuiHelper.createGroupLayout(conditionsPanel);
+        GroupLayout conditionsLayout = GuiHelper.createGroupLayout(startupSettingsPanel);
 
         conditionsLayout.setHorizontalGroup(conditionsLayout.createParallelGroup()
                 .addGroup(conditionsLayout.createSequentialGroup().addComponent(initialBoardLabel, 75, 75, 75)
                         .addComponent(initialBoard))
                 .addGroup(conditionsLayout.createSequentialGroup().addComponent(initialCharLabel)
                         .addComponent(initialCharacter))
-                .addComponent(blankBoardNote));
+                .addComponent(showVectors));
 
         conditionsLayout.linkSize(SwingConstants.HORIZONTAL, initialBoardLabel, initialCharLabel);
         conditionsLayout.linkSize(SwingConstants.VERTICAL, initialBoard, initialCharacter);
@@ -256,16 +262,16 @@ public final class ProjectEditor extends AbstractAssetEditorWindow implements In
                         .addComponent(initialBoard, GuiHelper.JTF_HEIGHT, GuiHelper.JTF_HEIGHT, GuiHelper.JTF_HEIGHT))
                 .addGroup(conditionsLayout.createParallelGroup().addComponent(initialCharLabel)
                         .addComponent(initialCharacter))
-                .addComponent(blankBoardNote));
+                .addComponent(showVectors));
 
         // Configure PROJECT SETTINGS PANEL layout
         layout.setHorizontalGroup(layout.createParallelGroup().addComponent(projectInfoPanel, 515, 515, 515)
-                .addComponent(conditionsPanel, 515, 515, 515));
+                .addComponent(startupSettingsPanel, 515, 515, 515));
 
-        layout.linkSize(SwingConstants.HORIZONTAL, projectInfoPanel, conditionsPanel);
+        layout.linkSize(SwingConstants.HORIZONTAL, projectInfoPanel, startupSettingsPanel);
 
         layout.setVerticalGroup(
-                layout.createSequentialGroup().addComponent(projectInfoPanel).addComponent(conditionsPanel));
+                layout.createSequentialGroup().addComponent(projectInfoPanel).addComponent(startupSettingsPanel));
     }
 
     private void createCodePanel() {
@@ -324,7 +330,7 @@ public final class ProjectEditor extends AbstractAssetEditorWindow implements In
     }
 
     private void createGraphicsPanel() {
-        fullScreen = new JCheckBox("Full Screen Mode?");
+        fullScreen = new JCheckBox("Full Screen Mode");
         fullScreen.setSelected(project.isFullScreen());
         fullScreen.addActionListener((ActionEvent e) -> {
             project.setIsFullScreen(fullScreen.isSelected());

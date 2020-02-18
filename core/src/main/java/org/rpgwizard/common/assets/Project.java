@@ -23,6 +23,7 @@ public class Project extends AbstractAsset {
     private String startupProgram;
     private String gameOverProgram;
     private String projectIcon;
+    private boolean showVectors;
 
     public Project(AssetDescriptor descriptor) {
         super(descriptor);
@@ -35,6 +36,7 @@ public class Project extends AbstractAsset {
         resolutionWidth = 640;
         resolutionHeight = 480;
         projectIcon = "";
+        showVectors = false;
     }
 
     public Project(AssetDescriptor descriptor, String name) {
@@ -114,6 +116,14 @@ public class Project extends AbstractAsset {
         this.projectIcon = projectIcon;
     }
 
+    public boolean isShowVectors() {
+        return showVectors;
+    }
+
+    public void setShowVectors(boolean showVectors) {
+        this.showVectors = showVectors;
+    }
+
     @Override
     public void reset() {
         isFullScreen = false;
@@ -124,6 +134,7 @@ public class Project extends AbstractAsset {
         resolutionWidth = 0;
         resolutionHeight = 0;
         projectIcon = "";
+        showVectors = false;
     }
 
 }

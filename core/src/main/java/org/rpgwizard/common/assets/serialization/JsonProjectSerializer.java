@@ -7,14 +7,13 @@
  */
 package org.rpgwizard.common.assets.serialization;
 
+import org.json.JSONObject;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.AssetException;
 import org.rpgwizard.common.assets.AssetHandle;
 import org.rpgwizard.common.assets.Project;
 import org.rpgwizard.common.io.Paths;
 import org.rpgwizard.common.utilities.CoreProperties;
-
-import org.json.JSONObject;
 
 /**
  *
@@ -52,6 +51,10 @@ public class JsonProjectSerializer extends AbstractJsonSerializer {
         if (json.has("projectIcon")) {
             project.setProjectIcon(json.getString("projectIcon"));
         }
+        // Version 1.7.0
+        if (json.has("showVectors")) {
+            project.setShowVectors(json.getBoolean("showVectors"));
+        }
 
         handle.setAsset(project);
     }
@@ -71,6 +74,7 @@ public class JsonProjectSerializer extends AbstractJsonSerializer {
         json.put("startupProgram", serializePath(project.getStartupProgram()));
         json.put("gameOverProgram", serializePath(project.getGameOverProgram()));
         json.put("projectIcon", serializePath(project.getProjectIcon()));
+        json.put("showVectors", project.isShowVectors());
     }
 
 }

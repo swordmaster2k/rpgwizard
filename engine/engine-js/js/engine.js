@@ -112,6 +112,9 @@ RPGWizard.prototype.setup = async function (filename) {
     }
 
     this.project = await new Project(filename).load();
+    
+    // Check if we should draw debugging vectors
+    this.showVectors = this.project.showVectors ? true : false;
 
     var scale = 1;
     if (this.project.isFullScreen) {

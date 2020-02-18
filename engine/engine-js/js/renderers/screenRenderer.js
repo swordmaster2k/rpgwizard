@@ -134,14 +134,18 @@ ScreenRenderer.prototype.renderBoard = function (context) {
                     }
                     context.lineWidth = 2.0;
                     context.beginPath();
-                    vector.points.forEach(function (point) {
+                    for (var i = 0; i < vector.points.length - 1; i++) {
+                        var p1 = vector.points[i];
+                        var p2 = vector.points[i + 1];
                         if (!haveMoved) {
-                            context.moveTo(point.x + xShift, point.y + yShift);
+                            context.moveTo(p1.x + xShift, p1.y + yShift);
                             haveMoved = true;
-                        } else {
-                            context.lineTo(point.x + xShift, point.y + yShift);
                         }
-                    }, this);
+                        context.lineTo(p2.x + xShift, p2.y + yShift);
+                    }
+                    if (vector.isClosed) {
+                        context.lineTo(vector.points[0].x + xShift, vector.points[0].y + yShift);
+                    }
                     context.stroke();
                 }, this);
             }

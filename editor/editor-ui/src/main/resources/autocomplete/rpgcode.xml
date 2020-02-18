@@ -1,13 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!--
-
-    Copyright (c) 2015, rpgwizard.org, some files forked from rpgtoolkit.net <info@rpgwizard.org>
-
-    This Source Code Form is subject to the terms of the Mozilla Public
-    License, v. 2.0. If a copy of the MPL was not distributed with this
-    file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
--->
 <!DOCTYPE api SYSTEM "CompletionXml.dtd">
 <api language="RPGCode">
     <environment paramStartChar="(" paramEndChar=")" paramSeparator=", " terminal=";"/>
@@ -154,7 +145,7 @@
         </keyword>
         <keyword name="rpgcode.addLayerImage(image, layer);" type="function" returnType="undefined" definedIn="engine/engine-js/js/rpgcode/rpgcode.js">
             <desc><![CDATA[<div class="description">
-  Adds the layer image to the requested layer, it will be rendered immediately after being added to the board. Note: Layers added this way will be lost the moment the board is reloaded. 
+  Adds the layer image to the requested layer, it will be rendered immediately after being added to the board. Note: Layers images added this way will be lost the moment the board is reloaded. 
 </div> 
 <div class="container-params"> 
  <h3>Parameters:</h3> 
@@ -1507,7 +1498,7 @@
 </div> 
 <h3>Throws:</h3> 
 <div class="param-desc">
-  layer out of range or tile out of range 
+  "layer out of range" or "tile out of range" 
 </div> 
 <div class="container-returns"> 
  <h3>Returns:</h3> 
@@ -3576,6 +3567,41 @@
 </div>  
 <h3>Example</h3> 
 <pre class="prettyprint"><code>// Removes the mouse up handler local to this program.rpgcode.unregisterMouseUp();// Removes the global engine mouse move handler.rpgcode.unregisterMouseUp(true);</code></pre>]]></desc>
+        </keyword>
+        <keyword name="rpgcode.updateLayerImage(image, layer);" type="function" returnType="undefined" definedIn="engine/engine-js/js/rpgcode/rpgcode.js">
+            <desc><![CDATA[<div class="description">
+  Update the layer image with the ID on the specified layer. If the image does not exist on the layer then there is no effect. 
+</div> 
+<div class="container-params"> 
+ <h3>Parameters:</h3> 
+ <table class="params"> 
+  <thead> 
+   <tr> 
+    <th>Name</th> 
+    <th>Type</th> 
+    <th class="last">Description</th> 
+   </tr> 
+  </thead> 
+  <tbody> 
+   <tr> 
+    <td class="name"><code>image</code></td> 
+    <td class="type"> <span class="param-type">Object</span> </td> 
+    <td class="description last">The layer image to update on the board.</td> 
+   </tr> 
+   <tr> 
+    <td class="name"><code>layer</code></td> 
+    <td class="type"> <span class="param-type">Number</span> </td> 
+    <td class="description last">Layer index on the board, first layer starts at 0.</td> 
+   </tr> 
+  </tbody> 
+ </table> 
+</div> 
+<div class="container-returns"> 
+ <h3>Returns:</h3> 
+ <span class="param-type">undefined</span> 
+</div>  
+<h3>Example</h3> 
+<pre class="prettyprint"><code>var image = { "src": "battle-background.png", // pre-loaded asset image "x": 150,                       // x location on board in pixels "y": 100,                       // y location on board in pixels "id": "battle.background"       // unique for this layer image}rpgcode.updateLayerImage(image, 1); // Update the image with ID "battle.background" on layer 1 </code></pre>]]></desc>
         </keyword>
         <keyword name="titlescreen.show(config, callback);" type="function" returnType="undefined" definedIn="demo/The Wizard's Tower/Programs/defaults/titleScreen.js">
             <desc><![CDATA[<div class="description">

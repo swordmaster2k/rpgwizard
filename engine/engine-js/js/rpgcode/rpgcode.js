@@ -152,7 +152,7 @@ RPGcode.prototype._getSpriteType = function (spriteId) {
  * Adds the layer image to the requested layer, it will be rendered immediately
  * after being added to the board.
  * 
- * Note: Layers added this way will be lost the moment the board is reloaded.
+ * Note: Layers images added this way will be lost the moment the board is reloaded.
  * 
  * @example
  * var image = {
@@ -3006,5 +3006,36 @@ RPGcode.prototype.unregisterMouseMove = function (globalScope) {
         rpgwizard.mouseMoveHandler = null;
     } else {
         rpgwizard.mouseHandler.mouseMoveHandler = null;
+    }
+};
+
+/**
+ * Update the layer image with the ID on the specified layer. If the image does
+ * not exist on the layer then there is no effect.
+ * 
+ * @example
+ * var image = {
+ *  "src": "battle-background.png", // pre-loaded asset image
+ *  "x": 150,                       // x location on board in pixels
+ *  "y": 100,                       // y location on board in pixels
+ *  "id": "battle.background"       // unique for this layer image
+ * }
+ * 
+ * rpgcode.updateLayerImage(image, 1); // Update the image with ID "battle.background" on layer 1 
+ * 
+ * @param {Object} image The layer image to update on the board.
+ * @param {Number} layer Layer index on the board, first layer starts at 0.
+ * @returns {undefined}
+ */
+RPGcode.prototype.updateLayerImage = function (image, layer) {
+    if (layer < rpgwizard.craftyBoard.board.layers.length) {
+        var boardLayer = rpgwizard.craftyBoard.board.layers[layer];
+        var length = boardLayer.images.length;
+        for (var i = 0; i < length; i++) {
+            if (boardLayer.images[i].id === image.id) {
+                boardLayer.images[i] = image;
+                break;
+            }
+        }
     }
 };

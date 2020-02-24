@@ -1,13 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!--
-
-    Copyright (c) 2015, rpgwizard.org, some files forked from rpgtoolkit.net <info@rpgwizard.org>
-
-    This Source Code Form is subject to the terms of the Mozilla Public
-    License, v. 2.0. If a copy of the MPL was not distributed with this
-    file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
--->
 <!DOCTYPE api SYSTEM "CompletionXml.dtd">
 <api language="RPGCode">
     <environment paramStartChar="(" paramEndChar=")" paramSeparator=", " terminal=";"/>
@@ -560,6 +551,138 @@
 </div>  
 <h3>Example</h3> 
 <pre class="prettyprint"><code>// Create a canvas and draw a red circle on it.var canvas = "myCanvas";rpgcode.createCanvas(640, 480, canvas);rpgcode.setColor(255, 0, 0, 1.0);rpgcode.drawCircle(100, 100, 25, canvas);rpgcode.renderNow(canvas); </code></pre>]]></desc>
+        </keyword>
+        <keyword name="rpgcode.drawImage(fileName, x, y, width, height, rotation, canvasId);" type="function" returnType="undefined" definedIn="engine/engine-js/js/rpgcode/rpgcode.js">
+            <desc><![CDATA[<div class="description">
+  Draws an image on the canvas specified or the default if none. 
+</div> 
+<div class="container-params"> 
+ <h3>Parameters:</h3> 
+ <table class="params"> 
+  <thead> 
+   <tr> 
+    <th>Name</th> 
+    <th>Type</th> 
+    <th class="last">Description</th> 
+   </tr> 
+  </thead> 
+  <tbody> 
+   <tr> 
+    <td class="name"><code>fileName</code></td> 
+    <td class="type"> <span class="param-type">String</span> </td> 
+    <td class="description last">The relative path to the image.</td> 
+   </tr> 
+   <tr> 
+    <td class="name"><code>x</code></td> 
+    <td class="type"> <span class="param-type">Number</span> </td> 
+    <td class="description last">The start position x in pixels.</td> 
+   </tr> 
+   <tr> 
+    <td class="name"><code>y</code></td> 
+    <td class="type"> <span class="param-type">Number</span> </td> 
+    <td class="description last">The start position y in pixels.</td> 
+   </tr> 
+   <tr> 
+    <td class="name"><code>width</code></td> 
+    <td class="type"> <span class="param-type">Number</span> </td> 
+    <td class="description last">In pixels.</td> 
+   </tr> 
+   <tr> 
+    <td class="name"><code>height</code></td> 
+    <td class="type"> <span class="param-type">Number</span> </td> 
+    <td class="description last">In pixels.</td> 
+   </tr> 
+   <tr> 
+    <td class="name"><code>rotation</code></td> 
+    <td class="type"> <span class="param-type">Number</span> </td> 
+    <td class="description last">In radians.</td> 
+   </tr> 
+   <tr> 
+    <td class="name"><code>canvasId</code></td> 
+    <td class="type"> <span class="param-type">String</span> </td> 
+    <td class="description last">The ID of the canvas to put the image on.</td> 
+   </tr> 
+  </tbody> 
+ </table> 
+</div>  
+<h3>Example</h3> 
+<pre class="prettyprint"><code>// Draw the image on the smaller canvas.rpgcode.drawImage("life.png", 0, 0, 32, 32, 0, "canvasId");</code></pre>]]></desc>
+        </keyword>
+        <keyword name="rpgcode.drawImagePart(fileName, srcX, srcY, srcWidth, srcHeight, destX, destY, destWidth, destHeight, rotation, canvasId);" type="function" returnType="undefined" definedIn="engine/engine-js/js/rpgcode/rpgcode.js">
+            <desc><![CDATA[<div class="description">
+  Draws part of an image on the canvas specified or the default if none. 
+</div> 
+<div class="container-params"> 
+ <h3>Parameters:</h3> 
+ <table class="params"> 
+  <thead> 
+   <tr> 
+    <th>Name</th> 
+    <th>Type</th> 
+    <th class="last">Description</th> 
+   </tr> 
+  </thead> 
+  <tbody> 
+   <tr> 
+    <td class="name"><code>fileName</code></td> 
+    <td class="type"> <span class="param-type">String</span> </td> 
+    <td class="description last">The relative path to the image.</td> 
+   </tr> 
+   <tr> 
+    <td class="name"><code>srcX</code></td> 
+    <td class="type"> <span class="param-type">Number</span> </td> 
+    <td class="description last">The start position x in pixels from the source image.</td> 
+   </tr> 
+   <tr> 
+    <td class="name"><code>srcY</code></td> 
+    <td class="type"> <span class="param-type">Number</span> </td> 
+    <td class="description last">The start position y in pixels from the source image.</td> 
+   </tr> 
+   <tr> 
+    <td class="name"><code>srcWidth</code></td> 
+    <td class="type"> <span class="param-type">Number</span> </td> 
+    <td class="description last">In pixels from the source image.</td> 
+   </tr> 
+   <tr> 
+    <td class="name"><code>srcHeight</code></td> 
+    <td class="type"> <span class="param-type">Number</span> </td> 
+    <td class="description last">In pixels from the source image.</td> 
+   </tr> 
+   <tr> 
+    <td class="name"><code>destX</code></td> 
+    <td class="type"> <span class="param-type">Number</span> </td> 
+    <td class="description last">The start position x in pixels on the destination canvas.</td> 
+   </tr> 
+   <tr> 
+    <td class="name"><code>destY</code></td> 
+    <td class="type"> <span class="param-type">Number</span> </td> 
+    <td class="description last">The start position y in pixels on the destination canvas.</td> 
+   </tr> 
+   <tr> 
+    <td class="name"><code>destWidth</code></td> 
+    <td class="type"> <span class="param-type">Number</span> </td> 
+    <td class="description last">In pixels on the destination canvas.</td> 
+   </tr> 
+   <tr> 
+    <td class="name"><code>destHeight</code></td> 
+    <td class="type"> <span class="param-type">Number</span> </td> 
+    <td class="description last">In pixels on the destination canvas.</td> 
+   </tr> 
+   <tr> 
+    <td class="name"><code>rotation</code></td> 
+    <td class="type"> <span class="param-type">Number</span> </td> 
+    <td class="description last">In radians.</td> 
+   </tr> 
+   <tr> 
+    <td class="name"><code>canvasId</code></td> 
+    <td class="type"> <span class="param-type">String</span> </td> 
+    <td class="description last">The ID of the canvas to put the image on.</td> 
+   </tr> 
+  </tbody> 
+ </table> 
+</div>  
+<h3>Example</h3> 
+<pre class="prettyprint"><code>// Set part of the image onto the smaller canvas.rpgcode.drawImagePart("objects.png", 64, 0, 16, 16, 8, 8, 16, 16, 0, "canvasId");</code></pre>]]></desc>
         </keyword>
         <keyword name="rpgcode.drawLine(x1, y1, x2, y2, lineWidth, canvasId);" type="function" returnType="undefined" definedIn="engine/engine-js/js/rpgcode/rpgcode.js">
             <desc><![CDATA[<div class="description">
@@ -3045,127 +3168,11 @@
  <span class="param-type">undefined</span> 
 </div>]]></desc>
         </keyword>
-        <keyword name="rpgcode.setImage(fileName, x, y, width, height, canvasId);" type="function" returnType="undefined" definedIn="engine/engine-js/js/rpgcode/rpgcode.js">
-            <desc><![CDATA[<div class="description">
-  Sets an image on the canvas specified or the default if none. 
-</div> 
-<div class="container-params"> 
- <h3>Parameters:</h3> 
- <table class="params"> 
-  <thead> 
-   <tr> 
-    <th>Name</th> 
-    <th>Type</th> 
-    <th class="last">Description</th> 
-   </tr> 
-  </thead> 
-  <tbody> 
-   <tr> 
-    <td class="name"><code>fileName</code></td> 
-    <td class="type"> <span class="param-type">String</span> </td> 
-    <td class="description last">The relative path to the image.</td> 
-   </tr> 
-   <tr> 
-    <td class="name"><code>x</code></td> 
-    <td class="type"> <span class="param-type">Number</span> </td> 
-    <td class="description last">The start position x in pixels.</td> 
-   </tr> 
-   <tr> 
-    <td class="name"><code>y</code></td> 
-    <td class="type"> <span class="param-type">Number</span> </td> 
-    <td class="description last">The start position y in pixels.</td> 
-   </tr> 
-   <tr> 
-    <td class="name"><code>width</code></td> 
-    <td class="type"> <span class="param-type">Number</span> </td> 
-    <td class="description last">In pixels.</td> 
-   </tr> 
-   <tr> 
-    <td class="name"><code>height</code></td> 
-    <td class="type"> <span class="param-type">Number</span> </td> 
-    <td class="description last">In pixels.</td> 
-   </tr> 
-   <tr> 
-    <td class="name"><code>canvasId</code></td> 
-    <td class="type"> <span class="param-type">String</span> </td> 
-    <td class="description last">The ID of the canvas to put the image on.</td> 
-   </tr> 
-  </tbody> 
- </table> 
-</div>  
-<h3>Example</h3> 
-<pre class="prettyprint"><code>// Set the image on the smaller canvas.rpgcode.setImage("life.png", 0, 0, 32, 32, lifeIcon);</code></pre>]]></desc>
+        <keyword name="rpgcode.setImage();" type="function" returnType="undefined" definedIn="engine/engine-js/js/rpgcode/rpgcode.js">
+            <desc><![CDATA[]]></desc>
         </keyword>
-        <keyword name="rpgcode.setImagePart(fileName, srcX, srcY, srcWidth, srcHeight, destX, destY, destWidth, destHeight, canvasId);" type="function" returnType="undefined" definedIn="engine/engine-js/js/rpgcode/rpgcode.js">
-            <desc><![CDATA[<div class="description">
-  Sets part of an image on the canvas specified or the default if none. 
-</div> 
-<div class="container-params"> 
- <h3>Parameters:</h3> 
- <table class="params"> 
-  <thead> 
-   <tr> 
-    <th>Name</th> 
-    <th>Type</th> 
-    <th class="last">Description</th> 
-   </tr> 
-  </thead> 
-  <tbody> 
-   <tr> 
-    <td class="name"><code>fileName</code></td> 
-    <td class="type"> <span class="param-type">String</span> </td> 
-    <td class="description last">The relative path to the image.</td> 
-   </tr> 
-   <tr> 
-    <td class="name"><code>srcX</code></td> 
-    <td class="type"> <span class="param-type">Number</span> </td> 
-    <td class="description last">The start position x in pixels from the source image.</td> 
-   </tr> 
-   <tr> 
-    <td class="name"><code>srcY</code></td> 
-    <td class="type"> <span class="param-type">Number</span> </td> 
-    <td class="description last">The start position y in pixels from the source image.</td> 
-   </tr> 
-   <tr> 
-    <td class="name"><code>srcWidth</code></td> 
-    <td class="type"> <span class="param-type">Number</span> </td> 
-    <td class="description last">In pixels from the source image.</td> 
-   </tr> 
-   <tr> 
-    <td class="name"><code>srcHeight</code></td> 
-    <td class="type"> <span class="param-type">Number</span> </td> 
-    <td class="description last">In pixels from the source image.</td> 
-   </tr> 
-   <tr> 
-    <td class="name"><code>destX</code></td> 
-    <td class="type"> <span class="param-type">Number</span> </td> 
-    <td class="description last">The start position x in pixels on the destination canvas.</td> 
-   </tr> 
-   <tr> 
-    <td class="name"><code>destY</code></td> 
-    <td class="type"> <span class="param-type">Number</span> </td> 
-    <td class="description last">The start position y in pixels on the destination canvas.</td> 
-   </tr> 
-   <tr> 
-    <td class="name"><code>destWidth</code></td> 
-    <td class="type"> <span class="param-type">Number</span> </td> 
-    <td class="description last">In pixels on the destination canvas.</td> 
-   </tr> 
-   <tr> 
-    <td class="name"><code>destHeight</code></td> 
-    <td class="type"> <span class="param-type">Number</span> </td> 
-    <td class="description last">In pixels on the destination canvas.</td> 
-   </tr> 
-   <tr> 
-    <td class="name"><code>canvasId</code></td> 
-    <td class="type"> <span class="param-type">String</span> </td> 
-    <td class="description last">The ID of the canvas to put the image on.</td> 
-   </tr> 
-  </tbody> 
- </table> 
-</div>  
-<h3>Example</h3> 
-<pre class="prettyprint"><code>// Set part of the image onto the smaller canvas.rpgcode.setImagePart("objects.png", 64, 0, 16, 16, 8, 8, 16, 16);</code></pre>]]></desc>
+        <keyword name="rpgcode.setImagePart();" type="function" returnType="undefined" definedIn="engine/engine-js/js/rpgcode/rpgcode.js">
+            <desc><![CDATA[]]></desc>
         </keyword>
         <keyword name="rpgcode.setPixel(x, y, canvasId);" type="function" returnType="undefined" definedIn="engine/engine-js/js/rpgcode/rpgcode.js">
             <desc><![CDATA[<div class="description">

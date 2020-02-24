@@ -564,6 +564,104 @@ RPGcode.prototype.drawCircle = function (x, y, radius, canvasId) {
 };
 
 /**
+ * Draws an image on the canvas specified or the default if none.
+ * 
+ * @example
+ * // Draw the image on the smaller canvas.
+ * rpgcode.drawImage("life.png", 0, 0, 32, 32, 0, "canvasId");
+ * 
+ * @param {String} fileName The relative path to the image.
+ * @param {Number} x The start position x in pixels.
+ * @param {Number} y The start position y in pixels.
+ * @param {Number} width In pixels.
+ * @param {Number} height In pixels.
+ * @param {Number} rotation In radians.
+ * @param {String} canvasId The ID of the canvas to put the image on.
+ */
+RPGcode.prototype.drawImage = function (fileName, x, y, width, height, rotation, canvasId) {
+    if (!canvasId) {
+        canvasId = "renderNowCanvas";
+    }
+    // Scale parameters
+    if (rpgcode.scale) {
+        x *= rpgcode.getScale();
+        y *= rpgcode.getScale();
+        width *= rpgcode.getScale();
+        height *= rpgcode.getScale();
+    }
+    var instance = rpgcode.canvases[canvasId];
+    if (instance) {
+        var image = Crafty.asset(Crafty.__paths.images + fileName);
+        if (image) {
+            try {
+                var context = instance.canvas.getContext("2d");
+                context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
+                context.globalAlpha = rpgcode.globalAlpha;
+                x += width / 2; y += height / 2; // rotate around center point
+                context.translate(x, y);
+                context.rotate(rotation);
+                context.drawImage(image, -width / 2, -height / 2, width, height);
+                context.rotate(-rotation);
+                context.translate(-x, -y);
+            } catch (err) {
+                console.log("Failed to setImage err=[%s]", err);
+            }
+        }
+    }
+};
+
+/**
+ * Draws part of an image on the canvas specified or the default if none.
+ * 
+ * @example
+ * // Set part of the image onto the smaller canvas.
+ * rpgcode.drawImagePart("objects.png", 64, 0, 16, 16, 8, 8, 16, 16, 0, "canvasId");
+ * 
+ * @param {String} fileName The relative path to the image.
+ * @param {Number} srcX The start position x in pixels from the source image.
+ * @param {Number} srcY The start position y in pixels from the source image.
+ * @param {Number} srcWidth In pixels from the source image.
+ * @param {Number} srcHeight In pixels from the source image.
+ * @param {Number} destX The start position x in pixels on the destination canvas.
+ * @param {Number} destY The start position y in pixels on the destination canvas.
+ * @param {Number} destWidth In pixels on the destination canvas.
+ * @param {Number} destHeight In pixels on the destination canvas.
+ * @param {Number} rotation In radians.
+ * @param {String} canvasId The ID of the canvas to put the image on.
+ */
+RPGcode.prototype.drawImagePart = function (fileName, srcX, srcY, srcWidth, srcHeight, destX, destY, destWidth, destHeight, rotation, canvasId) {
+    if (!canvasId) {
+        canvasId = "renderNowCanvas";
+    }
+    // Scale parameters
+    if (rpgcode.scale) {
+        destX *= rpgcode.getScale();
+        destY *= rpgcode.getScale();
+        destWidth *= rpgcode.getScale();
+        destHeight *= rpgcode.getScale();
+    }
+    var instance = rpgcode.canvases[canvasId];
+    if (instance) {
+        var image = Crafty.asset(Crafty.__paths.images + fileName);
+        if (image) {
+            try {
+                var context = instance.canvas.getContext("2d");
+                context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
+                context.globalAlpha = rpgcode.globalAlpha;
+                destX += destWidth / 2; destY += destHeight / 2; // rotate around center point
+                context.translate(destX, destY);
+                context.rotate(rotation);
+                context.drawImage(image, srcX, srcY, srcWidth, srcHeight, -destWidth / 2, -destHeight / 2, destWidth, destHeight);
+                context.rotate(-rotation);
+                context.translate(-destX, -destY);
+            } catch (err) {
+                console.log("Failed to setImage err=[%s]", err);
+            }
+        }
+    }
+};
+
+/**
  * Draws a line onto the canvas.
  * 
  * @example
@@ -2437,89 +2535,17 @@ RPGcode.prototype.setGlobalAlpha = function (alpha) {
 };
 
 /**
- * Sets an image on the canvas specified or the default if none.
- * 
- * @example
- * // Set the image on the smaller canvas.
- * rpgcode.setImage("life.png", 0, 0, 32, 32, lifeIcon);
- * 
- * @param {String} fileName The relative path to the image.
- * @param {Number} x The start position x in pixels.
- * @param {Number} y The start position y in pixels.
- * @param {Number} width In pixels.
- * @param {Number} height In pixels.
- * @param {String} canvasId The ID of the canvas to put the image on.
+ * @deprecated since 1.7.0, use "drawImage" instead.
  */
 RPGcode.prototype.setImage = function (fileName, x, y, width, height, canvasId) {
-    if (!canvasId) {
-        canvasId = "renderNowCanvas";
-    }
-    // Scale parameters
-    if (rpgcode.scale) {
-        x *= rpgcode.getScale();
-        y *= rpgcode.getScale();
-        width *= rpgcode.getScale();
-        height *= rpgcode.getScale();
-    }
-    var instance = rpgcode.canvases[canvasId];
-    if (instance) {
-        var image = Crafty.asset(Crafty.__paths.images + fileName);
-        if (image) {
-            try {
-                var context = instance.canvas.getContext("2d");
-                context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
-                context.globalAlpha = rpgcode.globalAlpha;
-                context.drawImage(image, x, y, width, height);
-            } catch (err) {
-                console.log("Failed to setImage err=[%s]", err);
-            }
-        }
-    }
+    rpgcode.drawImage(fileName, x, y, width, height, 0, canvasId);
 };
 
 /**
- * Sets part of an image on the canvas specified or the default if none.
- * 
- * @example
- * // Set part of the image onto the smaller canvas.
- * rpgcode.setImagePart("objects.png", 64, 0, 16, 16, 8, 8, 16, 16);
- * 
- * @param {String} fileName The relative path to the image.
- * @param {Number} srcX The start position x in pixels from the source image.
- * @param {Number} srcY The start position y in pixels from the source image.
- * @param {Number} srcWidth In pixels from the source image.
- * @param {Number} srcHeight In pixels from the source image.
- * @param {Number} destX The start position x in pixels on the destination canvas.
- * @param {Number} destY The start position y in pixels on the destination canvas.
- * @param {Number} destWidth In pixels on the destination canvas.
- * @param {Number} destHeight In pixels on the destination canvas.
- * @param {String} canvasId The ID of the canvas to put the image on.
+ * @deprecated since 1.7.0, use "drawImagePart" instead.
  */
 RPGcode.prototype.setImagePart = function (fileName, srcX, srcY, srcWidth, srcHeight, destX, destY, destWidth, destHeight, canvasId) {
-    if (!canvasId) {
-        canvasId = "renderNowCanvas";
-    }
-    // Scale parameters
-    if (rpgcode.scale) {
-        destX *= rpgcode.getScale();
-        destY *= rpgcode.getScale();
-        destWidth *= rpgcode.getScale();
-        destHeight *= rpgcode.getScale();
-    }
-    var instance = rpgcode.canvases[canvasId];
-    if (instance) {
-        var image = Crafty.asset(Crafty.__paths.images + fileName);
-        if (image) {
-            try {
-                var context = instance.canvas.getContext("2d");
-                context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
-                context.globalAlpha = rpgcode.globalAlpha;
-                context.drawImage(image, srcX, srcY, srcWidth, srcHeight, destX, destY, destWidth, destHeight);
-            } catch (err) {
-                console.log("Failed to setImage err=[%s]", err);
-            }
-        }
-    }
+    rpgcode.drawImagePart(fileName, srcX, srcY, srcWidth, srcHeight, destX, destY, destWidth, destHeight, 0, canvasId);
 };
 
 /**

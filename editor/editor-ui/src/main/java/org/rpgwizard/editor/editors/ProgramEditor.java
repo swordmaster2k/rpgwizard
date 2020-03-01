@@ -85,6 +85,10 @@ public final class ProgramEditor extends AbstractAssetEditorWindow
         return program;
     }
 
+    public Program getProgram() {
+        return program;
+    }
+
     @Override
     public void save() throws Exception {
         program.update(textArea.getText());

@@ -13,11 +13,11 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.ProgressMonitor;
 import javax.swing.SwingWorker;
+import org.pf4j.PluginManager;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.pluginsystem.Engine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.pf4j.PluginManager;
 
 /**
  *
@@ -54,6 +54,7 @@ public class StopAction extends AbstractAction {
                     public void done() {
                         Toolkit.getDefaultToolkit().beep();
                         instance.getMainToolBar().getRunButton().setEnabled(true);
+                        instance.getMainToolBar().getDebugButton().setEnabled(true);
                     }
                 };
                 worker.execute();

@@ -575,6 +575,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         } else if (window instanceof ProgramEditor) {
             ProgramEditor editor = (ProgramEditor) window;
             editor.forceReparsing();
+            toolBar.getDebugButton().setEnabled(true);
         }
     }
 
@@ -634,6 +635,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
             }
         } else if (frame instanceof ProgramEditor) {
             issuesPanel.clearNotices();
+            toolBar.getDebugButton().setEnabled(false);
         }
     }
 

@@ -20,6 +20,7 @@ import org.rpgwizard.editor.ui.actions.BucketAction;
 import org.rpgwizard.editor.ui.actions.CompileAction;
 import org.rpgwizard.editor.ui.actions.CopyAction;
 import org.rpgwizard.editor.ui.actions.CutAction;
+import org.rpgwizard.editor.ui.actions.DebugProgramAction;
 import org.rpgwizard.editor.ui.actions.EraserAction;
 import org.rpgwizard.editor.ui.actions.HelpAction;
 import org.rpgwizard.editor.ui.actions.LayerImageAction;
@@ -82,6 +83,7 @@ public final class MainToolBar extends JToolBar {
     private final EditorButton zoomOutButton;
 
     private final EditorButton runButton;
+    private final EditorButton debugButton;
     private final EditorButton stopButton;
     private final EditorButton compileButton;
 
@@ -233,6 +235,12 @@ public final class MainToolBar extends JToolBar {
         runButton.setToolTipText(EditorProperties.getProperty(EditorProperty.EDITOR_UI_TOOLTIP_RUN_GAME));
         runButton.setEnabled(false);
 
+        debugButton = new EditorButton();
+        debugButton.setAction(new DebugProgramAction());
+        debugButton.setIcon(Icons.getSmallIcon("bug"));
+        debugButton.setToolTipText(EditorProperties.getProperty(EditorProperty.EDITOR_UI_TOOLTIP_DEBUG_PROGRAM));
+        debugButton.setEnabled(false);
+
         stopButton = new EditorButton();
         stopButton.setAction(new StopAction());
         stopButton.setIcon(Icons.getSmallIcon("stop"));
@@ -294,6 +302,7 @@ public final class MainToolBar extends JToolBar {
         add(zoomOutButton);
         addSeparator();
         add(runButton);
+        add(debugButton);
         add(stopButton);
         addSeparator();
         add(compileButton);
@@ -385,6 +394,10 @@ public final class MainToolBar extends JToolBar {
         return runButton;
     }
 
+    public EditorButton getDebugButton() {
+        return debugButton;
+    }
+
     public EditorButton getStopButton() {
         return stopButton;
     }
@@ -419,6 +432,7 @@ public final class MainToolBar extends JToolBar {
         zoomInButton.setEnabled(enable);
         zoomOutButton.setEnabled(enable);
         runButton.setEnabled(enable);
+        // debugButton.setEnabled(enable);
         // stopButton.setEnabled(enable);
         if (SystemUtils.IS_OS_WINDOWS && enable) {
             // Only enable this feature on Windows for now.

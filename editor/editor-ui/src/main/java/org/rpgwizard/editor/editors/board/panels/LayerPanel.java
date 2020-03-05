@@ -26,7 +26,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
 import org.rpgwizard.editor.editors.board.AbstractBoardView;
 import org.rpgwizard.editor.editors.board.BoardLayerView;
 import org.rpgwizard.editor.editors.board.BoardLayersTableModel;
@@ -122,6 +121,10 @@ public class LayerPanel extends JPanel implements ChangeListener, ListSelectionL
                 opacitySlider.setValue((int) (selectedLayer.getOpacity() * 100));
             }
         }
+    }
+
+    public void updateTable() {
+        layerTable.repaint();
     }
 
     public void clearTable() {

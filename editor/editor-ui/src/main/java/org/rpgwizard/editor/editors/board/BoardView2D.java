@@ -7,7 +7,6 @@
  */
 package org.rpgwizard.editor.editors.board;
 
-import org.rpgwizard.editor.editors.board.brush.AbstractBrush;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -21,11 +20,11 @@ import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-
 import org.rpgwizard.common.assets.Board;
 import org.rpgwizard.common.assets.TilePixelOutOfRangeException;
-import org.rpgwizard.editor.editors.BoardEditor;
 import org.rpgwizard.editor.MainWindow;
+import org.rpgwizard.editor.editors.BoardEditor;
+import org.rpgwizard.editor.editors.board.brush.AbstractBrush;
 import org.rpgwizard.editor.utilities.GuiHelper;
 import org.rpgwizard.editor.utilities.TransparentDrawer;
 import org.slf4j.Logger;
@@ -181,7 +180,7 @@ public final class BoardView2D extends AbstractBoardView {
         ArrayList<BoardLayerView> layers = getLayerArrayList();
 
         for (BoardLayerView layer : layers) {
-            if (layer.isIsVisible()) {
+            if (layer.isVisible()) {
                 layer.drawImages(g);
             }
         }
@@ -260,7 +259,7 @@ public final class BoardView2D extends AbstractBoardView {
         ArrayList<BoardLayerView> layers = getLayerArrayList();
 
         for (BoardLayerView layer : layers) {
-            if (layer.isIsVisible()) {
+            if (layer.isVisible()) {
                 layer.drawSprites(g);
             }
         }
@@ -279,7 +278,7 @@ public final class BoardView2D extends AbstractBoardView {
         int startingLayer = board.getStartingLayer();
         ArrayList<BoardLayerView> layers = getLayerArrayList();
         for (BoardLayerView layer : layers) {
-            if (layer.isIsVisible()) {
+            if (layer.isVisible()) {
                 if (layer.getLayer().getNumber() == startingLayer) {
                     g.drawImage(startPositionImage, x, y, this);
                     int imageHeight = startPositionImage.getHeight(null);

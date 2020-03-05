@@ -10,6 +10,7 @@ package org.rpgwizard.editor;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.beans.PropertyVetoException;
@@ -25,6 +26,9 @@ import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 import org.apache.commons.io.FilenameUtils;
@@ -252,6 +256,11 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         SearchContext context = findDialog.getSearchContext();
         replaceDialog.setSearchContext(context);
         ///
+        /// statusBar
+        ///
+        JPanel statusBar = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        statusBar.setBorder(new CompoundBorder(new LineBorder(Color.DARK_GRAY), new EmptyBorder(4, 4, 4, 4)));
+        ///
         /// this
         ///
         JPanel parent = new JPanel(new BorderLayout());
@@ -263,6 +272,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         add(parent, BorderLayout.CENTER);
         add(westPanel, BorderLayout.WEST);
         add(eastPanel, BorderLayout.EAST);
+        add(statusBar, BorderLayout.SOUTH);
 
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);

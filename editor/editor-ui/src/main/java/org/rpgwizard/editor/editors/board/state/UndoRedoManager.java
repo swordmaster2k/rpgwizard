@@ -9,7 +9,6 @@
 package org.rpgwizard.editor.editors.board.state;
 
 import java.util.Stack;
-import org.rpgwizard.common.assets.Board;
 import org.rpgwizard.editor.MainWindow;
 
 /**

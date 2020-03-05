@@ -17,14 +17,13 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.rpgwizard.common.assets.Board;
+import org.rpgwizard.common.assets.Tile;
+import org.rpgwizard.common.assets.TilePixelOutOfRangeException;
 import org.rpgwizard.common.assets.board.BoardLayer;
 import org.rpgwizard.common.assets.board.BoardLayerImage;
 import org.rpgwizard.common.assets.board.BoardSprite;
 import org.rpgwizard.common.assets.board.BoardVector;
-import org.rpgwizard.common.assets.Tile;
-import org.rpgwizard.common.assets.TilePixelOutOfRangeException;
 import org.rpgwizard.common.assets.events.BoardChangedEvent;
 import org.rpgwizard.editor.ui.resources.Icons;
 import org.rpgwizard.editor.utilities.GuiHelper;
@@ -41,64 +40,13 @@ public class BoardLayerView {
      */
     private BoardLayer layer;
     /**
-     * Is it visible?
-     */
-    private boolean isVisible;
-    /**
-     * Is it locked?
-     */
-    private boolean isLocked;
-    /**
      * A reference to to MultilayerContainer this layer belongs to.
      */
     private MultiLayerContainer parentContainer;
     /**
-     * Layer opacity 100%, 80% etc.
-     */
-    private float opacity;
-    /**
      * Bounds of the layer.
      */
     private Rectangle bounds;
-
-    /**
-     * Default constructor.
-     */
-    public BoardLayerView() {
-
-    }
-
-    /**
-     * Used to create a new layer with the specified height and width.
-     *
-     * @param width
-     *            Width to use.
-     * @param height
-     *            Height to use.
-     */
-    public BoardLayerView(int width, int height) {
-
-    }
-
-    /**
-     * Used to create a new layer with the specified bounds from a rectangle.
-     *
-     * @param rectangle
-     *            Rectangle to get the bounds from.
-     */
-    public BoardLayerView(Rectangle rectangle) {
-
-    }
-
-    /**
-     * Used to create a new layer from an existing board.
-     *
-     * @param board
-     *            board to copy layers from
-     */
-    public BoardLayerView(Board board) {
-
-    }
 
     /**
      *
@@ -107,23 +55,6 @@ public class BoardLayerView {
      */
     public BoardLayerView(BoardLayer layer) {
         this.layer = layer;
-        isVisible = true;
-        isLocked = false;
-        opacity = 1.0f;
-    }
-
-    /**
-     *
-     *
-     * @param board
-     *            Parent board.
-     * @param width
-     *            Width to use.
-     * @param height
-     *            Height to use.
-     */
-    public BoardLayerView(Board board, int width, int height) {
-
     }
 
     /**
@@ -215,7 +146,7 @@ public class BoardLayerView {
      * @return current layer opacity
      */
     public float getOpacity() {
-        return opacity;
+        return this.layer.getOpacity();
     }
 
     /**
@@ -226,8 +157,8 @@ public class BoardLayerView {
      *            The new opacity for this layer.
      */
     public void setOpacity(float opacity) {
-        if (this.opacity != opacity) {
-            this.opacity = opacity;
+        if (this.layer.getOpacity() != opacity) {
+            this.layer.setOpacity(opacity);
 
             if (isVisible() && layer != null) {
                 final Board board = layer.getBoard();
@@ -244,7 +175,7 @@ public class BoardLayerView {
      * @return The visibility <code>true</code> or <code>false</code>.
      */
     public boolean isVisible() {
-        return isVisible;
+        return this.layer.isVisible();
     }
 
     /**
@@ -255,8 +186,8 @@ public class BoardLayerView {
      *            <code>true</code> to make the layer visible; <code>false</code> to make it invisible
      */
     public void setVisibility(boolean visible) {
-        if (isVisible != visible) {
-            isVisible = visible;
+        if (this.layer.isVisible() != visible) {
+            this.layer.setVisible(visible);
 
             if (layer != null) {
                 final Board board = layer.getBoard();
@@ -284,37 +215,10 @@ public class BoardLayerView {
     /**
      *
      *
-     * @return
+     * @param locked
      */
-    public boolean isIsVisible() {
-        return isVisible;
-    }
-
-    /**
-     *
-     *
-     * @param isVisible
-     */
-    public void setIsVisible(boolean isVisible) {
-        this.isVisible = isVisible;
-    }
-
-    /**
-     *
-     *
-     * @return
-     */
-    public boolean isIsLocked() {
-        return isLocked;
-    }
-
-    /**
-     *
-     *
-     * @param isLocked
-     */
-    public void setIsLocked(boolean isLocked) {
-        this.isLocked = isLocked;
+    public void setLocked(boolean locked) {
+        layer.setLocked(locked);
     }
 
     /**
@@ -354,7 +258,7 @@ public class BoardLayerView {
     public void drawTiles(Graphics2D g) throws TilePixelOutOfRangeException {
         Board parentBoard = layer.getBoard();
 
-        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, opacity));
+        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, layer.getOpacity()));
 
         for (int x = 0; x < parentBoard.getWidth(); x++) {
             for (int y = 0; y < parentBoard.getHeight(); y++) {
@@ -377,7 +281,7 @@ public class BoardLayerView {
      *            The graphics context to draw to.
      */
     public void drawVectors(Graphics2D g) {
-        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, opacity));
+        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, layer.getOpacity()));
 
         // Draw Vectors
         ArrayList<BoardVector> vectors = layer.getVectors();
@@ -412,7 +316,7 @@ public class BoardLayerView {
      *            Graphics context to draw to.
      */
     public void drawImages(Graphics2D g) {
-        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, opacity));
+        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, layer.getOpacity()));
         List<BoardLayerImage> images = layer.getImages();
         images.forEach((layerImage) -> {
             BufferedImage image = layerImage.getImage();
@@ -436,7 +340,7 @@ public class BoardLayerView {
      * @param g
      */
     public void drawSprites(Graphics2D g) {
-        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, opacity));
+        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, layer.getOpacity()));
 
         List<BoardSprite> sprites = layer.getSprites();
         sprites.sort((BoardSprite a, BoardSprite b) -> a.getY() - b.getY());

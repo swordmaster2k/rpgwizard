@@ -23,6 +23,11 @@ import org.rpgwizard.common.assets.Tile;
  */
 public class BoardLayer implements Cloneable {
 
+    // Non-IO
+    private boolean visible;
+    private boolean locked;
+    private float opacity;
+
     /**
      * The name of the layer.
      */
@@ -69,6 +74,9 @@ public class BoardLayer implements Cloneable {
         vectors = new ArrayList<>();
         sprites = new ArrayList<>();
         images = new ArrayList<>();
+        visible = true;
+        locked = false;
+        opacity = 1.0f;
 
         clearTiles();
     }
@@ -100,6 +108,33 @@ public class BoardLayer implements Cloneable {
             System.arraycopy(row, 0, tilesCopy[i], 0, length);
         }
         tiles = tilesCopy;
+        visible = boardLayer.visible;
+        locked = boardLayer.locked;
+        opacity = boardLayer.opacity;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
+
+    public float getOpacity() {
+        return opacity;
+    }
+
+    public void setOpacity(float opacity) {
+        this.opacity = opacity;
     }
 
     /**

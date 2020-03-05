@@ -527,6 +527,8 @@ public final class BoardEditor extends AbstractAssetEditorWindow
             if (oldType == UndoRedoType.LAYER || newState.getType() == UndoRedoType.LAYER) {
                 // Something layer based likely changed, tell the panel to update itself.
                 MainWindow.getInstance().getLayerPanel().setBoardView(boardView);
+            } else {
+                MainWindow.getInstance().getLayerPanel().updateTable();
             }
         } catch (IllegalStateException ex) {
             // Ignore it
@@ -549,6 +551,8 @@ public final class BoardEditor extends AbstractAssetEditorWindow
             if (oldType == UndoRedoType.LAYER || newState.getType() == UndoRedoType.LAYER) {
                 // Something layer based likely changed, tell the panel to update itself.
                 MainWindow.getInstance().getLayerPanel().setBoardView(boardView);
+            } else {
+                MainWindow.getInstance().getLayerPanel().updateTable();
             }
         } catch (IllegalStateException ex) {
             // Ignore it

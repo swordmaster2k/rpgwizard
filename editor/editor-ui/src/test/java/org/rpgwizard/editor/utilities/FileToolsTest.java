@@ -7,7 +7,6 @@
  */
 package org.rpgwizard.editor.utilities;
 
-import org.rpgwizard.editor.utilities.FileTools;
 import java.io.File;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -15,8 +14,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Test;
 import org.junit.Ignore;
+import org.junit.Test;
 
 /**
  *
@@ -53,7 +52,7 @@ public class FileToolsTest {
     String project = "Test";
     
     boolean expResult = true;
-    boolean result = FileTools.createDirectoryStructure(path, project);
+    boolean result = FileTools.createBlankProject(path, project);
     
     assertEquals(expResult, result);
   }

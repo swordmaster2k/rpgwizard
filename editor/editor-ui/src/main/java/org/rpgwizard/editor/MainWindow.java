@@ -585,7 +585,10 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         } else if (window instanceof ProgramEditor) {
             ProgramEditor editor = (ProgramEditor) window;
             editor.forceReparsing();
-            toolBar.getDebugButton().setEnabled(true);
+            if (!toolBar.getStopButton().isEnabled()) {
+                // Engine isn't running at the moment
+                toolBar.getDebugButton().setEnabled(true);
+            }
         }
     }
 
@@ -737,35 +740,42 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         return null;
     }
 
-    public void createNewProject() {
+    public void createNewProject(String projectName) {
         LOGGER.info("Creating new {}.", Project.class.getSimpleName());
 
-        String projectName = JOptionPane.showInputDialog(this, "Project Name:", "Create Project",
-                JOptionPane.QUESTION_MESSAGE);
+        // Remove any extensions the user may have tried to add.
+        projectName = FilenameUtils.removeExtension(projectName);
+        boolean result = FileTools.createBlankProject(FileTools.getProjectsDirectory(), projectName);
+        if (result) {
+            String fileName = FileTools.getProjectsDirectory() + File.separator + projectName + File.separator
+                    + projectName + CoreProperties.getDefaultExtension(Project.class);
+            File file = new File(fileName);
 
-        if (projectName != null) {
-            // Remove any . extensions the user may have tried to add.
-            projectName = FilenameUtils.removeExtension(projectName);
-
-            boolean result = FileTools.createDirectoryStructure(FileTools.getProjectsDirectory(), projectName);
-
-            if (result) {
-                String fileName = FileTools.getProjectsDirectory() + File.separator + projectName + File.separator
-                        + projectName + CoreProperties.getDefaultExtension(Project.class);
-                File file = new File(fileName);
-
-                Project project = new Project(new AssetDescriptor(file.toURI()), projectName);
-                try {
-                    // Write out new project file.
-                    AssetManager.getInstance().serialize(AssetManager.getInstance().getHandle(project));
-                    setProjectPath(file.getParent());
-                    setupProject(project, true);
-                } catch (IOException | AssetException ex) {
-                    LOGGER.error("Failed to create new {} projectName=[{}].", Project.class, projectName, ex);
-                }
-            } else {
-                // TODO: clean up directory structure?
+            Project project = new Project(new AssetDescriptor(file.toURI()), projectName);
+            try {
+                // Write out new project file.
+                AssetManager.getInstance().serialize(AssetManager.getInstance().getHandle(project));
+                setProjectPath(file.getParent());
+                setupProject(project, true);
+            } catch (IOException | AssetException ex) {
+                LOGGER.error("Failed to create new {} projectName=[{}].", Project.class, projectName, ex);
             }
+        } else {
+            // TODO: clean up directory structure?
+        }
+    }
+
+    public void createNewProject(String projectName, String template) {
+        LOGGER.info("Creating new {}.", Project.class.getSimpleName());
+        try {
+            // Remove any extensions the user may have tried to add.
+            projectName = FilenameUtils.removeExtension(projectName);
+            Project project = FileTools.createProjectFromTemplate(FileTools.getProjectsDirectory(), projectName,
+                    template);
+            setProjectPath(project.getFile().getParent());
+            setupProject(project, true);
+        } catch (IOException | AssetException ex) {
+            LOGGER.error("Failed to create new {} projectName=[{}].", Project.class, projectName, ex);
         }
     }
 

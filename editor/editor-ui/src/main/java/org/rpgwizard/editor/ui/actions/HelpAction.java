@@ -7,8 +7,14 @@
  */
 package org.rpgwizard.editor.ui.actions;
 
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import javax.swing.AbstractAction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -16,8 +22,20 @@ import javax.swing.AbstractAction;
  */
 public class HelpAction extends AbstractAction {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(HelpAction.class);
+
     @Override
     public void actionPerformed(ActionEvent e) {
+        LOGGER.info("Running on os.name=[{}], trying default browser.", System.getProperty("os.name"));
+        final String url = "https://github.com/swordmaster2k/rpgwizard/wiki";
+        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+            final Desktop desktop = Desktop.getDesktop();
+            try {
+                desktop.browse(new URI(url));
+            } catch (IOException | URISyntaxException ex) {
+                LOGGER.error("Could not start desktop browser!", ex);
+            }
+        }
     }
 
 }

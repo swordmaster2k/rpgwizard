@@ -11,7 +11,6 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.swing.ImageIcon;
 
 /**
@@ -87,7 +86,7 @@ public final class Icons {
         case "otf":
             return getIcon("font");
         default:
-            return getIcon("open");
+            return getIcon("document");
         }
     }
 

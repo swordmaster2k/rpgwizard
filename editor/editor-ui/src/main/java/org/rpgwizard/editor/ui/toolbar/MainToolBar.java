@@ -438,7 +438,7 @@ public final class MainToolBar extends JToolBar {
             // Only enable this feature on Windows for now.
             compileButton.setEnabled(enable);
         }
-        // helpButton.setEnabled(enable);
+        helpButton.setEnabled(enable);
     }
 
 }

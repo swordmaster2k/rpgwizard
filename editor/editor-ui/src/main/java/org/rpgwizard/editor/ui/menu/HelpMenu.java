@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import org.rpgwizard.editor.ui.actions.AboutAction;
+import org.rpgwizard.editor.ui.actions.HelpAction;
 import org.rpgwizard.editor.ui.resources.Icons;
 
 /**
@@ -19,7 +20,7 @@ import org.rpgwizard.editor.ui.resources.Icons;
  */
 public final class HelpMenu extends JMenu {
 
-    private JMenuItem indexMenuItem;
+    private JMenuItem helpMenuItem;
     private JMenuItem aboutMenuItem;
 
     public HelpMenu() {
@@ -27,18 +28,18 @@ public final class HelpMenu extends JMenu {
 
         this.setMnemonic(KeyEvent.VK_H);
 
-        this.configureIndexMenuItem();
+        this.configureHelpMenuItem();
         this.configureAboutMenuItem();
 
-        this.add(indexMenuItem);
+        this.add(helpMenuItem);
         this.add(aboutMenuItem);
     }
 
-    public void configureIndexMenuItem() {
-        indexMenuItem = new JMenuItem("Index"); // Help Index Menu (browser
-                                                // based?)
-        indexMenuItem.setIcon(Icons.getSmallIcon("help"));
-        indexMenuItem.setEnabled(false);
+    public void configureHelpMenuItem() {
+        helpMenuItem = new JMenuItem("Docs");
+        helpMenuItem.setIcon(Icons.getSmallIcon("help"));
+        helpMenuItem.addActionListener(new HelpAction());
+        helpMenuItem.setEnabled(true);
     }
 
     public void configureAboutMenuItem() {

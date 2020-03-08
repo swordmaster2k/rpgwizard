@@ -14,8 +14,11 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.commons.io.FileUtils;
 import org.rpgwizard.common.assets.AbstractAsset;
+import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.AssetException;
+import org.rpgwizard.common.assets.AssetHandle;
 import org.rpgwizard.common.assets.AssetManager;
+import org.rpgwizard.common.assets.Project;
 import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.properties.EditorProperties;
@@ -70,13 +73,38 @@ public final class FileTools {
         return System.getProperty("org.rpgwizard.execution.path");
     }
 
-    public static boolean createDirectoryStructure(String path, String projectName) {
+    public static boolean createBlankProject(String path, String projectName) {
         boolean result = true;
 
         result &= createDirectory(path + File.separator + projectName);
         result &= createAssetDirectories(path + File.separator + projectName);
 
         return result;
+    }
+
+    public static Project createProjectFromTemplate(String path, String projectName, String template)
+            throws IOException, AssetException {
+        // Copy the template into new directory
+        File srcDir = new File(path + File.separator + template);
+        File destDir = new File(path + File.separator + projectName);
+        FileUtils.copyDirectory(srcDir, destDir);
+
+        // Replace the .game file with new one
+        final String projectsDir = FileTools.getProjectsDirectory();
+        final String projectExt = CoreProperties.getDefaultExtension(Project.class);
+        final String prefix = projectsDir + File.separator + projectName + File.separator;
+        File srcFile = new File(prefix + template + projectExt);
+        File destFile = new File(prefix + projectName + projectExt);
+        FileUtils.moveFile(srcFile, destFile);
+        FileUtils.deleteQuietly(srcFile);
+
+        // Update the project name
+        AssetHandle handle = AssetManager.getInstance().deserialize(new AssetDescriptor(destFile.toURI()));
+        Project project = (Project) handle.getAsset();
+        project.setName(projectName);
+        AssetManager.getInstance().serialize(AssetManager.getInstance().getHandle(project));
+
+        return project;
     }
 
     public static boolean createAssetDirectories(String path) {

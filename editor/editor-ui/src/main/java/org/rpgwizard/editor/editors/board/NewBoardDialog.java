@@ -26,6 +26,11 @@ import javax.swing.event.ChangeEvent;
  */
 public final class NewBoardDialog extends JDialog {
 
+    private static int DEFAULT_WIDTH = 15;
+    private static int DEFAULT_HEIGHT = 10;
+    private static int DEFAULT_TILE_WIDTH = 32;
+    private static int DEFAULT_TILE_HEIGHT = 32;
+
     private final JSpinner widthSpinner;
     private final JSpinner heightSpinner;
     private final JSpinner tileWidthSpinner;
@@ -44,36 +49,43 @@ public final class NewBoardDialog extends JDialog {
     public NewBoardDialog(Window owner) {
         super(owner, "New Board", JDialog.ModalityType.APPLICATION_MODAL);
 
-        widthSpinner = new JSpinner(new SpinnerNumberModel(10, 3, 50, 1));
+        widthSpinner = new JSpinner(new SpinnerNumberModel(DEFAULT_WIDTH, 3, 50, 1));
         ((JSpinner.DefaultEditor) widthSpinner.getEditor()).getTextField().setColumns(7);
         widthSpinner.addChangeListener((ChangeEvent e) -> {
             updateDimensionsLabel();
         });
 
-        heightSpinner = new JSpinner(new SpinnerNumberModel(10, 3, 50, 1));
+        heightSpinner = new JSpinner(new SpinnerNumberModel(DEFAULT_HEIGHT, 3, 50, 1));
         ((JSpinner.DefaultEditor) heightSpinner.getEditor()).getTextField().setColumns(7);
         heightSpinner.addChangeListener((ChangeEvent e) -> {
             updateDimensionsLabel();
         });
 
-        tileWidthSpinner = new JSpinner(new SpinnerNumberModel(32, 16, 128, 1));
+        tileWidthSpinner = new JSpinner(new SpinnerNumberModel(DEFAULT_TILE_WIDTH, 16, 128, 1));
         ((JSpinner.DefaultEditor) tileWidthSpinner.getEditor()).getTextField().setColumns(7);
         tileWidthSpinner.addChangeListener((ChangeEvent e) -> {
             updateDimensionsLabel();
         });
 
-        tileHeightSpinner = new JSpinner(new SpinnerNumberModel(32, 16, 128, 1));
+        tileHeightSpinner = new JSpinner(new SpinnerNumberModel(DEFAULT_TILE_HEIGHT, 16, 128, 1));
         ((JSpinner.DefaultEditor) tileHeightSpinner.getEditor()).getTextField().setColumns(7);
         tileHeightSpinner.addChangeListener((ChangeEvent e) -> {
             updateDimensionsLabel();
         });
 
-        dimensionsLabel = new JLabel("320x320px", SwingConstants.RIGHT);
+        final int width = DEFAULT_WIDTH * DEFAULT_TILE_WIDTH;
+        final int height = DEFAULT_HEIGHT * DEFAULT_TILE_HEIGHT;
+        dimensionsLabel = new JLabel(width + "x" + height + "px", SwingConstants.RIGHT);
 
         okButton = new JButton("OK");
         okButton.addActionListener((ActionEvent e) -> {
-            value = new int[] { (int) widthSpinner.getValue(), (int) heightSpinner.getValue(),
-                    (int) tileWidthSpinner.getValue(), (int) tileHeightSpinner.getValue() };
+            // Remember last input to improve bulk creates
+            DEFAULT_WIDTH = (int) widthSpinner.getValue();
+            DEFAULT_HEIGHT = (int) heightSpinner.getValue();
+            DEFAULT_TILE_WIDTH = (int) tileWidthSpinner.getValue();
+            DEFAULT_TILE_HEIGHT = (int) tileHeightSpinner.getValue();
+
+            value = new int[] { DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_TILE_WIDTH, DEFAULT_TILE_HEIGHT };
             dispose();
         });
 

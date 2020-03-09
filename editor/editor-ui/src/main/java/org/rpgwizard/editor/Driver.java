@@ -28,6 +28,7 @@ import org.pushingpixels.substance.api.skin.SubstanceNebulaLookAndFeel;
 import org.rpgwizard.common.assets.AssetManager;
 import org.rpgwizard.common.assets.Project;
 import org.rpgwizard.common.assets.files.FileAssetHandleResolver;
+import org.rpgwizard.common.assets.serialization.ImageSerializer;
 import org.rpgwizard.common.assets.serialization.JsonAnimationSerializer;
 import org.rpgwizard.common.assets.serialization.JsonBoardSerializer;
 import org.rpgwizard.common.assets.serialization.JsonCharacterSerializer;
@@ -96,6 +97,7 @@ public class Driver {
         assetManager.registerSerializer(new JsonNPCSerializer());
         assetManager.registerSerializer(new TextProgramSerializer());
         assetManager.registerSerializer(new JsonTileSetSerializer());
+        assetManager.registerSerializer(new ImageSerializer());
     }
 
     public static PluginManager registerPlugins() throws URISyntaxException {

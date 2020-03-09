@@ -263,6 +263,16 @@ public final class ProgramEditor extends AbstractAssetEditorWindow
         textArea.selectAll();
     }
 
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (!MainWindow.getInstance().getSouthPanel().isVisible()) {
+            return;
+        }
+
+        List<ParserNotice> notices = textArea.getParserNotices();
+        MainWindow.getInstance().getIssuesPanel().addNotices(notices);
+    }
+
     public static void main(String[] args) {
         ProgramEditor editor = new ProgramEditor(new Program(null));
         editor.setVisible(true);
@@ -273,16 +283,6 @@ public final class ProgramEditor extends AbstractAssetEditorWindow
         frame.setSize(1024, 768);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-    }
-
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        if (!MainWindow.getInstance().getSouthPanel().isVisible()) {
-            return;
-        }
-
-        List<ParserNotice> notices = textArea.getParserNotices();
-        MainWindow.getInstance().getIssuesPanel().addNotices(notices);
     }
 
 }

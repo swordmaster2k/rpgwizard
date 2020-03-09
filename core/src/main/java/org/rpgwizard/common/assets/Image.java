@@ -7,22 +7,23 @@
  */
 package org.rpgwizard.common.assets;
 
-public class Program extends AbstractAsset {
+import java.awt.image.BufferedImage;
 
-    private final StringBuffer programBuffer;
+public class Image extends AbstractAsset {
 
-    public Program(AssetDescriptor assetDescriptor) {
+    private BufferedImage bufferedImage;
+
+    public Image(AssetDescriptor assetDescriptor) {
         super(assetDescriptor);
-        programBuffer = new StringBuffer();
+        bufferedImage = null;
     }
 
-    public StringBuffer getProgramBuffer() {
-        return programBuffer;
+    public BufferedImage getBufferedImage() {
+        return bufferedImage;
     }
 
-    public void update(String code) {
-        programBuffer.delete(0, programBuffer.length());
-        programBuffer.insert(0, code);
+    public void setBufferedImage(BufferedImage bufferedImage) {
+        this.bufferedImage = bufferedImage;
     }
 
 }

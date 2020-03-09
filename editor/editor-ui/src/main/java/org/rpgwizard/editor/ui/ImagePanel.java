@@ -13,8 +13,8 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.rpgwizard.editor.ui.resources.Icons;
+import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.rpgwizard.editor.utilities.TransparentDrawer;
 
 /**
@@ -24,7 +24,6 @@ import org.rpgwizard.editor.utilities.TransparentDrawer;
 public final class ImagePanel extends AbstractImagePanel {
 
     private final Image defaultImage;
-
     private Dimension scaledDimension;
 
     public ImagePanel() {

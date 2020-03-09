@@ -25,6 +25,7 @@ import org.rpgwizard.common.assets.Enemy;
 import org.rpgwizard.common.assets.Event;
 import org.rpgwizard.common.assets.EventType;
 import org.rpgwizard.common.assets.GraphicEnum;
+import org.rpgwizard.common.assets.Image;
 import org.rpgwizard.common.assets.Item;
 import org.rpgwizard.common.assets.NPC;
 import org.rpgwizard.common.assets.Program;
@@ -53,7 +54,7 @@ public class AssetSerializerTest {
 
         assetManager.registerResolver(new FileAssetHandleResolver());
 
-        // JSON.
+        // Serializers
         assetManager.registerSerializer(new JsonAnimationSerializer());
         assetManager.registerSerializer(new JsonCharacterSerializer());
         assetManager.registerSerializer(new JsonBoardSerializer());
@@ -64,6 +65,7 @@ public class AssetSerializerTest {
         assetManager.registerSerializer(new JsonNPCSerializer());
         assetManager.registerSerializer(new TextProgramSerializer());
         assetManager.registerSerializer(new JsonTileSetSerializer());
+        assetManager.registerSerializer(new ImageSerializer());
     }
 
     @Test
@@ -449,6 +451,18 @@ public class AssetSerializerTest {
         path = AssetSerializerTestHelper.serialize(asset, serializer);
         asset = AssetSerializerTestHelper.deserializeFile(path, serializer);
         checkItem(asset);
+    }
+    
+    @Test
+    public void testImageSerializier() throws Exception {
+        String path = AssetSerializerTestHelper.getPath("Graphics/Idle_north.png");
+        ImageSerializer serializer = new ImageSerializer();
+
+        // Deserialize original.
+        Image asset = AssetSerializerTestHelper.deserializeFile(path, serializer);
+        Assert.assertNotNull(asset.getBufferedImage());
+        Assert.assertEquals(55, asset.getBufferedImage().getWidth());
+        Assert.assertEquals(90, asset.getBufferedImage().getHeight());
     }
 
     private void checkItem(Item asset) {

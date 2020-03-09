@@ -7,7 +7,6 @@
  */
 package org.rpgwizard.editor.editors.board.panels;
 
-import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import javax.swing.JComboBox;
@@ -106,8 +105,6 @@ public final class BoardPanel extends AbstractModelPanel {
         // /
         // / this
         // /
-        setLayout(new GridBagLayout());
-
         insert(getJLabel("Description"), descriptionField);
         insert(getJLabel("Width"), widthSpinner);
         insert(getJLabel("Height"), heightSpinner);

@@ -10,10 +10,11 @@ package org.rpgwizard.editor.ui;
 import org.rpgwizard.common.assets.Animation;
 import org.rpgwizard.common.assets.Asset;
 import org.rpgwizard.common.assets.Board;
-import org.rpgwizard.common.assets.Enemy;
-import org.rpgwizard.common.assets.NPC;
 import org.rpgwizard.common.assets.Character;
+import org.rpgwizard.common.assets.Enemy;
+import org.rpgwizard.common.assets.Image;
 import org.rpgwizard.common.assets.Item;
+import org.rpgwizard.common.assets.NPC;
 import org.rpgwizard.common.assets.Program;
 import org.rpgwizard.common.assets.Project;
 import org.rpgwizard.editor.editors.AnimationEditor;
@@ -24,6 +25,7 @@ import org.rpgwizard.editor.editors.ItemEditor;
 import org.rpgwizard.editor.editors.NPCEditor;
 import org.rpgwizard.editor.editors.ProgramEditor;
 import org.rpgwizard.editor.editors.ProjectEditor;
+import org.rpgwizard.editor.editors.image.ImageEditor;
 
 /**
  * A factory for obtaining the corresponding file format editor based on the asset type.
@@ -59,6 +61,8 @@ public class EditorFactory {
             return new ProgramEditor((Program) asset);
         } else if (asset instanceof Project) {
             return new ProjectEditor((Project) asset);
+        } else if (asset instanceof Image) {
+            return new ImageEditor((Image) asset);
         }
 
         return null;

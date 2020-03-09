@@ -16,6 +16,7 @@ import java.awt.Rectangle;
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -46,6 +47,7 @@ import org.rpgwizard.common.assets.AssetManager;
 import org.rpgwizard.common.assets.Board;
 import org.rpgwizard.common.assets.Character;
 import org.rpgwizard.common.assets.Enemy;
+import org.rpgwizard.common.assets.Image;
 import org.rpgwizard.common.assets.Item;
 import org.rpgwizard.common.assets.NPC;
 import org.rpgwizard.common.assets.Program;
@@ -68,6 +70,7 @@ import org.rpgwizard.editor.editors.board.brush.BoardVectorAreaBrush;
 import org.rpgwizard.editor.editors.board.brush.BoardVectorBrush;
 import org.rpgwizard.editor.editors.board.brush.ShapeBrush;
 import org.rpgwizard.editor.editors.board.panels.LayerPanel;
+import org.rpgwizard.editor.editors.image.ImageEditor;
 import org.rpgwizard.editor.editors.program.IssuesTablePanel;
 import org.rpgwizard.editor.editors.tileset.NewTilesetDialog;
 import org.rpgwizard.editor.editors.tileset.TileSetUtil;
@@ -526,7 +529,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         LOGGER.debug("Closed internal frame e=[{}].", e.getInternalFrame().getClass());
 
         AbstractAssetEditorWindow window = (AbstractAssetEditorWindow) e.getInternalFrame();
-        if (window.getAsset().getFile() != null) {
+        if (window.getAsset() != null && window.getAsset().getFile() != null) {
             editorMap.remove(window.getAsset().getFile());
         }
 
@@ -546,6 +549,10 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         LOGGER.debug("Activated internal frame e=[{}].", e.getInternalFrame().getClass());
 
         AbstractAssetEditorWindow window = (AbstractAssetEditorWindow) e.getInternalFrame();
+        if (window.getAsset() == null) {
+            return;
+        }
+
         updateEditorMap(null, window.getAsset().getFile(), window);
 
         // Enable or Disable undo/redo buttons.
@@ -589,6 +596,9 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
                 // Engine isn't running at the moment
                 toolBar.getDebugButton().setEnabled(true);
             }
+        } else if (window instanceof ImageEditor) {
+            ImageEditor editor = (ImageEditor) window;
+            propertiesPanel.setModel(editor.getImage());
         }
     }
 
@@ -649,6 +659,11 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         } else if (frame instanceof ProgramEditor) {
             issuesPanel.clearNotices();
             toolBar.getDebugButton().setEnabled(false);
+        } else if (frame instanceof ImageEditor) {
+            ImageEditor editor = (ImageEditor) frame;
+            if (propertiesPanel.getModel() == editor.getImage()) {
+                propertiesPanel.setModel(null);
+            }
         }
     }
 
@@ -724,6 +739,9 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
             addToolkitEditorWindow(EditorFactory.getEditor(openProject(file)));
         } else if (fileName.endsWith(CoreProperties.getDefaultExtension(Program.class))) {
             addToolkitEditorWindow(EditorFactory.getEditor(openProgram(file)));
+        } else if (Arrays.asList(EditorFileManager.getImageExtensions())
+                .contains(FilenameUtils.getExtension(fileName))) {
+            addToolkitEditorWindow(EditorFactory.getEditor(openImage(file)));
         }
     }
 
@@ -1060,6 +1078,23 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
             }
         } catch (IOException | AssetException ex) {
             LOGGER.error("Failed to open {} file=[{}].", SpecialMove.class.getSimpleName(), file, ex);
+        }
+
+        return null;
+    }
+
+    public Image openImage(File file) {
+        LOGGER.info("Opening {} file=[{}].", Image.class.getSimpleName(), file);
+
+        try {
+            if (file.canRead()) {
+                AssetHandle handle = AssetManager.getInstance().deserialize(new AssetDescriptor(file.toURI()));
+                Image image = (Image) handle.getAsset();
+
+                return image;
+            }
+        } catch (IOException | AssetException ex) {
+            LOGGER.error("Failed to open {} file=[{}].", Image.class.getSimpleName(), file, ex);
         }
 
         return null;

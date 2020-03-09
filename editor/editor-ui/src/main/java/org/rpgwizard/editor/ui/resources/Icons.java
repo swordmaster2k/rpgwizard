@@ -73,6 +73,7 @@ public final class Icons {
         case "folder":
             return getIcon("open");
         case "jpg":
+        case "jpeg":
         case "png":
         case "gif":
             return getIcon("image");

@@ -21,7 +21,7 @@ function start() {
       backgroundImage: "battle-background.png",
       battleMusic: "Battle.ogg",
       itemSoundEffect: "item.ogg"
-   }
+   };
    hud.close();
    battle.show(config, function(result) {
       var config = {

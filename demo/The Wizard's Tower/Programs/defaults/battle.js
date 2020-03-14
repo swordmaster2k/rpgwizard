@@ -426,7 +426,7 @@ Battle.prototype._placeEnemies = function(enemies) {
       ];
    }
    var xShift = -Crafty.viewport._x - rpgwizard.craftyBoard.xShift;
-   var yShift = -Crafty.viewport._y - rpgwizard.craftyBoard.yShift
+   var yShift = -Crafty.viewport._y - rpgwizard.craftyBoard.yShift;
    for (var i = 0; i < enemies.length; i++) {
       rpgcode.setSpriteLocation(enemies[i].id, cells[i].center.x + xShift, cells[i].center.y + yShift, this._state.stageLayer, false);
       rpgcode.setSpriteStance(enemies[i].id, "EAST");
@@ -487,7 +487,7 @@ Battle.prototype._placeCharacters = function(characters) {
       ];
    }
    var xShift = -Crafty.viewport._x - rpgwizard.craftyBoard.xShift;
-   var yShift = -Crafty.viewport._y - rpgwizard.craftyBoard.yShift
+   var yShift = -Crafty.viewport._y - rpgwizard.craftyBoard.yShift;
    for (var i = 0; i < characters.length; i++) {
       rpgcode.setSpriteLocation(characters[i].id, cells[i].center.x + xShift, cells[i].center.y + yShift, this._state.stageLayer, false);
       rpgcode.setSpriteStance(characters[i].id, "WEST");
@@ -704,6 +704,7 @@ Battle.prototype._handleAction = function() {
          case 3:
          case 4:
             this._getMenuItems()[this.window.menu.selectedIndex - 1].execute();
+            return;
          default:
             return;
       }

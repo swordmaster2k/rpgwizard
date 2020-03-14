@@ -33,7 +33,7 @@ function GUI() {
          r: 255,
          g: 255,
          b: 255,
-         a: 0.3
+         a: 0.2
       },
       grid: {
          cell: {
@@ -55,6 +55,11 @@ function GUI() {
       y: 35,
       line: 10
    };
+   this.fontSize = 20;
+   this.fontFamily = "Lucida Console";
+
+   this.frames = {};
+   this.buttons = {};
 }
 
 GUI.prototype.getBackgroundGradient = function() {
@@ -62,11 +67,19 @@ GUI.prototype.getBackgroundGradient = function() {
 };
 
 GUI.prototype.getFontSize = function() {
-   return 20;
+   return this.fontSize;
 };
 
-GUI.prototype.getFontFamily = function() {
-   return "Lucida Console";
+GUI.prototype.setFontSize = function(size) {
+   this.fontSize = size;
+};
+
+GUI.prototype.getFontFamily = function(family) {
+   return this.fontFamily;
+};
+
+GUI.prototype.setFontFamily = function(family) {
+   this.fontFamily = family;
 };
 
 GUI.prototype.getFont = function() {
@@ -128,6 +141,7 @@ GUI.prototype.createFrame = function(config) {
          }
          rpgcode.clearCanvas(id);
          rpgcode.destroyCanvas(id);
+         delete gui.frames[id];
       };
 
       var setVisible = function(visible) {
@@ -136,6 +150,15 @@ GUI.prototype.createFrame = function(config) {
             draw();
          } else {
             rpgcode.clearCanvas(id);
+         }
+      };
+
+      var setLocation = function(newX, newY) {
+         this.x = newX;
+         this.y = newY;
+         rpgcode.setCanvasPosition(newX, newY, id);
+         if (_visible) {
+            rpgcode.renderNow(id);
          }
       };
 
@@ -347,7 +370,7 @@ GUI.prototype.createFrame = function(config) {
       };
 
       var _drawMenuItem = function(item, index) {
-         rpgcode.font = gui.getFont();
+         rpgcode.setFont(gui.getFontSize(), gui.getFontFamily());
          var x = gui.padding.x;
          var y = gui.padding.y + ((gui.getFontSize() + gui.padding.line) * index);
          gui.prepareTextColor();
@@ -413,6 +436,7 @@ GUI.prototype.createFrame = function(config) {
          destroy: destroy,
          draw: draw,
          setVisible: setVisible,
+         setLocation: setLocation,
          setImage: setImage,
          getMenu: getMenu,
          setMenu: setMenu,
@@ -421,7 +445,137 @@ GUI.prototype.createFrame = function(config) {
       };
    })();
    frame.init();
+   this.frames[frame.id] = frame;
    return frame;
+};
+
+GUI.prototype.createButton = function(config) {
+   var button = (function() {
+      var _visible = false;
+      var _image = null;
+      var _text = config.text;
+      var _focused = false;
+
+      var id = config.id;
+      
+      rpgcode.setFont(gui.getFontSize(), gui.getFontFamily());
+      var width = config.width ? config.width : rpgcode.measureText(_text).width + (gui.padding.x * 2);
+      var height = config.height ? config.height : rpgcode.measureText(_text).height + gui.padding.y;
+
+      var x = config.x;
+      var y = config.y;
+      var onClick = config.onClick;
+
+      var init = function() {
+         // Create the canvas element.
+         rpgcode.createCanvas(width, height, id);
+         rpgcode.setCanvasPosition(x, y, id);
+      };
+
+      var destroy = function() {
+         rpgcode.clearCanvas(id);
+         rpgcode.destroyCanvas(id);
+         delete gui.buttons[id];
+      };
+
+      var setVisible = function(visible) {
+         _visible = visible;
+         if (_visible) {
+            draw();
+         } else {
+            rpgcode.clearCanvas(id);
+         }
+      };
+
+      var setLocation = function(newX, newY) {
+         this.x = newX;
+         this.y = newY;
+         rpgcode.setCanvasPosition(newX, newY, id);
+         if (_visible) {
+            rpgcode.renderNow(id);
+         }
+      };
+
+      var setImage = function(image) {
+         _image = image;
+         draw();
+      };
+
+      var isFocused = function() {
+         return _focused;
+      };
+
+      var onEnter = function() {
+         _focused = true;
+         draw();
+      };
+
+      var onExit = function() {
+         _focused = false;
+         draw();
+      };
+
+      var draw = function() {
+         const border = gui.borderWidth > 0 ? gui.borderWidth : 0;
+         const radius = gui.cornerRadius > 0 ? gui.cornerRadius : 0;
+         gui.setGradient(width / 2, 0, width / 2, height * 1.75, id);
+         rpgcode.fillRoundedRect(border, border, width - (border * 2), height - (border * 2), radius, id);
+         gui.removeGradient();
+         gui.setColor(gui.colors.border);
+         rpgcode.drawRoundedRect(border, border, width - (border * 2), height - (border * 2), border, radius, id);
+
+         if (_focused) {
+            _drawFocus(border, radius);
+         }
+         if (_image) {
+            _drawImage();
+         }
+         if (_text) {
+            _drawText();
+         }
+         rpgcode.renderNow(id);
+      };
+
+      var _drawFocus = function(border, radius) {
+         gui.setColor(gui.colors.border);
+         rpgcode.setGlobalAlpha(gui.colors.selection.a);
+         rpgcode.fillRoundedRect(border, border, width - (border * 2), height - (border * 2), radius, id);
+         rpgcode.setGlobalAlpha(1.0);
+      };
+
+      var _drawImage = function() {
+         rpgcode.setImage(_image, gui.borderWidth * 3, gui.borderWidth * 3, width - (gui.borderWidth * 6), height - (gui.borderWidth * 6), id);
+      };
+
+      var _drawText = function() {
+         rpgcode.setFont(gui.getFontSize(), gui.getFontFamily());
+         var x = (width / 2) - (rpgcode.measureText(_text).width / 2);
+         var y = gui.padding.y;
+         gui.prepareTextColor();
+         rpgcode.drawText(x, y, _text, id);
+      };
+
+      return {
+         id: id,
+         width: width,
+         height: height,
+         x: x,
+         y: y,
+         onClick: onClick,
+         onEnter: onEnter,
+         onExit: onExit,
+         init: init,
+         destroy: destroy,
+         draw: draw,
+         setVisible: setVisible,
+         setLocation: setLocation,
+         setImage: setImage,
+         isFocused: isFocused
+      };
+   })();
+   button.init();
+   this.buttons[button.id] = button;
+   return button;
 };
 
 GUI.prototype.prepareTextColor = function() {
@@ -442,4 +596,58 @@ GUI.prototype.prepareGridCellColor = function() {
 
 GUI.prototype.prepareGridBorderColor = function() {
    rpgcode.setColor(this.colors.grid.border.r, this.colors.grid.border.g, this.colors.grid.border.b, this.colors.grid.border.a);
+};
+
+GUI.prototype.listenToMouse = function(listen) {
+   if (listen) {
+      rpgcode.registerMouseClick(this._handleMouseInput.bind(this), false);
+      rpgcode.registerMouseDoubleClick(this._handleMouseInput.bind(this), false);
+      rpgcode.registerMouseDown(this._handleMouseInput.bind(this), false);
+      rpgcode.registerMouseUp(this._handleMouseInput.bind(this), false);
+      rpgcode.registerMouseMove(this._handleMouseInput.bind(this), false);
+   } else {
+      rpgcode.unregisterMouseClick(false);
+      rpgcode.unregisterMouseDoubleClick(false);
+      rpgcode.unregisterMouseDown(false);
+      rpgcode.unregisterMouseUp(false);
+      rpgcode.unregisterMouseMove(false);
+   }
+};
+
+GUI.prototype._handleMouseInput = function(e, type) {
+   switch (e.type) {
+      case "click":
+         for (const button of Object.values(this.buttons)) {
+            if (this._mouseWithinBounds(e, button)) {
+               button.onClick();
+               break;
+            }
+         }
+         break;
+      case "dblclick":
+         break;
+      case "mousedown":
+         break;
+      case "mouseup":
+         break;
+      case "mousemove":
+         for (const button of Object.values(this.buttons)) {
+            if (this._mouseWithinBounds(e, button)) {
+               if (!button.isFocused()) {
+                  button.onEnter();
+               }
+            } else if (button.isFocused()) {
+               button.onExit();
+            }
+         }
+         break;
+      default:
+      // Do nothing
+   }
+   return;
+};
+
+GUI.prototype._mouseWithinBounds = function(e, bounds) {
+   // See: https://stackoverflow.com/a/33066028
+   return (bounds.x <= gui.descale(e.realX)) && (gui.descale(e.realX) <= (bounds.x + bounds.width)) && (bounds.y <= gui.descale(e.realY)) && (gui.descale(e.realY) <= (bounds.y + bounds.height));
 };

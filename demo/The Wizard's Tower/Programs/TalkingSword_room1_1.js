@@ -1,7 +1,5 @@
 /* global rpgcode */
 
-rpgcode.clearDialog();
-
 var swordActive = rpgcode.getGlobal("swordActive");
 if (swordActive) {
   rpgcode.sendToBoard("Room2.board", 5.5, 17);
@@ -12,9 +10,9 @@ if (swordActive) {
       nextMarkerImage: "next_marker.png",
       profileImage: "sword_profile_1_small.png",
       typingSound: "typing_loop.wav",
-      text: "Hey where are you going. Come back here."
+      text: `Hey where are you going. Come back here.`
    };
-   dialog.show(config, rpgcode.endProgram);
+   await (dialog.show(config));
+   rpgcode.endProgram();
 }
-
-
+

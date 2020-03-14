@@ -1,10 +1,10 @@
 if (rpgcode.canvases[Lighting.canvasId]) {
-   var location = rpgcode.getCharacterLocation(false, true);
-   var oldLocation = rpgcode.getGlobal(Lighting.canvasId);
-   if (Lighting.needRedraw || !oldLocation || oldLocation.x !=  location.x || oldLocation.y != location.y) {
-      rpgcode.setGlobal(Lighting.canvasId, location);
+   var loc = rpgcode.getCharacterLocation(false, true);
+   var oldLoc = rpgcode.getGlobal(Lighting.canvasId);
+   if (Lighting.needRedraw || !oldLoc || oldLoc.x !== loc.x || oldLoc.y !== loc.y) {
+      rpgcode.setGlobal(Lighting.canvasId, loc);
       var ctx = rpgcode.canvases[Lighting.canvasId].canvas.getContext('2d');
       var scale = rpgcode.getScale();
-      Lighting.drawCutOutLight(ctx, location.x * scale, location.y * scale, 75 * scale);
+      Lighting.drawCutOutLight(ctx, loc.x * scale, loc.y * scale, 75 * scale);
    }
 }

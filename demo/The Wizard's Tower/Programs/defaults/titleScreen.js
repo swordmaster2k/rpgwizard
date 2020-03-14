@@ -23,25 +23,21 @@ function TitleScreen() {
  *  "backgroundImage": "startscreen.png", 
  *  "titleScreenMusic": "intro.ogg"
  * };
- * titleScreen.show(config, function() {
- *  // Show the intro when the user has passed the title screen.
- *  if (playIntro) {
- *      showIntro();
- *  } else {
- *      finish();
- *  }
- * }); 
+ * await titleScreen.show(config); 
  * 
  * @param {Object} config
- * @param {Callback} callback
  * @returns {undefined}
  */
-TitleScreen.prototype.show = function(config, callback) {
-   this._loadAssets(config, function() {
-      this._callback = callback;
-      this._setup(config);
-      rpgcode.playSound("titleScreen.music", true, 1.0);
-   }.bind(this));
+TitleScreen.prototype.show = async function(config) {
+   return new Promise((resolve, reject) => {
+      this._loadAssets(config, async function() {
+         this._callback = function() {
+            resolve();
+         };
+         this._setup(config);
+         rpgcode.playSound("titleScreen.music", true, 1.0);
+      }.bind(this));
+   });
 };
 
 TitleScreen.prototype._end = function(config, callback) {

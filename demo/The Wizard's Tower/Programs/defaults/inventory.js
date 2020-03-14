@@ -29,25 +29,27 @@ function Inventory() {
  *       "backgroundImage": "startscreen.png", 
  *       "inventoryMusic": "intro.ogg"
  *    };
- *    inventory.show(config, function() {
- *       rpgcode.endProgram();
- *    });
+ *    await inventory.show(config);
+ *    rpgcode.endProgram();
  * }
  * 
  * @param {Object} config
- * @param {Callback} callback
  * @returns {undefined}
  */
-Inventory.prototype.show = function(config, callback) {
-   this.visible = true;
-   this._loadAssets(config, function() {
-      this._callback = callback;
-      this._setup(config);
-      if (this._config.inventoryMusic) {
-         rpgcode.stopSound(rpgcode.getBoard().backgroundMusic);
-         rpgcode.playSound("inventory.music", true, 1.0);
-      }
-   }.bind(this));
+Inventory.prototype.show = async function(config) {
+   return new Promise((resolve, reject) => {
+      this.visible = true;
+      this._loadAssets(config, async function() {
+         this._callback = function() {
+            resolve();
+         };
+         this._setup(config);
+         if (this._config.inventoryMusic) {
+            rpgcode.stopSound(rpgcode.getBoard().backgroundMusic);
+            rpgcode.playSound("inventory.music", true, 1.0);
+         }
+      }.bind(this));
+   });
 };
 
 Inventory.prototype.close = function() {
@@ -140,7 +142,7 @@ Inventory.prototype._loadAssets = function(config, callback) {
       "audio": {}
    };
    if (config.backgroundImage) {
-      assets["images"].push(config.backgroundImage);
+      assets.images.push(config.backgroundImage);
    }
    if (config.inventoryMusic) {
       assets.audio["inventory.music"] = config.inventoryMusic;
@@ -162,7 +164,7 @@ Inventory.prototype._handleSelectedItem = function(item) {
       default:
          break;
    }
-}
+};
 
 Inventory.prototype._applyItemEffects = function(effects) {
    var character = rpgcode.getCharacter();
@@ -182,7 +184,7 @@ Inventory.prototype._applyItemEffects = function(effects) {
    if (character.magic > character.maxMagic) {
       character.magic = character.maxMagic;
    }
-}
+};
 
 //
 // Input Functions

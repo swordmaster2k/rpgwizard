@@ -54,7 +54,7 @@ function Weather() {
 }
 
 /**
- *  Shows the weather system based the supplied config.
+ * Shows the weather system based the supplied config.
  * 
  * @example
  *  var config = {
@@ -62,19 +62,23 @@ function Weather() {
  *       sound: "rain.wav"
  *    }
  * };
- * weather.show(config, function() {console.log("weather started");});
+ * await weather.show(config);
+ * console.log("weather started");
  * rpgcode.endProgram();
  * 
  * @param {Object} config
- * @param {Callback} callback
  * @returns {undefined}
  */
-Weather.prototype.show = function(config, callback) {
-   this._loadAssets(config, function() {
-      this._callback = callback;
-      this._setup(config);
-      callback();
-   }.bind(this));
+Weather.prototype.show = async function(config, callback) {
+   return new Promise((resolve, reject) => {
+      this._loadAssets(config, async function() {
+         this._callback = function() {
+            resolve();
+         };
+         this._setup(config);
+         this._callback();
+      }.bind(this));
+   });
 };
 
 /**
@@ -241,7 +245,7 @@ Weather.prototype._drawSnow = function() {
          y: Math.random() * height,
          r: Math.random() * 4 + 1,
          d: Math.random() * mp
-      })
+      });
    }
 
    function draw() {
@@ -311,4 +315,4 @@ Weather.prototype._drawSnow = function() {
    }
 
    draw();
-}
+};

@@ -29,12 +29,12 @@ arpg.prototype._getRandomDirection = function(origin, distance) {
    while (attempts < directions.length) {
       choice = Math.floor(rpgcode.getRandom(0, directions.length - 1));
       var objects = this.getClosestObjects(origin, directions[choice], distance);
-      if (objects["solids"].length < 1 || objects["solids"][0].distance > distance) {
+      if (objects.solids.length < 1 || objects.solids[0].distance > distance) {
          return directions[choice];
       }
-      if (objects["solids"][0].distance > best.distance) {
+      if (objects.solids[0].distance > best.distance) {
          best.direction = directions[choice];
-         best.distance = objects["solids"][0].distance;
+         best.distance = objects.solids[0].distance;
       }
       attempts++;
    }
@@ -50,13 +50,13 @@ arpg.prototype.getClosestObjects = function(origin, direction, distance) {
          vector = {
             x: 0,
             y: -1
-         }
+         };
          break;
       case "SOUTH":
          vector = {
             x: 0,
             y: 1
-         }
+         };
          break;
       case "NORTH_EAST":
       case "SOUTH_EAST":
@@ -64,7 +64,7 @@ arpg.prototype.getClosestObjects = function(origin, direction, distance) {
          vector = {
             x: 1,
             y: 0
-         }
+         };
          break;
       case "NORTH_WEST":
       case "SOUTH_WEST":
@@ -72,7 +72,7 @@ arpg.prototype.getClosestObjects = function(origin, direction, distance) {
          vector = {
             x: -1,
             y: 0
-         }
+         };
          break;
    }
 
@@ -148,12 +148,13 @@ arpg.prototype.attackCharacter = function(details, callback) {
 };
 
 arpg.prototype.attackEnemy = function(details, callback) {
+   var result = {
+      "dead": false,
+      "location": null
+   };
    try {
       var sprite = rpgcode.getSprite(details.spriteId).sprite;
-      var result = {
-         "dead": false,
-         "location": null
-      };
+
    
       if (!sprite.enemy.isHit && !sprite.enemy.isInvulnerable) {
          var force = ARPG._getPushForce(details.direction, details.attackVelocity);
@@ -311,9 +312,9 @@ arpg.prototype.slashSword = function(attackPushTime, attackVelocity, attackRange
    var getHits = function() {
       // Check to see if we hit any enemies.
       var hits = ARPG.getClosestObjects(location, direction, attackRangePx);
-      if (hits["enemies"].length > 0) {
+      if (hits.enemies.length > 0) {
          // Simply attack the first enemy.
-         var sprite = hits["enemies"][0]
+         var sprite = hits.enemies[0];
          var spriteDirection = rpgcode.getSpriteDirection(sprite.id);
          var defendAnimationId;
          switch (spriteDirection) {
@@ -339,9 +340,9 @@ arpg.prototype.slashSword = function(attackPushTime, attackVelocity, attackRange
          } else {
             rpgcode.endProgram();
          }
-      } else if (hits["npcs"].length > 0) {
+      } else if (hits.npcs.length > 0) {
          if (hitNpc) {
-            hitNpc(hits["npcs"][0]);
+            hitNpc(hits.npcs[0]);
          } else {
             rpgcode.endProgram();
          }

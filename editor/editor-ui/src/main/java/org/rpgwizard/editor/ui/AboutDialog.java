@@ -39,7 +39,7 @@ public final class AboutDialog extends JDialog {
                 + " - Grindalf, for supplying the demo game assets." + "\n\n" + "Some icons by:" + "\n"
                 + " - Yusuke Kamiyamane. Licensed under a Creative Commons Attribution 3.0 License." + "\n"
                 + " - Icons8. Licensed under a Creative Commons Attribution-NoDerivs 3.0 Unported." + "\n\n"
-                + "Copyright 2016-2019 RPGWizard. All rights reserved." + "\n\n"
+                + "Copyright 2016-2020 RPGWizard. All rights reserved." + "\n\n"
                 + "Covered Software is provided under this License on "
                 + "an “as is” basis, without warranty of any kind, either "
                 + "expressed, implied, or statutory, including, without "
@@ -68,7 +68,7 @@ public final class AboutDialog extends JDialog {
         box.add(Box.createGlue());
         box.add(titleLabel);
         box.add(Box.createVerticalStrut(10));
-        box.add(new JLabel("Copyright 2016-2017 RPGWizard. All rights reserved."));
+        box.add(new JLabel("Copyright 2016-2020 RPGWizard. All rights reserved."));
         box.add(Box.createVerticalStrut(10));
         box.add(disclaimerArea);
         box.add(Box.createGlue());

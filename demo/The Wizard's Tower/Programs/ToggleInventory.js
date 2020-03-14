@@ -9,7 +9,6 @@ if (inventory.visible) {
 //      "backgroundImage": "startscreen.png", 
 //      "inventoryMusic": "intro.ogg"
    };
-   inventory.show(config, function() {
-      rpgcode.endProgram();
-   });
+   await (inventory.show(config));
+   rpgcode.endProgram();
 }

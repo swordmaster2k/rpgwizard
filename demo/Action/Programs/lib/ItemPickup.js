@@ -11,4 +11,4 @@ switch (this.sprite.name) {
 }
 
 rpgcode.destroySprite(this.sprite.id);
-rpgcode.endProgram()
+rpgcode.endProgram();

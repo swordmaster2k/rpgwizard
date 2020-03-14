@@ -20,7 +20,7 @@ var assets = {
       "defaults/inventory.js",
       "defaults/titleScreen.js"
   ]
-}
+};
 
 // Set the game globals.
 rpgcode.setGlobal("swordactive", false);
@@ -44,79 +44,69 @@ var startingItems = [
    "strength_potion.item"
 ];
 
-rpgcode.loadAssets(assets, function() {
+function setupItems() {
+   // Setup starting inventory items
+   if (startingItems.length === 0) {
+      // No more items to add, setup inventory key, and return
+      rpgcode.registerKeyDown("Q", function() {
+         rpgcode.runProgram("ToggleInventory.js");
+      }, true);
+      return;
+   } else {
+      // Keep adding items
+      rpgcode.giveItem(startingItems.pop(), "Hero", setupItems);
+   }
+}
+
+rpgcode.loadAssets(assets, async function() {
    // Configure and show the title screen.
    var config = {
    "backgroundImage": "startscreen.png", 
    "titleScreenMusic": "intro.ogg"
    };
-   titleScreen.show(config, function() {
-      // Show the intro when the user has passed the title screen.
-      if (playIntro) {
-         showIntro();
-      } else {
-         finish();
-      }
-   }); 
+   await titleScreen.show(config);
    
-   function showIntro() {
-      // Show the intro text.
-      var config = {
+   if (playIntro) {
+      // Show the intro when the user has passed the title screen.
+      config = {
          position: "CENTER",
          nextMarkerImage: "next_marker.png",
-         profileImage: rpgcode.getCharacter().graphics["PROFILE"],
+         profileImage: rpgcode.getCharacter().graphics.PROFILE,
          typingSound: "typing_loop.wav",
          text: introText
       };
-      dialog.show(config, finish);
+      await dialog.show(config);
    }
-
-   function setupItems() {
-      if (startingItems.length === 0) {
-         // No more items to add, setup inventory key, and return
-         rpgcode.registerKeyDown("Q", function() {
-            rpgcode.runProgram("ToggleInventory.js");
-         }, true);
-         return;
-      } else {
-         // Keep adding items
-         rpgcode.giveItem(startingItems.pop(), "Hero", setupItems);
+   
+   // Register the menu key program
+   rpgcode.registerKeyDown("Q", function() {
+      rpgcode.runProgram("ToggleInventory.js");
+   }, true);
+   
+   // Increase character walk speed.
+   rpgcode.setCharacterSpeed("Hero", 2.0);
+   
+   // Setup weather
+   config = {
+      rain: {
+         sound: "rain.wav"
       }
-   }
-   
-   function finish() {
-      rpgcode.log("Running finish");
-   
-      // Register the menu key program
-      rpgcode.registerKeyDown("Q", function() {
-         rpgcode.runProgram("ToggleInventory.js");
-      }, true);
-   
-      // Increase character walk speed.
-      rpgcode.setCharacterSpeed("Hero", 2.0);
+   };
+   await weather.show(config);
 
-      // Setup weather
-      var config = {
-         rain: {
-            sound: "rain.wav"
-         }
-      };
-      weather.show(config, function() {
-         // Setup HUD after to ensure it appears above
-         // any weather effects
-         var config = {
-            life: {
-               image: "life.png",
-               width: 32,
-               height: 32
-            }
-         };
-         hud.show(config, function() {});
-
-         // Setup starting inventory items
-         setupItems();
-
-         rpgcode.endProgram();
-      });
-   }
+   // Setup HUD after to ensure it appears above
+   // any weather effects
+   config = {
+      life: {
+         image: "life.png",
+         width: 32,
+         height: 32
+      }
+   };
+   hud.show(config, function() {});
+   
+   // Setup inventory items
+   setupItems();
+   
+   rpgcode.endProgram();
 });

@@ -31,32 +31,37 @@ function Dialog() {
  *  typingSound: "typing_loop.wav",
  *  text: "Hello, this text will be wrote to the window like a type-writer."
  * };
- * dialog.show(config, function() {
- *  // Dialog has ended, do something else.
- * });
+ * await dialog.show(config);
  *
  * @param {Object} config
- * @param {Callback} callback
  * @returns {undefined}
  */
-Dialog.prototype.show = function(config, callback) {
-   this._loadAssets(config, function() {
-      this._setup(config);
-      var lines = this._sortLines(config.text);
-      if (lines.length > 0) {
-         this._reset(gui.descale(rpgcode.measureText(lines[0]).height));
-         this._printLines(lines, callback);
-         this._playTypingSound();
-      } else {
-         callback();
-      }
-   }.bind(this));
+Dialog.prototype.show = async function(config) {
+   return new Promise((resolve, reject) => {
+      dialog._loadAssets(config, async function() {
+         this._setup(config);
+         await this._animate();
+         
+         var lines = this._sortLines(config.text.trim());
+         if (lines.length > 0) {
+            var callback = function() {
+               resolve();
+            };
+            this._reset(rpgcode.measureText(lines[0]).height);
+            this._printLines(lines, callback);
+            this._playTypingSound();
+         } else {
+             resolve();
+         }
+      }.bind(dialog));
+   });
 };
 
 Dialog.prototype._end = function(callback) {
+   rpgcode.unregisterKeyDown(this.advancementKey);
+   rpgcode.unregisterMouseClick(false);
    this._blink = false;
    this._clearNextMarker();
-   rpgcode.unregisterKeyDown(this.advancementKey);
    rpgcode.clearCanvas(this._nextMarkerCanvas);
    this.profileFrame.setVisible(false);
    this.frame.setVisible(false);
@@ -82,17 +87,17 @@ Dialog.prototype._setup = function(config) {
    this._blink = false;
    this._defaultX = 22;
    this._defaultY = 18;
+   this._position = config.position;
 
    this.characterDelay = 25;
    this.markerBlinkDelay = 500;
-   this.advancementKey = "E";
-   this.timeout = 2000;
+   this.advancementKey = null;
    this._cursorX = this._defaultX;
    this._cursorY = this._defaultY;
    this.maxLines = 3;
    this.nextMarkerImage = config.nextMarkerImage;
    this.typingSound = "dialog.typingSound";
-   this.skipMode = false;
+   this.skipMode = false;
 
    this.padding = {
       x: 0,
@@ -101,21 +106,24 @@ Dialog.prototype._setup = function(config) {
    };
 
    var width = 440;
+   if (rpgcode.getViewport(false).width < 560) {
+      width = rpgcode.getViewport(false).width - 120;
+   }
    var height = 120;
    var profileWidth = height;
    var profileHeight = height;
-   var x = Math.round((gui.descale(rpgcode.getViewport().width) / 2) - (width / 2) + (profileWidth / 2));
+   var x = Math.round((rpgcode.getViewport(false).width / 2) - (width / 2) + (profileWidth / 2));
    var y = 0;
    switch (config.position ? config.position : "BOTTOM") {
       case "TOP":
          y = 0;
          break;
       case "CENTER":
-         y = Math.floor((gui.descale(rpgcode.getViewport().height)) / 2) - Math.floor(height / 2);
+         y = Math.floor(rpgcode.getViewport(false).height / 2) - Math.floor(height / 2);
          break;
       case "BOTTOM":
       default:
-         y = Math.floor(gui.descale(rpgcode.getViewport().height) - height);
+         y = Math.floor(rpgcode.getViewport(false).height - height);
    }
 
    this.profileFrame = gui.createFrame({
@@ -126,7 +134,7 @@ Dialog.prototype._setup = function(config) {
       y: y
    });
    this.profileFrame.setImage(config.profileImage);
-   this.profileFrame.setVisible(true);
+   this.profileFrame.setVisible(false);
 
    this.frame = gui.createFrame({
       id: "Dialog.frameCanvas",
@@ -135,7 +143,7 @@ Dialog.prototype._setup = function(config) {
       x: x,
       y: y
    });
-   this.frame.setVisible(true);
+   this.frame.setVisible(false);
 
    var image = rpgcode.getImage(this.nextMarkerImage);
    if (image && image.width > 0 && image.height > 0) {
@@ -160,10 +168,16 @@ Dialog.prototype._sortLines = function(text) {
    var words = text.split(" ");
    var lines = [];
    var line = words[0];
-
+   
+   var newLine;
    for (var i = 1; i < words.length; i++) {
-      var newLine = line + " " + words[i];
-      if (gui.descale(rpgcode.measureText(newLine).width) < this.frame.width - 45) {
+      if (/[\r\n]$/.test(line)) {
+         lines.push(line);
+         line = words[i].trim();
+      }
+      
+      newLine = line.trim() + " " + words[i];
+      if (rpgcode.measureText(newLine.trim()).width < this.frame.width - 45) {
          line = newLine;
       } else {
          lines.push(line);
@@ -175,23 +189,24 @@ Dialog.prototype._sortLines = function(text) {
    return lines;
 };
 
-Dialog.prototype._printCharacters = function(characters, callback) {
-   rpgcode.setFont(gui.getFontSize(), gui.getFontFamily());
-   var character = characters.shift();
-   rpgcode.drawText(dialog._cursorX, dialog._cursorY, character, this.frame.id);
-   rpgcode.renderNow(this.frame.id);
-   dialog._cursorX += gui.descale(rpgcode.measureText(character).width);
+Dialog.prototype._animate = async function() {
+   if (this._position === "BOTTOM") {
+      const originalY = this.profileFrame.y;
+      const newY = rpgcode.getViewport(false).height;
+      this.profileFrame.setLocation(this.profileFrame.x, newY);
+      this.frame.setLocation(this.frame.x, newY);
+      this.profileFrame.setVisible(true);
+      this.frame.setVisible(true);
 
-   if (characters.length) {
-      if (dialog.skipMode) {
-         dialog._printCharacters(characters, callback);
-      } else {
-         rpgcode.delay(dialog.characterDelay, function() {
-            dialog._printCharacters(characters, callback);
-         });
-      }
+      const change = 10; // pixels
+      do {
+         this.profileFrame.setLocation(this.profileFrame.x, this.profileFrame.y - change);
+         this.frame.setLocation(this.frame.x, this.frame.y - change);
+         await new Promise(r => requestAnimationFrame(r));
+      } while(originalY < this.profileFrame.y);
    } else {
-      callback();
+      this.profileFrame.setVisible(true);
+      this.frame.setVisible(true);
    }
 };
 
@@ -199,11 +214,26 @@ Dialog.prototype._printLines = function(lines, callback) {
    rpgcode.setFont(gui.getFontSize(), gui.getFontFamily());
    gui.prepareTextColor();
 
-   rpgcode.registerKeyDown(dialog.advancementKey, function() {
-      dialog.skipMode = true;
-   }, false);
+   if (dialog.advancementKey) {
+      rpgcode.registerKeyDown(dialog.advancementKey, function () {
+         dialog.skipMode = true;
+      }, false);
+   } else {
+      rpgcode.registerMouseClick(function() {
+         dialog.skipMode = true;
+      }, false);
+   }
 
    var line = lines.shift();
+   if (/[\r\n]$/.test(line)) {
+      var tempLine = line.split("\r\n")[0];
+      if (line.replace(tempLine, "").trim()) {
+         lines.unshift(line.replace(tempLine, "").trim());
+      }
+      dialog._currentLines = dialog.maxLines; // Force a fresh window
+      line = tempLine.trim();
+   }
+   
    this._printCharacters(line.split(""), function() {
       if (lines.length) {
          dialog._currentLines++;
@@ -213,38 +243,57 @@ Dialog.prototype._printLines = function(lines, callback) {
             dialog._blink = true;
             dialog._blinkNextMarker();
 
-            // Decide whether or not to use keypress or timeout.
+            // Decide whether or not to use keypress or mouse.
             if (dialog.advancementKey) {
                rpgcode.registerKeyDown(dialog.advancementKey, function() {
                   dialog._advance(lines, callback);
                }, false);
             } else {
-               rpgcode.delay(dialog.timeout, function() {
+               rpgcode.registerMouseClick(function() {
                   dialog._advance(lines, callback);
-               });
+               }, false);
             }
          } else {
             dialog._cursorX = dialog._defaultX + dialog.padding.x;
-            dialog._cursorY += gui.descale(rpgcode.measureText(line).height) + dialog.padding.line;
+            dialog._cursorY += rpgcode.measureText(line).height + dialog.padding.line;
             dialog._printLines(lines, callback);
          }
       } else {
          dialog._stopTypingSound();
+         dialog._blink = true;
+         dialog._blinkNextMarker();
 
-         // Decide whether or not to use keypress or timeout.
+         // Decide whether or not to use keypress or mouse.
          if (dialog.advancementKey) {
-            dialog._blink = true;
-            dialog._blinkNextMarker();
             rpgcode.registerKeyDown(dialog.advancementKey, function() {
                dialog._end(callback);
             }, false);
          } else {
-            rpgcode.delay(dialog.timeout, function() {
+            rpgcode.registerMouseClick(function() {
                dialog._end(callback);
-            });
+            }, false);
          }
       }
    });
+};
+
+Dialog.prototype._printCharacters = function(characters, callback) {
+   var character = characters.shift();
+   rpgcode.drawText(dialog._cursorX, dialog._cursorY, character, this.frame.id);
+   rpgcode.renderNow(this.frame.id);
+   dialog._cursorX += rpgcode.measureText(character).width;
+
+   if (characters.length) {
+      if (dialog.skipMode) {
+         dialog._printCharacters(characters, callback);
+      } else {
+         rpgcode.delay(dialog.characterDelay, function () {
+            dialog._printCharacters(characters, callback);
+         });
+      }
+   } else {
+      callback();
+   }
 };
 
 Dialog.prototype._blinkNextMarker = function() {
@@ -297,7 +346,7 @@ Dialog.prototype._advance = function(lines, callback) {
    dialog._blink = false;
    dialog._clearNextMarker();
    rpgcode.unregisterKeyDown(dialog.advancementKey);
-   dialog._reset(gui.descale(rpgcode.measureText(lines[0]).height));
+   dialog._reset(rpgcode.measureText(lines[0]).height);
    dialog._printLines(lines, callback);
    dialog._playTypingSound();
 };

@@ -7,9 +7,9 @@
  */
 
 // For debugging.
-var playIntro = true;
+let playIntro = true;
 
-var assets = {
+let assets = {
   "programs": [
       // Default systems.
       "defaults/gui.js",
@@ -26,7 +26,7 @@ var assets = {
 rpgcode.setGlobal("swordactive", false);
 
 // Text used of the intro.
-var introText = 
+let introText = 
 "For as long as the villagers can remember the wizard's tower has stood upon the " +
 "grey plains. A reminder to not leave the village after dark. " +
 "Every hundred years somebody always goes missing from the village. " +
@@ -35,7 +35,7 @@ var introText =
 "sister of a knight. " + 
 "Without delay he grabs his armour and heads to the tower.....";
 
-var startingItems = [
+let startingItems = [
    "apple.item",
    "apple.item",
    "apple.item",
@@ -60,7 +60,7 @@ function setupItems() {
 
 rpgcode.loadAssets(assets, async function() {
    // Configure and show the title screen.
-   var config = {
+   let config = {
    "backgroundImage": "startscreen.png", 
    "titleScreenMusic": "intro.ogg"
    };

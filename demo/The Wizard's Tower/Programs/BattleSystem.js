@@ -1,4 +1,4 @@
-var items = [
+let items = [
    "apple.item", "apple.item", "apple.item"
 ];
 loadItems();
@@ -7,7 +7,7 @@ function loadItems() {
     if (items.length === 0) {
       start();
    } else {
-      var item = items.pop();
+      let item = items.pop();
       rpgcode.giveItem(item, "Hero", function() {
          loadItems();
       });
@@ -15,7 +15,7 @@ function loadItems() {
 }
 
 function start() {
-   var config = {
+   let config = {
       enemies: ["evil-eye.enemy"],
       characters: ["Hero.character"],
       backgroundImage: "battle-background.png",
@@ -24,7 +24,7 @@ function start() {
    };
    hud.close();
    battle.show(config, function(result) {
-      var config = {
+      let config = {
          life: {
             image: "life.png",
             width: 32,
@@ -32,9 +32,9 @@ function start() {
          }
       };
       hud.show(config, function() {});
-      rpgcode.log("The battle has ended, result.status=" + result.status);
-      rpgcode.destroySprite("evil-eye-1");
-      rpgcode.endProgram();   
+         rpgcode.log("The battle has ended, result.status=" + result.status);
+         rpgcode.destroySprite("evil-eye-1");
+         rpgcode.endProgram();   
    });
 }
 

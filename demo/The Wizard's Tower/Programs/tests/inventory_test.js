@@ -1,12 +1,12 @@
-var assets = {
+let assets = {
   "programs": [
       // Default systems.
       "defaults/gui.js",
       "defaults/inventory.js"
   ]
-}
+};
 
-var startingItems = [
+let startingItems = [
    "apple.item",
    "apple.item",
    "apple.item",

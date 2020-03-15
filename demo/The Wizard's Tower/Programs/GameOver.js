@@ -1,10 +1,10 @@
 // Game assets used in this program
-var assets = {
+let assets = {
   "images": ["GameOver.png"]
 };
 
 // Canvas IDs
-var gameOverCanvas = "gameOverCanvas";
+let gameOverCanvas = "gameOverCanvas";
 
 // Load up the assets we need
 rpgcode.loadAssets(assets, function() {

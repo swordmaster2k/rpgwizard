@@ -1,5 +1,5 @@
 /* global rpgcode, gui */
-var inventory = new Inventory();
+let inventory = new Inventory();
 
 /**
  * The builtin inventory system.
@@ -25,7 +25,7 @@ function Inventory() {
  *    rpgcode.endProgram();
  * } else {
  *    // Configure and show the inventory.
- *    var config = {
+ *    let config = {
  *       "backgroundImage": "startscreen.png", 
  *       "inventoryMusic": "intro.ogg"
  *    };
@@ -88,10 +88,10 @@ Inventory.prototype._setup = function(config) {
    }
    rpgcode.renderNow(this.background.canvasId);
 
-   var items = [];
-   var currentInventory = rpgcode.getCharacter().inventory;
+   let items = [];
+   let currentInventory = rpgcode.getCharacter().inventory;
    Object.keys(currentInventory).forEach(function(key) {
-      var i = currentInventory[key][0];
+      let i = currentInventory[key][0];
       items.push({
          item: i,
          count: currentInventory[key].length,
@@ -102,8 +102,8 @@ Inventory.prototype._setup = function(config) {
       });
    });
 
-   var frameWidth = 192;
-   var frameHeight = 224;
+   let frameWidth = 192;
+   let frameHeight = 224;
    this.frame = gui.createFrame({
       id: "Inventory.frameCanvas",
       width: 192,
@@ -137,7 +137,7 @@ Inventory.prototype._setup = function(config) {
 };
 
 Inventory.prototype._loadAssets = function(config, callback) {
-   var assets = {
+   let assets = {
       "images": [],
       "audio": {}
    };
@@ -167,7 +167,7 @@ Inventory.prototype._handleSelectedItem = function(item) {
 };
 
 Inventory.prototype._applyItemEffects = function(effects) {
-   var character = rpgcode.getCharacter();
+   let character = rpgcode.getCharacter();
    character.health += effects.health;
    if (character.health > character.maxHealth) {
       character.health = character.maxHealth;

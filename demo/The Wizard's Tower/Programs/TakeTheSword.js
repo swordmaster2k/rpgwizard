@@ -4,11 +4,11 @@
 //check the bitmap folder and see the images
 //named shot1 to shot11 to see what I mean
 //You will notice that I change the tiles where the sword is(for obvious reasons)
-var canvas;
-var assets;
-var delay = 250;
+let canvas;
+let assets;
+let delay = 250;
 
-var swordActive = rpgcode.getGlobal("swordActive");
+let swordActive = rpgcode.getGlobal("swordActive");
 if (!swordActive) {
    assets = {
       "images": [
@@ -27,7 +27,7 @@ if (!swordActive) {
    };
    rpgcode.loadAssets(assets, async function() {
       canvas = "renderNowCanvas";
-      var config = {
+      let config = {
          position: "BOTTOM",
          nextMarkerImage: "next_marker.png",
          profileImage: "sword_profile_1_small.png",
@@ -80,7 +80,7 @@ function takeSword() {
 }
 
 function animate(resolve) {
-   var image = assets.images.shift();
+   let image = assets.images.shift();
    rpgcode.setImage(image, 0, 0, 640, 480, canvas);
    rpgcode.renderNow(canvas);
 

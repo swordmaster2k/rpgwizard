@@ -1,5 +1,5 @@
 /* global rpgcode */
-var gui = new GUI();
+let gui = new GUI();
 
 function GUI() {
    this.borderWidth = 3;
@@ -91,11 +91,11 @@ GUI.prototype.setColor = function(color) {
 };
 
 GUI.prototype.setGradient = function(x1, y1, x2, y2, canvasId) {
-   var instance = rpgcode.canvases[canvasId];
-   var context = instance.canvas.getContext("2d");
-   var gradient = context.createLinearGradient(x1, y1, x2, y2);
-   var colorStops = gui.getBackgroundGradient();
-   for (var i = 0; i < colorStops.length; i++) {
+   let instance = rpgcode.canvases[canvasId];
+   let context = instance.canvas.getContext("2d");
+   let gradient = context.createLinearGradient(x1, y1, x2, y2);
+   let colorStops = gui.getBackgroundGradient();
+   for (let i = 0; i < colorStops.length; i++) {
       gradient.addColorStop(i, colorStops[i]);
    }
    rpgcode.gradient = gradient;
@@ -114,25 +114,25 @@ GUI.prototype.descale = function(value) {
 };
 
 GUI.prototype.createFrame = function(config) {
-   var frame = (function() {
-      var _visible = false;
-      var _menu = null;
-      var _image = null;
-      var _grid = null;
+   let frame = (function() {
+      let _visible = false;
+      let _menu = null;
+      let _image = null;
+      let _grid = null;
 
-      var id = config.id;
-      var width = config.width;
-      var height = config.height;
-      var x = config.x;
-      var y = config.y;
+      let id = config.id;
+      let width = config.width;
+      let height = config.height;
+      let x = config.x;
+      let y = config.y;
 
-      var init = function() {
+      let init = function() {
          // Create the canvas element.
          rpgcode.createCanvas(width, height, id);
          rpgcode.setCanvasPosition(x, y, id);
       };
 
-      var destroy = function() {
+      let destroy = function() {
          if (_menu) {
             _menu.destroy();
          }
@@ -144,7 +144,7 @@ GUI.prototype.createFrame = function(config) {
          delete gui.frames[id];
       };
 
-      var setVisible = function(visible) {
+      let setVisible = function(visible) {
          _visible = visible;
          if (_visible) {
             draw();
@@ -153,7 +153,7 @@ GUI.prototype.createFrame = function(config) {
          }
       };
 
-      var setLocation = function(newX, newY) {
+      let setLocation = function(newX, newY) {
          this.x = newX;
          this.y = newY;
          rpgcode.setCanvasPosition(newX, newY, id);
@@ -162,52 +162,52 @@ GUI.prototype.createFrame = function(config) {
          }
       };
 
-      var setImage = function(image) {
+      let setImage = function(image) {
          _image = image;
          draw();
       };
 
-      var getMenu = function() {
+      let getMenu = function() {
          return _menu;
       };
 
-      var setMenu = function(menu) {
+      let setMenu = function(menu) {
          _menu = (function() {
-            var _selectedIndex = 0;
-            var items = menu.items;
-            var _flashMenuSelection = true;
-            var _flashInterval = setInterval(function() {
+            let _selectedIndex = 0;
+            let items = menu.items;
+            let _flashMenuSelection = true;
+            let _flashInterval = setInterval(function() {
                _flashMenuSelection = !_flashMenuSelection;
                draw();
             }.bind(this), 500);
 
-            var destroy = function() {
+            let destroy = function() {
                clearInterval(_flashInterval);
             };
 
-            var getSelectedIndex = function() {
+            let getSelectedIndex = function() {
                return _selectedIndex;
             };
 
-            var setSelectedIndex = function(index) {
+            let setSelectedIndex = function(index) {
                _selectedIndex = index;
             };
 
-            var isFlashing = function() {
+            let isFlashing = function() {
                return _flashMenuSelection;
             };
 
-            var up = function() {
+            let up = function() {
                _selectedIndex = _selectedIndex > 0 ? _selectedIndex - 1 : _selectedIndex;
                draw();
             };
 
-            var down = function() {
+            let down = function() {
                _selectedIndex = _selectedIndex < items.length - 1 ? _selectedIndex + 1 : _selectedIndex;
                draw();
             };
 
-            var executeSelectedItem = function() {
+            let executeSelectedItem = function() {
                items[_selectedIndex].execute();
             };
 
@@ -225,71 +225,71 @@ GUI.prototype.createFrame = function(config) {
          draw();
       };
 
-      var getGrid = function() {
+      let getGrid = function() {
          return _grid;
       };
 
-      var setGrid = function(grid) {
+      let setGrid = function(grid) {
          _grid = (function() {
-            var x = grid.x;
-            var y = grid.y;
-            var rows = grid.rows;
-            var columns = grid.columns;
-            var cellWidth = grid.cellWidth;
-            var cellHeight = grid.cellHeight;
-            var cellLineWidth = grid.cellLineWidth;
+            let x = grid.x;
+            let y = grid.y;
+            let rows = grid.rows;
+            let columns = grid.columns;
+            let cellWidth = grid.cellWidth;
+            let cellHeight = grid.cellHeight;
+            let cellLineWidth = grid.cellLineWidth;
 
-            var _selectedIndex = 0;
-            var items = grid.items;
-            var _flashMenuSelection = true;
-            var _flashInterval = setInterval(function() {
+            let _selectedIndex = 0;
+            let items = grid.items;
+            let _flashMenuSelection = true;
+            let _flashInterval = setInterval(function() {
                _flashMenuSelection = !_flashMenuSelection;
                draw();
             }.bind(this), 500);
 
-            var destroy = function() {
+            let destroy = function() {
                clearInterval(_flashInterval);
             };
 
-            var getSelectedIndex = function() {
+            let getSelectedIndex = function() {
                return _selectedIndex;
             };
 
-            var setSelectedIndex = function(index) {
+            let setSelectedIndex = function(index) {
                _selectedIndex = index;
             };
 
-            var isFlashing = function() {
+            let isFlashing = function() {
                return _flashMenuSelection;
             };
 
-            var up = function() {
+            let up = function() {
                _selectedIndex = Math.max(_selectedIndex - columns, 0);
                draw();
             };
 
-            var down = function() {
+            let down = function() {
                _selectedIndex = Math.min(_selectedIndex + columns, (columns * rows) - 1);
                draw();
             };
 
-            var left = function() {
+            let left = function() {
                _selectedIndex = _selectedIndex > 0 ? _selectedIndex - 1 : _selectedIndex;
                draw();
             };
 
-            var right = function() {
+            let right = function() {
                _selectedIndex = _selectedIndex < (columns * rows) - 1 ? _selectedIndex + 1 : _selectedIndex;
                draw();
             };
 
-            var executeSelectedItem = function() {
+            let executeSelectedItem = function() {
                if (items[_selectedIndex]) {
                   items[_selectedIndex].execute();
                }
             };
 
-            var removeSelectedItem = function() {
+            let removeSelectedItem = function() {
                if (items[_selectedIndex]) {
                   if (1 < items[_selectedIndex].count) {
                      items[_selectedIndex].count--;
@@ -324,7 +324,7 @@ GUI.prototype.createFrame = function(config) {
          draw();
       };
 
-      var draw = function() {
+      let draw = function() {
          const border = gui.borderWidth > 0 ? gui.borderWidth : 0;
          const radius = gui.cornerRadius > 0 ? gui.cornerRadius : 0;
          gui.setGradient(width / 2, 0, width / 2, height * 1.75, id);
@@ -337,9 +337,9 @@ GUI.prototype.createFrame = function(config) {
             _drawImage();
          }
          if (_grid && (0 < _grid.rows && 0 < _grid.columns)) {
-            for (var row = 0; row < _grid.rows; row++) {
-               for (var column = 0; column < _grid.columns; column++) {
-                  var cell = {
+            for (let row = 0; row < _grid.rows; row++) {
+               for (let column = 0; column < _grid.columns; column++) {
+                  let cell = {
                      index: column + _grid.columns * row,
                      x: _grid.x + (_grid.cellWidth * column),
                      y: _grid.y + (_grid.cellHeight * row),
@@ -358,47 +358,47 @@ GUI.prototype.createFrame = function(config) {
             if (_menu.isFlashing()) {
                _drawMenuSelection();
             }
-            for (var i = 0; i < _menu.items.length; i++) {
+            for (let i = 0; i < _menu.items.length; i++) {
                _drawMenuItem(_menu.items[i], i);
             }
          }
          rpgcode.renderNow(id);
       };
 
-      var _drawImage = function() {
+      let _drawImage = function() {
          rpgcode.setImage(_image, gui.borderWidth * 3, gui.borderWidth * 3, width - (gui.borderWidth * 6), height - (gui.borderWidth * 6), id);
       };
 
-      var _drawMenuItem = function(item, index) {
+      let _drawMenuItem = function(item, index) {
          rpgcode.setFont(gui.getFontSize(), gui.getFontFamily());
-         var x = gui.padding.x;
-         var y = gui.padding.y + ((gui.getFontSize() + gui.padding.line) * index);
+         let x = gui.padding.x;
+         let y = gui.padding.y + ((gui.getFontSize() + gui.padding.line) * index);
          gui.prepareTextColor();
          rpgcode.drawText(x, y, item.text, id);
       };
 
-      var _drawMenuSelection = function() {
+      let _drawMenuSelection = function() {
          gui.prepareSelectionColor();
-         var x = gui.padding.x - (gui.padding.x / 2);
-         var y = gui.padding.y + ((gui.getFontSize() + gui.padding.line) * (_menu.getSelectedIndex())) - gui.getFontSize() - (gui.padding.line / 4);
-         var _width = width - gui.padding.x;
-         var _height = gui.getFontSize() + (gui.padding.line);
+         let x = gui.padding.x - (gui.padding.x / 2);
+         let y = gui.padding.y + ((gui.getFontSize() + gui.padding.line) * (_menu.getSelectedIndex())) - gui.getFontSize() - (gui.padding.line / 4);
+         let _width = width - gui.padding.x;
+         let _height = gui.getFontSize() + (gui.padding.line);
          rpgcode.fillRect(x, y, _width, _height, id);
       };
 
-      var _drawGridCell = function(cell) {
+      let _drawGridCell = function(cell) {
          gui.prepareGridCellColor();
          rpgcode.fillRect(cell.x, cell.y, cell.width, cell.height, id);
-         var index = Math.floor(cell.x + _grid.columns * cell.y);
+         let index = Math.floor(cell.x + _grid.columns * cell.y);
          if (cell.index < _grid.items.length) {
-            var item = _grid.items[cell.index];
+            let item = _grid.items[cell.index];
             if (item && item.image) {
                rpgcode.setImage(item.image, cell.x, cell.y, cell.width, cell.height, id);
                if (1 < item.count) {
-                  var textPadding = 3;
-                  var dimensions = rpgcode.measureText(item.count);
-                  var textX = cell.x + (cell.width - dimensions.width - textPadding);
-                  var textY = cell.y;
+                  let textPadding = 3;
+                  let dimensions = rpgcode.measureText(item.count);
+                  let textX = cell.x + (cell.width - dimensions.width - textPadding);
+                  let textY = cell.y;
                   rpgcode.fillRect(textX, textY, dimensions.width, dimensions.height, id);
                   gui.prepareTextColor();
                   rpgcode.drawText(
@@ -413,16 +413,16 @@ GUI.prototype.createFrame = function(config) {
          rpgcode.drawRect(cell.x, cell.y, cell.width, cell.height, cell.lineWidth, id);
       };
 
-      var _drawGridSelection = function() {
+      let _drawGridSelection = function() {
          gui.prepareSelectionColor();
-         var index = _grid.getSelectedIndex();
+         let index = _grid.getSelectedIndex();
          // https://softwareengineering.stackexchange.com/a/212813
-         var column = index % _grid.columns;
-         var row = Math.floor(index / _grid.columns);
-         var x = _grid.x + (_grid.cellWidth * column);
-         var y = _grid.y + (_grid.cellHeight * row);
-         var width = _grid.cellWidth;
-         var height = _grid.cellHeight;
+         let column = index % _grid.columns;
+         let row = Math.floor(index / _grid.columns);
+         let x = _grid.x + (_grid.cellWidth * column);
+         let y = _grid.y + (_grid.cellHeight * row);
+         let width = _grid.cellWidth;
+         let height = _grid.cellHeight;
          rpgcode.fillRect(x, y, width, height, id);
       };
 
@@ -450,35 +450,35 @@ GUI.prototype.createFrame = function(config) {
 };
 
 GUI.prototype.createButton = function(config) {
-   var button = (function() {
-      var _visible = false;
-      var _image = null;
-      var _text = config.text;
-      var _focused = false;
+   let button = (function() {
+      let _visible = false;
+      let _image = null;
+      let _text = config.text;
+      let _focused = false;
 
-      var id = config.id;
+      let id = config.id;
       
       rpgcode.setFont(gui.getFontSize(), gui.getFontFamily());
-      var width = config.width ? config.width : rpgcode.measureText(_text).width + (gui.padding.x * 2);
-      var height = config.height ? config.height : rpgcode.measureText(_text).height + gui.padding.y;
+      let width = config.width ? config.width : rpgcode.measureText(_text).width + (gui.padding.x * 2);
+      let height = config.height ? config.height : rpgcode.measureText(_text).height + gui.padding.y;
 
-      var x = config.x;
-      var y = config.y;
-      var onClick = config.onClick;
+      let x = config.x;
+      let y = config.y;
+      let onClick = config.onClick;
 
-      var init = function() {
+      let init = function() {
          // Create the canvas element.
          rpgcode.createCanvas(width, height, id);
          rpgcode.setCanvasPosition(x, y, id);
       };
 
-      var destroy = function() {
+      let destroy = function() {
          rpgcode.clearCanvas(id);
          rpgcode.destroyCanvas(id);
          delete gui.buttons[id];
       };
 
-      var setVisible = function(visible) {
+      let setVisible = function(visible) {
          _visible = visible;
          if (_visible) {
             draw();
@@ -487,7 +487,7 @@ GUI.prototype.createButton = function(config) {
          }
       };
 
-      var setLocation = function(newX, newY) {
+      let setLocation = function(newX, newY) {
          this.x = newX;
          this.y = newY;
          rpgcode.setCanvasPosition(newX, newY, id);
@@ -496,26 +496,26 @@ GUI.prototype.createButton = function(config) {
          }
       };
 
-      var setImage = function(image) {
+      let setImage = function(image) {
          _image = image;
          draw();
       };
 
-      var isFocused = function() {
+      let isFocused = function() {
          return _focused;
       };
 
-      var onEnter = function() {
+      let onEnter = function() {
          _focused = true;
          draw();
       };
 
-      var onExit = function() {
+      let onExit = function() {
          _focused = false;
          draw();
       };
 
-      var draw = function() {
+      let draw = function() {
          const border = gui.borderWidth > 0 ? gui.borderWidth : 0;
          const radius = gui.cornerRadius > 0 ? gui.cornerRadius : 0;
          gui.setGradient(width / 2, 0, width / 2, height * 1.75, id);
@@ -536,21 +536,21 @@ GUI.prototype.createButton = function(config) {
          rpgcode.renderNow(id);
       };
 
-      var _drawFocus = function(border, radius) {
+      let _drawFocus = function(border, radius) {
          gui.setColor(gui.colors.border);
          rpgcode.setGlobalAlpha(gui.colors.selection.a);
          rpgcode.fillRoundedRect(border, border, width - (border * 2), height - (border * 2), radius, id);
          rpgcode.setGlobalAlpha(1.0);
       };
 
-      var _drawImage = function() {
+      let _drawImage = function() {
          rpgcode.setImage(_image, gui.borderWidth * 3, gui.borderWidth * 3, width - (gui.borderWidth * 6), height - (gui.borderWidth * 6), id);
       };
 
-      var _drawText = function() {
+      let _drawText = function() {
          rpgcode.setFont(gui.getFontSize(), gui.getFontFamily());
-         var x = (width / 2) - (rpgcode.measureText(_text).width / 2);
-         var y = gui.padding.y;
+         let x = (width / 2) - (rpgcode.measureText(_text).width / 2);
+         let y = gui.padding.y;
          gui.prepareTextColor();
          rpgcode.drawText(x, y, _text, id);
       };

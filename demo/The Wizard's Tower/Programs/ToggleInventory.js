@@ -4,7 +4,7 @@ if (inventory.visible) {
    rpgcode.endProgram();
 } else {
    // Configure and show the inventory.
-   var config = {
+   let config = {
       // Set these if you want them
 //      "backgroundImage": "startscreen.png", 
 //      "inventoryMusic": "intro.ogg"

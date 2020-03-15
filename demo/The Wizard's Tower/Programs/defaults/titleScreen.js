@@ -1,5 +1,5 @@
 /* global rpgcode, gui */
-var titleScreen = new TitleScreen();
+let titleScreen = new TitleScreen();
 
 /**
  * The builtin title screen system.
@@ -19,7 +19,7 @@ function TitleScreen() {
  *  Shows the default title screen system based the supplied config.
  * 
  * @example
- * var config = {
+ * let config = {
  *  "backgroundImage": "startscreen.png", 
  *  "titleScreenMusic": "intro.ogg"
  * };
@@ -88,7 +88,7 @@ TitleScreen.prototype._setup = function(config) {
 };
 
 TitleScreen.prototype._loadAssets = function(config, callback) {
-   var assets = {
+   let assets = {
       "images": [config.backgroundImage],
       "audio": {
          "titleScreen.music": config.titleScreenMusic

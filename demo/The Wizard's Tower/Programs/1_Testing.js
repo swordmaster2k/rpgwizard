@@ -1,4 +1,4 @@
-var assets = {
+let assets = {
   "programs": [
       // Default systems.
       "defaults/gui.js",

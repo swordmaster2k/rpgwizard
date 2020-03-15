@@ -1,12 +1,12 @@
-var assets = {
+let assets = {
   "programs": [
       // Default systems.
       "defaults/weather.js"
   ]
-}
+};
 
 rpgcode.loadAssets(assets, function() {
-   var config = {
+   let config = {
       rain: {
          sound: "rain.wav"
       }

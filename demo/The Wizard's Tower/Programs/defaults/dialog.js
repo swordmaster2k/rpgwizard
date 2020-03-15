@@ -1,5 +1,5 @@
 /* global rpgcode, gui */
-var dialog = new Dialog();
+let dialog = new Dialog();
 
 /**
  * The builtin dialog window system.
@@ -24,7 +24,7 @@ function Dialog() {
  * Note: The current hardcoded next key is "E".
  *
  * @example
- * var config = {
+ * let config = {
  *  position: "CENTER",
  *  nextMarkerImage: "next_marker.png",
  *  profileImage: rpgcode.getCharacter().graphics["PROFILE"],
@@ -42,9 +42,9 @@ Dialog.prototype.show = async function(config) {
          this._setup(config);
          await this._animate();
          
-         var lines = this._sortLines(config.text.trim());
+         let lines = this._sortLines(config.text.trim());
          if (lines.length > 0) {
-            var callback = function() {
+            let callback = function() {
                resolve();
             };
             this._reset(rpgcode.measureText(lines[0]).height);
@@ -69,7 +69,7 @@ Dialog.prototype._end = function(callback) {
 };
 
 Dialog.prototype._loadAssets = function(config, callback) {
-   var assets = {
+   let assets = {
       "images": [config.nextMarkerImage, config.profileImage],
       "audio": {
          "dialog.typingSound": config.typingSound
@@ -105,15 +105,15 @@ Dialog.prototype._setup = function(config) {
       line: 10
    };
 
-   var width = 440;
+   let width = 440;
    if (rpgcode.getViewport(false).width < 560) {
       width = rpgcode.getViewport(false).width - 120;
    }
-   var height = 120;
-   var profileWidth = height;
-   var profileHeight = height;
-   var x = Math.round((rpgcode.getViewport(false).width / 2) - (width / 2) + (profileWidth / 2));
-   var y = 0;
+   let height = 120;
+   let profileWidth = height;
+   let profileHeight = height;
+   let x = Math.round((rpgcode.getViewport(false).width / 2) - (width / 2) + (profileWidth / 2));
+   let y = 0;
    switch (config.position ? config.position : "BOTTOM") {
       case "TOP":
          y = 0;
@@ -145,12 +145,12 @@ Dialog.prototype._setup = function(config) {
    });
    this.frame.setVisible(false);
 
-   var image = rpgcode.getImage(this.nextMarkerImage);
+   let image = rpgcode.getImage(this.nextMarkerImage);
    if (image && image.width > 0 && image.height > 0) {
-      var widthTemp = image.width;
-      var heightTemp = image.height;
-      var xTemp = this.frame.x + (this.frame.width - (widthTemp + widthTemp / 4));
-      var yTemp = this.frame.y + (this.frame.height - (heightTemp + heightTemp / 4));
+      let widthTemp = image.width;
+      let heightTemp = image.height;
+      let xTemp = this.frame.x + (this.frame.width - (widthTemp + widthTemp / 4));
+      let yTemp = this.frame.y + (this.frame.height - (heightTemp + heightTemp / 4));
       rpgcode.createCanvas(widthTemp, heightTemp, this._nextMarkerCanvas);
       rpgcode.setCanvasPosition(xTemp, yTemp, this._nextMarkerCanvas);
    }
@@ -165,12 +165,12 @@ Dialog.prototype._reset = function(lineHeight) {
 
 Dialog.prototype._sortLines = function(text) {
    rpgcode.setFont(gui.getFontSize(), gui.getFontFamily());
-   var words = text.split(" ");
-   var lines = [];
-   var line = words[0];
+   let words = text.split(" ");
+   let lines = [];
+   let line = words[0];
    
-   var newLine;
-   for (var i = 1; i < words.length; i++) {
+   let newLine;
+   for (let i = 1; i < words.length; i++) {
       if (/[\r\n]$/.test(line)) {
          lines.push(line);
          line = words[i].trim();
@@ -224,9 +224,9 @@ Dialog.prototype._printLines = function(lines, callback) {
       }, false);
    }
 
-   var line = lines.shift();
+   let line = lines.shift();
    if (/[\r\n]$/.test(line)) {
-      var tempLine = line.split("\r\n")[0];
+      let tempLine = line.split("\r\n")[0];
       if (line.replace(tempLine, "").trim()) {
          lines.unshift(line.replace(tempLine, "").trim());
       }
@@ -278,7 +278,7 @@ Dialog.prototype._printLines = function(lines, callback) {
 };
 
 Dialog.prototype._printCharacters = function(characters, callback) {
-   var character = characters.shift();
+   let character = characters.shift();
    rpgcode.drawText(dialog._cursorX, dialog._cursorY, character, this.frame.id);
    rpgcode.renderNow(this.frame.id);
    dialog._cursorX += rpgcode.measureText(character).width;
@@ -315,10 +315,10 @@ Dialog.prototype._clearNextMarker = function() {
 };
 
 Dialog.prototype._drawNextMarker = function() {
-   var image = rpgcode.getImage(this.nextMarkerImage);
+   let image = rpgcode.getImage(this.nextMarkerImage);
    if (image && image.width > 0 && image.height > 0) {
-      var width = image.width;
-      var height = image.height;
+      let width = image.width;
+      let height = image.height;
       rpgcode.setImage(this.nextMarkerImage, 0, 0, width, height, this._nextMarkerCanvas);
       rpgcode.renderNow(this._nextMarkerCanvas);
       this._nextMarkerVisible = true;

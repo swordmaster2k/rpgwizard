@@ -20,7 +20,7 @@
       * rain effect: https://codepen.io/ruigewaard/pen/JHDdF
       * snow effect: https://codepen.io/teetteet/pen/Jcvnf
 */
-var weather = new Weather();
+let weather = new Weather();
 
 /**
  * The builtin weather system.
@@ -57,7 +57,7 @@ function Weather() {
  * Shows the weather system based the supplied config.
  * 
  * @example
- *  var config = {
+ *  let config = {
  *    rain: {
  *       sound: "rain.wav"
  *    }
@@ -109,7 +109,7 @@ Weather.prototype._setup = function(config) {
 };
 
 Weather.prototype._loadAssets = function(config, callback) {
-   var assets = {"audio": {}};
+   let assets = {"audio": {}};
    if (config.rain && config.rain.sound) {
       assets.audio["weather.rainSound"] = config.rain.sound;
    }
@@ -157,18 +157,18 @@ Weather.prototype.snow = function(toggle) {
 };
 
 Weather.prototype._drawRain = function() {
-   var canvas = rpgcode.canvases[this._canvasId].canvas;
-   var ctx = canvas.getContext("2d");
-   var width = canvas.width;
-   var height = canvas.height;
+   let canvas = rpgcode.canvases[this._canvasId].canvas;
+   let ctx = canvas.getContext("2d");
+   let width = canvas.width;
+   let height = canvas.height;
 
    ctx.strokeStyle = this._rainStrokeStyle;
    ctx.lineWidth = this._rainLineWidth;
    ctx.lineCap = this._rainLineCap;
 
-   var init = [];
-   var maxParts = this._maxParts;
-   for (var a = 0; a < maxParts; a++) {
+   let init = [];
+   let maxParts = this._maxParts;
+   for (let a = 0; a < maxParts; a++) {
       init.push({
          x: Math.random() * width,
          y: Math.random() * height,
@@ -178,8 +178,8 @@ Weather.prototype._drawRain = function() {
       });
    }
 
-   var particles = [];
-   for (var b = 0; b < maxParts; b++) {
+   let particles = [];
+   for (let b = 0; b < maxParts; b++) {
       particles[b] = init[b];
    }
 
@@ -201,8 +201,8 @@ Weather.prototype._drawRain = function() {
 
          // Rain particles.
          ctx.globalAlpha = 1.0;
-         for (var c = 0; c < particles.length - weather._partModifier; c++) {
-            var p = particles[c];
+         for (let c = 0; c < particles.length - weather._partModifier; c++) {
+            let p = particles[c];
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p.x + p.l * p.xs, p.y + p.l * p.ys);
@@ -217,8 +217,8 @@ Weather.prototype._drawRain = function() {
    }
 
    function move() {
-      for (var b = 0; b < particles.length - weather._partModifier; b++) {
-         var p = particles[b];
+      for (let b = 0; b < particles.length - weather._partModifier; b++) {
+         let p = particles[b];
          p.x += p.xs;
          p.y += p.ys;
          if (p.x > width || p.y > height) {
@@ -232,14 +232,14 @@ Weather.prototype._drawRain = function() {
 };
   
 Weather.prototype._drawSnow = function() {
-   var canvas = rpgcode.canvases[this._canvasId].canvas;
-   var ctx = canvas.getContext("2d");
-   var width = canvas.width;
-   var height = canvas.height;
+   let canvas = rpgcode.canvases[this._canvasId].canvas;
+   let ctx = canvas.getContext("2d");
+   let width = canvas.width;
+   let height = canvas.height;
    
-   var mp = 50;
-   var particles = [];
-   for (var i = 0; i < mp; i++) {
+   let mp = 50;
+   let particles = [];
+   for (let i = 0; i < mp; i++) {
       particles.push({
          x: Math.random() * width,
          y: Math.random() * height,
@@ -261,8 +261,8 @@ Weather.prototype._drawSnow = function() {
          ctx.globalAlpha = 1.0;
          ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
          ctx.beginPath();
-         for (var i = 0; i < mp; i++) {
-            var p = particles[i];
+         for (let i = 0; i < mp; i++) {
+            let p = particles[i];
             ctx.moveTo(p.x, p.y);
             ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2, true);
          }
@@ -276,12 +276,12 @@ Weather.prototype._drawSnow = function() {
       }
    }
 
-   var angle = 0;
+   let angle = 0;
 
    function update() {
       angle += 0.01;
-      for (var i = 0; i < mp; i++) {
-         var p = particles[i];
+      for (let i = 0; i < mp; i++) {
+         let p = particles[i];
          p.y += Math.cos(angle + p.d) + 1 + p.r / 2;
          p.x += Math.sin(angle) * 2;
 

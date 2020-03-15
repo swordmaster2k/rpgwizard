@@ -1,11 +1,11 @@
 /* global rpgcode */
 
-var swordActive = rpgcode.getGlobal("swordActive");
+let swordActive = rpgcode.getGlobal("swordActive");
 if (swordActive) {
   rpgcode.sendToBoard("Room2.board", 5.5, 17);
   rpgcode.endProgram();
 } else {
-   var config = {
+   let config = {
       position: "BOTTOM",
       nextMarkerImage: "next_marker.png",
       profileImage: "sword_profile_1_small.png",

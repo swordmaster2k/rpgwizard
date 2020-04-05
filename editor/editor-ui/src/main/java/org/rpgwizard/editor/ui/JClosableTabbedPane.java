@@ -7,6 +7,7 @@
  */
 package org.rpgwizard.editor.ui;
 
+import com.formdev.flatlaf.icons.FlatInternalFrameCloseIcon;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
@@ -19,7 +20,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
-import org.rpgwizard.editor.ui.resources.Icons;
 
 /**
  * An extension of the JTabbedPane which automatically adds a close button.
@@ -57,20 +57,19 @@ public class JClosableTabbedPane extends JTabbedPane {
             JLabel jLabel = new JLabel(title);
             jLabel.setIcon(icon);
 
-            JButton button = new JButton(Icons.getIcon("close"));
-            button.addMouseListener(new CloseListener(tab));
-            button.setPreferredSize(new Dimension(12, 12));
-            button.setMaximumSize(new Dimension(12, 12));
-            button.setContentAreaFilled(false);
-            button.setBorderPainted(false);
-            button.setBorder(null);
+            JButton closeButton = new JButton(new FlatInternalFrameCloseIcon());
+            closeButton.addMouseListener(new CloseListener(tab));
+            closeButton.setPreferredSize(new Dimension(16, 16));
+            closeButton.setMaximumSize(new Dimension(16, 16));
+            closeButton.setContentAreaFilled(false);
+            closeButton.setBorder(null);
 
             BoxLayout boxlayout = new BoxLayout(this, BoxLayout.X_AXIS);
             setLayout(boxlayout);
 
             add(jLabel);
             add(Box.createRigidArea(new Dimension(7, 0)));
-            add(button);
+            add(closeButton);
 
             setBorder(new EmptyBorder(3, 3, 3, 3));
 

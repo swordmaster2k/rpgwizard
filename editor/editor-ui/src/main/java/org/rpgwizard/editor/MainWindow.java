@@ -7,10 +7,12 @@
  */
 package org.rpgwizard.editor;
 
+import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.beans.PropertyVetoException;
@@ -27,6 +29,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.UIManager;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -161,8 +164,18 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         ///
         /// desktopPane
         ///
-        desktopPane = new JDesktopPane();
-        desktopPane.setBackground(Color.LIGHT_GRAY);
+        desktopPane = new JDesktopPane() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (UIManager.getLookAndFeel().getClass().equals(FlatLightLaf.class)) {
+                    g.setColor(new Color(217, 217, 217));
+                } else {
+                    g.setColor(new Color(48, 50, 52));
+                }
+                g.fillRect(0, 0, getWidth(), getHeight());
+            }
+        };
         desktopPane.setDesktopManager(new ToolkitDesktopManager());
         ///
         /// editorMap

@@ -7,6 +7,9 @@
  */
 package org.rpgwizard.editor;
 
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLightLaf;
+import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -14,17 +17,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.util.List;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import org.apache.commons.lang3.SystemUtils;
 import org.pf4j.JarPluginManager;
 import org.pf4j.PluginManager;
-import org.pushingpixels.substance.api.skin.SubstanceGraphiteAquaLookAndFeel;
-import org.pushingpixels.substance.api.skin.SubstanceNebulaLookAndFeel;
 import org.rpgwizard.common.assets.AssetManager;
 import org.rpgwizard.common.assets.Project;
 import org.rpgwizard.common.assets.files.FileAssetHandleResolver;
@@ -115,21 +112,13 @@ public class Driver {
     public static void loadUserTheme() {
         Theme theme = Theme
                 .valueOf(UserPreferencesProperties.getProperty(UserPreference.USER_PREFERENCE_THEME).toUpperCase());
-        final LookAndFeel laf;
         switch (theme) {
         case LIGHT:
-            laf = new SubstanceNebulaLookAndFeel();
+            FlatLightLaf.install();
             break;
         case DARK:
         default:
-            laf = new SubstanceGraphiteAquaLookAndFeel();
-        }
-        try {
-            UIManager.setLookAndFeel(laf);
-            JFrame.setDefaultLookAndFeelDecorated(true);
-            JDialog.setDefaultLookAndFeelDecorated(true);
-        } catch (UnsupportedLookAndFeelException ex) {
-            LOGGER.error("Failed to set look and feel theme=[{}]!", ex, theme);
+            FlatDarkLaf.install();
         }
     }
 
@@ -201,6 +190,9 @@ public class Driver {
                         public void windowOpened(WindowEvent e) {
                             splashScreen.dispose();
                             UserPreferencesProperties.apply();
+                            for (Window window : Window.getWindows()) {
+                                SwingUtilities.updateComponentTreeUI(window);
+                            }
                         }
 
                         @Override

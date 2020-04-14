@@ -7,7 +7,6 @@
  */
 package org.rpgwizard.editor.editors.sprite;
 
-import org.rpgwizard.editor.ui.ImagePanel;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -40,21 +39,22 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import org.rpgwizard.common.assets.Animation;
 import org.rpgwizard.common.assets.AbstractSprite;
+import org.rpgwizard.common.assets.Animation;
 import org.rpgwizard.common.assets.GraphicEnum;
 import org.rpgwizard.common.assets.events.SpriteChangedEvent;
 import org.rpgwizard.common.assets.listeners.SpriteChangeListener;
+import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.editors.sprite.listener.AddAnimationActionListener;
 import org.rpgwizard.editor.editors.sprite.listener.AnimationListSelectionListener;
 import org.rpgwizard.editor.editors.sprite.listener.BrowseAnimationActionListener;
 import org.rpgwizard.editor.editors.sprite.listener.RemoveAnimationActionListener;
-import org.rpgwizard.editor.ui.AnimatedPanel;
-import org.rpgwizard.editor.utilities.GuiHelper;
-import org.rpgwizard.editor.MainWindow;
-import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
+import org.rpgwizard.editor.ui.AnimatedPanel;
+import org.rpgwizard.editor.ui.ImagePanel;
 import org.rpgwizard.editor.ui.resources.Icons;
+import org.rpgwizard.editor.utilities.EditorFileManager;
+import org.rpgwizard.editor.utilities.GuiHelper;
 
 /**
  *
@@ -286,7 +286,7 @@ public abstract class AbstractSpriteEditor extends AbstractAssetEditorWindow imp
         leftPanel.setBorder(BorderFactory.createTitledBorder(defaultEtchedBorder, "Profile (100x100)"));
 
         if (!profileImagePath.isEmpty()) {
-            // profilePanel.addImage(new File(EditorFileManager.getGraphicsPath() + profileImagePath));
+            profilePanel.addImage(new File(EditorFileManager.getGraphicsPath() + profileImagePath));
         }
 
         // Configure STATS PANEL layout

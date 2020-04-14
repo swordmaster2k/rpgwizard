@@ -162,14 +162,15 @@ public final class BoardVectorPanel extends BoardModelPanel {
         eventComboBox.setSelectedItem(((BoardVector) model).getEvents().get(0).getType().toString());
         eventComboBox.addActionListener((ActionEvent e) -> {
             Event event = ((BoardVector) model).getEvents().get(0);
-            String selected = eventComboBox.getSelectedItem().toString();
+            String eventType = eventComboBox.getSelectedItem().toString();
 
-            if (selected.equals(EventType.OVERLAP.toString())) {
+            if (eventType.equals(EventType.OVERLAP.toString())) {
                 event = new Event(EventType.OVERLAP, event.getProgram());
                 event.setType(EventType.OVERLAP);
                 keyComboBox.setEnabled(false);
-            } else if (selected.equals(EventType.KEYPRESS.toString())) {
-                event = new KeyPressEvent(event.getProgram(), selected);
+            } else if (eventType.equals(EventType.KEYPRESS.toString())) {
+                String key = keyComboBox.getSelectedItem().toString();
+                event = new KeyPressEvent(key, event.getProgram());
                 keyComboBox.setEnabled(true);
             }
             ((BoardVector) model).getEvents().set(0, event);

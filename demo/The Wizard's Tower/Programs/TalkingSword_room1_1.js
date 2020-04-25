@@ -7,6 +7,7 @@ if (swordActive) {
 } else {
    let config = {
       position: "BOTTOM",
+      advancementKey: "E",
       nextMarkerImage: "next_marker.png",
       profileImage: "sword_profile_1_small.png",
       typingSound: "typing_loop.wav",

@@ -1,5 +1,5 @@
 /* global rpgcode, gui */
-var inventory = new Inventory();
+let inventory = new Inventory();
 
 /**
  * The builtin inventory system.
@@ -25,29 +25,31 @@ function Inventory() {
  *    rpgcode.endProgram();
  * } else {
  *    // Configure and show the inventory.
- *    var config = {
+ *    let config = {
  *       "backgroundImage": "startscreen.png", 
  *       "inventoryMusic": "intro.ogg"
  *    };
- *    inventory.show(config, function() {
- *       rpgcode.endProgram();
- *    });
+ *    await inventory.show(config);
+ *    rpgcode.endProgram();
  * }
  * 
  * @param {Object} config
- * @param {Callback} callback
  * @returns {undefined}
  */
-Inventory.prototype.show = function(config, callback) {
-   this.visible = true;
-   this._loadAssets(config, function() {
-      this._callback = callback;
-      this._setup(config);
-      if (this._config.inventoryMusic) {
-         rpgcode.stopSound(rpgcode.getBoard().backgroundMusic);
-         rpgcode.playSound("inventory.music", true, 1.0);
-      }
-   }.bind(this));
+Inventory.prototype.show = async function(config) {
+   return new Promise((resolve, reject) => {
+      this.visible = true;
+      this._loadAssets(config, async function() {
+         this._callback = function() {
+            resolve();
+         };
+         this._setup(config);
+         if (this._config.inventoryMusic) {
+            rpgcode.stopSound(rpgcode.getBoard().backgroundMusic);
+            rpgcode.playSound("inventory.music", true, 1.0);
+         }
+      }.bind(this));
+   });
 };
 
 Inventory.prototype.close = function() {
@@ -86,10 +88,10 @@ Inventory.prototype._setup = function(config) {
    }
    rpgcode.renderNow(this.background.canvasId);
 
-   var items = [];
-   var currentInventory = rpgcode.getCharacter().inventory;
+   let items = [];
+   let currentInventory = rpgcode.getCharacter().inventory;
    Object.keys(currentInventory).forEach(function(key) {
-      var i = currentInventory[key][0];
+      let i = currentInventory[key][0];
       items.push({
          item: i,
          count: currentInventory[key].length,
@@ -100,8 +102,8 @@ Inventory.prototype._setup = function(config) {
       });
    });
 
-   var frameWidth = 192;
-   var frameHeight = 224;
+   let frameWidth = 192;
+   let frameHeight = 224;
    this.frame = gui.createFrame({
       id: "Inventory.frameCanvas",
       width: 192,
@@ -135,12 +137,12 @@ Inventory.prototype._setup = function(config) {
 };
 
 Inventory.prototype._loadAssets = function(config, callback) {
-   var assets = {
+   let assets = {
       "images": [],
       "audio": {}
    };
    if (config.backgroundImage) {
-      assets["images"].push(config.backgroundImage);
+      assets.images.push(config.backgroundImage);
    }
    if (config.inventoryMusic) {
       assets.audio["inventory.music"] = config.inventoryMusic;
@@ -162,10 +164,10 @@ Inventory.prototype._handleSelectedItem = function(item) {
       default:
          break;
    }
-}
+};
 
 Inventory.prototype._applyItemEffects = function(effects) {
-   var character = rpgcode.getCharacter();
+   let character = rpgcode.getCharacter();
    character.health += effects.health;
    if (character.health > character.maxHealth) {
       character.health = character.maxHealth;
@@ -182,7 +184,7 @@ Inventory.prototype._applyItemEffects = function(effects) {
    if (character.magic > character.maxMagic) {
       character.magic = character.maxMagic;
    }
-}
+};
 
 //
 // Input Functions

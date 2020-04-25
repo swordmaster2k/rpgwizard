@@ -26,6 +26,7 @@ function Dialog() {
  * @example
  * let config = {
  *  position: "CENTER",
+ *  advancementKey: "E",
  *  nextMarkerImage: "next_marker.png",
  *  profileImage: rpgcode.getCharacter().graphics["PROFILE"],
  *  typingSound: "typing_loop.wav",
@@ -91,7 +92,7 @@ Dialog.prototype._setup = function(config) {
 
    this.characterDelay = 25;
    this.markerBlinkDelay = 500;
-   this.advancementKey = null;
+   this.advancementKey = config.advancementKey;
    this._cursorX = this._defaultX;
    this._cursorY = this._defaultY;
    this.maxLines = 3;

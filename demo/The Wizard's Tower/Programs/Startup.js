@@ -70,6 +70,7 @@ rpgcode.loadAssets(assets, async function() {
       // Show the intro when the user has passed the title screen.
       config = {
          position: "CENTER",
+         advancementKey: "E",
          nextMarkerImage: "next_marker.png",
          profileImage: rpgcode.getCharacter().graphics.PROFILE,
          typingSound: "typing_loop.wav",

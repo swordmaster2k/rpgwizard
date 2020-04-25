@@ -1,5 +1,5 @@
 /* global rpgcode, gui */
-var hud = new HUD();
+let hud = new HUD();
 
 /**
  * The builtin HUD system.
@@ -17,7 +17,7 @@ function HUD() {
  *  Shows the default title screen system based the supplied config.
  * 
  * @example
- * var config = {
+ * let config = {
  *    life: {
  *       image: "life.png",
  *       width: 32,
@@ -63,22 +63,22 @@ HUD.prototype._setup = function(config) {
 };
 
 HUD.prototype._loadAssets = function(config, callback) {
-   var assets = {
+   let assets = {
       "images": [config.life.image]
    };
    rpgcode.loadAssets(assets, callback.bind(this));
 };
 
 HUD.prototype._update = function() {
-   var hearts = rpgcode.getCharacter().health;
+   let hearts = rpgcode.getCharacter().health;
    if (hearts < 1) {
       rpgcode.restart();
    }
 
-   var width = this._config.life.width;
-   var height = this._config.life.height;
+   let width = this._config.life.width;
+   let height = this._config.life.height;
    rpgcode.clearCanvas(this.background.canvasId);
-   for (var i = 0; i < hearts; i++) {
+   for (let i = 0; i < hearts; i++) {
       rpgcode.setImage(this._config.life.image, (width / 2) + (width * i), 0, width, height, this.background.canvasId);
    }
    rpgcode.renderNow(this.background.canvasId);

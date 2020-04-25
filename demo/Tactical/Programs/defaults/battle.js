@@ -1,5 +1,5 @@
 /* global rpgcode, gui */
-var battle = new Battle();
+let battle = new Battle();
 
 /**
  * The builtin turn-based battle system.
@@ -25,7 +25,7 @@ function Battle() {
  *  character can be used multiple times.
  * 
  * @example
- * var config = {
+ * let config = {
  *  enemies: ["evil-eye.enemy", "evil-eye.enemy", "evil-eye.enemy" "evil-eye.enemy"],
  *  characters: ["Hero.character", "Hero.character", "Hero.character", "Hero.character"],
  *  backgroundImage: "battle-background.png",
@@ -185,7 +185,7 @@ Battle.prototype._setup = function(config) {
 };
 
 Battle.prototype._loadAssets = function(config, callback) {
-   var assets = {
+   let assets = {
       "images": [config.backgroundImage],
       "audio": {
          "battle.stage": config.battleMusic,
@@ -198,8 +198,8 @@ Battle.prototype._loadAssets = function(config, callback) {
 };
 
 Battle.prototype._loadEnemies = function(config, callback) {
-   var enemies = [];
-   var loaded = function(enemy, index) {
+   let enemies = [];
+   let loaded = function(enemy, index) {
       enemies.push(enemy);
       if (config.enemies.length < 1) {
          config.enemies = enemies;
@@ -212,8 +212,8 @@ Battle.prototype._loadEnemies = function(config, callback) {
 };
 
 Battle.prototype._loadCharacters = function(config, callback) {
-   var characters = [];
-   var loaded = function(character, index) {
+   let characters = [];
+   let loaded = function(character, index) {
       characters.push(character);
       if (config.characters.length < 1) {
          config.characters = characters;
@@ -226,7 +226,7 @@ Battle.prototype._loadCharacters = function(config, callback) {
 };
 
 Battle.prototype._loadSprite = function(file, type, index, callback) {
-   var sprite = {
+   let sprite = {
       "name": file,
       "id": type + "-" + index,
       "thread": "",
@@ -246,8 +246,8 @@ Battle.prototype._loadSprite = function(file, type, index, callback) {
 };
 
 Battle.prototype._createStage = function(config) {
-   var viewport = rpgcode.getViewport();
-   var layer = {
+   let viewport = rpgcode.getViewport();
+   let layer = {
       "tiles": [],
       "vectors": [],
       "images": [{
@@ -278,8 +278,8 @@ Battle.prototype._getMenuItems = function() {
 };
 
 Battle.prototype._getStatItems = function() {
-   var statItems = [];
-   var entities = this._state.currentContext === this.context.ENEMY_SELECTION ? this._state.enemies : this._state.characters;
+   let statItems = [];
+   let entities = this._state.currentContext === this.context.ENEMY_SELECTION ? this._state.enemies : this._state.characters;
    entities.forEach(function(entity) {
       statItems.push(this._getStatItem(entity.data));
    }.bind(this));
@@ -287,11 +287,11 @@ Battle.prototype._getStatItems = function() {
 };
 
 Battle.prototype._getStatItem = function(entity) {
-   var name = entity.name.padEnd(12);
-   var hp = "HP " + entity.health.toString().padStart(4);
-   var mp = "MP " + entity.magic.toString().padStart(4);
-   var dp = "DP " + entity.defence.toString().padStart(4);
-   return item = {
+   let name = entity.name.padEnd(12);
+   let hp = "HP " + entity.health.toString().padStart(4);
+   let mp = "MP " + entity.magic.toString().padStart(4);
+   let dp = "DP " + entity.defence.toString().padStart(4);
+   const item = {
       text: name + hp + "  " + mp + "  " + dp,
       bars: [{
             position: name.length,
@@ -313,11 +313,12 @@ Battle.prototype._getStatItem = function(entity) {
          }
       ]
    };
+   return item;
 };
 
 Battle.prototype._getInventoryItems = function() {
-   var inventoryItems = [];
-   var inventory = rpgcode.getCharacter().inventory;
+   let inventoryItems = [];
+   let inventory = rpgcode.getCharacter().inventory;
    Object.keys(inventory).forEach(function(key) {
       if (inventory[key].length > 0) {
          if (inventory[key][0].type.toLowerCase() === "battle") {
@@ -338,27 +339,27 @@ Battle.prototype._getInventoryItem = function(inventoryItem, count, key) {
 };
 
 Battle.prototype._getCurrentSelection = function() {
-   var selection = {
+   let selection = {
       activeAnimation: null,
       location: null
    };
    if (this._state.currentContext === this.context.ENEMY_SELECTION) {
-      var selectedEnemy = this._state.enemies[this._state.selectedEnemyIndex - 1];
+      let selectedEnemy = this._state.enemies[this._state.selectedEnemyIndex - 1];
       if (!selectedEnemy) {
          return null;
       }
-      var sprite = rpgcode.getSprite(selectedEnemy.id);
+      let sprite = rpgcode.getSprite(selectedEnemy.id);
       if (!sprite) {
          return null;
       }
       selection.activeAnimation = sprite.sprite.enemy.spriteGraphics.active;
       selection.location = rpgcode.getSpriteLocation(selectedEnemy.id, false, true);
    } else {
-      var selectedCharacter = this._state.characters[this._state.selectedCharacterIndex - 1];
+      let selectedCharacter = this._state.characters[this._state.selectedCharacterIndex - 1];
       if (!selectedCharacter) {
          return null;
       }
-      var sprite = rpgcode.getSprite(selectedCharacter.id);
+      let sprite = rpgcode.getSprite(selectedCharacter.id);
       if (!sprite) {
          return null;
       }
@@ -373,7 +374,8 @@ Battle.prototype._getCurrentSelection = function() {
 //
 
 Battle.prototype._placeEnemies = function(enemies) {
-   var grid = {
+   let cells = {};
+   let grid = {
       width: this.stage.width * 0.50,
       height: this.stage.height,
       center: {
@@ -382,7 +384,7 @@ Battle.prototype._placeEnemies = function(enemies) {
       }
    };
    if (enemies.length === 1) {
-      var cells = [{
+      cells = [{
          x: 0,
          y: 0,
          center: {
@@ -391,7 +393,7 @@ Battle.prototype._placeEnemies = function(enemies) {
          }
       }];
    } else {
-      var cells = [{
+      cells = [{
             x: 0,
             y: 0,
             center: {
@@ -425,16 +427,17 @@ Battle.prototype._placeEnemies = function(enemies) {
          }
       ];
    }
-   var xShift = -Crafty.viewport._x - rpgwizard.craftyBoard.xShift;
-   var yShift = -Crafty.viewport._y - rpgwizard.craftyBoard.yShift
-   for (var i = 0; i < enemies.length; i++) {
+   let xShift = -Crafty.viewport._x - rpgwizard.craftyBoard.xShift;
+   let yShift = -Crafty.viewport._y - rpgwizard.craftyBoard.yShift;
+   for (let i = 0; i < enemies.length; i++) {
       rpgcode.setSpriteLocation(enemies[i].id, cells[i].center.x + xShift, cells[i].center.y + yShift, this._state.stageLayer, false);
       rpgcode.setSpriteStance(enemies[i].id, "EAST");
    }
 };
 
 Battle.prototype._placeCharacters = function(characters) {
-   var grid = {
+   let cells = {};
+   let grid = {
       width: this.stage.width,
       height: this.stage.height,
       center: {
@@ -443,7 +446,7 @@ Battle.prototype._placeCharacters = function(characters) {
       }
    };
    if (characters.length === 1) {
-      var cells = [{
+      cells = [{
          x: 0,
          y: 0,
          center: {
@@ -452,7 +455,7 @@ Battle.prototype._placeCharacters = function(characters) {
          }
       }];
    } else {
-      var cells = [{
+      cells = [{
             x: grid.width * 0.50,
             y: 0,
             center: {
@@ -486,9 +489,9 @@ Battle.prototype._placeCharacters = function(characters) {
          }
       ];
    }
-   var xShift = -Crafty.viewport._x - rpgwizard.craftyBoard.xShift;
-   var yShift = -Crafty.viewport._y - rpgwizard.craftyBoard.yShift
-   for (var i = 0; i < characters.length; i++) {
+   let xShift = -Crafty.viewport._x - rpgwizard.craftyBoard.xShift;
+   let yShift = -Crafty.viewport._y - rpgwizard.craftyBoard.yShift;
+   for (let i = 0; i < characters.length; i++) {
       rpgcode.setSpriteLocation(characters[i].id, cells[i].center.x + xShift, cells[i].center.y + yShift, this._state.stageLayer, false);
       rpgcode.setSpriteStance(characters[i].id, "WEST");
    }
@@ -513,7 +516,7 @@ Battle.prototype._endTurn = function() {
          this._endEnemyTurn();
       }
       this._state.turnsTaken++;
-      var totalTurns = this._state.playerTurn ? this._state.characters.length : this._state.enemies.length;
+      let totalTurns = this._state.playerTurn ? this._state.characters.length : this._state.enemies.length;
       if (this._state.turnsTaken >= totalTurns) {
          this._state.playerTurn = !this._state.playerTurn;
          this._state.turnsTaken = 0;
@@ -550,7 +553,7 @@ Battle.prototype._endCharacterTurn = function() {
 };
 
 Battle.prototype._startNextEnemyTurn = function() {
-   var enemy = this._state.enemies[this._state.selectedEnemyIndex - 1];
+   let enemy = this._state.enemies[this._state.selectedEnemyIndex - 1];
    this._state.selectedCharacterIndex = Math.round(Math.random() * ((this._state.characters.length) - 1) + 1);
    rpgcode.delay(1000, this._attackCharacter.bind(this));
 };
@@ -560,17 +563,17 @@ Battle.prototype._endEnemyTurn = function() {
 };
 
 Battle.prototype._attackCharacter = function() {
-   var enemy = this._state.enemies[this._state.selectedEnemyIndex - 1];
-   var character = this._state.characters[this._state.selectedCharacterIndex - 1];
-   var attackPower = this._determineAttackPower(enemy.data.attack);
-   var location = rpgcode.getSpriteLocation(character.id, false, true);
+   let enemy = this._state.enemies[this._state.selectedEnemyIndex - 1];
+   let character = this._state.characters[this._state.selectedCharacterIndex - 1];
+   let attackPower = this._determineAttackPower(enemy.data.attack);
+   let location = rpgcode.getSpriteLocation(character.id, false, true);
    this._showToastMessage({
       text: attackPower,
       x: location.x,
       y: location.y
    });
-   var playing = 2;
-   var callback = function() {
+   let playing = 2;
+   let callback = function() {
       playing--;
       if (playing < 1) {
          character.data.health -= attackPower;
@@ -593,17 +596,17 @@ Battle.prototype._removeCharacter = function(character, arrIndex) {
 };
 
 Battle.prototype._attackEnemy = function() {
-   var enemy = this._state.enemies[this._state.selectedEnemyIndex - 1];
-   var character = this._state.characters[this._state.selectedCharacterIndex - 1];
-   var attackPower = this._determineAttackPower(character.data.attack);
-   var location = rpgcode.getSpriteLocation(enemy.id, false, true);
+   let enemy = this._state.enemies[this._state.selectedEnemyIndex - 1];
+   let character = this._state.characters[this._state.selectedCharacterIndex - 1];
+   let attackPower = this._determineAttackPower(character.data.attack);
+   let location = rpgcode.getSpriteLocation(enemy.id, false, true);
    this._showToastMessage({
       text: attackPower,
       x: location.x,
       y: location.y
    });
-   var playing = 2;
-   var callback = function() {
+   let playing = 2;
+   let callback = function() {
       playing--;
       if (playing < 1) {
          enemy.data.health -= attackPower;
@@ -634,9 +637,9 @@ Battle.prototype._flee = function() {
 //
 
 Battle.prototype._useItem = function() {
-   var selectedItem = this._state.items[this._state.selectedItemIndex - 1];
+   let selectedItem = this._state.items[this._state.selectedItemIndex - 1];
    if (selectedItem) {
-      var character = this._state.characters[this._state.selectedCharacterIndex - 1].data;
+      let character = this._state.characters[this._state.selectedCharacterIndex - 1].data;
       character.health += selectedItem.effects.health;
       if (character.health > character.maxHealth) {
          character.health = character.maxHealth;
@@ -704,6 +707,7 @@ Battle.prototype._handleAction = function() {
          case 3:
          case 4:
             this._getMenuItems()[this.window.menu.selectedIndex - 1].execute();
+            return;
          default:
             return;
       }
@@ -792,7 +796,7 @@ Battle.prototype._draw = function() {
 
 Battle.prototype._drawStats = function(statItems) {
    this._drawStatSelection();
-   for (var i = 0; i < statItems.length; i++) {
+   for (let i = 0; i < statItems.length; i++) {
       this._drawStatItem(statItems[i], i);
    }
    rpgcode.drawOntoCanvas(this.areaFrame.id, this.window.area.x, this.window.area.y, this.window.area.width, this.window.area.height, this.window.canvasId);
@@ -800,8 +804,8 @@ Battle.prototype._drawStats = function(statItems) {
 
 Battle.prototype._drawStatItem = function(item, index) {
    rpgcode.font = gui.getFont();
-   var x = this.window.area.padding.x;
-   var y = this.window.area.padding.y + ((gui.getFontSize() + this.window.linePadding) * index);
+   let x = this.window.area.padding.x;
+   let y = this.window.area.padding.y + ((gui.getFontSize() + this.window.linePadding) * index);
    item.bars.forEach(function(bar) {
       this._drawStatBar(bar, x, y);
    }.bind(this));
@@ -810,28 +814,28 @@ Battle.prototype._drawStatItem = function(item, index) {
 };
 
 Battle.prototype._drawStatBar = function(bar, x, y) {
-   var charWidth = rpgcode.measureText("0").width;
-   var maxWidth = rpgcode.measureText(bar.maxWidth).width;
-   var width = maxWidth * (bar.value / bar.maxValue);
-   var height = this.window.area.bar.height;
-   var barX = x + (bar.position * charWidth);
-   var barY = y - (height / 2);
+   let charWidth = rpgcode.measureText("0").width;
+   let maxWidth = rpgcode.measureText(bar.maxWidth).width;
+   let width = maxWidth * (bar.value / bar.maxValue);
+   let height = this.window.area.bar.height;
+   let barX = x + (bar.position * charWidth);
+   let barY = y - (height / 2);
    gui.prepareStatBarColor();
    rpgcode.fillRect(barX, barY, width, height, this.areaFrame.id);
 };
 
 Battle.prototype._drawStatSelection = function() {
    gui.prepareSelectionColor();
-   var x = this.window.area.padding.x - (this.window.area.padding.x / 2);
-   var y = this.window.area.padding.y + ((gui.getFontSize() + this.window.linePadding) * (this.window.area.selectedIndex - 1)) - gui.getFontSize() - (this.window.linePadding / 4);
-   var width = this.window.area.width - this.window.area.padding.x;
-   var height = gui.getFontSize() + (this.window.linePadding);
+   let x = this.window.area.padding.x - (this.window.area.padding.x / 2);
+   let y = this.window.area.padding.y + ((gui.getFontSize() + this.window.linePadding) * (this.window.area.selectedIndex - 1)) - gui.getFontSize() - (this.window.linePadding / 4);
+   let width = this.window.area.width - this.window.area.padding.x;
+   let height = gui.getFontSize() + (this.window.linePadding);
    rpgcode.fillRect(x, y, width, height, this.areaFrame.id);
 };
 
 Battle.prototype._drawInventory = function(inventoryItems) {
    this._drawInventorySelection();
-   var i = 0;
+   let i = 0;
    for (; i < inventoryItems.length; i++) {
       this._drawInventoryItem(inventoryItems[i], i);
    }
@@ -843,19 +847,19 @@ Battle.prototype._drawInventory = function(inventoryItems) {
 
 Battle.prototype._drawInventoryItem = function(item, index) {
    rpgcode.font = gui.getFont();
-   var x = index < 4 ? this.window.area.padding.x : this.window.area.padding.x + (this.window.area.width / 2);
-   var y = this.window.area.padding.y + ((gui.getFontSize() + this.window.linePadding) * (index < 4 ? index : index - 4));
+   let x = index < 4 ? this.window.area.padding.x : this.window.area.padding.x + (this.window.area.width / 2);
+   let y = this.window.area.padding.y + ((gui.getFontSize() + this.window.linePadding) * (index < 4 ? index : index - 4));
    gui.prepareTextColor();
    rpgcode.drawText(x, y, item.text, this.areaFrame.id);
 };
 
 Battle.prototype._drawInventorySelection = function() {
    gui.prepareSelectionColor();
-   var index = this.window.area.selectedIndex - 1;
-   var x = index < 4 ? this.window.area.padding.x : this.window.area.padding.x + (this.window.area.width / 2);
-   var y = this.window.area.padding.y + ((gui.getFontSize() + this.window.linePadding) * (index < 4 ? index : index - 4)) - gui.getFontSize() - (this.window.linePadding / 4);
-   var width = (this.window.area.width / 2) - (this.window.area.padding.x * 2);
-   var height = gui.getFontSize() + (this.window.linePadding);
+   let index = this.window.area.selectedIndex - 1;
+   let x = index < 4 ? this.window.area.padding.x : this.window.area.padding.x + (this.window.area.width / 2);
+   let y = this.window.area.padding.y + ((gui.getFontSize() + this.window.linePadding) * (index < 4 ? index : index - 4)) - gui.getFontSize() - (this.window.linePadding / 4);
+   let width = (this.window.area.width / 2) - (this.window.area.padding.x * 2);
+   let height = gui.getFontSize() + (this.window.linePadding);
    rpgcode.fillRect(x, y, width, height, this.areaFrame.id);
 };
 
@@ -863,7 +867,7 @@ Battle.prototype._drawMenu = function(menuItems) {
    if (this._state.flashMenuSelection && this._state.currentContext !== this.context.ENEMY_TURN) {
       this._drawMenuSelection();
    }
-   for (var i = 0; i < menuItems.length; i++) {
+   for (let i = 0; i < menuItems.length; i++) {
       this._drawMenuItem(menuItems[i], i);
    }
    rpgcode.drawOntoCanvas(this.menuFrame.id, this.window.menu.x, this.window.menu.y, this.window.menu.width, this.window.menu.height, this.window.canvasId);
@@ -872,22 +876,22 @@ Battle.prototype._drawMenu = function(menuItems) {
 Battle.prototype._drawMenuItem = function(item, index) {
    rpgcode.font = gui.getFont();
    gui.prepareTextColor();
-   var x = this.window.menu.padding.x;
-   var y = this.window.menu.padding.y + ((gui.getFontSize() + this.window.linePadding) * index);
+   let x = this.window.menu.padding.x;
+   let y = this.window.menu.padding.y + ((gui.getFontSize() + this.window.linePadding) * index);
    rpgcode.drawText(x, y, item.text, this.menuFrame.id);
 };
 
 Battle.prototype._drawMenuSelection = function() {
    gui.prepareSelectionColor();
-   var x = this.window.menu.padding.x - (this.window.menu.padding.x / 2);
-   var y = this.window.menu.padding.y + ((gui.getFontSize() + this.window.linePadding) * (this.window.menu.selectedIndex - 1)) - gui.getFontSize() - (this.window.linePadding / 4);
-   var width = this.window.menu.width - this.window.menu.padding.x;
-   var height = gui.getFontSize() + (this.window.linePadding);
+   let x = this.window.menu.padding.x - (this.window.menu.padding.x / 2);
+   let y = this.window.menu.padding.y + ((gui.getFontSize() + this.window.linePadding) * (this.window.menu.selectedIndex - 1)) - gui.getFontSize() - (this.window.linePadding / 4);
+   let width = this.window.menu.width - this.window.menu.padding.x;
+   let height = gui.getFontSize() + (this.window.linePadding);
    rpgcode.fillRect(x, y, width, height, this.menuFrame.id);
 };
 
 Battle.prototype._drawSelection = function() {
-   var selection = this._getCurrentSelection();
+   let selection = this._getCurrentSelection();
    if (!selection) {
       return;
    }
@@ -911,7 +915,7 @@ Battle.prototype._showToastMessage = function(message, location) {
    rpgcode.font = gui.getFont();
    message.x -= rpgcode.measureText(message.text).width / 2;
    this._state.messages.push(message);
-   var callback = function(_this, message, startY) {
+   let callback = function(_this, message, startY) {
       message.y--;
       if (startY - message.y < 25) {
          rpgcode.delay(10, function() {

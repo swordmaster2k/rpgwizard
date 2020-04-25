@@ -1,1 +1,1 @@
-{"initialCharacter":"Hero.character","gameOverProgram":"GameOver.js","startupProgram":"","showVectors":false,"resolutionHeight":240,"projectIcon":"1_icon.png","name":"The Wizard's Tower","isFullScreen":false,"resolutionWidth":320,"version":1.6,"initialBoard":"demo_3.board"}
+{"initialCharacter":"Hero.character","gameOverProgram":"GameOver.js","startupProgram":"Startup.js","showVectors":false,"resolutionHeight":480,"projectIcon":"1_icon.png","name":"The Wizard's Tower","isFullScreen":false,"resolutionWidth":640,"version":1.6,"initialBoard":"Outside.board"}

@@ -45,9 +45,9 @@
  <span class="param-type">undefined</span> 
 </div>  
 <h3>Example</h3> 
-<pre class="prettyprint"><code>var config = { enemies: ["evil-eye.enemy", "evil-eye.enemy", "evil-eye.enemy" "evil-eye.enemy"], characters: ["Hero.character", "Hero.character", "Hero.character", "Hero.character"], backgroundImage: "battle-background.png", battleMusic: "Battle.ogg", itemSoundEffect: "item.ogg"}battle.show(config, function(result) { rpgcode.log("The battle has ended! result.status=" + result.status); rpgcode.endProgram();   });</code></pre>]]></desc>
+<pre class="prettyprint"><code>let config = { enemies: ["evil-eye.enemy", "evil-eye.enemy", "evil-eye.enemy" "evil-eye.enemy"], characters: ["Hero.character", "Hero.character", "Hero.character", "Hero.character"], backgroundImage: "battle-background.png", battleMusic: "Battle.ogg", itemSoundEffect: "item.ogg"}battle.show(config, function(result) { rpgcode.log("The battle has ended! result.status=" + result.status); rpgcode.endProgram();   });</code></pre>]]></desc>
         </keyword>
-        <keyword name="dialog.show(config, callback);" type="function" returnType="undefined" definedIn="demo/The Wizard's Tower/Programs/defaults/dialog.js">
+        <keyword name="dialog.show(config);" type="function" returnType="undefined" definedIn="demo/The Wizard's Tower/Programs/defaults/dialog.js">
             <desc><![CDATA[<div class="description">
   Shows the default dialog window based the supplied config. The dialog window can be set to appear at the "TOP", "CENTER", or "BOTTOM" of the screen. It can also be supplied with an image for the blinking next marker, a profile image of the speaker, and a typing sound that plays while it is animating. Note: The current hardcoded next key is "E". 
 </div> 
@@ -67,11 +67,6 @@
     <td class="type"> <span class="param-type">Object</span> </td> 
     <td class="description last"></td> 
    </tr> 
-   <tr> 
-    <td class="name"><code>callback</code></td> 
-    <td class="type"> <span class="param-type">Callback</span> </td> 
-    <td class="description last"></td> 
-   </tr> 
   </tbody> 
  </table> 
 </div> 
@@ -80,7 +75,15 @@
  <span class="param-type">undefined</span> 
 </div>  
 <h3>Example</h3> 
-<pre class="prettyprint"><code>var config = { position: "CENTER", nextMarkerImage: "next_marker.png", profileImage: rpgcode.getCharacter().graphics["PROFILE"], typingSound: "typing_loop.wav", text: "Hello, this text will be wrote to the window like a type-writer."};dialog.show(config, function() { // Dialog has ended, do something else.});</code></pre>]]></desc>
+<pre class="prettyprint"><code>let config = {
+ position: "CENTER",
+ advancementKey: "E",
+ nextMarkerImage: "next_marker.png",
+ profileImage: rpgcode.getCharacter().graphics["PROFILE"],
+ typingSound: "typing_loop.wav",
+ text: "Hello, this text will be wrote to the window like a type-writer."
+};
+await dialog.show(config);</code></pre>]]></desc>
         </keyword>
         <keyword name="hud.show(config, callback);" type="function" returnType="undefined" definedIn="demo/The Wizard's Tower/Programs/defaults/hud.js">
             <desc><![CDATA[<div class="description">
@@ -115,9 +118,9 @@
  <span class="param-type">undefined</span> 
 </div>  
 <h3>Example</h3> 
-<pre class="prettyprint"><code>var config = {   life: {      image: "life.png",      width: 32,      height: 32   }};hud.show(config, function() {rpgcode.log("hud closed";});</code></pre>]]></desc>
+<pre class="prettyprint"><code>let config = {   life: {      image: "life.png",      width: 32,      height: 32   }};hud.show(config, function() {rpgcode.log("hud closed";});</code></pre>]]></desc>
         </keyword>
-        <keyword name="inventory.show(config, callback);" type="function" returnType="undefined" definedIn="demo/The Wizard's Tower/Programs/defaults/inventory.js">
+        <keyword name="inventory.show(config);" type="function" returnType="undefined" definedIn="demo/The Wizard's Tower/Programs/defaults/inventory.js">
             <desc><![CDATA[<div class="description">
   Shows the default inventory system based the supplied config. 
 </div> 
@@ -137,11 +140,6 @@
     <td class="type"> <span class="param-type">Object</span> </td> 
     <td class="description last"></td> 
    </tr> 
-   <tr> 
-    <td class="name"><code>callback</code></td> 
-    <td class="type"> <span class="param-type">Callback</span> </td> 
-    <td class="description last"></td> 
-   </tr> 
   </tbody> 
  </table> 
 </div> 
@@ -150,7 +148,8 @@
  <span class="param-type">undefined</span> 
 </div>  
 <h3>Example</h3> 
-<pre class="prettyprint"><code>if (inventory.visible) {   // Close the inventory if it is visible   inventory.close();   rpgcode.endProgram();} else {   // Configure and show the inventory.   var config = {      "backgroundImage": "startscreen.png",       "inventoryMusic": "intro.ogg"   };   inventory.show(config, function() {      rpgcode.endProgram();   });}</code></pre>]]></desc>
+<pre class="prettyprint"><code>if (inventory.visible) {   // Close the inventory if it is visible   inventory.close();   rpgcode.endProgram();} else {   // Configure and show the inventory.   let config = {      "backgroundImage": "startscreen.png",       "inventoryMusic": "intro.ogg"   };   await inventory.show(config);   rpgcode.endProgram();
+}</code></pre>]]></desc>
         </keyword>
         <keyword name="rpgcode.addLayerImage(image, layer);" type="function" returnType="undefined" definedIn="engine/engine-js/js/rpgcode/rpgcode.js">
             <desc><![CDATA[<div class="description">
@@ -3116,7 +3115,7 @@
  </table> 
 </div>  
 <h3>Example</h3> 
-<pre class="prettyprint"><code>// Set the global font to 8px Lucida Consolerpgcode.setFont(8, family);  </code></pre>]]></desc>
+<pre class="prettyprint"><code>// Set the global font to 8px Lucida Consolerpgcode.setFont(8, "Lucida Console");  </code></pre>]]></desc>
         </keyword>
         <keyword name="rpgcode.setGlobal(id, value);" type="function" returnType="undefined" definedIn="engine/engine-js/js/rpgcode/rpgcode.js">
             <desc><![CDATA[<div class="description">
@@ -3626,9 +3625,9 @@
  <span class="param-type">undefined</span> 
 </div>  
 <h3>Example</h3> 
-<pre class="prettyprint"><code>var image = { "src": "battle-background.png", // pre-loaded asset image "x": 150,                       // x location on board in pixels "y": 100,                       // y location on board in pixels "id": "battle.background"       // unique for this layer image}rpgcode.updateLayerImage(image, 1); // Update the image with ID "battle.background" on layer 1 </code></pre>]]></desc>
+<pre class="prettyprint"><code>var image = { "src": "battle-background.png", // pre-loaded asset image "x": 150,                       // x location on board in pixels "y": 100,                       // y location on board in pixels "id": "battle.background"       // unique for this layer image};rpgcode.updateLayerImage(image, 1); // Update the image with ID "battle.background" on layer 1 </code></pre>]]></desc>
         </keyword>
-        <keyword name="titlescreen.show(config, callback);" type="function" returnType="undefined" definedIn="demo/The Wizard's Tower/Programs/defaults/titleScreen.js">
+        <keyword name="titlescreen.show(config);" type="function" returnType="undefined" definedIn="demo/The Wizard's Tower/Programs/defaults/titleScreen.js">
             <desc><![CDATA[<div class="description">
   Shows the default title screen system based the supplied config. 
 </div> 
@@ -3648,11 +3647,6 @@
     <td class="type"> <span class="param-type">Object</span> </td> 
     <td class="description last"></td> 
    </tr> 
-   <tr> 
-    <td class="name"><code>callback</code></td> 
-    <td class="type"> <span class="param-type">Callback</span> </td> 
-    <td class="description last"></td> 
-   </tr> 
   </tbody> 
  </table> 
 </div> 
@@ -3661,7 +3655,7 @@
  <span class="param-type">undefined</span> 
 </div>  
 <h3>Example</h3> 
-<pre class="prettyprint"><code>var config = { "backgroundImage": "startscreen.png",  "titleScreenMusic": "intro.ogg"};titleScreen.show(config, function() { // Show the intro when the user has passed the title screen. if (playIntro) {     showIntro(); } else {     finish(); }}); </code></pre>]]></desc>
+<pre class="prettyprint"><code>let config = { "backgroundImage": "startscreen.png",  "titleScreenMusic": "intro.ogg"};await titleScreen.show(config); </code></pre>]]></desc>
         </keyword>
         <keyword name="weather.close();" type="function" returnType="undefined" definedIn="demo/The Wizard's Tower/Programs/defaults/weather.js">
             <desc><![CDATA[<div class="description">
@@ -3672,7 +3666,7 @@
  <span class="param-type">undefined</span> 
 </div>]]></desc>
         </keyword>
-        <keyword name="weather.show(config, callback);" type="function" returnType="undefined" definedIn="demo/The Wizard's Tower/Programs/defaults/weather.js">
+        <keyword name="weather.show(config);" type="function" returnType="undefined" definedIn="demo/The Wizard's Tower/Programs/defaults/weather.js">
             <desc><![CDATA[<div class="description">
   Shows the weather system based the supplied config. 
 </div> 
@@ -3692,11 +3686,6 @@
     <td class="type"> <span class="param-type">Object</span> </td> 
     <td class="description last"></td> 
    </tr> 
-   <tr> 
-    <td class="name"><code>callback</code></td> 
-    <td class="type"> <span class="param-type">Callback</span> </td> 
-    <td class="description last"></td> 
-   </tr> 
   </tbody> 
  </table> 
 </div> 
@@ -3705,12 +3694,13 @@
  <span class="param-type">undefined</span> 
 </div>  
 <h3>Example</h3> 
-<pre class="prettyprint"><code>var config = {
+<pre class="prettyprint"><code>let config = {
    rain: {
       sound: "rain.wav"
    }
 };
-weather.show(config, function() {console.log("weather started");});
+await weather.show(config);
+console.log("weather started");
 rpgcode.endProgram();</code></pre>]]></desc>
         </keyword>
     </keywords>

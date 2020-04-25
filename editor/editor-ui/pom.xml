@@ -56,6 +56,11 @@
             <version>${languagesupport.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf</artifactId>
+            <version>${flatlaf.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.pushingpixels.substance</groupId>
             <artifactId>substance</artifactId>
             <version>${substance.version}</version>

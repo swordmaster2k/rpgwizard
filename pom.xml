@@ -23,9 +23,24 @@
 
     <repositories>
         <repository>
+            <id>maven-central</id>
+            <url>https://repo1.maven.org/maven2</url>
+        </repository>
+        <repository>
             <id>remote</id>
             <name>GitHub</name>
             <url>https://github.com/swordmaster2k/rpgwizard</url>
+        </repository>
+        <repository>
+            <id>jfrog</id>
+            <name>jfrog repo</name>
+            <url>https://oss.jfrog.org/artifactory/oss-snapshot-local</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
     </repositories>
 
@@ -58,6 +73,7 @@
         <maven.resources.version>3.0.2</maven.resources.version>
         <maven.clean.version>3.0.0</maven.clean.version>
         <maven.install.version>2.5.1</maven.install.version>
+        <flatlaf.version>0.28</flatlaf.version>
         <substance.version>8.0.00</substance.version>
         <trident.version>1.5.00</trident.version>
         <jcef.version>67.0</jcef.version>
@@ -265,5 +281,5 @@
             </plugin>
         </plugins>
     </build>
-
+    
 </project>

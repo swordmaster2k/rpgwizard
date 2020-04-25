@@ -7,6 +7,8 @@
  */
 package org.rpgwizard.editor.ui.actions;
 
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
@@ -14,8 +16,6 @@ import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import org.pushingpixels.substance.api.skin.SubstanceGraphiteAquaLookAndFeel;
-import org.pushingpixels.substance.api.skin.SubstanceNebulaLookAndFeel;
 import org.rpgwizard.editor.properties.user.UserPreference;
 import org.rpgwizard.editor.properties.user.UserPreferencesProperties;
 import org.rpgwizard.editor.ui.Theme;
@@ -40,10 +40,10 @@ public class ThemeAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         switch (theme) {
         case LIGHT:
-            changeTheme(new SubstanceNebulaLookAndFeel());
+            changeTheme(new FlatLightLaf());
             break;
         case DARK:
-            changeTheme(new SubstanceGraphiteAquaLookAndFeel());
+            changeTheme(new FlatDarkLaf());
             break;
         default:
             // Do Nothing.

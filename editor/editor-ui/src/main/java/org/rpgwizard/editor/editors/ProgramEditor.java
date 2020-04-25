@@ -27,7 +27,6 @@ import org.fife.rsta.ac.js.JsErrorParser;
 import org.fife.rsta.ui.search.SearchEvent;
 import org.fife.rsta.ui.search.SearchListener;
 import org.fife.ui.autocomplete.AutoCompletion;
-import org.fife.ui.rsyntaxtextarea.ErrorStrip;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rsyntaxtextarea.Theme;
@@ -171,14 +170,14 @@ public final class ProgramEditor extends AbstractAssetEditorWindow
         }
 
         RTextScrollPane scrollPane = new RTextScrollPane(textArea, true);
-        ErrorStrip errorStrip = new ErrorStrip(textArea);
-        errorStrip.setShowMarkedOccurrences(false);
-        errorStrip.setShowMarkAll(false);
-        errorStrip.setFollowCaret(false);
+        // ErrorStrip errorStrip = new ErrorStrip(textArea);
+        // errorStrip.setShowMarkedOccurrences(false);
+        // errorStrip.setShowMarkAll(false);
+        // errorStrip.setFollowCaret(false);
 
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(scrollPane, BorderLayout.CENTER);
-        panel.add(errorStrip, BorderLayout.LINE_END);
+        // panel.add(errorStrip, BorderLayout.LINE_END); // Slows things down
 
         setContentPane(panel);
         setTitle(fileName);

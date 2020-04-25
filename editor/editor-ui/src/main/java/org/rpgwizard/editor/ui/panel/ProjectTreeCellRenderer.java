@@ -37,11 +37,12 @@ public class ProjectTreeCellRenderer extends DefaultTreeCellRenderer {
 
             // Set the icon if possible.
             ImageIcon icon;
-            if (node.toString().contains(".")) {
+            File file = new File(node.toString());
+            if (file.exists() && file.isDirectory()) {
+                icon = Icons.getDefaultIcon("folder");
+            } else {
                 String extension = FilenameUtils.getExtension(node.toString());
                 icon = Icons.getDefaultIcon(extension.toLowerCase());
-            } else {
-                icon = Icons.getDefaultIcon("folder");
             }
 
             if (icon != null) {

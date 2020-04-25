@@ -3045,7 +3045,7 @@ RPGcode.prototype.unregisterMouseMove = function (globalScope) {
  *  "x": 150,                       // x location on board in pixels
  *  "y": 100,                       // y location on board in pixels
  *  "id": "battle.background"       // unique for this layer image
- * }
+ * };
  * 
  * rpgcode.updateLayerImage(image, 1); // Update the image with ID "battle.background" on layer 1 
  * 

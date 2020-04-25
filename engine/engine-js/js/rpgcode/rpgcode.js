@@ -2491,7 +2491,7 @@ RPGcode.prototype.setColor = function (r, g, b, a) {
  *
  * @example
  * // Set the global font to 8px Lucida Console
- * rpgcode.setFont(8, family);
+ * rpgcode.setFont(8, "Lucida Console");
  *   
  * @param {Number} size in pixels
  * @param {String} family E.g. Arial, Comic Sans, etc.

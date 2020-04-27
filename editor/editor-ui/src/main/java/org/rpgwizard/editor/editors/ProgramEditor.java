@@ -8,6 +8,7 @@
 package org.rpgwizard.editor.editors;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -168,6 +169,10 @@ public final class ProgramEditor extends AbstractAssetEditorWindow
         } catch (IOException ex) { // Never happens
             LOGGER.error("Failed to set theme.", ex);
         }
+
+        Font font = textArea.getFont();
+        Font newFont = new Font(font.getName(), font.getStyle(), 32);
+        textArea.setFont(newFont);
 
         RTextScrollPane scrollPane = new RTextScrollPane(textArea, true);
         // ErrorStrip errorStrip = new ErrorStrip(textArea);

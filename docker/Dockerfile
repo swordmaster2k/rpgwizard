@@ -14,5 +14,11 @@ RUN apt-get -yq install software-properties-common
 # Install a Java
 RUN add-apt-repository ppa:openjdk-r/ppa && apt-get -yq update && apt-get -yq install openjdk-11-jdk
 
-# Wwitch back to default user
+# Install npm
+RUN apt-get install -yq curl
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
+RUN apt-get install -yq nodejs
+RUN npm install -g jshint
+
+# Switch back to default user
 USER 1000

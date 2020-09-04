@@ -171,7 +171,7 @@ public final class ProgramEditor extends AbstractAssetEditorWindow
         }
 
         Font font = textArea.getFont();
-        Font newFont = new Font(font.getName(), font.getStyle(), 32);
+        Font newFont = new Font(font.getName(), font.getStyle(), 12);
         textArea.setFont(newFont);
 
         RTextScrollPane scrollPane = new RTextScrollPane(textArea, true);

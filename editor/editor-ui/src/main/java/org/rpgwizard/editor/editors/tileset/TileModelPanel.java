@@ -41,6 +41,7 @@ public final class TileModelPanel extends AbstractModelPanel {
     private static final String CUSTOM_KEY = "custom";
 
     private static final Map<String, Integer> TYPE_COVER_MAP = Map.ofEntries(
+            new AbstractMap.SimpleEntry<String, Integer>("", 0),
             new AbstractMap.SimpleEntry<String, Integer>("airport", 3),
             new AbstractMap.SimpleEntry<String, Integer>("beach", -1),
             new AbstractMap.SimpleEntry<String, Integer>("bridge", 0),

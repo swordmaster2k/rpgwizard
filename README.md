@@ -22,9 +22,41 @@ Here at RPGWizard we believe in building a creative and helpful community for ou
 
 - Discord Channel: Join our Discord channel to get in touch with others quickly.
 
-### Build
-- Most of the project uses Java except the engine which is wrote in HTML5 and JavaScript.
-- The primary build tool is Maven 3 with some uses of npm for the engine.
+### Building from Source
+In order to build the RPGWizard yourself you should be familiar with Java, Maven, JavaScript, and NodeJS.
+
+#### Software Dependencies
+* **Java 11+**
+  * Azul Zulu highly recommended over Oracle see: https://www.azul.com/downloads/zulu-community
+* **Java & JavaScript IDE**
+  * Apache NetBeans recommended https://netbeans.apache.org/download/index.html
+  * Turn on Web support for JavaScript editing, otherwise a Vanilla install is fine.
+* **Maven 3.5.0+**
+  * Included if using NetBeans as primary IDE
+
+#### Project Structure
+The RPGWizard is built up using a series of **Maven Modules** and a HTML web project
+for the engine. The entire project can be built using the parent RPGWizard module:
+
+![Parent Module](images/readme-building-1.png)
+
+#### Binary Dependencies
+RPGWizard depends on [Java Chromium Embedded Framework (JCEF) ](https://github.com/chromiumembedded/java-cef)
+for its game engine, in order to build and run the engine on Windows you need
+to download and place the pre-compiled binaries into the following location:
+
+* _rpgwizard/engine/src/main/resources/lib/_
+
+![JCEF Binaries](images/readme-building-2.png)
+
+
+##### JCEF Binaries
+* https://github.com/swordmaster2k/rpgwizard/releases/tag/1.7.0-dependencies
+
+#### Main Class
+The main runnable class for the RPGWizard is located at:
+
+* _rpgwizard/editor/editor-ui/src/main/java/org/rpgwizard/editor/Driver.java_
 
 ### Credits
 RPGWizard is an open source project, and is supported by its community. It owes its heritage to the RPGToolkit, from which it was originally forked.

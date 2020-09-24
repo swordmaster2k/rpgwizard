@@ -1181,7 +1181,7 @@ RPGcode.prototype.fillRoundedRect = function (x, y, width, height, radius, canva
  * @param {type} origin The point of origin from which the ray will be cast. The object must contain the properties _x, _y, and optionally _layer.
  * @param {type} direction The direction the ray will be cast. It must be normalized. The object must contain the properties x and y.
  * @param {type} maxDistance The maximum distance up to which intersections will be found. This is an optional parameter defaulting to Infinity. If it's Infinity find all intersections. If it's negative find only first intersection (if there is one). If it's positive find all intersections up to that distance.
- * @returns {Object} An object containing all of the entities in the path of the raycast. 
+ * @returns {Geometry.RaycastResult} An object containing all of the entities in the path of the raycast. 
  */
 RPGcode.prototype.fireRaycast = function (origin, direction, maxDistance) {
     var hits;
@@ -1232,7 +1232,7 @@ RPGcode.prototype.fireRaycast = function (origin, direction, maxDistance) {
  * 
  * @memberof Board
  * @alias getBoard
- * @returns {Board} Current board object.
+ * @returns {Asset.BoardAsset} Current board object.
  */
 RPGcode.prototype.getBoard = function () {
     return rpgwizard.craftyBoard.board;
@@ -1283,7 +1283,7 @@ RPGcode.prototype.getAngleBetweenPoints = function (x1, y1, x2, y2) {
  * 
  * @memberof Character
  * @alias getCharacter
- * @returns {Object} Active character.
+ * @returns {Asset.CharacterAsset} Active character.
  */
 RPGcode.prototype.getCharacter = function () {
     return rpgwizard.craftyCharacter.character;
@@ -1338,7 +1338,7 @@ RPGcode.prototype.getCharacterDirection = function () {
  * @alias getCharacterLocation
  * @param {boolean} inTiles Should the location be in tiles, otherwise pixels.
  * @param {boolean} includeOffset Should the location include the visual board offset.
- * @returns {Object} An object containing the characters location in the form {x, y, layer}.
+ * @returns {Geometry.Location} An object containing the characters location.
  */
 RPGcode.prototype.getCharacterLocation = function (inTiles, includeOffset) {
     var instance = rpgwizard.craftyCharacter;
@@ -1424,7 +1424,7 @@ RPGcode.prototype.getGlobal = function (id) {
  * @param {number} x In pixels.
  * @param {number} y In pixels.
  * @param {string} [canvasId=renderNowCanvas] The ID of the canvas to draw on.
- * @returns {Object} An ImageData object
+ * @returns {Draw2D.ImageData} An ImageData object.
  */
 RPGcode.prototype.getPixel = function (x, y, canvasId) {
     if (!canvasId) {
@@ -1459,7 +1459,7 @@ RPGcode.prototype.getPixel = function (x, y, canvasId) {
  * @memberof Image
  * @alias getImage
  * @param {string} fileName The relative path to the image.
- * @returns {Object} Image object or undefined if none available.
+ * @returns {Image.ImageInfo} An object containing information about the image.
  */
 RPGcode.prototype.getImage = function (fileName) {
     return Crafty.asset(Crafty.__paths.images + fileName);
@@ -1477,7 +1477,7 @@ RPGcode.prototype.getImage = function (fileName) {
  * @alias getItem
  * @param {string} fileName The relative path to the item.
  * @param {Callback} callback Invoked when the item has finished loading.
- * @returns {Object} Item object or undefined if none available.
+ * @returns {Asset.Item|undefined} Item object or undefined if none available.
  */
 RPGcode.prototype.getItem = async function (fileName, callback) {
     if (callback) { // Use a callback to future proof for async loading.
@@ -1513,7 +1513,7 @@ RPGcode.prototype.getRandom = function (min, max) {
  * 
  * @memberof Program
  * @alias getRunningProgram
- * @returns {Object} An object with the attributes inProgram (boolean) and the filename of the current running program, if any.
+ * @returns {Program.RunningProgram} An object with the attributes inProgram (boolean) and the filename of the current running program, if any.
  */
 RPGcode.prototype.getRunningProgram = function () {
     return {inProgram: rpgwizard.inProgram, currentProgram: rpgwizard.currentProgram};
@@ -1532,7 +1532,7 @@ RPGcode.prototype.getRunningProgram = function () {
  * @param {string} spriteId ID associated with the sprite. 
  * @param {boolean} inTiles Should the location be in tiles, otherwise pixels.
  * @param {boolean} includeOffset Should the location include the visual board offset.
- * @returns {Object} An object containing the characters location in the form {x, y, z}.
+ * @returns {Geometry.Location} An object containing the sprite's location.
  */
 RPGcode.prototype.getSpriteLocation = function (spriteId, inTiles, includeOffset) {
     var entity = rpgwizard.craftyBoard.board.sprites[spriteId];
@@ -1584,8 +1584,8 @@ RPGcode.prototype.getScale = function () {
  * 
  * @memberof Sprite
  * @alias getSprite
- * @param {type} spriteId
- * @returns {Entity}
+ * @param {string} spriteId
+ * @returns {Asset.Sprite}
  */
 RPGcode.prototype.getSprite = function (spriteId) {
     return rpgwizard.craftyBoard.board.sprites[spriteId];
@@ -1652,7 +1652,7 @@ RPGcode.prototype.getSpriteDirection = function (spriteId) {
  * @param {number} tileX
  * @param {number} tileY
  * @param {number} layer
- * @returns {Object} Containing the properties: "type", "defence", "custom".
+ * @returns {Board.TileData} An object containing the tile's properties.
  * @throws "layer out of range" or "tile out of range"
  */
 RPGcode.prototype.getTileData = function(tileX=0, tileY=0, layer=0) {
@@ -1695,7 +1695,7 @@ RPGcode.prototype.getTileData = function(tileX=0, tileY=0, layer=0) {
  * 
  * @memberof Util
  * @alias getViewport
- * @returns {Object}
+ * @returns {Util.Viewport}
  */
 RPGcode.prototype.getViewport = function () {
     return {
@@ -1874,7 +1874,7 @@ RPGcode.prototype.isControlEnabled = function () {
  * 
  * @memberof Asset
  * @alias loadAssets
- * @param {Object} assets Object of assets to load.
+ * @param {Asset.Assets} assets Object of assets to load.
  * @param {Callback} onLoad Callback to invoke after assets are loaded.
  */
 RPGcode.prototype.loadAssets = function (assets, onLoad) {
@@ -2036,7 +2036,7 @@ RPGcode.prototype.moveSprite = function (spriteId, direction, distance) {
  * @memberof Text
  * @alias measureText
  * @param {string} text
- * @returns {Object} An object containing the width and height of the text.
+ * @returns {Text.TextDimensions} An object containing the width and height of the text.
  */
 RPGcode.prototype.measureText = function (text) {
     var instance = rpgcode.canvases["renderNowCanvas"];
@@ -2400,7 +2400,7 @@ RPGcode.prototype.registerMouseMove = function (callback, globalScope) {
  * 
  * @memberof Asset
  * @alias removeAssets
- * @param {Object} assets The object containing the assets identifiers.
+ * @param {Asset.Assets} assets The object containing the assets identifiers.
  */
 RPGcode.prototype.removeAssets = function (assets) {
     Crafty.removeAssets(assets);
@@ -3317,3 +3317,501 @@ RPGcode.prototype.updateLayerImage = function (image, layer) {
         }
     }
 };
+
+//
+// Typedefs for complex API objects
+//
+/**
+ * @memberOf Geometry
+ * @typedef {Object} Location
+ * @property {number} x
+ * @property {number} y
+ * @property {number} layer
+ */
+
+/**
+ * @memberof Geometry
+ * @typedef {Object} RaycastResult
+ * @property {Asset.CharacterAsset[]} characters
+ * @property {Asset.EnemyAsset[]} enemies
+ * @property {Asset.NpcAsset[]} npcs
+ * @property {Geometry.Solid[]} solids
+ */
+
+/**
+ * @memberof Geometry
+ * @typedef {Object} Solid
+ * @property {number} distance
+ * @property {number} x
+ * @property {number} y
+ */
+
+/**
+ * @memberof Geometry
+ * @typedef {Object} Point
+ * @property {number} x
+ * @property {number} y
+ */
+
+/**
+ * @memberOf Text
+ * @typedef {Object} TextDimensions
+ * @property {number} width
+ * @property {number} height
+ */
+
+/**
+ * @memberOf Util
+ * @typedef {Object} Viewport
+ * @property {number} x
+ * @property {number} y
+ * @property {number} width
+ * @property {number} height
+ * @property {number} offsetX
+ * @property {number} offsetY
+ */
+
+/**
+ * @memberof Util
+ * @typedef {Object} Delay
+ * @property {string} key
+ * @property {string} filename
+ */
+
+/**
+ * @memberof Board
+ * @typedef {Object} TileData
+ * @property {string} type
+ * @property {number} defence
+ * @property {string} custom
+ */
+
+/**
+ * @memberof Program
+ * @typedef {Object} RunningProgram
+ * @property {boolean} inProgram
+ * @property {string} currentProgram
+ */
+
+/**
+ * @memberof Image
+ * @typedef {Object} ImageInfo
+ * @property {number} width
+ * @property {number} height
+ */
+
+/**
+ * @memberof Draw2D
+ * @typedef {Object} ImageData
+ * @property {number[]} data One-dimensional array containing the data in the RGBA order, with integer values between 0 and 255 (inclusive).
+ * @property {number} width In pixels.
+ * @property {number} height In pixels.
+ */
+
+/**
+ * @memberof Asset
+ * @typedef {Object} Assets
+ * @property {string[]} images
+ * @property {Asset.KeyValue[]} audio
+ * @property {string[]} programs
+ */
+
+/**
+ * @memberof Asset
+ * @typedef {Object} KeyValue
+ * @property {string} key
+ * @property {string} value
+ */
+
+/**
+ * @memberof Asset
+ * @typedef {Object} Item
+ * @property {string} name
+ * @property {string} description
+ * @property {string} type
+ * @property {string} icon
+ * @property {number} price
+ * @property {Asset.ItemEffects} effects
+ * @property {numbers} version
+ * 
+ * @example
+ {
+    "description": "",
+    "effects": {
+        "attack": 0,
+        "defence": 0,
+        "health": 1,
+        "magic": 0
+    },
+    "icon": "Icons/Item__64.png",
+    "name": "Apple",
+    "price": 0,
+    "type": "battle",
+    "version": 1.7
+}
+ */
+
+/**
+ * @memberof Asset
+ * @typedef {Object} ItemEffects
+ * @property {number} attack
+ * @property {number} defence
+ * @property {number} health
+ * @property {number} magic
+ */
+
+/**
+ * @memberof Asset
+ * @typedef {Object} Vector
+ * @property {Asset.Event[]} events
+ * @property {Geometry.Point[]} points
+ */
+
+/**
+ * @memberof Asset
+ * @typedef {Object} Event
+ * @property {string} program
+ * @property {string} type
+ * @property {string} key
+ */
+
+/**
+ * @memberof Asset
+ * @typedef {Object} Sprite
+ * @property {string} name
+ * @property {string} description
+ * @property {Asset.Vector} activationVector
+ * @property {Geometry.Point} activationOffset
+ * @property {boolean} activationVectorDisabled
+ * @property {Asset.KeyValue} animations
+ * @property {Asset.Vector} baseVector
+ * @property {Geometry.Point} baseVectorOffset
+ * @property {boolean} baseVectorDisabled
+ * @property {number} frameRate
+ * @property {Asset.KeyValue} graphics
+ * @property {string} version
+ */
+
+/**
+ * @memberof Asset
+ * @typedef {Asset.Sprite} NpcAsset
+ * 
+ * @example
+{
+    "activationOffset": {
+        "x": -5,
+        "y": -5
+    },
+    "activationVector": {
+        "events": [{
+                "program": "",
+                "type": "overlap"
+            }
+        ],
+        "points": [{
+                "x": 0,
+                "y": 0
+            }
+        ]
+    },
+    "activationVectorDisabled": false,
+    "animations": {
+        "ATTACK": ""
+    },
+    "baseVector": {
+        "events": [{
+                "program": "",
+                "type": "overlap"
+            }
+        ],
+        "points": [{
+                "x": 0,
+                "y": 0
+            }
+        ]
+    },
+    "baseVectorDisabled": false,
+    "baseVectorOffset": {
+        "x": -5,
+        "y": -5
+    },
+    "description": "Undefined",
+    "frameRate": 0,
+    "graphics": {
+        "PROFILE": ""
+    },
+    "name": "Untitled",
+    "version": 1.7
+}
+ */
+
+/**
+ * @memberof Asset
+ * @typedef {Asset.Sprite} EnemyAsset
+ * @property {number} level
+ * @property {number} health
+ * @property {number} attack
+ * @property {number} defence
+ * @property {number} magic
+ * @property {number} experienceReward
+ * @property {number} goldReward
+ * 
+ * @example
+{
+    "activationOffset": {
+        "x": -20,
+        "y": -5
+    },
+    "activationVector": {
+        "events": [{
+                "program": "",
+                "type": "overlap"
+            }
+        ],
+        "points": [{
+                "x": 0,
+                "y": 0
+            }
+        ]
+    },
+    "activationVectorDisabled": false,
+    "animations": {
+        "ATTACK": "Evil Eye/attack.animation"
+    },
+    "attack": 1,
+    "baseVector": {
+        "events": [{
+                "program": "",
+                "type": "overlap"
+            }
+        ],
+        "points": [{
+                "x": 0,
+                "y": 0
+            }
+        ]
+    },
+    "baseVectorDisabled": false,
+    "baseVectorOffset": {
+        "x": -15,
+        "y": 0
+    },
+    "defence": 0,
+    "experienceReward": 0,
+    "frameRate": 0,
+    "goldReward": 0,
+    "graphics": {
+        "PROFILE": ""
+    },
+    "health": 5,
+    "level": 0,
+    "magic": 0,
+    "name": "Evil Eye",
+    "version": 1.7
+}
+ */
+
+/**
+ * @memberof Asset
+ * @typedef {Asset.Sprite} CharacterAsset
+ * @property {number} level
+ * @property {number} maxLevel
+ * @property {number} health
+ * @property {number} maxHealth
+ * @property {number} attack
+ * @property {number} maxAttack
+ * @property {number} defence
+ * @property {number} maxDefence
+ * @property {number} magic
+ * @property {number} maxMagic
+ * @property {number} experience
+ * @property {Asset.KeyValue} inventory
+ * @property {Asset.KeyValue} equipment
+ * 
+ * @example
+{
+    "maxLevel": 10,
+    "magic": 0,
+    "maxDefence": 0,
+    "baseVectorOffset": {
+        "x": -15,
+        "y": 8
+    },
+    "defence": 0,
+    "graphics": {
+        "PROFILE": "sword_profile_1_small.png"
+    },
+    "experience": 0,
+    "inventory": {
+        "TODO": "TODO"
+    },
+    "gold": 0,
+    "frameRate": 0,
+    "attack": 1,
+    "animations": {
+        "DEFEND": "Hero/south_hurt.animation"
+    },
+    "maxHealth": 5,
+    "activationOffset": {
+        "x": -20,
+        "y": 1
+    },
+    "level": 0,
+    "maxMagic": 0,
+    "maxAttack": 1,
+    "health": 5,
+    "equipment": {
+        "head": "",
+        "accessory-2": "",
+        "accessory-1": "",
+        "chest": "",
+        "gloves": "",
+        "right-hand": "",
+        "boots": "",
+        "left-hand": ""
+    },
+    "maxExperience": 0,
+    "version": 1.7,
+    "baseVector": {
+        "events": [{
+                "program": "",
+                "type": "overlap"
+            }
+        ],
+        "points": [{
+                "x": 0,
+                "y": 0
+            }
+        ]
+    },
+    "activationVector": {
+        "events": [{
+                "program": "",
+                "type": "overlap"
+            }
+        ],
+        "points": [{
+                "x": 0,
+                "y": 0
+            }
+        ]
+    },
+    "baseVectorDisabled": false,
+    "name": "Hero",
+    "activationVectorDisabled": false
+}
+ */
+
+/**
+ * @memberof Asset
+ * @typedef {Object} BoardAsset
+ * @property {string} name
+ * @property {string} backgroundMusic
+ * @property {string} firstRunProgram
+ * @property {number} width 
+ * @property {number} height 
+ * @property {number} tileWidth 
+ * @property {number} tileHeight
+ * @property {string[]} tileSets 
+ * @property {Asset.BoardLayer[]} layers
+ * @property {Asset.BoardSprite[]} sprites
+ * @property {Geometry.Location} startingPosition
+ * 
+ * @example 
+ {
+    "backgroundMusic": "Tower.ogg",
+    "firstRunProgram": "entry.js",
+    "height": 10,
+    "layers": [{
+            "images": [{
+                    "id": "image-1",
+                    "src": "background.png",
+                    "x": 0,
+                    "y": 0
+                }
+            ],
+            "name": "Base",
+            "tiles": ["0:11"],
+            "vectors": [{
+                    "events": [{
+                            "key": "E",
+                            "program": "auto_generated/1586278226170_d49fe8d2-171c-4b7c-b625-bda20c6eacbb.js",
+                            "type": "keypress"
+                        }
+                    ],
+                    "id": "",
+                    "isClosed": true,
+                    "points": [{
+                            "x": 361,
+                            "y": 64
+                        }
+                    ],
+                    "type": "PASSABLE"
+                }
+            ]
+        }
+    ],
+    "name": "demo.board",
+    "sprites": [{
+            "name": "Torch.npc",
+            "id": "b596ab34-903c-4856-9d1d-90f6465c075a",
+            "thread": "Idle.js",
+            "startingPosition": {
+                "x": 112,
+                "y": 80,
+                "layer": 0
+            },
+            "events": []
+        }
+    ],
+    "startingPosition": {
+        "layer": 0,
+        "x": 242,
+        "y": 178
+    },
+    "tileHeight": 32,
+    "tileSets": ["tower.tileset"],
+    "tileWidth": 32,
+    "version": 1.7,
+    "width": 15
+} 
+ */
+
+/**
+ * @memberof Asset
+ * @typedef {Object} BoardLayer
+ * @property {string} name
+ * @property {string[]} tiles 
+ * @property {Asset.LayerImage[]} images
+ * @property {Asset.LayerVector[]} vectors
+ */
+
+/**
+ * @memberof Asset
+ * @typedef {Object} BoardSprite
+ * @property {string} name
+ * @property {string} id
+ * @property {string} thread
+ * @property {Asset.Event[]} events
+ * @property {Geometry.Location} startingPosition
+ */
+
+/**
+ * @memberof Asset
+ * @typedef {Object} LayerImage
+ * @property {string} id
+ * @property {string} src
+ * @property {number} x
+ * @property {number} y
+ */
+
+/**
+ * @memberof Asset
+ * @typedef {Object} LayerVector
+ * @property {string} id
+ * @property {string} type
+ * @property {string} isClosed
+ * @property {string} points
+ * @property {Asset.Event[]} events
+ */
+

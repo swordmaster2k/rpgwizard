@@ -7,6 +7,7 @@
  */
 package org.rpgwizard.editor.editors.program;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Icon;
 import javax.swing.table.AbstractTableModel;
@@ -24,7 +25,7 @@ public class IssuesTableModel extends AbstractTableModel {
     private List<ParserNotice> notices;
 
     public IssuesTableModel() {
-        notices = List.of();
+        notices = new ArrayList<>();
     }
 
     public List<ParserNotice> getNotices() {

@@ -59,3 +59,34 @@ EngineUtil.prototype.getBodyHeight = function () {
             document.documentElement.offsetHeight
             );
 };
+
+EngineUtil.prototype.getPolygonBounds = function (points) {
+    var minX = maxX = points[0];
+    var minY = maxY = points[1];
+    var currentX, currentY;
+    var len = points.length;
+    for (var i = 2; i < len; i += 2) {
+        currentX = points[i];
+        currentY = points[i + 1];
+        if (currentX < minX) {
+            minX = currentX;
+        } else if (currentX > maxX) {
+            maxX = currentX;
+        }
+        if (currentY < minY) {
+            minY = currentY;
+        } else if (currentY > maxY) {
+            maxY = currentY;
+        }
+    }
+    for (var i = 0; i < len; i += 2) {
+        points[i] -= minX;
+        points[i + 1] -= minY;
+    }
+    return {
+        x: minX, 
+        y: minY, 
+        width: Math.abs(maxX - minX) + 1, 
+        height: Math.abs(maxY - minY) + 1
+    };
+};

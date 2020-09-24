@@ -106,8 +106,8 @@ ScreenRenderer.prototype.renderBoard = function (context) {
                         context.lineWidth = "2";
                         context.strokeStyle = "#FFFF00";
                         for (var j = 0; j < points.length - 1; j += 2) {
-                            x = sprite.x + points[j];
-                            y = sprite.y + points[j + 1];
+                            x = sprite.x + points[j] + sprite.activationOffset.x;
+                            y = sprite.y + points[j + 1] + sprite.activationOffset.y;
                             if (!moved) {
                                 context.moveTo(x + xShift, y + yShift);
                                 moved = true;

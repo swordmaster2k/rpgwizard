@@ -182,8 +182,8 @@ RPGWizard.prototype.setup = async function (filename) {
         this.craftyCharacter.character.layer = this.craftyBoard.board.startingPosition["layer"];
         this.craftyCharacter.x = this.craftyCharacter.character.x;
         this.craftyCharacter.y = this.craftyCharacter.character.y;
-        this.craftyCharacter.activationVector.x = this.craftyCharacter.x;
-        this.craftyCharacter.activationVector.y = this.craftyCharacter.y;
+        this.craftyCharacter.activationVector.x = this.craftyCharacter.x + this.craftyCharacter.character.activationOffset.x;
+        this.craftyCharacter.activationVector.y = this.craftyCharacter.y + this.craftyCharacter.character.activationOffset.y;
 
         // Setup the viewport to smoothly follow the player object
         Crafty.viewport.x = 0;
@@ -572,10 +572,13 @@ RPGWizard.prototype.loadCharacter = async function (character) {
     // Have to keep this in a separate entity, as Crafty entites can
     // only have 1 collision polygon at a time, using composition to
     // get around this limitation.
+    const bounds = engineUtil.getPolygonBounds(character.activationPoints);
     var activationVector = Crafty.e("2D, Canvas, ActivationVector")
             .attr({
-                x: character.x,
-                y: character.y,
+                x: character.x + character.activationOffset.x,
+                y: character.y + character.activationOffset.y,
+                w: bounds.width,
+                h: bounds.height,
                 character: character})
             .ActivationVector(
                     new Crafty.polygon(character.activationPoints),
@@ -607,8 +610,8 @@ RPGWizard.prototype.loadCharacter = async function (character) {
             )
             .bind("Move", function (from) {
                 // Move activation vector with us.
-                this.activationVector.x = this.x;
-                this.activationVector.y = this.y;
+                this.activationVector.x = this.x + this.character.activationOffset.x;
+                this.activationVector.y = this.y + this.character.activationOffset.y;
                 this.character.animate(this.dt);
             })
             .bind("EnterFrame", function (event) {
@@ -668,10 +671,13 @@ RPGWizard.prototype.loadSprite = async function (sprite) {
         sprite.thread = await this.openProgram(PATH_PROGRAM + sprite.thread);
     }
     var entity;
+    const bounds = engineUtil.getPolygonBounds(asset.activationPoints);
     var activationVector = Crafty.e("2D, Canvas, ActivationVector")
             .attr({
-                x: sprite.x,
-                y: sprite.y,
+                x: sprite.x + asset.activationOffset.x,
+                y: sprite.y + asset.activationOffset.y,
+                w: bounds.width,
+                h: bounds.height,
                 sprite: sprite})
             .ActivationVector(
                     new Crafty.polygon(asset.activationPoints),
@@ -700,8 +706,8 @@ RPGWizard.prototype.loadSprite = async function (sprite) {
             this.attr({x: sprite.x, y: sprite.y, w: 50, h: 50, show: false});
             this.bind("Move", function (from) {
                 // Move activation vector with us.
-                this.activationVector.x = entity.x;
-                this.activationVector.y = entity.y;
+                this.activationVector.x = entity.x + asset.activationOffset.x;
+                this.activationVector.y = entity.y + asset.activationOffset.y;
                 asset.animate(this.dt);
             });
             this.bind("EnterFrame", function (event) {
@@ -812,32 +818,8 @@ RPGWizard.prototype.endProgram = function (nextProgram) {
 };
 
 RPGWizard.prototype.createVectorPolygon = function (id, points, layer, type, events) {
-    var minX = maxX = points[0];
-    var minY = maxY = points[1];
-    var currentX, currentY;
-    var len = points.length;
-    for (var i = 2; i < len; i += 2) {
-        currentX = points[i];
-        currentY = points[i + 1];
-        if (currentX < minX) {
-            minX = currentX;
-        } else if (currentX > maxX) {
-            maxX = currentX;
-        }
-        if (currentY < minY) {
-            minY = currentY;
-        } else if (currentY > maxY) {
-            maxY = currentY;
-        }
-    }
-    for (var i = 0; i < len; i += 2) {
-        points[i] -= minX;
-        points[i + 1] -= minY;
-    }
-
-    var width = Math.abs(maxX - minX) + 1;
-    var height = Math.abs(maxY - minY) + 1;
-    var attr = {x: minX, y: minY, w: width, h: height};
+    const bounds = engineUtil.getPolygonBounds(points);
+    var attr = {x: bounds.x, y: bounds.y, w: bounds.width, h: bounds.height};
     attr.vectorId = id;
     attr.layer = layer;
     attr.vectorType = type;

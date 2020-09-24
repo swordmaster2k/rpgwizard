@@ -15,6 +15,7 @@
         "tutorials": "./src/tutorials"
     },
     "templates": {
+		"search": true,
         "better-docs": {
             "name": "RPGWizard Documentation"
         }

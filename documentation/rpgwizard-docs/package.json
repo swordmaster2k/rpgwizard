@@ -7,7 +7,14 @@
     "dependencies": {
         "better-docs": "2.3.2"
     },
+    "devDependencies": {
+        "npm-run-all": "4.1.5"
+    },
     "scripts": {
-        "docs": "rm -rf docs/ && jsdoc -c jsdoc.json && cp -r src/images docs/images"
+        "build": "npm-run-all -s clean copy-rpgcode copy-defaults generate",
+        "clean": "rm -rf docs/",
+        "copy-rpgcode": "cp ../../engine/engine-js/js/rpgcode/rpgcode.js src/",
+		"copy-defaults": "cp ../../demo/Tactical/Programs/defaults/*.js src/",
+        "generate": "jsdoc -c jsdoc.json && cp -r src/images docs/images"
     }
 }

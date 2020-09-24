@@ -42,3 +42,7 @@ launch4j/
 engine/engine-js/package-lock.json
 engine/src/main/resources/lib/*
 documentation/src/main/resources/autocomplete/input/*
+
+# Documentation
+documentation/rpgwizard-docs/docs
+documentation/rpgwizard-docs/src/*.js

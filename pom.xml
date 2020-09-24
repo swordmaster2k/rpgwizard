@@ -73,7 +73,7 @@
         <maven.resources.version>3.0.2</maven.resources.version>
         <maven.clean.version>3.0.0</maven.clean.version>
         <maven.install.version>2.5.1</maven.install.version>
-        <flatlaf.version>0.28</flatlaf.version>
+        <flatlaf.version>0.42</flatlaf.version>
         <substance.version>8.0.00</substance.version>
         <trident.version>1.5.00</trident.version>
         <jcef.version>67.0</jcef.version>

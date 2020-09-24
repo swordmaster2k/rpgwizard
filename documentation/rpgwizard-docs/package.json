@@ -1,0 +1,13 @@
+{
+    "name": "rpgwizard-docs",
+    "version": "1.0.0",
+    "description": "RPGWizard Documentation",
+    "repository": "https://github.com/swordmaster2k/rpgwizard",
+    "license": "MPL-2.0",
+    "dependencies": {
+        "better-docs": "2.3.2"
+    },
+    "scripts": {
+        "docs": "rm -rf docs/ && jsdoc -c jsdoc.json && cp -r src/images docs/images"
+    }
+}

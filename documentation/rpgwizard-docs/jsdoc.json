@@ -1,0 +1,22 @@
+{
+    "tags": {
+        "allowUnknownTags": "all"
+    },
+    "source": {
+        "include": ["src", "src/README.md"],
+        "includePattern": "\\.(js)$"
+    },
+    "opts": {
+        "encoding": "utf8",
+        "destination": "./docs",
+        "recurse": true,
+        "verbose": true,
+        "template": "node_modules/better-docs",
+        "tutorials": "./src/tutorials"
+    },
+    "templates": {
+        "better-docs": {
+            "name": "RPGWizard Documentation"
+        }
+    }
+}

@@ -1,7 +1,7 @@
-# Summary
+## Summary
 In this part of the tutorial we look at adding a new layer to the board we have created. The layer management in RPGWizard is designed to behave like other popular image editing tools like Gimp, Paint .NET, PhotoShop etc. A board can have as many layers as you want, and there is no requirement to set every tile on a layer.
 
-# Steps
+## Steps
 Switch to the layers tab and add a new layer above the current board layer. Then rename the layers until you have something like this:
 
 ![](images/my_first_game/06_new_layer/images/1.png)
@@ -22,5 +22,5 @@ Start the game up and walk behind one of the pillars, your character should be b
 
 ![](images/my_first_game/06_new_layer/images/5.png)
 
-# Challenge
+## Challenge
 > Play around with the other layer options, such as copying, moving up, and moving down, etc. They function like any other image editor.

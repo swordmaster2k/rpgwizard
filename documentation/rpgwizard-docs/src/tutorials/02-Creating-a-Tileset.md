@@ -1,7 +1,7 @@
-# Summary
+## Summary
 In this part of the tutorial we will create a Tileset for use on our boards. A Tileset is a collection of smaller images broken up into a uniform grid of tiles. These tiles can then be placed on a board (i.e. a map) that our character can then explore. Tilesets can be made up of **tile sizes ranging from 16 x 16 upto 128 x 128** pixels.
 
-# Steps
+## Steps
 
 To create a tileset go to **File > New > New Tileset**.
 
@@ -25,5 +25,5 @@ As soon as you save the Tileset it should appear in the "Tileset" pane in the to
 
 ![](images/my_first_game/04_new_tileset/images/5.png)
 
-# Challenge
+## Challenge
 > Follow this [Google search](http://lmgtfy.com/?t=i&q=tileset+32x32) and download a Tileset image. Then place it in your project's Graphics folder and try importing it.

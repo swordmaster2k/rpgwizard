@@ -1,9 +1,9 @@
-# Summary
+## Summary
 At the moment the default title screen bundled with the RPGWizard is very simple, and only supports specifying the background image, and the music to play. It has a single menu option "New Game" that can be used to delay the start of your game, in the demo project it triggers the story introduction.
 
 ![](images/default_systems/02_title_screen/images/1.gif)
 
-# Steps
+## Steps
 To use the default title screen in your own project you will only need a few lines of code, you simply need to load the title screen program and its dependencies. After that you can specify what background image and music you want to use, and the title screen will deal with loading and displaying them. In the table below you will find all the key inputs that the title screen listens for:
 
 * **Enter**
@@ -21,17 +21,17 @@ var assets = {
 };
 
 rpgcode.loadAssets(assets, function() {
-   
+
    // Specify the config options for the title screen to use.
    var config = {
-   "backgroundImage": "startscreen.png", 
+   "backgroundImage": "startscreen.png",
    "titleScreenMusic": "intro.ogg"
    };
-   
+
    // Show the title screen.
    titleScreen.show(config, function() {
       // The player pressed "ENTER" ending the titlescreen.
       // Let's continue with the rest of the game.
-   }); 
+   });
 });
 ```

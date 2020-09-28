@@ -1982,7 +1982,7 @@ RPGcode.prototype.log = function (message) {
  * @alias playSound
  * @param {string} file Relative path to the sound file to play.
  * @param {boolean} loop Should it loop indefinitely?
- * @param {number} volume (Optional) Value ranging from 1.0 to 0.0, default is 1.0 (i.e. 100%).
+ * @param {number} [volume=1.0] Value ranging from 1.0 to 0.0, default is 1.0 (i.e. 100%).
  * @returns {Object} A HTML5 audio element representing the playing sound.
  */
 RPGcode.prototype.playSound = function (file, loop, volume = 1.0) {

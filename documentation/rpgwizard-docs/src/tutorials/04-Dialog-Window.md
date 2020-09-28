@@ -1,9 +1,9 @@
-# Summary
+## Summary
 Character dialog is key part of any entertaining RPG game, and it is important to keep that dialog as interesting as possible for the reader. The RPGWizard comes bundled with an animated typewriter style dialog window, which was inspired by the Zelda games that I played in my childhood. It supports fully animated text, typing sounds, profile pictures, and a flashing next indicator, all this functionality is completely free!
 
 ![](images/default_systems/03_dialog_window/images/1.gif)
 
-# Steps
+## Steps
 Using the default dialog is incredibly simple, and only requires a few lines of code to get your characters talking! For example, to create the dialog above you will just need to ensure that you have loaded the default programs into the engine. Then you can supply the text, and any other images you want to display. See the below code snippet from "The Wizard's Tower" for a better idea:
 
 ```javascript

@@ -1,7 +1,7 @@
-# Summary
+## Summary
 In this part of the tutorial we will learn about RPGWizard animations, which are made up of several smaller frames from one large image. These are the building blocks for characters, enemies, NPCs, and will be needed to bring the character we create to life in the next part of this tutorial.
 
-# Steps
+## Steps
 To create an animation go to **File > New > New Animation**. You will notice that there a several file types under the New menu, by the end of this tutorial series we will have introduced you to all of them.
 
 ![](images/my_first_game/02_new_animation/images/1.png)
@@ -10,7 +10,7 @@ You will then be presented with the animation editor. This is the tool that buil
 
 ![](images/my_first_game/02_new_animation/images/2.png)
 
-## Setting the Sprite Sheet
+### Setting the Sprite Sheet
 In the file dialog goto **Graphics > Hero** and open the file "walk_south.png", this will be our character's south walking sprite sheet.
 
 > NOTE: you will need to have copied the Graphics folder from the demo as detailed in the last tutorial for this image to show up.
@@ -27,7 +27,7 @@ Now we need to select the frames that we want to include in the animation, click
 
 > NOTE: For larger sprite sheets it is possible to select smaller parts of the image to use as an animation. This is useful if you have something like a complete character sheet.
 
-## Configuring Properties
+### Configuring Properties
 Now there is something we need to look at, in the bottom left of the main window you should see a tab titled "Properties". While you have the animation open switch to the this tab and you will notice a number of settings that can be configured:
 
 * **Sound Effect:** Sound file to play during the animation (.mp3 or .wav).
@@ -37,10 +37,10 @@ For our character's walking animation we only have 2 frames from a sprite sheet 
 
 ![](images/my_first_game/02_new_animation/images/3-4.png)
 
-## Saving an Animation
+### Saving an Animation
 When you have finished experimenting save it with the name "hero_walk_south.animation":
 
 ![](images/my_first_game/02_new_animation/images/5.png)
 
-# Challenge
+## Challenge
 > Repeat what you have learned to create another 3 animations for our character from the images walk_north.png, walk_east.png, and walk_west.png.

@@ -1,7 +1,7 @@
-# Summary
+## Summary
 In the last part of this tutorial series we will look at creating inventory items. An item can be placed in or removed from a character's inventory while the game is running. Certain item types can even be equipped to a character such as a sword, shield, and so on.
 
-# Steps
+## Steps
 To create an item go to **File > New > New Item**.
 
 ![](images/my_first_game/11_new_item/images/1.png)
@@ -10,7 +10,7 @@ The item editor is very simple and relatively straight forward to use. You can s
 
 * **Default Slots:** chest, boots, gloves, head, right-hand, left-hand
 
-## Equipping an Item
+### Equipping an Item
 To use an item in the engine you need to give it to a character, which involves loading it into the engine like any other asset. In the below code example we load up an item file and equip it to the character's right-hand slot. When we equip the item we remove it from the character's inventory, likewise when place it back into the inventory when removing it from the right-hand slot:
 
 ```javascript
@@ -38,5 +38,5 @@ rpgcode.giveItem(itemFile, "Hero", function() {
 });
 ```
 
-# Challenge
+## Challenge
 > You have completed the basic tutorial on how to make a game with the RPGWizard. The next set of tutorials will build upon what you've learned here and teach you how to bring your game to life with code.

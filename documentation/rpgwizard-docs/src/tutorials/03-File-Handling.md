@@ -1,4 +1,4 @@
-# Saving a JSON File
+## Saving a JSON File
 In RPGWizard you can create and store [JSON](https://www.w3schools.com/whatis/whatis_json.asp) data in a games directory at runtime, this makes it possible to save custom state beyond the scope of a global variable, which are lost when the engine is shutdown.
 
 To save JSON data you need to supply the following:
@@ -29,7 +29,7 @@ rpgcode.saveJSON(
 );
 ```
 
-# Loading a JSON File
+## Loading a JSON File
 In RPGWizard you can read files back as [JSON](https://www.w3schools.com/whatis/whatis_json.asp) data from your games directory at runtime, this makes it possible to read custom saved state or even game assets such as boards.
 
 To load JSON data you need to supply the following:

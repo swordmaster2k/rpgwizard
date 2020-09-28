@@ -1,27 +1,7 @@
-<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
-
-- [Keyboard Events](#keyboard-events)
-	- [Local vs Global Key Listeners](#local-vs-global-key-listeners)
-	- [Listening for Key Down](#listening-for-key-down)
-	- [Listening for Key Up](#listening-for-key-up)
-	- [Telling if a Key is Held Down](#telling-if-a-key-is-held-down)
-	- [How to Stop Listening to a Key](#how-to-stop-listening-to-a-key)
-- [Mouse Events](#mouse-events)
-	- [Single Click](#single-click)
-	- [Double Click](#double-click)
-	- [Mouse Button Down](#mouse-button-down)
-	- [Mouse Button Up](#mouse-button-up)
-	- [Mouse Movement](#mouse-movement)
-	- [How to Stop Listening to a Mouse Event](#how-to-stop-listening-to-a-mouse-event)
-- [Touch Support](#touch-support)
-- [List of Supported Keys](#list-of-supported-keys)
-
-<!-- /TOC -->
-
-# Keyboard Events
+## Keyboard Events
 > TIP: You can listen to as many keys as you want using separate listeners, however **each key can only have a single listener attached at a time**.
 
-## Local vs Global Key Listeners
+### Local vs Global Key Listeners
 When listening on a key events you have the option of whether or not to register the listener at a **local or global scope**.
 
 * **local scope:** The listener only lasts as long as the program is running, useful for temporary things, e.g. navigating a menu screen.
@@ -30,7 +10,7 @@ When listening on a key events you have the option of whether or not to register
 
 The default scope for all listeners is **local scope** unless you tell the engine to register it at a **global scope**.
 
-## Listening for Key Down
+### Listening for Key Down
 
 ```javascript
 // Register a listener on the "ENTER" key
@@ -39,7 +19,7 @@ rpgcode.registerKeyDown("ENTER", function(e) {
 }, false); // local scope = false, global scope = true
 ```
 
-## Listening for Key Up
+### Listening for Key Up
 
 ```javascript
 // Register a listener on the "ENTER" key
@@ -48,7 +28,7 @@ rpgcode.registerKeyUp("ENTER", function(e) {
 }, false); // local scope = false, global scope = true
 ```
 
-## Telling if a Key is Held Down
+### Telling if a Key is Held Down
 Unfortunately in JavaScript there is no way to check the state of a key at a given time, instead we have to keep track of whether a key is currently held down. This can be done by simply toggling a *boolean* flag to true or false in the down and up listener for the key. For further details on the subject see this answer on [stackoverflow](https://stackoverflow.com/a/1828802).
 
 ```javascript
@@ -68,7 +48,7 @@ rpgcode.registerKeyUp("ENTER", function(e) {
 }, false); // local scope = false, global scope = true
 ```
 
-## How to Stop Listening to a Key
+### How to Stop Listening to a Key
 > IMPORTANT: The engine will unregister **local scope** key listeners itself when the program that created them ends.
 
 If you want to stop listening to a key event then you can unregister the listener on it at anytime, you need to do this separately for both down and up listeners.
@@ -81,7 +61,7 @@ rpgcode.unregisterKeyDown("ENTER", false);  // local scope = false, global scope
 rpgcode.unregisterKeyUp("ENTER", false);  // local scope = false, global scope = true
 ```
 
-# Mouse Events
+## Mouse Events
 > TIP: You can listen to as many mouse events as you want using separate listeners, however **each mouse event can only have a single listener attached at a time**.
 
 When listening on a mouse events you have the option of whether or not to register the listener at a **local or global scope**.
@@ -92,7 +72,7 @@ When listening on a mouse events you have the option of whether or not to regist
 
 The default scope for all listeners is **local scope** unless you tell the engine to register it at a **global scope**.
 
-## Single Click
+### Single Click
 
 ```javascript
 rpgcode.registerMouseClick(function(e) {
@@ -105,7 +85,7 @@ rpgcode.registerMouseClick(function(e) {
 }, false); // local scope = false, global scope = true
 ```
 
-## Double Click
+### Double Click
 
 ```javascript
 rpgcode.registerMouseDoubleClick(function(e) {
@@ -118,7 +98,7 @@ rpgcode.registerMouseDoubleClick(function(e) {
 }, false); // local scope = false, global scope = true
 ```
 
-## Mouse Button Down
+### Mouse Button Down
 
 ```javascript
 rpgcode.registerMouseDown(function(e) {
@@ -131,7 +111,7 @@ rpgcode.registerMouseDown(function(e) {
 }, false); // local scope = false, global scope = true
 ```
 
-## Mouse Button Up
+### Mouse Button Up
 
 ```javascript
 rpgcode.registerMouseUp(function(e) {
@@ -144,7 +124,7 @@ rpgcode.registerMouseUp(function(e) {
 }, false); // local scope = false, global scope = true
 ```
 
-## Mouse Movement
+### Mouse Movement
 
 ```javascript
 rpgcode.registerMouseMove(function(e) {
@@ -154,7 +134,7 @@ rpgcode.registerMouseMove(function(e) {
 }, false); // local scope = false, global scope = true
 ```
 
-## How to Stop Listening to a Mouse Event
+### How to Stop Listening to a Mouse Event
 > IMPORTANT: The engine will unregister **local scope** mouse listeners itself when the program that created them ends.
 
 If you want to stop listening to a key event then you can unregister the listener on it at anytime, you need to do this separately for both down and up listeners.
@@ -176,10 +156,10 @@ rpgcode.unregisterMouseUp(false); // local scope = false, global scope = true
 rpgcode.unregisterMouseMove(false); // local scope = false, global scope = true
 ```
 
-# Touch Support
+## Touch Support
 You can achieve a limited amount of touch support using the **MouseDown** and **MouseUp** listeners which will fire on touch based devices. This makes certain touch driven games possible with RPGWizard without having to write extra code.
 
-# List of Supported Keys
+## List of Supported Keys
 
 ```javascript
 {

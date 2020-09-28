@@ -2,14 +2,8 @@
     "01-Getting-Started": {
         "title": "Getting Started",
         "children": {
-			"01-What-is-RPGWizard": {
-				"title": "What is RPGWizard"
-			},
 			"01-Trying-Out-the-Demo": {
 				"title": "Trying Out the Demo"
-			},
-			"01-FAQ": {
-				"title": "FAQ"
 			}
 		}
     },

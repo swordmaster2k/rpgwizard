@@ -1,20 +1,4 @@
-<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
-
-- [Drawing Text](#drawing-text)
-	- [Changing the Color](#changing-the-color)
-	- [Changing the Font](#changing-the-font)
-	- [Centering the Font](#centering-the-font)
-- [Drawing Shapes](#drawing-shapes)
-	- [Drawing a Line](#drawing-a-line)
-	- [Drawing a Rectangle](#drawing-a-rectangle)
-	- [Drawing a Rounded Rectangle](#drawing-a-rounded-rectangle)
-	- [Drawing a Circle](#drawing-a-circle)
-- [Drawing Images](#drawing-images)
-- [Animating Images](#animating-images)
-
-<!-- /TOC -->
-
-# Drawing Text
+## Drawing Text
 Placing a piece of text on the screen is very straight forward, you simply to need to specify the (x, y) coordinates if you are using the **default canvas**. The text will not appear at first and is instead wrote to an off screen buffer. You have to tell the engine that it is ready to be rendered, and also when to clear it.
 
 ```javascript
@@ -31,7 +15,7 @@ rpgcode.registerKeyDown("SPACE", function () {
 
 ![](images/programming_guide/05_working_with_graphics/images/1.png)
 
-## Changing the Color
+### Changing the Color
 You can change the color that the engine should use for drawing text at any time using [rpgcode.setColor](images/rpgcode_api_reference/RPGcode.html#setColor), which accepts an [RGBA (Red, Green Blue, Alpha)](https://en.wikipedia.org/wiki/RGBA_color_space) value, where the alpha ranges from 0 (0%) to 1.0 (100%).
 
 ```javascript
@@ -51,7 +35,7 @@ rpgcode.registerKeyDown("SPACE", function () {
 
 ![](images/programming_guide/05_working_with_graphics/images/1-1.png)
 
-## Changing the Font
+### Changing the Font
 You can change the font that the engine should use for drawing text at any time by setting [rpgcode.font](images/rpgcode_api_reference/RPGcode.html#font), you can either use a [Web Safe Font](https://www.w3schools.com/cssref/css_websafe_fonts.asp), or any custom font asset that you have loaded into the engine.
 
 ```javascript
@@ -71,7 +55,7 @@ rpgcode.registerKeyDown("SPACE", function () {
 
 ![](images/programming_guide/05_working_with_graphics/images/1-2.png)
 
-## Centering the Font
+### Centering the Font
 In the last example you might notice that since we've changed the font size it is no longer centered beneath the player. This is because the dimensions of the font have changed, sometimes when drawing text you need to account for this. To fix it we can adjust the x location of the text by measuring it with [rpgcode.measureText](images/rpgcode_api_reference/RPGcode.html#measureText).
 
 ```javascript
@@ -97,10 +81,10 @@ rpgcode.registerKeyDown("SPACE", function () {
 
 ![](images/programming_guide/05_working_with_graphics/images/1-3.png)
 
-# Drawing Shapes
+## Drawing Shapes
 > NOTE: For each of the **draw functions** there are also **equivalent fill functions** which act exactly the same only they draw solid shapes. See for example [fillCircle](images/rpgcode_api_reference/RPGcode.html#fillCircle), [fillRect](images/rpgcode_api_reference/RPGcode.html#fillRect), and [fillRoundedRect](images/rpgcode_api_reference/RPGcode.html#fillRoundedRect).
 
-## Drawing a Line
+### Drawing a Line
 
 ```javascript
 // Move to (300, 300) and draw a line to (350, 325)
@@ -117,7 +101,7 @@ rpgcode.registerKeyDown("SPACE", function () {
 
 ![](images/programming_guide/05_working_with_graphics/images/1-4.png)
 
-## Drawing a Rectangle
+### Drawing a Rectangle
 
 ```javascript
 // Move to (265, 270) and draw a rectangle
@@ -135,7 +119,7 @@ rpgcode.registerKeyDown("SPACE", function () {
 
 ![](images/programming_guide/05_working_with_graphics/images/1-5.png)
 
-## Drawing a Rounded Rectangle
+### Drawing a Rounded Rectangle
 
 ```javascript
 // Move to (265, 270) and draw a rounded rectangle
@@ -154,7 +138,7 @@ rpgcode.registerKeyDown("SPACE", function () {
 
 ![](images/programming_guide/05_working_with_graphics/images/1-6.png)
 
-## Drawing a Circle
+### Drawing a Circle
 
 ```javascript
 // Move to (320, 300) and draw a cirlce
@@ -171,7 +155,7 @@ rpgcode.registerKeyDown("SPACE", function () {
 
 ![](images/programming_guide/05_working_with_graphics/images/1-7.png)
 
-# Drawing Images
+## Drawing Images
 >IMPORTANT: Before you can use an image you must first ensure that it has been loaded into the engine using **rpgcode.loadAssets**, only then will it be usable in your programs.
 
 Placing an image on the screen is also very straight forward, you simply to need to specify the (x, y) coordinates and the width and height of the image you want to draw by calling [rpgcode.setImage](images/rpgcode_api_reference/RPGcode.html#setImage). The image will not appear at first and is instead wrote to an off screen buffer. You have to tell the engine that it is ready to be rendered, and also when to clear it.
@@ -208,7 +192,7 @@ rpgcode.loadAssets(assets, function() {
 });
 ```
 
-# Animating Images
+## Animating Images
 >IMPORTANT: Before you can use an image you must first ensure that it has been loaded into the engine using **rpgcode.loadAssets**, only then will it be usable in your programs.
 
 Drawing static images is all well and good but sometimes we want them to appear more animated. We can achieve this by redrawing the screen at set intervals.

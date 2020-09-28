@@ -15,6 +15,7 @@
         "clean": "rm -rf docs/",
         "copy-rpgcode": "cp ../../engine/engine-js/js/rpgcode/rpgcode.js src/",
 		"copy-defaults": "cp ../../demo/Tactical/Programs/defaults/*.js src/",
-        "generate": "jsdoc -c jsdoc.json && cp -r src/images docs/images"
+        "generate": "jsdoc -c jsdoc.json && cp -r src/images docs/images",
+		"site":  "rm -rf ../../../rpgwizard.github.io/assets/docs/v1 && cp -r docs/ ../../../rpgwizard.github.io/assets/docs/v1"
     }
 }

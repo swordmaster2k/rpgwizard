@@ -1,9 +1,9 @@
-# Summary
+## Summary
 The RPGWizard comes packaged with a simple turn based battle system, similar in style to the original Final Fantasy series of games. Using this battle system it is possible to create multi-character vs multi-enemy encounters, against custom backdrops, and looping music.
 
 ![](images/default_systems/04_battle_system/images/1.gif)
 
-# Steps
+## Steps
 Starting a battle with the default battle system is very straightforward, as it deals with loading all the assets needed in background for you. You can supply it with a list of enemies to battle against, and the list of characters you wish to fight with. The default game included with the RPGWizard, "The Wizard's Tower", comes with a complete example of how to start a battle:
 
 ```javascript

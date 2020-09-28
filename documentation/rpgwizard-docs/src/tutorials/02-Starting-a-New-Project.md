@@ -1,7 +1,7 @@
-# Summary
+## Summary
 In this part of the tutorial we will cover creating your first project. We will also show you where your project is created so you can copy & backup.
 
-# Steps
+## Steps
 Open the RPGWizard editor and go to the **File > New Project**. Alternatively you can use the keyboard shortcut **CTRL + N** for faster access:
 
 ![](images/my_first_game/01_new_project/images/1.png)
@@ -18,7 +18,7 @@ If you look under the "projects" folder included with the RPGWizard you should s
 
 ![](images/my_first_game/01_new_project/images/4.png)
 
-## Copying the Starter Assets
+### Copying the Starter Assets
 For the next part of this tutorial you will need to replace the "Graphics" folder in your project with a copy of the "Graphics" folder from the demo "The Wizard's Tower". This folder contains all the image files you will need for the rest of the tutorial.
 
 ![](images/my_first_game/01_new_project/images/5.png)

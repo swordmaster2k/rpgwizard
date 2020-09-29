@@ -6,13 +6,25 @@ Open the RPGWizard editor and go to the **File > New Project**. Alternatively yo
 
 ![](images/my_first_game/01_new_project/images/1.png)
 
-You will then be asked to provide a name for your new project, this name will be used to create the folder your game lives in. Be careful not to use the special characters **<>:"/\|?*** as they are forbidden in folder names in most operating systems. This name will also be used as the display name for the project, although that can be changed later in the project editor:
+<br/>
+
+You will then be asked to provide a name for your new project, this name will be used to create the folder your game lives in. This name will also be used as the display name for the project, although that can be changed later in the project editor.
+
+For the **Template** select **Blank Project**, we'll be creating this project from scratch but in RPGWizard you can create a new project based on one of the demo projects too.
+
+> Be careful not to use the special characters **<>:"/\|?*** as they are forbidden in folder names in most operating systems.
 
 ![](images/my_first_game/01_new_project/images/2.png)
 
-When you have decided on a name click "OK" and then the editor will go off and create the required project structure. After the project has been setup you will be presented with the project editor. This file editor can be used to configure your project startup settings.
+<br/>
+
+When you have decided on a name click "OK" and then the editor will go off and create the required project structure.
+
+After the project has been setup you will be presented with the project editor, this editor can be used to configure your project startup settings.
 
 ![](images/my_first_game/01_new_project/images/3.png)
+
+<br/>
 
 If you look under the "projects" folder included with the RPGWizard you should see a folder with your project name. This is where everything related to your project will be stored and if you ever want to backup it up then you can simply copy this folder somewhere else.
 

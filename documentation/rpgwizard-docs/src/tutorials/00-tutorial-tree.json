@@ -2,98 +2,118 @@
     "01-Getting-Started": {
         "title": "Getting Started",
         "children": {
-			"01-Trying-Out-the-Demo": {
-				"title": "Trying Out the Demo"
-			}
-		}
+            "01-Trying-Out-the-Demo": {
+                "title": "Trying Out the Demo"
+            },
+            "01-Accessing-the-Console": {
+                "title": "Accessing the Console"
+            }
+        }
     },
     "02-Your-First-Game": {
         "title": "Your First Game",
         "children": {
-			"02-Starting-a-New-Project": {
-				"title": "Starting a New Project"
-			},
-			"02-Creating-an-Animation": {
-				"title": "Creating an Animation"
-			},
-			"02-Creating-a-Character": {
-				"title": "Creating a Character"
-			},
-			"02-Creating-a-Tileset": {
-				"title": "Creating a Tileset"
-			},
-			"02-Creating-a-Board": {
-				"title": "Creating a Board"
-			},
-			"02-Creating-a-Board-Layer": {
-				"title": "Creating a Board Layer"
-			},
-			"02-Adding-a-Solid-Board-Vector": {
-				"title": "Adding a Solid Board Vector"
-			},
-			"02-Moving-between-Boards": {
-				"title": "Moving between Boards"
-			},
-			"02-Creating-an-NPC": {
-				"title": "Creating an NPC"
-			},
-			"02-Creating-a-Board-Sprite": {
-				"title": "Creating a Board Sprite"
-			},
-			"02-Creating-an-Inventory-Item": {
-				"title": "Creating an Inventory Item"
-			}
+            "02-Starting-a-New-Project": {
+                "title": "Starting a New Project"
+            },
+            "02-Creating-an-Animation": {
+                "title": "Creating an Animation"
+            },
+            "02-Creating-a-Character": {
+                "title": "Creating a Character"
+            },
+            "02-Creating-a-Tileset": {
+                "title": "Creating a Tileset"
+            },
+            "02-Creating-a-Board": {
+                "title": "Creating a Board"
+            },
+            "02-Creating-a-Board-Layer": {
+                "title": "Creating a Board Layer"
+            },
+            "02-Adding-a-Solid-Board-Vector": {
+                "title": "Adding a Solid Board Vector"
+            },
+            "02-Moving-between-Boards": {
+                "title": "Moving between Boards"
+            },
+            "02-Creating-an-NPC": {
+                "title": "Creating an NPC"
+            },
+            "02-Creating-a-Board-Sprite": {
+                "title": "Creating a Board Sprite"
+            },
+            "02-Creating-an-Inventory-Item": {
+                "title": "Creating an Inventory Item"
+            }
         }
     },
-	"03-Programming-Guide": {
+    "03-Programming-Guide": {
         "title": "Programming Guide",
         "children": {
-			"03-Introduction-to-JavaScript": {
-				"title": "Introduction to JavaScript"
-			},
-			"03-Asset-Management": {
-				"title": "Asset Management"
-			},
-			"03-Global-Variables": {
-				"title": "Global Variables"
-			},
-			"03-Working-with-Graphics": {
-				"title": "Working with Graphics"
-			},
-			"03-Working-with-Canvases": {
-				"title": "Working with Canvases"
-			},
-			"03-User-Input": {
-				"title": "User Input"
-			},
-			"03-File-Handling": {
-				"title": "File Handling"
-			}
+            "03-Hello-World": {
+                "title": "Hello world!"
+            },
+            "03-Introduction-to-JavaScript": {
+                "title": "Introduction to JavaScript"
+            },
+            "03-Asset-Management": {
+                "title": "Asset Management"
+            },
+            "03-Global-Variables": {
+                "title": "Global Variables"
+            },
+            "03-Working-with-Graphics": {
+                "title": "Working with Graphics"
+            },
+            "03-Working-with-Canvases": {
+                "title": "Working with Canvases"
+            },
+            "03-User-Input": {
+                "title": "User Input"
+            },
+            "03-File-Handling": {
+                "title": "File Handling"
+            }
         }
     },
-	"04-Default-Systems": {
+    "04-Default-Systems": {
         "title": "Default Systems",
         "children": {
-			"04-Setting-up-the-Default-Systems": {
-				"title": "Setup Process"
-			},
-			"04-Title-Screen": {
-				"title": "Title Screen"
-			},
-			"04-Dialog-Window": {
-				"title": "Dialog Window"
-			},
-			"04-Battle-System": {
-				"title": "Battle System"
-			}
+            "04-Setting-up-the-Default-Systems": {
+                "title": "Setup Process"
+            },
+            "04-Title-Screen": {
+                "title": "Title Screen"
+            },
+            "04-Dialog-Window": {
+                "title": "Dialog Window"
+            },
+            "04-Battle-System": {
+                "title": "Battle System"
+            },
+            "04-Weather-Effects": {
+                "title": "Weather Effects"
+            }
         }
     },
-	"05-Example-Games": {
+    "05-Example-Games": {
         "title": "Example Games",
         "children": {
-			"05-The-Vent": {
-				"title": "The Vent"
-			}
+            "05-The-Vent": {
+                "title": "The Vent"
+            }
+        }
+    },
+    "06-Advanced-Topics": {
+        "title": "Advanced Topics",
+        "children": {
+            "06-Canvas-2D-Context": {
+                "title": "Canvas 2D Context"
+            },
+            "06-Writing-Modules": {
+                "title": "Writing Modules"
+            }
         }
     }
 }

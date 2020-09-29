@@ -6,36 +6,83 @@ To create an item go to **File > New > New Item**.
 
 ![](images/my_first_game/11_new_item/images/1.png)
 
-The item editor is very simple and relatively straight forward to use. You can set a name, an image (which can be set using a double-click), slot type, sellable price, and a few default effects to apply when equipped. When an item is equipped you can update the character stance to reflect this if you wish. There are a few basic slots that the item type can be set to:
+<br/>
 
-* **Default Slots:** chest, boots, gloves, head, right-hand, left-hand
+The item editor is very simple, you can set a name, an image (which can be set using a double-click), slot type, sellable price, and a few default effects to apply when equipped. There are a few basic slots that the item type can be equipped in.
+
+### Default Item Slots
+* head
+* chest
+* right-hand
+* left-hand
+* gloves
+* boots
 
 ### Equipping an Item
-To use an item in the engine you need to give it to a character, which involves loading it into the engine like any other asset. In the below code example we load up an item file and equip it to the character's right-hand slot. When we equip the item we remove it from the character's inventory, likewise when place it back into the inventory when removing it from the right-hand slot:
 
+#### Loading an Item
+To use an item in the engine you need to give it to a character, which involves loading it into the engine like any other asset. The code below simply requests that an item be loaded into the engine, when it has the callback function is then called:
 ```javascript
 // Part 1: Load the item.
 var itemFile = "dragon_sword.item";
-rpgcode.giveItem(itemFile, "Hero", function() {
+rpgcode.giveItem(itemFile, "Hero", function() { // callback
+	// Code here is called once item has been loaded
+});
+```
+
+<br/>
+
+#### Equipping an Item
+> IMPORTANT: Only 1 item at a time can be assigned to a slot, if you assign an item to an occupied slot then the current item will be overwritten!
+
+If we wanted to assign the item to a slot on the character it would look something like:
+```javascript
+var itemFile = "dragon_sword.item";
+rpgcode.giveItem(itemFile, "Hero", function() { // callback
 
 	// Part 2: Access the character's inventory and log the number of them.
-	var character = rpgcode.getCharacter("Hero");
 	rpcode.log("Number of itemFile=[" + itemFile + "in inventory count=[" + character.inventory[itemFile].length + "]");
 
 	// Part 3: Equip the item, available slots are (chest, boots, gloves, head, right-hand, left-hand).
 	character.equipment["right-hand"] = character.inventory[itemFile][0];
 
-	// Part 4: Removes one of requested items from character's inventory.
-	rpgcode.takeItem(itemFile, "Hero");
-
-	// Part 5: Unequip the item.
-	var item = character.equipment["right-hand"];
-	character.inventory[itemFile].push(item);
-	character.equipment["right-hand"] = "";
-
-	rpgcode.endProgram();
-
 });
+```
+
+<br/>
+
+#### Unequipping an Item
+To unequip an item we must do the following things in order:
+
+1. Get the equipped item in the slot we want to unequip
+2. Move a copy of the item to the character's inventory
+3. Clear the equipment after copying to the inventory.
+
+```javascript
+var item = character.equipment["right-hand"];	// Get the item
+character.inventory[itemFile].push(item); 		// Copy it into the inventory
+character.equipment["right-hand"] = "";			 	// Now cleanup
+```
+
+<br/>
+
+#### Taking an Item
+In some cases you might want to completely remove an item from a Character's inventory, for example they eat an Apple to regain some health. To do this you'll need to know the item's file name:
+
+```javascript
+// Removes one of requested items from character's inventory.
+rpgcode.takeItem("apple.item", "Hero");
+```
+
+<br/>
+
+This would only remove a single item from the character's inventory, if you wanted to remove multiple it would look something like:
+
+```javascript
+const numApples = character.inventory["apple.item"].length; // Get the number of apples present
+for (var i = 0; i < numApples; i++) {
+	rpgcode.takeItem("apple.item", "Hero"); // Keep taking until they are all gone
+}
 ```
 
 ## Challenge

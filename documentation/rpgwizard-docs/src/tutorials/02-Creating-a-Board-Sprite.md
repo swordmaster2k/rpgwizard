@@ -1,12 +1,14 @@
 ## Summary
-In this part of the tutorial series we will look add adding a board sprite. A board sprite is an instance of an NPC on a board. We will be using the Evil Eye NPC from the previous tutorial. By the end of this we will have an Evil Eye that follows the character around the hall board.
+In this part of the tutorial series we will look add adding a board sprite. A board sprite is an instance of an NPC or Enemy on a board. We will be using the Evil Eye NPC from the previous tutorial. By the end of this we will have an Evil Eye that follows the character around the hall board.
 
 ## Steps
 Open the "hall.board" that you've created and select the board sprite tool from the main toolbar.
 
 ![](images/my_first_game/10_adding_board_sprites/images/1.png)
 
-The board sprite tool shares the same set of mouse commands as the board vector tool. Left click to place a board sprite, right click to select it, and middle click to remove it from the board. When you place a board sprite it appears as a blank box as it has no associated NPC file.
+<br/>
+
+The board sprite tool shares the same set of mouse commands as the board vector tool. Left click to place a board sprite, right click to select it, and middle click to remove it from the board. When you place a board sprite it appears as a blank box as it has no associated file.
 
 ![](images/my_first_game/10_adding_board_sprites/images/2.png)
 

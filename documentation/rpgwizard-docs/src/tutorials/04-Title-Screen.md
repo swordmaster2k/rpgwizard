@@ -32,6 +32,8 @@ rpgcode.loadAssets(assets, function() {
    titleScreen.show(config, function() {
       // The player pressed "ENTER" ending the titlescreen.
       // Let's continue with the rest of the game.
+
+      rpgcode.endProgram();
    });
 });
 ```

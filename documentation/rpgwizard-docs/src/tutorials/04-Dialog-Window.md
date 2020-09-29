@@ -41,6 +41,8 @@ rpgcode.loadAssets(assets, async function() {
       // Show the intro dialog.
       await dialog.show(config);
 
+      rpgcode.endProgram();
+
 });
 ```
 

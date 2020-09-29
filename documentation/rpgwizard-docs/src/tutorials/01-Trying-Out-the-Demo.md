@@ -1,12 +1,16 @@
 ## Summary
-In this brief introduction we will show how to launch the RPGWizard. We'll also cover how to open the editor and start the included demo game "The Wizard's Tower".
+In this brief introduction we will show how to launch the RPGWizard. We'll also cover how to open the editor and start one of the included demo games, "The Wizard's Tower".
 
 ## Steps
 
 ### Opening the RPGWizard
-After you've downloaded and extracted the zip folder, look for the editor **.exe** file. In the same folder you will also find the *plugins* and *projects* folders. To start the editor you simply need to run the **.exe**.
+After you've downloaded and extracted the zip folder, look for the editor **.exe** file. In the same folder you will also find the *plugins* and *projects* folders.
+
+**To start the editor you simply need to run the .exe**.
 
 ![](images/getting_started/01_demo_game/images/1.png)
+
+<br/>
 
 When the editor starts for the first time it will automatically open the demo game "The Wizards's Tower".
 
@@ -16,6 +20,8 @@ When the editor starts for the first time it will automatically open the demo ga
 To start the demo game in the engine use the run button located towards the top of the editor.
 
 ![](images/getting_started/01_demo_game/images/6.png)
+
+<br/>
 
 The engine will open up the current game project inside an embedded engine on Windows, or on Linux it will use the default web browser.
 

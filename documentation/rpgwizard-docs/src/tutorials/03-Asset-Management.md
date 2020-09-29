@@ -1,12 +1,12 @@
 ## What are Assets?
 In RPGWizard an "asset" **refers to any sound, image, or program file** that you wish to use in your game at runtime. Before you can play audio, draw images, or call functions from other programs, you must load them into the engine.
 
-Assets are loaded **asynchronously** meaning they cannot be used until the engine has loaded them. Once an asset has been loaded it will be available in the engine to programs until it is explictly removed, this means you can load up common assets on game startup and access them anytime without needing to wait for them again.
+Assets are loaded **asynchronously** meaning they cannot be used until the engine has loaded them. Once an asset has been loaded it will be available in the engine to programs until it is explicitly removed, this means you can load up common assets on game startup and access them anytime without needing to wait for them again.
 
 These files must be available in the **Sounds**, **Graphics**, or **Programs** folder of your project which is where the engine looks for them by default.
 
 ## Loading Assets
-To load assets into the engine you will be using a special function provided by the RPGcode API, [rpgcode.loadAssets](images/rpgcode_api_reference/RPGcode.html#loadAssets). This function accepts an object containing the different types of assets that you wish to load into the engine, you also need to provide it with a **callback function** which it will call as soon as the assets are ready for use. Below you will find examples for loading each of the asset types into the engine.
+To load assets into the engine you will be using a special function provided by the RPGcode API, <a href="Asset.html#loadAssets" target="_blank">rpgcode.loadAssets</a>. This function accepts an object containing the different types of assets that you wish to load into the engine, you also need to provide it with a **callback function** which it will call as soon as the assets are ready for use. Below you will find examples for loading each of the asset types into the engine.
 
 ### Images
 
@@ -28,6 +28,7 @@ rpgcode.loadAssets(assets, function() {
 * jpeg
 
 ### Audio
+> NOTE: Audio items are created using key-value pairs, where the key is the ID that you want to associate with a sound file the value.
 
 ```javascript
 // An example of an assets object

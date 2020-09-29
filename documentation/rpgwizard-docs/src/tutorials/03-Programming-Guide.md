@@ -1,5 +1,8 @@
 ## Sections
 
+* [Hello world!](tutorial-03-Hello-World.html)
+* [Ending a Program](tutorial-03-Ending-a-Program.html)
+* [Introduction to JavaScript](tutorial-03-Introduction-to-JavaScript.html)
 * [Introduction to JavaScript](tutorial-03-Introduction-to-JavaScript.html)
 * [Asset Management](tutorial-03-Asset-Management.html)
 * [Global Variables](tutorial-03-Global-Variables.html)

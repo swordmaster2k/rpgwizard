@@ -77,6 +77,12 @@
             },
             "03-File-Handling": {
                 "title": "File Handling"
+            },
+            "03-Sprite-Threads": {
+                "title": "Sprite Threads"
+            },
+            "03-Run-Time-Programs": {
+                "title": "Run Time Programs"
             }
         }
     },

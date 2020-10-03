@@ -13,14 +13,13 @@ RPGWizard is an open-source 2D game creation tool that specialises in making RPG
 - JavaScript Programming: All game code is in JavaScript which one of the most popular languages on the web today and very well documented.
 
 ### Download
-Head over to the official site for the latest version and documentation: http://rpgwizard.org
+Head over to the official site for the latest version and documentation: https://rpgwiz.github.io/site/
 
 ### Community
 Here at RPGWizard we believe in building a creative and helpful community for our users:
 
-- Dedicated Forums: Reach out to other users of RPGWizard for help and feedback on all sorts of topics.
-
-- Discord Channel: Join our Discord channel to get in touch with others quickly.
+- **Discord Channel:** Join our Discord channel to get in touch with others quickly.
+ - https://rpgwiz.github.io/site/community/
 
 ### Building from Source
 In order to build the RPGWizard yourself you should be familiar with Java, Maven, JavaScript, and NodeJS.

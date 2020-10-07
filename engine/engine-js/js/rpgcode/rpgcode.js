@@ -1388,6 +1388,28 @@ RPGcode.prototype.getDistanceBetweenPoints = function (x1, y1, x2, y2) {
 };
 
 /**
+ * Gets the enemy asset by its spriteId as set in the editor.
+ * 
+ * Returns null if the spriteId cannot be found.
+ * 
+ * @example
+ * const enemy = rpgcode.getEnemy("enemy-1");
+ * console.log(enemy.name);
+ * 
+ * @memberof Sprite
+ * @alias getEnemy
+ * @param {string} spriteId
+ * @returns {Asset.EnemyAsset|null}
+ */
+RPGcode.prototype.getEnemy = function (spriteId) {
+    const sprite = rpgcode.getSprite(spriteId);
+    if (sprite && sprite.sprite && sprite.sprite.enemy) { // ugh
+        return sprite.sprite.enemy;
+    }
+    return null;
+};
+
+/**
  * Gets the value of global variable.
  * 
  * @example
@@ -1485,6 +1507,28 @@ RPGcode.prototype.getItem = async function (fileName, callback) {
         callback(item);
     }
     return undefined;
+};
+
+/**
+ * Gets the npc asset by its spriteId as set in the editor.
+ * 
+ * Returns null if the spriteId cannot be found.
+ * 
+ * @example
+ * const npc = rpgcode.getNpc("npc-1");
+ * console.log(npc.name);
+ * 
+ * @memberof Sprite
+ * @alias getNpc
+ * @param {string} spriteId
+ * @returns {Asset.NpcAsset|null}
+ */
+RPGcode.prototype.getNpc = function (spriteId) {
+    const sprite = rpgcode.getSprite(spriteId);
+    if (sprite && sprite.sprite && sprite.sprite.npc) { // ugh
+        return sprite.sprite.npc;
+    }
+    return null;
 };
 
 /**
@@ -1848,6 +1892,22 @@ RPGcode.prototype.isControlEnabled = function () {
 };
 
 /**
+ * Checks if a sound with the asset id is currently playing.
+ * 
+ * @example
+ * var playing = rpgcode.isPlaying("rain");
+ * rpgcode.log(playing);
+ * 
+ * @memberof Sound
+ * @alias isPlaying
+ * @param {string} id Id of the sound asset to check for.
+ * @returns {boolean} whether or not the sound is playing
+ */
+RPGcode.prototype.isPlaying = function (id) {
+    return Crafty.audio.isPlaying(id);
+};
+
+/**
  * Loads the requested assets into the engine, when all of the assets have been loaded
  * the onLoad callback is invoked.
  * 
@@ -1980,14 +2040,14 @@ RPGcode.prototype.log = function (message) {
  * 
  * @memberof Sound
  * @alias playSound
- * @param {string} file Relative path to the sound file to play.
+ * @param {string} id Id of the sound asset to play.
  * @param {boolean} loop Should it loop indefinitely?
  * @param {number} [volume=1.0] Value ranging from 1.0 to 0.0, default is 1.0 (i.e. 100%).
  * @returns {Object} A HTML5 audio element representing the playing sound.
  */
-RPGcode.prototype.playSound = function (file, loop, volume = 1.0) {
+RPGcode.prototype.playSound = function (id, loop, volume = 1.0) {
     var count = loop ? -1 : 1;
-    return Crafty.audio.play(file, count, volume);
+    return Crafty.audio.play(id, count, volume);
 };
 
 /**

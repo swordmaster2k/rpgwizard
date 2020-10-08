@@ -16,12 +16,12 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.AssetDescriptor;
-import org.rpgwizard.common.assets.GraphicEnum;
 import org.rpgwizard.common.assets.Character;
-import org.rpgwizard.editor.editors.sprite.AbstractSpriteEditor;
-import org.rpgwizard.editor.ui.IntegerField;
+import org.rpgwizard.common.assets.GraphicEnum;
 import org.rpgwizard.common.assets.listeners.SpriteChangeListener;
+import org.rpgwizard.editor.editors.sprite.AbstractSpriteEditor;
 import org.rpgwizard.editor.ui.DoubleField;
+import org.rpgwizard.editor.ui.IntegerField;
 import org.rpgwizard.editor.ui.resources.Icons;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -154,7 +154,7 @@ public final class CharacterEditor extends AbstractSpriteEditor implements Sprit
         maxLevel.setColumns(DEFAULT_INPUT_COLUMNS);
         maxLevel.getDocument().addDocumentListener(saveDocumentListener);
 
-        experience = new DoubleField(player.getMaxExperience());
+        experience = new DoubleField(player.getExperience());
         experience.setColumns(DEFAULT_INPUT_COLUMNS);
         experience.getDocument().addDocumentListener(saveDocumentListener);
 
@@ -221,7 +221,7 @@ public final class CharacterEditor extends AbstractSpriteEditor implements Sprit
     public static void main(String[] args) {
         JFrame frame = new JFrame("Test InternalJFrame");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(new CharacterEditor(null));
+        frame.add(new CharacterEditor(new Character(null)));
         frame.setSize(440, 360);
         frame.setVisible(true);
     }

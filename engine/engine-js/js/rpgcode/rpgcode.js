@@ -565,6 +565,37 @@ RPGcode.prototype.destroySprite = function (spriteId) {
     }
 };
 
+
+/**
+ * Destroys a vector by its ID field.
+ * 
+ * @example
+ * rpgcode.destroyVector("some-vector-id");
+ * 
+ * @memberof Board
+ * @alias destroyVector
+ * @param {string} vectorId The ID of the vector as it appears in the editor.
+ */
+RPGcode.prototype.destroyVector = function (vectorId) {
+    // TODO: Very inefficient, lots of looping, need to store it properly
+    for (let i = 0; i < Crafty("Collision").length; i++) {
+        const e = Crafty("Collision").get(i);
+        if (e.vectorId === vectorId) {
+            const board = rpgcode.getBoard();
+            const layer = board.layers[e.layer];
+            for (let j = 0; j < layer.vectors.length; j++) {
+                const vector = layer.vectors[j];
+                if (vector.id === vectorId) {
+                    layer.vectors.splice(j, 1);
+                    break;
+                }
+            }
+            e.destroy();
+            break;
+        }
+    }
+};
+
 /**
  * Draws a circle onto the canvas.
  * 

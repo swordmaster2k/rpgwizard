@@ -19,6 +19,15 @@ public class Enemy extends AbstractSprite {
 
     public Enemy(AssetDescriptor descriptor) {
         super(descriptor);
+
+        // Set non-zero level starting stats
+        level = 1;
+        health = 3;
+        attack = 1;
+        defence = 1;
+        magic = 1;
+        experienceReward = 3;
+        goldReward = 5;
     }
 
     public int getLevel() {

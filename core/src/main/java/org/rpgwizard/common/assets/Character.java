@@ -37,6 +37,21 @@ public class Character extends AbstractSprite {
     public Character(AssetDescriptor descriptor) {
         super(descriptor);
 
+        // Set non-zero level starting stats
+        level = 1;
+        maxLevel = 3;
+        experience = 1;
+        maxExperience = 100;
+        health = 3;
+        maxHealth = 5;
+        attack = 1;
+        maxAttack = 5;
+        defence = 1;
+        maxDefence = 5;
+        magic = 1;
+        maxMagic = 5;
+        gold = 3;
+
         equipment = new HashMap<>();
         equipment.put(Equipment.HEAD.toString(), "");
         equipment.put(Equipment.CHEST.toString(), "");

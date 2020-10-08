@@ -179,7 +179,7 @@ public final class EnemyEditor extends AbstractSpriteEditor implements SpriteCha
     public static void main(String[] args) {
         JFrame frame = new JFrame("Test InternalJFrame");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(new EnemyEditor(null));
+        frame.add(new EnemyEditor(new Enemy(null)));
         frame.setSize(440, 360);
         frame.setVisible(true);
     }

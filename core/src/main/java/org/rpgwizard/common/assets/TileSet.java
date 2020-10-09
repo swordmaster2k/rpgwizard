@@ -163,6 +163,13 @@ public class TileSet extends AbstractAsset {
         return Map.of();
     }
 
+    /**
+     * Clears all loaded tiles in this set.
+     */
+    public void clearTiles() {
+        tiles = new LinkedList<>();
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;

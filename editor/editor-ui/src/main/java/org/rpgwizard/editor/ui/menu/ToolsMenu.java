@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import org.rpgwizard.editor.ui.actions.BoardToImageAction;
+import org.rpgwizard.editor.ui.actions.ReloadTilesetsAction;
 import org.rpgwizard.editor.ui.resources.Icons;
 
 /**
@@ -20,12 +21,15 @@ import org.rpgwizard.editor.ui.resources.Icons;
 public final class ToolsMenu extends JMenu {
 
     private JMenuItem boardImageExportItem;
+    private JMenuItem reloadTilesetsItem;
 
     public ToolsMenu() {
         super("Tools");
         configureBoardImageExportItem();
+        configureReloadTilesetsItem();
 
         add(boardImageExportItem);
+        add(reloadTilesetsItem);
         setMnemonic(KeyEvent.VK_T);
     }
 
@@ -36,6 +40,11 @@ public final class ToolsMenu extends JMenu {
         boardImageExportItem = new JMenuItem("Export Board to Image");
         boardImageExportItem.setIcon(Icons.getSmallIcon("image-export"));
         boardImageExportItem.addActionListener(new BoardToImageAction());
+    }
+
+    public void configureReloadTilesetsItem() {
+        reloadTilesetsItem = new JMenuItem("Reload Tilesets");
+        reloadTilesetsItem.addActionListener(new ReloadTilesetsAction());
     }
 
 }

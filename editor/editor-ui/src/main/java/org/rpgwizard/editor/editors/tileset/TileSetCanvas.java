@@ -46,7 +46,7 @@ public final class TileSetCanvas extends JPanel implements Scrollable {
 
     private final LinkedList<TileSelectionListener> tileSelectionListeners = new LinkedList<>();
 
-    private final TileSet tileSet;
+    private TileSet tileSet;
     private BufferedImage bufferedImage;
 
     private Rectangle selection;
@@ -102,6 +102,14 @@ public final class TileSetCanvas extends JPanel implements Scrollable {
         addMouseMotionListener(tileSetMouseAdapter);
     }
 
+    public TileSet getTileSet() {
+        return tileSet;
+    }
+
+    public void setTileSet(TileSet tileSet) {
+        this.tileSet = tileSet;
+    }
+
     /**
      *
      * @return
@@ -133,9 +141,8 @@ public final class TileSetCanvas extends JPanel implements Scrollable {
      */
     @Override
     public void paint(Graphics g) {
-        paintBackground(g);
-
         Graphics2D g2d = bufferedImage.createGraphics();
+        paintBackground(g2d);
         paintTileSet(g2d);
         paintGrid(g2d);
 
@@ -249,26 +256,25 @@ public final class TileSetCanvas extends JPanel implements Scrollable {
         return tiles;
     }
 
-    private void paintBackground(Graphics g) {
-        Rectangle clipRectangle = g.getClipBounds();
+    private void paintBackground(Graphics2D g2d) {
         int side = tilesPerRow;
 
-        int startX = clipRectangle.x / side;
-        int startY = clipRectangle.y / side;
-        int endX = (clipRectangle.x + clipRectangle.width) / side + 1;
-        int endY = (clipRectangle.y + clipRectangle.height) / side + 1;
+        int startX = 0;
+        int startY = 0;
+        int endX = (bufferedImage.getWidth()) / side + 1;
+        int endY = (bufferedImage.getHeight()) / side + 1;
 
         // Fill with white background.
-        g.setColor(Color.WHITE);
-        g.fillRect(clipRectangle.x, clipRectangle.y, clipRectangle.width, clipRectangle.height);
+        g2d.setColor(Color.WHITE);
+        g2d.fillRect(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight());
 
         // Draw darker squares.
-        g.setColor(Color.LIGHT_GRAY);
+        g2d.setColor(Color.LIGHT_GRAY);
 
         for (int y = startY; y < endY; y++) {
             for (int x = startX; x < endX; x++) {
                 if ((y + x) % 2 == 1) {
-                    g.fillRect(x * side, y * side, side, side);
+                    g2d.fillRect(x * side, y * side, side, side);
                 }
             }
         }

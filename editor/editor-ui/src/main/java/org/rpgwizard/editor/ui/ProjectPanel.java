@@ -8,22 +8,12 @@
 package org.rpgwizard.editor.ui;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.ClosedWatchServiceException;
 import java.nio.file.FileSystems;
-import java.nio.file.FileVisitResult;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.SimpleFileVisitor;
-import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
-import static java.nio.file.StandardWatchEventKinds.ENTRY_DELETE;
-import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 import java.nio.file.WatchService;
 import java.util.StringTokenizer;
 import javax.swing.JPanel;
@@ -32,12 +22,9 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
-
-import java.nio.file.WatchEvent;
-import java.nio.file.WatchKey;
-import java.nio.file.attribute.BasicFileAttributes;
 import javax.swing.tree.TreeSelectionModel;
 import org.rpgwizard.editor.MainWindow;
+import org.rpgwizard.editor.ui.async.ProjectWatchServiceRunnable;
 import org.rpgwizard.editor.ui.panel.ProjectTreeCellRenderer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -109,48 +96,22 @@ public final class ProjectPanel extends JPanel {
                     LOGGER.info("Waiting for Watch Thread to die.");
                 }
             } catch (IOException ex) {
-
+                LOGGER.error("Could not stop watcher thread!", ex);
             }
         }
     }
 
     private void startWatchService(String watchPath) {
-        Runnable watchRunnable = () -> {
-            try {
-                LOGGER.info("Stopping WatchService watchPath=[{}]", watchPath);
-                watchService = FileSystems.getDefault().newWatchService();
-                registerRecursive(Paths.get(watchPath));
-
-                WatchKey key;
-                while ((key = watchService.take()) != null) {
-                    for (WatchEvent<?> event : key.pollEvents()) {
-                        LOGGER.debug("Event kind=[{}], File affected=[{}]", event.kind(), event.context());
-                        EventQueue.invokeLater(() -> {
-                            loadTree();
-                        });
-                    }
-                    key.reset();
-                }
-            } catch (IOException | InterruptedException | ClosedWatchServiceException e) {
-                LOGGER.info("Stopping WatchService watchPath=[{}]", watchPath);
-            }
-        };
-        watchThread = new Thread(watchRunnable);
-        watchThread.start();
+        try {
+            watchService = FileSystems.getDefault().newWatchService();
+            watchThread = new Thread(new ProjectWatchServiceRunnable(this, watchService, watchPath));
+            watchThread.start();
+        } catch (IOException ex) {
+            LOGGER.error("Could not start watcher thread!", ex);
+        }
     }
 
-    // Credit: https://stackoverflow.com/questions/18701242/how-to-watch-a-folder-and-subfolders-for-changes
-    private void registerRecursive(final Path root) throws IOException {
-        Files.walkFileTree(root, new SimpleFileVisitor<Path>() {
-            @Override
-            public FileVisitResult preVisitDirectory(Path path, BasicFileAttributes attrs) throws IOException {
-                path.register(watchService, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
-                return FileVisitResult.CONTINUE;
-            }
-        });
-    }
-
-    private DefaultMutableTreeNode loadTree() {
+    public DefaultMutableTreeNode loadTree() {
         String state = getExpansionState(tree, 0);
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
         root.removeAllChildren();

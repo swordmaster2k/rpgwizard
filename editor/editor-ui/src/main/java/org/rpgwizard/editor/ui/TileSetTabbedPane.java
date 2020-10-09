@@ -7,9 +7,11 @@
  */
 package org.rpgwizard.editor.ui;
 
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.Collection;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -19,12 +21,17 @@ import org.rpgwizard.common.assets.TileSet;
 import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.editors.tileset.TileSetCanvas;
+import org.rpgwizard.editor.editors.tileset.TileSetUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Joshua Michael Daly
  */
 public final class TileSetTabbedPane extends JClosableTabbedPane {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(TileSetTabbedPane.class);
 
     public TileSetTabbedPane() {
         setFont(new Font(getFont().getFontName(), Font.PLAIN, 10));
@@ -55,6 +62,30 @@ public final class TileSetTabbedPane extends JClosableTabbedPane {
     public void addTileSets(Collection<TileSet> tileSets) {
         for (TileSet tileSet : tileSets) {
             addTileSet(tileSet);
+        }
+    }
+
+    /**
+     * Provides a means for Tilesets to be reloaded, eventually this should be done through dynamic asset reloading on
+     * change detection.
+     * 
+     * TODO: Replace this when dynamic asset reloading exists.
+     */
+    public void reloadTileSets() {
+        for (int i = 0; i < getTabCount(); i++) {
+            try {
+                Component component = getComponentAt(i);
+                JScrollPane scrollPane = (JScrollPane) component;
+                TileSetCanvas canvas = (TileSetCanvas) scrollPane.getViewport().getComponent(0);
+                TileSet tileset = canvas.getTileSet();
+                tileset.clearTiles();
+                tileset = TileSetUtil.load(tileset);
+                canvas.setTileSet(tileset);
+                canvas.revalidate();
+                canvas.repaint();
+            } catch (IOException ex) {
+                LOGGER.error("Could not reload tileset!", ex);
+            }
         }
     }
 

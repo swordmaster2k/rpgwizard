@@ -401,6 +401,10 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         return this.propertiesPanel;
     }
 
+    public TileSetTabbedPane getTileSetPanel() {
+        return tileSetPanel;
+    }
+
     public JInternalFrame getCurrentFrame() {
         return desktopPane.getSelectedFrame();
     }

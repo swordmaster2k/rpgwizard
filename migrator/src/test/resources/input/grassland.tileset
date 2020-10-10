@@ -1,0 +1,19 @@
+{
+    "image": "tiles/oryx_16bit_scifi_world_trans.png",
+    "name": "oryx_16bit_scifi_world_trans.tileset",
+    "tileData": {
+        "44": {
+            "defence": "1",
+            "custom": "",
+            "type": "plain"
+        },
+        "36": {
+            "defence": "4",
+            "custom": "",
+            "type": "mountain"
+        }
+    },
+    "tileWidth": 24,
+    "version": 1.7,
+    "tileHeight": 24
+}

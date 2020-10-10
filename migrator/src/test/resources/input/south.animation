@@ -1,0 +1,14 @@
+{
+    "frameRate": 16,
+    "soundEffect": "sound-asset",
+    "width": 24,
+    "spriteSheet": {
+        "image": "tiles/oryx_16bit_scifi_creatures_trans_flip.png",
+        "x": 720,
+        "width": 48,
+        "y": 480,
+        "height": 24
+    },
+    "version": 1.7,
+    "height": 24
+}

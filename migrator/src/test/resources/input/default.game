@@ -1,0 +1,13 @@
+{
+    "initialCharacter": "Hero.character",
+    "gameOverProgram": "GameOver.js",
+    "startupProgram": "Startup.js",
+    "showVectors": true,
+    "resolutionHeight": 480,
+    "projectIcon": "1_icon.png",
+    "name": "The Wizard's Tower",
+    "isFullScreen": true,
+    "resolutionWidth": 640,
+    "version": 1.7,
+    "initialBoard": "Outside.board"
+}

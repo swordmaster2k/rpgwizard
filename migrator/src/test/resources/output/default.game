@@ -1,0 +1,13 @@
+{
+    "name": "The Wizard's Tower",
+    "viewport": {
+        "width": 640,
+        "height": 480,
+        "fullScreen": true
+    },
+    "debug": {
+        "showColliders": true,
+        "showTriggers": true
+    },
+    "version": "2.0.0"
+}

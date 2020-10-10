@@ -37,6 +37,10 @@ public class PopupListFilesListener implements PopupMenuListener {
 
     @Override
     public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+        if (!hasChanged()) {
+            return; // No change to backing contents of combobox, don't repopulate
+        }
+
         Object previouslySelected = comboBox.getSelectedItem();
         comboBox.removeAllItems();
         comboBox.addItem("");
@@ -52,6 +56,15 @@ public class PopupListFilesListener implements PopupMenuListener {
     public void popupMenuCanceled(PopupMenuEvent e) {
     }
 
+    private boolean hasChanged() {
+        int count = 1; // First blank item
+        for (File rootDirectory : rootDirectories) {
+            Collection<File> files = FileUtils.listFiles(rootDirectory, extension, recursive);
+            count += files.size();
+        }
+        return count != comboBox.getItemCount();
+    }
+
     private void populate() {
         for (File rootDirectory : rootDirectories) {
             Collection<File> files = FileUtils.listFiles(rootDirectory, extension, recursive);
@@ -63,7 +76,6 @@ public class PopupListFilesListener implements PopupMenuListener {
                 comboBox.addItem(FilenameUtils.separatorsToUnix(path));
             }
         }
-
     }
 
 }

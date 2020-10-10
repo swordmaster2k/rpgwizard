@@ -39,6 +39,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.TableColumn;
 import javax.swing.text.DefaultFormatter;
 import org.rpgwizard.common.assets.Board;
+import org.rpgwizard.editor.ui.AutoCompletion;
 import org.rpgwizard.editor.ui.listeners.PopupListFilesListener;
 
 /**
@@ -175,11 +176,10 @@ public abstract class GuiHelper {
      */
     public static JComboBox getFileListJComboBox(File[] rootDirectories, String[] extensions, boolean recursive) {
         JComboBox comboBox = new JComboBox();
-
         comboBox.addPopupMenuListener(new PopupListFilesListener(rootDirectories, extensions, recursive, comboBox));
-
         comboBox.setPrototypeDisplayValue("*****************");
         comboBox.insertItemAt("", 0);
+        AutoCompletion.enable(comboBox);
         return comboBox;
     }
 

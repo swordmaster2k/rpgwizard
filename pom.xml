@@ -178,6 +178,7 @@
                                 <exclude>src/main/resources/lib/**</exclude>
                                 <exclude>src/test/resources/**</exclude>
                                 <exclude>src/main/resources/program/templates/**</exclude>
+                                <exclude>src/main/java/org/rpgwizard/editor/ui/AutoCompletion.java</exclude>
                             </excludes>
                         </configuration>
                         <goals>

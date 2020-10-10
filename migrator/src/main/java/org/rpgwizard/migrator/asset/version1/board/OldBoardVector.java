@@ -5,23 +5,26 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package org.rpgwizard.migrator.asset.version2;
+package org.rpgwizard.migrator.asset.version1.board;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.awt.Point;
+import java.util.List;
 import lombok.Data;
+import org.rpgwizard.migrator.asset.version1.OldEvent;
 
 /**
  *
  * @author Joshua Michael Daly
  */
 @Data
-public class Event {
+public class OldBoardVector {
     
+    private String id;
+    @JsonProperty("isClosed")
+    private boolean isClosed;
     private String type;
-    private String script;
-    private String key;
-    
-    public Event() {
-        
-    }
+    private List<OldEvent> events;
+    private List<Point> points;
     
 }

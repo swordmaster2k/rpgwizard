@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package org.rpgwizard.migrator.asset.version2;
+package org.rpgwizard.migrator.asset.version1.board;
 
 import lombok.Data;
 
@@ -14,14 +14,10 @@ import lombok.Data;
  * @author Joshua Michael Daly
  */
 @Data
-public class Event {
+public class OldStartingPosition {
     
-    private String type;
-    private String script;
-    private String key;
-    
-    public Event() {
-        
-    }
+    private int x;
+    private int y;
+    private int layer;
     
 }

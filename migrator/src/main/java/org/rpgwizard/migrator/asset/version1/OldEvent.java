@@ -23,6 +23,7 @@ public class OldEvent extends AbstractAsset {
     
     private String type;
     private String program;
+    private String key;
     
     public OldEvent() {
         

@@ -1,0 +1,154 @@
+{
+    "backgroundMusic": "some.wav",
+    "tileSets": ["test.tileset"],
+    "name": "main.board",
+    "width": 25,
+    "layers": [{
+            "tiles": ["-1:-1", "-1:-1", "-1:-1"],
+            "vectors": [],
+            "images": [],
+            "name": "Waypoints"
+        }, {
+            "tiles": ["-1:-1", "-1:-1", "-1:-1"],
+            "vectors": [{
+                    "isClosed": true,
+                    "id": "collider-1",
+                    "type": "SOLID",
+                    "events": [{
+                            "program": "",
+                            "type": "overlap"
+                        }
+                    ],
+                    "points": [{
+                            "x": 122,
+                            "y": 219
+                        }, {
+                            "x": 121,
+                            "y": 290
+                        }, {
+                            "x": 131,
+                            "y": 300
+                        }, {
+                            "x": 356,
+                            "y": 93
+                        }, {
+                            "x": 353,
+                            "y": 19
+                        }, {
+                            "x": 345,
+                            "y": 13
+                        }
+                    ]
+                }, {
+                    "isClosed": true,
+                    "id": "trigger-1",
+                    "type": "PASSABLE",
+                    "events": [{
+                            "program": "custom/jump.js",
+                            "type": "keypress",
+                            "key": "SPACE"
+                        }
+                    ],
+                    "points": [{
+                            "x": 370,
+                            "y": 111
+                        }, {
+                            "x": 358,
+                            "y": 124
+                        }, {
+                            "x": 387,
+                            "y": 153
+                        }, {
+                            "x": 399,
+                            "y": 141
+                        }
+                    ]
+                }, {
+                    "isClosed": true,
+                    "id": "trigger-2",
+                    "type": "PASSABLE",
+                    "events": [{
+                            "program": "custom/interact.js",
+                            "type": "keypress",
+                            "key": "SPACE"
+                        }
+                    ],
+                    "points": [{
+                            "x": 240,
+                            "y": 267
+                        }, {
+                            "x": 256,
+                            "y": 280
+                        }, {
+                            "x": 232,
+                            "y": 304
+                        }, {
+                            "x": 215,
+                            "y": 290
+                        }
+                    ]
+                }
+            ],
+            "images": [{
+                    "src": "rooms/base.png",
+                    "x": 120,
+                    "y": 12,
+                    "id": "image-1"
+                }
+            ],
+            "name": "Base"
+        }
+    ],
+    "firstRunProgram": "custom/main.js",
+    "tileWidth": 32,
+    "startingPosition": {
+        "x": 430,
+        "y": 350,
+        "layer": 1
+    },
+    "version": 1.7,
+    "sprites": [{
+            "name": "waypoint.npc",
+            "id": "p5",
+            "thread": "",
+            "startingPosition": {
+                "x": 348,
+                "y": 163,
+                "layer": 0
+            },
+            "events": []
+        },{
+            "name": "item_3.npc",
+            "id": "item_3",
+            "thread": "",
+            "startingPosition": {
+                "x": 476,
+                "y": 539,
+                "layer": 1
+            },
+            "events": [{
+                    "program": "custom/interact.js",
+                    "type": "keypress",
+                    "key": "SPACE"
+                }
+            ]
+        }, {
+            "name": "owner.enemy",
+            "id": "owner",
+            "thread": "custom/enemy.js",
+            "startingPosition": {
+                "x": 517,
+                "y": 425,
+                "layer": 1
+            },
+            "events": [{
+                    "program": "custom/hit.js",
+                    "type": "overlap",
+                    "key": ""
+                }
+            ]
+        }
+    ],
+    "height": 20,
+    "tileHeight": 32
+}

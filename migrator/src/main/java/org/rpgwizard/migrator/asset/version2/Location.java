@@ -14,14 +14,10 @@ import lombok.Data;
  * @author Joshua Michael Daly
  */
 @Data
-public class Event {
+public class Location {
     
-    private String type;
-    private String script;
-    private String key;
-    
-    public Event() {
-        
-    }
+    private int x;
+    private int y;
+    private int layer;
     
 }

@@ -1,0 +1,148 @@
+{
+    "name": "main.board",
+    "width": 25,
+    "height": 20,
+    "tileWidth": 32,
+    "tileHeight": 32,
+    "tilesets": ["test.tileset"],
+    "music": "some.wav",
+    "entryScript": "custom/main.js",
+    "startLocation": {
+        "x": 430,
+        "y": 350,
+        "layer": 1
+    },
+    "layers": [{
+            "id": "Waypoints",
+            "tiles": ["-1:-1", "-1:-1", "-1:-1"],
+            "colliders": {},
+            "triggers": {},
+            "sprites": {
+                "p5": {
+                    "asset": "waypoint.sprite",
+                    "thread": "",
+                    "startLocation": {
+                        "x": 348,
+                        "y": 163,
+                        "layer": 0
+                    },
+                    "events": []
+                }
+            },
+            "images": {}
+        }, {
+            "id": "Base",
+            "tiles": ["-1:-1", "-1:-1", "-1:-1"],
+            "colliders": {
+                "collider-1": {
+                    "points": [{
+                            "x": 122,
+                            "y": 219
+                        }, {
+                            "x": 121,
+                            "y": 290
+                        }, {
+                            "x": 131,
+                            "y": 300
+                        }, {
+                            "x": 356,
+                            "y": 93
+                        }, {
+                            "x": 353,
+                            "y": 19
+                        }, {
+                            "x": 345,
+                            "y": 13
+                        }
+                    ]
+                }
+            },
+            "triggers": {
+                "trigger-1": {
+                    "events": [{
+                            "script": "custom/jump.js",
+                            "type": "keypress",
+                            "key": "SPACE"
+                        }
+                    ],
+                    "points": [{
+                            "x": 370,
+                            "y": 111
+                        }, {
+                            "x": 358,
+                            "y": 124
+                        }, {
+                            "x": 387,
+                            "y": 153
+                        }, {
+                            "x": 399,
+                            "y": 141
+                        }
+                    ]
+                },
+                "trigger-2": {
+                    "events": [{
+                            "script": "custom/interact.js",
+                            "type": "keypress",
+                            "key": "SPACE"
+                        }
+                    ],
+                    "points": [{
+                            "x": 240,
+                            "y": 267
+                        }, {
+                            "x": 256,
+                            "y": 280
+                        }, {
+                            "x": 232,
+                            "y": 304
+                        }, {
+                            "x": 215,
+                            "y": 290
+                        }
+                    ]
+                }
+            },
+            "sprites": {
+                "item_3": {
+                    "asset": "item_3.sprite",
+                    "thread": "",
+                    "startLocation": {
+                        "x": 476,
+                        "y": 539,
+                        "layer": 1
+                    },
+                    "events": [{
+                            "script": "custom/interact.js",
+                            "type": "keypress",
+                            "key": "SPACE"
+                        }
+                    ]
+                },
+                "owner": {
+                    "asset": "owner.sprite",
+                    "thread": "custom/enemy.js",
+                    "startLocation": {
+                        "x": 517,
+                        "y": 425,
+                        "layer": 1
+                    },
+                    "events": [{
+                            "script": "custom/hit.js",
+                            "type": "overlap",
+                            "key": ""
+                        }
+                    ]
+                }
+            },
+            "images": {
+                "image-1": {
+                    "image": "rooms/base.png",
+                    "x": 120,
+                    "y": 12
+                }
+            }
+        }
+    ],
+    "version": "2.0.0"
+}

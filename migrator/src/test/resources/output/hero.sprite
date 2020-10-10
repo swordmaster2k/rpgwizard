@@ -1,0 +1,72 @@
+{
+    "name": "Untitled",
+    "description": "",
+    "animations": {
+        "DEFEND": "",
+        "DIE": "",
+        "EAST_IDLE": "",
+        "NORTH_WEST": "",
+        "NORTH_EAST_IDLE": "",
+        "WEST": "cursor/normal.animation",
+        "NORTH_WEST_IDLE": "",
+        "SPECIAL_MOVE": "",
+        "WEST_IDLE": "",
+        "NORTH_IDLE": "",
+        "SOUTH_WEST_IDLE": "",
+        "SOUTH_EAST_IDLE": "",
+        "SOUTH_IDLE": "",
+        "REST": "",
+        "NORTH": "cursor/normal.animation",
+        "NORTH_EAST": "",
+        "ATTACK": "",
+        "SOUTH_EAST": "",
+        "SOUTH": "cursor/normal.animation",
+        "SOUTH_WEST": "",
+        "EAST": "cursor/normal.animation"
+    },
+    "collider": {
+        "enabled": true,
+        "x": -12,
+        "y": -12,
+        "points": [{
+                "x": 0,
+                "y": 0
+            }, {
+                "x": 24,
+                "y": 0
+            }, {
+                "x": 24,
+                "y": 24
+            }, {
+                "x": 0,
+                "y": 24
+            }
+        ]
+    },
+    "trigger": {
+        "enabled": true,
+        "x": -13,
+        "y": -13,
+        "events": [{
+                "script": "",
+                "type": "overlap"
+            }
+        ],
+        "points": [{
+                "x": 0,
+                "y": 0
+            }, {
+                "x": 26,
+                "y": 0
+            }, {
+                "x": 26,
+                "y": 26
+            }, {
+                "x": 0,
+                "y": 26
+            }
+        ]
+    },
+    "data": {},
+    "version": "2.0.0"
+}

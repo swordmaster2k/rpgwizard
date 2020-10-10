@@ -1,0 +1,87 @@
+{
+    "frameRate": 0,
+    "baseVector": {
+        "events": [{
+                "program": "",
+                "type": "overlap"
+            }
+        ],
+        "points": [{
+                "x": 0,
+                "y": 0
+            }, {
+                "x": 30,
+                "y": 0
+            }, {
+                "x": 30,
+                "y": 20
+            }, {
+                "x": 0,
+                "y": 20
+            }
+        ]
+    },
+    "activationOffset": {
+        "x": -20,
+        "y": -5
+    },
+    "activationVector": {
+        "events": [{
+                "program": "",
+                "type": "overlap"
+            }
+        ],
+        "points": [{
+                "x": 0,
+                "y": 0
+            }, {
+                "x": 40,
+                "y": 0
+            }, {
+                "x": 40,
+                "y": 30
+            }, {
+                "x": 0,
+                "y": 30
+            }
+        ]
+    },
+    "baseVectorOffset": {
+        "x": -15,
+        "y": 0
+    },
+    "baseVectorDisabled": false,
+    "animations": {
+        "DEFEND": "",
+        "DIE": "",
+        "EAST_IDLE": "",
+        "NORTH_WEST": "ds/civilian/east.animation",
+        "NORTH_EAST_IDLE": "",
+        "CUSTOM_DESTROYED": "unit_destroyed.animation",
+        "WEST": "ds/civilian/east.animation",
+        "NORTH_WEST_IDLE": "",
+        "SPECIAL_MOVE": "",
+        "WEST_IDLE": "",
+        "NORTH_IDLE": "",
+        "CUSTOM_DAMAGED": "ds/civilian/east_damaged.animation",
+        "SOUTH_WEST_IDLE": "",
+        "SOUTH_EAST_IDLE": "",
+        "CUSTOM_USED": "ds/civilian/used.animation",
+        "SOUTH_IDLE": "",
+        "REST": "",
+        "NORTH": "ds/civilian/east.animation",
+        "NORTH_EAST": "ds/civilian/east.animation",
+        "ATTACK": "",
+        "SOUTH_EAST": "ds/civilian/east.animation",
+        "SOUTH": "ds/civilian/east.animation",
+        "SOUTH_WEST": "ds/civilian/east.animation",
+        "EAST": "ds/civilian/east.animation"
+    },
+    "name": "Untitled",
+    "description": "Undefined",
+    "graphics": {
+        "PROFILE": ""
+    },
+    "activationVectorDisabled": false,
+    "version": 1.7
+}

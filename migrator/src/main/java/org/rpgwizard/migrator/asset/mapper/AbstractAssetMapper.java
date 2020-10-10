@@ -8,8 +8,11 @@
 package org.rpgwizard.migrator.asset.mapper;
 
 import org.mapstruct.AfterMapping;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.rpgwizard.migrator.asset.version1.OldEvent;
 import org.rpgwizard.migrator.asset.version2.AbstractAsset;
+import org.rpgwizard.migrator.asset.version2.Event;
 
 /**
  *
@@ -21,5 +24,8 @@ public abstract class AbstractAssetMapper {
     protected void mapVersion(@MappingTarget AbstractAsset target) {
         target.setVersion("2.0.0");
     }
+    
+    @Mapping(source = "program", target = "script")
+    public abstract Event mapEvent(OldEvent source);
 
 }

@@ -5,6 +5,10 @@ life span of a sprite to create things like HUDs and Weather Effects.
 Enter the Run Time Program, always running, always updating, and it will not stop,
 until it is stopped!
 
+![](images/programming_guide/08_run_time_programs/images/1.gif)
+
+<br/>
+
 ## When and when not to use them
 
 ### Use them for

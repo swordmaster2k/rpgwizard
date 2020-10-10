@@ -3,6 +3,10 @@ A game with static sprites is no fun at all! You might be wondering how you can
 bring life to everyone in your game world, like making them move around,
 or have them chase the player? Well look no further than the Sprite Thread!
 
+![](images/programming_guide/07_sprite_threads/images/1.gif)
+
+<br/>
+
 ## When and when not to use them
 
 ### Use them for

@@ -4,10 +4,9 @@
 ## Navigating the Documentation
 
 ### Tutorials
-If you are a new user or you are simply looking for a complete set of tutorials
-on how to achieve certain things in the RPGWizard, then in the **top right of
-this page see Tutorials**. Here you'll find several tutorials ranging from the
-absolute basics, to advanced coding topics, and even links to complete example games.
+If you are a new user see the **top right of this page for Tutorials**. Here
+you'll find several tutorials ranging from the absolute basics, to advanced
+coding topics, and even links to complete example games.
 
 ### RPGCode API
 If you are looking for detailed documentation on functions in the RPGCode API,

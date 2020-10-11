@@ -7,7 +7,6 @@
  */
 package org.rpgwizard.migrator.asset;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
@@ -17,18 +16,25 @@ import java.util.Optional;
 import javax.swing.JFileChooser;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
-import org.mapstruct.factory.Mappers;
-import org.rpgwizard.migrator.asset.mapper.OldAnimationToAnimationMapper;
-import org.rpgwizard.migrator.asset.mapper.OldBoardToMapMapper;
 import org.rpgwizard.migrator.asset.version1.OldAbstractAsset;
 import org.rpgwizard.migrator.asset.version1.animation.OldAnimation;
 import org.rpgwizard.migrator.asset.version1.board.OldBoard;
+import org.rpgwizard.migrator.asset.version1.character.OldCharacter;
+import org.rpgwizard.migrator.asset.version1.enemy.OldEnemy;
+import org.rpgwizard.migrator.asset.version1.game.OldGame;
+import org.rpgwizard.migrator.asset.version1.npc.OldNpc;
+import org.rpgwizard.migrator.asset.version1.tileset.OldTileset;
 import org.rpgwizard.migrator.asset.version2.AbstractAsset;
 import org.rpgwizard.migrator.asset.version2.animation.Animation;
 import org.rpgwizard.migrator.asset.version2.map.Map;
+import org.rpgwizard.migrator.asset.version2.sprite.Sprite;
+import org.rpgwizard.migrator.asset.version2.tileset.Tileset;
 
 /**
- *
+ * Initial migration tool for RPGWizard 1.x to RPGWizard 2.x for testing.
+ * 
+ * This will be revisited closer to the release of 2.x for further improvements.
+ * 
  * @author Joshua Michael Daly
  */
 @Slf4j
@@ -82,8 +88,12 @@ public class Driver {
     private static void showOutput(File outputDir) {
         if (Desktop.isDesktopSupported()) {
             var desktop = Desktop.getDesktop();
-            if (desktop.isSupported(Desktop.Action.BROWSE_FILE_DIR)) {
-                desktop.browseFileDirectory(outputDir);
+            if (desktop.isSupported(Desktop.Action.BROWSE)) {
+                try {
+                    desktop.browse(outputDir.toURI());
+                } catch (IOException ex) {
+                    log.error("Could not browse outputDir=[{}]", outputDir, ex);
+                }
             }
         }
     }
@@ -105,6 +115,18 @@ public class Driver {
     }
     
     private static void migrate(File gameDir, File outputDir) {
+        // Migrate the game file
+        try {
+            var gameFiles = gameDir.listFiles((File file) -> {
+                return file.getName().endsWith(".game");
+            });
+            migrateAsset(gameDir, outputDir, gameFiles[0], OldGame.class);
+        } catch (IOException ex) {
+            log.error("Failed to migrate game file!", ex);
+            // TODO: abort migration if this happens
+        }
+        
+        // Migrate all the subdirectories
         var dirs = gameDir.listFiles(File::isDirectory);
         for (var dir : dirs) {
             var dirName = dir.getName();
@@ -117,22 +139,31 @@ public class Driver {
                     migrateDir(dir, new File(outputDir.getAbsoluteFile() + "/maps"), OldBoard.class, Map.class, "board");
                     break;
                 case "Characters":
+                    migrateDir(dir, new File(outputDir.getAbsoluteFile() + "/sprites"), OldCharacter.class, Sprite.class, "character");
                     break;
                 case "Enemies":
+                    migrateDir(dir, new File(outputDir.getAbsoluteFile() + "/sprites"), OldEnemy.class, Sprite.class, "enemy");
                     break;
                 case "Fonts":
+                    migrateDir(dir, new File(outputDir.getAbsoluteFile() + "/fonts"));
                     break;
                 case "Graphics":
+                    migrateDir(dir, new File(outputDir.getAbsoluteFile() + "/textures"));
                     break;
                 case "Items":
+                    // No plan for these at the moment
                     break;
                 case "NPCs":
+                    migrateDir(dir, new File(outputDir.getAbsoluteFile() + "/sprites"), OldNpc.class, Sprite.class, "npc");
                     break;
                 case "Programs":
+                    migrateDir(dir, new File(outputDir.getAbsoluteFile() + "/scripts"));
                     break;
                 case "Sounds":
+                    migrateDir(dir, new File(outputDir.getAbsoluteFile() + "/sounds"));
                     break;
                 case "TileSets":
+                    migrateDir(dir, new File(outputDir.getAbsoluteFile() + "/tilesets"), OldTileset.class, Tileset.class, "tileset");
                     break;
                 default:
                     log.warn("Unknown directory type, dirName=[{}], skipping...", dirName);
@@ -140,48 +171,45 @@ public class Driver {
         }
     }
     
+    private static void migrateDir(File src, File dest) {
+        log.info("Migrating src=[{}], dest=[{}]", src, dest);
+        try {
+            FileUtils.copyDirectory(src, dest);
+        } catch (IOException ex) {
+            log.error("Could not create asset dir, dest=[{}]", dest);
+        }
+    }
+    
     private static void migrateDir(File src, File dest, Class<? extends OldAbstractAsset> oldAssetType, Class<? extends AbstractAsset> newAssetType, String ext) {
-        log.info("Migrating oldAssetType=[{}] to newAssetType=[{}], src=[{}], dest=[{}], ext=[{}]", oldAssetType, newAssetType, src, dest, ext);
+        log.info("Migrating dir, oldAssetType=[{}] to newAssetType=[{}], src=[{}], dest=[{}], ext=[{}]", oldAssetType, newAssetType, src, dest, ext);
+        
         var srcAssets = FileUtils.listFiles(src, new String[]{ext}, true);
+        try {
+            Files.createDirectories(Paths.get(dest.getAbsolutePath()));
+        } catch (IOException ex) {
+            log.error("Could not create asset dir, dest=[{}]", dest);
+            return;
+        }
         
         for (var srcAsset : srcAssets) {
             try {
-                var oldAsset = readAsset(srcAsset, oldAssetType);
-                var newAsset = mapAsset(oldAsset);
-                if (newAsset.isPresent()) {
-                    var targetPath = srcAsset.getAbsolutePath().replace(src.getAbsolutePath(), dest.getAbsolutePath());
-                    targetPath = ExtensionMapper.map(targetPath);
-                    writeAsset(newAsset.get(), new File(targetPath));
-                }
+                migrateAsset(src, dest, srcAsset, oldAssetType);
             } catch (IOException ex) {
                 log.error("Could not read asset! srcAsset=[{}], oldAssetType=[{}], ex=[{}]", srcAsset, oldAssetType, ex);
             }
         }
     }
     
-    private static OldAbstractAsset readAsset(File src, Class<? extends OldAbstractAsset> oldAssetType) throws IOException {
-        log.info("Reading asset, src=[{}], oldAssetType=[{}]", src, oldAssetType);
-        var inputJson = Files.readString(Paths.get(src.getAbsolutePath()));
-        return new ObjectMapper().readValue(inputJson, oldAssetType);
-    }
-    
-    private static void writeAsset(AbstractAsset newAsset, File dest) throws IOException {
-        log.info("Writing asset, newAsset.class=[{}], dest=[{}]", newAsset.getClass(), dest);
-        Files.createDirectories(Paths.get(dest.getParentFile().getAbsolutePath()));
-        Files.createFile(Paths.get(dest.getAbsolutePath()));
-        new ObjectMapper().writeValue(dest, newAsset);
-    }
-    
-    private static Optional<AbstractAsset> mapAsset(OldAbstractAsset oldAsset) {
-        if (oldAsset instanceof OldAnimation) {
-            var mapper = Mappers.getMapper(OldAnimationToAnimationMapper.class);
-            return Optional.of(mapper.map((OldAnimation) oldAsset));
-        } else if (oldAsset instanceof OldBoard) {
-            var mapper = Mappers.getMapper(OldBoardToMapMapper.class);
-            return Optional.of(mapper.map((OldBoard) oldAsset));
-        }
+    private static void migrateAsset(File src, File dest, File srcAsset, Class<? extends OldAbstractAsset> oldAssetType) throws IOException {
+        log.info("Migrating asset, oldAssetType=[{}], src=[{}], dest=[{}]", oldAssetType, src, dest);
         
-        return Optional.empty();
+        var oldAsset = AssetIO.readAsset(srcAsset, oldAssetType);
+        var newAsset = AssetMapperFactory.map(oldAsset);
+        if (newAsset.isPresent()) {
+            var targetPath = srcAsset.getAbsolutePath().replace(src.getAbsolutePath(), dest.getAbsolutePath());
+            targetPath = ExtensionMapper.map(targetPath);
+            AssetIO.writeAsset(newAsset.get(), new File(targetPath));
+        }
     }
     
 }

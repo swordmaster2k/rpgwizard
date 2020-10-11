@@ -13,13 +13,16 @@ import org.rpgwizard.migrator.asset.version1.BaseVectorOffset;
 import org.rpgwizard.migrator.asset.version1.ActivationOffset;
 import java.util.Map;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.rpgwizard.migrator.asset.version1.OldAbstractAsset;
 
 /**
  *
  * @author Joshua Michael Daly
  */
 @Data
-public class OldNpc {
+@EqualsAndHashCode(callSuper = true)
+public class OldNpc extends OldAbstractAsset {
     
     private int frameRate;
     private BaseVector baseVector;
@@ -32,6 +35,5 @@ public class OldNpc {
     private String description;
     private Map<String, String> graphics;
     private boolean activationVectorDisabled;
-    private double version;
     
 }

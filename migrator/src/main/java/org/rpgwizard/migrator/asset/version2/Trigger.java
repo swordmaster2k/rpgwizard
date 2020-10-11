@@ -7,7 +7,6 @@
  */
 package org.rpgwizard.migrator.asset.version2;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;

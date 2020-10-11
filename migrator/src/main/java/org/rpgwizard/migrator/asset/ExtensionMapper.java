@@ -21,6 +21,14 @@ public class ExtensionMapper {
             return path.replace(".animation", ".animation");
         } else if (path.endsWith(".board")) {
             return path.replace(".board", ".map");
+        } else if (path.endsWith(".character")) {
+            return path.replace(".character", ".sprite");
+        } else if (path.endsWith(".enemy")) {
+            return path.replace(".enemy", ".sprite");
+        } else if (path.endsWith(".npc")) {
+            return path.replace(".npc", ".sprite");
+        } else if (path.endsWith(".tileset")) {
+            return path.replace(".tileset", ".tileset");
         }
         return path;
     }

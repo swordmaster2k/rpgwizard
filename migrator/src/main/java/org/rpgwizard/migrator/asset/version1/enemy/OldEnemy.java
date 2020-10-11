@@ -9,17 +9,20 @@ package org.rpgwizard.migrator.asset.version1.enemy;
 
 import java.util.Map;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.rpgwizard.migrator.asset.version1.ActivationOffset;
 import org.rpgwizard.migrator.asset.version1.ActivationVector;
 import org.rpgwizard.migrator.asset.version1.BaseVector;
 import org.rpgwizard.migrator.asset.version1.BaseVectorOffset;
+import org.rpgwizard.migrator.asset.version1.OldAbstractAsset;
 
 /**
  *
  * @author Joshua Michael Daly
  */
 @Data
-public class OldEnemy {
+@EqualsAndHashCode(callSuper = true)
+public class OldEnemy extends OldAbstractAsset {
     
     private int frameRate;
     private BaseVector baseVector;
@@ -32,7 +35,6 @@ public class OldEnemy {
     private String description;
     private Map<String, String> graphics;
     private boolean activationVectorDisabled;
-    private double version;
     
     // Specific to old enemy asset
     private int magic;

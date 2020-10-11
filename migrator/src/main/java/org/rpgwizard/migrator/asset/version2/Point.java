@@ -7,8 +7,6 @@
  */
 package org.rpgwizard.migrator.asset.version2;
 
-import java.util.ArrayList;
-import java.util.List;
 import lombok.Data;
 
 /**
@@ -16,16 +14,9 @@ import lombok.Data;
  * @author Joshua Michael Daly
  */
 @Data
-public class Collider {
+public class Point {
     
-    private boolean enabled;
     private int x;
     private int y;
-    private List<Point> points;
-    
-    public Collider() {
-        enabled = true;
-        points = new ArrayList<>();
-    }
     
 }

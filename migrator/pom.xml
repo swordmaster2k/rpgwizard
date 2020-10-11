@@ -8,13 +8,13 @@
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        
         <!-- Only works with these versions at the moment -->
         <mapstruct.version>1.4.0.Final</mapstruct.version>
         <lombok.version>1.18.12</lombok.version>
-        
+        <logback.version>1.2.3</logback.version>
         <jackson.version>2.11.1</jackson.version>
         <junit.version>5.5.2</junit.version>
+        <commons-io.version>2.8.0</commons-io.version>
     </properties>
     
     <dependencies>
@@ -33,6 +33,16 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io.version}</version>
         </dependency>
         
         <!-- Test -->

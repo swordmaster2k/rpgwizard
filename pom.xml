@@ -59,7 +59,7 @@
         <java.version>11</java.version>
         <maven.compiler.version>3.8.1</maven.compiler.version>
         <maven.jar.version>2.6</maven.jar.version>
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
         <json.version>20141113</json.version>
         <jsoup.version>1.10.2</jsoup.version>
         <commons-io.version>2.4</commons-io.version>

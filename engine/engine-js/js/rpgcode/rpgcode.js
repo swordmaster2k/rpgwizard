@@ -124,18 +124,29 @@ function RPGcode() {
     };
 }
 
-RPGcode.prototype._animateGeneric = function (generic, resetGraphics, callback) {
+RPGcode.prototype._animateGeneric = function (spriteId, generic, resetGraphics, callback) {
     var activeGraphics = generic.spriteGraphics.active;
     if (!activeGraphics.spriteSheet.frames) {
         // Never loaded it before.
         generic.prepareActiveAnimation();
     }
-
+    
+    var parent;
+    if (spriteId === "CHARACTER") {
+        parent = rpgwizard.craftyCharacter;
+    } else {
+        parent = rpgwizard.craftyBoard.board.sprites[spriteId];
+    }
+    
+    if (parent.animation) {
+        parent.animation.cancelDelay();
+    }
+    
     var soundEffect = activeGraphics.soundEffect;
     var frameRate = activeGraphics.frameRate;
     var delay = (1.0 / activeGraphics.frameRate) * 1000; // Get number of milliseconds.
     var repeat = activeGraphics.spriteSheet.frames.length - 1;
-    Crafty.e("Delay").delay(function () {
+    parent.animation = Crafty.e("Delay").delay(function () {
         generic.animate(frameRate);
     }, delay, repeat, function () {
         generic.spriteGraphics.active = resetGraphics;
@@ -273,7 +284,7 @@ RPGcode.prototype.animateSprite = function (spriteId, animationId, callback) {
     if (type) {
         var resetGraphics = type.spriteGraphics.active;
         rpgcode.setSpriteStance(spriteId, animationId);
-        rpgcode._animateGeneric(type, resetGraphics, callback);
+        rpgcode._animateGeneric(spriteId, type, resetGraphics, callback);
     } else {
         // Provide error feedback.
     }
@@ -303,7 +314,7 @@ RPGcode.prototype.animateCharacter = function (characterId, animationId, callbac
     var character = rpgwizard.craftyCharacter.character;
     var resetGraphics = character.spriteGraphics.active;
     rpgcode.setCharacterStance(characterId, animationId);
-    rpgcode._animateGeneric(character, resetGraphics, callback);
+    rpgcode._animateGeneric("CHARACTER", character, resetGraphics, callback);
 };
 
 /**
@@ -2053,6 +2064,45 @@ RPGcode.prototype.log = function (message) {
 };
 
 /**
+ * Pauses animation and movement for all requested sprites.
+ * 
+ * @example 
+ * // Pauses every sprite
+ * rpgcode.pauseSprites();
+ * 
+ * // Pauses just one sprite
+ * rpgcode.pauseSprites(["sprite-1"]);
+ * 
+ * // Pauses multiple sprites
+ * rpgcode.pauseSprites(["sprite-1", "sprite-2", "sprite-3"]);
+ * 
+ * @memberof Sprite
+ * @alias pauseSprites
+ * @param {string} spriteIds Sprites to pause.
+ */
+RPGcode.prototype.pauseSprites = function (spriteIds) {
+    if (spriteIds && Array.isArray(spriteIds)) {
+        // Pause just the requested sprites
+        for (let [key, sprite] of Object.entries(rpgwizard.craftyBoard.board.sprites)) {
+            if (spriteIds.includes(key)) {
+                sprite.pauseTweens();
+                if (sprite.animation) {
+                    sprite.animation.pauseDelays();
+                }
+            }
+        }
+    } else {
+        // Pause every sprite
+        for (let [key, sprite] of Object.entries(rpgwizard.craftyBoard.board.sprites)) {
+            sprite.pauseTweens();
+            if (sprite.animation) {
+                sprite.animation.pauseDelays();
+            }
+        }
+    }
+};
+
+/**
  * Plays the supplied sound file, up to five sound channels can be active at once.
  * 
  * @example
@@ -2636,6 +2686,45 @@ RPGcode.prototype.removeTile = function (tileX, tileY, layer) {
  */
 RPGcode.prototype.restart = function () {
     location.reload(); // Cheap way to implement game restart for the moment.
+};
+
+/**
+ * Resumes animation and movement for all requested sprites.
+ * 
+ * @example 
+ * // Resumes every sprite
+ * rpgcode.resumeSprites();
+ * 
+ * // Resumes just one sprite
+ * rpgcode.resumeSprites(["sprite-1"]);
+ * 
+ * // Resumes multiple sprites
+ * rpgcode.resumeSprites(["sprite-1", "sprite-2", "sprite-3"]);
+ * 
+ * @memberof Sprite
+ * @alias resumeSprites
+ * @param {string} spriteIds Sprites to resume.
+ */
+RPGcode.prototype.resumeSprites = function (spriteIds) {
+    if (spriteIds && Array.isArray(spriteIds)) {
+        // Resume just the requested sprites
+        for (let [key, sprite] of Object.entries(rpgwizard.craftyBoard.board.sprites)) {
+            if (spriteIds.includes(key)) {
+                sprite.resumeTweens()();
+                if (sprite.animation) {
+                    sprite.animation.resumeDelays();
+                }
+            }
+        }
+    } else {
+        // Resume every sprite
+        for (let [key, sprite] of Object.entries(rpgwizard.craftyBoard.board.sprites)) {
+            sprite.resumeTweens();
+            if (sprite.animation) {
+                sprite.animation.resumeDelays();
+            }
+        }
+    }
 };
 
 /**

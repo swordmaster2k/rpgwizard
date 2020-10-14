@@ -46,3 +46,7 @@ documentation/src/main/resources/autocomplete/input/*
 # Documentation
 documentation/rpgwizard-docs/docs
 documentation/rpgwizard-docs/src/*.js
+
+# Migrator
+migrator/input/
+migrator/output/

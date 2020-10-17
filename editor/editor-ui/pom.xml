@@ -9,7 +9,7 @@
     <parent>
         <groupId>org.rpgwizard</groupId>
         <artifactId>editor</artifactId>
-        <version>1.7.0</version>
+        <version>1.7.1</version>
     </parent>
     
     <artifactId>editor-ui</artifactId>

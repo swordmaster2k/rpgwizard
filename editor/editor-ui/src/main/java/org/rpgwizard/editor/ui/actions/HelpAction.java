@@ -27,7 +27,7 @@ public class HelpAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         LOGGER.info("Running on os.name=[{}], trying default browser.", System.getProperty("os.name"));
-        final String url = "https://github.com/swordmaster2k/rpgwizard/wiki";
+        final String url = "https://rpgwiz.github.io/site/assets/docs/v1/index.html";
         if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
             final Desktop desktop = Desktop.getDesktop();
             try {

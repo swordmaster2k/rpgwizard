@@ -2064,6 +2064,25 @@ RPGcode.prototype.log = function (message) {
 };
 
 /**
+ * Pauses animation and movement for the charcter.
+ * 
+ * @example 
+ * // Pauses the character
+ * rpgcode.pauseCharacter();
+ *
+ * @memberof Character
+ * @alias pauseCharacter
+ */
+RPGcode.prototype.pauseCharacter = function () {
+    if (rpgwizard.craftyCharacter) {
+        rpgwizard.craftyCharacter.pauseTweens();
+        if (rpgwizard.craftyCharacter.animation) {
+            rpgwizard.craftyCharacter.animation.pauseDelays();
+        }
+    }
+};
+
+/**
  * Pauses animation and movement for all requested sprites.
  * 
  * @example 
@@ -2686,6 +2705,25 @@ RPGcode.prototype.removeTile = function (tileX, tileY, layer) {
  */
 RPGcode.prototype.restart = function () {
     location.reload(); // Cheap way to implement game restart for the moment.
+};
+
+/**
+ * Resumes animation and movement for the charcter.
+ * 
+ * @example 
+ * // Resumes the character
+ * rpgcode.resumeCharacter();
+ * 
+ * @memberof Character
+ * @alias resumeCharacter
+ */
+RPGcode.prototype.resumeCharacter = function () {
+    if (rpgwizard.craftyCharacter) {
+        rpgwizard.craftyCharacter.resumeTweens();
+        if (rpgwizard.craftyCharacter.animation) {
+            rpgwizard.craftyCharacter.animation.resumeDelays();
+        }
+    }
 };
 
 /**

@@ -7,6 +7,7 @@
  */
 package org.rpgwizard.documentation;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.nodes.Element;
 
 /**
@@ -23,7 +24,7 @@ public class Keyword {
 
     public Keyword(String prefix, Element dt, Element dd) {
         Element h4 = dt.getElementsByTag("h4").first();
-        name = prefix + "." + h4.ownText() + h4.getElementsByClass("signature").first().text() + ";";
+        name = mapPrefix(prefix) + "." + h4.ownText() + h4.getElementsByClass("signature").first().text() + ";";
         type = "function";
 
         Element details = dd.getElementsByClass("details").first();
@@ -37,7 +38,7 @@ public class Keyword {
             paramType = returns.getElementsByClass("param-type").first();
         }
 
-        returnType = paramType != null ? paramType.ownText() : "undefined";
+        returnType = StringEscapeUtils.escapeXml11(paramType != null ? paramType.ownText() : "undefined");
         definedIn = dt.getElementsByTag("a").first().ownText();
 
         desc = "<![CDATA[" + dd.html().replace("h5", "h3") + "]]>";
@@ -50,6 +51,32 @@ public class Keyword {
                 + "        </keyword>\n",
                 name, type, returnType, definedIn, desc
         );
+    }
+    
+    // Map JSDoc Namespaces to RPGCode prefix
+    private static String mapPrefix(String prefix) {
+        switch (prefix.toLowerCase()) {
+            case "asset":
+            case "board":
+            case "canvas":
+            case "character":
+            case "draw2d":
+            case "file":
+            case "geometry":
+            case "global":
+            case "image":
+            case "item":
+            case "keyboard":
+            case "mouse":
+            case "program":
+            case "sound":
+            case "sprite":
+            case "text":
+            case "util":
+                return "rpgcode";
+            default:
+                return prefix;
+        }
     }
 
 }

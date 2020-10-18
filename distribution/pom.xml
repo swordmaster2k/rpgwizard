@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.rpgwizard</groupId>
         <artifactId>rpgwizard</artifactId>
-        <version>1.7.1</version>
+        <version>1.7.1.1</version>
     </parent>
 
     <groupId>org.rpgwizard</groupId>
@@ -16,7 +16,7 @@
     <name>RPGWizard Distribution</name>
 
     <properties>
-        <file.version>${project.version}.0</file.version>
+        <file.version>${project.version}</file.version>
         <product.version>${file.version}</product.version>
         <launch4j.version>1.7.21</launch4j.version>
     </properties>

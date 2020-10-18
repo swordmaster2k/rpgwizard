@@ -6,23 +6,29 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 /* global rpgwizard */
+
 function Project(filename) {
     if (rpgwizard.debugEnabled) {
         console.debug("Creating Project filename=[%s]", filename);
     }
     this.filename = filename;
 }
+
 Project.prototype.load = async function () {
     if (rpgwizard.debugEnabled) {
         console.debug("Loading Project filename=[%s]", this.filename);
     }
+
     let response = await fetch(this.filename);
     response = await response.json();
     for (var property in response) {
         this[property] = response[property];
     }
+
     if (rpgwizard.debugEnabled) {
         console.debug("Finished Project Project filename=[%s]", this.filename);
     }
+
     return this;
 };
+

@@ -6,12 +6,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 /* global rpgwizard, rpgcode, PATH_PROGRAM, PATH_ITEM, PATH_FONT, Crafty, Promise */
+
 // To enable JSDoc grouping of functions
 /** @namespace Draw2D       */
 /** @namespace Geometry     */
-/**
+/** 
  * For more information, see [Asset Management]{@tutorial 03-Asset-Management}
- * @namespace Asset
+ * @namespace Asset        
  */
 /** @namespace Global       */
 /** @namespace Character    */
@@ -27,20 +28,24 @@
 /** @namespace Mouse        */
 /** @namespace File         */
 /** @namespace Util         */
+
 var rpgcode = null; // Setup inside of the engine.
+
 /**
  * The engine RPGcode API.
- *
+ * 
  * @class
  * @constructor
- *
+ * 
  * @returns {RPGcode}
  */
 function RPGcode() {
     // The last entity to trigger a program.
     this.source = {};
+
     // An array of programs that will be run each frame.
     this.runTimePrograms = [];
+
     this.canvases = {
         "renderNowCanvas": {
             canvas: rpgwizard.screen.renderNowCanvas,
@@ -49,14 +54,16 @@ function RPGcode() {
             y: 0
         }
     };
+
     // Global variable storage for user programs.
     this.globals = {};
-    this.rgba = { r: 255, g: 255, b: 255, a: 1.0 };
+
+    this.rgba = {r: 255, g: 255, b: 255, a: 1.0};
     this.gradient = null;
     /**
      * Font that will be used for all drawing operations.
-     *
-     * @example
+     * 
+     * @example 
      * // Normal
      * rpgcode.font = "20px Lucida Console"
      * //Bold
@@ -65,38 +72,40 @@ function RPGcode() {
      * rpgcode.font = "italic 20px Lucida Console"
      * // Both.
      * rpgcode.font = "italic bold 20px Lucida Console"
-     *
+     * 
      * @type {String}
      */
     this.font = "14px Arial";
     /**
      * Alpha value that will be used for all drawing operations.
-     *
-     * @example
+     * 
+     * @example 
      * // 50% Alpha
      * rpgcode.globalAlpha = 0.5
      * // 100% Alpha
      * rpgcode.globalAlpha = 1.0
-     *
+     * 
      * @type {Number}
      */
     this.globalAlpha = 1.0;
     /**
      * Controls whether or not all drawing operations will be scaled in fullscreen
      * mode, default setting is true.
-     *
-     * @example
+     * 
+     * @example 
      * // Turn global scaling of on all drawing operations
      * rpgcode.scale = false;
-     *
+     * 
      * @type {Boolean}
      */
     this.scale = true;
     this.imageSmoothingEnabled = false;
+
     this.dialogPosition = {
         NORTH: "NORTH",
         SOUTH: "SOUTH"
     };
+
     this.dialogWindow = {
         visible: false,
         profile: null,
@@ -114,12 +123,14 @@ function RPGcode() {
         }
     };
 }
+
 RPGcode.prototype._animateGeneric = function (generic, resetGraphics, callback) {
     var activeGraphics = generic.spriteGraphics.active;
     if (!activeGraphics.spriteSheet.frames) {
         // Never loaded it before.
         generic.prepareActiveAnimation();
     }
+
     var soundEffect = activeGraphics.soundEffect;
     var frameRate = activeGraphics.frameRate;
     var delay = (1.0 / activeGraphics.frameRate) * 1000; // Get number of milliseconds.
@@ -133,21 +144,38 @@ RPGcode.prototype._animateGeneric = function (generic, resetGraphics, callback) 
             callback();
         }
     });
+
     if (soundEffect) {
         rpgcode.playSound(soundEffect, false);
     }
 };
+
 RPGcode.prototype._convertCraftyId = function (craftyId) {
     return rpgwizard.craftyBoard.board.sprites.findIndex(function (entity) {
         return entity.getId() === craftyId;
     });
 };
+
+RPGcode.prototype._getSpriteType = function (spriteId) {
+    var entity = rpgwizard.craftyBoard.board.sprites[spriteId];
+    if (entity && entity.sprite) {
+        if (entity.sprite.enemy) {
+            return entity.sprite.enemy;
+        } else if (entity.sprite.npc) {
+            return entity.sprite.npc;
+        } else if (entity.sprite.character) {
+            return entity.sprite.character;
+        }
+    }
+    return null;
+};
+
 /**
  * Adds the layer image to the requested layer, it will be rendered immediately
  * after being added to the board.
- *
+ * 
  * Note: Layers images added this way will be lost the moment the board is reloaded.
- *
+ * 
  * @example
  * var image = {
  *  "src": "battle-background.png", // pre-loaded asset image
@@ -155,9 +183,9 @@ RPGcode.prototype._convertCraftyId = function (craftyId) {
  *  "y": 100,                       // y location on board in pixels
  *  "id": "battle.background"       // unique for this layer image
  * }
- *
+ * 
  * rpgcode.addLayerImage(image, 1); // Adds the image to layer 1 on the current board
- *
+ * 
  * @memberof Image
  * @alias addLayerImage
  * @param {Object} image The layer image to add to the board.
@@ -168,13 +196,14 @@ RPGcode.prototype.addLayerImage = function (image, layer) {
         rpgwizard.craftyBoard.board.layers[layer].images.push(image);
     }
 };
+
 /**
- * Adds a program that will be called at runtime for each frame. You
+ * Adds a program that will be called at runtime for each frame. You 
  * should avoid doing any lengthy operations with these programs.
- *
+ * 
  * @example
  * rpgcode.addRunTimeProgram("UI/HUD.js");
- *
+ * 
  * @memberof Program
  * @alias addRunTimeProgram
  * @param {string} filename Filename of the JavaScript file stored in Programs folder.
@@ -183,11 +212,12 @@ RPGcode.prototype.addRunTimeProgram = function (filename) {
     this.runTimePrograms.push(filename);
     this.runTimePrograms = Array.from(new Set(this.runTimePrograms));
 };
+
 /**
  * Dynamically adds a sprite to the current board, when the sprite has been added
  * the callback function will be invoked, if any. Useful for spawning item
  * pickups or enemies.
- *
+ * 
  * @example
  * var sprite = {
  *  "name":"skeleton.enemy",
@@ -206,11 +236,11 @@ RPGcode.prototype.addRunTimeProgram = function (filename) {
  *     }
  *  ]
  * };
- *
+ * 
  * rpgcode.addSprite(sprite, function() {
  *  rpgcode.log("Sprite added to board.");
  * });
- *
+ * 
  * @memberof Sprite
  * @alias addSprite
  * @param {Object} sprite BoardSprite object to add.
@@ -220,17 +250,18 @@ RPGcode.prototype.addSprite = async function (sprite, callback) {
     rpgwizard.craftyBoard.board.sprites[sprite.id] = await rpgwizard.loadSprite(sprite);
     rpgwizard.loadCraftyAssets(callback);
 };
+
 /**
- * Animates the sprite using the requested animation. The animationId must be
+ * Animates the sprite using the requested animation. The animationId must be 
  * available for the sprite.
- *
+ * 
  * @example
  * var spriteId = "mysprite";
  * var animationId = "DANCE";
  * rpgcode.animateSprite(spriteId, animationId, function() {
  *  rpgcode.log("Finished dancing");
  * });
- *
+ * 
  * @memberof Sprite
  * @alias animateSprite
  * @param {string} spriteId The ID set for the sprite as it appears in the editor.
@@ -243,27 +274,27 @@ RPGcode.prototype.animateSprite = function (spriteId, animationId, callback) {
         var resetGraphics = type.spriteGraphics.active;
         rpgcode.setSpriteStance(spriteId, animationId);
         rpgcode._animateGeneric(type, resetGraphics, callback);
-    }
-    else {
+    } else {
         // Provide error feedback.
     }
 };
+
 /**
  * Animates the character using the requested animation. The animationId must be
  * available for the character.
- *
+ * 
  * @example
  * // Without a callback.
  * rpgcode.animateCharacter("Hero", "HURT_SOUTH");
- *
+ * 
  * // With a callback.
  * rpgcode.animateCharacter("Hero", "HURT_SOUTH", function(){
  *  rpgcode.log("Animated Hero!");
  * });
- *
+ * 
  * @memberof Character
  * @alias animateCharacter
- * @param {string} characterId The label associated with the character.
+ * @param {string} characterId The label associated with the character. 
  * @param {string} animationId The requested animation to character for the character.
  * @param {Callback} callback If defined, the function to invoke at the end of the animation.
  */
@@ -274,11 +305,12 @@ RPGcode.prototype.animateCharacter = function (characterId, animationId, callbac
     rpgcode.setCharacterStance(characterId, animationId);
     rpgcode._animateGeneric(character, resetGraphics, callback);
 };
+
 /**
  * Changes a characters visible graphics at runtime by swapping the values stored
  * in the left-hand slots with those on the right. These keys can be reversed
  * to restore the previous values.
- *
+ * 
  * @example
  * var changes = {
  *  "NORTH": "BOAT_NORTH",
@@ -291,7 +323,7 @@ RPGcode.prototype.animateCharacter = function (characterId, animationId, callbac
  *  "SOUTH_WEST": "BOAT_SOUTH_WEST"
  * };
  * rpgcode.changeCharacterGraphics("Hero", changes);
- *
+ * 
  * // To restore the defaults all we need to do is swap them around again.
  * var changes = {
  *  "BOAT_NORTH": "NORTH",
@@ -304,10 +336,10 @@ RPGcode.prototype.animateCharacter = function (characterId, animationId, callbac
  *  "BOAT_SOUTH_WEST": "SOUTH_WEST"
  * };
  * rpgcode.changeCharacterGraphics("Hero", changes);
- *
+ * 
  * @memberof Character
  * @alias changeCharacterGraphics
- * @param {string} characterId The label associated with the character.
+ * @param {string} characterId The label associated with the character. 
  * @param {Object} swaps An object containing the graphics to swap.
  */
 RPGcode.prototype.changeCharacterGraphics = function (characterId, swaps) {
@@ -379,21 +411,22 @@ RPGcode.prototype.changeCharacterGraphics = function (characterId, swaps) {
     });
     rpgcode.setCharacterStance(characterId, rpgcode.getCharacterDirection(characterId));
 };
+
 /**
  * Clears an entire canvas and triggers a redraw.
- *
+ * 
  * @example
  * // Create a simple canvas and write some text on it.
  * var canvas = "myCanvas";
  * rpgcode.createCanvas(640, 480, canvas);
  * rpgcode.drawText(270, 300, "Hello world!", canvas);
  * rpgcode.renderNow(canvas);
- *
+ * 
  * // Clears the canvas after 5 seconds have elapsed.
- * rpgcode.delay(5000, function(){
- *  rpgcode.clearCanvas(canvas);
+ * rpgcode.delay(5000, function(){ 
+ *  rpgcode.clearCanvas(canvas); 
  * });
- *
+ * 
  * @memberof Canvas
  * @alias clearCanvas
  * @param {string} [canvasId=renderNowCanvas] The canvas to clear.
@@ -402,6 +435,7 @@ RPGcode.prototype.clearCanvas = function (canvasId) {
     if (!canvasId) {
         canvasId = "renderNowCanvas";
     }
+
     var instance = rpgcode.canvases[canvasId];
     if (instance) {
         var canvas = instance.canvas;
@@ -410,18 +444,19 @@ RPGcode.prototype.clearCanvas = function (canvasId) {
         Crafty.trigger("Invalidate");
     }
 };
+
 /**
  * Clears and hides the dialog box.
- *
+ * 
  * @memberof Util
  * @alias clearDialog
  * @deprecated
- * @example
+ * @example 
  * // Display some dialog.
  * rpgcode.showDialog("Hello world!");
- *
+ * 
  * // Clears the dialog after 5 seconds have elapsed.
- * rpgcode.delay(5000, function(){
+ * rpgcode.delay(5000, function(){ 
  *  rpgcode.clearDialog();
  * });
  */
@@ -430,17 +465,18 @@ RPGcode.prototype.clearDialog = function () {
     rpgcode.dialogWindow.paddingY = 5;
     rpgcode.clearCanvas("renderNowCanvas");
 };
+
 /**
- * Creates a canvas with the specified width, height, and ID. This canvas will
+ * Creates a canvas with the specified width, height, and ID. This canvas will 
  * not be drawn until renderNow is called with its ID.
- *
+ * 
  * @example
  * // Create a simple canvas and write some text on it.
  * var canvas = "myCanvas";
  * rpgcode.createCanvas(640, 480, canvas);
  * rpgcode.drawText(270, 300, "Hello world!", canvas);
- * rpgcode.renderNow(canvas);
- *
+ * rpgcode.renderNow(canvas); 
+ * 
  * @memberof Canvas
  * @alias createCanvas
  * @param {number} width In pixels.
@@ -463,16 +499,17 @@ RPGcode.prototype.createCanvas = function (width, height, canvasId) {
         y: 0
     };
 };
+
 /**
- * Delays the execution of a callback for a specified number of milliseconds,
+ * Delays the execution of a callback for a specified number of milliseconds, 
  * after which the callback function is invoked.
- *
- * @example
+ * 
+ * @example 
  * // Logs to the console after 5 seconds
- * rpgcode.delay(5000, function(){
+ * rpgcode.delay(5000, function(){ 
  *  rpgcode.log("Hello world!");
  * });
- *
+ * 
  * @memberof Util
  * @alias delay
  * @param {number} ms Time to wait in milliseconds.
@@ -483,24 +520,24 @@ RPGcode.prototype.createCanvas = function (width, height, canvasId) {
 RPGcode.prototype.delay = function (ms, callback, loop) {
     if (loop) {
         return Crafty.e("Delay").delay(callback, ms, -1);
-    }
-    else {
+    } else {
         return Crafty.e("Delay").delay(callback, ms);
     }
 };
+
 /**
  * Destroys the canvas with the specified ID, removing it from the engine.
- *
+ * 
  * @example
  * // Create a simple canvas and write some text on it.
  * var canvas = "myCanvas";
  * rpgcode.createCanvas(640, 480, canvas);
  * rpgcode.drawText(270, 300, "Hello world!", canvas);
- * rpgcode.renderNow(canvas);
- *
+ * rpgcode.renderNow(canvas); 
+ * 
  * // Destroys the canvas that we just created.
  * rpgcode.destroyCanvas(canvas);
- *
+ * 
  * @memberof Canvas
  * @alias destroyCanvas
  * @param {string} canvasId The ID for the canvas to destroy.
@@ -508,12 +545,13 @@ RPGcode.prototype.delay = function (ms, callback, loop) {
 RPGcode.prototype.destroyCanvas = function (canvasId) {
     delete rpgcode.canvases[canvasId];
 };
+
 /**
  * Destroys a particular sprite instance and removes it from the engine.
- *
+ * 
  * @example
  * rpgcode.destroySprite("evil-eye-1");
- *
+ * 
  * @memberof Sprite
  * @alias destroySprite
  * @param {string} spriteId The ID set for the sprite as it appears in the editor.
@@ -526,17 +564,18 @@ RPGcode.prototype.destroySprite = function (spriteId) {
         Crafty.trigger("Invalidate");
     }
 };
+
 /**
  * Draws a circle onto the canvas.
- *
+ * 
  * @example
  * // Create a canvas and draw a red circle on it.
  * var canvas = "myCanvas";
  * rpgcode.createCanvas(640, 480, canvas);
  * rpgcode.setColor(255, 0, 0, 1.0);
  * rpgcode.drawCircle(100, 100, 25, canvas);
- * rpgcode.renderNow(canvas);
- *
+ * rpgcode.renderNow(canvas); 
+ * 
  * @memberof Draw2D
  * @alias drawCircle
  * @param {number} x The start x postion.
@@ -548,6 +587,7 @@ RPGcode.prototype.drawCircle = function (x, y, radius, canvasId) {
     if (!canvasId) {
         canvasId = "renderNowCanvas";
     }
+
     var instance = rpgcode.canvases[canvasId];
     if (instance) {
         // Scale parameters
@@ -556,6 +596,7 @@ RPGcode.prototype.drawCircle = function (x, y, radius, canvasId) {
             y *= rpgcode.getScale();
             radius *= rpgcode.getScale();
         }
+
         var context = instance.canvas.getContext("2d");
         context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
         var rgba = rpgcode.rgba;
@@ -566,16 +607,17 @@ RPGcode.prototype.drawCircle = function (x, y, radius, canvasId) {
         context.stroke();
     }
 };
+
 /**
  * Draws an image onto a canvas, if no canvas is specified the default canvas will be used.
- *
+ * 
  * @example
  * // Draw the image onto the default canvas.
  * rpgcode.drawImage("life.png", 0, 0, 32, 32, 0);
- *
+ * 
  * // Draw the image onto the canvas we specified.
  * rpgcode.drawImage("life.png", 0, 0, 32, 32, 0, "myCanvas");
- *
+ * 
  * @memberof Image
  * @alias drawImage
  * @param {string} fileName The relative path to the image.
@@ -605,30 +647,29 @@ RPGcode.prototype.drawImage = function (fileName, x, y, width, height, rotation,
                 var context = instance.canvas.getContext("2d");
                 context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
                 context.globalAlpha = rpgcode.globalAlpha;
-                x += width / 2;
-                y += height / 2; // rotate around center point
+                x += width / 2; y += height / 2; // rotate around center point
                 context.translate(x, y);
                 context.rotate(rotation);
                 context.drawImage(image, -width / 2, -height / 2, width, height);
                 context.rotate(-rotation);
                 context.translate(-x, -y);
-            }
-            catch (err) {
+            } catch (err) {
                 console.log("Failed to setImage err=[%s]", err);
             }
         }
     }
 };
+
 /**
  * Draws part of image an onto a canvas, if no canvas is specified the default canvas will be used.
- *
+ * 
  * @example
  * // Draw part of the image onto the default canvas.
  * rpgcode.drawImagePart("objects.png", 64, 0, 16, 16, 8, 8, 16, 16, 0);
- *
+ * 
  * // Draw part of the image onto the canvas we specified.
  * rpgcode.drawImagePart("objects.png", 64, 0, 16, 16, 8, 8, 16, 16, 0, "myCanvas");
- *
+ * 
  * @memberof Image
  * @alias drawImagePart
  * @param {string} fileName The relative path to the image.
@@ -662,31 +703,30 @@ RPGcode.prototype.drawImagePart = function (fileName, srcX, srcY, srcWidth, srcH
                 var context = instance.canvas.getContext("2d");
                 context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
                 context.globalAlpha = rpgcode.globalAlpha;
-                destX += destWidth / 2;
-                destY += destHeight / 2; // rotate around center point
+                destX += destWidth / 2; destY += destHeight / 2; // rotate around center point
                 context.translate(destX, destY);
                 context.rotate(rotation);
                 context.drawImage(image, srcX, srcY, srcWidth, srcHeight, -destWidth / 2, -destHeight / 2, destWidth, destHeight);
                 context.rotate(-rotation);
                 context.translate(-destX, -destY);
-            }
-            catch (err) {
+            } catch (err) {
                 console.log("Failed to setImage err=[%s]", err);
             }
         }
     }
 };
+
 /**
  * Draws a line onto the canvas.
- *
+ * 
  * @example
  * // Create a canvas and draw a red line on it.
  * var canvas = "myCanvas";
  * rpgcode.createCanvas(640, 480, canvas);
  * rpgcode.setColor(255, 0, 0, 1.0);
  * rpgcode.drawLine(25, 25, 50, 50, 1, canvas);
- * rpgcode.renderNow(canvas);
- *
+ * rpgcode.renderNow(canvas); 
+ * 
  * @memberof Draw2D
  * @alias drawLine
  * @param {number} x1 In pixels.
@@ -700,6 +740,7 @@ RPGcode.prototype.drawLine = function (x1, y1, x2, y2, lineWidth, canvasId) {
     if (!canvasId) {
         canvasId = "renderNowCanvas";
     }
+
     var instance = rpgcode.canvases[canvasId];
     if (instance) {
         // Scale parameters
@@ -710,6 +751,7 @@ RPGcode.prototype.drawLine = function (x1, y1, x2, y2, lineWidth, canvasId) {
             y2 *= rpgcode.getScale();
             lineWidth *= rpgcode.getScale();
         }
+
         var context = instance.canvas.getContext("2d");
         context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
         var rgba = rpgcode.rgba;
@@ -722,22 +764,23 @@ RPGcode.prototype.drawLine = function (x1, y1, x2, y2, lineWidth, canvasId) {
         context.stroke();
     }
 };
+
 /**
  * Draws the source canvas onto the target canvas. Useful for combining multiple
  * canvases together.
- *
+ * 
  * @example
  * // Canvas IDs.
  * var buffer = "buffer";
  * var lifeIcon = "life_icon";
- *
+ * 
  * // Assets to load up.
  * var assets = {
  *  "images": [
  *      "life.png"
  *  ]
  * };
- *
+ * 
  * // Load up the assets needed for this example.
  * rpgcode.loadAssets(assets, function () {
  *  // Smaller canvas.
@@ -748,16 +791,16 @@ RPGcode.prototype.drawLine = function (x1, y1, x2, y2, lineWidth, canvasId) {
  *
  *  // Set the image on the smaller canvas.
  *  rpgcode.setImage("life.png", 0, 0, 32, 32, lifeIcon);
- *
+ *  
  *  // Draw 3 hearts onto the buffer canvas.
  *  for (var i = 1; i < 4; i++) {
  *      rpgcode.drawOntoCanvas(lifeIcon, i * 32, 430, 32, 32, buffer);
  *  }
- *
+ *  
  *  // Show the larger canvas with the smaller hearts on it.
  *  rpgcode.renderNow(buffer);
  * });
- *
+ * 
  * @memberof Canvas
  * @alias drawOntoCanvas
  * @param {string} sourceId The ID of the source canvas.
@@ -770,6 +813,7 @@ RPGcode.prototype.drawLine = function (x1, y1, x2, y2, lineWidth, canvasId) {
 RPGcode.prototype.drawOntoCanvas = function (sourceId, x, y, width, height, targetId) {
     var source = rpgcode.canvases[sourceId];
     var target = rpgcode.canvases[targetId];
+
     if (source && target) {
         // Scale parameters
         if (rpgcode.scale) {
@@ -778,22 +822,24 @@ RPGcode.prototype.drawOntoCanvas = function (sourceId, x, y, width, height, targ
             width *= rpgcode.getScale();
             height *= rpgcode.getScale();
         }
+
         var sourceCanvas = source.canvas;
         var targetContext = target.canvas.getContext("2d");
         targetContext.drawImage(sourceCanvas, x, y, width, height);
     }
 };
+
 /**
  * Draws a rectangle onto the canvas.
- *
+ * 
  * @example
  * // Create a canvas and draw a red rectangle on it.
  * var canvas = "myCanvas";
  * rpgcode.createCanvas(640, 480, canvas);
  * rpgcode.setColor(255, 0, 0, 1.0);
  * rpgcode.drawRect(0, 0, 100, 100, 1, canvas);
- * rpgcode.renderNow(canvas);
- *
+ * rpgcode.renderNow(canvas); 
+ * 
  * @memberof Draw2D
  * @alias drawRect
  * @param {number} x The start x postion.
@@ -807,6 +853,7 @@ RPGcode.prototype.drawRect = function (x, y, width, height, lineWidth, canvasId)
     if (!canvasId) {
         canvasId = "renderNowCanvas";
     }
+
     var instance = rpgcode.canvases[canvasId];
     if (instance) {
         // Scale parameters
@@ -817,6 +864,7 @@ RPGcode.prototype.drawRect = function (x, y, width, height, lineWidth, canvasId)
             height *= rpgcode.getScale();
             lineWidth *= rpgcode.getScale();
         }
+
         var context = instance.canvas.getContext("2d");
         context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
         var rgba = rpgcode.rgba;
@@ -826,17 +874,18 @@ RPGcode.prototype.drawRect = function (x, y, width, height, lineWidth, canvasId)
         context.strokeRect(x, y, width, height);
     }
 };
+
 /**
  * Draws a rectangle with rounded edges onto the canvas.
- *
+ * 
  * @example
  * // Create a canvas and draw a red rectangle on it.
  * var canvas = "myCanvas";
  * rpgcode.createCanvas(640, 480, canvas);
  * rpgcode.setColor(255, 0, 0, 1.0);
  * rpgcode.drawRoundedRect(0, 0, 100, 100, 1, 5, canvas);
- * rpgcode.renderNow(canvas);
- *
+ * rpgcode.renderNow(canvas); 
+ * 
  * @memberof Draw2D
  * @alias drawRoundedRect
  * @param {number} x The start x postion.
@@ -851,6 +900,7 @@ RPGcode.prototype.drawRoundedRect = function (x, y, width, height, lineWidth, ra
     if (!canvasId) {
         canvasId = "renderNowCanvas";
     }
+
     var instance = rpgcode.canvases[canvasId];
     if (instance) {
         // Scale parameters
@@ -862,6 +912,7 @@ RPGcode.prototype.drawRoundedRect = function (x, y, width, height, lineWidth, ra
             lineWidth *= rpgcode.getScale();
             radius *= rpgcode.getScale();
         }
+
         var context = instance.canvas.getContext("2d");
         context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
         var rgba = rpgcode.rgba;
@@ -882,21 +933,22 @@ RPGcode.prototype.drawRoundedRect = function (x, y, width, height, lineWidth, ra
         context.stroke();
     }
 };
+
 /**
- * Draws the text on the canvas starting at the specified (x, y) position, if no
+ * Draws the text on the canvas starting at the specified (x, y) position, if no 
  * canvas is specified it defaults to the "renderNowCanvas".
- *
+ * 
  * @example
  * // Display the text on the default canvas.
  * rpgcode.drawText(270, 300, "Hello world!");
  * rpgcode.renderNow();
- *
+ * 
  * // Display the text on a custom canvas.
  * var canvas = "myCanvas";
  * rpgcode.createCanvas(640, 480, canvas);
  * rpgcode.drawText(270, 300, "Hello world!", canvas);
- * rpgcode.renderNow(canvas);
- *
+ * rpgcode.renderNow(canvas); 
+ * 
  * @memberof Text
  * @alias drawText
  * @param {number} x The start position x in pixels.
@@ -908,6 +960,7 @@ RPGcode.prototype.drawText = function (x, y, text, canvasId) {
     if (!canvasId) {
         canvasId = "renderNowCanvas";
     }
+
     var instance = rpgcode.canvases[canvasId];
     if (instance) {
         // Scale parameters
@@ -915,6 +968,7 @@ RPGcode.prototype.drawText = function (x, y, text, canvasId) {
             x *= rpgcode.getScale();
             y *= rpgcode.getScale();
         }
+
         var context = instance.canvas.getContext("2d");
         context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
         var rgba = rpgcode.rgba;
@@ -924,18 +978,19 @@ RPGcode.prototype.drawText = function (x, y, text, canvasId) {
         context.fillText(text, x, y);
     }
 };
+
 /**
  * Ends the current program and releases control back to the main game loop. If nextProgram is
  * specified the main loop will not resume. Execution will be immediately passed to the program
  * the user specified.
- *
+ * 
  * @example
  * // End the current program and release control back to the engine.
  * rpgcode.endProgram();
- *
+ * 
  * // End the current program, then run another.
  * rpgcode.endProgram("MyProgram.js");
- *
+ * 
  * @memberof Program
  * @alias endProgram
  * @param {string} nextProgram The relative path to the next program to execute.
@@ -943,22 +998,22 @@ RPGcode.prototype.drawText = function (x, y, text, canvasId) {
 RPGcode.prototype.endProgram = function (nextProgram) {
     if (nextProgram) {
         rpgwizard.endProgram(nextProgram);
-    }
-    else {
+    } else {
         rpgwizard.endProgram();
     }
 };
+
 /**
  * Fills a solid circle onto the canvas.
- *
+ * 
  * @example
  * // Create a canvas and draw a red circle on it.
  * var canvas = "myCanvas";
  * rpgcode.createCanvas(640, 480, canvas);
  * rpgcode.setColor(255, 0, 0, 1.0);
  * rpgcode.fillCircle(100, 100, 25, canvas);
- * rpgcode.renderNow(canvas);
- *
+ * rpgcode.renderNow(canvas); 
+ * 
  * @memberof Draw2D
  * @alias fillCircle
  * @param {number} x The start x postion.
@@ -970,6 +1025,7 @@ RPGcode.prototype.fillCircle = function (x, y, radius, canvasId) {
     if (!canvasId) {
         canvasId = "renderNowCanvas";
     }
+
     var instance = rpgcode.canvases[canvasId];
     if (instance) {
         // Scale parameters
@@ -978,6 +1034,7 @@ RPGcode.prototype.fillCircle = function (x, y, radius, canvasId) {
             y *= rpgcode.getScale();
             radius *= rpgcode.getScale();
         }
+
         var context = instance.canvas.getContext("2d");
         context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
         var rgba = rpgcode.rgba;
@@ -988,17 +1045,18 @@ RPGcode.prototype.fillCircle = function (x, y, radius, canvasId) {
         context.fill();
     }
 };
+
 /**
  * Fills a solid rectangle on the canvas.
- *
+ * 
  * @example
  * // Create a canvas and draw a red rectangle on it.
  * var canvas = "myCanvas";
  * rpgcode.createCanvas(640, 480, canvas);
  * rpgcode.setColor(255, 0, 0, 1.0);
  * rpgcode.fillRect(0, 0, 100, 100, canvas);
- * rpgcode.renderNow(canvas);
- *
+ * rpgcode.renderNow(canvas); 
+ * 
  * @memberof Draw2D
  * @alias fillRect
  * @param {number} x The start x postion.
@@ -1011,6 +1069,7 @@ RPGcode.prototype.fillRect = function (x, y, width, height, canvasId) {
     if (!canvasId) {
         canvasId = "renderNowCanvas";
     }
+
     var instance = rpgcode.canvases[canvasId];
     if (instance) {
         // Scale parameters
@@ -1020,6 +1079,7 @@ RPGcode.prototype.fillRect = function (x, y, width, height, canvasId) {
             width *= rpgcode.getScale();
             height *= rpgcode.getScale();
         }
+
         var context = instance.canvas.getContext("2d");
         context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
         var rgba = rpgcode.rgba;
@@ -1028,30 +1088,32 @@ RPGcode.prototype.fillRect = function (x, y, width, height, canvasId) {
         context.fillRect(x, y, width, height);
     }
 };
+
 /**
  * Fills a solid rounded rectangle on the canvas.
- *
+ * 
  * @example
  * // Create a canvas and draw a red rectangle on it.
  * var canvas = "myCanvas";
  * rpgcode.createCanvas(640, 480, canvas);
  * rpgcode.setColor(255, 0, 0, 1.0);
  * rpgcode.fillRoundedRect(0, 0, 100, 100, 5, canvas);
- * rpgcode.renderNow(canvas);
- *
+ * rpgcode.renderNow(canvas); 
+ * 
  * @memberof Draw2D
  * @alias fillRoundedRect
  * @param {number} x The start x postion.
  * @param {number} y The start y postion.
  * @param {number} width In pixels.
  * @param {number} height In pixels.
- * @param {number} radius In pixels.
+ * @param {number} radius In pixels. 
  * @param {string} [canvasId=renderNowCanvas] The ID of the canvas to draw on.
  */
 RPGcode.prototype.fillRoundedRect = function (x, y, width, height, radius, canvasId) {
     if (!canvasId) {
         canvasId = "renderNowCanvas";
     }
+
     var instance = rpgcode.canvases[canvasId];
     if (instance) {
         // Scale parameters
@@ -1062,6 +1124,7 @@ RPGcode.prototype.fillRoundedRect = function (x, y, width, height, radius, canva
             height *= rpgcode.getScale();
             radius *= rpgcode.getScale();
         }
+
         var context = instance.canvas.getContext("2d");
         context.imageSmoothingEnabled = rpgcode.imageSmoothingEnabled;
         var rgba = rpgcode.rgba;
@@ -1081,15 +1144,16 @@ RPGcode.prototype.fillRoundedRect = function (x, y, width, height, radius, canva
         context.fill();
     }
 };
+
 /**
- * Fires a ray from its origin in the direction and report entities that intersect
+ * Fires a ray from its origin in the direction and report entities that intersect 
  * with it, given the parameter constraints.
  *
- * This will return any characters, enemies, NPCs, and SOLID vectors caught in the path of the
+ * This will return any characters, enemies, NPCs, and SOLID vectors caught in the path of the 
  * raycast enclosing them inside an object.
- *
+ * 
  * If no layer is specified, the origin layer will be the player's current.
- *
+ * 
  * @example
  * var hits = rpgcode.fireRaycast({
  *     _x: location.x,
@@ -1111,22 +1175,21 @@ RPGcode.prototype.fillRoundedRect = function (x, y, width, height, radius, canva
  *      rpgcode.log(solid.y);
  *  });
  *  rpgcode.endProgram();
- *
+ * 
  * @memberof Geometry
  * @alias fireRaycast
  * @param {type} origin The point of origin from which the ray will be cast. The object must contain the properties _x, _y, and optionally _layer.
  * @param {type} direction The direction the ray will be cast. It must be normalized. The object must contain the properties x and y.
  * @param {type} maxDistance The maximum distance up to which intersections will be found. This is an optional parameter defaulting to Infinity. If it's Infinity find all intersections. If it's negative find only first intersection (if there is one). If it's positive find all intersections up to that distance.
- * @returns {Geometry.RaycastResult} An object containing all of the entities in the path of the raycast.
+ * @returns {Geometry.RaycastResult} An object containing all of the entities in the path of the raycast. 
  */
 RPGcode.prototype.fireRaycast = function (origin, direction, maxDistance) {
     var hits;
-    var results = { characters: [], enemies: [], npcs: [], solids: [] };
+    var results = {characters: [], enemies: [], npcs: [], solids: []};
     direction = new Crafty.math.Vector2D(direction.x, direction.y).normalize();
     if (maxDistance) {
         hits = Crafty.raycast(origin, direction, maxDistance, "Raycastable");
-    }
-    else {
+    } else {
         hits = Crafty.raycast(origin, direction, -1, "Raycastable");
     }
     var layerCheck = {
@@ -1140,34 +1203,33 @@ RPGcode.prototype.fireRaycast = function (origin, direction, maxDistance) {
                 if (hit.obj.sprite.npc.onSameLayer(layerCheck) && !hit.obj.sprite.npc.baseVectorDisabled) {
                     results.npcs.push(hit.obj.sprite);
                 }
-            }
-            else if (hit.obj.sprite.enemy) {
+            } else if (hit.obj.sprite.enemy) {
                 if (hit.obj.sprite.enemy.onSameLayer(layerCheck) && !hit.obj.sprite.enemy.baseVectorDisabled) {
                     results.enemies.push(hit.obj.sprite);
                 }
             }
-        }
-        else if (hit.obj.character) {
+        } else if (hit.obj.character) {
             if (hit.obj.character.onSameLayer(layerCheck) && !hit.obj.character.baseVectorDisabled) {
                 results.characters.push(hit.obj.character);
             }
-        }
-        else if (hit.obj.vectorType === "SOLID") {
+        } else if (hit.obj.vectorType === "SOLID") {
             if (hit.obj.layer === layerCheck.obj.layer) {
-                results.solids.push({ "distance": hit.distance, "x": hit.x, "y": hit.y });
+                results.solids.push({"distance": hit.distance, "x": hit.x, "y": hit.y});
             }
         }
     });
+
     return results;
 };
+
 /**
  * Gets the current board, useful for accessing certain properties e.g.
  * name, description etc.
- *
+ * 
  * @example
  * var board = rpgcode.getBoard();
  * rpgcode.log(board);
- *
+ * 
  * @memberof Board
  * @alias getBoard
  * @returns {Asset.BoardAsset} Current board object.
@@ -1175,13 +1237,14 @@ RPGcode.prototype.fireRaycast = function (origin, direction, maxDistance) {
 RPGcode.prototype.getBoard = function () {
     return rpgwizard.craftyBoard.board;
 };
+
 /**
  * Gets the current board's name and returns it.
- *
+ * 
  * @example
  * var boardName = rpgcode.getBoardName();
  * rpgcode.log(boardName);
- *
+ * 
  * @memberof Board
  * @alias getBoardName
  * @returns {string} Name of the current board.
@@ -1189,13 +1252,14 @@ RPGcode.prototype.getBoard = function () {
 RPGcode.prototype.getBoardName = function () {
     return rpgwizard.craftyBoard.board.name;
 };
+
 /**
  * Gets the angle between two points in radians.
- *
+ * 
  * @example
  * // Get the angle in radians between two points.
  * var angle = rpgcode.getAngleBetweenPoints(location.x, location.y, this.x, this.y);
- *
+ * 
  * @memberof Geometry
  * @alias getAngleBetweenPoints
  * @param {number} x1
@@ -1209,13 +1273,14 @@ RPGcode.prototype.getAngleBetweenPoints = function (x1, y1, x2, y2) {
     var dy = y1 - y2;
     return Math.atan2(dy, dx);
 };
+
 /**
  * Gets the active character object.
- *
+ * 
  * @example
  * var character = rpgcode.getCharacter();
  * rpgcode.log(character);
- *
+ * 
  * @memberof Character
  * @alias getCharacter
  * @returns {Asset.CharacterAsset} Active character.
@@ -1223,19 +1288,21 @@ RPGcode.prototype.getAngleBetweenPoints = function (x1, y1, x2, y2) {
 RPGcode.prototype.getCharacter = function () {
     return rpgwizard.craftyCharacter.character;
 };
+
 /**
  * Gets the character's current direction.
- *
+ * 
  * @example
  * var direction = rpgcode.getCharacterDirection();
  * rpgcode.log(direction);
- *
+ * 
  * @memberof Character
  * @alias getCharacterDirection
  * @returns {("NORTH"|"SOUTH"|"EAST"|"WEST"|"NORTH_EAST"|"SOUTH_EAST"|"NORTH_WEST"|"SOUTH_WEST")}
  */
 RPGcode.prototype.getCharacterDirection = function () {
     var direction = rpgwizard.craftyCharacter.character.direction;
+
     // User friendly rewrite of Crafty constants.
     switch (direction) {
         case "n":
@@ -1256,16 +1323,17 @@ RPGcode.prototype.getCharacterDirection = function () {
             return "SOUTH_WEST";
     }
 };
+
 /**
  * Gets the character's current location, optionally including the visual offset
  * that happens when boards are smaller than the viewport dimensions.
- *
+ * 
  * @example
  * var location = rpgcode.getCharacterLocation();
  * rpgcode.log(location.x);
  * rpgcode.log(location.y);
  * rpgcode.log(location.layer);
- *
+ * 
  * @memberof Character
  * @alias getCharacterLocation
  * @param {boolean} inTiles Should the location be in tiles, otherwise pixels.
@@ -1274,22 +1342,22 @@ RPGcode.prototype.getCharacterDirection = function () {
  */
 RPGcode.prototype.getCharacterLocation = function (inTiles, includeOffset) {
     var instance = rpgwizard.craftyCharacter;
+
     if (includeOffset) {
         var x = instance.x + rpgwizard.craftyBoard.xShift + Crafty.viewport._x;
         var y = instance.y + rpgwizard.craftyBoard.yShift + Crafty.viewport._y;
-    }
-    else {
+    } else {
         var x = instance.x;
         var y = instance.y;
     }
+
     if (inTiles) {
         return {
             x: x / rpgwizard.craftyBoard.board.tileWidth,
             y: y / rpgwizard.craftyBoard.board.tileHeight,
             layer: instance.character.layer
         };
-    }
-    else {
+    } else {
         return {
             x: x,
             y: y,
@@ -1297,13 +1365,14 @@ RPGcode.prototype.getCharacterLocation = function (inTiles, includeOffset) {
         };
     }
 };
+
 /**
  * Gets the straight line distance between two points in pixels.
- *
+ * 
  * @example
  * // Get the distance between two points in pixels.
  * var distance = rpgcode.getDistanceBetweenPoints(location.x, location.y, this.x, this.y);
- *
+ * 
  * @memberof Geometry
  * @alias getDistanceBetweenPoints
  * @param {number} x1
@@ -1317,13 +1386,14 @@ RPGcode.prototype.getDistanceBetweenPoints = function (x1, y1, x2, y2) {
     var b = y1 - y2;
     return Math.sqrt(a * a + b * b); // Simple Pythagora's theorem.
 };
+
 /**
  * Gets the value of global variable.
- *
+ * 
  * @example
  * var swordActive = rpgcode.getGlobal("swordActive");
  * rpgcode.log(swordActive);
- *
+ * 
  * @memberof Global
  * @alias getGlobal
  * @param {string} id The ID associated with the global variable.
@@ -1332,22 +1402,23 @@ RPGcode.prototype.getDistanceBetweenPoints = function (x1, y1, x2, y2) {
 RPGcode.prototype.getGlobal = function (id) {
     return rpgcode.globals[id];
 };
+
 /**
  * Gets the pixel ImageData at the (x, y) coordinate on the canvas.
- *
+ * 
  * @example
  * // Draw a rectangle on the default canvas and render it.
  * rpgcode.setColor(255, 0, 0, 1.0);
  * rpgcode.fillRect(0, 0, 100, 100);
  * rpgcode.renderNow();
- *
+ * 
  * // Get the red pixel at (50, 50) from the rectangle.
  * var imageData = rpgcode.getPixel(50, 50);
  * var rgba = imageData.data;
- *
+ * 
  * // Show the RGBA values of the pixel
  * alert("R, G, B, A (" + rgba[0] + ", " + rgba[1] + ", " + rgba[2] + ", " + rgba[3] + ")");
- *
+ * 
  * @memberof Draw2D
  * @alias getPixel
  * @param {number} x In pixels.
@@ -1359,11 +1430,13 @@ RPGcode.prototype.getPixel = function (x, y, canvasId) {
     if (!canvasId) {
         canvasId = "renderNowCanvas";
     }
+    
     // Scale parameters
     if (rpgcode.scale) {
         x *= rpgcode.getScale();
         y *= rpgcode.getScale();
     }
+
     var instance = rpgcode.canvases[canvasId];
     if (instance) {
         var context = instance.canvas.getContext("2d");
@@ -1372,16 +1445,17 @@ RPGcode.prototype.getPixel = function (x, y, canvasId) {
     }
     return null;
 };
+
 /**
  * Gets the image object if it has been loaded into the engine already, otherwise
  * it returns undefined.
- *
+ * 
  * @example
  * // Set the image on the smaller canvas.
  * var image = rpgcode.getImage("life.png");
  * rpgcode.log(image.width);
  * rpgcode.log(image.height);
- *
+ * 
  * @memberof Image
  * @alias getImage
  * @param {string} fileName The relative path to the image.
@@ -1390,14 +1464,15 @@ RPGcode.prototype.getPixel = function (x, y, canvasId) {
 RPGcode.prototype.getImage = function (fileName) {
     return Crafty.asset(Crafty.__paths.images + fileName);
 };
+
 /**
  * Gets the item object and returns it to the caller
- *
+ * 
  * @example
  * rpgcode.getItem("apple.item", function(item) {
  *  rpgcode.log(item);
  * });
- *
+ * 
  * @memberof Item
  * @alias getItem
  * @param {string} fileName The relative path to the item.
@@ -1411,69 +1486,72 @@ RPGcode.prototype.getItem = async function (fileName, callback) {
     }
     return undefined;
 };
+
 /**
  * Gets a random number between the min and max inclusive.
- *
- * @example
+ * 
+ * @example 
  * var result = rpgcode.getRandom(1, 10);
  * rpgcode.log(result); // Will be between 1 and 10.
- *
+ * 
  * @memberof Util
  * @alias getRandom
  * @param {number} min Minimum value for the random number.
  * @param {number} max Maximum value for the random number.
- * @returns {number} A random number in the from the requested range.
+ * @returns {number} A random number in the from the requested range. 
  */
 RPGcode.prototype.getRandom = function (min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 };
+
 /**
  * Gets the current running program as an Object.
- *
+ * 
  * @example
  * var program = rpgcode.getRunningProgram();
  * rpgcode.log(program);
- *
+ * 
  * @memberof Program
  * @alias getRunningProgram
  * @returns {Program.RunningProgram} An object with the attributes inProgram (boolean) and the filename of the current running program, if any.
  */
 RPGcode.prototype.getRunningProgram = function () {
-    return { inProgram: rpgwizard.inProgram, currentProgram: rpgwizard.currentProgram };
+    return {inProgram: rpgwizard.inProgram, currentProgram: rpgwizard.currentProgram};
 };
+
 /**
  * Gets the sprites's current location, optionally including the visual offset
  * that happens when boards are smaller than the viewport dimensions.
- *
+ * 
  * @example
  * var location = rpgcode.getSpriteLocation("rat");
  * rpgcode.log(location);
- *
+ * 
  * @memberof Sprite
  * @alias getSpriteLocation
- * @param {string} spriteId ID associated with the sprite.
+ * @param {string} spriteId ID associated with the sprite. 
  * @param {boolean} inTiles Should the location be in tiles, otherwise pixels.
  * @param {boolean} includeOffset Should the location include the visual board offset.
  * @returns {Geometry.Location} An object containing the sprite's location.
  */
 RPGcode.prototype.getSpriteLocation = function (spriteId, inTiles, includeOffset) {
     var entity = rpgwizard.craftyBoard.board.sprites[spriteId];
+
     if (includeOffset) {
         var x = entity.x + rpgwizard.craftyBoard.xShift + Crafty.viewport._x;
         var y = entity.y + rpgwizard.craftyBoard.yShift + Crafty.viewport._y;
-    }
-    else {
+    } else {
         var x = entity.x;
         var y = entity.y;
     }
+
     if (inTiles) {
         return {
             x: x / rpgwizard.craftyBoard.board.tileWidth,
             y: y / rpgwizard.craftyBoard.board.tileHeight,
             layer: entity.layer
         };
-    }
-    else {
+    } else {
         return {
             x: x,
             y: y,
@@ -1481,14 +1559,15 @@ RPGcode.prototype.getSpriteLocation = function (spriteId, inTiles, includeOffset
         };
     }
 };
+
 /**
  * Gets the current scale factor that the renderer has been drawn with, useful
  * for creating responsive and scalable UIs.
- *
+ * 
  * @example
  * var scale = rpgcode.getScale();
  * rpgcode.log(scale);
- *
+ * 
  * @memberof Util
  * @alias getScale
  * @returns {number}
@@ -1496,12 +1575,13 @@ RPGcode.prototype.getSpriteLocation = function (spriteId, inTiles, includeOffset
 RPGcode.prototype.getScale = function () {
     return Crafty.viewport._scale;
 };
+
 /**
  * Gets the sprite associated with the ID set in the Board editor.
- *
+ * 
  * @example
  * var sprite = rpgcode.getSprite("MySprite");
- *
+ * 
  * @memberof Sprite
  * @alias getSprite
  * @param {string} spriteId
@@ -1510,13 +1590,14 @@ RPGcode.prototype.getScale = function () {
 RPGcode.prototype.getSprite = function (spriteId) {
     return rpgwizard.craftyBoard.board.sprites[spriteId];
 };
+
 /**
  * Gets the sprites's current direction.
- *
+ * 
  * @example
  * var direction = rpgcode.getSpriteDirection();
  * rpgcode.log(direction);
- *
+ * 
  * @memberof Sprite
  * @alias getSpriteDirection
  * @param {string} spriteId ID associated with the sprite.
@@ -1526,10 +1607,10 @@ RPGcode.prototype.getSpriteDirection = function (spriteId) {
     var entity = rpgwizard.craftyBoard.board.sprites[spriteId];
     if (entity.sprite.npc) {
         var direction = entity.sprite.npc.direction;
-    }
-    else {
+    } else {
         var direction = entity.sprite.enemy.direction;
     }
+
     // User friendly rewrite of Crafty constants.
     switch (direction) {
         case "n":
@@ -1550,21 +1631,22 @@ RPGcode.prototype.getSpriteDirection = function (spriteId) {
             return "SOUTH_WEST";
     }
 };
+
 /**
- * Gets the data associated with a tile on the board as set in the Editor's
- * Tileset properties.
- *
- * Returns "null" if no data can be found.
- *
+ * Gets the data associated with a tile on the board as set in the Editor's 
+ * Tileset properties. 
+ * 
+ * Returns "null" if no data can be found. 
+ * 
  * Throws an exception if either the layer or tile is out-of-bounds.
- *
+ * 
  * @example
  * // Get the tile data at (10, 5, 1), and log the output
  * const tileData = rpgcode.getTileData(10, 5, 1);
  * rpgcode.log(tileData.type);
  * rpgcode.log(tileData.defence);
  * rpgcode.log(tileData.custom);
- *
+ * 
  * @memberof Board
  * @alias getTileData
  * @param {number} tileX
@@ -1573,31 +1655,35 @@ RPGcode.prototype.getSpriteDirection = function (spriteId) {
  * @returns {Board.TileData} An object containing the tile's properties.
  * @throws "layer out of range" or "tile out of range"
  */
-RPGcode.prototype.getTileData = function (tileX = 0, tileY = 0, layer = 0) {
+RPGcode.prototype.getTileData = function(tileX=0, tileY=0, layer=0) {
     const board = rpgwizard.craftyBoard.board;
     if (layer < 0 || board.layers.length < layer) {
         throw "layer out of range";
     }
+    
     const boardLayer = board.layers[layer];
     const tileIndex = (tileY * board.width) + tileX;
     if (tileIndex < 0 || boardLayer.tiles.length < tileIndex) {
         throw "tile out of range";
     }
+    
     const parts = boardLayer.tiles[tileIndex].split(":"); // tileSetIndex:tileIndex
     if (parts[0] === "-1" || parts[1] === "-1") {
         return null; // empty tile
     }
+    
     const tileSet = rpgwizard.tilesets[board.tileSets[parts[0]]];
     return tileSet.tileData && tileSet.tileData[parts[1]] ? tileSet.tileData[parts[1]] : null;
 };
+
 /**
- * Gets the viewport object, this is useful for calculating the position of
+ * Gets the viewport object, this is useful for calculating the position of 
  * characters or sprites on the board relative to the RPGcode screen.
- *
+ * 
  * The viewport contains the (x, y) values of the upper left corner of screen
  * relative to a board's (x, y). It also returns the width and height of the
  * viewport, and the current visual offset (x, y) of the board and viewport.
- *
+ * 
  * @example
  * var viewport = rpgcode.getViewport();
  * rpgcode.log(viewport.x);
@@ -1606,7 +1692,7 @@ RPGcode.prototype.getTileData = function (tileX = 0, tileY = 0, layer = 0) {
  * rpgcode.log(viewport.height);
  * rpgcode.log(viewport.offsetX);
  * rpgcode.log(viewport.offsetY);
- *
+ * 
  * @memberof Util
  * @alias getViewport
  * @returns {Util.Viewport}
@@ -1621,9 +1707,10 @@ RPGcode.prototype.getViewport = function () {
         offsetY: Math.floor(rpgwizard.craftyBoard.yShift + Crafty.viewport._y)
     };
 };
+
 /**
- * Gives an item to a character, placing in their inventory.
- *
+ * Gives an item to a character, placing in their inventory. 
+ * 
  * @memberof Item
  * @alias giveItem
  * @param {string} filename
@@ -1632,6 +1719,7 @@ RPGcode.prototype.getViewport = function () {
  */
 RPGcode.prototype.giveItem = async function (filename, characterId, callback) {
     var item = await new Item(PATH_ITEM + filename).load();
+
     rpgwizard.loadItem(item);
     rpgwizard.loadCraftyAssets(function (e) {
         if (!e) {
@@ -1643,20 +1731,21 @@ RPGcode.prototype.giveItem = async function (filename, characterId, callback) {
         }
     });
 };
+
 /**
  * Hits the character dealing the requested damage while playing the corresponding
  * animation. Optionally a callback can be invoked when the hit animation
  * has finished playing.
- *
+ * 
  * @example
  * // Without a callback.
  * rpgcode.hitCharacter("Hero", 1, "DEFEND");
- *
+ * 
  * // With a callback.
  * rpgcode.hitCharacter("Hero", 1, "DEFEND", function() {
  *  // The animation has ended, do something.
  * });
- *
+ * 
  * @memberof Util
  * @alias hitCharacter
  * @param {string} characterId ID of the character.
@@ -1678,20 +1767,21 @@ RPGcode.prototype.hitCharacter = function (characterId, damage, animationId, cal
         }
     });
 };
+
 /**
  * Hits the enemy dealing the requested damage while playing the corresponding
  * animation. Optionally a callback can be invoked when the hit animation
  * has finished playing.
- *
+ * 
  * @example
  * // Without a callback.
  * rpgcode.hitEnemy("rat-1", 1, "DEFEND");
- *
+ * 
  * // With a callback.
  * rpgcode.hitEnemy("rat-1", 1, "DEFEND", function() {
  *  // The animation has ended, do something.
  * });
- *
+ * 
  * @memberof Util
  * @alias hitEnemy
  * @param {string} spriteId ID of the BoardSprite that represents the enemy.
@@ -1710,20 +1800,20 @@ RPGcode.prototype.hitEnemy = function (spriteId, damage, animationId, callback) 
             }
             enemy.isHit = false;
         });
-    }
-    else {
+    } else {
         // Provide error feedback.
     }
 };
+
 /**
  * Returns a true or false value indicating whether an asset is currently loaded.
- *
+ * 
  * Note: For audio files use the identifier key, not the filename.
- *
+ * 
  * @example
  * rpgcode.log(rpgcode.isAssetLoaded("Hero/attack_east.png", "image")); // logs true
  * rpgcode.log(rpgcode.isAssetLoaded("intro", "audio")); // logs true
- *
+ * 
  * @memberof Asset
  * @alias isAssetLoaded
  * @param {string} asset Filename of the asset including any subfolders.
@@ -1740,14 +1830,15 @@ RPGcode.prototype.isAssetLoaded = function (asset, type) {
     }
     return false;
 };
+
 /**
  * Returns a true or false value indicating whether standard movement controls
  * are currently enabled in the engine.
- *
+ * 
  * @example
  * var controlEnabled = rpgcode.isControlEnabled();
  * rpgcode.log(controlEnabled);
- *
+ * 
  * @memberof Util
  * @alias isControlEnabled
  * @returns {boolean} true if the player has control, false otherwise
@@ -1755,12 +1846,13 @@ RPGcode.prototype.isAssetLoaded = function (asset, type) {
 RPGcode.prototype.isControlEnabled = function () {
     return rpgwizard.controlEnabled;
 };
+
 /**
  * Loads the requested assets into the engine, when all of the assets have been loaded
  * the onLoad callback is invoked.
- *
+ * 
  * For more information, see [Asset Management]{@tutorial 03-Asset-Management}
- *
+ * 
  * @example
  * // Game assets used in this program.
  * var assets = {
@@ -1774,12 +1866,12 @@ RPGcode.prototype.isControlEnabled = function () {
  *      "startscreen.png"
  *  ]
  * };
- *
+ * 
  * // Load up the assets we need
  * rpgcode.loadAssets(assets, function () {
  *  // Assets we need are ready, continue on...
  * });
- *
+ * 
  * @memberof Asset
  * @alias loadAssets
  * @param {Asset.Assets} assets Object of assets to load.
@@ -1797,13 +1889,12 @@ RPGcode.prototype.loadAssets = function (assets, onLoad) {
             }
             delete assets.fonts;
             rpgcode.loadAssets(assets, onLoad);
-        }).catch(function () {
+        }).catch(function() {
             console.error(`Failed to load assets.fonts=[${JSON.stringify(assets.fonts)}]!`);
             delete assets.fonts;
             rpgcode.loadAssets(assets, onLoad);
         });
-    }
-    else if (assets.programs) {
+    } else if (assets.programs) {
         assets.programs.forEach(function (program, i) {
             assets.programs[i] = program.replace(/\.[^/.]+$/, "");
         });
@@ -1811,28 +1902,28 @@ RPGcode.prototype.loadAssets = function (assets, onLoad) {
             delete assets.programs;
             Crafty.load(assets, onLoad);
         });
-    }
-    else {
+    } else {
         Crafty.load(assets, onLoad);
     }
 };
+
 /**
  * Loads the requested JSON file data from the requested path and returns the
  * JSON text as it appears in the file.
- *
+ * 
  * @example
  * rpgcode.loadJSON(
- *      "Boards/start.board",
+ *      "Boards/start.board", 
  *      function(response) {
  *          // Success callback.
  *          console.log(response);
- *      },
+ *      }, 
  *      function(response) {
  *          // Failure callback.
  *          console.log(response);
  *      }
  *  );
- *
+ * 
  * @memberof File
  * @alias loadJSON
  * @param {string} path File path to read from.
@@ -1844,24 +1935,24 @@ RPGcode.prototype.loadJSON = async function (path, successCallback, failureCallb
         var response = await fetch("http://localhost:8080/engine/load", {
             method: "POST",
             credentials: "include",
-            body: JSON.stringify({ "path": path }),
+            body: JSON.stringify({"path": path}),
             headers: {
                 "Content-Type": "application/json",
                 "Cache-Control": "no-cache"
             }
         });
         successCallback(await response.json());
-    }
-    catch (err) {
+    } catch (err) {
         failureCallback(err);
     }
 };
+
 /**
  * Log a message to the console.
- *
- * @example
+ * 
+ * @example 
  * rpgcode.log("Hello world!");
- *
+ * 
  * @memberof Util
  * @alias log
  * @param {string} message Message to log.
@@ -1869,9 +1960,10 @@ RPGcode.prototype.loadJSON = async function (path, successCallback, failureCallb
 RPGcode.prototype.log = function (message) {
     console.log(message);
 };
+
 /**
  * Plays the supplied sound file, up to five sound channels can be active at once.
- *
+ * 
  * @example
  * // Game assets used in this program.
  * var assets = {
@@ -1879,13 +1971,13 @@ RPGcode.prototype.log = function (message) {
  *      "intro": "intro.mp3"
  *  }
  * };
- *
+ * 
  * // Load up the assets we need
  * rpgcode.loadAssets(assets, function () {
  *  // The sound file is loaded play it in an infinite loop.
  *  rpgcode.playSound("intro", true);
- * });
- *
+ * }); 
+ * 
  * @memberof Sound
  * @alias playSound
  * @param {string} file Relative path to the sound file to play.
@@ -1897,16 +1989,17 @@ RPGcode.prototype.playSound = function (file, loop, volume = 1.0) {
     var count = loop ? -1 : 1;
     return Crafty.audio.play(file, count, volume);
 };
+
 /**
  * Moves the sprite by the requested number of pixels in the given direction.
- *
+ * 
  * @example
  * // Move the sprite with id "mysprite" in the north direction by 50 pixels.
  * var spriteId = "mysprite";
  * var direction = "NORTH";
  * var distancePx = 50;
  * rpgcode.moveSprite(spriteId, direction, distancePx);
- *
+ * 
  * @memberof Sprite
  * @alias moveSprite
  * @param {string} spriteId The ID set for the sprite as it appears in the editor.
@@ -1916,6 +2009,7 @@ RPGcode.prototype.playSound = function (file, loop, volume = 1.0) {
 RPGcode.prototype.moveSprite = function (spriteId, direction, distance) {
     // Quick conversion to Crafty constants: n, s, e, w.
     direction = direction[0].toLowerCase();
+
     switch (spriteId) {
         case "source":
             rpgcode.source.move(direction, distance);
@@ -1929,15 +2023,16 @@ RPGcode.prototype.moveSprite = function (spriteId, direction, distance) {
             }
     }
 };
+
 /**
  * Measures text as it would appear on a canvas using the current font, returning
  * the width and height of the text in pixels.
- *
+ * 
  * @example
  * var dimensions = rpgcode.measureText("Hello world");
  * rpgcode.log(dimensions.width);
  * rpgcode.log(dimensions.height);
- *
+ * 
  * @memberof Text
  * @alias measureText
  * @param {string} text
@@ -1950,17 +2045,18 @@ RPGcode.prototype.measureText = function (text) {
     context.globalAlpha = rpgcode.globalAlpha;
     context.font = rpgcode.font;
     return {
-        width: Math.round(context.measureText(text).width / rpgcode.getScale()),
+        width: Math.round(context.measureText(text).width / rpgcode.getScale()), 
         height: Math.round(parseInt(context.font) / rpgcode.getScale())
     };
 };
+
 /**
  * Moves the character by n pixels in the given direction.
- *
- * @example
+ * 
+ * @example 
  * // Move the character with the "Hero" ID north 50 pixels.
  * rpgcode.moveCharacter("Hero", "NORTH", 50);
- *
+ * 
  * @memberof Character
  * @alias moveCharacter
  * @param {string} characterId The id of the character to move. (unused)
@@ -1969,14 +2065,16 @@ RPGcode.prototype.measureText = function (text) {
  */
 RPGcode.prototype.moveCharacter = function (characterId, direction, distance) {
     // TODO: characterId is unused until multiple party members are supported.
+
     rpgwizard.craftyCharacter.move(direction, distance);
 };
+
 /**
  * Moves the character to the (x, y) position, the character will travel for the
  * supplied duration (milliseconds).
- *
+ * 
  * A short duration will result in the character arriving quicker and vice versa.
- *
+ * 
  * @example
  * // Move towards (100, 150) for 50 milliseconds, this will animate the character.
  * var characterId = "hero";
@@ -1986,7 +2084,7 @@ RPGcode.prototype.moveCharacter = function (characterId, direction, distance) {
  * rpgcode.moveCharacterTo(characterId, x, y, delay, function() {
  *  rpgcode.log("character has finished moving");
  * });
- *
+ * 
  * @memberof Character
  * @alias moveCharacterTo
  * @param {string} characterId The name set for the character as it appears in the editor.
@@ -1997,25 +2095,25 @@ RPGcode.prototype.moveCharacter = function (characterId, direction, distance) {
  */
 RPGcode.prototype.moveCharacterTo = function (characterId, x, y, duration, callback) {
     rpgwizard.craftyCharacter.trigger("TweenEnd", {});
-    rpgwizard.craftyCharacter.cancelTween({ x: true, y: true });
+    rpgwizard.craftyCharacter.cancelTween({x: true, y: true});
     rpgwizard.craftyCharacter.tweenEndCallbacks.push(callback);
+
     var location = rpgcode.getCharacterLocation();
     if (location.x !== x && location.y !== y) {
-        rpgwizard.craftyCharacter.tween({ x: x, y: y }, duration);
-    }
-    else if (location.x !== x) {
-        rpgwizard.craftyCharacter.tween({ x: x }, duration);
-    }
-    else {
-        rpgwizard.craftyCharacter.tween({ y: y }, duration);
+        rpgwizard.craftyCharacter.tween({x: x, y: y}, duration);
+    } else if (location.x !== x) {
+        rpgwizard.craftyCharacter.tween({x: x}, duration);
+    } else {
+        rpgwizard.craftyCharacter.tween({y: y}, duration);
     }
 };
+
 /**
  * Moves the sprite to the (x, y) position, the sprite will travel for the
  * supplied duration (milliseconds).
- *
+ * 
  * A short duration will result in the sprite arriving quicker and vice versa.
- *
+ * 
  * @example
  * // Move towards (100, 150) for 50 milliseconds, this will animate the sprite.
  * var spriteId = "mysprite";
@@ -2023,7 +2121,7 @@ RPGcode.prototype.moveCharacterTo = function (characterId, x, y, duration, callb
  * var y = 150;
  * var delay = 50;
  * rpgcode.moveSpriteTo(spriteId, x, y, delay);
- *
+ * 
  * @memberof Sprite
  * @alias moveSpriteTo
  * @param {string} spriteId The ID set for the sprite as it appears in the editor.
@@ -2036,15 +2134,16 @@ RPGcode.prototype.moveSpriteTo = function (spriteId, x, y, duration, callback) {
     if (rpgwizard.craftyBoard.board.sprites.hasOwnProperty(spriteId)) {
         var entity = rpgwizard.craftyBoard.board.sprites[spriteId];
         entity.trigger("TweenEnd", {});
-        entity.cancelTween({ x: true, y: true });
+        entity.cancelTween({x: true, y: true});
         entity.tweenEndCallbacks.push(callback);
-        entity.tween({ x: x, y: y }, duration);
+        entity.tween({x: x, y: y}, duration);
     }
 };
+
 /**
  * Resets activation checks for the requested character, useful for cases where
  * you want to continually check a program activation, e.g. block pushing.
- *
+ * 
  * @example
  * // An example of a pushable block that can only be moved when the character is
  * // facing EAST. This program would be attached to an NPCs EventProgram.
@@ -2057,7 +2156,7 @@ RPGcode.prototype.moveSpriteTo = function (spriteId, x, y, duration, callback) {
  *  var loc = rpgcode.getSpriteLocation("pushable-rock");
  *  loc.x += 16;
  *
- *  rpgcode.moveSpriteTo("pushable-rock", loc.x, loc.y, movementTime, function() {
+ *  rpgcode.moveSpriteTo("pushable-rock", loc.x, loc.y, movementTime, function() { 
  *      rpgcode.playSound("door");
  *      rpgcode.destroySprite("closed_door");
  *      rpgcode.getGlobal("dungeonState").room2.doorOpened=true;
@@ -2079,208 +2178,209 @@ RPGcode.prototype.resetActivationChecks = function (characterId) {
     // are supported.
     rpgwizard.craftyCharacter.activationVector.resetHitChecks();
 };
+
 /**
  * Registers a keyDown listener for a specific key, for a list of valid key values see:
  *    http://craftyjs.com/api/Crafty-keys.html
- *
+ *    
  * The callback function will continue to be invoked for every keyDown event until it
  * is unregistered.
- *
- * @example
+ * 
+ * @example 
  * rpgcode.registerKeyDown("ENTER", function(e) {
  *  rpgcode.log(e.key + " key is down!");
  * });
- *
+ * 
  * @memberof Keyboard
  * @alias registerKeyDown
  * @param {string} key The key to listen to.
  * @param {Callback} callback The callback function to invoke when the keyDown event fires.
- * @param {boolean} [globalScope=false] Is this for use outside of the program itself?
+ * @param {boolean} [globalScope=false] Is this for use outside of the program itself? 
  */
 RPGcode.prototype.registerKeyDown = function (key, callback, globalScope) {
     if (globalScope) {
         rpgwizard.keyDownHandlers[Crafty.keys[key]] = callback;
-    }
-    else {
+    } else {
         rpgwizard.keyboardHandler.downHandlers[Crafty.keys[key]] = callback;
     }
 };
+
 /**
  * Registers a keyUp listener for a specific key, for a list of valid key values see:
  *    http://craftyjs.com/api/Crafty-keys.html
- *
+ *    
  * The callback function will continue to be invoked for every keyUp event until it
  * is unregistered.
- *
+ * 
  * @example
  * rpgcode.registerKeyUp("ENTER", function() {
  *  rpgcode.log("Enter key is up!");
  * });
- *
+ * 
  * @memberof Keyboard
  * @alias registerKeyUp
  * @param {string} key The key to listen to.
  * @param {Callback} callback The callback function to invoke when the keyUp event fires.
- * @param {boolean} [globalScope=false] Is this for use outside of the program itself?
+ * @param {boolean} [globalScope=false] Is this for use outside of the program itself? 
  */
 RPGcode.prototype.registerKeyUp = function (key, callback, globalScope) {
     if (globalScope) {
         rpgwizard.keyUpHandlers[Crafty.keys[key]] = callback;
-    }
-    else {
+    } else {
         rpgwizard.keyboardHandler.upHandlers[Crafty.keys[key]] = callback;
     }
 };
+
 /**
- * Registers a mouse down event callback, when the mouse is pressed down the supplied
+ * Registers a mouse down event callback, when the mouse is pressed down the supplied 
  * callback function will be called and provided with the current mouse state.
- *
- * The callback function will continue to be invoked for every mouse move event
+ *    
+ * The callback function will continue to be invoked for every mouse move event 
  * until it is unregistered.
- *
+ * 
  * @example
  * rpgcode.registerMouseDown(function(e) {
  *  // Log the x and y coordinates of the mouse.
  *  rpgcode.log(e.realX);
  *  rpgcode.log(e.realY);
- *
+ *  
  *  // Log the mouse button that has been pressed down.
  *  rpgcode.log(e.mouseButton); // LEFT: 0, MIDDLE: 1, RIGHT: 2
  * });
- *
+ * 
  * @memberof Mouse
  * @alias registerMouseDown
  * @param {Callback} callback The callback function to invoke when the event fires.
- * @param {boolean} [globalScope=false] Is this for use outside of the program itself?
+ * @param {boolean} [globalScope=false] Is this for use outside of the program itself? 
  */
 RPGcode.prototype.registerMouseDown = function (callback, globalScope) {
     if (globalScope) {
         rpgwizard.mouseDownHandler = callback;
-    }
-    else {
+    } else {
         rpgwizard.mouseHandler.mouseDownHandler = callback;
     }
 };
+
 /**
- * Registers a mouse move event callback, when the mouse is moved the supplied
+ * Registers a mouse move event callback, when the mouse is moved the supplied 
  * callback function will be called and provided with the current mouse state.
- *
- * The callback function will continue to be invoked for every mouse move event
+ *    
+ * The callback function will continue to be invoked for every mouse move event 
  * until it is unregistered.
- *
+ * 
  * @example
  * rpgcode.registerMouseUp(function(e) {
  *  // Log the x and y coordinates of the mouse.
  *  rpgcode.log(e.realX);
  *  rpgcode.log(e.realY);
- *
+ *  
  *  // Log the mouse button that has been released.
  *  rpgcode.log(e.mouseButton); // LEFT: 0, MIDDLE: 1, RIGHT: 2
  * });
- *
+ * 
  * @memberof Mouse
  * @alias registerMouseUp
  * @param {Callback} callback The callback function to invoke when the event fires.
- * @param {boolean} [globalScope=false] Is this for use outside of the program itself?
+ * @param {boolean} [globalScope=false] Is this for use outside of the program itself? 
  */
 RPGcode.prototype.registerMouseUp = function (callback, globalScope) {
     if (globalScope) {
         rpgwizard.mouseUpHandler = callback;
-    }
-    else {
+    } else {
         rpgwizard.mouseHandler.mouseUpHandler = callback;
     }
 };
+
 /**
- * Registers a mouse move event callback, when the mouse is moved the supplied
+ * Registers a mouse move event callback, when the mouse is moved the supplied 
  * callback function will be called and provided with the current mouse state.
- *
- * The callback function will continue to be invoked for every mouse move event
+ *    
+ * The callback function will continue to be invoked for every mouse move event 
  * until it is unregistered.
- *
+ * 
  * @example
  * rpgcode.registerMouseClick(function(e) {
  *  // Log the x and y coordinates of the mouse.
  *  rpgcode.log(e.realX);
  *  rpgcode.log(e.realY);
- *
+ *  
  *  // Log the mouse button that has been clicked.
  *  rpgcode.log(e.mouseButton); // LEFT: 0, MIDDLE: 1, RIGHT: 2
  * });
- *
+ * 
  * @memberof Mouse
  * @alias registerMouseClick
  * @param {Callback} callback The callback function to invoke when the event fires.
- * @param {boolean} [globalScope=false] Is this for use outside of the program itself?
+ * @param {boolean} [globalScope=false] Is this for use outside of the program itself? 
  */
 RPGcode.prototype.registerMouseClick = function (callback, globalScope) {
     if (globalScope) {
         rpgwizard.mouseClickHandler = callback;
-    }
-    else {
+    } else {
         rpgwizard.mouseHandler.mouseClickHandler = callback;
     }
 };
+
 /**
- * Registers a mouse move event callback, when the mouse is moved the supplied
+ * Registers a mouse move event callback, when the mouse is moved the supplied 
  * callback function will be called and provided with the current mouse state.
- *
- * The callback function will continue to be invoked for every mouse move event
+ *    
+ * The callback function will continue to be invoked for every mouse move event 
  * until it is unregistered.
- *
+ * 
  * @example
  * rpgcode.registerMouseDoubleClick(function(e) {
  *  // Log the x and y coordinates of the mouse.
  *  rpgcode.log(e.realX);
  *  rpgcode.log(e.realY);
- *
+ *  
  *  // Log the mouse button that has been double clicked.
  *  rpgcode.log(e.mouseButton); // LEFT: 0, MIDDLE: 1, RIGHT: 2
  * });
- *
+ * 
  * @memberof Mouse
  * @alias registerMouseDoubleClick
  * @param {Callback} callback The callback function to invoke when the event fires.
- * @param {boolean} [globalScope=false] Is this for use outside of the program itself?
+ * @param {boolean} [globalScope=false] Is this for use outside of the program itself? 
  */
 RPGcode.prototype.registerMouseDoubleClick = function (callback, globalScope) {
     if (globalScope) {
         rpgwizard.mouseDoubleClickHandler = callback;
-    }
-    else {
+    } else {
         rpgwizard.mouseHandler.mouseDoubleClickHandler = callback;
     }
 };
+
 /**
- * Registers a mouse move event callback, when the mouse is moved the supplied
+ * Registers a mouse move event callback, when the mouse is moved the supplied 
  * callback function will be called and provided with the current mouse state.
- *
- * The callback function will continue to be invoked for every mouse move event
+ *    
+ * The callback function will continue to be invoked for every mouse move event 
  * until it is unregistered.
- *
+ * 
  * @example
  * rpgcode.registerMouseMove(function(e) {
  *  // Log the x and y coordinates of the mouse.
  *  rpgcode.log(e.realX);
  *  rpgcode.log(e.realY);
  * });
- *
+ * 
  * @memberof Mouse
  * @alias registerMouseMove
  * @param {Callback} callback The callback function to invoke when the event fires.
- * @param {boolean} [globalScope=false] Is this for use outside of the program itself?
+ * @param {boolean} [globalScope=false] Is this for use outside of the program itself? 
  */
 RPGcode.prototype.registerMouseMove = function (callback, globalScope) {
     if (globalScope) {
         rpgwizard.mouseMoveHandler = callback;
-    }
-    else {
+    } else {
         rpgwizard.mouseHandler.mouseMoveHandler = callback;
     }
 };
+
 /**
  * Removes assets from the engine and frees up the memory allocated to them.
- *
+ * 
  * @example
  * // Game assets to unload from the engine.
  * var assets = {
@@ -2294,10 +2394,10 @@ RPGcode.prototype.registerMouseMove = function (callback, globalScope) {
  *      "startscreen.png"
  *  ]
  * };
- *
+ * 
  * // Remove some assets after use
- * rpgcode.removeAssets(assets);
- *
+ * rpgcode.removeAssets(assets); 
+ * 
  * @memberof Asset
  * @alias removeAssets
  * @param {Asset.Assets} assets The object containing the assets identifiers.
@@ -2305,9 +2405,10 @@ RPGcode.prototype.registerMouseMove = function (callback, globalScope) {
 RPGcode.prototype.removeAssets = function (assets) {
     Crafty.removeAssets(assets);
 };
+
 /**
  * Removes a globally scoped variable from the engine.
- *
+ * 
  * @memberof Global
  * @alias removeGlobal
  * @param {string} id
@@ -2317,22 +2418,23 @@ RPGcode.prototype.removeGlobal = function (id) {
         delete rpgcode.globals[id];
     }
 };
+
 /**
  * Renders the specified canvas, if none then the "renderNowCanvas" is shown.
- *
+ * 
  * @example
  * // Draw a rectangle on the default canvas and render it.
  * rpgcode.setColor(255, 0, 0, 1.0);
  * rpgcode.fillRect(0, 0, 100, 100);
  * rpgcode.renderNow();
- *
+ * 
  * // Create a canvas and draw a red rectangle on it.
  * var canvas = "myCanvas";
  * rpgcode.createCanvas(640, 480, canvas);
  * rpgcode.setColor(255, 0, 0, 1.0);
  * rpgcode.fillRect(0, 0, 100, 100, canvas);
- * rpgcode.renderNow(canvas);
- *
+ * rpgcode.renderNow(canvas);  
+ * 
  * @memberof Canvas
  * @alias renderNow
  * @param {string} [canvasId=renderNowCanvas] The ID of the canvas to render.
@@ -2341,20 +2443,22 @@ RPGcode.prototype.renderNow = function (canvasId) {
     if (!canvasId) {
         canvasId = "renderNowCanvas";
     }
+
     var canvas = rpgcode.canvases[canvasId];
     if (canvas) {
         canvas.render = true;
         Crafty.trigger("Invalidate");
     }
 };
+
 /**
  * Replaces a tile at the supplied (x, y, layer) position.
- *
+ * 
  * @example
- * // Places the tile at (x: 11, y: 10, layer: 0) with the 81st tile
+ * // Places the tile at (x: 11, y: 10, layer: 0) with the 81st tile 
  * // from the tileset "tileset1.tileset".
  * rpgcode.replaceTile(11, 10, 0, "tileset1.tileset", 81);
- *
+ * 
  * @memberof Board
  * @alias replaceTile
  * @param {number} tileX The x position in tiles.
@@ -2367,13 +2471,14 @@ RPGcode.prototype.replaceTile = function (tileX, tileY, layer, tileSet, tileInde
     var tile = rpgwizard.tilesets[tileSet].getTile(tileIndex);
     rpgwizard.craftyBoard.board.replaceTile(tileX, tileY, layer, tile);
 };
+
 /**
  * Removes the layer image with the ID on the specified layer. If the image does
  * not exist on the layer then there is no effect.
- *
+ * 
  * @example
- * rpgcode.removeLayerImage("battle.background", 1); // Remove the image with ID "battle.background" on layer 1
- *
+ * rpgcode.removeLayerImage("battle.background", 1); // Remove the image with ID "battle.background" on layer 1 
+ * 
  * @memberof Image
  * @alias removeLayerImage
  * @param {string} id Unique ID of the layer image to remove.
@@ -2392,30 +2497,33 @@ RPGcode.prototype.removeLayerImage = function (id, layer) {
         }
     }
 };
+
 /**
  * Removes a run time program from the engine, if the program is currently
  * executing it will be allowed to finish first.
- *
+ * 
  * @example
  * rpgcode.removeRunTimeProgram("UI/HUD.js");
- *
+ * 
  * @memberof Program
  * @alias removeRunTimeProgram
  * @param {string} filename
  */
 RPGcode.prototype.removeRunTimeProgram = function (filename) {
     var index = this.runTimePrograms.indexOf(filename);
+
     if (index > -1) {
         this.runTimePrograms.splice(index, 1);
     }
 };
+
 /**
  * Removes the specified tile from the board.
- *
+ * 
  * @example
  * // Removes the tile at (x: 11, y: 9, layer: 1).
- * rpgcode.removeTile(11, 9, 1);
- *
+ * rpgcode.removeTile(11, 9, 1); 
+ * 
  * @memberof Board
  * @alias removeTile
  * @param {number} tileX The x position in tiles.
@@ -2425,28 +2533,30 @@ RPGcode.prototype.removeRunTimeProgram = function (filename) {
 RPGcode.prototype.removeTile = function (tileX, tileY, layer) {
     rpgwizard.craftyBoard.board.removeTile(tileX, tileY, layer);
 };
+
 /**
  * Restarts the game by refreshing the browser page.
- *
+ * 
  * @example
  * rpgcode.restart(); // Will refresh the browser page.
- *
+ * 
  * @memberof Util
  * @alias restart
  */
 RPGcode.prototype.restart = function () {
     location.reload(); // Cheap way to implement game restart for the moment.
 };
+
 /**
  * Runs the requested program, movement is disabled for the programs duration.
- *
+ * 
  * @example
  * // Run a program at the root of the "Programs"
  * rpgcode.runProgram("MyProgram.js");
- *
+ * 
  * // Run a program in a subpath of "Programs"
  * rpgcode.runProgram("examples/MyProgram.js");
- *
+ * 
  * @memberof Program
  * @alias runProgram
  * @param {string} filename Program to run, including any subpaths.
@@ -2454,9 +2564,10 @@ RPGcode.prototype.restart = function () {
 RPGcode.prototype.runProgram = function (filename) {
     rpgwizard.runProgram(PATH_PROGRAM + filename, rpgcode, null);
 };
+
 /**
  * Sets the position of a canvas relative to its parent.
- *
+ * 
  * @example
  * // Create a canvas and draw a red rectangle on it.
  * var canvas = "myCanvas";
@@ -2464,10 +2575,10 @@ RPGcode.prototype.runProgram = function (filename) {
  * rpgcode.setColor(255, 0, 0, 1.0);
  * rpgcode.fillRect(0, 0, 100, 100, canvas);
  * rpgcode.renderNow(canvas);
- *
+ * 
  * // Now move it to a new position relative to its parent.
  * rpgcode.setCanvasPosition(100, 100, canvas);
- *
+ * 
  * @memberof Canvas
  * @alias setCanvasPosition
  * @param {number} x In pixels.
@@ -2486,10 +2597,11 @@ RPGcode.prototype.setCanvasPosition = function (x, y, canvasId) {
         rpgcodeCanvas.y = y;
     }
 };
+
 /**
  * Saves the requested JSON data to the file specified, if the file does not
  * exist it is created. If the file does exist it is overwritten.
- *
+ * 
  * @example
  * rpgcode.saveJSON(
  *  {
@@ -2500,14 +2612,14 @@ RPGcode.prototype.setCanvasPosition = function (x, y, canvasId) {
  *     // Success callback.
  *     console.log(response);
  *     rpgcode.endProgram();
- *  },
+ *  }, 
  *  function(response) {
  *     // Failure callback.
  *     console.log(response);
  *     rpgcode.endProgram();
  *  }
  * );
- *
+ * 
  * @memberof File
  * @alias saveJSON
  * @param {Object} data JSON object containing path and data properties.
@@ -2526,21 +2638,21 @@ RPGcode.prototype.saveJSON = async function (data, successCallback, failureCallb
             }
         });
         successCallback("success");
-    }
-    catch (err) {
+    } catch (err) {
         failureCallback(err);
     }
 };
+
 /**
  * Sends the character to a board and places them at the given (x, y, [optional] layer) position in tiles.
- *
+ * 
  * @example
  * // Use current character layer.
- * rpgcode.sendToBoard("Room1.board", 11.5, 18);
- *
+ * rpgcode.sendToBoard("Room1.board", 11.5, 18); 
+ * 
  * // Explictly state which layer.
  * rpgcode.sendToBoard("Room1.board", 11.5, 18, 1);
- *
+ * 
  * @memberof Board
  * @alias sendToBoard
  * @param {string} boardName The board to send the character to.
@@ -2555,13 +2667,14 @@ RPGcode.prototype.sendToBoard = async function (boardName, tileX, tileY, layer) 
     }
     await rpgwizard.switchBoard(boardName, tileX, tileY, layer);
 };
+
 /**
  * Sets the RGBA color for all drawing operations to use. See [RGBA Colors]{@link https://www.w3schools.com/css/css_colors_rgb.asp}
- *
+ * 
  * @example
  * // Set the color to red.
  * rpgcode.setColor(255, 0, 0, 1.0);
- *
+ * 
  * @memberof Draw2D
  * @alias setColor
  * @param {number} r 0 to 255
@@ -2570,8 +2683,9 @@ RPGcode.prototype.sendToBoard = async function (boardName, tileX, tileY, layer) 
  * @param {number} a 0 to 1.0
  */
 RPGcode.prototype.setColor = function (r, g, b, a) {
-    rpgcode.rgba = { r: r, g: g, b: b, a: a };
+    rpgcode.rgba = {r: r, g: g, b: b, a: a};
 };
+
 /**
  * Sets the engine's font to the specified size, and font family. Custom fonts
  * need to be installed on the user's system to work. For a list of builtin fonts
@@ -2580,7 +2694,7 @@ RPGcode.prototype.setColor = function (r, g, b, a) {
  * @example
  * // Set the global font to 8px Lucida Console
  * rpgcode.setFont(8, "Lucida Console");
- *
+ *   
  * @memberof Text
  * @alias setFont
  * @param {number} size in pixels
@@ -2589,19 +2703,20 @@ RPGcode.prototype.setColor = function (r, g, b, a) {
 RPGcode.prototype.setFont = function (size, family) {
     rpgcode.font = Math.round(size * rpgcode.getScale()) + "px " + family;
 };
+
 /**
  * Sets a global value in the engine, if it doesn't exist it is created.
  *
  * @example
  * // Store a simple boolean.
  * rpgcode.setGlobal("swordactive", false);
- *
+ * 
  * // Store a string.
  * rpgcode.setGlobal("name", "Bob");
- *
+ * 
  * // Store an object.
- * rpgcode.setGlobal("shield", {def: 10, price: 100});
- *
+ * rpgcode.setGlobal("shield", {def: 10, price: 100}); 
+ *   
  * @memberof Global
  * @alias setGlobal
  * @param {string} id The ID to use for this global.
@@ -2610,16 +2725,17 @@ RPGcode.prototype.setFont = function (size, family) {
 RPGcode.prototype.setGlobal = function (id, value) {
     rpgcode.globals[id] = value;
 };
+
 /**
- * Sets the global drawing alpha for all subsequent canvas drawing operation.
+ * Sets the global drawing alpha for all subsequent canvas drawing operation. 
  * Useful for drawing transparent elements to a canvas.
- *
+ * 
  * For more details see: [Canvas Global Alpha]{@link https://www.w3schools.com/Tags/canvas_globalalpha.asp}
- *
+ *  
  * @example
  * // All drawing operations will now be semi-transparent
  * rpgcode.setGlobalAlpha(0.5);
- *
+ * 
  * @memberof Draw2D
  * @alias setGlobalAlpha
  * @param {number} alpha
@@ -2627,6 +2743,7 @@ RPGcode.prototype.setGlobal = function (id, value) {
 RPGcode.prototype.setGlobalAlpha = function (alpha) {
     rpgcode.globalAlpha = alpha;
 };
+
 /**
  * @memberof Image
  * @alias setImage
@@ -2635,6 +2752,7 @@ RPGcode.prototype.setGlobalAlpha = function (alpha) {
 RPGcode.prototype.setImage = function (fileName, x, y, width, height, canvasId) {
     rpgcode.drawImage(fileName, x, y, width, height, 0, canvasId);
 };
+
 /**
  * @memberof Image
  * @alias setImagePart
@@ -2643,19 +2761,20 @@ RPGcode.prototype.setImage = function (fileName, x, y, width, height, canvasId) 
 RPGcode.prototype.setImagePart = function (fileName, srcX, srcY, srcWidth, srcHeight, destX, destY, destWidth, destHeight, canvasId) {
     rpgcode.drawImagePart(fileName, srcX, srcY, srcWidth, srcHeight, destX, destY, destWidth, destHeight, 0, canvasId);
 };
+
 /**
  * Sets the pixel ImageData at the (x, y) coordinate on the canvas.
- *
+ * 
  * @example
  * // Draw a rectangle on the default canvas and render it.
  * rpgcode.setColor(255, 0, 0, 1.0);
  * rpgcode.fillRect(0, 0, 100, 100);
  * rpgcode.renderNow();
- *
+ * 
  * // Set a pixel to green at (50, 50) from the rectangle.
  * rpgcode.setColor(0, 255, 0, 1.0);
  * rpgcode.setPixel(50, 50);
- *
+ * 
  * @memberof Draw2D
  * @alias setPixel
  * @param {number} x In pixels.
@@ -2684,15 +2803,16 @@ RPGcode.prototype.setPixel = function (x, y, canvasId) {
         context.putImageData(imageData, x, y);
     }
 };
+
 /**
  * Sets the dialog box's profile and text area dimensions.
- *
+ * 
  * @example
  * // Set the profile picture to use and the background dialog image.
  * var profileDimensions = {width: 100, height: 100};
  * var dialogDimensions = {width: 640, height: 480};
  * rpgcode.setDialogDimensions(profileDimensions, dialogDimensions);
- *
+ * 
  * @memberof Util
  * @alias setDialogDimensions
  * @deprecated
@@ -2703,13 +2823,14 @@ RPGcode.prototype.setDialogDimensions = function (profileDimensions, dialogDimen
     rpgcode.dialogWindow.profileDimensions = profileDimensions;
     rpgcode.dialogWindow.dialogDimensions = dialogDimensions;
 };
+
 /**
  * Sets the dialog box's speaker profile image and the background image.
- *
+ * 
  * @example
  * // Set the profile picture to use and the background dialog image.
  * rpgcode.setDialogGraphics("sword_profile_1_small.png", "mwin_small.png");
- *
+ * 
  * @memberof Util
  * @alias setDialogGraphics
  * @deprecated
@@ -2720,22 +2841,23 @@ RPGcode.prototype.setDialogGraphics = function (profileImage, backgroundImage) {
     rpgcode.dialogWindow.profile = profileImage;
     rpgcode.dialogWindow.background = backgroundImage;
 };
+
 /**
  * Sets the padding from the top left corner of the dialog window for
  * the x and/or y values. This can be used to prevent text from overlapping
  * the start or end of the dialog window graphics. The default padding value
  * is 5px for both x and y.
- *
+ * 
  * @example
  * // Set just the x padding value.
  * rpgcode.setDialogPadding({x: 10});
- *
+ * 
  * // Set just the y padding value.
  * rpgcode.setDialogPadding({y: 10});
- *
+ * 
  * // Set both.
  * rpgcode.setDialogPadding({x: 10, y: 10});
- *
+ * 
  * @memberof Util
  * @alias setDialogPadding
  * @deprecated
@@ -2749,26 +2871,26 @@ RPGcode.prototype.setDialogPadding = function (padding) {
         if (padding.y) {
             rpgcode.dialogWindow.paddingY = padding.y;
         }
-    }
-    else {
+    } else {
         // Provide error feedback.
     }
 };
+
 /**
  * Sets the position of the dialog window for the next call to showDialog.
  * The dialog window can either appear at the top of the screen i.e. "NORTH", or
  * the bottom of the screen i.e. "SOUTH". The default position is "SOUTH".
- *
+ * 
  * @example
  * rpgcode.setDialogPosition(rpgcode.dialogPosition.NORTH);
  * rpgcode.showDialog("Hello north!");
- *
+ * 
  * rpgcode.delay(5000, function() {
  *  rpgcode.clearDialog();
  *  rpcode.setDialogPosition(rpgcode.dialogPosition.SOUTH);
  *  rpgcode.showDialog("Hello south!");
  * });
- *
+ * 
  * @memberof Util
  * @alias setDialogPosition
  * @deprecated
@@ -2778,18 +2900,17 @@ RPGcode.prototype.setDialogPosition = function (position) {
     if (position) {
         if (position === rpgcode.dialogPosition.NORTH || position === rpgcode.dialogPosition.SOUTH) {
             rpgcode.dialogWindow.position = position;
-        }
-        else {
+        } else {
             // Provide error feedback.    
         }
-    }
-    else {
+    } else {
         // Provide error feedback.
     }
 };
+
 /**
  * Sets the location of the sprite.
- *
+ * 
  * @example
  * // Place a sprite at the tile coordinates (10, 10, 1).
  * var spriteId = "mysprite";
@@ -2798,7 +2919,7 @@ RPGcode.prototype.setDialogPosition = function (position) {
  * var layer = 1;
  * var inTiles = true;
  * rpgcode.setSpriteLocation(spriteId, x, y, layer, inTiles);
- *
+ * 
  * @memberof Sprite
  * @alias setSpriteLocation
  * @param {string} spriteId The ID set for the sprite as it appears in the editor.
@@ -2812,6 +2933,7 @@ RPGcode.prototype.setSpriteLocation = function (spriteId, x, y, layer, inTiles) 
         x *= rpgwizard.craftyBoard.board.tileWidth;
         y *= rpgwizard.craftyBoard.board.tileHeight;
     }
+
     var entity = rpgwizard.craftyBoard.board.sprites[spriteId];
     if (entity) {
         entity.x = x;
@@ -2821,15 +2943,16 @@ RPGcode.prototype.setSpriteLocation = function (spriteId, x, y, layer, inTiles) 
         Crafty.trigger("Invalidate");
     }
 };
+
 /**
  * Sets the sprite's current stance, uses the first frame in the animation.
- *
+ * 
  * @example
  * // Set the sprite with ID "mysprite" to its idle stance.
  * var spriteId = "mysprite";
  * var stanceId = "IDLE";
  * rpgcode.setSpriteStance(spriteId, stanceId);
- *
+ * 
  * @memberof Sprite
  * @alias setSpriteStance
  * @param {string} spriteId The ID set for the sprite as it appears in the editor.
@@ -2843,9 +2966,10 @@ RPGcode.prototype.setSpriteStance = function (spriteId, stanceId) {
         }
     }
 };
+
 /**
  * Sets the character's location without triggering any animation.
- *
+ * 
  * @example
  * var characterId = "Hero";
  * var x = 10;
@@ -2853,7 +2977,7 @@ RPGcode.prototype.setSpriteStance = function (spriteId, stanceId) {
  * var layer = 1;
  * var isTiles = true;
  * rpgcode.setCharacterLocation(characterId, x, y, layer, isTiles);
- *
+ * 
  * @memberof Character
  * @alias setCharacterLocation
  * @param {string} characterId The identifier associated with character to move.
@@ -2867,25 +2991,27 @@ RPGcode.prototype.setCharacterLocation = function (characterId, x, y, layer, isT
         x *= rpgwizard.craftyBoard.board.tileWidth;
         y *= rpgwizard.craftyBoard.board.tileHeight;
     }
+
     // TODO: characterId will be unused until parties with multiple characters 
     // are supported.
     rpgwizard.craftyCharacter.x = x;
     rpgwizard.craftyCharacter.y = y;
     rpgwizard.craftyCharacter.character.layer = layer;
 };
+
 /**
  * Sets the character speed by proportionally applying the change, can be used
- * to increase or decrease the character speed by some factor
- * i.e. 3 times faster or 3 times slower. Positive change values are interpreted
+ * to increase or decrease the character speed by some factor 
+ * i.e. 3 times faster or 3 times slower. Positive change values are interpreted 
  * as an increase and negative values as a decrease.
- *
+ * 
  * @example
  * // Increase the character's movement speed by 3 times.
  * rpgcode.setCharacterSpeed("Hero", 3);
- *
+ * 
  * // Decrease the character's movement speed by 3 times, returning it to normal.
  * rpgcode.setCharacterSpeed("Hero", -3);
- *
+ * 
  * @memberof Character
  * @alias setCharacterSpeed
  * @param {string} characterId The index of the character on the board.
@@ -2896,25 +3022,24 @@ RPGcode.prototype.setCharacterSpeed = function (characterId, change) {
     // are supported.
     if (change === 0) {
         return;
-    }
-    else if (change > 0) {
+    } else if (change > 0) {
         rpgwizard.craftyCharacter._speed *= change;
         rpgwizard.craftyCharacter._diagonalSpeed *= change;
-    }
-    else if (change < 0) {
+    } else if (change < 0) {
         rpgwizard.craftyCharacter._speed /= -change;
         rpgwizard.craftyCharacter._diagonalSpeed /= -change;
     }
 };
+
 /**
  * Sets the character's current stance, uses the first frame in the animation.
- *
+ * 
  * @example
  * // Set the sprite with ID 5 to its idle stance.
  * var characterId = "Hero";
  * var stanceId = "IDLE";
- * rpgcode.setCharacterStance(characterId, stanceId);
- *
+ * rpgcode.setCharacterStance(characterId, stanceId); 
+ * 
  * @memberof Character
  * @alias setCharacterStance
  * @param {string} characterId The index of the character on the board.
@@ -2926,15 +3051,16 @@ RPGcode.prototype.setCharacterStance = function (characterId, stanceId) {
     rpgwizard.craftyCharacter.character.changeGraphics(stanceId);
     Crafty.trigger("Invalidate");
 };
+
 /**
- * Shows the dialog window and adds the dialog to it if it is already
+ * Shows the dialog window and adds the dialog to it if it is already 
  * visible the dialog is just appended to the current window.
- *
+ * 
  * Note the dialog window is drawn on the default "renderNowCanvas".
- *
+ * 
  * @example
  * rpgcode.showDialog("Pssst, Over here");
- *
+ * 
  * @memberof Util
  * @alias showDialog
  * @deprecated
@@ -2949,29 +3075,39 @@ RPGcode.prototype.showDialog = function (dialog) {
         x1 = Math.round((rpgcode.getViewport().width - fullWidth) / 2);
         x2 = x1 + dialogWindow.profileDimensions.width;
         y1 = y2 = 0;
-    }
-    else {
+    } else {
         // Draw from the bottom left.
         x1 = Math.round((rpgcode.getViewport().width - fullWidth) / 2);
         x2 = x1 + dialogWindow.profileDimensions.width;
         y1 = Crafty.viewport.height - dialogWindow.profileDimensions.width;
         y2 = y1;
     }
+
     if (!dialogWindow.visible) {
-        rpgcode.setImage(dialogWindow.profile, x1, y1, dialogWindow.profileDimensions.width, dialogWindow.profileDimensions.width);
-        rpgcode.setImage(dialogWindow.background, x2, y2, dialogWindow.dialogDimensions.width, dialogWindow.dialogDimensions.height);
+        rpgcode.setImage(
+                dialogWindow.profile, x1, y1,
+                dialogWindow.profileDimensions.width,
+                dialogWindow.profileDimensions.width
+                );
+        rpgcode.setImage(
+                dialogWindow.background, x2, y2,
+                dialogWindow.dialogDimensions.width,
+                dialogWindow.dialogDimensions.height
+                );
         dialogWindow.visible = true;
     }
+
     dialogWindow.paddingY += parseInt(rpgcode.font);
     rpgcode.drawText(dialogWindow.paddingX + x2, dialogWindow.paddingY + y1, dialog);
     rpgcode.renderNow();
 };
+
 /**
  * Stop playing a specific sound file, if no file is set stop all sounds.
- *
+ * 
  * @example
  * rpgcode.stopSound("intro");
- *
+ * 
  * @memberof Sound
  * @alias stopSound
  * @param {string} file The relative path of the sound file to stop.
@@ -2979,14 +3115,14 @@ RPGcode.prototype.showDialog = function (dialog) {
 RPGcode.prototype.stopSound = function (file) {
     if (file) {
         Crafty.audio.stop(file);
-    }
-    else {
+    } else {
         Crafty.audio.stop();
     }
 };
+
 /**
  * Takes the item from the character's inventory.
- *
+ * 
  * @memberof Item
  * @alias takeItem
  * @param {string} filename The filename of the item.
@@ -3001,12 +3137,13 @@ RPGcode.prototype.takeItem = function (filename, characterId) {
         }
     }
 };
+
 /**
  * Removes a previously registered KeyDown listener.
- *
+ * 
  * @example
  * rpgcode.unregisterKeyDown("ENTER");
- *
+ * 
  * @memberof Keyboard
  * @alias unregisterKeyDown
  * @param {string} key The key associated with the listener.
@@ -3015,17 +3152,17 @@ RPGcode.prototype.takeItem = function (filename, characterId) {
 RPGcode.prototype.unregisterKeyDown = function (key, globalScope) {
     if (globalScope) {
         delete rpgwizard.keyDownHandlers[Crafty.keys[key]];
-    }
-    else {
+    } else {
         delete rpgwizard.keyboardHandler.downHandlers[Crafty.keys[key]];
     }
 };
+
 /**
  * Removes a previously registered KeyUp listener.
- *
+ * 
  * @example
  * rpgcode.unregisterKeyUp("ENTER");
- *
+ * 
  * @memberof Keyboard
  * @alias unregisterKeyUp
  * @param {string} key The key associated with the listener.
@@ -3034,21 +3171,21 @@ RPGcode.prototype.unregisterKeyDown = function (key, globalScope) {
 RPGcode.prototype.unregisterKeyUp = function (key, globalScope) {
     if (globalScope) {
         delete rpgwizard.keyUpHandlers[Crafty.keys[key]];
-    }
-    else {
+    } else {
         delete rpgwizard.keyboardHandler.upHandlers[Crafty.keys[key]];
     }
 };
+
 /**
  * Removes a previously registered mouse down handler.
- *
+ * 
  * @example
  * // Removes the mouse down handler local to this program.
  * rpgcode.unregisterMouseDown();
- *
+ * 
  * // Removes the global engine mouse down handler.
  * rpgcode.unregisterMouseDown(true);
- *
+ * 
  * @memberof Mouse
  * @alias unregisterMouseDown
  * @param {boolean} [globalScope=false] Is this a global scope mouse handler.
@@ -3056,21 +3193,21 @@ RPGcode.prototype.unregisterKeyUp = function (key, globalScope) {
 RPGcode.prototype.unregisterMouseDown = function (globalScope) {
     if (globalScope) {
         rpgwizard.mouseDownHandler = null;
-    }
-    else {
+    } else {
         rpgwizard.mouseHandler.mouseDownHandler = null;
     }
 };
+
 /**
  * Removes a previously registered mouse up handler.
- *
+ * 
  * @example
  * // Removes the mouse up handler local to this program.
  * rpgcode.unregisterMouseUp();
- *
+ * 
  * // Removes the global engine mouse move handler.
  * rpgcode.unregisterMouseUp(true);
- *
+ * 
  * @memberof Mouse
  * @alias unregisterMouseUp
  * @param {boolean} [globalScope=false] Is this a global scope mouse handler.
@@ -3078,21 +3215,21 @@ RPGcode.prototype.unregisterMouseDown = function (globalScope) {
 RPGcode.prototype.unregisterMouseUp = function (globalScope) {
     if (globalScope) {
         rpgwizard.mouseUpHandler = null;
-    }
-    else {
+    } else {
         rpgwizard.mouseHandler.mouseUpHandler = null;
     }
 };
+
 /**
  * Removes a previously registered mouse click handler.
- *
+ * 
  * @example
  * // Removes the mouse click handler local to this program.
  * rpgcode.unregisterMouseClick();
- *
+ * 
  * // Removes the global engine mouse click handler.
  * rpgcode.unregisterMouseClick(true);
- *
+ * 
  * @memberof Mouse
  * @alias unregisterMouseClick
  * @param {boolean} [globalScope=false] Is this a global scope mouse handler.
@@ -3100,21 +3237,21 @@ RPGcode.prototype.unregisterMouseUp = function (globalScope) {
 RPGcode.prototype.unregisterMouseClick = function (globalScope) {
     if (globalScope) {
         rpgwizard.mouseClickHandler = null;
-    }
-    else {
+    } else {
         rpgwizard.mouseHandler.mouseClickHandler = null;
     }
 };
+
 /**
  * Removes a previously registered mouse double click handler.
- *
+ * 
  * @example
  * // Removes the mouse double click handler local to this program.
  * rpgcode.unregisterMouseDoubleClick();
- *
+ * 
  * // Removes the global engine mouse double click handler.
  * rpgcode.unregisterMouseDoubleClick(true);
- *
+ * 
  * @memberof Mouse
  * @alias unregisterMouseDoubleClick
  * @param {boolean} [globalScope=false] Is this a global scope mouse handler.
@@ -3122,21 +3259,21 @@ RPGcode.prototype.unregisterMouseClick = function (globalScope) {
 RPGcode.prototype.unregisterMouseDoubleClick = function (globalScope) {
     if (globalScope) {
         rpgwizard.mouseDoubleClickHandler = null;
-    }
-    else {
+    } else {
         rpgwizard.mouseHandler.mouseDoubleClickHandler = null;
     }
 };
+
 /**
  * Removes a previously registered mouse move handler.
- *
+ * 
  * @example
  * // Removes the mouse move handler local to this program.
  * rpgcode.unregisterMouseMove();
- *
+ * 
  * // Removes the global engine mouse move handler.
  * rpgcode.unregisterMouseMove(true);
- *
+ * 
  * @memberof Mouse
  * @alias unregisterMouseMove
  * @param {boolean} [globalScope=false] Is this a global scope mouse handler.
@@ -3144,15 +3281,15 @@ RPGcode.prototype.unregisterMouseDoubleClick = function (globalScope) {
 RPGcode.prototype.unregisterMouseMove = function (globalScope) {
     if (globalScope) {
         rpgwizard.mouseMoveHandler = null;
-    }
-    else {
+    } else {
         rpgwizard.mouseHandler.mouseMoveHandler = null;
     }
 };
+
 /**
  * Update the layer image with the ID on the specified layer. If the image does
  * not exist on the layer then there is no effect.
- *
+ * 
  * @example
  * var image = {
  *  "src": "battle-background.png", // pre-loaded asset image
@@ -3160,9 +3297,9 @@ RPGcode.prototype.unregisterMouseMove = function (globalScope) {
  *  "y": 100,                       // y location on board in pixels
  *  "id": "battle.background"       // unique for this layer image
  * };
- *
- * rpgcode.updateLayerImage(image, 1); // Update the image with ID "battle.background" on layer 1
- *
+ * 
+ * rpgcode.updateLayerImage(image, 1); // Update the image with ID "battle.background" on layer 1 
+ * 
  * @memberof Image
  * @alias updateLayerImage
  * @param {Object} image The layer image to update on the board.
@@ -3180,6 +3317,7 @@ RPGcode.prototype.updateLayerImage = function (image, layer) {
         }
     }
 };
+
 //
 // Typedefs for complex API objects
 //
@@ -3190,6 +3328,7 @@ RPGcode.prototype.updateLayerImage = function (image, layer) {
  * @property {number} y
  * @property {number} layer
  */
+
 /**
  * @memberof Geometry
  * @typedef {Object} RaycastResult
@@ -3198,6 +3337,7 @@ RPGcode.prototype.updateLayerImage = function (image, layer) {
  * @property {Asset.NpcAsset[]} npcs
  * @property {Geometry.Solid[]} solids
  */
+
 /**
  * @memberof Geometry
  * @typedef {Object} Solid
@@ -3205,18 +3345,21 @@ RPGcode.prototype.updateLayerImage = function (image, layer) {
  * @property {number} x
  * @property {number} y
  */
+
 /**
  * @memberof Geometry
  * @typedef {Object} Point
  * @property {number} x
  * @property {number} y
  */
+
 /**
  * @memberOf Text
  * @typedef {Object} TextDimensions
  * @property {number} width
  * @property {number} height
  */
+
 /**
  * @memberOf Util
  * @typedef {Object} Viewport
@@ -3227,12 +3370,14 @@ RPGcode.prototype.updateLayerImage = function (image, layer) {
  * @property {number} offsetX
  * @property {number} offsetY
  */
+
 /**
  * @memberof Util
  * @typedef {Object} Delay
  * @property {string} key
  * @property {string} filename
  */
+
 /**
  * @memberof Board
  * @typedef {Object} TileData
@@ -3240,18 +3385,21 @@ RPGcode.prototype.updateLayerImage = function (image, layer) {
  * @property {number} defence
  * @property {string} custom
  */
+
 /**
  * @memberof Program
  * @typedef {Object} RunningProgram
  * @property {boolean} inProgram
  * @property {string} currentProgram
  */
+
 /**
  * @memberof Image
  * @typedef {Object} ImageInfo
  * @property {number} width
  * @property {number} height
  */
+
 /**
  * @memberof Draw2D
  * @typedef {Object} ImageData
@@ -3259,6 +3407,7 @@ RPGcode.prototype.updateLayerImage = function (image, layer) {
  * @property {number} width In pixels.
  * @property {number} height In pixels.
  */
+
 /**
  * @memberof Asset
  * @typedef {Object} Assets
@@ -3266,12 +3415,14 @@ RPGcode.prototype.updateLayerImage = function (image, layer) {
  * @property {Asset.KeyValue[]} audio
  * @property {string[]} programs
  */
+
 /**
  * @memberof Asset
  * @typedef {Object} KeyValue
  * @property {string} key
  * @property {string} value
  */
+
 /**
  * @memberof Asset
  * @typedef {Object} Item
@@ -3282,7 +3433,7 @@ RPGcode.prototype.updateLayerImage = function (image, layer) {
  * @property {number} price
  * @property {Asset.ItemEffects} effects
  * @property {numbers} version
- *
+ * 
  * @example
  {
     "description": "",
@@ -3299,6 +3450,7 @@ RPGcode.prototype.updateLayerImage = function (image, layer) {
     "version": 1.7
 }
  */
+
 /**
  * @memberof Asset
  * @typedef {Object} ItemEffects
@@ -3307,12 +3459,14 @@ RPGcode.prototype.updateLayerImage = function (image, layer) {
  * @property {number} health
  * @property {number} magic
  */
+
 /**
  * @memberof Asset
  * @typedef {Object} Vector
  * @property {Asset.Event[]} events
  * @property {Geometry.Point[]} points
  */
+
 /**
  * @memberof Asset
  * @typedef {Object} Event
@@ -3320,6 +3474,7 @@ RPGcode.prototype.updateLayerImage = function (image, layer) {
  * @property {string} type
  * @property {string} key
  */
+
 /**
  * @memberof Asset
  * @typedef {Object} Sprite
@@ -3336,10 +3491,11 @@ RPGcode.prototype.updateLayerImage = function (image, layer) {
  * @property {Asset.KeyValue} graphics
  * @property {string} version
  */
+
 /**
  * @memberof Asset
  * @typedef {Asset.Sprite} NpcAsset
- *
+ * 
  * @example
 {
     "activationOffset": {
@@ -3388,6 +3544,7 @@ RPGcode.prototype.updateLayerImage = function (image, layer) {
     "version": 1.7
 }
  */
+
 /**
  * @memberof Asset
  * @typedef {Asset.Sprite} EnemyAsset
@@ -3398,7 +3555,7 @@ RPGcode.prototype.updateLayerImage = function (image, layer) {
  * @property {number} magic
  * @property {number} experienceReward
  * @property {number} goldReward
- *
+ * 
  * @example
 {
     "activationOffset": {
@@ -3453,6 +3610,7 @@ RPGcode.prototype.updateLayerImage = function (image, layer) {
     "version": 1.7
 }
  */
+
 /**
  * @memberof Asset
  * @typedef {Asset.Sprite} CharacterAsset
@@ -3469,7 +3627,7 @@ RPGcode.prototype.updateLayerImage = function (image, layer) {
  * @property {number} experience
  * @property {Asset.KeyValue} inventory
  * @property {Asset.KeyValue} equipment
- *
+ * 
  * @example
 {
     "maxLevel": 10,
@@ -3543,22 +3701,23 @@ RPGcode.prototype.updateLayerImage = function (image, layer) {
     "activationVectorDisabled": false
 }
  */
+
 /**
  * @memberof Asset
  * @typedef {Object} BoardAsset
  * @property {string} name
  * @property {string} backgroundMusic
  * @property {string} firstRunProgram
- * @property {number} width
- * @property {number} height
- * @property {number} tileWidth
+ * @property {number} width 
+ * @property {number} height 
+ * @property {number} tileWidth 
  * @property {number} tileHeight
- * @property {string[]} tileSets
+ * @property {string[]} tileSets 
  * @property {Asset.BoardLayer[]} layers
  * @property {Asset.BoardSprite[]} sprites
  * @property {Geometry.Location} startingPosition
- *
- * @example
+ * 
+ * @example 
  {
     "backgroundMusic": "Tower.ogg",
     "firstRunProgram": "entry.js",
@@ -3615,16 +3774,18 @@ RPGcode.prototype.updateLayerImage = function (image, layer) {
     "tileWidth": 32,
     "version": 1.7,
     "width": 15
-}
+} 
  */
+
 /**
  * @memberof Asset
  * @typedef {Object} BoardLayer
  * @property {string} name
- * @property {string[]} tiles
+ * @property {string[]} tiles 
  * @property {Asset.LayerImage[]} images
  * @property {Asset.LayerVector[]} vectors
  */
+
 /**
  * @memberof Asset
  * @typedef {Object} BoardSprite
@@ -3634,6 +3795,7 @@ RPGcode.prototype.updateLayerImage = function (image, layer) {
  * @property {Asset.Event[]} events
  * @property {Geometry.Location} startingPosition
  */
+
 /**
  * @memberof Asset
  * @typedef {Object} LayerImage
@@ -3642,6 +3804,7 @@ RPGcode.prototype.updateLayerImage = function (image, layer) {
  * @property {number} x
  * @property {number} y
  */
+
 /**
  * @memberof Asset
  * @typedef {Object} LayerVector
@@ -3651,3 +3814,4 @@ RPGcode.prototype.updateLayerImage = function (image, layer) {
  * @property {string} points
  * @property {Asset.Event[]} events
  */
+

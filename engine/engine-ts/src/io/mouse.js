@@ -6,6 +6,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 /* global rpgwizard */
+
 function Mouse() {
     this.mouseDownHandler = null;
     this.mouseUpHandler = null;
@@ -13,3 +14,4 @@ function Mouse() {
     this.mouseDoubleClickHandler = null;
     this.mouseMoveHandler = null;
 }
+

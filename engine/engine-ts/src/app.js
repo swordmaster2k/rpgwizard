@@ -6,12 +6,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 /* global rpgwizard */
+
 // Default error handler.
 window.onerror = function (msg, url, line) {
     console.error("Uncaught error msg=[%s], url=[%s], line=[%s]", msg, url, line);
     alert("Error message: " + msg + "\n\n" + "URL: " + url + "\n\n" + "Line Number: " + line + "\n\n");
     return true;
 };
+
 // https://github.com/uxitten/polyfill/blob/master/string.polyfill.js
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/padEnd
 if (!String.prototype.padEnd) {
@@ -20,8 +22,7 @@ if (!String.prototype.padEnd) {
         padString = String((typeof padString !== 'undefined' ? padString : ' '));
         if (this.length > targetLength) {
             return String(this);
-        }
-        else {
+        } else {
             targetLength = targetLength - this.length;
             if (targetLength > padString.length) {
                 padString += padString.repeat(targetLength / padString.length); //append to original to ensure we are longer than needed
@@ -38,8 +39,7 @@ if (!String.prototype.padStart) {
         padString = String((typeof padString !== 'undefined' ? padString : ' '));
         if (this.length > targetLength) {
             return String(this);
-        }
-        else {
+        } else {
             targetLength = targetLength - this.length;
             if (targetLength > padString.length) {
                 padString += padString.repeat(targetLength / padString.length); //append to original to ensure we are longer than needed
@@ -48,12 +48,13 @@ if (!String.prototype.padStart) {
         }
     };
 }
+
 // Don't start the game until the user has interacted with the window
 let play = document.getElementById("play");
-let playGame = async function () {
+let playGame = async function() {
     console.info("Starting the game...");
     play.style.visibility = "hidden";
     await rpgwizard.setup("game/default.game");
 };
-play.addEventListener("click", playGame, { once: true });
+play.addEventListener("click", playGame, {once: true});
 console.info("Awaiting user input...");

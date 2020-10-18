@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "target": "ES2019",
+        "module": "commonjs",
+        "sourceMap": false,
+        "allowJs": true,
+        "outDir": "js",
+        "skipLibCheck": true // Stop tsc complaining about global node_modules
+    },
+    "include": ["src/**/*"],
+    "exclude": [ "node_modules", "functions" ]
+}

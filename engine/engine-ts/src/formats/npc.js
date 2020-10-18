@@ -11,7 +11,7 @@ NPC.prototype = Object.create(Sprite.prototype);
 NPC.prototype.constructor = NPC;
 
 function NPC(filename) {
-    if (rpgwizard.debugEnabled) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Creating NPC filename=[%s]", filename);
     }
     this.filename = filename;
@@ -19,14 +19,14 @@ function NPC(filename) {
 }
 
 NPC.prototype.load = async function (json) {
-    if (rpgwizard.debugEnabled) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Loading NPC filename=[%s]", this.filename);
     }
 
     if (!json) {
         let response = await fetch(this.filename);
         json = await response.json();
-        rpgwizard.npcs[this.filename] = JSON.stringify(json);
+        Core.getInstance().npcs[this.filename] = JSON.stringify(json);
     }
     
     for (var property in json) {
@@ -35,7 +35,7 @@ NPC.prototype.load = async function (json) {
     this.calculateCollisionPoints();
     this.calculateActivationPoints();
 
-    if (rpgwizard.debugEnabled) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Finished loading NPC filename=[%s]", this.filename);
     }
 
@@ -65,7 +65,7 @@ NPC.prototype.hitOffActivation = function (hitData, entity) {
 };
 
 NPC.prototype.checkCollisions = function (collision, entity) {
-    if (rpgwizard.debugEnabled) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Checking collisions for NPC name=[%s], collision.obj=[%s], entity=[%s]", this.name, collision.obj, entity);
     }
     

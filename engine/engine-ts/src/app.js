@@ -23,7 +23,7 @@ let playGame = async function() {
     play.style.visibility = "hidden";
 
     // REFACTOR: Use module instead...
-    await rpgwizard.setup("game/default.game");
+    await Core.getInstance().setup("game/default.game");
 };
 play.addEventListener("click", playGame, {once: true});
 console.info("Awaiting user input...");

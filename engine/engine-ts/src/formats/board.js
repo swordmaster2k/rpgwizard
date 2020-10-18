@@ -7,8 +7,10 @@
  */
 /* global rpgwizard */
 
-function Board(filename) {
-    if (rpgwizard.debugEnabled) {
+import { Core } from "../core.js";
+
+export function Board(filename) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Creating Board filename=[%s]", filename);
     }
     this.filename = filename;
@@ -16,21 +18,21 @@ function Board(filename) {
 }
 
 Board.prototype.load = async function (json) {
-    if (rpgwizard.debugEnabled) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Loading Board filename=[%s]", this.filename);
     }
     
     if (!json) {
         let response = await fetch(this.filename);
         json = await response.json();
-        rpgwizard.boards[this.filename] = JSON.stringify(json);
+        Core.getInstance().boards[this.filename] = JSON.stringify(json);
     }
     
     for (var property in json) {
         this[property] = json[property];
     }
     
-    if (rpgwizard.debugEnabled) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Finished loading Board filename=[%s]", this.filename);
     }
     
@@ -38,13 +40,13 @@ Board.prototype.load = async function (json) {
 };
 
 Board.prototype.setReady = function () {
-    if (rpgwizard.debugEnabled) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Setting ready Board name=[%s]", this.name);
     }
 };
 
 Board.prototype.addLayer = function (layer) {
-    if (rpgwizard.debugEnabled) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Adding layer dynamically to Board name=[%s]", this.name);
     }
     this._addCachedLayer(layer);
@@ -52,7 +54,7 @@ Board.prototype.addLayer = function (layer) {
 };
 
 Board.prototype.removeLayer = function (index) {
-    if (rpgwizard.debugEnabled) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Removing layer dynamically from Board name=[%s]", this.name);
     }
     if (this.layers.length > 1) { // Can't remove the last layer
@@ -62,17 +64,17 @@ Board.prototype.removeLayer = function (index) {
 };
 
 Board.prototype.generateLayerCache = function () {
-    if (rpgwizard.debugEnabled) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Generating the layer cache for Board name=[%s]", this.name);
     }
-    if (rpgwizard.layerCache[this.filename]) {
-        this.layerCache = rpgwizard.layerCache[this.filename];
+    if (Core.getInstance().layerCache[this.filename]) {
+        this.layerCache = Core.getInstance().layerCache[this.filename];
     } else {
         this.layerCache = [];
         this.layers.forEach(function (layer) {
             this._addCachedLayer(layer);
         }.bind(this));
-        rpgwizard.layerCache[this.filename] = this.layerCache;
+        Core.getInstance().layerCache[this.filename] = this.layerCache;
     }
 };
 
@@ -93,7 +95,7 @@ Board.prototype._addCachedLayer = function (layer) {
                     continue; // Blank tile.
                 }
                 var tileset = this.tilesets[tileSetIndex]; // Render tile to board canvas
-                var renderer = new TilesetRenderer(rpgwizard.tilesets[tileset]);
+                var renderer = new TilesetRenderer(Core.getInstance().tilesets[tileset]);
                 renderer.renderTile(context, tileIndex, x * this.tileWidth, y * this.tileHeight);
             }
         }

@@ -10,14 +10,14 @@
 Item.prototype.constructor = Item;
 
 function Item(filename) {
-    if (rpgwizard.debugEnabled) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Creating Item filename=[%s]", filename);
     }
     this.filename = filename;
 }
 
 Item.prototype.load = async function () {
-    if (rpgwizard.debugEnabled) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Loading Item filename=[%s]", this.filename);
     }
     
@@ -28,7 +28,7 @@ Item.prototype.load = async function () {
         this[property] = response[property];
     }
     
-    if (rpgwizard.debugEnabled) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Finished loading Item filename=[%s]", this.filename);
     }
     
@@ -36,7 +36,7 @@ Item.prototype.load = async function () {
 };
 
 Item.prototype.loadAssets = function () {
-    if (rpgwizard.debugEnabled) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Loading Item assets name=[%s]", this.name);
     }
 
@@ -45,7 +45,7 @@ Item.prototype.loadAssets = function () {
 };
 
 Item.prototype.setReady = function () {
-    if (rpgwizard.debugEnabled) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Setting ready Item name=[%s]", this.name);
     }
 };

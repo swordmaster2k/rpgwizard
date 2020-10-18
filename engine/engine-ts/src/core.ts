@@ -8,15 +8,30 @@
 
 /* global PATH_BITMAP, PATH_MEDIA, PATH_PROGRAM, PATH_BOARD, PATH_CHARACTER, PATH_NPC, jailed, rpgcode, PATH_TILESET, PATH_ENEMY, Crafty, engineUtil, Promise */
 
+import { Project } from "./formats/project.js";
+import { Board } from "./formats/board.js";
+import { TileSet } from "./formats/tileset.js";
+import { Sprite } from "./formats/sprite.js";
+import { ScreenRenderer } from "./renderers/screenRenderer.js";
+
+import { RPGcode } from "./rpgcode/rpgcode.js";
 import { ScriptVM } from "./script-vm.js";
 
 // REFACTOR: Find better solution
 // https://stackoverflow.com/questions/31173738/typescript-getting-error-ts2304-cannot-find-name-require
 declare const Crafty: any;
 
+// Allow extending window with RPG API global
+declare global {
+    interface Window { rpgcode: any; }
+}
+
 const AsyncFunction = Object.getPrototypeOf(async function() {}).constructor;
 
 export class Core {
+
+    // Singleton reference
+    private static instance: Core;
 
     // REFACTOR: Move this
     private dt: number; // Craftyjs time step since last frame.
@@ -81,7 +96,7 @@ export class Core {
 
     private scriptVM: ScriptVM;
 
-    constructor() {
+    private constructor() {
         this.dt = 0; // Craftyjs time step since last frame.
         this.screen = {};
 
@@ -112,6 +127,8 @@ export class Core {
 
         this.activePrograms = 0;
         this.endProgramCallback = null;
+
+        // REFACTOR: Remove me
         requirejs.config({
             baseUrl: PATH_PROGRAM
         });
@@ -171,10 +188,19 @@ export class Core {
         });
 
         this.scriptVM = new ScriptVM();
+        window.rpgcode = new RPGcode();
+    }
+
+    public static getInstance(): Core {
+        if (!Core.instance) {
+            Core.instance = new Core();
+        }
+
+        return Core.instance;
     }
 
     public async setup(filename: string) {
-        if (rpgwizard.debugEnabled) {
+        if (this.debugEnabled) {
             console.debug("Starting engine with filename=[%s]", filename);
         }
 
@@ -214,8 +240,10 @@ export class Core {
         // Setup the drawing canvas (game screen).
         this.screen = new ScreenRenderer();
 
+        // REFACTOR: Do something about this
         // Setup the RPGcode rutime.
-        rpgcode = new RPGcode();
+        // rpgcode = new RPGcode();
+        // rpgcode.log("test global");
 
         // Disable controls until everything is ready.
         this.controlEnabled = false;
@@ -226,7 +254,8 @@ export class Core {
         // Run game's startup script
         try {
             console.info("Starting to run startup script...");
-            await rpgwizard.runProgram("game/scripts/startup.js", this, () => { rpgwizard.haveRunStartup = true; });
+            await this.scriptVM.run("../game/scripts/new-startup.js", this);
+            // await rpgwizard.runProgram("game/scripts/startup.js", this, () => { rpgwizard.haveRunStartup = true; });
             console.info("Finished running startup script...");
         } catch (e) {
             console.error(e);
@@ -238,7 +267,7 @@ export class Core {
         if (e) {
             if (e.type === "loading") {
                 engineUtil.showProgress(e.value.percent);
-                if (rpgwizard.debugEnabled) {
+                if (Core.instance.debugEnabled) {
                     console.debug(JSON.stringify(e));
                 }
             } else {
@@ -247,49 +276,49 @@ export class Core {
         } else {
             engineUtil.hideProgress();
             // Run the startup program before the game logic loop.
-            if (rpgwizard.project.startupProgram && rpgwizard.firstScene && !rpgwizard.haveRunStartup) {
-                rpgwizard.runProgram(
-                    PATH_PROGRAM + rpgwizard.project.startupProgram,
+            if (Core.instance.project.startupProgram && Core.instance.firstScene && !Core.instance.haveRunStartup) {
+                this.runProgram(
+                    PATH_PROGRAM + this.project.startupProgram,
                     {},
-                    function() {
-                        rpgwizard.haveRunStartup = true;
-                        rpgwizard.inProgram = false;
-                        rpgwizard.currentProgram = null;
-                        rpgwizard.controlEnabled = true;
-                        rpgwizard.startScene();
+                    () => {
+                        Core.instance.haveRunStartup = true;
+                        Core.instance.inProgram = false;
+                        Core.instance.currentProgram = null;
+                        Core.instance.controlEnabled = true;
+                        Core.instance.startScene();
                     });
             } else {
-                rpgwizard.startScene();
+                Core.instance.startScene();
             }
         }
     }
 
     public startScene() {
-        if (rpgwizard.firstScene) {
-            rpgwizard.firstScene = false;
+        if (this.firstScene) {
+            this.firstScene = false;
         }
 
         Crafty.viewport.x = 0;
         Crafty.viewport.y = 0;
-        var width = Math.floor((rpgwizard.craftyBoard.board.width * rpgwizard.craftyBoard.board.tileWidth) * Crafty.viewport._scale);
-        var height = Math.floor((rpgwizard.craftyBoard.board.height * rpgwizard.craftyBoard.board.tileHeight) * Crafty.viewport._scale);
+        var width = Math.floor((this.craftyBoard.board.width * this.craftyBoard.board.tileWidth) * Crafty.viewport._scale);
+        var height = Math.floor((this.craftyBoard.board.height * this.craftyBoard.board.tileHeight) * Crafty.viewport._scale);
         if (width > Crafty.viewport._width || height > Crafty.viewport._height) {
             Crafty.viewport.follow(this.craftyCharacter, 0, 0);
         }
 
-        rpgwizard.craftyBoard.show = true;
-        if (rpgwizard.craftyBoard.board.backgroundMusic !== rpgwizard.lastBackgroundMusic) {
+        this.craftyBoard.show = true;
+        if (this.craftyBoard.board.backgroundMusic !== this.lastBackgroundMusic) {
             Crafty.audio.stop();
-            rpgwizard.playSound(rpgwizard.craftyBoard.board.backgroundMusic, -1);
+            this.playSound(this.craftyBoard.board.backgroundMusic, -1);
         }
         Crafty.trigger("Invalidate");
 
-        if (rpgwizard.craftyBoard.board.firstRunProgram) {
-            rpgwizard.runProgram(
-                PATH_PROGRAM + rpgwizard.craftyBoard.board.firstRunProgram,
+        if (this.craftyBoard.board.firstRunProgram) {
+            this.runProgram(
+                PATH_PROGRAM + this.craftyBoard.board.firstRunProgram,
                 null, null, true);
         } else {
-            rpgwizard.controlEnabled = true;
+            this.controlEnabled = true;
             Crafty.trigger("EnterFrame", {});
         }
     }
@@ -313,7 +342,7 @@ export class Core {
 
     public loadCraftyAssets(callback: any) {
         var assets = this.assetsToLoad;
-        if (rpgwizard.debugEnabled) {
+        if (this.debugEnabled) {
             console.debug("Loading assets=[" + JSON.stringify(assets) + "]");
         }
         // Remove any duplicates.
@@ -334,12 +363,12 @@ export class Core {
         }
         if (images.length === 0 && Object.keys(audio).length === 0) {
             // Notifiy the entities that their assets are ready for use.
-            rpgwizard.waitingEntities.forEach(function(entity) {
+            this.waitingEntities.forEach(function(entity) {
                 entity.setReady();
             });
             // Reset asset queue.
-            rpgwizard.assetsToLoad = { images: [], audio: {} };
-            rpgwizard.waitingEntities = [];
+            this.assetsToLoad = { images: [], audio: {} };
+            this.waitingEntities = [];
             callback();
             return;
         }
@@ -347,17 +376,17 @@ export class Core {
         assets.images = images;
         assets.audio = audio;
         Crafty.load(assets,
-            function () { // loaded
-                if (rpgwizard.debugEnabled) {
+            () => { // loaded
+                if (this.debugEnabled) {
                     console.debug("Loaded assets=[%s]", JSON.stringify(assets));
                 }
                 // Notifiy the entities that their assets are ready for use.
-                rpgwizard.waitingEntities.forEach(function (entity) {
+                this.waitingEntities.forEach(function (entity) {
                     entity.setReady();
                 });
                 // Reset asset queue.
-                rpgwizard.assetsToLoad = { images: [], audio: {} };
-                rpgwizard.waitingEntities = [];
+                this.assetsToLoad = { images: [], audio: {} };
+                this.waitingEntities = [];
                 callback();
             },
             function(e) { // progress
@@ -381,37 +410,37 @@ export class Core {
 
         Crafty.e("2D, UI, Mouse")
             .attr({ x: 0, y: 0, w: Crafty.viewport._width, h: Crafty.viewport._height, ready: true })
-            .bind("Draw", function(e) {
+            .bind("Draw", (e) => {
                 if (e.ctx) {
-                    rpgwizard.screen.renderUI(e.ctx);
+                    this.screen.renderUI(e.ctx);
                 }
             })
-            .bind("MouseDown", function(e) {
-                var handler = rpgwizard.inProgram ? rpgwizard.mouseHandler.mouseDownHandler : rpgwizard.mouseDownHandler;
+            .bind("MouseDown", (e) => {
+                var handler = this.inProgram ? this.mouseHandler.mouseDownHandler : this.mouseDownHandler;
                 if (handler && typeof handler === "function") {
                     handler(e);
                 }
             })
-            .bind("MouseUp", function(e) {
-                var handler = rpgwizard.inProgram ? rpgwizard.mouseHandler.mouseUpHandler : rpgwizard.mouseUpHandler;
+            .bind("MouseUp", (e) => {
+                var handler = this.inProgram ? this.mouseHandler.mouseUpHandler : this.mouseUpHandler;
                 if (handler && typeof handler === "function") {
                     handler(e);
                 }
             })
-            .bind("Click", function(e) {
-                var handler = rpgwizard.inProgram ? rpgwizard.mouseHandler.mouseClickHandler : rpgwizard.mouseClickHandler;
+            .bind("Click", (e) => {
+                var handler = this.inProgram ? this.mouseHandler.mouseClickHandler : this.mouseClickHandler;
                 if (handler && typeof handler === "function") {
                     handler(e);
                 }
             })
-            .bind("DoubleClick", function(e) {
-                var handler = rpgwizard.inProgram ? rpgwizard.mouseHandler.mouseDoubleClickHandler : rpgwizard.mouseDoubleClickHandler;
+            .bind("DoubleClick", (e) => {
+                var handler = this.inProgram ? this.mouseHandler.mouseDoubleClickHandler : this.mouseDoubleClickHandler;
                 if (handler && typeof handler === "function") {
                     handler(e);
                 }
             })
-            .bind("MouseMove", function(e) {
-                var handler = rpgwizard.inProgram ? rpgwizard.mouseHandler.mouseMoveHandler : rpgwizard.mouseMoveHandler;
+            .bind("MouseMove", (e) => {
+                var handler = this.inProgram ? this.mouseHandler.mouseMoveHandler : this.mouseMoveHandler;
                 if (handler && typeof handler === "function") {
                     handler(e);
                 }
@@ -419,7 +448,7 @@ export class Core {
     }
 
     public createCraftyBoard(board: any): any {
-        if (rpgwizard.debugEnabled) {
+        if (this.debugEnabled) {
             console.debug("Creating Crafty board=[%s]", JSON.stringify(board));
         }
 
@@ -447,7 +476,7 @@ export class Core {
             height = vHeight;
         }
 
-        if (rpgwizard.debugEnabled) {
+        if (this.debugEnabled) {
             console.debug("width=" + width);
             console.debug("height=" + height);
             console.debug("xShift=" + xShift);
@@ -468,12 +497,13 @@ export class Core {
                 });
                 this.bind("Draw", function(e) {
                     if (e.ctx) {
+                        // REFACTOR: Fix this
                         // Excute the user specified runtime programs first.
-                        rpgcode.runTimePrograms.forEach(async function(filename) {
-                            var program = await rpgwizard.openProgram(PATH_PROGRAM + filename);
-                            program();
-                        });
-                        rpgwizard.screen.renderBoard(e.ctx);
+                        // rpgcode.runTimePrograms.forEach(async function(filename) {
+                        //     var program = await Core.getInstance().openProgram(PATH_PROGRAM + filename);
+                        //     program();
+                        // });
+                        Core.getInstance().screen.renderBoard(e.ctx);
                     }
                 });
             }
@@ -484,17 +514,17 @@ export class Core {
     }
 
     public async loadBoard(board: any) {
-        if (rpgwizard.debugEnabled) {
+        if (this.debugEnabled) {
             console.debug("Loading board=[%s]", JSON.stringify(board));
         }
         var craftyBoard = this.createCraftyBoard(board);
         var assets = { images: [], audio: {} };
 
         await Promise.all(craftyBoard.board.tilesets.map(async(file) => {
-            if (!rpgwizard.tilesets[file]) {
+            if (!this.tilesets[file]) {
                 var tileset = await new TileSet(PATH_TILESET + file).load();
-                rpgwizard.tilesets[file] = tileset;
-                rpgwizard.queueCraftyAssets({ images: [tileset.image] }, tileset);
+                this.tilesets[file] = tileset;
+                this.queueCraftyAssets({ images: [tileset.image] }, tileset);
             }
         }));
 
@@ -564,7 +594,7 @@ export class Core {
     }
 
     public async switchBoard(boardName: string, tileX: number, tileY: number, layer: number) {
-        if (rpgwizard.debugEnabled) {
+        if (this.debugEnabled) {
             console.debug("Switching board to boardName=[%s], tileX=[%d], tileY=[%d], layer=[%d]",
                 boardName, tileX, tileY);
         }
@@ -577,15 +607,15 @@ export class Core {
         Crafty("BoardSprite").destroy();
 
         // May not be a last board if it is being set in a startup program.
-        if (rpgwizard.craftyBoard.board) {
-            rpgwizard.lastBackgroundMusic = rpgwizard.craftyBoard.board.backgroundMusic;
+        if (this.craftyBoard.board) {
+            this.lastBackgroundMusic = this.craftyBoard.board.backgroundMusic;
         }
 
         // Load in the next board.
         var json;
         var board = new Board(PATH_BOARD + boardName);
-        if (rpgwizard.boards[board.filename]) {
-            json = JSON.parse(rpgwizard.boards[board.filename]);
+        if (this.boards[board.filename]) {
+            json = JSON.parse(this.boards[board.filename]);
         }
         board = await board.load(json);
 
@@ -599,7 +629,7 @@ export class Core {
 
         await this.loadBoard(board);
 
-        if (rpgwizard.debugEnabled) {
+        if (this.debugEnabled) {
             console.debug("Switching board player location set to x=[%d], y=[%d], layer=[%d]",
                 this.craftyCharacter.x, this.craftyCharacter.y, this.craftyCharacter.layer);
         }
@@ -608,7 +638,7 @@ export class Core {
     }
 
     public async loadCharacter(character: any) {
-        if (rpgwizard.debugEnabled) {
+        if (this.debugEnabled) {
             console.debug("Loading character=[%s]", JSON.stringify(character));
         }
         // Have to keep this in a separate entity, as Crafty entites can
@@ -626,10 +656,10 @@ export class Core {
             .ActivationVector(
                 new Crafty.polygon(character.activationPoints),
                 function(hitData) {
-                    character.hitOnActivation(hitData, rpgwizard.craftyCharacter);
+                    character.hitOnActivation(hitData, Core.getInstance().craftyCharacter);
                 },
                 function(hitData) {
-                    character.hitOffActivation(hitData, rpgwizard.craftyCharacter);
+                    character.hitOffActivation(hitData, Core.getInstance().craftyCharacter);
                 }
             );
         this.craftyCharacter = Crafty.e("2D, Canvas, player, CustomControls, BaseVector, Tween")
@@ -645,10 +675,10 @@ export class Core {
             .BaseVector(
                 new Crafty.polygon(character.collisionPoints),
                 function(hitData) {
-                    character.hitOnCollision(hitData, rpgwizard.craftyCharacter);
+                    character.hitOnCollision(hitData, Core.getInstance().craftyCharacter);
                 },
                 function(hitData) {
-                    character.hitOffCollision(hitData, rpgwizard.craftyCharacter);
+                    character.hitOffCollision(hitData, Core.getInstance().craftyCharacter);
                 }
             )
             .bind("Move", function(from) {
@@ -675,7 +705,7 @@ export class Core {
     }
 
     public async loadSprite(sprite: any) {
-        if (rpgwizard.debugEnabled) {
+        if (this.debugEnabled) {
             console.debug("Loading sprite=[%s]", JSON.stringify(sprite));
         }
 
@@ -746,7 +776,7 @@ export class Core {
                 });
                 this.bind("EnterFrame", function(event) {
                     this.dt = event.dt / 1000;
-                    if (sprite.thread && asset.renderReady && rpgwizard.craftyBoard.show) {
+                    if (sprite.thread && asset.renderReady && Core.getInstance().craftyBoard.show) {
                         sprite.thread.apply(this);
                     }
                 });
@@ -782,71 +812,71 @@ export class Core {
     }
 
     public loadItem(item: any) {
-        if (rpgwizard.debugEnabled) {
+        if (this.debugEnabled) {
             console.debug("Loading item=[%s]", JSON.stringify(item));
         }
         this.queueCraftyAssets(item.loadAssets(), item);
     }
 
     public async openProgram(filename: string) {
-        if (rpgwizard.debugEnabled) {
+        if (this.debugEnabled) {
             console.debug("Opening program=[%s]", filename);
         }
-        var program = rpgwizard.programCache[filename];
+        var program = this.programCache[filename];
         if (!program) {
             let response = await fetch(filename);
             response = await response.text();
             program = new AsyncFunction(response);
-            rpgwizard.programCache[filename] = program;
+            this.programCache[filename] = program;
         }
 
         return program;
     }
 
     public async runProgram(filename: string, source: any, callback: any) {
-        if (rpgwizard.debugEnabled) {
+        if (this.debugEnabled) {
             console.debug("Running program=[%s]", filename);
         }
-        rpgwizard.activePrograms++;
-        rpgwizard.inProgram = true;
-        rpgwizard.currentProgram = filename;
+        this.activePrograms++;
+        this.inProgram = true;
+        this.currentProgram = filename;
         rpgcode.source = source; // Entity that triggered the program.
-        rpgwizard.controlEnabled = false;
-        rpgwizard.endProgramCallback = callback; // Store endProgram callback.
-        rpgwizard.keyboardHandler.downHandlers = {}; // Wipe previous keyboard handlers.
-        rpgwizard.keyboardHandler.upHandlers = {};
-        rpgwizard.mouseHandler.mouseDownHandler = null; // Wipe previous mouse handlers.
-        rpgwizard.mouseHandler.mouseUpHandler = null;
-        rpgwizard.mouseHandler.mouseClickHandler = null;
-        rpgwizard.mouseHandler.mouseDoubleClickHandler = null;
-        rpgwizard.mouseHandler.mouseMoveHandler = null;
+        this.controlEnabled = false;
+        this.endProgramCallback = callback; // Store endProgram callback.
+        this.keyboardHandler.downHandlers = {}; // Wipe previous keyboard handlers.
+        this.keyboardHandler.upHandlers = {};
+        this.mouseHandler.mouseDownHandler = null; // Wipe previous mouse handlers.
+        this.mouseHandler.mouseUpHandler = null;
+        this.mouseHandler.mouseClickHandler = null;
+        this.mouseHandler.mouseDoubleClickHandler = null;
+        this.mouseHandler.mouseMoveHandler = null;
 
-        var program = await rpgwizard.openProgram(filename);
+        var program = await this.openProgram(filename);
         program.apply(source);
     }
 
     public endProgram(nextProgram: string) {
-        if (rpgwizard.debugEnabled) {
+        if (this.debugEnabled) {
             console.debug("Ending current program, nextProgram=[%s]", nextProgram);
         }
 
-        if (rpgwizard.activePrograms > 0) {
-            rpgwizard.activePrograms--;
+        if (this.activePrograms > 0) {
+            this.activePrograms--;
         }
         if (nextProgram) {
-            rpgwizard.runProgram(
+            this.runProgram(
                 PATH_PROGRAM + nextProgram,
                 rpgcode.source,
-                rpgwizard.endProgramCallback
+                this.endProgramCallback
             );
-        } else if (rpgwizard.activePrograms === 0) {
-            if (rpgwizard.endProgramCallback) {
-                rpgwizard.endProgramCallback();
-                rpgwizard.endProgramCallback = null;
+        } else if (this.activePrograms === 0) {
+            if (this.endProgramCallback) {
+                this.endProgramCallback();
+                this.endProgramCallback = null;
             } else {
-                rpgwizard.inProgram = false;
-                rpgwizard.currentProgram = null;
-                rpgwizard.controlEnabled = true;
+                this.inProgram = false;
+                this.currentProgram = null;
+                this.controlEnabled = true;
             }
         }
     }
@@ -893,13 +923,10 @@ export class Core {
     }
 
     public playSound(sound: string, loop: number) {
-        if (rpgwizard.debugEnabled) {
+        if (this.debugEnabled) {
             console.debug("Playing sound=[%s]", sound);
         }
         Crafty.audio.play(sound, loop);
     }
 
 }
-
-// REFACTOR: remove this
-const rpgwizard: Core = new Core();

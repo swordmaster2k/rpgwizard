@@ -7,17 +7,19 @@
  */
 /* global rpgwizard */
 
+import { Core } from "../core.js";
+
 Animation.prototype.constructor = Animation;
 
-function Animation(filename) {
-    if (rpgwizard.debugEnabled) {
+export function Animation(filename) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Creating Animation filename=[%s]", filename);
     }
     this.filename = filename;
 }
 
 Animation.prototype.load = async function () {
-    if (rpgwizard.debugEnabled) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Loading Animation filename=[%s]", this.filename);
     }
     
@@ -27,7 +29,7 @@ Animation.prototype.load = async function () {
         this[property] = response[property];
     }
     
-    if (rpgwizard.debugEnabled) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Finished loading Animation filename=[%s]", this.filename);
     }
     

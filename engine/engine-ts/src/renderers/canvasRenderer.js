@@ -17,7 +17,7 @@ CanvasRenderer.prototype.render = function (context) {
   var x = -Crafty.viewport._x;
   var y = -Crafty.viewport._y;
   
-  var canvases = rpgwizard.rpgcodeApi.canvases;
+  var canvases = Core.getInstance().rpgcodeApi.canvases;
   for (var property in canvases) {
     if (canvases.hasOwnProperty(property)) {
       var element = canvases[property];

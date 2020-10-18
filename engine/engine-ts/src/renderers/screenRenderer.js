@@ -7,7 +7,9 @@
  */
 /* global rpgwizard, rpgcode, Crafty */
 
-function ScreenRenderer() {
+import { Core } from "../core.js";
+
+export function ScreenRenderer() {
     this.renderNowCanvas = document.createElement("canvas");
     this.renderNowCanvas.width = Crafty.viewport._width;
     this.renderNowCanvas.height = Crafty.viewport._height;
@@ -16,12 +18,12 @@ function ScreenRenderer() {
 ScreenRenderer.prototype.renderBoard = function (context) {
     context.imageSmoothingEnabled = false;
     
-    var xShift = rpgwizard.craftyBoard.xShift;
-    var yShift = rpgwizard.craftyBoard.yShift;
-    var x = rpgwizard.craftyBoard.x + xShift;
-    var y = rpgwizard.craftyBoard.y + yShift;
-    var width = rpgwizard.craftyBoard.width;
-    var height = rpgwizard.craftyBoard.height;
+    var xShift = Core.getInstance().craftyBoard.xShift;
+    var yShift = Core.getInstance().craftyBoard.yShift;
+    var x = Core.getInstance().craftyBoard.x + xShift;
+    var y = Core.getInstance().craftyBoard.y + yShift;
+    var width = Core.getInstance().craftyBoard.width;
+    var height = Core.getInstance().craftyBoard.height;
 
     if (/Edge/.test(navigator.userAgent)) {
         // Handle Edge bug when drawing up to the bounds of a canvas.
@@ -31,12 +33,12 @@ ScreenRenderer.prototype.renderBoard = function (context) {
 
     // Shorthand reference.
     // REFACTOR: Remove this
-    // var character = rpgwizard.craftyCharacter.character;
-    // character.x = rpgwizard.craftyCharacter.x;
-    // character.y = rpgwizard.craftyCharacter.y;
+    // var character = Core.getInstance().craftyCharacter.character;
+    // character.x = Core.getInstance().craftyCharacter.x;
+    // character.y = Core.getInstance().craftyCharacter.y;
 
-    if (rpgwizard.craftyBoard.show) {
-        this.board = rpgwizard.craftyBoard.board;
+    if (Core.getInstance().craftyBoard.show) {
+        this.board = Core.getInstance().craftyBoard.board;
 
         // Draw a black background.  
         context.fillStyle = "#000000";
@@ -83,7 +85,7 @@ ScreenRenderer.prototype.renderBoard = function (context) {
                         context.drawImage(frame, x, y);
                     }
 
-                    if (rpgwizard.showVectors) {
+                    if (Core.getInstance().showVectors) {
                         // Draw collision ploygon.
                         var x, y, moved = false;
                         var points = sprite.collisionPoints;
@@ -125,7 +127,7 @@ ScreenRenderer.prototype.renderBoard = function (context) {
                 }
             });
 
-            if (rpgwizard.showVectors) {
+            if (Core.getInstance().showVectors) {
                 /*
                  * (Optional) Render Vectors.
                  */
@@ -161,15 +163,16 @@ ScreenRenderer.prototype.renderUI = function (context) {
     /*
      * Render rpgcode canvases.
      */
-    var canvases = rpgcode.canvases;
-    for (var property in canvases) {
-        if (canvases.hasOwnProperty(property)) {
-            var element = canvases[property];
-            if (element.render) {
-                context.drawImage(element.canvas, element.x, element.y);
-            }
-        }
-    }
+    // REFACTOR: Decouple me
+    // var canvases = rpgcode.canvases;
+    // for (var property in canvases) {
+    //     if (canvases.hasOwnProperty(property)) {
+    //         var element = canvases[property];
+    //         if (element.render) {
+    //             context.drawImage(element.canvas, element.x, element.y);
+    //         }
+    //     }
+    // }
 };
 
 ScreenRenderer.prototype.sortSprites = function (layer, player) {

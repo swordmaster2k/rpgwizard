@@ -7,15 +7,17 @@
  */
 /* global rpgwizard */
 
-function Project(filename) {
-    if (rpgwizard.debugEnabled) {
+import { Core } from "../core.js";
+
+export function Project(filename) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Creating Project filename=[%s]", filename);
     }
     this.filename = filename;
 }
 
 Project.prototype.load = async function () {
-    if (rpgwizard.debugEnabled) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Loading Project filename=[%s]", this.filename);
     }
 
@@ -25,7 +27,7 @@ Project.prototype.load = async function () {
         this[property] = response[property];
     }
 
-    if (rpgwizard.debugEnabled) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Finished Project Project filename=[%s]", this.filename);
     }
 

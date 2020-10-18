@@ -11,7 +11,7 @@ Character.prototype = Object.create(Sprite.prototype);
 Character.prototype.constructor = Character;
 
 function Character(filename) {
-    if (rpgwizard.debugEnabled) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Creating Character filename=[%s]", filename);
     }
     this.filename = filename;
@@ -19,14 +19,14 @@ function Character(filename) {
 }
 
 Character.prototype.load = async function (json) {
-    if (rpgwizard.debugEnabled) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Loading Character filename=[%s]", this.filename);
     }
 
     if (!json) {
         let response = await fetch(this.filename);
         json = await response.json();
-        rpgwizard.characters[this.filename] = JSON.stringify(json);
+        Core.getInstance().characters[this.filename] = JSON.stringify(json);
     }
     
     for (var property in json) {
@@ -35,7 +35,7 @@ Character.prototype.load = async function (json) {
     this.calculateCollisionPoints();
     this.calculateActivationPoints();
 
-    if (rpgwizard.debugEnabled) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Finished loading Character filename=[%s]", this.filename);
     }
 
@@ -69,7 +69,7 @@ Character.prototype.hitOffActivation = function (hitData, entity) {
 };
 
 Character.prototype.processCollision = function (collision, entity) {
-    if (rpgwizard.debugEnabled) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Processing collision for Character name=[%s], collision.obj=[%s], entity=[%s]", this.name, collision.obj, entity);
     }
 
@@ -92,10 +92,10 @@ Character.prototype.processCollision = function (collision, entity) {
 };
 
 Character.prototype.processActivation = function (collision, entity, entering) {
-    if (rpgwizard.debugEnabled) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Processing activation for Character name=[%s], collision.obj=[%s], entity=[%s], entering=[%s]", this.name, collision.obj, entity, entering);
     }
-    if (!this.onSameLayer(collision) || !rpgwizard.controlEnabled || this.activationVectorDisabled || !this.isOtherActivatable(collision.obj)) {
+    if (!this.onSameLayer(collision) || !Core.getInstance().controlEnabled || this.activationVectorDisabled || !this.isOtherActivatable(collision.obj)) {
         return;
     }
 
@@ -110,16 +110,16 @@ Character.prototype.processActivation = function (collision, entity, entering) {
     events.forEach(function (event) {
         if (event.program) {
             if (event.type.toUpperCase() === "OVERLAP") {
-                rpgwizard.runProgram(PATH_PROGRAM.concat(event.program), object);
+                Core.getInstance().runProgram(PATH_PROGRAM.concat(event.program), object);
             } else if (event.type.toUpperCase() === "KEYPRESS") {
                 if (event.key) {
                     entity.previousKeyHandler = {
                         key: event.key,
-                        callback: rpgwizard.keyboardHandler.downHandlers[event.key]
+                        callback: Core.getInstance().keyboardHandler.downHandlers[event.key]
                     };
                     var callback = function () {
                         rpgcode.unregisterKeyDown(event.key, true);
-                        rpgwizard.runProgram(PATH_PROGRAM.concat(event.program), object);
+                        Core.getInstance().runProgram(PATH_PROGRAM.concat(event.program), object);
                     };
                     rpgcode.registerKeyDown(event.key, callback, true);
                 }

@@ -7,15 +7,17 @@
  */
 /* global PATH_BITMAP, rpgwizard, Crafty */
 
-function TileSet(filename) {
-    if (rpgwizard.debugEnabled) {
+import { Core } from "../core.js";
+
+export function TileSet(filename) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Creating Tileset filename=[%s]", filename);
     }
     this.filename = filename;
 }
 
 TileSet.prototype.load = async function () {
-    if (rpgwizard.debugEnabled) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Loading Tileset filename=[%s]", this.filename);
     }
 
@@ -25,7 +27,7 @@ TileSet.prototype.load = async function () {
         this[property] = response[property];
     }
 
-    if (rpgwizard.debugEnabled) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Finished loading Tileset filename=[%s]", this.filename);
     }
 
@@ -33,7 +35,7 @@ TileSet.prototype.load = async function () {
 };
 
 TileSet.prototype.setReady = function () {
-    if (rpgwizard.debugEnabled) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Setting ready TileSet name=[%s]", this.name);
     }
     

@@ -7,6 +7,8 @@
  */
 /* global rpgwizard, rpgcode, PATH_PROGRAM, PATH_ITEM, PATH_FONT, Crafty, Promise */
 
+import { Core } from "../core.js";
+
 // To enable JSDoc grouping of functions
 /** @namespace Draw2D       */
 /** @namespace Geometry     */
@@ -29,8 +31,6 @@
 /** @namespace File         */
 /** @namespace Util         */
 
-var rpgcode = null; // Setup inside of the engine.
-
 /**
  * The engine RPGcode API.
  * 
@@ -39,7 +39,9 @@ var rpgcode = null; // Setup inside of the engine.
  * 
  * @returns {RPGcode}
  */
-function RPGcode() {
+export function RPGcode() {};
+
+RPGcode.prototype.setup = function() {
     // The last entity to trigger a program.
     this.source = {};
 
@@ -48,7 +50,7 @@ function RPGcode() {
 
     this.canvases = {
         "renderNowCanvas": {
-            canvas: rpgwizard.screen.renderNowCanvas,
+            canvas: Core.getInstance().screen.renderNowCanvas,
             render: false,
             x: 0,
             y: 0
@@ -58,7 +60,7 @@ function RPGcode() {
     // Global variable storage for user programs.
     this.globals = {};
 
-    this.rgba = {r: 255, g: 255, b: 255, a: 1.0};
+    this.rgba = { r: 255, g: 255, b: 255, a: 1.0 };
     this.gradient = null;
     /**
      * Font that will be used for all drawing operations.
@@ -151,7 +153,7 @@ RPGcode.prototype._animateGeneric = function (generic, resetGraphics, callback) 
 };
 
 RPGcode.prototype._convertCraftyId = function (craftyId) {
-    return rpgwizard.craftyBoard.board.sprites.findIndex(function (entity) {
+    return Core.getInstance().craftyBoard.board.sprites.findIndex(function (entity) {
         return entity.getId() === craftyId;
     });
 };
@@ -178,8 +180,8 @@ RPGcode.prototype._convertCraftyId = function (craftyId) {
  * @param {number} layer Layer index on the board, first layer starts at 0.
  */
 RPGcode.prototype.addLayerImage = function (image, layer) {
-    if (layer < rpgwizard.craftyBoard.board.layers.length) {
-        rpgwizard.craftyBoard.board.layers[layer].images.push(image);
+    if (layer < Core.getInstance().craftyBoard.board.layers.length) {
+        Core.getInstance().craftyBoard.board.layers[layer].images.push(image);
     }
 };
 
@@ -233,8 +235,8 @@ RPGcode.prototype.addRunTimeProgram = function (filename) {
  * @param {Callback} callback If defined, the function to invoke after the sprite has been added.
  */
 RPGcode.prototype.addSprite = async function (sprite, callback) {
-    rpgwizard.craftyBoard.board.sprites[sprite.id] = await rpgwizard.loadSprite(sprite);
-    rpgwizard.loadCraftyAssets(callback);
+    Core.getInstance().craftyBoard.board.sprites[sprite.id] = await Core.getInstance().loadSprite(sprite);
+    Core.getInstance().loadCraftyAssets(callback);
 };
 
 /**
@@ -286,7 +288,7 @@ RPGcode.prototype.animateSprite = function (spriteId, animationId, callback) {
  */
 RPGcode.prototype.animateCharacter = function (characterId, animationId, callback) {
     // TODO: characterId will be unused until parties with multiple characters are supported.
-    var character = rpgwizard.craftyCharacter.character;
+    var character = Core.getInstance().craftyCharacter.character;
     var resetGraphics = character.spriteGraphics.active;
     rpgcode.setCharacterStance(characterId, animationId);
     rpgcode._animateGeneric(character, resetGraphics, callback);
@@ -543,10 +545,10 @@ RPGcode.prototype.destroyCanvas = function (canvasId) {
  * @param {string} spriteId The ID set for the sprite as it appears in the editor.
  */
 RPGcode.prototype.destroySprite = function (spriteId) {
-    if (rpgwizard.craftyBoard.board.sprites.hasOwnProperty(spriteId)) {
-        var entity = rpgwizard.craftyBoard.board.sprites[spriteId];
+    if (Core.getInstance().craftyBoard.board.sprites.hasOwnProperty(spriteId)) {
+        var entity = Core.getInstance().craftyBoard.board.sprites[spriteId];
         entity.destroy();
-        delete rpgwizard.craftyBoard.board.sprites[spriteId];
+        delete Core.getInstance().craftyBoard.board.sprites[spriteId];
         Crafty.trigger("Invalidate");
     }
 };
@@ -983,9 +985,9 @@ RPGcode.prototype.drawText = function (x, y, text, canvasId) {
  */
 RPGcode.prototype.endProgram = function (nextProgram) {
     if (nextProgram) {
-        rpgwizard.endProgram(nextProgram);
+        Core.getInstance().endProgram(nextProgram);
     } else {
-        rpgwizard.endProgram();
+        Core.getInstance().endProgram();
     }
 };
 
@@ -1180,7 +1182,7 @@ RPGcode.prototype.fireRaycast = function (origin, direction, maxDistance) {
     }
     var layerCheck = {
         obj: {
-            layer: origin._layer === undefined || origin._layer === null ? rpgwizard.craftyCharacter.character.layer : origin._layer
+            layer: origin._layer === undefined || origin._layer === null ? Core.getInstance().craftyCharacter.character.layer : origin._layer
         }
     };
     hits.forEach(function (hit) {
@@ -1221,7 +1223,7 @@ RPGcode.prototype.fireRaycast = function (origin, direction, maxDistance) {
  * @returns {Asset.BoardAsset} Current board object.
  */
 RPGcode.prototype.getBoard = function () {
-    return rpgwizard.craftyBoard.board;
+    return Core.getInstance().craftyBoard.board;
 };
 
 /**
@@ -1236,7 +1238,7 @@ RPGcode.prototype.getBoard = function () {
  * @returns {string} Name of the current board.
  */
 RPGcode.prototype.getBoardName = function () {
-    return rpgwizard.craftyBoard.board.name;
+    return Core.getInstance().craftyBoard.board.name;
 };
 
 /**
@@ -1272,7 +1274,7 @@ RPGcode.prototype.getAngleBetweenPoints = function (x1, y1, x2, y2) {
  * @returns {Asset.CharacterAsset} Active character.
  */
 RPGcode.prototype.getCharacter = function () {
-    return rpgwizard.craftyCharacter.character;
+    return Core.getInstance().craftyCharacter.character;
 };
 
 /**
@@ -1287,7 +1289,7 @@ RPGcode.prototype.getCharacter = function () {
  * @returns {("NORTH"|"SOUTH"|"EAST"|"WEST"|"NORTH_EAST"|"SOUTH_EAST"|"NORTH_WEST"|"SOUTH_WEST")}
  */
 RPGcode.prototype.getCharacterDirection = function () {
-    var direction = rpgwizard.craftyCharacter.character.direction;
+    var direction = Core.getInstance().craftyCharacter.character.direction;
 
     // User friendly rewrite of Crafty constants.
     switch (direction) {
@@ -1327,11 +1329,11 @@ RPGcode.prototype.getCharacterDirection = function () {
  * @returns {Geometry.Location} An object containing the characters location.
  */
 RPGcode.prototype.getCharacterLocation = function (inTiles, includeOffset) {
-    var instance = rpgwizard.craftyCharacter;
+    var instance = Core.getInstance().craftyCharacter;
 
     if (includeOffset) {
-        var x = instance.x + rpgwizard.craftyBoard.xShift + Crafty.viewport._x;
-        var y = instance.y + rpgwizard.craftyBoard.yShift + Crafty.viewport._y;
+        var x = instance.x + Core.getInstance().craftyBoard.xShift + Crafty.viewport._x;
+        var y = instance.y + Core.getInstance().craftyBoard.yShift + Crafty.viewport._y;
     } else {
         var x = instance.x;
         var y = instance.y;
@@ -1339,8 +1341,8 @@ RPGcode.prototype.getCharacterLocation = function (inTiles, includeOffset) {
 
     if (inTiles) {
         return {
-            x: x / rpgwizard.craftyBoard.board.tileWidth,
-            y: y / rpgwizard.craftyBoard.board.tileHeight,
+            x: x / Core.getInstance().craftyBoard.board.tileWidth,
+            y: y / Core.getInstance().craftyBoard.board.tileHeight,
             layer: instance.character.layer
         };
     } else {
@@ -1502,7 +1504,7 @@ RPGcode.prototype.getRandom = function (min, max) {
  * @returns {Program.RunningProgram} An object with the attributes inProgram (boolean) and the filename of the current running program, if any.
  */
 RPGcode.prototype.getRunningProgram = function () {
-    return {inProgram: rpgwizard.inProgram, currentProgram: rpgwizard.currentProgram};
+    return {inProgram: Core.getInstance().inProgram, currentProgram: Core.getInstance().currentProgram};
 };
 
 /**
@@ -1521,11 +1523,11 @@ RPGcode.prototype.getRunningProgram = function () {
  * @returns {Geometry.Location} An object containing the sprite's location.
  */
 RPGcode.prototype.getSpriteLocation = function (spriteId, inTiles, includeOffset) {
-    var entity = rpgwizard.craftyBoard.board.sprites[spriteId];
+    var entity = Core.getInstance().craftyBoard.board.sprites[spriteId];
 
     if (includeOffset) {
-        var x = entity.x + rpgwizard.craftyBoard.xShift + Crafty.viewport._x;
-        var y = entity.y + rpgwizard.craftyBoard.yShift + Crafty.viewport._y;
+        var x = entity.x + Core.getInstance().craftyBoard.xShift + Crafty.viewport._x;
+        var y = entity.y + Core.getInstance().craftyBoard.yShift + Crafty.viewport._y;
     } else {
         var x = entity.x;
         var y = entity.y;
@@ -1533,8 +1535,8 @@ RPGcode.prototype.getSpriteLocation = function (spriteId, inTiles, includeOffset
 
     if (inTiles) {
         return {
-            x: x / rpgwizard.craftyBoard.board.tileWidth,
-            y: y / rpgwizard.craftyBoard.board.tileHeight,
+            x: x / Core.getInstance().craftyBoard.board.tileWidth,
+            y: y / Core.getInstance().craftyBoard.board.tileHeight,
             layer: entity.layer
         };
     } else {
@@ -1574,7 +1576,7 @@ RPGcode.prototype.getScale = function () {
  * @returns {Asset.Sprite}
  */
 RPGcode.prototype.getSprite = function (spriteId) {
-    return rpgwizard.craftyBoard.board.sprites[spriteId];
+    return Core.getInstance().craftyBoard.board.sprites[spriteId];
 };
 
 /**
@@ -1590,7 +1592,7 @@ RPGcode.prototype.getSprite = function (spriteId) {
  * @returns {("NORTH"|"SOUTH"|"EAST"|"WEST"|"NORTH_EAST"|"SOUTH_EAST"|"NORTH_WEST"|"SOUTH_WEST")}
  */
 RPGcode.prototype.getSpriteDirection = function (spriteId) {
-    var entity = rpgwizard.craftyBoard.board.sprites[spriteId];
+    var entity = Core.getInstance().craftyBoard.board.sprites[spriteId];
     if (entity.sprite.npc) {
         var direction = entity.sprite.npc.direction;
     } else {
@@ -1642,7 +1644,7 @@ RPGcode.prototype.getSpriteDirection = function (spriteId) {
  * @throws "layer out of range" or "tile out of range"
  */
 RPGcode.prototype.getTileData = function(tileX=0, tileY=0, layer=0) {
-    const board = rpgwizard.craftyBoard.board;
+    const board = Core.getInstance().craftyBoard.board;
     if (layer < 0 || board.layers.length < layer) {
         throw "layer out of range";
     }
@@ -1658,7 +1660,7 @@ RPGcode.prototype.getTileData = function(tileX=0, tileY=0, layer=0) {
         return null; // empty tile
     }
     
-    const tileSet = rpgwizard.tilesets[board.tileSets[parts[0]]];
+    const tileSet = Core.getInstance().tilesets[board.tileSets[parts[0]]];
     return tileSet.tileData && tileSet.tileData[parts[1]] ? tileSet.tileData[parts[1]] : null;
 };
 
@@ -1689,8 +1691,8 @@ RPGcode.prototype.getViewport = function () {
         y: -Crafty.viewport.y,
         width: Math.round(Crafty.viewport.width / rpgcode.getScale()),
         height: Math.round(Crafty.viewport.height / rpgcode.getScale()),
-        offsetX: Math.floor(rpgwizard.craftyBoard.xShift + Crafty.viewport._x),
-        offsetY: Math.floor(rpgwizard.craftyBoard.yShift + Crafty.viewport._y)
+        offsetX: Math.floor(Core.getInstance().craftyBoard.xShift + Crafty.viewport._x),
+        offsetY: Math.floor(Core.getInstance().craftyBoard.yShift + Crafty.viewport._y)
     };
 };
 
@@ -1706,13 +1708,13 @@ RPGcode.prototype.getViewport = function () {
 RPGcode.prototype.giveItem = async function (filename, characterId, callback) {
     var item = await new Item(PATH_ITEM + filename).load();
 
-    rpgwizard.loadItem(item);
-    rpgwizard.loadCraftyAssets(function (e) {
+    Core.getInstance().loadItem(item);
+    Core.getInstance().loadCraftyAssets(function (e) {
         if (!e) {
-            if (!rpgwizard.craftyCharacter.character.inventory[filename]) {
-                rpgwizard.craftyCharacter.character.inventory[filename] = [];
+            if (!Core.getInstance().craftyCharacter.character.inventory[filename]) {
+                Core.getInstance().craftyCharacter.character.inventory[filename] = [];
             }
-            rpgwizard.craftyCharacter.character.inventory[filename].push(item);
+            Core.getInstance().craftyCharacter.character.inventory[filename].push(item);
             callback();
         }
     });
@@ -1741,13 +1743,13 @@ RPGcode.prototype.giveItem = async function (filename, characterId, callback) {
  */
 RPGcode.prototype.hitCharacter = function (characterId, damage, animationId, callback) {
     // characterId unused until multi-character parties are supported.
-    rpgwizard.controlEnabled = false;
-    var character = rpgwizard.craftyCharacter.character;
+    Core.getInstance().controlEnabled = false;
+    var character = Core.getInstance().craftyCharacter.character;
     character.health -= damage;
     character.isHit = true;
     rpgcode.animateCharacter(characterId, animationId, function () {
         character.isHit = false;
-        rpgwizard.controlEnabled = true;
+        Core.getInstance().controlEnabled = true;
         if (callback) {
             callback();
         }
@@ -1830,7 +1832,7 @@ RPGcode.prototype.isAssetLoaded = function (asset, type) {
  * @returns {boolean} true if the player has control, false otherwise
  */
 RPGcode.prototype.isControlEnabled = function () {
-    return rpgwizard.controlEnabled;
+    return Core.getInstance().controlEnabled;
 };
 
 /**
@@ -1870,7 +1872,7 @@ RPGcode.prototype.loadAssets = function (assets, onLoad) {
             fontPromises.push(new FontFace(font.name, `url(${PATH_FONT + font.file})`).load());
         }
         Promise.all(fontPromises).then(function () {
-            if (rpgwizard.debugEnabled) {
+            if (Core.getInstance().debugEnabled) {
                 console.log(`loadedFonts=[${JSON.stringify(assets.fonts)}]`);
             }
             delete assets.fonts;
@@ -2002,8 +2004,8 @@ RPGcode.prototype.moveSprite = function (spriteId, direction, distance) {
             Crafty.trigger("Invalidate");
             break;
         default:
-            if (rpgwizard.craftyBoard.board.sprites.hasOwnProperty(spriteId)) {
-                var entity = rpgwizard.craftyBoard.board.sprites[spriteId];
+            if (Core.getInstance().craftyBoard.board.sprites.hasOwnProperty(spriteId)) {
+                var entity = Core.getInstance().craftyBoard.board.sprites[spriteId];
                 entity.move(direction, distance);
                 Crafty.trigger("Invalidate");
             }
@@ -2052,7 +2054,7 @@ RPGcode.prototype.measureText = function (text) {
 RPGcode.prototype.moveCharacter = function (characterId, direction, distance) {
     // TODO: characterId is unused until multiple party members are supported.
 
-    rpgwizard.craftyCharacter.move(direction, distance);
+    Core.getInstance().craftyCharacter.move(direction, distance);
 };
 
 /**
@@ -2080,17 +2082,17 @@ RPGcode.prototype.moveCharacter = function (characterId, direction, distance) {
  * @param {Callback} callback Function to invoke when the sprite has finished moving.
  */
 RPGcode.prototype.moveCharacterTo = function (characterId, x, y, duration, callback) {
-    rpgwizard.craftyCharacter.trigger("TweenEnd", {});
-    rpgwizard.craftyCharacter.cancelTween({x: true, y: true});
-    rpgwizard.craftyCharacter.tweenEndCallbacks.push(callback);
+    Core.getInstance().craftyCharacter.trigger("TweenEnd", {});
+    Core.getInstance().craftyCharacter.cancelTween({x: true, y: true});
+    Core.getInstance().craftyCharacter.tweenEndCallbacks.push(callback);
 
     var location = rpgcode.getCharacterLocation();
     if (location.x !== x && location.y !== y) {
-        rpgwizard.craftyCharacter.tween({x: x, y: y}, duration);
+        Core.getInstance().craftyCharacter.tween({x: x, y: y}, duration);
     } else if (location.x !== x) {
-        rpgwizard.craftyCharacter.tween({x: x}, duration);
+        Core.getInstance().craftyCharacter.tween({x: x}, duration);
     } else {
-        rpgwizard.craftyCharacter.tween({y: y}, duration);
+        Core.getInstance().craftyCharacter.tween({y: y}, duration);
     }
 };
 
@@ -2117,8 +2119,8 @@ RPGcode.prototype.moveCharacterTo = function (characterId, x, y, duration, callb
  * @param {Callback} callback Function to invoke when the sprite has finished moving.
  */
 RPGcode.prototype.moveSpriteTo = function (spriteId, x, y, duration, callback) {
-    if (rpgwizard.craftyBoard.board.sprites.hasOwnProperty(spriteId)) {
-        var entity = rpgwizard.craftyBoard.board.sprites[spriteId];
+    if (Core.getInstance().craftyBoard.board.sprites.hasOwnProperty(spriteId)) {
+        var entity = Core.getInstance().craftyBoard.board.sprites[spriteId];
         entity.trigger("TweenEnd", {});
         entity.cancelTween({x: true, y: true});
         entity.tweenEndCallbacks.push(callback);
@@ -2162,7 +2164,7 @@ RPGcode.prototype.moveSpriteTo = function (spriteId, x, y, duration, callback) {
 RPGcode.prototype.resetActivationChecks = function (characterId) {
     // TODO: characterId will be unused until parties with multiple characters 
     // are supported.
-    rpgwizard.craftyCharacter.activationVector.resetHitChecks();
+    Core.getInstance().craftyCharacter.activationVector.resetHitChecks();
 };
 
 /**
@@ -2185,9 +2187,9 @@ RPGcode.prototype.resetActivationChecks = function (characterId) {
  */
 RPGcode.prototype.registerKeyDown = function (key, callback, globalScope) {
     if (globalScope) {
-        rpgwizard.keyDownHandlers[Crafty.keys[key]] = callback;
+        Core.getInstance().keyDownHandlers[Crafty.keys[key]] = callback;
     } else {
-        rpgwizard.keyboardHandler.downHandlers[Crafty.keys[key]] = callback;
+        Core.getInstance().keyboardHandler.downHandlers[Crafty.keys[key]] = callback;
     }
 };
 
@@ -2211,9 +2213,9 @@ RPGcode.prototype.registerKeyDown = function (key, callback, globalScope) {
  */
 RPGcode.prototype.registerKeyUp = function (key, callback, globalScope) {
     if (globalScope) {
-        rpgwizard.keyUpHandlers[Crafty.keys[key]] = callback;
+        Core.getInstance().keyUpHandlers[Crafty.keys[key]] = callback;
     } else {
-        rpgwizard.keyboardHandler.upHandlers[Crafty.keys[key]] = callback;
+        Core.getInstance().keyboardHandler.upHandlers[Crafty.keys[key]] = callback;
     }
 };
 
@@ -2241,9 +2243,9 @@ RPGcode.prototype.registerKeyUp = function (key, callback, globalScope) {
  */
 RPGcode.prototype.registerMouseDown = function (callback, globalScope) {
     if (globalScope) {
-        rpgwizard.mouseDownHandler = callback;
+        Core.getInstance().mouseDownHandler = callback;
     } else {
-        rpgwizard.mouseHandler.mouseDownHandler = callback;
+        Core.getInstance().mouseHandler.mouseDownHandler = callback;
     }
 };
 
@@ -2271,9 +2273,9 @@ RPGcode.prototype.registerMouseDown = function (callback, globalScope) {
  */
 RPGcode.prototype.registerMouseUp = function (callback, globalScope) {
     if (globalScope) {
-        rpgwizard.mouseUpHandler = callback;
+        Core.getInstance().mouseUpHandler = callback;
     } else {
-        rpgwizard.mouseHandler.mouseUpHandler = callback;
+        Core.getInstance().mouseHandler.mouseUpHandler = callback;
     }
 };
 
@@ -2301,9 +2303,9 @@ RPGcode.prototype.registerMouseUp = function (callback, globalScope) {
  */
 RPGcode.prototype.registerMouseClick = function (callback, globalScope) {
     if (globalScope) {
-        rpgwizard.mouseClickHandler = callback;
+        Core.getInstance().mouseClickHandler = callback;
     } else {
-        rpgwizard.mouseHandler.mouseClickHandler = callback;
+        Core.getInstance().mouseHandler.mouseClickHandler = callback;
     }
 };
 
@@ -2331,9 +2333,9 @@ RPGcode.prototype.registerMouseClick = function (callback, globalScope) {
  */
 RPGcode.prototype.registerMouseDoubleClick = function (callback, globalScope) {
     if (globalScope) {
-        rpgwizard.mouseDoubleClickHandler = callback;
+        Core.getInstance().mouseDoubleClickHandler = callback;
     } else {
-        rpgwizard.mouseHandler.mouseDoubleClickHandler = callback;
+        Core.getInstance().mouseHandler.mouseDoubleClickHandler = callback;
     }
 };
 
@@ -2358,9 +2360,9 @@ RPGcode.prototype.registerMouseDoubleClick = function (callback, globalScope) {
  */
 RPGcode.prototype.registerMouseMove = function (callback, globalScope) {
     if (globalScope) {
-        rpgwizard.mouseMoveHandler = callback;
+        Core.getInstance().mouseMoveHandler = callback;
     } else {
-        rpgwizard.mouseHandler.mouseMoveHandler = callback;
+        Core.getInstance().mouseHandler.mouseMoveHandler = callback;
     }
 };
 
@@ -2454,8 +2456,8 @@ RPGcode.prototype.renderNow = function (canvasId) {
  * @param {number} tileIndex The index of the tile in the replacement TileSet.
  */
 RPGcode.prototype.replaceTile = function (tileX, tileY, layer, tileSet, tileIndex) {
-    var tile = rpgwizard.tilesets[tileSet].getTile(tileIndex);
-    rpgwizard.craftyBoard.board.replaceTile(tileX, tileY, layer, tile);
+    var tile = Core.getInstance().tilesets[tileSet].getTile(tileIndex);
+    Core.getInstance().craftyBoard.board.replaceTile(tileX, tileY, layer, tile);
 };
 
 /**
@@ -2471,8 +2473,8 @@ RPGcode.prototype.replaceTile = function (tileX, tileY, layer, tileSet, tileInde
  * @param {number} layer Layer index on the board, first layer starts at 0.
  */
 RPGcode.prototype.removeLayerImage = function (id, layer) {
-    if (layer < rpgwizard.craftyBoard.board.layers.length) {
-        var boardLayer = rpgwizard.craftyBoard.board.layers[layer];
+    if (layer < Core.getInstance().craftyBoard.board.layers.length) {
+        var boardLayer = Core.getInstance().craftyBoard.board.layers[layer];
         var length = boardLayer.images.length;
         for (var i = 0; i < length; i++) {
             var image = boardLayer.images[i];
@@ -2517,7 +2519,7 @@ RPGcode.prototype.removeRunTimeProgram = function (filename) {
  * @param {number} layer The layer the tile is on.
  */
 RPGcode.prototype.removeTile = function (tileX, tileY, layer) {
-    rpgwizard.craftyBoard.board.removeTile(tileX, tileY, layer);
+    Core.getInstance().craftyBoard.board.removeTile(tileX, tileY, layer);
 };
 
 /**
@@ -2548,7 +2550,7 @@ RPGcode.prototype.restart = function () {
  * @param {string} filename Program to run, including any subpaths.
  */
 RPGcode.prototype.runProgram = function (filename) {
-    rpgwizard.runProgram(PATH_PROGRAM + filename, rpgcode, null);
+    Core.getInstance().runProgram(PATH_PROGRAM + filename, rpgcode, null);
 };
 
 /**
@@ -2649,9 +2651,9 @@ RPGcode.prototype.saveJSON = async function (data, successCallback, failureCallb
 RPGcode.prototype.sendToBoard = async function (boardName, tileX, tileY, layer) {
     if (layer === undefined || layer === null || layer < 0) {
         // Backwards compatability check.
-        layer = rpgwizard.craftyCharacter.character.layer;
+        layer = Core.getInstance().craftyCharacter.character.layer;
     }
-    await rpgwizard.switchBoard(boardName, tileX, tileY, layer);
+    await Core.getInstance().switchBoard(boardName, tileX, tileY, layer);
 };
 
 /**
@@ -2916,11 +2918,11 @@ RPGcode.prototype.setDialogPosition = function (position) {
  */
 RPGcode.prototype.setSpriteLocation = function (spriteId, x, y, layer, inTiles) {
     if (inTiles) {
-        x *= rpgwizard.craftyBoard.board.tileWidth;
-        y *= rpgwizard.craftyBoard.board.tileHeight;
+        x *= Core.getInstance().craftyBoard.board.tileWidth;
+        y *= Core.getInstance().craftyBoard.board.tileHeight;
     }
 
-    var entity = rpgwizard.craftyBoard.board.sprites[spriteId];
+    var entity = Core.getInstance().craftyBoard.board.sprites[spriteId];
     if (entity) {
         entity.x = x;
         entity.y = y;
@@ -2945,7 +2947,7 @@ RPGcode.prototype.setSpriteLocation = function (spriteId, x, y, layer, inTiles) 
  * @param {string} stanceId The stanceId (animationId) to use.
  */
 RPGcode.prototype.setSpriteStance = function (spriteId, stanceId) {
-    if (rpgwizard.craftyBoard.board.sprites.hasOwnProperty(spriteId)) {
+    if (Core.getInstance().craftyBoard.board.sprites.hasOwnProperty(spriteId)) {
         var type = rpgcode._getSpriteType(spriteId);
         if (type) {
             type.changeGraphics(stanceId);
@@ -2974,15 +2976,15 @@ RPGcode.prototype.setSpriteStance = function (spriteId, stanceId) {
  */
 RPGcode.prototype.setCharacterLocation = function (characterId, x, y, layer, isTiles) {
     if (isTiles) {
-        x *= rpgwizard.craftyBoard.board.tileWidth;
-        y *= rpgwizard.craftyBoard.board.tileHeight;
+        x *= Core.getInstance().craftyBoard.board.tileWidth;
+        y *= Core.getInstance().craftyBoard.board.tileHeight;
     }
 
     // TODO: characterId will be unused until parties with multiple characters 
     // are supported.
-    rpgwizard.craftyCharacter.x = x;
-    rpgwizard.craftyCharacter.y = y;
-    rpgwizard.craftyCharacter.character.layer = layer;
+    Core.getInstance().craftyCharacter.x = x;
+    Core.getInstance().craftyCharacter.y = y;
+    Core.getInstance().craftyCharacter.character.layer = layer;
 };
 
 /**
@@ -3009,11 +3011,11 @@ RPGcode.prototype.setCharacterSpeed = function (characterId, change) {
     if (change === 0) {
         return;
     } else if (change > 0) {
-        rpgwizard.craftyCharacter._speed *= change;
-        rpgwizard.craftyCharacter._diagonalSpeed *= change;
+        Core.getInstance().craftyCharacter._speed *= change;
+        Core.getInstance().craftyCharacter._diagonalSpeed *= change;
     } else if (change < 0) {
-        rpgwizard.craftyCharacter._speed /= -change;
-        rpgwizard.craftyCharacter._diagonalSpeed /= -change;
+        Core.getInstance().craftyCharacter._speed /= -change;
+        Core.getInstance().craftyCharacter._diagonalSpeed /= -change;
     }
 };
 
@@ -3034,7 +3036,7 @@ RPGcode.prototype.setCharacterSpeed = function (characterId, change) {
 RPGcode.prototype.setCharacterStance = function (characterId, stanceId) {
     // TODO: characterId will be unused until parties with multiple characters 
     // are supported.
-    rpgwizard.craftyCharacter.character.changeGraphics(stanceId);
+    Core.getInstance().craftyCharacter.character.changeGraphics(stanceId);
     Crafty.trigger("Invalidate");
 };
 
@@ -3115,7 +3117,7 @@ RPGcode.prototype.stopSound = function (file) {
  * @param {string} characterId The character to remove it from.
  */
 RPGcode.prototype.takeItem = function (filename, characterId) {
-    var inventory = rpgwizard.craftyCharacter.character.inventory;
+    var inventory = Core.getInstance().craftyCharacter.character.inventory;
     if (inventory[filename]) {
         inventory[filename].pop();
         if (inventory[filename].length === 0) {
@@ -3137,9 +3139,9 @@ RPGcode.prototype.takeItem = function (filename, characterId) {
  */
 RPGcode.prototype.unregisterKeyDown = function (key, globalScope) {
     if (globalScope) {
-        delete rpgwizard.keyDownHandlers[Crafty.keys[key]];
+        delete Core.getInstance().keyDownHandlers[Crafty.keys[key]];
     } else {
-        delete rpgwizard.keyboardHandler.downHandlers[Crafty.keys[key]];
+        delete Core.getInstance().keyboardHandler.downHandlers[Crafty.keys[key]];
     }
 };
 
@@ -3156,9 +3158,9 @@ RPGcode.prototype.unregisterKeyDown = function (key, globalScope) {
  */
 RPGcode.prototype.unregisterKeyUp = function (key, globalScope) {
     if (globalScope) {
-        delete rpgwizard.keyUpHandlers[Crafty.keys[key]];
+        delete Core.getInstance().keyUpHandlers[Crafty.keys[key]];
     } else {
-        delete rpgwizard.keyboardHandler.upHandlers[Crafty.keys[key]];
+        delete Core.getInstance().keyboardHandler.upHandlers[Crafty.keys[key]];
     }
 };
 
@@ -3178,9 +3180,9 @@ RPGcode.prototype.unregisterKeyUp = function (key, globalScope) {
  */
 RPGcode.prototype.unregisterMouseDown = function (globalScope) {
     if (globalScope) {
-        rpgwizard.mouseDownHandler = null;
+        Core.getInstance().mouseDownHandler = null;
     } else {
-        rpgwizard.mouseHandler.mouseDownHandler = null;
+        Core.getInstance().mouseHandler.mouseDownHandler = null;
     }
 };
 
@@ -3200,9 +3202,9 @@ RPGcode.prototype.unregisterMouseDown = function (globalScope) {
  */
 RPGcode.prototype.unregisterMouseUp = function (globalScope) {
     if (globalScope) {
-        rpgwizard.mouseUpHandler = null;
+        Core.getInstance().mouseUpHandler = null;
     } else {
-        rpgwizard.mouseHandler.mouseUpHandler = null;
+        Core.getInstance().mouseHandler.mouseUpHandler = null;
     }
 };
 
@@ -3222,9 +3224,9 @@ RPGcode.prototype.unregisterMouseUp = function (globalScope) {
  */
 RPGcode.prototype.unregisterMouseClick = function (globalScope) {
     if (globalScope) {
-        rpgwizard.mouseClickHandler = null;
+        Core.getInstance().mouseClickHandler = null;
     } else {
-        rpgwizard.mouseHandler.mouseClickHandler = null;
+        Core.getInstance().mouseHandler.mouseClickHandler = null;
     }
 };
 
@@ -3244,9 +3246,9 @@ RPGcode.prototype.unregisterMouseClick = function (globalScope) {
  */
 RPGcode.prototype.unregisterMouseDoubleClick = function (globalScope) {
     if (globalScope) {
-        rpgwizard.mouseDoubleClickHandler = null;
+        Core.getInstance().mouseDoubleClickHandler = null;
     } else {
-        rpgwizard.mouseHandler.mouseDoubleClickHandler = null;
+        Core.getInstance().mouseHandler.mouseDoubleClickHandler = null;
     }
 };
 
@@ -3266,9 +3268,9 @@ RPGcode.prototype.unregisterMouseDoubleClick = function (globalScope) {
  */
 RPGcode.prototype.unregisterMouseMove = function (globalScope) {
     if (globalScope) {
-        rpgwizard.mouseMoveHandler = null;
+        Core.getInstance().mouseMoveHandler = null;
     } else {
-        rpgwizard.mouseHandler.mouseMoveHandler = null;
+        Core.getInstance().mouseHandler.mouseMoveHandler = null;
     }
 };
 
@@ -3292,8 +3294,8 @@ RPGcode.prototype.unregisterMouseMove = function (globalScope) {
  * @param {number} layer Layer index on the board, first layer starts at 0.
  */
 RPGcode.prototype.updateLayerImage = function (image, layer) {
-    if (layer < rpgwizard.craftyBoard.board.layers.length) {
-        var boardLayer = rpgwizard.craftyBoard.board.layers[layer];
+    if (layer < Core.getInstance().craftyBoard.board.layers.length) {
+        var boardLayer = Core.getInstance().craftyBoard.board.layers[layer];
         var length = boardLayer.images.length;
         for (var i = 0; i < length; i++) {
             if (boardLayer.images[i].id === image.id) {

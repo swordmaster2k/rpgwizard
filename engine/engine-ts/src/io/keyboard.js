@@ -12,13 +12,13 @@ function Keyboard() {
     this.upHandlers = {};
     this.entity = Crafty.e()
             .bind("KeyDown", function (e) {
-                var handler = rpgwizard.inProgram ? rpgwizard.keyboardHandler.downHandlers[e.key] : rpgwizard.keyDownHandlers[e.key];
+                var handler = Core.getInstance().inProgram ? Core.getInstance().keyboardHandler.downHandlers[e.key] : Core.getInstance().keyDownHandlers[e.key];
                 if (handler) {
                     handler(e);
                 }
             })
             .bind("KeyUp", function (e) {
-                var handler = rpgwizard.inProgram ? rpgwizard.keyboardHandler.upHandlers[e.key] : rpgwizard.keyUpHandlers[e.key];
+                var handler = Core.getInstance().inProgram ? Core.getInstance().keyboardHandler.upHandlers[e.key] : Core.getInstance().keyUpHandlers[e.key];
                 if (handler) {
                     handler(e);
                 }
@@ -43,67 +43,67 @@ function Keyboard() {
             var move = this.__move;
 
             this.bind("EnterFrame", function () {
-                if (!rpgwizard.controlEnabled) {
+                if (!Core.getInstance().controlEnabled) {
                     return;
                 }
 
                 // Move the player in a direction depending on the booleans.
                 if (move.south && move.west) {
-                    if (rpgwizard.craftyCharacter.character.direction !== this.character.DirectionEnum.SOUTH_WEST) {
-                        rpgwizard.craftyCharacter.character.direction = this.character.DirectionEnum.SOUTH_WEST;
+                    if (Core.getInstance().craftyCharacter.character.direction !== this.character.DirectionEnum.SOUTH_WEST) {
+                        Core.getInstance().craftyCharacter.character.direction = this.character.DirectionEnum.SOUTH_WEST;
                         this.character.changeGraphics(this.character.direction);
                     }
                     this.x -= this._diagonalSpeed;
                     this.y += this._diagonalSpeed;
                     Crafty.trigger("Moved", {});
                 } else if (move.south && move.east) {
-                    if (rpgwizard.craftyCharacter.character.direction !== this.character.DirectionEnum.SOUTH_EAST) {
-                        rpgwizard.craftyCharacter.character.direction = this.character.DirectionEnum.SOUTH_EAST;
+                    if (Core.getInstance().craftyCharacter.character.direction !== this.character.DirectionEnum.SOUTH_EAST) {
+                        Core.getInstance().craftyCharacter.character.direction = this.character.DirectionEnum.SOUTH_EAST;
                         this.character.changeGraphics(this.character.direction);
                     }
                     this.x += this._diagonalSpeed;
                     this.y += this._diagonalSpeed;
                     Crafty.trigger("Moved", {});
                 } else if (move.north && move.west) {
-                    if (rpgwizard.craftyCharacter.character.direction !== this.character.DirectionEnum.NORTH_WEST) {
-                        rpgwizard.craftyCharacter.character.direction = this.character.DirectionEnum.NORTH_WEST;
+                    if (Core.getInstance().craftyCharacter.character.direction !== this.character.DirectionEnum.NORTH_WEST) {
+                        Core.getInstance().craftyCharacter.character.direction = this.character.DirectionEnum.NORTH_WEST;
                         this.character.changeGraphics(this.character.direction);
                     }
                     this.x -= this._diagonalSpeed;
                     this.y -= this._diagonalSpeed;
                     Crafty.trigger("Moved", {});
                 } else if (move.north && move.east) {
-                    if (rpgwizard.craftyCharacter.character.direction !== this.character.DirectionEnum.NORTH_EAST) {
-                        rpgwizard.craftyCharacter.character.direction = this.character.DirectionEnum.NORTH_EAST;
+                    if (Core.getInstance().craftyCharacter.character.direction !== this.character.DirectionEnum.NORTH_EAST) {
+                        Core.getInstance().craftyCharacter.character.direction = this.character.DirectionEnum.NORTH_EAST;
                         this.character.changeGraphics(this.character.direction);
                     }
                     this.x += this._diagonalSpeed;
                     this.y -= this._diagonalSpeed;
                     Crafty.trigger("Moved", {});
                 } else if (move.east) {
-                    if (rpgwizard.craftyCharacter.character.direction !== this.character.DirectionEnum.EAST) {
-                        rpgwizard.craftyCharacter.character.direction = this.character.DirectionEnum.EAST;
+                    if (Core.getInstance().craftyCharacter.character.direction !== this.character.DirectionEnum.EAST) {
+                        Core.getInstance().craftyCharacter.character.direction = this.character.DirectionEnum.EAST;
                         this.character.changeGraphics(this.character.direction);
                     }
                     this.x += this._speed;
                     Crafty.trigger("Moved", {});
                 } else if (move.west) {
-                    if (rpgwizard.craftyCharacter.character.direction !== this.character.DirectionEnum.WEST) {
-                        rpgwizard.craftyCharacter.character.direction = this.character.DirectionEnum.WEST;
+                    if (Core.getInstance().craftyCharacter.character.direction !== this.character.DirectionEnum.WEST) {
+                        Core.getInstance().craftyCharacter.character.direction = this.character.DirectionEnum.WEST;
                         this.character.changeGraphics(this.character.direction);
                     }
                     this.x -= this._speed;
                     Crafty.trigger("Moved", {});
                 } else if (move.north) {
-                    if (rpgwizard.craftyCharacter.character.direction !== this.character.DirectionEnum.NORTH) {
-                        rpgwizard.craftyCharacter.character.direction = this.character.DirectionEnum.NORTH;
+                    if (Core.getInstance().craftyCharacter.character.direction !== this.character.DirectionEnum.NORTH) {
+                        Core.getInstance().craftyCharacter.character.direction = this.character.DirectionEnum.NORTH;
                         this.character.changeGraphics(this.character.direction);
                     }
                     this.y -= this._speed;
                     Crafty.trigger("Moved", {});
                 } else if (move.south) {
-                    if (rpgwizard.craftyCharacter.character.direction !== this.character.DirectionEnum.SOUTH) {
-                        rpgwizard.craftyCharacter.character.direction = this.character.DirectionEnum.SOUTH;
+                    if (Core.getInstance().craftyCharacter.character.direction !== this.character.DirectionEnum.SOUTH) {
+                        Core.getInstance().craftyCharacter.character.direction = this.character.DirectionEnum.SOUTH;
                         this.character.changeGraphics(this.character.direction);
                     }
                     this.y += this._speed;

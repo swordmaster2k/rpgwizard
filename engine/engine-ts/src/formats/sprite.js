@@ -7,8 +7,11 @@
  */
 /* global rpgwizard, PATH_ANIMATION, PATH_PROGRAM, Promise */
 
-function Sprite(filename) {
-    if (rpgwizard.debugEnabled) {
+import { Core } from "../core.js";
+import { Animation } from "./animation.js";
+
+export function Sprite(filename) {
+    if (Core.getInstance().debugEnabled) {
         console.info("Creating Sprite filename=[%s]", filename);
     }
     this.filename = filename;
@@ -73,14 +76,14 @@ Sprite.prototype.StandardKeys = [
 ];
 
 Sprite.prototype.load = async function (json) {
-    if (rpgwizard.debugEnabled) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Loading Sprite filename=[%s]", this.filename);
     }
 
     if (!json) {
         let response = await fetch(this.filename);
         json = await response.json();
-        rpgwizard.enemies[this.filename] = JSON.stringify(json);
+        Core.getInstance().enemies[this.filename] = JSON.stringify(json);
     }
     
     for (var property in json) {
@@ -91,7 +94,7 @@ Sprite.prototype.load = async function (json) {
     // this.calculateCollisionPoints();
     // this.calculateActivationPoints();
 
-    if (rpgwizard.debugEnabled) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Finished loading Enemy filename=[%s]", this.filename);
     }
 
@@ -145,7 +148,7 @@ Sprite.prototype.calculateActivationPoints = function () {
 };
 
 Sprite.prototype.loadAssets = async function () {
-    if (rpgwizard.debugEnabled) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Loading Sprite assets name=[%s]", this.name);
     }
 
@@ -157,7 +160,7 @@ Sprite.prototype.loadAssets = async function () {
 };
 
 Sprite.prototype.loadAnimations = async function () {
-    if (rpgwizard.debugEnabled) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Loading Sprite animations name=[%s]", this.name);
     }
 
@@ -254,17 +257,17 @@ Sprite.prototype.loadAnimations = async function () {
 };
 
 Sprite.prototype._loadAnimation = async function (fileName) {
-    if (rpgwizard.debugEnabled) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Loading Sprite animation name=[%s], fileName=[%s]", this.name, fileName);
     }
 
     if (fileName) {
-        if (rpgwizard.animations[fileName]) {
-            return rpgwizard.animations[fileName];
+        if (Core.getInstance().animations[fileName]) {
+            return Core.getInstance().animations[fileName];
         } else {
             var animation = new Animation(PATH_ANIMATION + fileName);
             var result = await animation.load();
-            rpgwizard.animations[fileName] = result;
+            Core.getInstance().animations[fileName] = result;
             return result;
         }
     } else {
@@ -273,7 +276,7 @@ Sprite.prototype._loadAnimation = async function (fileName) {
 };
 
 Sprite.prototype.loadFrames = async function () {
-    if (rpgwizard.debugEnabled) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Loading Sprite frames name=[%s]", this.name);
     }
 
@@ -297,7 +300,7 @@ Sprite.prototype.loadFrames = async function () {
 };
 
 Sprite.prototype.loadSoundEffects = function () {
-    if (rpgwizard.debugEnabled) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Loading Sprite sound effects name=[%s]", this.name);
     }
 
@@ -319,7 +322,7 @@ Sprite.prototype.loadSoundEffects = function () {
 };
 
 Sprite.prototype.setReady = function () {
-    if (rpgwizard.debugEnabled) {
+    if (Core.getInstance().debugEnabled) {
         console.debug("Setting ready Sprite name=[%s]", this.name);
     }
 

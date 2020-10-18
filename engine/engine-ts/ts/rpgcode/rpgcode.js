@@ -156,20 +156,6 @@ RPGcode.prototype._convertCraftyId = function (craftyId) {
     });
 };
 
-RPGcode.prototype._getSpriteType = function (spriteId) {
-    var entity = rpgwizard.craftyBoard.board.sprites[spriteId];
-    if (entity && entity.sprite) {
-        if (entity.sprite.enemy) {
-            return entity.sprite.enemy;
-        } else if (entity.sprite.npc) {
-            return entity.sprite.npc;
-        } else if (entity.sprite.character) {
-            return entity.sprite.character;
-        }
-    }
-    return null;
-};
-
 /**
  * Adds the layer image to the requested layer, it will be rendered immediately
  * after being added to the board.

@@ -68,62 +68,62 @@ ScreenRenderer.prototype.renderBoard = function (context) {
             /*
              * Sort sprites for depth.
              */
-            // var layerSprites = this.sortSprites(i, character);
+            var layerSprites = this.sortSprites(boardLayer);
 
             // REFACTOR: Update this
             /*
              * Render sprites.
              */
-            // layerSprites.forEach(function (sprite) {
-            //     if (sprite && sprite.layer === i && sprite.renderReady) {
-            //         var frame = sprite.getActiveFrame();
-            //         if (frame) {
-            //             var x = parseInt(sprite.x - (frame.width / 2) + xShift);
-            //             var y = parseInt(sprite.y - (frame.height / 2) + yShift);
-            //             context.drawImage(frame, x, y);
-            //         }
+            layerSprites.forEach(function (sprite) {
+                if (sprite && sprite.layer === i && sprite.renderReady) {
+                    var frame = sprite.getActiveFrame();
+                    if (frame) {
+                        var x = parseInt(sprite.x - (frame.width / 2) + xShift);
+                        var y = parseInt(sprite.y - (frame.height / 2) + yShift);
+                        context.drawImage(frame, x, y);
+                    }
 
-            //         if (rpgwizard.showVectors) {
-            //             // Draw collision ploygon.
-            //             var x, y, moved = false;
-            //             var points = sprite.collisionPoints;
-            //             context.beginPath();
-            //             context.lineWidth = "2";
-            //             context.strokeStyle = "#FF0000";
-            //             for (var j = 0; j < points.length - 1; j += 2) {
-            //                 x = sprite.x + points[j];
-            //                 y = sprite.y + points[j + 1];
-            //                 if (!moved) {
-            //                     context.moveTo(x + xShift, y + yShift);
-            //                     moved = true;
-            //                 } else {
-            //                     context.lineTo(x + xShift, y + yShift);
-            //                 }
-            //             }
-            //             context.closePath();
-            //             context.stroke();
+                    if (rpgwizard.showVectors) {
+                        // Draw collision ploygon.
+                        var x, y, moved = false;
+                        var points = sprite.collisionPoints;
+                        context.beginPath();
+                        context.lineWidth = "2";
+                        context.strokeStyle = "#FF0000";
+                        for (var j = 0; j < points.length - 1; j += 2) {
+                            x = sprite.x + points[j];
+                            y = sprite.y + points[j + 1];
+                            if (!moved) {
+                                context.moveTo(x + xShift, y + yShift);
+                                moved = true;
+                            } else {
+                                context.lineTo(x + xShift, y + yShift);
+                            }
+                        }
+                        context.closePath();
+                        context.stroke();
 
-            //             // Draw activation ploygon.
-            //             moved = false;
-            //             points = sprite.activationPoints;
-            //             context.beginPath();
-            //             context.lineWidth = "2";
-            //             context.strokeStyle = "#FFFF00";
-            //             for (var j = 0; j < points.length - 1; j += 2) {
-            //                 x = sprite.x + points[j] + sprite.activationOffset.x;
-            //                 y = sprite.y + points[j + 1] + sprite.activationOffset.y;
-            //                 if (!moved) {
-            //                     context.moveTo(x + xShift, y + yShift);
-            //                     moved = true;
-            //                 } else {
-            //                     context.lineTo(x + xShift, y + yShift);
-            //                 }
-            //             }
-            //             context.closePath();
-            //             context.stroke();
-            //         }
-            //     }
-            // });
+                        // Draw activation ploygon.
+                        moved = false;
+                        points = sprite.activationPoints;
+                        context.beginPath();
+                        context.lineWidth = "2";
+                        context.strokeStyle = "#FFFF00";
+                        for (var j = 0; j < points.length - 1; j += 2) {
+                            x = sprite.x + points[j] + sprite.activationOffset.x;
+                            y = sprite.y + points[j + 1] + sprite.activationOffset.y;
+                            if (!moved) {
+                                context.moveTo(x + xShift, y + yShift);
+                                moved = true;
+                            } else {
+                                context.lineTo(x + xShift, y + yShift);
+                            }
+                        }
+                        context.closePath();
+                        context.stroke();
+                    }
+                }
+            });
 
             if (rpgwizard.showVectors) {
                 /*
@@ -175,16 +175,11 @@ ScreenRenderer.prototype.renderUI = function (context) {
 ScreenRenderer.prototype.sortSprites = function (layer, player) {
     var layerSprites = [];
 
-    // REFACTOR: Remove this
-    // if (player && player.layer === layer && player.renderReady) {
-    //     layerSprites.push(player);
-    // }
-
-    var board = this.board;
-    Object.keys(this.board.sprites).forEach(function (key) {
-        var entity = board.sprites[key];
-        var asset = rpgcode._getSpriteType(key);
-        if (layer === entity.layer && asset && asset.renderReady) {
+    Object.keys(layer.sprites).forEach(function (key) {
+        // REFACTOR: Update this
+        var entity = layer.sprites[key];
+        var asset = entity.sprite.enemy;
+        if (asset && asset.renderReady) {
             asset.x = entity.x;
             asset.y = entity.y;
             asset.layer = entity.layer;

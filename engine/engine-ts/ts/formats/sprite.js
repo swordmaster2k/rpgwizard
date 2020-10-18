@@ -7,7 +7,12 @@
  */
 /* global rpgwizard, PATH_ANIMATION, PATH_PROGRAM, Promise */
 
-function Sprite() {
+function Sprite(filename) {
+    if (rpgwizard.debugEnabled) {
+        console.info("Creating Sprite filename=[%s]", filename);
+    }
+    this.filename = filename;
+
     this.x = 0;
     this.y = 0;
     this.layer = 0;
@@ -66,6 +71,54 @@ Sprite.prototype.StandardKeys = [
     "REST", "SOUTH_IDLE", "NORTH_IDLE", "EAST_IDLE", "WEST_IDLE",
     "NORTH_EAST_IDLE", "NORTH_WEST_IDLE", "SOUTH_EAST_IDLE", "SOUTH_WEST_IDLE"
 ];
+
+Sprite.prototype.load = async function (json) {
+    if (rpgwizard.debugEnabled) {
+        console.debug("Loading Sprite filename=[%s]", this.filename);
+    }
+
+    if (!json) {
+        let response = await fetch(this.filename);
+        json = await response.json();
+        rpgwizard.enemies[this.filename] = JSON.stringify(json);
+    }
+    
+    for (var property in json) {
+        this[property] = json[property];
+    }
+
+    // REFACTOR: Update this
+    // this.calculateCollisionPoints();
+    // this.calculateActivationPoints();
+
+    if (rpgwizard.debugEnabled) {
+        console.debug("Finished loading Enemy filename=[%s]", this.filename);
+    }
+
+    return this;
+};
+
+Sprite.prototype.hitOnCollision = function (hitData, entity) {
+    var sprite = this;
+    hitData.forEach(function(hit) {
+        sprite.checkCollisions(hit, entity);
+    });
+};
+
+Sprite.prototype.hitOffCollision = function (hitData, entity) {
+    // Not used yet.
+};
+
+Sprite.prototype.hitOnActivation = function (hitData, entity) {
+    var sprite = this;
+    hitData.forEach(function(hit) {
+        sprite.checkActivations(hit, entity);
+    });
+};
+
+Sprite.prototype.hitOffActivation = function (hitData, entity) {
+    // Not used yet.
+};
 
 Sprite.prototype.calculateCollisionPoints = function () {
     // Build the collision polygon.

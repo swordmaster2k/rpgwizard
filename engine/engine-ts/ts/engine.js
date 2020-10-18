@@ -140,11 +140,6 @@ RPGWizard.prototype.setup = async function (filename) {
 
     // Setup run time keys.
     this.keyboardHandler = new Keyboard();
-    if (this.project.menuKey) {
-        this.keyboardHandler.downHandlers[this.project.menuKey] = function () {
-            rpgwizard.runProgram(PATH_PROGRAM + this.project.menuPlugin, {});
-        };
-    }
 
     // Setup the mouse handler.
     this.mouseHandler = new Mouse();
@@ -164,7 +159,7 @@ RPGWizard.prototype.setup = async function (filename) {
     // Run game's startup script
     try {
         console.info("Starting to run startup script...");
-        await rpgwizard.runProgram("game/scripts/startup.js", this, () => {console.info("program ran...");});
+        await rpgwizard.runProgram("game/scripts/startup.js", this, () => {rpgwizard.haveRunStartup = true;});
         console.info("Finished running startup script...");
     } catch (e) {
         log.error(e);
@@ -463,6 +458,15 @@ RPGWizard.prototype.loadBoard = async function (board) {
         // boardLayer.images.forEach(function (image) {
         //     assets.images.push(image.src);
         // }, this);
+
+        /*
+        * Setup board sprites.
+        */
+        var sprites = {};
+        for (const [key, value] of Object.entries(boardLayer.sprites)) {
+            sprites[key] = await this.loadSprite(value);
+        }
+        boardLayer.sprites = sprites;
     }
 
     // REFACTOR: Update this
@@ -605,47 +609,36 @@ RPGWizard.prototype.loadSprite = async function (sprite) {
     if (rpgwizard.debugEnabled) {
         console.debug("Loading sprite=[%s]", JSON.stringify(sprite));
     }
-    var asset;
-    if (sprite.name.endsWith(".enemy")) {
-        var json;
-        const newEnemy = new Enemy(PATH_ENEMY + sprite.name);
-        if (this.enemies[newEnemy.filename]) {
-            json = JSON.parse(this.enemies[newEnemy.filename]);
-        }
-        asset = sprite.enemy = await newEnemy.load(json);
-        sprite.collisionPoints = sprite.enemy.collisionPoints;
-    } else if (sprite.name.endsWith(".npc")) {
-        var json;
-        const newNpc = new NPC(PATH_NPC + sprite.name);
-        if (this.npcs[newNpc.filename]) {
-            json = JSON.parse(this.npcs[newNpc.filename]);
-        }
-        asset = sprite.npc = await newNpc.load(json);
-        sprite.collisionPoints = sprite.npc.collisionPoints;
-    } else {
-        var json;
-        const newCharacter = new Character(PATH_CHARACTER + sprite.name);
-        if (this.characters[newCharacter.filename]) {
-            json = JSON.parse(this.characters[newCharacter.filename]);
-        }
-        asset = sprite.character = await newCharacter.load(json);
-        sprite.collisionPoints = sprite.character.collisionPoints;
-    }
-    sprite.x = sprite.startingPosition.x;
-    sprite.y = sprite.startingPosition.y;
-    sprite.layer = sprite.startingPosition.layer;
 
+    var asset;
+    if (sprite.asset.endsWith(".sprite")) {
+        var json;
+        const newSprite = new Sprite(PATH_SPRITE + sprite.asset);
+        if (this.enemies[newSprite.filename]) {
+            json = JSON.parse(this.enemies[newSprite.filename]);
+        }
+        asset = sprite.enemy = await newSprite.load(json);
+        sprite.collisionPoints = sprite.enemy.collisionPoints;
+    }
+
+    sprite.x = sprite.startLocation.x;
+    sprite.y = sprite.startLocation.y;
+    sprite.layer = sprite.startLocation.layer;
+
+    // REFACTOR: Update this
     var isEnemy = sprite.enemy !== undefined;
+
     // TODO: width and height of npc must contain the collision polygon.
     if (sprite.thread) {
         sprite.thread = await this.openProgram(PATH_PROGRAM + sprite.thread);
     }
+
     var entity;
     const bounds = engineUtil.getPolygonBounds(asset.activationPoints);
     var activationVector = Crafty.e("2D, Canvas, ActivationVector")
             .attr({
-                x: sprite.x + asset.activationOffset.x,
-                y: sprite.y + asset.activationOffset.y,
+                x: sprite.x + asset.trigger.x,
+                y: sprite.y + asset.trigger.y,
                 w: bounds.width,
                 h: bounds.height,
                 sprite: sprite})
@@ -658,6 +651,7 @@ RPGWizard.prototype.loadSprite = async function (sprite) {
                         asset.hitOffActivation(hitData, entity);
                     }
             );
+
     Crafty.c("BoardSprite", {
         ready: true,
         visible: false,
@@ -699,6 +693,7 @@ RPGWizard.prototype.loadSprite = async function (sprite) {
             this.activationVector.destroy();
         }
     });
+
     entity = Crafty.e("BoardSprite")
             .BaseVector(
                     new Crafty.polygon(asset.collisionPoints),

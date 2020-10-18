@@ -17,7 +17,9 @@ let play = document.getElementById("play");
 let playGame = async function () {
     console.info("Starting the game...");
     play.style.visibility = "hidden";
+    // REFACTOR: Use module instead...
     await rpgwizard.setup("game/default.game");
 };
 play.addEventListener("click", playGame, { once: true });
 console.info("Awaiting user input...");
+export {};

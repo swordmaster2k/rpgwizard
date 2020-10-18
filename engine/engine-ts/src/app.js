@@ -7,8 +7,10 @@
  */
 /* global rpgwizard */
 
+import { Core } from "./core.js";
+
 // Default error handler.
-window.onerror = function (msg, url, line) {
+window.onerror = function(msg, url, line) {
     console.error("Uncaught error msg=[%s], url=[%s], line=[%s]", msg, url, line);
     alert("Error message: " + msg + "\n\n" + "URL: " + url + "\n\n" + "Line Number: " + line + "\n\n");
     return true;
@@ -19,6 +21,8 @@ let play = document.getElementById("play");
 let playGame = async function() {
     console.info("Starting the game...");
     play.style.visibility = "hidden";
+
+    // REFACTOR: Use module instead...
     await rpgwizard.setup("game/default.game");
 };
 play.addEventListener("click", playGame, {once: true});

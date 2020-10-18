@@ -50,3 +50,6 @@ documentation/rpgwizard-docs/src/*.js
 # Migrator
 migrator/input/
 migrator/output/
+
+# Engine
+engine/engine-ts/game/

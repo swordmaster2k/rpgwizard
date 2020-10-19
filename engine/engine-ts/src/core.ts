@@ -15,7 +15,7 @@ import { Sprite } from "./formats/sprite.js";
 import { ScreenRenderer } from "./renderers/screenRenderer.js";
 
 import { RPGcode } from "./rpgcode/rpgcode.js";
-import { ScriptVM } from "./script-vm.js";
+import { ScriptVM } from "./client-api/script-vm.js";
 
 import { Keyboard } from "./io/keyboard.js";
 import { Mouse } from "./io/mouse.js";
@@ -29,8 +29,6 @@ declare global {
     // eslint-disable-next-line no-unused-vars
     interface Window { rpgcode: any; }
 }
-
-const AsyncFunction = Object.getPrototypeOf(async function() {}).constructor;
 
 export class Core {
 
@@ -244,11 +242,6 @@ export class Core {
         // Setup the drawing canvas (game screen).
         this.screen = new ScreenRenderer();
 
-        // REFACTOR: Do something about this
-        // Setup the RPGcode rutime.
-        // rpgcode = new RPGcode();
-        // rpgcode.log("test global");
-
         // Disable controls until everything is ready.
         this.controlEnabled = false;
 
@@ -258,7 +251,7 @@ export class Core {
         // Run game's startup script
         try {
             console.info("Starting to run startup script...");
-            await this.scriptVM.run("../game/scripts/new-startup.js", this);
+            await this.scriptVM.run("../../game/scripts/new-startup.js", this);
             // await rpgwizard.runProgram("game/scripts/startup.js", this, () => { rpgwizard.haveRunStartup = true; });
             console.info("Finished running startup script...");
         } catch (e) {
@@ -268,7 +261,7 @@ export class Core {
     }
 
     // REFACTOR: Move this
-    public loadScene(e: any) {
+    public async loadScene(e: any) {
         if (e) {
             if (e.type === "loading") {
                 engineUtil.showProgress(e.value.percent);
@@ -280,26 +273,25 @@ export class Core {
             }
         } else {
             engineUtil.hideProgress();
+
+            // REFACTOR: Update this
             // Run the startup program before the game logic loop.
             if (Core.instance.project.startupProgram && Core.instance.firstScene && !Core.instance.haveRunStartup) {
-                this.runProgram(
-                    PATH_PROGRAM + this.project.startupProgram,
-                    {},
-                    () => {
-                        Core.instance.haveRunStartup = true;
-                        Core.instance.inProgram = false;
-                        Core.instance.currentProgram = null;
-                        Core.instance.controlEnabled = true;
-                        Core.instance.startScene();
-                    });
+                await this.scriptVM.run(PATH_PROGRAM + this.project.startupProgram, Core.instance);
+                Core.instance.haveRunStartup = true;
+                Core.instance.inProgram = false;
+                Core.instance.currentProgram = null;
+                Core.instance.controlEnabled = true;
+
+                await Core.instance.startScene();
             } else {
-                Core.instance.startScene();
+                await Core.instance.startScene();
             }
         }
     }
 
     // REFACTOR: Move this
-    public startScene() {
+    public async startScene() {
         if (this.firstScene) {
             this.firstScene = false;
         }
@@ -320,9 +312,7 @@ export class Core {
         Crafty.trigger("Invalidate");
 
         if (this.craftyBoard.board.firstRunProgram) {
-            this.runProgram(
-                PATH_PROGRAM + this.craftyBoard.board.firstRunProgram,
-                null, null);
+            await this.scriptVM.run(PATH_PROGRAM + this.craftyBoard.board.firstRunProgram, Core.instance);
         } else {
             this.controlEnabled = true;
             Crafty.trigger("EnterFrame", {});
@@ -745,7 +735,7 @@ export class Core {
 
         // TODO: width and height of npc must contain the collision polygon.
         if (sprite.thread) {
-            sprite.thread = await this.openProgram(PATH_PROGRAM + sprite.thread);
+            sprite.thread = await this.scriptVM.open(PATH_PROGRAM + sprite.thread);
         }
 
         var entity;
@@ -793,7 +783,8 @@ export class Core {
                 this.bind("EnterFrame", function(event) {
                     this.dt = event.dt / 1000;
                     if (sprite.thread && asset.renderReady && Core.getInstance().craftyBoard.show) {
-                        sprite.thread.apply(this);
+                        // REFACTOR: FIX ME
+                        // sprite.thread.default(this);
                     }
                 });
                 this.bind("TweenEnd", function(event) {
@@ -825,80 +816,6 @@ export class Core {
         this.queueCraftyAssets(assets, asset);
 
         return entity;
-    }
-
-    // REFACTOR: Remove this
-    public loadItem(item: any) {
-        if (this.debugEnabled) {
-            console.debug("Loading item=[%s]", JSON.stringify(item));
-        }
-        this.queueCraftyAssets(item.loadAssets(), item);
-    }
-
-    // REFACTOR: Remove this
-    public async openProgram(filename: string) {
-        if (this.debugEnabled) {
-            console.debug("Opening program=[%s]", filename);
-        }
-        var program = this.programCache[filename];
-        if (!program) {
-            const response = await fetch(filename);
-            const responseText = await response.text();
-            program = new AsyncFunction(responseText);
-            this.programCache[filename] = program;
-        }
-
-        return program;
-    }
-
-    // REFACTOR: Remove this
-    public async runProgram(filename: string, source: any, callback: any) {
-        if (this.debugEnabled) {
-            console.debug("Running program=[%s]", filename);
-        }
-        this.activePrograms++;
-        this.inProgram = true;
-        this.currentProgram = filename;
-        rpgcode.source = source; // Entity that triggered the program.
-        this.controlEnabled = false;
-        this.endProgramCallback = callback; // Store endProgram callback.
-        this.keyboardHandler.downHandlers = {}; // Wipe previous keyboard handlers.
-        this.keyboardHandler.upHandlers = {};
-        this.mouseHandler.mouseDownHandler = null; // Wipe previous mouse handlers.
-        this.mouseHandler.mouseUpHandler = null;
-        this.mouseHandler.mouseClickHandler = null;
-        this.mouseHandler.mouseDoubleClickHandler = null;
-        this.mouseHandler.mouseMoveHandler = null;
-
-        var program = await this.openProgram(filename);
-        program.apply(source);
-    }
-
-    // REFACTOR: Remove this
-    public endProgram(nextProgram: string) {
-        if (this.debugEnabled) {
-            console.debug("Ending current program, nextProgram=[%s]", nextProgram);
-        }
-
-        if (this.activePrograms > 0) {
-            this.activePrograms--;
-        }
-        if (nextProgram) {
-            this.runProgram(
-                PATH_PROGRAM + nextProgram,
-                rpgcode.source,
-                this.endProgramCallback
-            );
-        } else if (this.activePrograms === 0) {
-            if (this.endProgramCallback) {
-                this.endProgramCallback();
-                this.endProgramCallback = null;
-            } else {
-                this.inProgram = false;
-                this.currentProgram = null;
-                this.controlEnabled = true;
-            }
-        }
     }
 
     // REFACTOR: Move this

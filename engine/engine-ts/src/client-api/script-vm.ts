@@ -14,10 +14,9 @@ export class ScriptVM {
         this.cache = {};
     }
 
-    public async run(file: string, origin: object) {
-        console.info("running game script file=[%s], origin=[%s]", file, origin);
+    public async open(file: string) {
+        console.info("opening game script file=[%s]", file);
 
-        // Try to get the game script from the cache
         let script: any;
         if (this.cache[file]) {
             script = this.cache[file];
@@ -26,7 +25,15 @@ export class ScriptVM {
             this.cache[file] = script;
         }
 
-        // Run the game script, provide the origin
+        console.info("returning game script file=[%s]", file);
+
+        return script;
+    }
+
+    public async run(file: string, origin: object) {
+        console.info("running game script file=[%s], origin=[%s]", file, origin);
+
+        const script: any = await this.open(file);
         await script.default(origin);
 
         console.info("finished game script file=[%s], origin=[%s]", file, origin);

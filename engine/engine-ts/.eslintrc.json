@@ -19,7 +19,7 @@
         "padded-blocks": 0,
         "semi": ["error", "always"],
         "space-before-function-paren": ["error", "never"],
-        "quotes": ["error", "double"],
+        "quotes": ["error", "double", {"allowTemplateLiterals": true}],
         "new-cap": 0
     },
     "overrides": [

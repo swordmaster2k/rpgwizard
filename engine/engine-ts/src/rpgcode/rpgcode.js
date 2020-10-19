@@ -984,11 +984,11 @@ RPGcode.prototype.drawText = function (x, y, text, canvasId) {
  * @param {string} nextProgram The relative path to the next program to execute.
  */
 RPGcode.prototype.endProgram = function (nextProgram) {
-    if (nextProgram) {
-        Core.getInstance().endProgram(nextProgram);
-    } else {
-        Core.getInstance().endProgram();
-    }
+    // if (nextProgram) {
+    //     Core.getInstance().endProgram(nextProgram);
+    // } else {
+    //     Core.getInstance().endProgram();
+    // }
 };
 
 /**

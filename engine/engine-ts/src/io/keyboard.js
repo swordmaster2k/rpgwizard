@@ -7,7 +7,9 @@
  */
 /* global rpgwizard */
 
-function Keyboard() {
+import { Core } from "../core.js";
+
+export function Keyboard() {
     this.downHandlers = {};
     this.upHandlers = {};
     this.entity = Crafty.e()

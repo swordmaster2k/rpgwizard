@@ -53,3 +53,4 @@ migrator/output/
 
 # Engine
 engine/engine-ts/game/
+engine/engine-ts/js/

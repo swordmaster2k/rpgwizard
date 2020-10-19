@@ -7,11 +7,10 @@
  */
 /* global rpgwizard */
 
-function Mouse() {
+export function Mouse() {
     this.mouseDownHandler = null;
     this.mouseUpHandler = null;
     this.mouseClickHandler = null;
     this.mouseDoubleClickHandler = null;
     this.mouseMoveHandler = null;
 }
-

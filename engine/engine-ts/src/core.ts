@@ -6,7 +6,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-/* global PATH_BITMAP, PATH_MEDIA, PATH_PROGRAM, PATH_BOARD, PATH_CHARACTER, PATH_NPC, jailed, rpgcode, PATH_TILESET, PATH_ENEMY, Crafty, engineUtil, Promise */
+/* global PATH_BITMAP, PATH_MEDIA, PATH_PROGRAM, PATH_BOARD, PATH_CHARACTER, PATH_NPC, jailed, rpgcode, PATH_TILESET, PATH_ENEMY, Crafty, engineUtil, Promise, requirejs, PATH_SPRITE */
 
 import { Project } from "./formats/project.js";
 import { Board } from "./formats/board.js";
@@ -17,12 +17,16 @@ import { ScreenRenderer } from "./renderers/screenRenderer.js";
 import { RPGcode } from "./rpgcode/rpgcode.js";
 import { ScriptVM } from "./script-vm.js";
 
+import { Keyboard } from "./io/keyboard.js";
+import { Mouse } from "./io/mouse.js";
+
 // REFACTOR: Find better solution
 // https://stackoverflow.com/questions/31173738/typescript-getting-error-ts2304-cannot-find-name-require
 declare const Crafty: any;
 
 // Allow extending window with RPG API global
 declare global {
+    // eslint-disable-next-line no-unused-vars
     interface Window { rpgcode: any; }
 }
 
@@ -38,7 +42,7 @@ export class Core {
 
     private screen: any;
     private project: any;
-    private assetsToLoad: object;
+    private assetsToLoad: any;
     private waitingEntities: Array<any>;
 
     // REFACTOR: Move this
@@ -167,7 +171,7 @@ export class Core {
 
         // Custom crafty components.
         Crafty.c("BaseVector", {
-            BaseVector: function (polygon, hiton, hitoff) {
+            BaseVector: function(polygon, hiton, hitoff) {
                 this.requires("Collision, BASE");
                 this.collision(polygon);
                 this.checkHits("SOLID, BASE");
@@ -177,7 +181,7 @@ export class Core {
             }
         });
         Crafty.c("ActivationVector", {
-            ActivationVector: function (polygon, hiton, hitoff) {
+            ActivationVector: function(polygon, hiton, hitoff) {
                 this.requires("Collision, ACTIVATION, Raycastable");
                 this.collision(polygon);
                 this.checkHits("PASSABLE, ACTIVATION");
@@ -213,9 +217,9 @@ export class Core {
         if (this.project.viewport.fullScreen) {
             var bodyWidth = engineUtil.getBodyWidth();
             var bodyHeight = engineUtil.getBodyHeight();
-            scale = (bodyWidth / this.project.viewport.width).toFixed(2);
+            scale = parseFloat((bodyWidth / this.project.viewport.width).toFixed(2));
             if (this.project.viewport.height * scale > bodyHeight) {
-                scale = (bodyHeight / this.project.viewport.height).toFixed(2);
+                scale = parseFloat((bodyHeight / this.project.viewport.height).toFixed(2));
             }
         }
 
@@ -259,10 +263,11 @@ export class Core {
             console.info("Finished running startup script...");
         } catch (e) {
             console.error(e);
-            throw "Could not run startup script!";
+            throw new Error("Could not run startup script!");
         }
     }
 
+    // REFACTOR: Move this
     public loadScene(e: any) {
         if (e) {
             if (e.type === "loading") {
@@ -293,6 +298,7 @@ export class Core {
         }
     }
 
+    // REFACTOR: Move this
     public startScene() {
         if (this.firstScene) {
             this.firstScene = false;
@@ -316,19 +322,20 @@ export class Core {
         if (this.craftyBoard.board.firstRunProgram) {
             this.runProgram(
                 PATH_PROGRAM + this.craftyBoard.board.firstRunProgram,
-                null, null, true);
+                null, null);
         } else {
             this.controlEnabled = true;
             Crafty.trigger("EnterFrame", {});
         }
     }
 
+    // REFACTOR: Move this
     public queueCraftyAssets(assets: any, waitingEntity: any) {
         if (assets.images) {
             // Remove duplicates images.
             var seen = {};
             assets.images = assets.images.filter(function(item) {
-                return seen.hasOwnProperty(item) ? false : (seen[item] = true);
+                return Object.prototype.hasOwnProperty.call(seen, item) ? false : (seen[item] = true);
             });
             this.assetsToLoad.images = this.assetsToLoad.images.concat(assets.images);
         }
@@ -340,6 +347,7 @@ export class Core {
         }
     }
 
+    // REFACTOR: Move this
     public loadCraftyAssets(callback: any) {
         var assets = this.assetsToLoad;
         if (this.debugEnabled) {
@@ -350,7 +358,7 @@ export class Core {
 
         // Remove already loaded assets.
         var images = [];
-        assets.images.forEach(function (image) {
+        assets.images.forEach(function(image) {
             if (!Crafty.assets[Crafty.__paths.images + image]) {
                 images.push(image);
             }
@@ -381,7 +389,7 @@ export class Core {
                     console.debug("Loaded assets=[%s]", JSON.stringify(assets));
                 }
                 // Notifiy the entities that their assets are ready for use.
-                this.waitingEntities.forEach(function (entity) {
+                this.waitingEntities.forEach(function(entity) {
                     entity.setReady();
                 });
                 // Reset asset queue.
@@ -391,17 +399,20 @@ export class Core {
             },
             function(e) { // progress
                 if (callback && callback.length) {
-                    callback({ type: "loading", value: e });
+                    const response = { type: "loading", value: e };
+                    callback(response);
                 }
             },
             function(e) { // uh oh, error loading
                 if (callback && callback.length) {
-                    callback({ type: "error", value: e });
+                    const response = { type: "error", value: e };
+                    callback(response);
                 }
             }
         );
     }
 
+    // REFACTOR: Move this
     public createUILayer() {
         // Define a UI layer that is completely static and sits above the other layers
         Crafty.createLayer("UI", "Canvas", {
@@ -447,6 +458,7 @@ export class Core {
             });
     }
 
+    // REFACTOR: Move this
     public createCraftyBoard(board: any): any {
         if (this.debugEnabled) {
             console.debug("Creating Crafty board=[%s]", JSON.stringify(board));
@@ -513,6 +525,7 @@ export class Core {
         return this.craftyBoard;
     }
 
+    // REFACTOR: Move this
     public async loadBoard(board: any) {
         if (this.debugEnabled) {
             console.debug("Loading board=[%s]", JSON.stringify(board));
@@ -593,6 +606,7 @@ export class Core {
         this.queueCraftyAssets(assets, craftyBoard.board);
     }
 
+    // REFACTOR: Move this
     public async switchBoard(boardName: string, tileX: number, tileY: number, layer: number) {
         if (this.debugEnabled) {
             console.debug("Switching board to boardName=[%s], tileX=[%d], tileY=[%d], layer=[%d]",
@@ -637,6 +651,7 @@ export class Core {
         this.loadCraftyAssets(this.loadScene);
     }
 
+    // REFACTOR: Remove this
     public async loadCharacter(character: any) {
         if (this.debugEnabled) {
             console.debug("Loading character=[%s]", JSON.stringify(character));
@@ -704,6 +719,7 @@ export class Core {
         this.queueCraftyAssets(assets, character);
     }
 
+    // REFACTOR: Move this
     public async loadSprite(sprite: any) {
         if (this.debugEnabled) {
             console.debug("Loading sprite=[%s]", JSON.stringify(sprite));
@@ -811,6 +827,7 @@ export class Core {
         return entity;
     }
 
+    // REFACTOR: Remove this
     public loadItem(item: any) {
         if (this.debugEnabled) {
             console.debug("Loading item=[%s]", JSON.stringify(item));
@@ -818,21 +835,23 @@ export class Core {
         this.queueCraftyAssets(item.loadAssets(), item);
     }
 
+    // REFACTOR: Remove this
     public async openProgram(filename: string) {
         if (this.debugEnabled) {
             console.debug("Opening program=[%s]", filename);
         }
         var program = this.programCache[filename];
         if (!program) {
-            let response = await fetch(filename);
-            response = await response.text();
-            program = new AsyncFunction(response);
+            const response = await fetch(filename);
+            const responseText = await response.text();
+            program = new AsyncFunction(responseText);
             this.programCache[filename] = program;
         }
 
         return program;
     }
 
+    // REFACTOR: Remove this
     public async runProgram(filename: string, source: any, callback: any) {
         if (this.debugEnabled) {
             console.debug("Running program=[%s]", filename);
@@ -855,6 +874,7 @@ export class Core {
         program.apply(source);
     }
 
+    // REFACTOR: Remove this
     public endProgram(nextProgram: string) {
         if (this.debugEnabled) {
             console.debug("Ending current program, nextProgram=[%s]", nextProgram);
@@ -881,13 +901,19 @@ export class Core {
         }
     }
 
+    // REFACTOR: Move this
     public createVectorPolygon(id: string, points: Array<any>, layer: number, type: string, events: any) {
         const bounds = engineUtil.getPolygonBounds(points);
-        var attr = { x: bounds.x, y: bounds.y, w: bounds.width, h: bounds.height };
-        attr.vectorId = id;
-        attr.layer = layer;
-        attr.vectorType = type;
-        attr.events = events;
+        var attr = {
+            x: bounds.x,
+            y: bounds.y,
+            w: bounds.width,
+            h: bounds.height,
+            vectorId: id,
+            layer: layer,
+            vectorType: type,
+            events: events
+        };
 
         if (points[0] === points[points.length - 2] && points[1] === points[points.length - 1]) {
             // Start and end points are the same, Crafty does not like that.
@@ -900,6 +926,7 @@ export class Core {
             .collision(points);
     }
 
+    // REFACTOR: Move this
     public calculateVectorPosition(x1: number, y1: number, x2: number, y2: number) {
         var width, height;
         var xDiff = x2 - x1;
@@ -922,6 +949,7 @@ export class Core {
         return { x: x1, y: y1, w: width, h: height };
     }
 
+    // REFACTOR: Move this
     public playSound(sound: string, loop: number) {
         if (this.debugEnabled) {
             console.debug("Playing sound=[%s]", sound);

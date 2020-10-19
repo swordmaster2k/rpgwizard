@@ -14,6 +14,7 @@ export function TileSet(filename) {
         console.debug("Creating Tileset filename=[%s]", filename);
     }
     this.filename = filename;
+    this.image = "";
 }
 
 TileSet.prototype.load = async function () {

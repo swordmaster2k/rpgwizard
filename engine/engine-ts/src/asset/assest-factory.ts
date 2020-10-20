@@ -5,7 +5,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import * as Asset from "./assets";
+import * as Asset from "./dto/assets.js";
+import { Animation } from "./animation.js";
+import { Map } from "./map.js";
+import { Sprite } from "./sprite.js";
+import { Tileset } from "./tileset.js";
 
 export async function build(file: string): Promise<Asset.Base> {
 
@@ -13,13 +17,13 @@ export async function build(file: string): Promise<Asset.Base> {
     const json: any = await response.json();
 
     if (file.endsWith(".animation")) {
-        return <Asset.Animation>json;
+        return new Animation(<Asset.Animation>json);
     } else if (file.endsWith(".map")) {
-        return <Asset.Map>json;
+        return new Map(<Asset.Map>json);
     } else if (file.endsWith(".sprite")) {
-        return <Asset.Sprite>json;
+        return new Sprite(<Asset.Sprite>json);
     } else if (file.endsWith(".tileset")) {
-        return <Asset.Tileset>json;
+        return new Tileset(<Asset.Tileset>json);
     }
 
     throw new Error(`Unknown asset type=[${file}]!`);

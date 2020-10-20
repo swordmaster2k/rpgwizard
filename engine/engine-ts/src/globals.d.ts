@@ -7,6 +7,7 @@
  */
 declare var requirejs: any;
 declare var rpgcode: any;
+declare var Crafty: any;
 
 declare var PATH_PROGRAM: any;
 declare var PATH_MEDIA: any;

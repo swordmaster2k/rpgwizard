@@ -17,14 +17,42 @@ export async function build(file: string): Promise<Asset.Base> {
     const json: any = await response.json();
 
     if (file.endsWith(".animation")) {
+
         return new Animation(<Asset.Animation>json);
+
     } else if (file.endsWith(".map")) {
+
         return new Map(<Asset.Map>json);
+
     } else if (file.endsWith(".sprite")) {
+
         return new Sprite(<Asset.Sprite>json);
+
     } else if (file.endsWith(".tileset")) {
-        return new Tileset(<Asset.Tileset>json);
+
+        const dto: Asset.Tileset = <Asset.Tileset>json;
+        await loadRawAssets({ images: [dto.image] });
+        return new Tileset(dto);
+
     }
 
     throw new Error(`Unknown asset type=[${file}]!`);
+}
+
+export async function loadRawAssets(assets: any): Promise<void> {
+    return new Promise<void>((resolve: any, reject: any) => {
+        Crafty.load(assets,
+            () => {
+                // Assets have been loaded
+                resolve();
+            },
+            (e: any) => {
+                // TODO: progress
+            },
+            (e: any) => {
+                // TODO: error
+                reject(e);
+            }
+        );
+    });
 }

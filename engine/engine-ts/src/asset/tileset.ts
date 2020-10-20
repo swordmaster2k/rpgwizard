@@ -10,18 +10,18 @@ import * as Asset from "./dto/assets.js";
 export class Tileset implements Asset.Tileset {
 
     // Implemented
-    tileWidth: number;
-    tileHeight: number;
-    image: string;
-    tileData: object;
-    version: string;
+    readonly tileWidth: number;
+    readonly tileHeight: number;
+    readonly image: string;
+    readonly tileData: object;
+    readonly version: string;
 
     // Specific
-    imageBitmap: ImageBitmap;
-    rows: number;
-    columns: number;
-    count: number;
-    tiles: Array<ImageData>;
+    readonly imageBitmap: ImageBitmap;
+    readonly rows: number;
+    readonly columns: number;
+    readonly count: number;
+    readonly tiles: Array<ImageData>;
 
     constructor(asset: Asset.Tileset) {
         // Copy over values
@@ -35,6 +35,8 @@ export class Tileset implements Asset.Tileset {
         this.imageBitmap = Crafty.assets[Crafty.__paths.images + this.image];
         this.rows = Math.floor(this.imageBitmap.height / this.tileHeight);
         this.columns = Math.floor(this.imageBitmap.width / this.tileWidth);
+        this.count = this.rows * this.columns;
+        this.tiles = [];
 
         this.prepareTiles();
     }
@@ -51,7 +53,6 @@ export class Tileset implements Asset.Tileset {
         const ctx: CanvasRenderingContext2D = canvas.getContext("2d");
         ctx.drawImage(this.imageBitmap, 0, 0);
 
-        this.tiles = [];
         for (let i: number = 0; i < this.count; i++) {
             // Converted 1D index to 2D cooridnates.
             const x: number = i % this.columns;

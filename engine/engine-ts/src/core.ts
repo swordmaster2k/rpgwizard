@@ -8,9 +8,11 @@
 
 /* global PATH_BITMAP, PATH_MEDIA, PATH_PROGRAM, PATH_BOARD, PATH_CHARACTER, PATH_NPC, jailed, rpgcode, PATH_TILESET, PATH_ENEMY, Crafty, engineUtil, Promise, requirejs, PATH_SPRITE */
 
+import * as Factory from "./asset/assest-factory.js";
+import { Tileset } from "./asset/tileset.js";
+
 import { Project } from "./formats/project.js";
 import { Board } from "./formats/board.js";
-import { TileSet } from "./formats/tileset.js";
 import { Sprite } from "./formats/sprite.js";
 import { ScreenRenderer } from "./renderers/screenRenderer.js";
 
@@ -525,9 +527,8 @@ export class Core {
 
         await Promise.all(craftyBoard.board.tilesets.map(async(file) => {
             if (!this.tilesets[file]) {
-                var tileset = await new TileSet(PATH_TILESET + file).load();
+                const tileset: Tileset = await Factory.build(PATH_TILESET + file) as Tileset;
                 this.tilesets[file] = tileset;
-                this.queueCraftyAssets({ images: [tileset.image] }, tileset);
             }
         }));
 

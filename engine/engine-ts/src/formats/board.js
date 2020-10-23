@@ -25,7 +25,7 @@ Board.prototype.load = async function (json) {
     if (!json) {
         let response = await fetch(this.filename);
         json = await response.json();
-        Core.getInstance().boards[this.filename] = JSON.stringify(json);
+        Core.getInstance().cache.put(this.filename, JSON.stringify(json));
     }
     
     for (var property in json) {
@@ -95,7 +95,7 @@ Board.prototype._addCachedLayer = function (layer) {
                     continue; // Blank tile.
                 }
                 var tileset = this.tilesets[tileSetIndex]; // Render tile to board canvas
-                var renderer = new TilesetRenderer(Core.getInstance().tilesets[tileset]);
+                var renderer = new TilesetRenderer(Core.getInstance().cache.get(tileset));
                 renderer.renderTile(context, tileIndex, x * this.tileWidth, y * this.tileHeight);
             }
         }

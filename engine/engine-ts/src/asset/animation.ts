@@ -11,12 +11,12 @@ import { SpriteSheet } from "./dto/asset-subtypes.js";
 export class Animation implements Asset.Animation {
 
     // Implemented
-    width: number;
-    height: number;
-    frameRate: number;
-    soundEffect: string;
-    spriteSheet: SpriteSheet;
-    version: string;
+    readonly width: number;
+    readonly height: number;
+    readonly frameRate: number;
+    readonly soundEffect: string;
+    readonly spriteSheet: SpriteSheet;
+    readonly version: string;
 
     constructor(asset: Asset.Animation) {
         // Copy over values

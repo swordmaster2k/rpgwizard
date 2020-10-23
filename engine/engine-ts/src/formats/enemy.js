@@ -26,7 +26,7 @@ Enemy.prototype.load = async function (json) {
     if (!json) {
         let response = await fetch(this.filename);
         json = await response.json();
-        Core.getInstance().enemies[this.filename] = JSON.stringify(json);
+        Core.getInstance().cache.put(this.filename, JSON.stringify(json));
     }
     
     for (var property in json) {

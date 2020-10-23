@@ -8,11 +8,12 @@
 
 /* global PATH_BITMAP, PATH_MEDIA, PATH_PROGRAM, PATH_BOARD, PATH_CHARACTER, PATH_NPC, jailed, rpgcode, PATH_TILESET, PATH_ENEMY, Crafty, engineUtil, Promise, requirejs, PATH_SPRITE */
 
-import * as Factory from "./asset/assest-factory.js";
+import { Cache } from "./asset/asset-cache.js";
+import * as Factory from "./asset/asset-factory.js";
+import { Map } from "./asset/map.js";
 import { Tileset } from "./asset/tileset.js";
 
 import { Project } from "./formats/project.js";
-import { Board } from "./formats/board.js";
 import { Sprite } from "./formats/sprite.js";
 import { ScreenRenderer } from "./renderers/screenRenderer.js";
 
@@ -21,6 +22,7 @@ import { ScriptVM } from "./client-api/script-vm.js";
 
 import { Keyboard } from "./io/keyboard.js";
 import { Mouse } from "./io/mouse.js";
+import { MapLayer } from "./asset/dto/asset-subtypes.js";
 
 // REFACTOR: Find better solution
 // https://stackoverflow.com/questions/31173738/typescript-getting-error-ts2304-cannot-find-name-require
@@ -35,7 +37,7 @@ declare global {
 export class Core {
 
     // Singleton reference
-    private static instance: Core;
+    private static _instance: Core;
 
     // REFACTOR: Move this
     private dt: number; // Craftyjs time step since last frame.
@@ -52,16 +54,9 @@ export class Core {
 
     private tileSize: number;
 
-    // REFACTOR: Move this
-    // In-Memory asset Cache
-    private boards: any;
-    private tilesets: any;
-    private layerCache: any;
+    // Asset cache
+    private _cache: Cache;
     private animations: any;
-    private enemies: any;
-    private npcs: any;
-    private characters: any;
-    private programCache: any;
 
     // REFACTOR: Remove this
     private activePrograms: number;
@@ -120,14 +115,9 @@ export class Core {
         this.tileSize = 32;
 
         // In-Memory asset Cache
-        this.boards = {};
-        this.tilesets = {};
-        this.layerCache = {};
+        this._cache = new Cache();
         this.animations = {};
-        this.enemies = {};
-        this.npcs = {};
-        this.characters = {};
-        this.programCache = {};
+        // this.layerCache = {};
 
         this.activePrograms = 0;
         this.endProgramCallback = null;
@@ -196,11 +186,15 @@ export class Core {
     }
 
     public static getInstance(): Core {
-        if (!Core.instance) {
-            Core.instance = new Core();
+        if (!Core._instance) {
+            Core._instance = new Core();
         }
 
-        return Core.instance;
+        return Core._instance;
+    }
+
+    get cache(): Cache {
+        return this._cache;
     }
 
     public async setup(filename: string) {
@@ -267,7 +261,7 @@ export class Core {
         if (e) {
             if (e.type === "loading") {
                 engineUtil.showProgress(e.value.percent);
-                if (Core.instance.debugEnabled) {
+                if (Core._instance.debugEnabled) {
                     console.debug(JSON.stringify(e));
                 }
             } else {
@@ -278,16 +272,16 @@ export class Core {
 
             // REFACTOR: Update this
             // Run the startup program before the game logic loop.
-            if (Core.instance.project.startupProgram && Core.instance.firstScene && !Core.instance.haveRunStartup) {
-                await this.scriptVM.run(PATH_PROGRAM + this.project.startupProgram, Core.instance);
-                Core.instance.haveRunStartup = true;
-                Core.instance.inProgram = false;
-                Core.instance.currentProgram = null;
-                Core.instance.controlEnabled = true;
+            if (Core._instance.project.startupProgram && Core._instance.firstScene && !Core._instance.haveRunStartup) {
+                await this.scriptVM.run(PATH_PROGRAM + this.project.startupProgram, Core._instance);
+                Core._instance.haveRunStartup = true;
+                Core._instance.inProgram = false;
+                Core._instance.currentProgram = null;
+                Core._instance.controlEnabled = true;
 
-                await Core.instance.startScene();
+                await Core._instance.startScene();
             } else {
-                await Core.instance.startScene();
+                await Core._instance.startScene();
             }
         }
     }
@@ -314,7 +308,7 @@ export class Core {
         Crafty.trigger("Invalidate");
 
         if (this.craftyBoard.board.firstRunProgram) {
-            await this.scriptVM.run(PATH_PROGRAM + this.craftyBoard.board.firstRunProgram, Core.instance);
+            await this.scriptVM.run(PATH_PROGRAM + this.craftyBoard.board.firstRunProgram, Core._instance);
         } else {
             this.controlEnabled = true;
             Crafty.trigger("EnterFrame", {});
@@ -364,7 +358,10 @@ export class Core {
         if (images.length === 0 && Object.keys(audio).length === 0) {
             // Notifiy the entities that their assets are ready for use.
             this.waitingEntities.forEach(function(entity) {
-                entity.setReady();
+                // REFACTOR: Remove this
+                if (entity.setReady) {
+                    entity.setReady();
+                }
             });
             // Reset asset queue.
             this.assetsToLoad = { images: [], audio: {} };
@@ -382,7 +379,10 @@ export class Core {
                 }
                 // Notifiy the entities that their assets are ready for use.
                 this.waitingEntities.forEach(function(entity) {
-                    entity.setReady();
+                    // REFACTOR: Remove this
+                    if (entity.setReady) {
+                        entity.setReady();
+                    }
                 });
                 // Reset asset queue.
                 this.assetsToLoad = { images: [], audio: {} };
@@ -518,22 +518,26 @@ export class Core {
     }
 
     // REFACTOR: Move this
-    public async loadBoard(board: any) {
+    public async loadMap(map: Map) {
         if (this.debugEnabled) {
-            console.debug("Loading board=[%s]", JSON.stringify(board));
+            console.debug("Loading board=[%s]", JSON.stringify(map));
         }
-        var craftyBoard = this.createCraftyBoard(board);
+
+        var craftyBoard = this.createCraftyBoard(map);
         var assets = { images: [], audio: {} };
 
-        await Promise.all(craftyBoard.board.tilesets.map(async(file) => {
-            if (!this.tilesets[file]) {
-                const tileset: Tileset = await Factory.build(PATH_TILESET + file) as Tileset;
-                this.tilesets[file] = tileset;
+        await Promise.all(craftyBoard.board.tilesets.map(async(file: string) => {
+            let tileset: Tileset = this._cache.get(file);
+            if (tileset === null) {
+                tileset = await Factory.build(PATH_TILESET + file) as Tileset;
+                this._cache.put(file, tileset);
             }
         }));
 
-        for (var layer = 0; layer < board.layers.length; layer++) {
-            var boardLayer = board.layers[layer];
+        map.generateLayerCache(); // REFACTOR: Move this?
+
+        for (let layer: number = 0; layer < map.layers.length; layer++) {
+            const mapLayer: MapLayer = map.layers[layer];
 
             // REFACTOR: Update this
             /*
@@ -565,10 +569,10 @@ export class Core {
             * Setup board sprites.
             */
             var sprites = {};
-            for (const [key, value] of Object.entries(boardLayer.sprites)) {
+            for (const [key, value] of Object.entries(mapLayer.sprites)) {
                 sprites[key] = await this.loadSprite(value);
             }
-            boardLayer.sprites = sprites;
+            mapLayer.sprites = sprites;
         }
 
         // REFACTOR: Update this
@@ -594,11 +598,11 @@ export class Core {
         //     assets.audio[board.backgroundMusic] = board.backgroundMusic;
         // }
 
-        this.queueCraftyAssets(assets, craftyBoard.board);
+        // this.queueCraftyAssets(assets, craftyBoard.board);
     }
 
     // REFACTOR: Move this
-    public async switchBoard(boardName: string, tileX: number, tileY: number, layer: number) {
+    public async switchMap(boardName: string, tileX: number, tileY: number, layer: number) {
         if (this.debugEnabled) {
             console.debug("Switching board to boardName=[%s], tileX=[%d], tileY=[%d], layer=[%d]",
                 boardName, tileX, tileY);
@@ -616,13 +620,12 @@ export class Core {
             this.lastBackgroundMusic = this.craftyBoard.board.backgroundMusic;
         }
 
-        // Load in the next board.
-        var json;
-        var board = new Board(PATH_BOARD + boardName);
-        if (this.boards[board.filename]) {
-            json = JSON.parse(this.boards[board.filename]);
+        // Load in the next map
+        let map: Map = this._cache.get(PATH_BOARD + boardName);
+        if (map === null) {
+            map = await Factory.build(PATH_BOARD + boardName) as Map;
+            this._cache.put(boardName, map);
         }
-        board = await board.load(json);
 
         // REFACTOR: Remove this
         // Move the character first to avoid triggering vectors on next board, in same position.
@@ -632,7 +635,7 @@ export class Core {
         // this.craftyCharacter.y = parseInt((tileY * tileHeight) + tileHeight / 2);
         // this.craftyCharacter.character.layer = layer;
 
-        await this.loadBoard(board);
+        await this.loadMap(map);
 
         if (this.debugEnabled) {
             console.debug("Switching board player location set to x=[%d], y=[%d], layer=[%d]",
@@ -720,8 +723,8 @@ export class Core {
         if (sprite.asset.endsWith(".sprite")) {
             var json;
             const newSprite = new Sprite(PATH_SPRITE + sprite.asset);
-            if (this.enemies[newSprite.filename]) {
-                json = JSON.parse(this.enemies[newSprite.filename]);
+            if (this.cache.get(newSprite.filename)) {
+                json = JSON.parse(this.cache.get(newSprite.filename));
             }
             asset = sprite.enemy = await newSprite.load(json);
             sprite.collisionPoints = sprite.enemy.collisionPoints;

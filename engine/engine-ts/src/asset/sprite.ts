@@ -11,13 +11,13 @@ import { Collider, Trigger } from "./dto/asset-subtypes.js";
 export class Sprite implements Asset.Sprite {
 
     // Implemented
-    name: string;
-    description: string;
-    animations: object;
-    collider: Collider;
-    trigger: Trigger;
-    data: object;
-    version: string;
+    readonly name: string;
+    readonly description: string;
+    readonly animations: object;
+    readonly collider: Collider;
+    readonly trigger: Trigger;
+    readonly data: object;
+    readonly version: string;
 
     constructor(asset: Asset.Sprite) {
         // Copy over values

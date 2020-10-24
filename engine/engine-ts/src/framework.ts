@@ -11,6 +11,7 @@ import { Game } from "./asset/game.js";
 import { Map } from "./asset/map.js";
 import { Sprite } from "./asset/sprite.js";
 import { Core } from "./core.js";
+import { Event } from "./rpgcode/rpgcode.js";
 
 // REFACTOR: Find better solution
 // https://stackoverflow.com/questions/31173738/typescript-getting-error-ts2304-cannot-find-name-require
@@ -22,6 +23,13 @@ declare const Crafty: any;
  * Provides a layer of Abstraction over other frameworks.
  */
 export namespace Framework {
+
+    export enum EntityType {
+        Collider = "Collider",
+        Trigger = "Trigger",
+        Map = "Map",
+        MapSprite = "MapSprite"
+    }
 
     export interface Assets {
 
@@ -52,8 +60,8 @@ export namespace Framework {
         Crafty.paths({ audio: PATH_MEDIA, images: PATH_BITMAP });
         Crafty.viewport.scale(scale);
 
-        defineComponent("BaseVector", {});
-        defineComponent("ActivationVector", {});
+        defineComponent(EntityType.Collider, {});
+        defineComponent(EntityType.Trigger, {});
     }
 
     export function getViewport(): any {
@@ -79,30 +87,30 @@ export namespace Framework {
         }
     }
 
-    export function defineComponent(type: string, data: any): void {
+    export function defineComponent(type: EntityType, data: any): void {
         switch (type) {
-        case "ActivationVector":
-            return _defineActivationVector(type, data);
-        case "BaseVector":
-            return _defineBaseVector(type, data);
-        case "Map":
+        case EntityType.Collider:
+            return _defineCollider(type, data);
+        case EntityType.Trigger:
+            return _defineTrigger(type, data);
+        case EntityType.Map:
             return _defineMap(type, data);
-        case "MapSprite":
+        case EntityType.MapSprite:
             return _defineMapSprite(type, data);
         default:
             return null; // REFACTOR: Handle this
         }
     }
 
-    export function createEntity(type: string, data: any): any {
+    export function createEntity(type: EntityType, data: any): any {
         switch (type) {
-        case "ActivationVector":
-            return _createActivationVector(type, data);
-        case "BaseVector":
-            return _createBaseVector(type, data);
-        case "Map":
+        case EntityType.Collider:
+            return _createCollider(type, data);
+        case EntityType.Trigger:
+            return _createTrigger(type, data);
+        case EntityType.Map:
             return _createMap(type, data);
-        case "MapSprite":
+        case EntityType.MapSprite:
             return _createMapSprite(type, data);
         default:
             return null; // REFACTOR: Handle this
@@ -229,9 +237,9 @@ export namespace Framework {
 //
 // Component
 //
-function _defineBaseVector(type: string, data: any) {
+function _defineCollider(type: Framework.EntityType, data: any) {
     Crafty.c(type, {
-        BaseVector: function (polygon, hiton, hitoff) {
+        Collider: function (polygon, hiton, hitoff) {
             this.requires("Collision, BASE");
             this.collision(polygon);
             this.checkHits("SOLID, BASE");
@@ -242,9 +250,9 @@ function _defineBaseVector(type: string, data: any) {
     });
 }
 
-function _defineActivationVector(type: string, data: any) {
+function _defineTrigger(type: Framework.EntityType, data: any) {
     Crafty.c(type, {
-        ActivationVector: function(polygon, hiton, hitoff) {
+        Trigger: function(polygon, hiton, hitoff) {
             this.requires("Collision, ACTIVATION, Raycastable");
             this.collision(polygon);
             this.checkHits("PASSABLE, ACTIVATION");
@@ -255,7 +263,7 @@ function _defineActivationVector(type: string, data: any) {
     });
 }
 
-function _defineMap(type: string, data: any) {
+function _defineMap(type: Framework.EntityType, data: any) {
     const width: number = data.width;
     const height: number = data.height;
     const xShift: number = data.xShift;
@@ -289,9 +297,8 @@ function _defineMap(type: string, data: any) {
     });
 }
 
-function _defineMapSprite(type: string, data: any) {
-    const mapSprite: MapSprite = data.mapSprite;
-    const asset: Sprite = data.asset;
+function _defineMapSprite(type: Framework.EntityType, data: any) {
+    const sprite: Sprite = data.sprite;
     const isEnemy: boolean = data.isEnemy;
     const events: any = data.events;
     const activationVector: any = data.activationVector;
@@ -300,29 +307,32 @@ function _defineMapSprite(type: string, data: any) {
     Crafty.c(type, {
         ready: true,
         visible: false,
-        x: mapSprite.startLocation.x,
-        y: mapSprite.startLocation.y,
-        layer: mapSprite.startLocation.layer,
+        x: sprite.x,
+        y: sprite.y,
+        layer: sprite.layer,
         width: 150,
         height: 150,
-        vectorType: isEnemy ? "ENEMY" : "NPC",
-        sprite: mapSprite,
+
+        sprite: sprite,
+
         events: events,
         activationVector: activationVector,
+        vectorType: isEnemy ? "ENEMY" : "NPC",
+
         tweenEndCallbacks: [],
         init: function () {
-            this.requires("2D, Canvas, Tween, BaseVector");
+            this.requires(`2D, Canvas, Tween, ${Framework.EntityType.Collider}`);
             // REFACTOR: Need current (x, y) fields, decorate DTO
-            this.attr({ x: mapSprite.startLocation.x, y: mapSprite.startLocation.y, w: 50, h: 50, show: false });
+            this.attr({ x: sprite.x, y: sprite.y, w: 50, h: 50, show: false });
             this.bind("Move", function (from) {
                 // Move activation vector with us.
-                this.activationVector.x = entity.x + asset.trigger.x;
-                this.activationVector.y = entity.y + asset.trigger.y;
-                asset.animate(this.dt);
+                this.activationVector.x = entity.x + sprite.trigger.x;
+                this.activationVector.y = entity.y + sprite.trigger.y;
+                sprite.animate(this.dt);
             });
             this.bind("EnterFrame", function (event) {
                 this.dt = event.dt / 1000;
-                if (mapSprite.thread && asset.renderReady && Core.getInstance().map.show) {
+                if (sprite.thread && sprite.renderReady && Core.getInstance().mapEntity.show) {
                     // REFACTOR: FIX ME
                     // sprite.thread.default(this);
                 }
@@ -345,44 +355,68 @@ function _defineMapSprite(type: string, data: any) {
 //
 // Entity
 //
-function _createActivationVector(type: string, data: any): any {
-    const mapSprite: MapSprite = data.mapSprite;
-    const asset: Sprite = data.asset;
+function _createCollider(type: Framework.EntityType, data: any): any {
+    const points: Array<number> = data.points;
+    const id: string = data.id;
+    const layer: number = data.number;
+    const events: Array<Event> = data.events;
+
+    const bounds = engineUtil.getPolygonBounds(points);
+    var attr = {
+        x: bounds.x,
+        y: bounds.y,
+        w: bounds.width,
+        h: bounds.height,
+        vectorId: id,
+        layer: layer,
+        vectorType: type,
+        events: events
+    };
+
+    if (points[0] === points[points.length - 2] && points[1] === points[points.length - 1]) {
+        // Start and end points are the same, Crafty does not like that.
+        points.pop(); // Remove last y.
+        points.pop(); // Remove last x.
+    }
+
+    Crafty.e(type + ", Collision, Raycastable")
+        .attr(attr)
+        .collision(points);
+}
+
+function _createTrigger(type: Framework.EntityType, data: any): any {
+    const sprite: Sprite = data.sprite;
     const bounds: any = data.bounds;
     const entity: any = data.entity;
 
     return Crafty.e(`2D, Canvas, ${type}`)
         .attr({
             // REFACTOR: Need current (x, y) fields, decorate DTO
-            x: mapSprite.startLocation.x + asset.trigger.x,
-            y: mapSprite.startLocation.y + asset.trigger.y,
+            x: sprite.x + sprite.trigger.x,
+            y: sprite.y + sprite.trigger.y,
             w: bounds.width,
             h: bounds.height,
-            sprite: mapSprite
+            sprite: sprite
         })
-        .ActivationVector(
-            new Crafty.polygon(asset.activationPoints),
+        .Trigger(
+            new Crafty.polygon(sprite.activationPoints),
             function (hitData) {
-                asset.hitOnActivation(hitData, entity);
+                sprite.hitOnActivation(hitData, entity);
             },
             function (hitData) {
-                asset.hitOffActivation(hitData, entity);
+                sprite.hitOffActivation(hitData, entity);
             }
         );
 }
 
-function _createBaseVector(type: string, data: any): any {
-    return null;
-}
-
-function _createMap(type: string, data: any): any {
+function _createMap(type: Framework.EntityType, data: any): any {
     return Crafty.e(type);
 }
 
-function _createMapSprite(type: string, data: any): any {
+function _createMapSprite(type: Framework.EntityType, data: any): any {
     const sprite: Sprite = data.sprite;
     const entity = Crafty.e(type)
-        .BaseVector(
+        .Collider(
             new Crafty.polygon(sprite.collisionPoints),
             function (hitData) {
                 sprite.hitOnCollision(hitData, entity);

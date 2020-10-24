@@ -2653,7 +2653,7 @@ RPGcode.prototype.sendToBoard = async function (boardName, tileX, tileY, layer) 
         // Backwards compatability check.
         layer = Core.getInstance().craftyCharacter.character.layer;
     }
-    await Core.getInstance().switchMap(boardName, tileX, tileY, layer);
+    await Core.getInstance().mapController.switchMap(boardName, tileX, tileY, layer);
 };
 
 /**

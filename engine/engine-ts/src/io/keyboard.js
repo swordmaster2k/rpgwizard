@@ -13,23 +13,23 @@ export function Keyboard() {
     this.downHandlers = {};
     this.upHandlers = {};
     this.entity = Crafty.e()
-            .bind("KeyDown", function (e) {
-                var handler = Core.getInstance().inProgram ? Core.getInstance().keyboardHandler.downHandlers[e.key] : Core.getInstance().keyDownHandlers[e.key];
-                if (handler) {
-                    handler(e);
-                }
-            })
-            .bind("KeyUp", function (e) {
-                var handler = Core.getInstance().inProgram ? Core.getInstance().keyboardHandler.upHandlers[e.key] : Core.getInstance().keyUpHandlers[e.key];
-                if (handler) {
-                    handler(e);
-                }
-            });
+        .bind("KeyDown", function (e) {
+            var handler = Core.getInstance().inProgram ? Core.getInstance().keyboardHandler.downHandlers[e.key] : Core.getInstance().keyDownHandlers[e.key];
+            if (handler) {
+                handler(e);
+            }
+        })
+        .bind("KeyUp", function (e) {
+            var handler = Core.getInstance().inProgram ? Core.getInstance().keyboardHandler.upHandlers[e.key] : Core.getInstance().keyUpHandlers[e.key];
+            if (handler) {
+                handler(e);
+            }
+        });
     Crafty.c("CustomControls", {
         __move: {
-            west: false, 
-            east: false, 
-            north: false, 
+            west: false,
+            east: false,
+            north: false,
             south: false
         },
         _speed: 1,
@@ -143,4 +143,3 @@ export function Keyboard() {
         }
     });
 }
-

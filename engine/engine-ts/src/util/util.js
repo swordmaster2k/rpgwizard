@@ -90,3 +90,25 @@ EngineUtil.prototype.getPolygonBounds = function (points) {
         height: Math.abs(maxY - minY) + 1
     };
 };
+
+EngineUtil.prototype.calculateVectorPosition = function (x1, y1, x2, y2) {
+    var width, height;
+    var xDiff = x2 - x1;
+    var yDiff = y2 - y1;
+    var distance = Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
+    if (x1 !== x2) {
+        width = distance;
+        height = 2;
+        if (xDiff < 0) {
+            x1 = x2;
+        }
+    } else {
+        width = 2;
+        height = distance;
+        if (yDiff < 0) {
+            y1 = y2;
+        }
+    }
+
+    return { x: x1, y: y1, w: width, h: height };
+};

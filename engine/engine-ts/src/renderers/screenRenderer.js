@@ -18,12 +18,12 @@ export function ScreenRenderer() {
 ScreenRenderer.prototype.renderBoard = function (context) {
     context.imageSmoothingEnabled = false;
     
-    var xShift = Core.getInstance().map.xShift;
-    var yShift = Core.getInstance().map.yShift;
-    var x = Core.getInstance().map.x + xShift;
-    var y = Core.getInstance().map.y + yShift;
-    var width = Core.getInstance().map.width;
-    var height = Core.getInstance().map.height;
+    var xShift = Core.getInstance().mapEntity.xShift;
+    var yShift = Core.getInstance().mapEntity.yShift;
+    var x = Core.getInstance().mapEntity.x + xShift;
+    var y = Core.getInstance().mapEntity.y + yShift;
+    var width = Core.getInstance().mapEntity.width;
+    var height = Core.getInstance().mapEntity.height;
 
     if (/Edge/.test(navigator.userAgent)) {
         // Handle Edge bug when drawing up to the bounds of a canvas.
@@ -37,8 +37,8 @@ ScreenRenderer.prototype.renderBoard = function (context) {
     // character.x = Core.getInstance().craftyCharacter.x;
     // character.y = Core.getInstance().craftyCharacter.y;
 
-    if (Core.getInstance().map.show) {
-        this.board = Core.getInstance().map.map;
+    if (Core.getInstance().mapEntity.show) {
+        this.board = Core.getInstance().mapEntity.map;
 
         // Draw a black background
         context.fillStyle = "#000000";
@@ -181,12 +181,12 @@ ScreenRenderer.prototype.sortSprites = function (layer, player) {
     Object.keys(layer.sprites).forEach(function (key) {
         // REFACTOR: Update this
         var entity = layer.sprites[key];
-        var asset = entity.sprite.enemy;
-        if (asset && asset.renderReady) {
-            asset.x = entity.x;
-            asset.y = entity.y;
-            asset.layer = entity.layer;
-            layerSprites.push(asset);
+        var sprite = entity.sprite;
+        if (sprite && sprite.renderReady) {
+            sprite.x = entity.x;
+            sprite.y = entity.y;
+            sprite.layer = entity.layer;
+            layerSprites.push(sprite);
         }
     });
 

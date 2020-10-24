@@ -13,19 +13,19 @@ import * as Factory from "./asset/asset-factory.js";
 import { Map } from "./asset/map";
 import { Tileset } from "./asset/tileset";
 
-import { MapLayer } from "./asset/dto/asset-subtypes.js";
+import { MapLayer, MapSprite } from "./asset/dto/asset-subtypes.js";
 import { Sprite } from "./asset/sprite.js";
 
 export class MapController {
 
-    private _craftyMap: any;
+    private _mapEntity: any;
 
     constructor() {
-        this._craftyMap = {};
+        this._mapEntity = {};
     }
 
-    get map(): any {
-        return this._craftyMap;
+    get mapEntity(): any {
+        return this._mapEntity;
     }
 
     public async loadMap(map: Map) {
@@ -33,10 +33,10 @@ export class MapController {
             console.debug("Loading board=[%s]", JSON.stringify(map));
         }
 
-        this._craftyMap = this.createCraftyMap(map);
+        this._mapEntity = this.createCraftyMap(map);
         var assets = { images: [], audio: {} };
 
-        await Promise.all(this._craftyMap.map.tilesets.map(async(file: string) => {
+        await Promise.all(this._mapEntity.map.tilesets.map(async(file: string) => {
             let tileset: Tileset = Core.getInstance().cache.get(file);
             if (tileset === null) {
                 tileset = await Factory.build(PATH_TILESET + file) as Tileset;
@@ -116,12 +116,12 @@ export class MapController {
             console.debug("Switching board to boardName=[%s], tileX=[%d], tileY=[%d], layer=[%d]",
                 file, tileX, tileY);
         }
-        this.map.show = false;
+        this.mapEntity.show = false;
 
         // REFACTOR
         // this.controlEnabled = false;
 
-        Framework.destroyEntities(["SOLID", "PASSABLE", "Map", "MapSprite"]);
+        Framework.destroyEntities(["SOLID", "PASSABLE", Framework.EntityType.Map, Framework.EntityType.MapSprite]);
 
         // REFACTOR
         // May not be a last board if it is being set in a startup program.
@@ -138,7 +138,7 @@ export class MapController {
 
         await this.loadMap(map);
 
-        this.map.show = true;
+        this.mapEntity.show = true;
 
         // REFACTOR
         // if (Core.getInstance().debugEnabled) {
@@ -151,24 +151,22 @@ export class MapController {
 
     }
 
-    private async loadSprite(sprite: any) {
+    private async loadSprite(mapSprite: MapSprite) {
         if (Core.getInstance().debugEnabled) {
-            console.debug("Loading sprite=[%s]", JSON.stringify(sprite));
+            console.debug("Loading sprite=[%s]", JSON.stringify(mapSprite));
         }
 
         // REFACTOR
-        var asset;
-        const newSprite: Sprite = await Factory.build(PATH_SPRITE + sprite.asset) as Sprite;
+        const sprite: Sprite = await Factory.build(PATH_SPRITE + mapSprite.asset) as Sprite;
         // if (newSprite === null) {
         //     newSprite = await Factory.build(PATH_SPRITE + sprite.asset) as Sprite;
         //     this._cache.put(sprite.asset, newSprite);
         // }
-        asset = sprite.enemy = newSprite;
-        sprite.collisionPoints = sprite.enemy.collisionPoints;
 
-        sprite.x = sprite.startLocation.x;
-        sprite.y = sprite.startLocation.y;
-        sprite.layer = sprite.startLocation.layer;
+        sprite.x = mapSprite.startLocation.x;
+        sprite.y = mapSprite.startLocation.y;
+        sprite.layer = mapSprite.startLocation.layer;
+        sprite.thread = mapSprite.thread;
 
         // TODO: width and height of npc must contain the collision polygon.
         if (sprite.thread) {
@@ -178,29 +176,27 @@ export class MapController {
         // REFACTOR: get rid of this hacky code?
         var entity;
 
-        const bounds = engineUtil.getPolygonBounds(asset.activationPoints);
+        const bounds = engineUtil.getPolygonBounds(sprite.activationPoints);
         const activatonData: any = {
-            mapSprite: sprite,
-            asset: asset,
+            sprite: sprite,
             bounds: bounds,
             entity: entity
         };
-        var activationVector = Framework.createEntity("ActivationVector", activatonData);
+        var activationVector = Framework.createEntity(Framework.EntityType.Trigger, activatonData);
 
         const componentData: any = {
-            mapSprite: sprite,
-            asset: asset,
+            sprite: sprite,
             isEnemy: true, // REFACTOR: Get rid of this
             events: [], // REFACTOR: Fix me
             activationVector: activationVector, // REFACTOR: Fix me
             entity: entity
         };
-        Framework.defineComponent("MapSprite", componentData);
+        Framework.defineComponent(Framework.EntityType.MapSprite, componentData);
 
         const entityData: any = {
-            sprite: newSprite
+            sprite: sprite
         };
-        entity = Framework.createEntity("MapSprite", entityData);
+        entity = Framework.createEntity(Framework.EntityType.MapSprite, entityData);
 
         return entity;
     }
@@ -252,9 +248,9 @@ export class MapController {
             yShift: yShift,
             map: map
         };
-        Framework.defineComponent("Map", mapDefinition);
+        Framework.defineComponent(Framework.EntityType.Map, mapDefinition);
 
-        return Framework.createEntity("Map", {});
+        return Framework.createEntity(Framework.EntityType.Map, {});
     }
 
 }

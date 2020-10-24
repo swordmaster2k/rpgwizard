@@ -20,17 +20,18 @@ export class Sprite implements Asset.Sprite {
     // Implemented
     readonly name: string;
     readonly description: string;
-    readonly animations: Record<string, string>; // REFACTOR: Figure out typing
+    readonly animations: Record<string, string>;
     readonly collider: Collider;
     readonly trigger: Trigger;
     readonly data: object;
     readonly version: string;
 
     // Specific
-    x: number;
-    y: number;
-    layer: number;
-    direction: Direction;
+    _x: number;
+    _y: number;
+    _layer: number;
+    _direction: Direction;
+    _thread: string;
 
     // REFACTOR
     collisionPoints: Array<number>;
@@ -51,12 +52,17 @@ export class Sprite implements Asset.Sprite {
         this.version = asset.version;
 
         // Setup
-        this.x = 0;
-        this.y = 0;
-        this.layer = 0;
-        this.direction = Direction.SOUTH;
+        this._x = 0;
+        this._y = 0;
+        this._layer = 0;
+        this._direction = Direction.SOUTH;
+        this._thread = null;
+
         this.collisionPoints = [];
         this.activationPoints = [];
+
+        this.hit = false;
+
         this.spriteGraphics = {
             elapsed: 0,
             frameIndex: 0,
@@ -84,13 +90,54 @@ export class Sprite implements Asset.Sprite {
             rest: null,
             custom: {}
         };
-        this.hit = false;
 
         // REFACTOR: Setup collider and trigger later
         // this.calculateCollisionPoints();
         // this.calculateActivationPoints();
     }
 
+    // Getters & Setters
+    get x(): number {
+        return this._x;
+    }
+
+    set x(v: number) {
+        this._x = v;
+    }
+
+    get y(): number {
+        return this._y;
+    }
+
+    set y(v: number) {
+        this._y = v;
+    }
+
+    get layer(): number {
+        return this._layer;
+    }
+
+    set layer(v: number) {
+        this._layer = v;
+    }
+
+    get direction(): Direction {
+        return this._direction;
+    }
+
+    set direction(v: Direction) {
+        this._direction = v;
+    }
+
+    get thread(): string {
+        return this._thread;
+    }
+
+    set thread(v: string) {
+        this._thread = v;
+    }
+
+    // Public methods
     public hitOnCollision(hitData: any, entity: any) {
         // REFACTOR: Implement
     }

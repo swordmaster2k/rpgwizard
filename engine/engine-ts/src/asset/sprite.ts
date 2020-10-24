@@ -6,6 +6,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 /* global PATH_ANIMATION */
+import { Framework } from "../framework.js";
 
 import * as Factory from "./asset-factory.js";
 import { Animation } from "./animation.js";
@@ -140,6 +141,11 @@ export class Sprite implements Asset.Sprite {
 
         // Return the assets that need to be loaded.
         return { images: frames, audio: soundEffects };
+    }
+
+    // REFACTOR: Should be on MapSprite?
+    public animate(dt: number) {
+        // TODO
     }
 
     private async loadAnimations() {
@@ -296,7 +302,7 @@ export class Sprite implements Asset.Sprite {
     private prepareActiveAnimation() {
         var animation = this.spriteGraphics.active;
         var spriteSheet = animation.spriteSheet;
-        var image = Crafty.assets[Crafty.__paths.images + spriteSheet.image];
+        var image: ImageBitmap = Framework.getImage(spriteSheet.image);
 
         var canvas = document.createElement("canvas");
         canvas.width = image.width;

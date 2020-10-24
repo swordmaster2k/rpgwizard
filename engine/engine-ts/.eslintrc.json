@@ -18,7 +18,7 @@
         "indent": ["error", 4],
         "padded-blocks": 0,
         "semi": ["error", "always"],
-        "space-before-function-paren": ["error", "never"],
+        "space-before-function-paren": 0,
         "quotes": ["error", "double", {"allowTemplateLiterals": true}],
         "new-cap": 0
     },

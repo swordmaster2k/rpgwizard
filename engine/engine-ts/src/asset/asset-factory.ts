@@ -5,6 +5,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { Framework } from "../framework.js";
+
 import * as Asset from "./dto/assets.js";
 import { Animation } from "./animation.js";
 import { Game } from "./game.js";
@@ -35,7 +37,7 @@ export async function build(file: string): Promise<Asset.Base> {
         const dto: Asset.Sprite = <Asset.Sprite>json;
         const sprite = new Sprite(dto);
         const assets = await sprite.loadAssets();
-        await loadRawAssets(assets);
+        await Framework.loadAssets(assets);
         sprite.spriteGraphics.active = sprite.spriteGraphics.south;
         sprite.getActiveFrame();
 
@@ -44,51 +46,10 @@ export async function build(file: string): Promise<Asset.Base> {
     } else if (file.endsWith(".tileset")) {
 
         const dto: Asset.Tileset = <Asset.Tileset>json;
-        await loadRawAssets({ images: [dto.image] });
+        await Framework.loadAssets({ images: [dto.image], audio: {} });
         return new Tileset(dto);
 
     }
 
     throw new Error(`Unknown asset type=[${file}]!`);
-}
-
-// REFACTOR
-export async function loadRawAssets(assets: any): Promise<void> {
-
-    // Remove any duplicates.
-    assets.images = assets.images.filter((it, i, ar) => ar.indexOf(it) === i);
-
-    // Remove already loaded assets.
-    var images = [];
-    assets.images.forEach(function (image) {
-        if (!Crafty.assets[Crafty.__paths.images + image]) {
-            images.push(image);
-        }
-    });
-
-    var audio = {};
-    for (var property in assets.audio) {
-        if (!Crafty.assets[Crafty.__paths.audio + property]) {
-            audio[property] = assets.audio[property];
-        }
-    }
-
-    assets.images = images;
-    assets.audio = audio;
-
-    return new Promise<void>((resolve: any, reject: any) => {
-        Crafty.load(assets,
-            () => {
-                // Assets have been loaded
-                resolve();
-            },
-            (e: any) => {
-                // TODO: progress
-            },
-            (e: any) => {
-                // TODO: error
-                reject(e);
-            }
-        );
-    });
 }

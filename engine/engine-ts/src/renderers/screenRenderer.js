@@ -18,12 +18,12 @@ export function ScreenRenderer() {
 ScreenRenderer.prototype.renderBoard = function (context) {
     context.imageSmoothingEnabled = false;
     
-    var xShift = Core.getInstance().craftyBoard.xShift;
-    var yShift = Core.getInstance().craftyBoard.yShift;
-    var x = Core.getInstance().craftyBoard.x + xShift;
-    var y = Core.getInstance().craftyBoard.y + yShift;
-    var width = Core.getInstance().craftyBoard.width;
-    var height = Core.getInstance().craftyBoard.height;
+    var xShift = Core.getInstance().map.xShift;
+    var yShift = Core.getInstance().map.yShift;
+    var x = Core.getInstance().map.x + xShift;
+    var y = Core.getInstance().map.y + yShift;
+    var width = Core.getInstance().map.width;
+    var height = Core.getInstance().map.height;
 
     if (/Edge/.test(navigator.userAgent)) {
         // Handle Edge bug when drawing up to the bounds of a canvas.
@@ -37,10 +37,10 @@ ScreenRenderer.prototype.renderBoard = function (context) {
     // character.x = Core.getInstance().craftyCharacter.x;
     // character.y = Core.getInstance().craftyCharacter.y;
 
-    if (Core.getInstance().craftyBoard.show) {
-        this.board = Core.getInstance().craftyBoard.board;
+    if (Core.getInstance().map.show) {
+        this.board = Core.getInstance().map.map;
 
-        // Draw a black background.  
+        // Draw a black background
         context.fillStyle = "#000000";
         context.fillRect(x, y, width, height);
 

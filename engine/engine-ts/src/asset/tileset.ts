@@ -5,6 +5,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { Framework } from "../framework.js";
+
 import * as Asset from "./dto/assets.js";
 
 export class Tileset implements Asset.Tileset {
@@ -32,7 +34,7 @@ export class Tileset implements Asset.Tileset {
         this.version = asset.version;
 
         // REFACTOR: Remove direct Crafty usage
-        this.imageBitmap = Crafty.assets[Crafty.__paths.images + this.image];
+        this.imageBitmap = Framework.getImage(this.image);
         this.rows = Math.floor(this.imageBitmap.height / this.tileHeight);
         this.columns = Math.floor(this.imageBitmap.width / this.tileWidth);
         this.count = this.rows * this.columns;

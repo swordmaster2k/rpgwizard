@@ -5,6 +5,41 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
+// REFACTOR: Move this?
+export enum Direction {
+    NORTH = "n",
+    SOUTH = "s",
+    EAST = "e",
+    WEST = "w",
+    NORTH_EAST = "ne",
+    NORTH_WEST = "nw",
+    SOUTH_EAST = "se",
+    SOUTH_WEST = "sw",
+    ATTACK = "ATTACK",
+    DEFEND = "DEFEND",
+    DIE = "DIE"
+}
+
+// REFACTOR: Move this?
+export const StandardKeys: Array<string> = [
+    "SOUTH", "NORTH", "EAST", "WEST", "NORTH_EAST", "NORTH_WEST",
+    "SOUTH_EAST", "SOUTH_WEST", "ATTACK", "DEFEND", "SPECIAL_MOVE", "DIE",
+    "REST", "SOUTH_IDLE", "NORTH_IDLE", "EAST_IDLE", "WEST_IDLE",
+    "NORTH_EAST_IDLE", "NORTH_WEST_IDLE", "SOUTH_EAST_IDLE", "SOUTH_WEST_IDLE"
+];
+
+export interface Viewport {
+    width: number;
+    height: number;
+    fullScreen: boolean;
+}
+
+export interface Debug {
+    showColliders: boolean;
+    showTriggers: boolean;
+}
+
 export interface SpriteSheet {
     image: string;
     x: number;

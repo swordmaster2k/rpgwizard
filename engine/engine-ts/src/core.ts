@@ -6,15 +6,16 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-/* global PATH_BITMAP, PATH_MEDIA, PATH_PROGRAM, PATH_BOARD, PATH_CHARACTER, PATH_NPC, jailed, rpgcode, PATH_TILESET, PATH_ENEMY, Crafty, engineUtil, Promise, requirejs, PATH_SPRITE */
+/* global PATH_BITMAP, PATH_MEDIA, PATH_PROGRAM, PATH_BOARD, PATH_TILESET, engineUtil, Promise, requirejs, PATH_SPRITE */
 
 import { Cache } from "./asset/asset-cache.js";
 import * as Factory from "./asset/asset-factory.js";
+
+import { Game } from "./asset/game.js";
 import { Map } from "./asset/map.js";
+import { Sprite } from "./asset/sprite.js";
 import { Tileset } from "./asset/tileset.js";
 
-import { Project } from "./formats/project.js";
-import { Sprite } from "./formats/sprite.js";
 import { ScreenRenderer } from "./renderers/screenRenderer.js";
 
 import { RPGcode } from "./rpgcode/rpgcode.js";
@@ -43,7 +44,7 @@ export class Core {
     private dt: number; // Craftyjs time step since last frame.
 
     private screen: any;
-    private project: any;
+    private project: Game;
     private assetsToLoad: any;
     private waitingEntities: Array<any>;
 
@@ -91,7 +92,7 @@ export class Core {
 
     // REFACTOR: Update this
     private showVectors: boolean;
-    private debugEnabled: boolean;
+    public debugEnabled: boolean;
 
     private scriptVM: ScriptVM;
 
@@ -202,10 +203,10 @@ export class Core {
             console.debug("Starting engine with filename=[%s]", filename);
         }
 
-        this.project = await new Project(filename).load();
+        this.project = await Factory.build(filename) as Game;
 
         // Check if we should draw debugging vectors
-        this.showVectors = this.project.showVectors;
+        this.showVectors = this.project.debug.showColliders;
 
         var scale = 1;
         if (this.project.viewport.fullScreen) {
@@ -272,17 +273,17 @@ export class Core {
 
             // REFACTOR: Update this
             // Run the startup program before the game logic loop.
-            if (Core._instance.project.startupProgram && Core._instance.firstScene && !Core._instance.haveRunStartup) {
-                await this.scriptVM.run(PATH_PROGRAM + this.project.startupProgram, Core._instance);
-                Core._instance.haveRunStartup = true;
-                Core._instance.inProgram = false;
-                Core._instance.currentProgram = null;
-                Core._instance.controlEnabled = true;
+            // if (Core._instance.project.startupProgram && Core._instance.firstScene && !Core._instance.haveRunStartup) {
+            //     await this.scriptVM.run(PATH_PROGRAM + this.project.startupProgram, Core._instance);
+            //     Core._instance.haveRunStartup = true;
+            //     Core._instance.inProgram = false;
+            //     Core._instance.currentProgram = null;
+            //     Core._instance.controlEnabled = true;
 
+            //     await Core._instance.startScene();
+            // } else {
                 await Core._instance.startScene();
-            } else {
-                await Core._instance.startScene();
-            }
+            // }
         }
     }
 
@@ -719,16 +720,15 @@ export class Core {
             console.debug("Loading sprite=[%s]", JSON.stringify(sprite));
         }
 
+        // REFACTOR
         var asset;
-        if (sprite.asset.endsWith(".sprite")) {
-            var json;
-            const newSprite = new Sprite(PATH_SPRITE + sprite.asset);
-            if (this.cache.get(newSprite.filename)) {
-                json = JSON.parse(this.cache.get(newSprite.filename));
-            }
-            asset = sprite.enemy = await newSprite.load(json);
-            sprite.collisionPoints = sprite.enemy.collisionPoints;
-        }
+        const newSprite: Sprite = await Factory.build(PATH_SPRITE + sprite.asset) as Sprite;
+        // if (newSprite === null) {
+        //     newSprite = await Factory.build(PATH_SPRITE + sprite.asset) as Sprite;
+        //     this._cache.put(sprite.asset, newSprite);
+        // }
+        asset = sprite.enemy = newSprite;
+        sprite.collisionPoints = sprite.enemy.collisionPoints;
 
         sprite.x = sprite.startLocation.x;
         sprite.y = sprite.startLocation.y;

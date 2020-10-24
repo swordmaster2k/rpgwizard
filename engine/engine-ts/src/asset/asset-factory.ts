@@ -7,6 +7,7 @@
  */
 import * as Asset from "./dto/assets.js";
 import { Animation } from "./animation.js";
+import { Game } from "./game.js";
 import { Map } from "./map.js";
 import { Sprite } from "./sprite.js";
 import { Tileset } from "./tileset.js";
@@ -20,13 +21,25 @@ export async function build(file: string): Promise<Asset.Base> {
 
         return new Animation(<Asset.Animation>json);
 
+    } else if (file.endsWith(".game")) {
+
+        return new Game(<Asset.Game>json);
+
     } else if (file.endsWith(".map")) {
 
         return new Map(<Asset.Map>json);
 
     } else if (file.endsWith(".sprite")) {
 
-        return new Sprite(<Asset.Sprite>json);
+        // REFACTOR
+        const dto: Asset.Sprite = <Asset.Sprite>json;
+        const sprite = new Sprite(dto);
+        const assets = await sprite.loadAssets();
+        await loadRawAssets(assets);
+        sprite.spriteGraphics.active = sprite.spriteGraphics.south;
+        sprite.getActiveFrame();
+
+        return sprite;
 
     } else if (file.endsWith(".tileset")) {
 
@@ -39,7 +52,30 @@ export async function build(file: string): Promise<Asset.Base> {
     throw new Error(`Unknown asset type=[${file}]!`);
 }
 
+// REFACTOR
 export async function loadRawAssets(assets: any): Promise<void> {
+
+    // Remove any duplicates.
+    assets.images = assets.images.filter((it, i, ar) => ar.indexOf(it) === i);
+
+    // Remove already loaded assets.
+    var images = [];
+    assets.images.forEach(function (image) {
+        if (!Crafty.assets[Crafty.__paths.images + image]) {
+            images.push(image);
+        }
+    });
+
+    var audio = {};
+    for (var property in assets.audio) {
+        if (!Crafty.assets[Crafty.__paths.audio + property]) {
+            audio[property] = assets.audio[property];
+        }
+    }
+
+    assets.images = images;
+    assets.audio = audio;
+
     return new Promise<void>((resolve: any, reject: any) => {
         Crafty.load(assets,
             () => {

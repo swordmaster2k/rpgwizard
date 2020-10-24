@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { SpriteSheet, StartLocation, MapLayer, Collider, Trigger } from "./asset-subtypes";
+import { SpriteSheet, StartLocation, MapLayer, Collider, Trigger, Viewport, Debug } from "./asset-subtypes";
 
 // Base type
 export interface Base {
@@ -19,6 +19,13 @@ export interface Animation extends Base {
     frameRate: number;
     soundEffect: string;
     spriteSheet: SpriteSheet;
+}
+
+export interface Game extends Base {
+    name: string;
+    viewport: Viewport;
+    debug: Debug;
+    version: string;
 }
 
 export interface Map extends Base {
@@ -37,10 +44,10 @@ export interface Map extends Base {
 export interface Sprite extends Base {
     name: string;
     description: string;
-    animations: object;
+    animations: Record<string, string>;
     collider: Collider;
     trigger: Trigger;
-    data: object;
+    data: any;
 }
 
 export interface Tileset extends Base {

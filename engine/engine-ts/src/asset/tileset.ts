@@ -33,7 +33,6 @@ export class Tileset implements Asset.Tileset {
         this.tileData = asset.tileData;
         this.version = asset.version;
 
-        // REFACTOR: Remove direct Crafty usage
         this.imageBitmap = Framework.getImage(this.image);
         this.rows = Math.floor(this.imageBitmap.height / this.tileHeight);
         this.columns = Math.floor(this.imageBitmap.width / this.tileWidth);

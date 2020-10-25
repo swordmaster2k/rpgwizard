@@ -5,7 +5,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-/* global rpgwizard */
 
 import { Core } from "./core.js";
 
@@ -17,13 +16,13 @@ window.onerror = function(msg, url, line) {
 };
 
 // Don't start the game until the user has interacted with the window
-let play = document.getElementById("play");
-let playGame = async function() {
+const play = document.getElementById("play");
+const playGame = async function() {
     console.info("Starting the game...");
     play.style.visibility = "hidden";
 
     // REFACTOR: Use module instead...
     await Core.getInstance().main("game/default.game");
 };
-play.addEventListener("click", playGame, {once: true});
+play.addEventListener("click", playGame, { once: true });
 console.info("Awaiting user input...");

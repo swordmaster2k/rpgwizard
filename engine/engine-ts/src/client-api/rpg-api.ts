@@ -40,9 +40,7 @@ export class Rpg {
     public attachControls(id: string) {
         const entity = this._mapController.findEntity(id);
         if (entity) {
-            console.log(entity);
             entity.addComponent("CustomControls");
-            console.log(entity);
         }
     }
 

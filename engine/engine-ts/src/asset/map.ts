@@ -7,7 +7,8 @@
  */
 import { Core } from "../core.js"; // REFACTOR: Decouple this?
 import * as Asset from "./dto/assets.js";
-import { StartLocation, MapLayer } from "./dto/asset-subtypes.js";
+import * as Dto from "./dto/asset-subtypes.js";
+import * as Runtime from "./runtime/asset-subtypes.js";
 
 export class Map implements Asset.Map {
 
@@ -20,8 +21,8 @@ export class Map implements Asset.Map {
     readonly music: string;
     readonly tilesets: string[];
     readonly entryScript: string;
-    readonly startLocation: StartLocation;
-    readonly layers: MapLayer[];
+    readonly startLocation: Dto.StartLocation;
+    readonly layers: Runtime.MapLayer[];
     readonly version: string;
 
     // Specific
@@ -61,7 +62,7 @@ export class Map implements Asset.Map {
         }
     }
 
-    private generateLayer(layer: MapLayer): HTMLCanvasElement {
+    private generateLayer(layer: Runtime.MapLayer): HTMLCanvasElement {
         const cnv: HTMLCanvasElement = document.createElement("canvas");
         cnv.width = this.width * this.tileWidth;
         cnv.height = this.height * this.tileHeight;

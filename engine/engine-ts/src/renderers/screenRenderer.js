@@ -180,12 +180,14 @@ ScreenRenderer.prototype.sortSprites = function (layer, player) {
 
     Object.keys(layer.sprites).forEach(function (key) {
         // REFACTOR: Update this
-        var entity = layer.sprites[key];
-        var sprite = entity.sprite;
+        const mapSprite = layer.sprites[key];
+        const entity = mapSprite.entity;
+        const sprite = entity.sprite;
+
+        sprite.x = entity.x;
+        sprite.y = entity.y;
+
         if (sprite && sprite.renderReady) {
-            sprite.x = entity.x;
-            sprite.y = entity.y;
-            sprite.layer = entity.layer;
             layerSprites.push(sprite);
         }
     });

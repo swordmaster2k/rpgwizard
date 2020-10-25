@@ -22,11 +22,12 @@ import { Keyboard } from "./io/keyboard.js";
 import { Mouse } from "./io/mouse.js";
 import { MapController } from "./map-controller.js";
 import { Framework } from "./framework.js";
+import { Rpg } from "./client-api/rpg-api.js";
 
 // Allow extending window with RPG API global
 declare global {
     // eslint-disable-next-line no-unused-vars
-    interface Window { rpgcode: any; }
+    interface Window { rpg: any; }
 }
 
 export class Core {
@@ -67,7 +68,7 @@ export class Core {
         // Setup composites
         this._mapController = new MapController();
         this._scriptVM = new ScriptVM();
-        window.rpgcode = new RPGcode();
+        window.rpg = new Rpg(this);
         this._cache = new Cache();
 
         this.screen = {};

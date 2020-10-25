@@ -325,9 +325,11 @@ function _defineMapSprite(type: Framework.EntityType, data: any) {
             // REFACTOR: Need current (x, y) fields, decorate DTO
             this.attr({ x: sprite.x, y: sprite.y, w: 50, h: 50, show: false });
             this.bind("Move", function (from) {
+                // REFACTOR: FIX ME
                 // Move activation vector with us.
-                this.activationVector.x = entity.x + sprite.trigger.x;
-                this.activationVector.y = entity.y + sprite.trigger.y;
+                // this.activationVector.x = entity.x + sprite.trigger.x;
+                // this.activationVector.y = entity.y + sprite.trigger.y;
+
                 sprite.animate(this.dt);
             });
             this.bind("EnterFrame", function (event) {

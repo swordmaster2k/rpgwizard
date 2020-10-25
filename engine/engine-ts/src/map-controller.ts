@@ -13,7 +13,7 @@ import * as Factory from "./asset/asset-factory.js";
 import { Map } from "./asset/map";
 import { Tileset } from "./asset/tileset";
 
-import { MapLayer, MapSprite } from "./asset/dto/asset-subtypes.js";
+import * as Runtime from "./asset/runtime/asset-subtypes.js";
 import { Sprite } from "./asset/sprite.js";
 
 export class MapController {
@@ -26,6 +26,17 @@ export class MapController {
 
     get mapEntity(): any {
         return this._mapEntity;
+    }
+
+    public findEntity(id: string): any {
+        // TODO: Implement lookup table to make this O(1)
+        const map: Map = this._mapEntity.map;
+        for (const layer of map.layers) {
+            if (layer.sprites[id]) {
+                return layer.sprites[id].entity;
+            }
+        }
+        return null;
     }
 
     public async loadMap(map: Map) {
@@ -47,7 +58,7 @@ export class MapController {
         map.generateLayerCache(); // REFACTOR: Move this?
 
         for (let layer: number = 0; layer < map.layers.length; layer++) {
-            const mapLayer: MapLayer = map.layers[layer];
+            const mapLayer: Runtime.MapLayer = map.layers[layer];
 
             // REFACTOR: Update this
             /*
@@ -78,11 +89,10 @@ export class MapController {
             /*
             * Setup board sprites.
             */
-            var sprites = {};
-            for (const [key, value] of Object.entries(mapLayer.sprites)) {
-                sprites[key] = await this.loadSprite(value);
+            for (const spriteId in mapLayer.sprites) {
+                const mapSprite: Runtime.MapSprite = mapLayer.sprites[spriteId];
+                mapSprite.entity = await this.loadSprite(mapSprite);
             }
-            mapLayer.sprites = sprites;
         }
 
         // REFACTOR: Update this
@@ -151,7 +161,7 @@ export class MapController {
 
     }
 
-    private async loadSprite(mapSprite: MapSprite) {
+    private async loadSprite(mapSprite: Runtime.MapSprite) {
         if (Core.getInstance().debugEnabled) {
             console.debug("Loading sprite=[%s]", JSON.stringify(mapSprite));
         }

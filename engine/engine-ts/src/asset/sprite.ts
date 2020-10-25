@@ -192,7 +192,74 @@ export class Sprite implements Asset.Sprite {
 
     // REFACTOR: Should be on MapSprite?
     public animate(dt: number) {
-        // TODO
+        try {
+            if (!dt || !this.renderReady || !this.spriteGraphics.active.spriteSheet.canvas) {
+                return;
+            }
+            this.spriteGraphics.elapsed += dt;
+            var delay = (1.0 / this.spriteGraphics.active.frameRate);
+            if (this.spriteGraphics.elapsed >= delay) {
+                this.spriteGraphics.elapsed -= delay;
+                var frame = this.spriteGraphics.frameIndex + 1;
+                if (frame < this.spriteGraphics.active.spriteSheet.width / this.spriteGraphics.active.width) {
+                    this.spriteGraphics.frameIndex = frame;
+                } else {
+                    this.spriteGraphics.frameIndex = 0;
+                }
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    public changeGraphics(direction: string|Direction) {
+        this.spriteGraphics.elapsed = 0;
+        this.spriteGraphics.frameIndex = 0;
+        switch (direction) {
+        case Direction.NORTH:
+            this.direction = Direction.NORTH;
+            this.spriteGraphics.active = this.spriteGraphics.north;
+            break;
+        case Direction.SOUTH:
+            this.direction = Direction.SOUTH;
+            this.spriteGraphics.active = this.spriteGraphics.south;
+            break;
+        case Direction.EAST:
+            this.direction = Direction.EAST;
+            this.spriteGraphics.active = this.spriteGraphics.east;
+            break;
+        case Direction.WEST:
+            this.direction = Direction.WEST;
+            this.spriteGraphics.active = this.spriteGraphics.west;
+            break;
+        case Direction.NORTH_EAST:
+            this.direction = Direction.NORTH_EAST;
+            this.spriteGraphics.active = this.spriteGraphics.northEast;
+            break;
+        case Direction.NORTH_WEST:
+            this.direction = Direction.NORTH_WEST;
+            this.spriteGraphics.active = this.spriteGraphics.northWest;
+            break;
+        case Direction.SOUTH_EAST:
+            this.direction = Direction.SOUTH_EAST;
+            this.spriteGraphics.active = this.spriteGraphics.southEast;
+            break;
+        case Direction.SOUTH_WEST:
+            this.direction = Direction.SOUTH_WEST;
+            this.spriteGraphics.active = this.spriteGraphics.southWest;
+            break;
+        case Direction.ATTACK:
+            this.spriteGraphics.active = this.spriteGraphics.attack;
+            break;
+        case Direction.DEFEND:
+            this.spriteGraphics.active = this.spriteGraphics.defend;
+            break;
+        case Direction.DIE:
+            this.spriteGraphics.active = this.spriteGraphics.die;
+            break;
+        default:
+            this.spriteGraphics.active = this.spriteGraphics.custom[direction];
+        }
     }
 
     private async loadAnimations() {
@@ -339,10 +406,6 @@ export class Sprite implements Asset.Sprite {
     }
 
     private animation(step: number) {
-        // REFACTOR: Implement
-    }
-
-    private changeGraphics(direciton: Direction) {
         // REFACTOR: Implement
     }
 

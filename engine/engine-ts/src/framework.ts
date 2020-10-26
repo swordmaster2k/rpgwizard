@@ -358,32 +358,16 @@ function _defineMapSprite(type: Framework.EntityType, data: any) {
 // Entity
 //
 function _createCollider(type: Framework.EntityType, data: any): any {
-    const points: Array<number> = data.points;
-    const id: string = data.id;
-    const layer: number = data.number;
-    const events: Array<Event> = data.events;
-
-    const bounds = engineUtil.getPolygonBounds(points);
-    var attr = {
-        x: bounds.x,
-        y: bounds.y,
-        w: bounds.width,
-        h: bounds.height,
-        vectorId: id,
-        layer: layer,
-        vectorType: type,
-        events: events
+    const attr = {
+        x: data.x,
+        y: data.y,
+        w: data.w,
+        h: data.h,
+        collider: data.collider
     };
-
-    if (points[0] === points[points.length - 2] && points[1] === points[points.length - 1]) {
-        // Start and end points are the same, Crafty does not like that.
-        points.pop(); // Remove last y.
-        points.pop(); // Remove last x.
-    }
-
-    Crafty.e(type + ", Collision, Raycastable")
+    Crafty.e("SOLID, Collision, Raycastable")
         .attr(attr)
-        .collision(points);
+        .collision(data.points);
 }
 
 function _createTrigger(type: Framework.EntityType, data: any): any {

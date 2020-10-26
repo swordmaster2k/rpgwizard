@@ -92,7 +92,7 @@ export class Sprite implements Asset.Sprite {
         };
 
         // REFACTOR: Setup collider and trigger later
-        // this.calculateCollisionPoints();
+        this.calculateCollisionPoints();
         // this.calculateActivationPoints();
     }
 
@@ -137,29 +137,11 @@ export class Sprite implements Asset.Sprite {
         this._thread = v;
     }
 
-    // Public methods
-    public hitOnCollision(hitData: any, entity: any) {
-        // REFACTOR: Implement
-    }
-
-    public hitOffCollision(hitData: any, entity: any) {
-        // REFACTOR: Implement
-    }
-
-    public hitOnActivation(hitData: any, entity: any) {
-        // REFACTOR: Implement
-    }
-
-    public hitOffActivation(hitData: any, entity: any) {
-        // REFACTOR: Implement
-    }
-
-    public checkCollisions(collision: any, entity: any) {
-
-    }
-
-    public checkActivations(collision: any, entity: any) {
-
+    private calculateCollisionPoints() {
+        for (const point of this.collider.points) {
+            this.collisionPoints.push(point.x + this.collider.x);
+            this.collisionPoints.push(point.y + this.collider.y);
+        }
     }
 
     public getActiveFrame() {
@@ -445,6 +427,48 @@ export class Sprite implements Asset.Sprite {
 
             spriteSheet.frames.push(frame);
         }
+    }
+
+    // Collision functions
+    public hitOnCollision(hitData: any, entity: any) {
+        for (const hit of hitData) {
+            this.processCollision(hit, entity);
+        }
+    }
+
+    // REFACTOR: revisit this
+    private processCollision(collision: any, entity: any) {
+        console.log(this.name);
+
+        if (collision.obj.collider) {
+            entity.cancelTween({ x: true, y: true });
+            entity.x -= collision.overlap * collision.normal.x;
+            entity.y -= collision.overlap * collision.normal.y;
+        } else if (collision.obj.sprite) {
+            // REFACTOR: Fix me
+            if (collision.obj.sprite.name === "Hero") {
+                return;
+            }
+
+            entity.cancelTween({ x: true, y: true });
+            entity.x -= collision.overlap * collision.normal.x;
+            entity.y -= collision.overlap * collision.normal.y;
+        }
+
+        entity.resetHitChecks();
+    }
+
+    public hitOffCollision(hitData: any, entity: any) {
+        entity.resetHitChecks();
+    }
+
+    // Trigger functions
+    public hitOnActivation(hitData: any, entity: any) {
+        // REFACTOR: Implement
+    }
+
+    public hitOffActivation(hitData: any, entity: any) {
+        // REFACTOR: Implement
     }
 
     private onSameLayer(collision: any) {

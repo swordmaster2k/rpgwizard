@@ -15,6 +15,8 @@ import { Tileset } from "./asset/tileset";
 
 import * as Runtime from "./asset/runtime/asset-subtypes.js";
 import { Sprite } from "./asset/sprite.js";
+import { Collider, Trigger } from "./asset/dto/asset-subtypes.js";
+import { Point } from "./rpgcode/rpgcode.js";
 
 export class MapController {
 
@@ -60,23 +62,19 @@ export class MapController {
         for (let layer: number = 0; layer < map.layers.length; layer++) {
             const mapLayer: Runtime.MapLayer = map.layers[layer];
 
-            // REFACTOR: Update this
             /*
-             * Setup vectors.
+             * Setup colliders
              */
-            // boardLayer.vectors.forEach(function (vector) {
-            //     var id = vector.id;
-            //     var type = vector.type;
-            //     var points = vector.points;
-            //     var events = vector.events;
+            for (const id in mapLayer.colliders) {
+                this.createCollider(mapLayer.colliders[id]);
+            }
 
-            //     var len = points.length;
-            //     var collision = [];
-            //     for (var i = 0; i < len; i++) {
-            //         collision.push(points[i].x, points[i].y);
-            //     }
-            //     this.createVectorPolygon(id, collision, layer, type, events);
-            // }, this);
+            /*
+             * Setup triggers
+             */
+            for (const id in mapLayer.triggers) {
+                this.createTrigger(mapLayer.triggers[id]);
+            }
 
             // REFACTOR: Update this
             /*
@@ -85,6 +83,7 @@ export class MapController {
             // boardLayer.images.forEach(function (image) {
             //     assets.images.push(image.src);
             // }, this);
+
 
             /*
             * Setup board sprites.
@@ -261,6 +260,41 @@ export class MapController {
         Framework.defineComponent(Framework.EntityType.Map, mapDefinition);
 
         return Framework.createEntity(Framework.EntityType.Map, {});
+    }
+
+    private createCollider(collider: Collider) {
+        const points: Array<number> = this.pointsToArray(collider.points);
+        const bounds: any = engineUtil.getPolygonBounds(points);
+
+        if (points[0] === points[points.length - 2] && points[1] === points[points.length - 1]) {
+            // Start and end points are the same, Crafty does not like that.
+            points.pop(); // Remove last y.
+            points.pop(); // Remove last x.
+        }
+
+        const data: any = {
+            x: bounds.x,
+            y: bounds.y,
+            w: bounds.width,
+            h: bounds.height,
+            collider: collider,
+            points: points
+        };
+
+        Framework.createEntity(Framework.EntityType.Collider, data);
+    }
+
+    private createTrigger(trigger: Trigger) {
+
+    }
+
+    private pointsToArray(points: Point[]): Array<number> {
+        const pointsArr: Array<number> = [];
+        for (const point of points) {
+            pointsArr.push(point.x);
+            pointsArr.push(point.y);
+        }
+        return pointsArr;
     }
 
 }

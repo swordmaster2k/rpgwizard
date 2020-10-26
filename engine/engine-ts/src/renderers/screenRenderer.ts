@@ -6,14 +6,16 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { Collider, MapImage, Trigger } from "../asset/dto/asset-subtypes.js";
 import { Map } from "../asset/map.js";
 import { MapLayer, MapSprite } from "../asset/runtime/asset-subtypes.js";
 import { Sprite } from "../asset/sprite.js";
 import { Core } from "../core.js";
 import { Framework } from "../framework.js";
+import { Point } from "../rpgcode/rpgcode.js";
 
 export class ScreenRenderer {
-
+w
     private _renderNowCanvas: HTMLCanvasElement;
 
     constructor() {
@@ -31,20 +33,8 @@ export class ScreenRenderer {
         const yShift: number = Core.getInstance().mapEntity.yShift;
         const x: number = Core.getInstance().mapEntity.x + xShift;
         const y: number = Core.getInstance().mapEntity.y + yShift;
-        let width: number = Core.getInstance().mapEntity.width;
-        let height: number = Core.getInstance().mapEntity.height;
-
-        if (/Edge/.test(navigator.userAgent)) {
-            // Handle Edge bug when drawing up to the bounds of a canvas.
-            width -= 2;
-            height -= 2;
-        }
-
-        // Shorthand reference.
-        // REFACTOR: Remove this
-        // var character = Core.getInstance().craftyCharacter.character;
-        // character.x = Core.getInstance().craftyCharacter.x;
-        // character.y = Core.getInstance().craftyCharacter.y;
+        const width: number = Core.getInstance().mapEntity.width;
+        const height: number = Core.getInstance().mapEntity.height;
 
         if (Core.getInstance().mapEntity.show) {
             const map: Map = Core.getInstance().mapEntity.map;
@@ -60,109 +50,62 @@ export class ScreenRenderer {
             // Loop through layers.
             for (var i = 0; i < map.layers.length; i++) {
                 const mapLayer: MapLayer = map.layers[i];
-
                 /*
                  * Render layer tiles.
                  */
                 ctx.drawImage(map.layerCache[i], 0, 0, width, height, x, y, width, height);
-
-                // REFACTOR: Update this
                 /*
                  * Render layer images.
                  */
-                // boardLayer.images.forEach(function (image) {
-                //     var layerImage = Crafty.assets[Crafty.__paths.images + image.src];
-                //     context.drawImage(layerImage, x + image.x, y + image.y);
-                // }, this);
-
-                // REFACTOR: Update this
+                for (const id in mapLayer.images) {
+                    const image: MapImage = mapLayer.images[id];
+                    const imageBitmap: ImageBitmap = Framework.getImage(image.image);
+                    ctx.drawImage(imageBitmap, x + image.x, y + image.y);
+                }
                 /*
                  * Sort sprites for depth.
                  */
                 const layerSprites = this.sortSprites(mapLayer);
-
-                // REFACTOR: Update this
                 /*
                  * Render sprites.
                  */
-                layerSprites.forEach(function (sprite) {
+                for (const sprite of layerSprites) {
                     if (sprite && sprite.layer === i && sprite.renderReady) {
                         const frame = sprite.getActiveFrame();
                         if (frame) {
-                            const x = parseInt(sprite.x - (frame.width / 2) + xShift);
-                            const y = parseInt(sprite.y - (frame.height / 2) + yShift);
+                            const x: number = sprite.x - (frame.width / 2) + xShift;
+                            const y: number = sprite.y - (frame.height / 2) + yShift;
                             ctx.drawImage(frame, x, y);
                         }
-
-                        if (Core.getInstance().showVectors) {
-                            // Draw collision ploygon.
-                            var x, y, moved = false;
-                            var points = sprite.collisionPoints;
-                            ctx.beginPath();
-                            ctx.lineWidth = "2";
-                            ctx.strokeStyle = "#FF0000";
-                            for (var j = 0; j < points.length - 1; j += 2) {
-                                x = sprite.x + points[j];
-                                y = sprite.y + points[j + 1];
-                                if (!moved) {
-                                    ctx.moveTo(x + xShift, y + yShift);
-                                    moved = true;
-                                } else {
-                                    ctx.lineTo(x + xShift, y + yShift);
-                                }
-                            }
-                            ctx.closePath();
-                            ctx.stroke();
-
-                            // Draw activation ploygon.
-                            moved = false;
-                            points = sprite.activationPoints;
-                            ctx.beginPath();
-                            ctx.lineWidth = "2";
-                            ctx.strokeStyle = "#FFFF00";
-                            for (var j = 0; j < points.length - 1; j += 2) {
-                                x = sprite.x + points[j] + sprite.activationOffset.x;
-                                y = sprite.y + points[j + 1] + sprite.activationOffset.y;
-                                if (!moved) {
-                                    ctx.moveTo(x + xShift, y + yShift);
-                                    moved = true;
-                                } else {
-                                    ctx.lineTo(x + xShift, y + yShift);
-                                }
-                            }
-                            ctx.closePath();
-                            ctx.stroke();
+                        if (Core.getInstance().game.debug.showColliders) {
+                            const x: number = sprite.x + xShift + sprite.collider.x;
+                            const y: number = sprite.y + yShift + sprite.collider.y;
+                            this.drawCollider(ctx, sprite.collider, x, y);
+                        }
+                        if (Core.getInstance().game.debug.showTriggers) {
+                            const x: number = sprite.x + xShift + sprite.trigger.x;
+                            const y: number = sprite.y + yShift + sprite.trigger.y;
+                            this.drawTrigger(ctx, sprite.trigger, x, y);
                         }
                     }
-                });
-
-                if (Core.getInstance().showVectors) {
-                    /*
-                     * (Optional) Render Vectors.
-                     */
-                    mapLayer.vectors.forEach(function (vector) {
-                        var haveMoved = false;
-                        if (vector.type === "SOLID") {
-                            ctx.strokeStyle = "#FF0000";
-                        } else if (vector.type === "PASSABLE") {
-                            ctx.strokeStyle = "#FFFF00";
-                        }
-                        ctx.lineWidth = 2.0;
-                        ctx.beginPath();
-                        for (var i = 0; i < vector.points.length - 1; i++) {
-                            var p1 = vector.points[i];
-                            var p2 = vector.points[i + 1];
-                            if (!haveMoved) {
-                                ctx.moveTo(p1.x + xShift, p1.y + yShift);
-                                haveMoved = true;
-                            }
-                            ctx.lineTo(p2.x + xShift, p2.y + yShift);
-                        }
-                        if (vector.isClosed) {
-                            ctx.lineTo(vector.points[0].x + xShift, vector.points[0].y + yShift);
-                        }
-                        ctx.stroke();
-                    }, this);
+                }
+                /*
+                 * Render Colliders
+                 */
+                if (Core.getInstance().game.debug.showColliders) {
+                    for (const id in mapLayer.colliders) {
+                        const collider: Collider = mapLayer.colliders[id];
+                        this.drawCollider(ctx, collider, xShift, yShift);
+                    }
+                }
+                /*
+                 * Render Triggers
+                 */
+                if (Core.getInstance().game.debug.showTriggers) {
+                    for (const id in mapLayer.triggers) {
+                        const trigger: Trigger = mapLayer.triggers[id];
+                        this.drawTrigger(ctx, trigger, xShift, yShift);
+                    }
                 }
             }
         }
@@ -190,6 +133,33 @@ export class ScreenRenderer {
         });
 
         return layerSprites;
+    }
+
+    private drawCollider(ctx: CanvasRenderingContext2D, collider: Collider, xShift: number, yShift: number) {
+        this.drawPolygon(ctx, collider.points, xShift, yShift, "#FF0000");
+    }
+
+    private drawTrigger(ctx: CanvasRenderingContext2D, trigger: Trigger, xShift: number, yShift: number) {
+        this.drawPolygon(ctx, trigger.points, xShift, yShift, "#FFFF00");
+    }
+
+    private drawPolygon(ctx: CanvasRenderingContext2D, points: Array<Point>, xShift: number, yShift: number, color: string) {
+        let haveMoved = false;
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2.0;
+        ctx.beginPath();
+
+        for (let i = 0; i < points.length - 1; i++) {
+            const p1 = points[i];
+            const p2 = points[i + 1];
+            if (!haveMoved) {
+                ctx.moveTo(p1.x + xShift, p1.y + yShift);
+                haveMoved = true;
+            }
+            ctx.lineTo(p2.x + xShift, p2.y + yShift);
+        }
+
+        ctx.stroke();
     }
 
     private renderUI(ctx: CanvasRenderingContext2D) {

@@ -6,12 +6,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { MapSprite } from "./asset/dto/asset-subtypes.js";
+import { createNoSubstitutionTemplateLiteral } from "../node_modules/typescript/lib/typescript.js";
 import { Game } from "./asset/game.js";
 import { Map } from "./asset/map.js";
 import { Sprite } from "./asset/sprite.js";
 import { Core } from "./core.js";
-import { Event } from "./rpgcode/rpgcode.js";
+import { EngineUtil } from "./util/util.js";
 
 // REFACTOR: Find better solution
 // https://stackoverflow.com/questions/31173738/typescript-getting-error-ts2304-cannot-find-name-require
@@ -25,43 +25,51 @@ declare const Crafty: any;
 export namespace Framework {
 
     export enum EntityType {
+        // eslint-disable-next-line no-unused-vars
         Collider = "Collider",
+        // eslint-disable-next-line no-unused-vars
         Trigger = "Trigger",
+        // eslint-disable-next-line no-unused-vars
         Map = "Map",
-        MapSprite = "MapSprite"
+        // eslint-disable-next-line no-unused-vars
+        MapSprite = "MapSprite",
+        // eslint-disable-next-line no-unused-vars
+        Keyboard = "Keyboard"
     }
 
     export interface Assets {
 
-        images: Array<String>;
-        audio: any;
+        images?: Array<String>;
+        audio?: any;
 
     }
 
     export function bootstrap(game: Game) {
-        var scale = 1;
+        let scale = 1;
         if (game.viewport.fullScreen) {
-            var bodyWidth = engineUtil.getBodyWidth();
-            var bodyHeight = engineUtil.getBodyHeight();
+            const bodyWidth = EngineUtil.getBodyWidth();
+            const bodyHeight = EngineUtil.getBodyHeight();
             scale = parseFloat((bodyWidth / game.viewport.width).toFixed(2));
             if (game.viewport.height * scale > bodyHeight) {
                 scale = parseFloat((bodyHeight / game.viewport.height).toFixed(2));
             }
         }
 
-        var container = document.getElementById("container");
-        var width = Math.floor((game.viewport.width * scale));
-        var height = Math.floor((game.viewport.height * scale));
+        const container = document.getElementById("container");
+        const width = Math.floor((game.viewport.width * scale));
+        const height = Math.floor((game.viewport.height * scale));
         container.style.width = width + "px";
         container.style.height = height + "px";
 
         Crafty.init(game.viewport.width, game.viewport.height);
         Crafty.viewport.init(width, height);
-        Crafty.paths({ audio: PATH_MEDIA, images: PATH_BITMAP });
+        Crafty.paths({ audio: Core.PATH_MEDIA, images: Core.PATH_BITMAP });
         Crafty.viewport.scale(scale);
 
         defineComponent(EntityType.Collider, {});
         defineComponent(EntityType.Trigger, {});
+
+        createEntity(EntityType.Keyboard, {});
     }
 
     export function getViewport(): any {
@@ -98,7 +106,7 @@ export namespace Framework {
         case EntityType.MapSprite:
             return _defineMapSprite(type, data);
         default:
-            return null; // REFACTOR: Handle this
+            throw new Error(`Cannot define unknown component type! type=[${type}]`);
         }
     }
 
@@ -112,8 +120,10 @@ export namespace Framework {
             return _createMap(type, data);
         case EntityType.MapSprite:
             return _createMapSprite(type, data);
+        case EntityType.Keyboard:
+            return _createKeyboard();
         default:
-            return null; // REFACTOR: Handle this
+            throw new Error(`Cannot create unknown entity type! type=[${type}]`);
         }
     }
 
@@ -126,24 +136,28 @@ export namespace Framework {
     }
 
     export async function loadAssets(assets: Assets) {
-        // Remove any duplicates and already loaded images
-        assets.images = assets.images.filter((it, i, ar) => ar.indexOf(it) === i);
-        const images: Array<string> = [];
-        assets.images.forEach(function (image: string) {
-            if (!Crafty.assets[Crafty.__paths.images + image]) {
-                images.push(image);
-            }
-        });
-        assets.images = images;
-
-        // Remove any duplicates and already loaded audio
-        const audio = {};
-        for (const property in assets.audio) {
-            if (!Crafty.assets[Crafty.__paths.audio + property]) {
-                audio[property] = assets.audio[property];
-            }
+        if (assets.images) {
+            // Remove any duplicates and already loaded images
+            assets.images = assets.images.filter((it, i, ar) => ar.indexOf(it) === i);
+            const images: Array<string> = [];
+            assets.images.forEach(function (image: string) {
+                if (!Crafty.assets[Crafty.__paths.images + image]) {
+                    images.push(image);
+                }
+            });
+            assets.images = images;
         }
-        assets.audio = audio;
+
+        if (assets.audio) {
+            // Remove any duplicates and already loaded audio
+            const audio = {};
+            for (const property in assets.audio) {
+                if (!Crafty.assets[Crafty.__paths.audio + property]) {
+                    audio[property] = assets.audio[property];
+                }
+            }
+            assets.audio = audio;
+        }
 
         return new Promise<void>((resolve: any, reject: any) => {
             Crafty.load(assets,
@@ -195,37 +209,37 @@ export namespace Framework {
 
         Crafty.e("2D, UI, Mouse")
             .attr({ x: 0, y: 0, w: Crafty.viewport._width, h: Crafty.viewport._height, ready: true })
-            .bind("Draw", (e) => {
+            .bind("Draw", (e: any) => {
                 if (e.ctx) {
                     core.screen.renderUI(e.ctx);
                 }
             })
-            .bind("MouseDown", (e) => {
-                var handler = core.inProgram ? core.mouseHandler.mouseDownHandler : core.mouseDownHandler;
+            .bind("MouseDown", (e: any) => {
+                const handler = core.inProgram ? core.mouseHandler.mouseDownHandler : core.mouseDownHandler;
                 if (handler && typeof handler === "function") {
                     handler(e);
                 }
             })
-            .bind("MouseUp", (e) => {
-                var handler = core.inProgram ? core.mouseHandler.mouseUpHandler : core.mouseUpHandler;
+            .bind("MouseUp", (e: any) => {
+                const handler = core.inProgram ? core.mouseHandler.mouseUpHandler : core.mouseUpHandler;
                 if (handler && typeof handler === "function") {
                     handler(e);
                 }
             })
-            .bind("Click", (e) => {
-                var handler = core.inProgram ? core.mouseHandler.mouseClickHandler : core.mouseClickHandler;
+            .bind("Click", (e: any) => {
+                const handler = core.inProgram ? core.mouseHandler.mouseClickHandler : core.mouseClickHandler;
                 if (handler && typeof handler === "function") {
                     handler(e);
                 }
             })
-            .bind("DoubleClick", (e) => {
-                var handler = core.inProgram ? this.mouseHandler.mouseDoubleClickHandler : core.mouseDoubleClickHandler;
+            .bind("DoubleClick", (e: any) => {
+                const handler = core.inProgram ? this.mouseHandler.mouseDoubleClickHandler : core.mouseDoubleClickHandler;
                 if (handler && typeof handler === "function") {
                     handler(e);
                 }
             })
-            .bind("MouseMove", (e) => {
-                var handler = core.inProgram ? core.mouseHandler.mouseMoveHandler : core.mouseMoveHandler;
+            .bind("MouseMove", (e: any) => {
+                const handler = core.inProgram ? core.mouseHandler.mouseMoveHandler : core.mouseMoveHandler;
                 if (handler && typeof handler === "function") {
                     handler(e);
                 }
@@ -239,7 +253,7 @@ export namespace Framework {
 //
 function _defineCollider(type: Framework.EntityType, data: any) {
     Crafty.c(type, {
-        Collider: function (polygon, hiton, hitoff) {
+        Collider: function (polygon: any, hiton: any, hitoff: any) {
             this.requires("Collision, Raycastable");
             this.collision(polygon);
             this.checkHits(type);
@@ -252,7 +266,7 @@ function _defineCollider(type: Framework.EntityType, data: any) {
 
 function _defineTrigger(type: Framework.EntityType, data: any) {
     Crafty.c(type, {
-        Trigger: function(polygon, hiton, hitoff) {
+        Trigger: function(polygon: any, hiton: any, hitoff: any) {
             this.requires("Collision, Raycastable");
             this.collision(polygon);
             this.checkHits(type);
@@ -282,12 +296,12 @@ function _defineMap(type: Framework.EntityType, data: any) {
             this.bind("EnterFrame", function () {
                 this.trigger("Invalidate");
             });
-            this.bind("Draw", function (e) {
+            this.bind("Draw", function (e: any) {
                 if (e.ctx) {
                     // REFACTOR: Fix this
                     // Excute the user specified runtime programs first.
                     // rpgcode.runTimePrograms.forEach(async function(filename) {
-                    //     var program = await Core.getInstance().openProgram(PATH_PROGRAM + filename);
+                    //     let program = await Core.getInstance().openProgram(PATH_PROGRAM + filename);
                     //     program();
                     // });
                     Core.getInstance().screen.renderBoard(e.ctx);
@@ -299,10 +313,6 @@ function _defineMap(type: Framework.EntityType, data: any) {
 
 function _defineMapSprite(type: Framework.EntityType, data: any) {
     const sprite: Sprite = data.sprite;
-    const isEnemy: boolean = data.isEnemy;
-    const events: any = data.events;
-    const activationVector: any = data.activationVector;
-    const entity: any = data.entity;
 
     Crafty.c(type, {
         ready: true,
@@ -312,35 +322,32 @@ function _defineMapSprite(type: Framework.EntityType, data: any) {
         layer: sprite.layer,
         width: 150,
         height: 150,
-
         sprite: sprite,
-
-        events: events,
-        activationVector: activationVector,
-        vectorType: isEnemy ? "ENEMY" : "NPC",
-
         tweenEndCallbacks: [],
         init: function () {
             this.requires(`2D, Canvas, Tween, ${Framework.EntityType.Collider}`);
-            // REFACTOR: Need current (x, y) fields, decorate DTO
-            this.attr({ x: sprite.x, y: sprite.y, w: 50, h: 50, show: false });
-            this.bind("Move", function (from) {
+            this.attr({
+                x: sprite.x,
+                y: sprite.y,
+                w: 50,
+                h: 50,
+                show: false
+            });
+            this.bind("Move", function (from: any) {
                 // Move trigger vector with sprite
                 sprite.triggerEntity.x = Math.floor(this.x + sprite.trigger.x);
                 sprite.triggerEntity.y = Math.floor(this.y + sprite.trigger.y);
-
                 sprite.animate(this.dt);
             });
-            this.bind("EnterFrame", function (event) {
+            this.bind("EnterFrame", async function (event: any) {
                 this.dt = event.dt / 1000;
                 if (sprite.thread && sprite.renderReady && Core.getInstance().mapEntity.show) {
-                    // REFACTOR: FIX ME
-                    // sprite.thread.default(this);
+                    await Core.getInstance().scriptVM.run(Core.PATH_PROGRAM + sprite.thread, this.sprite);
                 }
             });
-            this.bind("TweenEnd", function (event) {
+            this.bind("TweenEnd", function (event: any) {
                 if (this.tweenEndCallbacks.length > 0) {
-                    var callback = this.tweenEndCallbacks.shift();
+                    const callback = this.tweenEndCallbacks.shift();
                     if (callback) {
                         callback();
                     }
@@ -348,7 +355,7 @@ function _defineMapSprite(type: Framework.EntityType, data: any) {
             });
         },
         remove: function () {
-            this.activationVector.destroy();
+            this.sprite.triggerEntity.destroy();
         }
     });
 }
@@ -356,6 +363,22 @@ function _defineMapSprite(type: Framework.EntityType, data: any) {
 //
 // Entity
 //
+function _createKeyboard() {
+    Crafty.e()
+        .bind("KeyDown", function (e: any) {
+            const handler = Core.getInstance().inProgram ? Core.getInstance().keyboardHandler.downHandlers[e.key] : Core.getInstance().keyDownHandlers[e.key];
+            if (handler) {
+                handler(e);
+            }
+        })
+        .bind("KeyUp", function (e: any) {
+            const handler = Core.getInstance().inProgram ? Core.getInstance().keyboardHandler.upHandlers[e.key] : Core.getInstance().keyUpHandlers[e.key];
+            if (handler) {
+                handler(e);
+            }
+        });
+}
+
 function _createCollider(type: Framework.EntityType, data: any): any {
     const attr = {
         x: data.x,
@@ -364,7 +387,7 @@ function _createCollider(type: Framework.EntityType, data: any): any {
         h: data.h,
         collider: data.collider
     };
-    Crafty.e(`${type}, Collision, Raycastable`) // REFACTOR: get rid of SOLID
+    Crafty.e(`${type}, Collision, Raycastable`)
         .attr(attr)
         .collision(data.points);
 }
@@ -377,7 +400,7 @@ function _createTrigger(type: Framework.EntityType, data: any): any {
         h: data.h,
         trigger: data.trigger
     };
-    Crafty.e(`${type}, Collision, Raycastable`) // REFACTOR: get rid of ACTIVATION
+    Crafty.e(`${type}, Collision, Raycastable`)
         .attr(attr)
         .collision(data.points);
 }
@@ -389,12 +412,11 @@ function _createMap(type: Framework.EntityType, data: any): any {
 function _createMapSprite(type: Framework.EntityType, data: any): any {
     const sprite: Sprite = data.sprite;
 
-    const bounds: any = engineUtil.getPolygonBounds(sprite._triggerPoints);
+    const bounds: any = EngineUtil.getPolygonBounds(sprite._triggerPoints);
 
     // Create trigger here so it can be attached
     const triggerEntity: any = Crafty.e(`2D, Canvas, ${Framework.EntityType.Trigger}`)
         .attr({
-            // REFACTOR: Need current (x, y) fields, decorate DTO
             x: sprite.x + sprite.trigger.x,
             y: sprite.y + sprite.trigger.y,
             w: bounds.width,
@@ -403,10 +425,10 @@ function _createMapSprite(type: Framework.EntityType, data: any): any {
         })
         .Trigger(
             new Crafty.polygon(sprite._triggerPoints),
-            function (hitData) {
+            function (hitData: any) {
                 sprite.hitOnTrigger(hitData, entity);
             },
-            function (hitData) {
+            function (hitData: any) {
                 sprite.hitOffTrigger(hitData, entity);
             }
         );
@@ -416,10 +438,10 @@ function _createMapSprite(type: Framework.EntityType, data: any): any {
     const entity = Crafty.e(type)
         .Collider(
             new Crafty.polygon(sprite._collisionPoints),
-            function (hitData) {
+            function (hitData: any) {
                 sprite.hitOnCollider(hitData, entity);
             },
-            function (hitData) {
+            function (hitData: any) {
                 sprite.hitOffCollider(hitData, entity);
             }
         );

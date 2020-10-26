@@ -6,19 +6,15 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-/* global PATH_BITMAP, PATH_MEDIA, PATH_PROGRAM, PATH_BOARD, PATH_TILESET, engineUtil, Promise, requirejs, PATH_SPRITE */
-
 import { Cache } from "./asset/asset-cache.js";
 import * as Factory from "./asset/asset-factory.js";
 
 import { Game } from "./asset/game.js";
 
-import { ScreenRenderer } from "./renderers/screenRenderer.js";
+import { ScreenRenderer } from "./renderers/screen-renderer.js";
 
 import { ScriptVM } from "./client-api/script-vm.js";
 
-import { Keyboard } from "./io/keyboard.js";
-import { Mouse } from "./io/mouse.js";
 import { MapController } from "./map-controller.js";
 import { Framework } from "./framework.js";
 import { Rpg } from "./client-api/rpg-api.js";
@@ -34,6 +30,16 @@ export class Core {
     // Singleton reference
     private static _instance: Core;
 
+    // Asset directory paths
+    public static PATH_PROJECT: string = window.location.origin + "/game";
+    public static PATH_ANIMATION: string = Core.PATH_PROJECT + "/animations/";
+    public static PATH_PROGRAM: string = Core.PATH_PROJECT + "/scripts/";
+    public static PATH_MEDIA: string = Core.PATH_PROJECT + "/sounds/";
+    public static PATH_BITMAP: string = Core.PATH_PROJECT + "/textures/";
+    public static PATH_TILESET: string = Core.PATH_PROJECT + "/tilesets/";
+    public static PATH_BOARD: string = Core.PATH_PROJECT + "/maps/";
+    public static PATH_SPRITE: string = Core.PATH_PROJECT + "/sprites/";
+
     // Debug flag for engine logging
     public debugEnabled: boolean = false;
 
@@ -41,27 +47,26 @@ export class Core {
     private _mapController: MapController;
     private _scriptVM: ScriptVM;
 
-    public screen: any; // REFACTOR: visibility
+    private _screen: any;
     private _game: Game;
 
     // Asset cache
     private _cache: Cache;
 
-    // REFACTOR: Move this
-    private keyboardHandler: any;
-    private keyDownHandlers: any;
-    private keyUpHandlers: any;
+    // Keyboard handlers
+    private _keyboardHandler: any;
+    private _keyDownHandlers: any;
+    private _keyUpHandlers: any;
 
-    // REFACTOR: Move this
-    public mouseHandler: any; // REFACTOR: visibility
-    public mouseDownHandler: any; // REFACTOR: visibility
-    public mouseUpHandler: any; // REFACTOR: visibility
-    public mouseClickHandler: any; // REFACTOR: visibility
-    public mouseDoubleClickHandler: any; // REFACTOR: visibility
-    public mouseMoveHandler: any; // REFACTOR: visibility
+    // Mouse handlers
+    private _mouseHandler: any;
+    private _mouseDownHandler: any;
+    private _mouseUpHandler: any;
+    private _mouseClickHandler: any;
+    private _mouseDoubleClickHandler: any;
+    private _mouseMoveHandler: any;
 
-    // REFACTOR: Move this
-    public inProgram: boolean; // REFACTOR: visibility
+    public _inProgram: boolean;
 
     private constructor() {
         // Setup composites
@@ -70,31 +75,26 @@ export class Core {
         window.rpg = new Rpg(this);
         this._cache = new Cache();
 
-        this.screen = {};
+        this._screen = {};
 
         // Game project file.
         this._game = null;
 
-        // REFACTOR: Remove me
-        requirejs.config({
-            baseUrl: PATH_PROGRAM
-        });
+        // Used to store state when runProgram is called.
+        this._keyboardHandler = {};
+        this._keyDownHandlers = {};
+        this._keyUpHandlers = {};
 
         // Used to store state when runProgram is called.
-        this.keyboardHandler = {};
-        this.keyDownHandlers = {};
-        this.keyUpHandlers = {};
-
-        // Used to store state when runProgram is called.
-        this.mouseHandler = {};
-        this.mouseDownHandler = {};
-        this.mouseUpHandler = {};
-        this.mouseClickHandler = {};
-        this.mouseDoubleClickHandler = {};
-        this.mouseMoveHandler = {};
+        this._mouseHandler = {};
+        this._mouseDownHandler = {};
+        this._mouseUpHandler = {};
+        this._mouseClickHandler = {};
+        this._mouseDoubleClickHandler = {};
+        this._mouseMoveHandler = {};
 
         // Engine program states.
-        this.inProgram = false;
+        this._inProgram = false;
     }
 
     public static getInstance(): Core {
@@ -109,8 +109,16 @@ export class Core {
         return this._game;
     }
 
+    get screen(): any {
+        return this._screen;
+    }
+
     get cache(): Cache {
         return this._cache;
+    }
+
+    get inProgram(): boolean {
+        return this._inProgram;
     }
 
     get mapEntity(): any {
@@ -125,6 +133,42 @@ export class Core {
         return this._mapController;
     }
 
+    get keyboardHandler(): any {
+        return this._keyboardHandler;
+    }
+
+    get keyDownHandlers(): any {
+        return this._keyDownHandlers;
+    }
+
+    get keyUpHandlers(): any {
+        return this._keyUpHandlers;
+    }
+
+    get mouseHandler(): any {
+        return this._mouseHandler;
+    }
+
+    get mouseDownHandler(): any {
+        return this._mouseDownHandler;
+    }
+
+    get mouseUpHandler(): any {
+        return this._mouseUpHandler;
+    }
+
+    get mouseClickHandler(): any {
+        return this._mouseClickHandler;
+    }
+
+    get mouseDoubleClickHandler(): any {
+        return this._mouseDoubleClickHandler;
+    }
+
+    get mouseMoveHandler(): any {
+        return this._mouseMoveHandler;
+    }
+
     public async main(filename: string) {
         if (this.debugEnabled) {
             console.debug("Starting engine with filename=[%s]", filename);
@@ -136,9 +180,7 @@ export class Core {
         Framework.bootstrap(this._game);
 
         // Setup IO & UI
-        this.keyboardHandler = new Keyboard();
-        this.mouseHandler = new Mouse();
-        this.screen = new ScreenRenderer();
+        this._screen = new ScreenRenderer();
         Framework.createUI(this);
 
         // Run game's startup script

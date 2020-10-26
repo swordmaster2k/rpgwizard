@@ -15,8 +15,9 @@ import { Tileset } from "./asset/tileset";
 
 import * as Runtime from "./asset/runtime/asset-subtypes.js";
 import { Sprite } from "./asset/sprite.js";
-import { Collider, Trigger } from "./asset/dto/asset-subtypes.js";
+import { Collider, MapImage, Trigger } from "./asset/dto/asset-subtypes.js";
 import { Point } from "./rpgcode/rpgcode.js";
+import { EngineUtil } from "./util/util.js";
 
 export class MapController {
 
@@ -47,77 +48,55 @@ export class MapController {
         }
 
         this._mapEntity = this.createCraftyMap(map);
-        var assets = { images: [], audio: {} };
 
         await Promise.all(this._mapEntity.map.tilesets.map(async(file: string) => {
             let tileset: Tileset = Core.getInstance().cache.get(file);
             if (tileset === null) {
-                tileset = await Factory.build(PATH_TILESET + file) as Tileset;
+                tileset = await Factory.build(Core.PATH_TILESET + file) as Tileset;
                 Core.getInstance().cache.put(file, tileset);
             }
         }));
 
-        map.generateLayerCache(); // REFACTOR: Move this?
+        map.generateLayerCache();
 
         for (let layer: number = 0; layer < map.layers.length; layer++) {
             const mapLayer: Runtime.MapLayer = map.layers[layer];
-
             /*
              * Setup colliders
              */
             for (const id in mapLayer.colliders) {
                 this.createCollider(mapLayer.colliders[id]);
             }
-
             /*
              * Setup triggers
              */
             for (const id in mapLayer.triggers) {
                 this.createTrigger(mapLayer.triggers[id]);
             }
-
-            // REFACTOR: Update this
             /*
-             * Layer images.
+             * Setup images
              */
-            // boardLayer.images.forEach(function (image) {
-            //     assets.images.push(image.src);
-            // }, this);
-
-
+            for (const id in mapLayer.images) {
+                const mapImage: MapImage = mapLayer.images[id];
+                await Framework.loadAssets({ images: [mapImage.image] });
+            }
             /*
-            * Setup board sprites.
+            * Setup sprites
             */
             for (const spriteId in mapLayer.sprites) {
                 const mapSprite: Runtime.MapSprite = mapLayer.sprites[spriteId];
                 mapSprite.entity = await this.loadSprite(mapSprite);
             }
         }
-
-        // REFACTOR: Update this
-        /*
-         * Setup board sprites.
-         */
-        // var sprites = {};
-        // var len = board.sprites.length;
-        // for (var i = 0; i < len; i++) {
-        //     var sprite = board.sprites[i];
-        //     sprites[sprite.id] = await this.loadSprite(sprite);
-        // }
-
-        // Change board sprites to an object set.
-        // board.sprites = sprites;
-
-        // REFACTOR: Update this
         /*
          * Play background music.
          */
-        // var backgroundMusic = board.backgroundMusic;
-        // if (backgroundMusic) {
-        //     assets.audio[board.backgroundMusic] = board.backgroundMusic;
-        // }
-
-        // this.queueCraftyAssets(assets, craftyBoard.board);
+        if (map.music) {
+            const audioAssets: any = {};
+            audioAssets[map.music] = map.music;
+            await Framework.loadAssets({ audio: audioAssets });
+            // Framework.playAudio(map.music, 1);
+        }
     }
 
     public async switchMap(file: string, tileX: number, tileY: number, layer: number) {
@@ -127,33 +106,17 @@ export class MapController {
         }
         this.mapEntity.show = false;
 
-        // REFACTOR
-        // this.controlEnabled = false;
-
-        Framework.destroyEntities(["SOLID", "PASSABLE", Framework.EntityType.Map, Framework.EntityType.MapSprite]);
-
-        // REFACTOR
-        // May not be a last board if it is being set in a startup program.
-        // if (this._mapController.map.map) {
-        //     this.lastBackgroundMusic = this._mapController.map.map.backgroundMusic;
-        // }
+        Framework.destroyEntities([Framework.EntityType.Collider, Framework.EntityType.Trigger, Framework.EntityType.Map, Framework.EntityType.MapSprite]);
 
         // Load in the next map
-        let map: Map = Core.getInstance().cache.get(PATH_BOARD + file);
+        let map: Map = Core.getInstance().cache.get(Core.PATH_BOARD + file);
         if (map === null) {
-            map = await Factory.build(PATH_BOARD + file) as Map;
+            map = await Factory.build(Core.PATH_BOARD + file) as Map;
             Core.getInstance().cache.put(file, map);
         }
 
         await this.loadMap(map);
-
         this.mapEntity.show = true;
-
-        // REFACTOR
-        // if (Core.getInstance().debugEnabled) {
-        //     console.debug("Switching board player location set to x=[%d], y=[%d], layer=[%d]",
-        //         this.craftyCharacter.x, this.craftyCharacter.y, this.craftyCharacter.layer);
-        // }
     }
 
     private async setupMap() {
@@ -166,9 +129,9 @@ export class MapController {
         }
 
         // REFACTOR
-        const sprite: Sprite = await Factory.build(PATH_SPRITE + mapSprite.asset) as Sprite;
+        const sprite: Sprite = await Factory.build(Core.PATH_SPRITE + mapSprite.asset) as Sprite;
         // if (newSprite === null) {
-        //     newSprite = await Factory.build(PATH_SPRITE + sprite.asset) as Sprite;
+        //     newSprite = await Factory.build(Core.PATH_SPRITE + sprite.asset) as Sprite;
         //     this._cache.put(sprite.asset, newSprite);
         // }
 
@@ -178,27 +141,18 @@ export class MapController {
         sprite.thread = mapSprite.thread;
 
         // TODO: width and height of npc must contain the collision polygon.
-        if (sprite.thread) {
-            sprite.thread = await Core.getInstance().scriptVM.open(PATH_PROGRAM + sprite.thread);
-        }
-
-        // REFACTOR: get rid of this hacky code?
-        var entity;
+        // if (sprite.thread) {
+        //     sprite.thread = await Core.getInstance().scriptVM.open(Core.PATH_PROGRAM + sprite.thread);
+        // }
 
         const componentData: any = {
-            sprite: sprite,
-            isEnemy: true, // REFACTOR: Get rid of this
-            events: [], // REFACTOR: Fix me
-            entity: entity
+            sprite: sprite
         };
         Framework.defineComponent(Framework.EntityType.MapSprite, componentData);
-
         const entityData: any = {
             sprite: sprite
         };
-        entity = Framework.createEntity(Framework.EntityType.MapSprite, entityData);
-
-        return entity;
+        return Framework.createEntity(Framework.EntityType.MapSprite, entityData);
     }
 
     // REFACTOR
@@ -207,18 +161,18 @@ export class MapController {
             console.debug("Creating Crafty board=[%s]", JSON.stringify(map));
         }
 
-        var width = map.width * map.tileWidth;
-        var height = map.height * map.tileHeight;
+        let width = map.width * map.tileWidth;
+        let height = map.height * map.tileHeight;
 
         const viewport = Framework.getViewport();
-        var vWidth = viewport._width;
-        var vHeight = viewport._height;
-        var scale = viewport._scale;
+        const vWidth = viewport._width;
+        const vHeight = viewport._height;
+        const scale = viewport._scale;
 
-        var xShift = 0;
-        var yShift = 0;
+        let xShift = 0;
+        let yShift = 0;
         if (width < vWidth) {
-            var sWidth = width * scale;
+            const sWidth = width * scale;
             xShift = Math.max(((vWidth - sWidth) / 2) / scale, 0);
             if (xShift < 1) {
                 Math.max(sWidth - vWidth, 0);
@@ -226,7 +180,7 @@ export class MapController {
             width = vWidth;
         }
         if (height < vHeight) {
-            var sHeight = height * scale;
+            const sHeight = height * scale;
             yShift = Math.max(((vHeight - sHeight) / 2) / scale, 0);
             if (yShift < 1) {
                 Math.max(sHeight - vHeight, 0);
@@ -255,7 +209,7 @@ export class MapController {
 
     private createCollider(collider: Collider) {
         const points: Array<number> = this.pointsToArray(collider.points);
-        const bounds: any = engineUtil.getPolygonBounds(points);
+        const bounds: any = EngineUtil.getPolygonBounds(points);
 
         if (points[0] === points[points.length - 2] && points[1] === points[points.length - 1]) {
             // Start and end points are the same, Crafty does not like that.
@@ -277,7 +231,7 @@ export class MapController {
 
     private createTrigger(trigger: Trigger) {
         const points: Array<number> = this.pointsToArray(trigger.points);
-        const bounds: any = engineUtil.getPolygonBounds(points);
+        const bounds: any = EngineUtil.getPolygonBounds(points);
 
         if (points[0] === points[points.length - 2] && points[1] === points[points.length - 1]) {
             // Start and end points are the same, Crafty does not like that.

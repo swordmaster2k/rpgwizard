@@ -16,14 +16,14 @@ import { Point } from "../rpgcode/rpgcode.js";
 
 export class ScreenRenderer {
 w
-    private _renderNowCanvas: HTMLCanvasElement;
+    private _defaultCanvas: HTMLCanvasElement;
 
     constructor() {
-        this._renderNowCanvas = document.createElement("canvas");
+        this._defaultCanvas = document.createElement("canvas");
 
         const viewport = Framework.getViewport();
-        this._renderNowCanvas.width = viewport._width;
-        this._renderNowCanvas.height = viewport._height;
+        this._defaultCanvas.width = viewport._width;
+        this._defaultCanvas.height = viewport._height;
     }
 
     public renderBoard(ctx: CanvasRenderingContext2D) {
@@ -114,9 +114,8 @@ w
     private sortSprites(layer: MapLayer) {
         const layerSprites: Array<Sprite> = [];
 
-        Object.keys(layer.sprites).forEach(function (key) {
-            // REFACTOR: Update this
-            const mapSprite: MapSprite = layer.sprites[key];
+        for (const id in layer.sprites) {
+            const mapSprite: MapSprite = layer.sprites[id];
             const entity: any = mapSprite.entity;
             const sprite: Sprite = entity.sprite;
 
@@ -126,11 +125,9 @@ w
             if (sprite && sprite.renderReady) {
                 layerSprites.push(sprite);
             }
-        });
+        }
 
-        layerSprites.sort(function (a, b) {
-            return a.y - b.y;
-        });
+        layerSprites.sort((a, b) => { return a.y - b.y; });
 
         return layerSprites;
     }

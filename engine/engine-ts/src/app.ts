@@ -21,7 +21,6 @@ const playGame = async function() {
     console.info("Starting the game...");
     play.style.visibility = "hidden";
 
-    // REFACTOR: Use module instead...
     await Core.getInstance().main("game/default.game");
 };
 play.addEventListener("click", playGame, { once: true });

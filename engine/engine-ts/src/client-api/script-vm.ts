@@ -8,21 +8,21 @@
 
 export class ScriptVM {
 
-    private cache: object;
+    private _cache: object;
 
     constructor() {
-        this.cache = {};
+        this._cache = {};
     }
 
-    public async open(file: string) {
+    public async open(file: string): Promise<any> {
         console.info("opening game script file=[%s]", file);
 
         let script: any;
-        if (this.cache[file]) {
-            script = this.cache[file];
+        if (this._cache[file]) {
+            script = this._cache[file];
         } else {
             script = await import(file);
-            this.cache[file] = script;
+            this._cache[file] = script;
         }
 
         console.info("returning game script file=[%s]", file);

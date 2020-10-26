@@ -367,7 +367,7 @@ export class Sprite implements Asset.Sprite {
         if (file) {
             let animation: Animation = Core.getInstance().cache.get(file);
             if (animation === null) {
-                animation = await Factory.build(PATH_ANIMATION + file) as Animation;
+                animation = await Factory.build(Core.PATH_ANIMATION + file) as Animation;
                 Core.getInstance().cache.put(file, animation);
             }
             return animation;

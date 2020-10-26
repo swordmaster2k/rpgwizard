@@ -185,19 +185,10 @@ export class MapController {
         // REFACTOR: get rid of this hacky code?
         var entity;
 
-        const bounds = engineUtil.getPolygonBounds(sprite.activationPoints);
-        const activatonData: any = {
-            sprite: sprite,
-            bounds: bounds,
-            entity: entity
-        };
-        var activationVector = Framework.createEntity(Framework.EntityType.Trigger, activatonData);
-
         const componentData: any = {
             sprite: sprite,
             isEnemy: true, // REFACTOR: Get rid of this
             events: [], // REFACTOR: Fix me
-            activationVector: activationVector, // REFACTOR: Fix me
             entity: entity
         };
         Framework.defineComponent(Framework.EntityType.MapSprite, componentData);
@@ -285,7 +276,25 @@ export class MapController {
     }
 
     private createTrigger(trigger: Trigger) {
+        const points: Array<number> = this.pointsToArray(trigger.points);
+        const bounds: any = engineUtil.getPolygonBounds(points);
 
+        if (points[0] === points[points.length - 2] && points[1] === points[points.length - 1]) {
+            // Start and end points are the same, Crafty does not like that.
+            points.pop(); // Remove last y.
+            points.pop(); // Remove last x.
+        }
+
+        const data: any = {
+            x: bounds.x,
+            y: bounds.y,
+            w: bounds.width,
+            h: bounds.height,
+            trigger: trigger,
+            points: points
+        };
+
+        Framework.createEntity(Framework.EntityType.Trigger, data);
     }
 
     private pointsToArray(points: Point[]): Array<number> {

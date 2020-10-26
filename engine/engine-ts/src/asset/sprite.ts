@@ -15,6 +15,9 @@ import * as Asset from "./dto/assets.js";
 import { Collider, Direction, StandardKeys, Trigger } from "./dto/asset-subtypes.js";
 import { Core } from "../core.js";
 
+/**
+ * REFACTOR: Break this up a bit
+ */
 export class Sprite implements Asset.Sprite {
 
     // Implemented
@@ -32,10 +35,11 @@ export class Sprite implements Asset.Sprite {
     _layer: number;
     _direction: Direction;
     _thread: string;
+    _collisionPoints: Array<number>;
+    _triggerPoints: Array<number>;
+    _triggerEntity: any;
 
     // REFACTOR
-    collisionPoints: Array<number>;
-    activationPoints: Array<number>;
     spriteGraphics: any;
     hit: boolean;
     enemy: any;
@@ -58,8 +62,11 @@ export class Sprite implements Asset.Sprite {
         this._direction = Direction.SOUTH;
         this._thread = null;
 
-        this.collisionPoints = [];
-        this.activationPoints = [];
+        this._collisionPoints = [];
+        this.calculateCollisionPoints();
+
+        this._triggerPoints = [];
+        this.calculateTriggerPoints();
 
         this.hit = false;
 
@@ -90,10 +97,6 @@ export class Sprite implements Asset.Sprite {
             rest: null,
             custom: {}
         };
-
-        // REFACTOR: Setup collider and trigger later
-        this.calculateCollisionPoints();
-        // this.calculateActivationPoints();
     }
 
     // Getters & Setters
@@ -137,10 +140,25 @@ export class Sprite implements Asset.Sprite {
         this._thread = v;
     }
 
+    get triggerEntity(): any {
+        return this._triggerEntity;
+    }
+
+    set triggerEntity(v: any) {
+        this._triggerEntity = v;
+    }
+
     private calculateCollisionPoints() {
         for (const point of this.collider.points) {
-            this.collisionPoints.push(point.x + this.collider.x);
-            this.collisionPoints.push(point.y + this.collider.y);
+            this._collisionPoints.push(point.x + this.collider.x);
+            this._collisionPoints.push(point.y + this.collider.y);
+        }
+    }
+
+    private calculateTriggerPoints() {
+        for (const point of this.trigger.points) {
+            this._triggerPoints.push(point.x + this.trigger.x);
+            this._triggerPoints.push(point.y + this.trigger.y);
         }
     }
 
@@ -430,45 +448,52 @@ export class Sprite implements Asset.Sprite {
     }
 
     // Collision functions
-    public hitOnCollision(hitData: any, entity: any) {
+    public hitOnCollider(hitData: any, entity: any) {
         for (const hit of hitData) {
-            this.processCollision(hit, entity);
+            this.processCollider(hit, entity);
         }
     }
 
+    public hitOffCollider(hitData: any, entity: any) {
+        entity.resetHitChecks();
+    }
+
     // REFACTOR: revisit this
-    private processCollision(collision: any, entity: any) {
+    private processCollider(hit: any, entity: any) {
         console.log(this.name);
 
-        if (collision.obj.collider) {
+        if (hit.obj.collider) {
             entity.cancelTween({ x: true, y: true });
-            entity.x -= collision.overlap * collision.normal.x;
-            entity.y -= collision.overlap * collision.normal.y;
-        } else if (collision.obj.sprite) {
+            entity.x -= hit.overlap * hit.normal.x;
+            entity.y -= hit.overlap * hit.normal.y;
+        } else if (hit.obj.sprite) {
             // REFACTOR: Fix me
-            if (collision.obj.sprite.name === "Hero") {
+            if (hit.obj.sprite.name === "Hero") {
                 return;
             }
 
             entity.cancelTween({ x: true, y: true });
-            entity.x -= collision.overlap * collision.normal.x;
-            entity.y -= collision.overlap * collision.normal.y;
+            entity.x -= hit.overlap * hit.normal.x;
+            entity.y -= hit.overlap * hit.normal.y;
         }
 
         entity.resetHitChecks();
     }
 
-    public hitOffCollision(hitData: any, entity: any) {
-        entity.resetHitChecks();
-    }
-
     // Trigger functions
-    public hitOnActivation(hitData: any, entity: any) {
-        // REFACTOR: Implement
+    public hitOnTrigger(hitData: any, entity: any) {
+        console.log("hitOnActivation " + this.name);
+        for (const hit of hitData) {
+            this.processTrigger(hit, entity);
+        }
     }
 
-    public hitOffActivation(hitData: any, entity: any) {
-        // REFACTOR: Implement
+    public hitOffTrigger(hitData: any, entity: any) {
+        console.log("hitOffActivation " + this.name);
+    }
+
+    private processTrigger(hit: any, entity: any) {
+
     }
 
     private onSameLayer(collision: any) {

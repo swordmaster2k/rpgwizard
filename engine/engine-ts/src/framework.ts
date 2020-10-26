@@ -240,9 +240,9 @@ export namespace Framework {
 function _defineCollider(type: Framework.EntityType, data: any) {
     Crafty.c(type, {
         Collider: function (polygon, hiton, hitoff) {
-            this.requires("Collision, BASE");
+            this.requires("Collision, Raycastable");
             this.collision(polygon);
-            this.checkHits("SOLID, BASE");
+            this.checkHits(type);
             this.bind("HitOn", hiton);
             this.bind("HitOff", hitoff);
             return this;
@@ -253,9 +253,9 @@ function _defineCollider(type: Framework.EntityType, data: any) {
 function _defineTrigger(type: Framework.EntityType, data: any) {
     Crafty.c(type, {
         Trigger: function(polygon, hiton, hitoff) {
-            this.requires("Collision, ACTIVATION, Raycastable");
+            this.requires("Collision, Raycastable");
             this.collision(polygon);
-            this.checkHits("PASSABLE, ACTIVATION");
+            this.checkHits(type);
             this.bind("HitOn", hiton);
             this.bind("HitOff", hitoff);
             return this;
@@ -325,10 +325,9 @@ function _defineMapSprite(type: Framework.EntityType, data: any) {
             // REFACTOR: Need current (x, y) fields, decorate DTO
             this.attr({ x: sprite.x, y: sprite.y, w: 50, h: 50, show: false });
             this.bind("Move", function (from) {
-                // REFACTOR: FIX ME
-                // Move activation vector with us.
-                // this.activationVector.x = entity.x + sprite.trigger.x;
-                // this.activationVector.y = entity.y + sprite.trigger.y;
+                // Move trigger vector with sprite
+                sprite.triggerEntity.x = Math.floor(this.x + sprite.trigger.x);
+                sprite.triggerEntity.y = Math.floor(this.y + sprite.trigger.y);
 
                 sprite.animate(this.dt);
             });
@@ -365,17 +364,35 @@ function _createCollider(type: Framework.EntityType, data: any): any {
         h: data.h,
         collider: data.collider
     };
-    Crafty.e("SOLID, Collision, Raycastable")
+    Crafty.e(`${type}, Collision, Raycastable`) // REFACTOR: get rid of SOLID
         .attr(attr)
         .collision(data.points);
 }
 
 function _createTrigger(type: Framework.EntityType, data: any): any {
-    const sprite: Sprite = data.sprite;
-    const bounds: any = data.bounds;
-    const entity: any = data.entity;
+    const attr = {
+        x: data.x,
+        y: data.y,
+        w: data.w,
+        h: data.h,
+        trigger: data.trigger
+    };
+    Crafty.e(`${type}, Collision, Raycastable`) // REFACTOR: get rid of ACTIVATION
+        .attr(attr)
+        .collision(data.points);
+}
 
-    return Crafty.e(`2D, Canvas, ${type}`)
+function _createMap(type: Framework.EntityType, data: any): any {
+    return Crafty.e(type);
+}
+
+function _createMapSprite(type: Framework.EntityType, data: any): any {
+    const sprite: Sprite = data.sprite;
+
+    const bounds: any = engineUtil.getPolygonBounds(sprite._triggerPoints);
+
+    // Create trigger here so it can be attached
+    const triggerEntity: any = Crafty.e(`2D, Canvas, ${Framework.EntityType.Trigger}`)
         .attr({
             // REFACTOR: Need current (x, y) fields, decorate DTO
             x: sprite.x + sprite.trigger.x,
@@ -385,31 +402,27 @@ function _createTrigger(type: Framework.EntityType, data: any): any {
             sprite: sprite
         })
         .Trigger(
-            new Crafty.polygon(sprite.activationPoints),
+            new Crafty.polygon(sprite._triggerPoints),
             function (hitData) {
-                sprite.hitOnActivation(hitData, entity);
+                sprite.hitOnTrigger(hitData, entity);
             },
             function (hitData) {
-                sprite.hitOffActivation(hitData, entity);
+                sprite.hitOffTrigger(hitData, entity);
             }
         );
-}
 
-function _createMap(type: Framework.EntityType, data: any): any {
-    return Crafty.e(type);
-}
+    sprite.triggerEntity = triggerEntity;
 
-function _createMapSprite(type: Framework.EntityType, data: any): any {
-    const sprite: Sprite = data.sprite;
     const entity = Crafty.e(type)
         .Collider(
-            new Crafty.polygon(sprite.collisionPoints),
+            new Crafty.polygon(sprite._collisionPoints),
             function (hitData) {
-                sprite.hitOnCollision(hitData, entity);
+                sprite.hitOnCollider(hitData, entity);
             },
             function (hitData) {
-                sprite.hitOffCollision(hitData, entity);
+                sprite.hitOffCollider(hitData, entity);
             }
         );
+
     return entity;
 }

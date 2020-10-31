@@ -215,44 +215,55 @@ export class Sprite implements Asset.Sprite {
         this.spriteGraphics.elapsed = 0;
         this.spriteGraphics.frameIndex = 0;
         switch (direction) {
+        case "NORTH":
         case Direction.NORTH:
             this.direction = Direction.NORTH;
             this.spriteGraphics.active = this.spriteGraphics.north;
             break;
+        case "SOUTH":
         case Direction.SOUTH:
             this.direction = Direction.SOUTH;
             this.spriteGraphics.active = this.spriteGraphics.south;
             break;
+        case "EAST":
         case Direction.EAST:
             this.direction = Direction.EAST;
             this.spriteGraphics.active = this.spriteGraphics.east;
             break;
+        case "WEST":
         case Direction.WEST:
             this.direction = Direction.WEST;
             this.spriteGraphics.active = this.spriteGraphics.west;
             break;
+        case "NORTH_EAST":
         case Direction.NORTH_EAST:
             this.direction = Direction.NORTH_EAST;
             this.spriteGraphics.active = this.spriteGraphics.northEast;
             break;
+        case "NORTH_WEST":
         case Direction.NORTH_WEST:
             this.direction = Direction.NORTH_WEST;
             this.spriteGraphics.active = this.spriteGraphics.northWest;
             break;
+        case "SOUTH_EAST":
         case Direction.SOUTH_EAST:
             this.direction = Direction.SOUTH_EAST;
             this.spriteGraphics.active = this.spriteGraphics.southEast;
             break;
+        case "SOUTH_WEST":
         case Direction.SOUTH_WEST:
             this.direction = Direction.SOUTH_WEST;
             this.spriteGraphics.active = this.spriteGraphics.southWest;
             break;
+        case "ATTACK":
         case Direction.ATTACK:
             this.spriteGraphics.active = this.spriteGraphics.attack;
             break;
+        case "DEFEND":
         case Direction.DEFEND:
             this.spriteGraphics.active = this.spriteGraphics.defend;
             break;
+        case "DIE":
         case Direction.DIE:
             this.spriteGraphics.active = this.spriteGraphics.die;
             break;
@@ -408,7 +419,7 @@ export class Sprite implements Asset.Sprite {
         // REFACTOR: Implement
     }
 
-    private prepareActiveAnimation() {
+    public prepareActiveAnimation() {
         var animation = this.spriteGraphics.active;
         var spriteSheet = animation.spriteSheet;
         var image: ImageBitmap = Framework.getImage(spriteSheet.image);

@@ -10,8 +10,10 @@ import { Core } from "../core.js";
 import { Sprite } from "../asset/sprite.js";
 import { MapController } from "../map-controller.js";
 import { Map } from "../asset/map.js";
-import { Assets, TileData } from "../rpgcode/rpgcode.js";
 import { Framework } from "../framework.js";
+import { MapLayer, MapSprite } from "../asset/runtime/asset-subtypes.js";
+import { MapImage, Location } from "../asset/dto/asset-subtypes.js";
+import { Tileset } from "../asset/tileset.js";
 
 export class Canvas {
     canvasElement: HTMLCanvasElement;
@@ -76,11 +78,11 @@ export class Rpg {
         return Framework.isAssetLoaded(assetId, type);
     }
 
-    public async loadAssets(assets: Assets) {
+    public async loadAssets(assets: Framework.Assets) {
         await Framework.loadAssets(assets);
     }
 
-    public removeAssets(assets: Assets) {
+    public removeAssets(assets: Framework.Assets) {
         Framework.removeAssets(assets);
     }
 
@@ -134,7 +136,7 @@ export class Rpg {
         const canvas: Canvas = this._canvases[canvasId];
         if (canvas) {
             canvas.render = true;
-            Framework.trigger("Invalidate");
+            Framework.trigger(Framework.EventType.Invalidate);
         }
     }
 
@@ -144,7 +146,7 @@ export class Rpg {
             const canvasElement: HTMLCanvasElement = canvas.canvasElement;
             canvasElement.getContext("2d").clearRect(0, 0, canvasElement.width, canvasElement.height);
             canvas.render = true;
-            Framework.trigger("Invalidate");
+            Framework.trigger(Framework.EventType.Invalidate);
         }
     }
 
@@ -362,64 +364,147 @@ export class Rpg {
         return this._mapController.mapEntity.map;
     }
 
-    public async addLayerImage(image: any, layer: number) {
+    public async loadMap(map: string) {
+        await this._mapController.switchMap(map, 5, 5, 1);
+    }
 
+    public async addLayerImage(imageId: string, layer: number, image: MapImage) {
+        if (layer < this.getMap().layers.length) {
+            const mapLayer: MapLayer = this.getMap().layers[layer];
+            mapLayer.images[imageId] = image;
+        }
     }
 
     public removeLayerImage(imageId: string, layer: number) {
-
+        if (layer < this.getMap().layers.length) {
+            const mapLayer: MapLayer = this.getMap().layers[layer];
+            delete mapLayer.images[imageId];
+        }
     }
 
-    public getTileData(x: number, y: number, layer: number): TileData {
-        return null;
+    public getTileData(x: number, y: number, layer: number): any {
+        const map: Map = this.getMap();
+        if (layer < 0 || map.layers.length < layer) {
+            throw new Error("layer out of range");
+        }
+
+        const mapLayer: MapLayer = map.layers[layer];
+        const tileIndex: number = (y * map.width) + x;
+        if (tileIndex < 0 || mapLayer.tiles.length < tileIndex) {
+            throw new Error("tile out of range");
+        }
+
+        const parts = mapLayer.tiles[tileIndex].split(":");
+        if (parts[0] === "-1" || parts[1] === "-1") {
+            return null; // empty tile
+        }
+
+        const tileset: Tileset = this._core.cache.get(map.tilesets[parts[0]]);
+        return tileset.tileData && tileset.tileData[parts[1]] ? tileset.tileData[parts[1]] : null;
     }
 
-    public replaceTile(x: number, y: number, layer: number, tileset: string, tileIndex: number) {
-
+    public replaceTile(x: number, y: number, layer: number, tilesetFile: string, tileIndex: number) {
+        const tileset: Tileset = this._core.cache.get(tilesetFile);
+        const tile: ImageData = tileset.getTile(tileIndex);
+        this.getMap().replaceTile(x, y, layer, tile);
     }
 
     public removeTile(x: number, y: number, layer: number) {
-
+        this.getMap().removeTile(x, y, layer);
     }
 
     // ------------------------------------------------------------------------
     // Sprite
     // ------------------------------------------------------------------------
 
-    public async addSprite(sprite: any) {
+    public getSprite(id: string): Sprite {
+        const entity = this._mapController.findEntity(id);
+        if (entity && entity.sprite) {
+            return entity.sprite;
+        }
+        return null;
+    }
 
+    public async addSprite(spriteId: string, layer: number, sprite: MapSprite) {
+        if (layer < this.getMap().layers.length) {
+            const mapLayer: MapLayer = this.getMap().layers[layer];
+            mapLayer.sprites[spriteId] = sprite;
+        }
     }
 
     public removeSprite(spriteId: string) {
-
+        const sprite: Sprite = this.getSprite(spriteId);
+        if (sprite) {
+            delete this.getMap().layers[sprite.layer].sprites[spriteId];
+        }
     }
 
-    public getSpriteLocation(spriteId: string, inTiles: boolean, includeOffset: boolean): any {
-
+    public getSpriteLocation(spriteId: string, inTiles: boolean, includeOffset: boolean): Location {
+        const sprite: Sprite = this.getSprite(spriteId);
+        if (sprite) {
+            let x = sprite.x;
+            let y = sprite.y;
+            if (includeOffset) {
+                x += this._mapController.mapEntity.xShift + this.getViewport()._x;
+                y += this._mapController.mapEntity.yShift + this.getViewport()._y;
+            }
+            if (inTiles) {
+                return {
+                    x: Math.floor(x / this.getMap().tileWidth),
+                    y: Math.floor(y / this.getMap().tileHeight),
+                    layer: sprite.layer
+                };
+            } else {
+                return {
+                    x: x,
+                    y: y,
+                    layer: sprite.layer
+                };
+            }
+        }
     }
 
     public async animateSprite(spriteId: string, animationId: string) {
-
+        const sprite: Sprite = this.getSprite(spriteId);
+        if (sprite) {
+            await Framework.animateSprite(spriteId, animationId, sprite);
+        }
     }
 
-    public async moveSprite(spriteId: string, direction: string, distance: number) {
-
-    }
-
-    public async moveSpriteTo(spriteId: string, x: number, y: number, duration: number) {
-
+    public async moveSprite(spriteId: string, x: number, y: number, duration: number) {
+        const entity: any = this._mapController.findEntity(spriteId);
+        if (entity) {
+            await Framework.moveEntity(entity, x, y, duration);
+        }
     }
 
     public resetTriggers(spriteId: string) {
-
+        const entity: any = this._mapController.findEntity(spriteId);
+        if (entity && entity.sprite) {
+            const sprite: Sprite = entity.sprite;
+            sprite.triggerEntity.resetHitChecks();
+        }
     }
 
     public setSpriteLocation(spriteId: string, x: number, y: number, layer: number, inTiles: boolean) {
-
+        const entity: any = this._mapController.findEntity(spriteId);
+        if (entity) {
+            if (inTiles) {
+                x *= this.getMap().tileWidth;
+                y *= this.getMap().tileHeight;
+            }
+            entity.x = x;
+            entity.y = y;
+            entity.sprite.layer = layer;
+            Framework.trigger(Framework.EventType.Invalidate);
+        }
     }
 
     public setSpriteAnimation(spriteId: string, animationId: string) {
-
+        const sprite: Sprite = this.getSprite(spriteId);
+        if (sprite) {
+            sprite.changeGraphics(animationId);
+        }
     }
 
     // ------------------------------------------------------------------------
@@ -427,15 +512,15 @@ export class Rpg {
     // ------------------------------------------------------------------------
 
     public raycast(origin: any, direction: any, maxDistance: any): any {
-
+        // REFACTOR: Implement me
     }
 
     public getAngleBetweenPoints(x1: number, y1: number, x2: number, y2: number): number {
-        return 0;
+        return Math.atan2(y1 - y2, x1 - x2);
     }
 
     public getDistanceBetweenPoints(x1: number, y1: number, x2: number, y2: number): number {
-        return 0;
+        return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)); // Simple Pythagora's theorem.
     }
 
     // ------------------------------------------------------------------------
@@ -452,30 +537,6 @@ export class Rpg {
 
     public removeGlobal(id: string) {
         delete this._globals[id];
-    }
-
-    // ------------------------------------------------------------------------
-    // Utility
-    // ------------------------------------------------------------------------
-
-    public getRandom(min: number, max: number): number {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    public getScale(): any {
-
-    }
-
-    public getViewport(): any {
-
-    }
-
-    public measureText(text: string): any {
-
-    }
-
-    public restart() {
-        location.reload(); // Cheap way to implement game restart for the moment.
     }
 
     // ------------------------------------------------------------------------
@@ -546,7 +607,7 @@ export class Rpg {
     // Audio
     // ------------------------------------------------------------------------
 
-    public playAudio(id: string, loop: boolean, volume: number) {
+    public playAudio(id: string, loop: boolean, volume: number = 1.0) {
         const repeatCount: number = loop ? -1 : 1;
         Framework.playAudio(id, repeatCount, volume);
     }
@@ -556,30 +617,41 @@ export class Rpg {
     }
 
     // ------------------------------------------------------------------------
-    // Misc
+    // Utility
     // ------------------------------------------------------------------------
 
-    // REFACTOR: use a getLayerImage() instead?
-    public updateLayerImage(image: any, layer: number) {
-
+    public async sleep(duration: number) {
+        await new Promise(resolve => setTimeout(resolve, duration));
     }
 
-    public async loadMap(map: string) {
-        await this._mapController.switchMap(map, 5, 5, 1);
+    public getRandom(min: number, max: number): number {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    // REFACTOR: Stick all sprite attrs onto entity?
-    public getEntity(id: string): any {
-        return this._mapController.findEntity(id);
+    public getScale(): number {
+        return Framework.getViewport()._scale;
     }
 
-    public getSprite(id: string): Sprite {
-        const entity = this._mapController.findEntity(id);
-        if (entity && entity.sprite) {
-            return entity.sprite;
-        }
-        return null;
+    public getViewport(): any {
+        return Framework.getViewport();
     }
+
+    public measureText(text: string): any {
+        const ctx: CanvasRenderingContext2D = this._getDrawingContext(this._canvases.default);
+        ctx.font = this._font;
+        return {
+            width: Math.round(ctx.measureText(text).width),
+            height: Math.round(parseInt(ctx.font))
+        };
+    }
+
+    public restart() {
+        location.reload(); // Cheap way to implement game restart for the moment.
+    }
+
+    // ------------------------------------------------------------------------
+    // Misc
+    // ------------------------------------------------------------------------
 
     public attachControls(id: string) {
         const entity = this._mapController.findEntity(id);

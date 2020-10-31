@@ -8,6 +8,7 @@
 import { Game } from "./asset/game.js";
 import { Map } from "./asset/map.js";
 import { Sprite } from "./asset/sprite.js";
+import { Rpg } from "./client-api/rpg-api.js";
 import { Core } from "./core.js";
 import { EngineUtil } from "./util/util.js";
 
@@ -21,6 +22,13 @@ declare const Crafty: any;
  * Provides a layer of Abstraction over other frameworks.
  */
 export namespace Framework {
+
+    export enum EventType {
+        // eslint-disable-next-line no-unused-vars
+        Invalidate = "Invalidate",
+        // eslint-disable-next-line no-unused-vars
+        TweenEnd = "TweenEnd"
+    }
 
     export enum EntityType {
         // eslint-disable-next-line no-unused-vars
@@ -98,6 +106,43 @@ export namespace Framework {
         for (const type of types) {
             Crafty(type).destroy();
         }
+    }
+
+    export async function moveEntity(entity: any, x: number, y: number, duration: number) {
+        return new Promise<void>((resolve: any, reject: any) => {
+            entity.trigger(EventType.TweenEnd, {});
+            entity.cancelTween({ x: true, y: true });
+            entity.tweenEndCallbacks.push(resolve);
+            entity.tween({ x: x, y: y }, duration);
+        });
+    }
+
+    export async function animateSprite(spriteId: string, animationId: string, sprite: Sprite) {
+        const resetGraphics = sprite.spriteGraphics.active;
+        Core.getInstance().rpg.setSpriteAnimation(spriteId, animationId);
+
+        const activeGraphics = sprite.spriteGraphics.active;
+        if (!activeGraphics.spriteSheet.frames) {
+            sprite.prepareActiveAnimation();
+        }
+
+        const soundEffect: string = activeGraphics.soundEffect;
+        const frameRate: number = activeGraphics.frameRate;
+        const delay: number = (1.0 / activeGraphics.frameRate) * 1000; // Get number of milliseconds.
+        const repeat: number = activeGraphics.spriteSheet.frames.length - 1;
+
+        return new Promise<void>((resolve: any, reject: any) => {
+            Crafty.e("Delay").delay(function () {
+                sprite.animate(frameRate);
+            }, delay, repeat, function () {
+                sprite.spriteGraphics.active = resetGraphics;
+                sprite.spriteGraphics.elapsed = 0;
+                resolve();
+            });
+            if (soundEffect) {
+                Core.getInstance().rpg.playAudio(soundEffect, false);
+            }
+        });
     }
 
     export function defineComponent(type: EntityType, data: any): void {

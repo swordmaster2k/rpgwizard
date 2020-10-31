@@ -15,7 +15,7 @@ export class ScriptVM {
     }
 
     public async open(file: string): Promise<any> {
-        console.info("opening game script file=[%s]", file);
+        console.debug("opening game script file=[%s]", file);
 
         let script: any;
         if (this._cache[file]) {
@@ -25,18 +25,18 @@ export class ScriptVM {
             this._cache[file] = script;
         }
 
-        console.info("returning game script file=[%s]", file);
+        console.debug("returning game script file=[%s]", file);
 
         return script;
     }
 
     public async run(file: string, origin: object) {
-        console.info("running game script file=[%s], origin=[%s]", file, origin);
+        console.debug("running game script file=[%s], origin=[%s]", file, origin);
 
         const script: any = await this.open(file);
         await script.default(origin);
 
-        console.info("finished game script file=[%s], origin=[%s]", file, origin);
+        console.debug("finished game script file=[%s], origin=[%s]", file, origin);
     }
 
 }

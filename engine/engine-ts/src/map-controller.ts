@@ -15,8 +15,7 @@ import { Tileset } from "./asset/tileset";
 
 import * as Runtime from "./asset/runtime/asset-subtypes.js";
 import { Sprite } from "./asset/sprite.js";
-import { Collider, MapImage, Trigger } from "./asset/dto/asset-subtypes.js";
-import { Point } from "./rpgcode/rpgcode.js";
+import { Collider, MapImage, Point, Trigger } from "./asset/dto/asset-subtypes.js";
 import { EngineUtil } from "./util/util.js";
 
 export class MapController {

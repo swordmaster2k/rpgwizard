@@ -6,14 +6,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Collider, MapImage, Trigger } from "../asset/dto/asset-subtypes.js";
+import { Collider, MapImage, Point, Trigger } from "../asset/dto/asset-subtypes.js";
 import { Map } from "../asset/map.js";
 import { MapLayer, MapSprite } from "../asset/runtime/asset-subtypes.js";
 import { Sprite } from "../asset/sprite.js";
 import { Canvas } from "../client-api/rpg-api.js";
 import { Core } from "../core.js";
 import { Framework } from "../framework.js";
-import { Point } from "../rpgcode/rpgcode.js";
 
 export class ScreenRenderer {
 

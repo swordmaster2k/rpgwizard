@@ -83,7 +83,7 @@ export interface Collider {
     points: Point[];
 }
 
-export interface StartLocation {
+export interface Location {
     x: number;
     y: number;
     layer: number;
@@ -92,7 +92,7 @@ export interface StartLocation {
 export interface MapSprite {
     asset: string;
     thread: string;
-    startLocation: StartLocation;
+    startLocation: Location;
     events: Event[];
 }
 

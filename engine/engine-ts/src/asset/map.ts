@@ -22,7 +22,7 @@ export class Map implements Asset.Map {
     readonly music: string;
     readonly tilesets: string[];
     readonly entryScript: string;
-    readonly startLocation: Dto.StartLocation;
+    readonly startLocation: Dto.Location;
     readonly layers: Runtime.MapLayer[];
     readonly version: string;
 

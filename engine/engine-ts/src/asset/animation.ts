@@ -10,7 +10,7 @@ import { SpriteSheet } from "./dto/asset-subtypes.js";
 
 export class Animation implements Asset.Animation {
 
-    // Implemented
+    // DTO
     readonly width: number;
     readonly height: number;
     readonly frameRate: number;

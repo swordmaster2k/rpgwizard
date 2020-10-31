@@ -47,7 +47,7 @@ export class MapController {
             console.debug("Loading board=[%s]", JSON.stringify(map));
         }
 
-        this._mapEntity = this.createCraftyMap(map);
+        this._mapEntity = this.createMap(map);
 
         await Promise.all(this._mapEntity.map.tilesets.map(async(file: string) => {
             let tileset: Tileset = Core.getInstance().cache.get(file);
@@ -109,9 +109,9 @@ export class MapController {
         Framework.destroyEntities([Framework.EntityType.Collider, Framework.EntityType.Trigger, Framework.EntityType.Map, Framework.EntityType.MapSprite]);
 
         // Load in the next map
-        let map: Map = Core.getInstance().cache.get(Core.PATH_BOARD + file);
+        let map: Map = Core.getInstance().cache.get(Core.PATH_MAP + file);
         if (map === null) {
-            map = await Factory.build(Core.PATH_BOARD + file) as Map;
+            map = await Factory.build(Core.PATH_MAP + file) as Map;
             Core.getInstance().cache.put(file, map);
         }
 
@@ -140,11 +140,6 @@ export class MapController {
         sprite.layer = mapSprite.startLocation.layer;
         sprite.thread = mapSprite.thread;
 
-        // TODO: width and height of npc must contain the collision polygon.
-        // if (sprite.thread) {
-        //     sprite.thread = await Core.getInstance().scriptVM.open(Core.PATH_PROGRAM + sprite.thread);
-        // }
-
         const componentData: any = {
             sprite: sprite
         };
@@ -155,8 +150,7 @@ export class MapController {
         return Framework.createEntity(Framework.EntityType.MapSprite, entityData);
     }
 
-    // REFACTOR
-    private createCraftyMap(map: Map): any {
+    private createMap(map: Map): any {
         if (Core.getInstance().debugEnabled) {
             console.debug("Creating Crafty board=[%s]", JSON.stringify(map));
         }
@@ -186,13 +180,6 @@ export class MapController {
                 Math.max(sHeight - vHeight, 0);
             }
             height = vHeight;
-        }
-
-        if (Core.getInstance().debugEnabled) {
-            console.debug("width=" + width);
-            console.debug("height=" + height);
-            console.debug("xShift=" + xShift);
-            console.debug("yShift=" + yShift);
         }
 
         const mapDefinition: any = {

@@ -22,7 +22,7 @@ import { Rpg } from "./client-api/rpg-api.js";
 // Allow extending window with RPG API global
 declare global {
     // eslint-disable-next-line no-unused-vars
-    interface Window { rpg: any; }
+    interface Window { rpg: Rpg; }
 }
 
 export class Core {
@@ -31,14 +31,14 @@ export class Core {
     private static _instance: Core;
 
     // Asset directory paths
-    public static PATH_PROJECT: string = window.location.origin + "/game";
-    public static PATH_ANIMATION: string = Core.PATH_PROJECT + "/animations/";
-    public static PATH_PROGRAM: string = Core.PATH_PROJECT + "/scripts/";
-    public static PATH_MEDIA: string = Core.PATH_PROJECT + "/sounds/";
-    public static PATH_BITMAP: string = Core.PATH_PROJECT + "/textures/";
-    public static PATH_TILESET: string = Core.PATH_PROJECT + "/tilesets/";
-    public static PATH_BOARD: string = Core.PATH_PROJECT + "/maps/";
-    public static PATH_SPRITE: string = Core.PATH_PROJECT + "/sprites/";
+    public static PATH_GAME: string = window.location.origin + "/game";
+    public static PATH_ANIMATION: string = Core.PATH_GAME + "/animations/";
+    public static PATH_SCRIPT: string = Core.PATH_GAME + "/scripts/";
+    public static PATH_SOUND: string = Core.PATH_GAME + "/sounds/"; // REFACTOR: Name AUDIO?
+    public static PATH_TEXTURE: string = Core.PATH_GAME + "/textures/";
+    public static PATH_TILESET: string = Core.PATH_GAME + "/tilesets/";
+    public static PATH_MAP: string = Core.PATH_GAME + "/maps/";
+    public static PATH_SPRITE: string = Core.PATH_GAME + "/sprites/";
 
     // Debug flag for engine logging
     public debugEnabled: boolean = false;
@@ -47,7 +47,7 @@ export class Core {
     private _mapController: MapController;
     private _scriptVM: ScriptVM;
 
-    private _screen: any;
+    private _screen: ScreenRenderer;
     private _game: Game;
 
     // Asset cache
@@ -72,10 +72,10 @@ export class Core {
         // Setup composites
         this._mapController = new MapController();
         this._scriptVM = new ScriptVM();
-        window.rpg = new Rpg(this);
         this._cache = new Cache();
 
-        this._screen = {};
+        // Setup in game load
+        this._screen = null;
 
         // Game project file.
         this._game = null;
@@ -109,12 +109,16 @@ export class Core {
         return this._game;
     }
 
-    get screen(): any {
+    get screen(): ScreenRenderer {
         return this._screen;
     }
 
     get cache(): Cache {
         return this._cache;
+    }
+
+    get rpg(): Rpg {
+        return window.rpg;
     }
 
     get inProgram(): boolean {
@@ -182,6 +186,7 @@ export class Core {
         // Setup IO & UI
         this._screen = new ScreenRenderer();
         Framework.createUI(this);
+        window.rpg = new Rpg(this);
 
         // Run game's startup script
         try {

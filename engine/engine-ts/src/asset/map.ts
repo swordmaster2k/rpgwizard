@@ -13,7 +13,7 @@ import { TilesetRenderer } from "../renderers/tileset-renderer.js";
 
 export class Map implements Asset.Map {
 
-    // Implemented
+    // DTO
     readonly name: string;
     readonly width: number;
     readonly height: number;
@@ -26,7 +26,7 @@ export class Map implements Asset.Map {
     readonly layers: Runtime.MapLayer[];
     readonly version: string;
 
-    // Specific
+    // Runtime
     readonly layerCache: HTMLCanvasElement[];
 
     constructor(asset: Asset.Map) {

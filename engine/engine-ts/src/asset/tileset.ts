@@ -11,14 +11,14 @@ import * as Asset from "./dto/assets.js";
 
 export class Tileset implements Asset.Tileset {
 
-    // Implemented
+    // DTO
     readonly tileWidth: number;
     readonly tileHeight: number;
     readonly image: string;
     readonly tileData: object;
     readonly version: string;
 
-    // Specific
+    // Runtime
     readonly imageBitmap: ImageBitmap;
     readonly rows: number;
     readonly columns: number;

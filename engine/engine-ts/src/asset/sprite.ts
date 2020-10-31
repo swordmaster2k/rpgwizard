@@ -5,7 +5,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-/* global PATH_ANIMATION */
 import { Framework } from "../framework.js";
 
 import * as Factory from "./asset-factory.js";
@@ -20,7 +19,7 @@ import { Core } from "../core.js";
  */
 export class Sprite implements Asset.Sprite {
 
-    // Implemented
+    // DTO
     readonly name: string;
     readonly description: string;
     readonly animations: Record<string, string>;
@@ -29,7 +28,7 @@ export class Sprite implements Asset.Sprite {
     readonly data: object;
     readonly version: string;
 
-    // Specific
+    // Runtime
     _x: number;
     _y: number;
     _layer: number;

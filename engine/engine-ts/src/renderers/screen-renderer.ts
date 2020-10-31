@@ -10,12 +10,13 @@ import { Collider, MapImage, Trigger } from "../asset/dto/asset-subtypes.js";
 import { Map } from "../asset/map.js";
 import { MapLayer, MapSprite } from "../asset/runtime/asset-subtypes.js";
 import { Sprite } from "../asset/sprite.js";
+import { Canvas } from "../client-api/rpg-api.js";
 import { Core } from "../core.js";
 import { Framework } from "../framework.js";
 import { Point } from "../rpgcode/rpgcode.js";
 
 export class ScreenRenderer {
-w
+
     private _defaultCanvas: HTMLCanvasElement;
 
     constructor() {
@@ -24,6 +25,10 @@ w
         const viewport = Framework.getViewport();
         this._defaultCanvas.width = viewport._width;
         this._defaultCanvas.height = viewport._height;
+    }
+
+    get defaultCanvas(): HTMLCanvasElement {
+        return this._defaultCanvas;
     }
 
     public renderBoard(ctx: CanvasRenderingContext2D) {
@@ -159,20 +164,16 @@ w
         ctx.stroke();
     }
 
-    private renderUI(ctx: CanvasRenderingContext2D) {
+    public renderUI(ctx: CanvasRenderingContext2D) {
         /*
         * Render rpgcode canvases.
         */
-        // REFACTOR: Decouple me
-        // var canvases = rpgcode.canvases;
-        // for (var property in canvases) {
-        //     if (canvases.hasOwnProperty(property)) {
-        //         var element = canvases[property];
-        //         if (element.render) {
-        //             context.drawImage(element.canvas, element.x, element.y);
-        //         }
-        //     }
-        // }
+        for (const id in Core.getInstance().rpg.canvases) {
+            const canvas: Canvas = Core.getInstance().rpg.canvases[id];
+            if (canvas.render) {
+                ctx.drawImage(canvas.canvasElement, canvas.x, canvas.y);
+            }
+        }
     }
 
 }

@@ -6,22 +6,31 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-// REFACTOR: Move this?
 export enum Direction {
+    // eslint-disable-next-line no-unused-vars
     NORTH = "n",
+    // eslint-disable-next-line no-unused-vars
     SOUTH = "s",
+    // eslint-disable-next-line no-unused-vars
     EAST = "e",
+    // eslint-disable-next-line no-unused-vars
     WEST = "w",
+    // eslint-disable-next-line no-unused-vars
     NORTH_EAST = "ne",
+    // eslint-disable-next-line no-unused-vars
     NORTH_WEST = "nw",
+    // eslint-disable-next-line no-unused-vars
     SOUTH_EAST = "se",
+    // eslint-disable-next-line no-unused-vars
     SOUTH_WEST = "sw",
+    // eslint-disable-next-line no-unused-vars
     ATTACK = "ATTACK",
+    // eslint-disable-next-line no-unused-vars
     DEFEND = "DEFEND",
+    // eslint-disable-next-line no-unused-vars
     DIE = "DIE"
 }
 
-// REFACTOR: Move this?
 export const StandardKeys: Array<string> = [
     "SOUTH", "NORTH", "EAST", "WEST", "NORTH_EAST", "NORTH_WEST",
     "SOUTH_EAST", "SOUTH_WEST", "ATTACK", "DEFEND", "SPECIAL_MOVE", "DIE",

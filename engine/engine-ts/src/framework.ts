@@ -5,8 +5,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-
-import { createNoSubstitutionTemplateLiteral } from "../node_modules/typescript/lib/typescript.js";
 import { Game } from "./asset/game.js";
 import { Map } from "./asset/map.js";
 import { Sprite } from "./asset/sprite.js";
@@ -63,7 +61,7 @@ export namespace Framework {
 
         Crafty.init(game.viewport.width, game.viewport.height);
         Crafty.viewport.init(width, height);
-        Crafty.paths({ audio: Core.PATH_MEDIA, images: Core.PATH_BITMAP });
+        Crafty.paths({ audio: Core.PATH_SOUND, images: Core.PATH_TEXTURE });
         Crafty.viewport.scale(scale);
 
         defineComponent(EntityType.Collider, {});
@@ -81,11 +79,18 @@ export namespace Framework {
         Crafty.viewport.y = 0;
     }
 
-    export function getImage(image: string): ImageBitmap {
-        return Crafty.assets[Crafty.__paths.images + image];
+    export function getImage(file: string): ImageBitmap {
+        return Crafty.assets[Crafty.__paths.images + file];
     }
 
-    export function isAssetLoaded(): boolean {
+    export function isAssetLoaded(assetId: string, type: string): boolean {
+        type = type.toLowerCase();
+        if (type === "image") {
+            return !!Crafty.assets[Crafty.__paths.images + assetId];
+        }
+        if (type === "audio") {
+            return !!Crafty.assets[Crafty.__paths.audio + assetId];
+        }
         return false;
     }
 
@@ -176,8 +181,8 @@ export namespace Framework {
         });
     }
 
-    export function removeAssets() {
-        // TODO
+    export function removeAssets(assets: Assets) {
+        Crafty.removeAssets(assets);
     }
 
     export function trigger(event: string, data?: any) {
@@ -192,12 +197,16 @@ export namespace Framework {
         // TODO
     }
 
-    export function playAudio(audio: string, loop: number) {
-        Crafty.audio.play(audio, loop);
+    export function playAudio(id: string, repeatCount: number, volume: number = 1.0) {
+        Crafty.audio.play(id, repeatCount, volume);
     }
 
-    export function stopAudio() {
-        Crafty.audio.stop();
+    export function stopAudio(id?: string) {
+        if (id) {
+            Crafty.audio.stop(id);
+        } else {
+            Crafty.audio.stop();
+        }
     }
 
     // REFACTOR: decouple core?
@@ -208,7 +217,13 @@ export namespace Framework {
         });
 
         Crafty.e("2D, UI, Mouse")
-            .attr({ x: 0, y: 0, w: Crafty.viewport._width, h: Crafty.viewport._height, ready: true })
+            .attr({
+                x: 0,
+                y: 0,
+                w: Crafty.viewport._width,
+                h: Crafty.viewport._height,
+                ready: true
+            })
             .bind("Draw", (e: any) => {
                 if (e.ctx) {
                     core.screen.renderUI(e.ctx);
@@ -331,7 +346,8 @@ function _defineMapSprite(type: Framework.EntityType, data: any) {
                 y: sprite.y,
                 w: 50,
                 h: 50,
-                show: false
+                show: false,
+                threadRunning: false
             });
             this.bind("Move", function (from: any) {
                 // Move trigger vector with sprite
@@ -342,7 +358,11 @@ function _defineMapSprite(type: Framework.EntityType, data: any) {
             this.bind("EnterFrame", async function (event: any) {
                 this.dt = event.dt / 1000;
                 if (sprite.thread && sprite.renderReady && Core.getInstance().mapEntity.show) {
-                    await Core.getInstance().scriptVM.run(Core.PATH_PROGRAM + sprite.thread, this.sprite);
+                    if (!this.threadRunning) {
+                        this.threadRunning = true;
+                        await Core.getInstance().scriptVM.run(Core.PATH_SCRIPT + sprite.thread, this.sprite);
+                        this.threadRunning = false;
+                    }
                 }
             });
             this.bind("TweenEnd", function (event: any) {

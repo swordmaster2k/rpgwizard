@@ -10,7 +10,7 @@ import * as Asset from "./dto/assets.js";
 
 export class Game implements Asset.Game {
 
-    // Implemented
+    // DTO
     name: string;
     viewport: Viewport;
     debug: Debug;

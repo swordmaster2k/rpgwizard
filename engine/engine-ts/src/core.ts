@@ -81,12 +81,21 @@ export class Core {
         this._game = null;
 
         // Used to store state when runProgram is called.
-        this._keyboardHandler = {};
+        this._keyboardHandler = {
+            downHandlers: {},
+            upHandlers: {}
+        };
         this._keyDownHandlers = {};
         this._keyUpHandlers = {};
 
         // Used to store state when runProgram is called.
-        this._mouseHandler = {};
+        this._mouseHandler = {
+            mouseDownHandler: {},
+            mouseUpHandler: {},
+            mouseClickHandler: {},
+            mouseDoubleClickHandler: {},
+            mouseMoveHandler: {}
+        };
         this._mouseDownHandler = {};
         this._mouseUpHandler = {};
         this._mouseClickHandler = {};
@@ -121,8 +130,8 @@ export class Core {
         return window.rpg;
     }
 
-    get inProgram(): boolean {
-        return this._inProgram;
+    get inScript(): boolean {
+        return this.scriptVM.inScript;
     }
 
     get mapEntity(): any {
@@ -157,20 +166,40 @@ export class Core {
         return this._mouseDownHandler;
     }
 
+    set mouseDownHandler(handler: any) {
+        this._mouseDownHandler = handler;
+    }
+
     get mouseUpHandler(): any {
         return this._mouseUpHandler;
+    }
+
+    set mouseUpHandler(handler: any) {
+        this._mouseUpHandler = handler;
     }
 
     get mouseClickHandler(): any {
         return this._mouseClickHandler;
     }
 
+    set mouseClickHandler(handler: any) {
+        this._mouseClickHandler = handler;
+    }
+
     get mouseDoubleClickHandler(): any {
         return this._mouseDoubleClickHandler;
     }
 
+    set mouseDoubleClickHandler(handler: any) {
+        this._mouseDoubleClickHandler = handler;
+    }
+
     get mouseMoveHandler(): any {
         return this._mouseMoveHandler;
+    }
+
+    set mouseMoveHandler(handler: any) {
+        this._mouseMoveHandler = handler;
     }
 
     public async main(filename: string) {

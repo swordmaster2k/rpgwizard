@@ -544,19 +544,35 @@ export class Rpg {
     // ------------------------------------------------------------------------
 
     public registerKeyDown(key: string, callback: any, global: boolean) {
-
+        if (global) {
+            this._core.keyDownHandlers[Framework.getKey(key)] = callback;
+        } else {
+            this._core.keyboardHandler.downHandlers[Framework.getKey(key)] = callback;
+        }
     }
 
     public unregisterKeyDown(key: string, global: boolean) {
-
+        if (global) {
+            delete this._core.keyDownHandlers[Framework.getKey(key)];
+        } else {
+            delete this._core.keyboardHandler.downHandlers[Framework.getKey(key)];
+        }
     }
 
     public registerKeyUp(key: string, callback: any, global: boolean) {
-
+        if (global) {
+            this._core.keyUpHandlers[Framework.getKey(key)] = callback;
+        } else {
+            this._core.keyboardHandler.upHandlers[Framework.getKey(key)] = callback;
+        }
     }
 
     public unregisterKeyUp(key: string, global: boolean) {
-
+        if (global) {
+            delete this._core.keyUpHandlers[Framework.getKey(key)];
+        } else {
+            delete this._core.keyboardHandler.upHandlers[Framework.getKey(key)];
+        }
     }
 
     // ------------------------------------------------------------------------
@@ -564,43 +580,83 @@ export class Rpg {
     // ------------------------------------------------------------------------
 
     public registerMouseDown(callback: any, global: boolean) {
-
+        if (global) {
+            Core.getInstance().mouseDownHandler = callback;
+        } else {
+            Core.getInstance().mouseHandler.mouseDownHandler = callback;
+        }
     }
 
     public unregisterMouseDown(global: boolean) {
-
+        if (global) {
+            Core.getInstance().mouseDownHandler = null;
+        } else {
+            Core.getInstance().mouseHandler.mouseDownHandler = null;
+        }
     }
 
     public registerMouseUp(callback: any, global: boolean) {
-
+        if (global) {
+            Core.getInstance().mouseUpHandler = callback;
+        } else {
+            Core.getInstance().mouseHandler.mouseUpHandler = callback;
+        }
     }
 
     public unregisterMouseUp(global: boolean) {
-
+        if (global) {
+            Core.getInstance().mouseUpHandler = null;
+        } else {
+            Core.getInstance().mouseHandler.mouseUpHandler = null;
+        }
     }
 
     public registerMouseClick(callback: any, global: boolean) {
-
+        if (global) {
+            Core.getInstance().mouseClickHandler = callback;
+        } else {
+            Core.getInstance().mouseHandler.mouseClickHandler = callback;
+        }
     }
 
     public unregisterMouseClick(global: boolean) {
-
+        if (global) {
+            Core.getInstance().mouseClickHandler = null;
+        } else {
+            Core.getInstance().mouseHandler.mouseClickHandler = null;
+        }
     }
 
     public registerMouseDoubleClick(callback: any, global: boolean) {
-
+        if (global) {
+            Core.getInstance().mouseDoubleClickHandler = callback;
+        } else {
+            Core.getInstance().mouseHandler.mouseDoubleClickHandler = callback;
+        }
     }
 
     public unregisterMouseDoubleClick(global: boolean) {
-
+        if (global) {
+            Core.getInstance().mouseDoubleClickHandler = null;
+        } else {
+            Core.getInstance().mouseHandler.mouseDoubleClickHandler = null;
+        }
     }
 
     public registerMouseMove(callback: any, global: boolean) {
-
+        if (global) {
+            Core.getInstance().mouseMoveHandler = callback;
+        } else {
+            Core.getInstance().mouseHandler.mouseMoveHandler = callback;
+        }
     }
 
     public unregisterMouseMove(global: boolean) {
-
+        if (global) {
+            Core.getInstance().mouseMoveHandler = null;
+        } else {
+            Core.getInstance().mouseHandler.mouseMoveHandler = null;
+        }
     }
 
     // ------------------------------------------------------------------------

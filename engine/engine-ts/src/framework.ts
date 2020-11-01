@@ -8,7 +8,6 @@
 import { Game } from "./asset/game.js";
 import { Map } from "./asset/map.js";
 import { Sprite } from "./asset/sprite.js";
-import { Rpg } from "./client-api/rpg-api.js";
 import { Core } from "./core.js";
 import { EngineUtil } from "./util/util.js";
 
@@ -74,8 +73,10 @@ export namespace Framework {
 
         defineComponent(EntityType.Collider, {});
         defineComponent(EntityType.Trigger, {});
+    }
 
-        createEntity(EntityType.Keyboard, {});
+    export function getKey(key: string): string {
+        return Crafty.keys[key];
     }
 
     export function getViewport(): any {
@@ -170,8 +171,6 @@ export namespace Framework {
             return _createMap(type, data);
         case EntityType.MapSprite:
             return _createMapSprite(type, data);
-        case EntityType.Keyboard:
-            return _createKeyboard();
         default:
             throw new Error(`Cannot create unknown entity type! type=[${type}]`);
         }
@@ -269,39 +268,51 @@ export namespace Framework {
                 h: Crafty.viewport._height,
                 ready: true
             })
-            .bind("Draw", (e: any) => {
+            .bind("Draw", async (e: any) => {
                 if (e.ctx) {
                     core.screen.renderUI(e.ctx);
                 }
             })
-            .bind("MouseDown", (e: any) => {
-                const handler = core.inProgram ? core.mouseHandler.mouseDownHandler : core.mouseDownHandler;
+            .bind("KeyDown", async (e: any) => {
+                const handler = core.inScript ? core.keyboardHandler.downHandlers[e.key] : core.keyDownHandlers[e.key];
                 if (handler && typeof handler === "function") {
-                    handler(e);
+                    await handler(e);
                 }
             })
-            .bind("MouseUp", (e: any) => {
-                const handler = core.inProgram ? core.mouseHandler.mouseUpHandler : core.mouseUpHandler;
+            .bind("KeyUp", async (e: any) => {
+                const handler = core.inScript ? core.keyboardHandler.upHandlers[e.key] : core.keyUpHandlers[e.key];
                 if (handler && typeof handler === "function") {
-                    handler(e);
+                    await handler(e);
                 }
             })
-            .bind("Click", (e: any) => {
-                const handler = core.inProgram ? core.mouseHandler.mouseClickHandler : core.mouseClickHandler;
+            .bind("MouseDown", async (e: any) => {
+                const handler = core.inScript ? core.mouseHandler.mouseDownHandler : core.mouseDownHandler;
                 if (handler && typeof handler === "function") {
-                    handler(e);
+                    await handler(e);
                 }
             })
-            .bind("DoubleClick", (e: any) => {
-                const handler = core.inProgram ? this.mouseHandler.mouseDoubleClickHandler : core.mouseDoubleClickHandler;
+            .bind("MouseUp", async (e: any) => {
+                const handler = core.inScript ? core.mouseHandler.mouseUpHandler : core.mouseUpHandler;
                 if (handler && typeof handler === "function") {
-                    handler(e);
+                    await handler(e);
                 }
             })
-            .bind("MouseMove", (e: any) => {
-                const handler = core.inProgram ? core.mouseHandler.mouseMoveHandler : core.mouseMoveHandler;
+            .bind("Click", async (e: any) => {
+                const handler = core.inScript ? core.mouseHandler.mouseClickHandler : core.mouseClickHandler;
                 if (handler && typeof handler === "function") {
-                    handler(e);
+                    await handler(e);
+                }
+            })
+            .bind("DoubleClick", async (e: any) => {
+                const handler = core.inScript ? core.mouseHandler.mouseDoubleClickHandler : core.mouseDoubleClickHandler;
+                if (handler && typeof handler === "function") {
+                    await handler(e);
+                }
+            })
+            .bind("MouseMove", async (e: any) => {
+                const handler = core.inScript ? core.mouseHandler.mouseMoveHandler : core.mouseMoveHandler;
+                if (handler && typeof handler === "function") {
+                    await handler(e);
                 }
             });
     }
@@ -405,7 +416,7 @@ function _defineMapSprite(type: Framework.EntityType, data: any) {
                 if (sprite.thread && sprite.renderReady && Core.getInstance().mapEntity.show) {
                     if (!this.threadRunning) {
                         this.threadRunning = true;
-                        await Core.getInstance().scriptVM.run(Core.PATH_SCRIPT + sprite.thread, this.sprite);
+                        await Core.getInstance().scriptVM.run(Core.PATH_SCRIPT + sprite.thread, this.sprite, false);
                         this.threadRunning = false;
                     }
                 }
@@ -428,22 +439,6 @@ function _defineMapSprite(type: Framework.EntityType, data: any) {
 //
 // Entity
 //
-function _createKeyboard() {
-    Crafty.e()
-        .bind("KeyDown", function (e: any) {
-            const handler = Core.getInstance().inProgram ? Core.getInstance().keyboardHandler.downHandlers[e.key] : Core.getInstance().keyDownHandlers[e.key];
-            if (handler) {
-                handler(e);
-            }
-        })
-        .bind("KeyUp", function (e: any) {
-            const handler = Core.getInstance().inProgram ? Core.getInstance().keyboardHandler.upHandlers[e.key] : Core.getInstance().keyUpHandlers[e.key];
-            if (handler) {
-                handler(e);
-            }
-        });
-}
-
 function _createCollider(type: Framework.EntityType, data: any): any {
     const attr = {
         x: data.x,

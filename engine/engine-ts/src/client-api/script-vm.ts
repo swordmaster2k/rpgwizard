@@ -9,9 +9,14 @@
 export class ScriptVM {
 
     private _cache: object;
+    private _inScript: boolean;
 
     constructor() {
         this._cache = {};
+    }
+
+    get inScript(): boolean {
+        return this._inScript;
     }
 
     public async open(file: string): Promise<any> {
@@ -30,11 +35,22 @@ export class ScriptVM {
         return script;
     }
 
-    public async run(file: string, origin: object) {
+    public async run(file: string, origin: object, pause: boolean = true) {
         console.debug("running game script file=[%s], origin=[%s]", file, origin);
 
-        const script: any = await this.open(file);
-        await script.default(origin);
+        try {
+            if (pause) {
+                this._inScript = true;
+            }
+            const script: any = await this.open(file);
+            await script.default(origin);
+        } catch (err) {
+            console.error("could not run script, err=[%s]", err);
+        } finally {
+            if (pause) {
+                this._inScript = false;
+            }
+        }
 
         console.debug("finished game script file=[%s], origin=[%s]", file, origin);
     }

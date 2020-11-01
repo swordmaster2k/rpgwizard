@@ -14,6 +14,7 @@ import { Framework } from "../framework.js";
 import { MapLayer, MapSprite } from "../asset/runtime/asset-subtypes.js";
 import { MapImage, Location } from "../asset/dto/asset-subtypes.js";
 import { Tileset } from "../asset/tileset.js";
+import { Draw2D } from "../view/draw-2d.js";
 
 export class Canvas {
     canvasElement: HTMLCanvasElement;
@@ -186,12 +187,7 @@ export class Rpg {
         const canvas: Canvas = this._canvases[canvasId];
         if (canvas) {
             const ctx: CanvasRenderingContext2D = this._getDrawingContext(canvas);
-            const imageData: ImageData = ctx.getImageData(x, y, 1, 1);
-            imageData.data[0] = this._rgba.r;
-            imageData.data[1] = this._rgba.g;
-            imageData.data[2] = this._rgba.b;
-            imageData.data[3] = this._rgba.a * 255;
-            ctx.putImageData(imageData, x, y);
+            Draw2D.putImageData(ctx, x, y, this._rgba);
         }
     }
 
@@ -209,9 +205,7 @@ export class Rpg {
         if (canvas) {
             const ctx: CanvasRenderingContext2D = this._getDrawingContext(canvas);
             ctx.strokeStyle = this._getStrokeStyle();
-            ctx.beginPath();
-            ctx.arc(x, y, radius, 0, 2 * Math.PI);
-            ctx.stroke();
+            Draw2D.drawCircle(ctx, x, y, radius);
         }
     }
 
@@ -220,14 +214,7 @@ export class Rpg {
         const image: ImageBitmap = Framework.getImage(file);
         if (canvas && image) {
             const ctx: CanvasRenderingContext2D = this._getDrawingContext(canvas);
-            // rotate around center point
-            x += width / 2;
-            y += height / 2;
-            ctx.translate(x, y);
-            ctx.rotate(rotation);
-            ctx.drawImage(image, -width / 2, -height / 2, width, height);
-            ctx.rotate(-rotation);
-            ctx.translate(-x, -y);
+            Draw2D.drawImage(ctx, image, x, y, width, height, rotation);
         }
     }
 
@@ -236,14 +223,7 @@ export class Rpg {
         const image: ImageBitmap = Framework.getImage(file);
         if (canvas && image) {
             const ctx: CanvasRenderingContext2D = this._getDrawingContext(canvas);
-            // rotate around center point
-            destX += destWidth / 2;
-            destY += destHeight / 2;
-            ctx.translate(destX, destY);
-            ctx.rotate(rotation);
-            ctx.drawImage(image, srcX, srcY, srcWidth, srcHeight, -destWidth / 2, -destHeight / 2, destWidth, destHeight);
-            ctx.rotate(-rotation);
-            ctx.translate(-destX, -destY);
+            Draw2D.drawImagePart(ctx, image, srcX, srcY, srcWidth, srcHeight, destX, destY, destWidth, destHeight, rotation);
         }
     }
 
@@ -251,12 +231,8 @@ export class Rpg {
         const canvas: Canvas = this._canvases[canvasId];
         if (canvas) {
             const ctx: CanvasRenderingContext2D = this._getDrawingContext(canvas);
-            ctx.lineWidth = lineWidth;
             ctx.strokeStyle = this._getStrokeStyle();
-            ctx.beginPath();
-            ctx.moveTo(x1, y1);
-            ctx.lineTo(x2, y2);
-            ctx.stroke();
+            Draw2D.drawLine(ctx, x1, y1, x2, y2, lineWidth);
         }
     }
 
@@ -264,9 +240,8 @@ export class Rpg {
         const canvas: Canvas = this._canvases[canvasId];
         if (canvas) {
             const ctx: CanvasRenderingContext2D = this._getDrawingContext(canvas);
-            ctx.lineWidth = lineWidth;
             ctx.strokeStyle = this._getStrokeStyle();
-            ctx.strokeRect(x, y, width, height);
+            Draw2D.drawRect(ctx, x, y, width, height, lineWidth);
         }
     }
 
@@ -274,20 +249,8 @@ export class Rpg {
         const canvas: Canvas = this._canvases[canvasId];
         if (canvas) {
             const ctx: CanvasRenderingContext2D = this._getDrawingContext(canvas);
-            ctx.lineWidth = lineWidth;
             ctx.strokeStyle = this._getStrokeStyle();
-            ctx.beginPath();
-            ctx.moveTo(x + radius, y);
-            ctx.lineTo(x + width - radius, y);
-            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-            ctx.lineTo(x + width, y + height - radius);
-            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-            ctx.lineTo(x + radius, y + height);
-            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-            ctx.lineTo(x, y + radius);
-            ctx.quadraticCurveTo(x, y, x + radius, y);
-            ctx.closePath();
-            ctx.stroke();
+            Draw2D.drawRoundedRect(ctx, x, y, width, height, lineWidth, radius);
         }
     }
 
@@ -296,8 +259,7 @@ export class Rpg {
         if (canvas) {
             const ctx: CanvasRenderingContext2D = this._getDrawingContext(canvas);
             ctx.fillStyle = this._getFillStyle();
-            ctx.font = this._font;
-            ctx.fillText(text, x, y);
+            Draw2D.drawText(ctx, x, y, text, this._font);
         }
     }
 
@@ -306,9 +268,7 @@ export class Rpg {
         if (canvas) {
             const ctx: CanvasRenderingContext2D = this._getDrawingContext(canvas);
             ctx.fillStyle = this._getFillStyle();
-            ctx.beginPath();
-            ctx.arc(x, y, radius, 0, 2 * Math.PI);
-            ctx.fill();
+            Draw2D.drawCircle(ctx, x, y, radius);
         }
     }
 
@@ -317,7 +277,7 @@ export class Rpg {
         if (canvas) {
             const ctx: CanvasRenderingContext2D = this._getDrawingContext(canvas);
             ctx.fillStyle = this._getFillStyle();
-            ctx.fillRect(x, y, width, height);
+            Draw2D.fillRect(ctx, x, y, width, height);
         }
     }
 
@@ -326,18 +286,7 @@ export class Rpg {
         if (canvas) {
             const ctx: CanvasRenderingContext2D = this._getDrawingContext(canvas);
             ctx.fillStyle = this._getFillStyle();
-            ctx.beginPath();
-            ctx.moveTo(x + radius, y);
-            ctx.lineTo(x + width - radius, y);
-            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-            ctx.lineTo(x + width, y + height - radius);
-            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-            ctx.lineTo(x + radius, y + height);
-            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-            ctx.lineTo(x, y + radius);
-            ctx.quadraticCurveTo(x, y, x + radius, y);
-            ctx.closePath();
-            ctx.fill();
+            Draw2D.fillRoundedRect(ctx, x, y, width, height, radius);
         }
     }
 

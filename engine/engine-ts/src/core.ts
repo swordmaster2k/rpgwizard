@@ -11,7 +11,7 @@ import * as Factory from "./asset/asset-factory.js";
 
 import { Game } from "./asset/game.js";
 
-import { ScreenRenderer } from "./renderers/screen-renderer.js";
+import { ScreenRenderer } from "./view/screen-renderer.js";
 
 import { ScriptVM } from "./client-api/script-vm.js";
 

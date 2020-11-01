@@ -9,7 +9,7 @@ import { Core } from "../core.js"; // REFACTOR: Decouple this?
 import * as Asset from "./dto/assets.js";
 import * as Dto from "./dto/asset-subtypes.js";
 import * as Runtime from "./runtime/asset-subtypes.js";
-import { TilesetRenderer } from "../renderers/tileset-renderer.js";
+import { TilesetRenderer } from "../view/tileset-renderer.js";
 
 export class Map implements Asset.Map {
 

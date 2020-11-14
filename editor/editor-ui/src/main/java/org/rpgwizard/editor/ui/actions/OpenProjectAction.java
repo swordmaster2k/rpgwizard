@@ -12,7 +12,7 @@ import java.io.File;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import org.rpgwizard.common.assets.Project;
+import org.rpgwizard.common.assets.Game;
 import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.utilities.EditorFileManager;
@@ -29,7 +29,7 @@ public class OpenProjectAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         EditorFileManager.getFileChooser().resetChoosableFileFilters();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Toolkit Project",
-                CoreProperties.getDefaultExtension(Project.class).replace(".", ""));
+                CoreProperties.getDefaultExtension(Game.class).replace(".", ""));
         EditorFileManager.getFileChooser().setFileFilter(filter);
 
         File mainFolder = new File(FileTools.getProjectsDirectory());
@@ -45,7 +45,7 @@ public class OpenProjectAction extends AbstractAction {
 
             mainWindow.setProjectPath(file.getParent());
             ProjectUpgrader.upgrade(file.getParentFile());
-            Project project = mainWindow.openProject(file);
+            Game project = mainWindow.openProject(file);
             mainWindow.setupProject(project, true);
         }
     }

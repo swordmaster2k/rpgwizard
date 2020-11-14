@@ -75,4 +75,10 @@ public class JsonAnimationSerializer extends AbstractJsonSerializer {
         json.put("soundEffect", serializePath(animation.getSoundEffect()));
     }
 
+    @Override
+    protected JSONObject store(AssetHandle handle) throws AssetException {
+        throw new UnsupportedOperationException("Not supported yet."); // To change body of generated methods, choose
+                                                                       // Tools | Templates.
+    }
+
 }

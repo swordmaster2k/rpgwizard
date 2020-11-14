@@ -23,7 +23,7 @@ import org.apache.commons.lang3.SystemUtils;
 import org.pf4j.JarPluginManager;
 import org.pf4j.PluginManager;
 import org.rpgwizard.common.assets.AssetManager;
-import org.rpgwizard.common.assets.Project;
+import org.rpgwizard.common.assets.Game;
 import org.rpgwizard.common.assets.files.FileAssetHandleResolver;
 import org.rpgwizard.common.assets.serialization.ImageSerializer;
 import org.rpgwizard.common.assets.serialization.JsonAnimationSerializer;
@@ -128,11 +128,11 @@ public class Driver {
         if (lastProject.equals("The Wizard's Tower")) {
             // Load default from "projects" directory.
             file = new File(FileTools.getProjectsDirectory() + File.separator + "The Wizard's Tower" + File.separator
-                    + "The Wizard's Tower" + CoreProperties.getDefaultExtension(Project.class));
+                    + "The Wizard's Tower" + CoreProperties.getDefaultExtension(Game.class));
         }
         if (file.exists()) {
             MainWindow mainWindow = MainWindow.getInstance();
-            Project project = mainWindow.openProject(file);
+            Game project = mainWindow.openProject(file);
             if (project != null) {
                 mainWindow.setProjectPath(file.getParent());
                 ProjectUpgrader.upgrade(file.getParentFile());
@@ -144,7 +144,7 @@ public class Driver {
     }
 
     public static void saveLastProject() {
-        Project project = MainWindow.getInstance().getActiveProject();
+        Game project = MainWindow.getInstance().getActiveProject();
         if (project != null && project.getFile() != null) {
             String lastProject = project.getFile().getAbsolutePath();
             LOGGER.info("Saving last open project, lastProject=[{}]", lastProject);

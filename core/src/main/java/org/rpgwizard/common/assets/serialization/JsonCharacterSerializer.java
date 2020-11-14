@@ -86,4 +86,10 @@ public class JsonCharacterSerializer extends AbstractSpriteSerializer {
         json.put("inventory", serializeMap(player.getInventory()));
     }
 
+    @Override
+    protected JSONObject store(AssetHandle handle) throws AssetException {
+        throw new UnsupportedOperationException("Not supported yet."); // To change body of generated methods, choose
+                                                                       // Tools | Templates.
+    }
+
 }

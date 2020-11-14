@@ -1,12 +1,13 @@
 {
-   "version":4.0,
-   "name":"The Wizard's Tower",
-   "resolutionWidth":640,
-   "resolutionHeight":480,
-   "isFullScreen":false,
-   "initialBoard":"Room1.board",
-   "initialCharacter":"Hero.character",
-   "startupProgram":"Start.program",
-   "gameOverProgram":"GameOver.program",
-   "showVectors":true
+    "name": "The Wizard's Tower",
+    "viewport": {
+      "width": 1600,
+      "height": 900,
+      "fullScreen": true
+    },
+    "debug": {
+      "showColliders": true,
+      "showTriggers": true
+    },
+    "version": "2.0.0"
 }

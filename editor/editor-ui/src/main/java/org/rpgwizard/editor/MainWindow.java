@@ -54,7 +54,7 @@ import org.rpgwizard.common.assets.Image;
 import org.rpgwizard.common.assets.Item;
 import org.rpgwizard.common.assets.NPC;
 import org.rpgwizard.common.assets.Program;
-import org.rpgwizard.common.assets.Project;
+import org.rpgwizard.common.assets.Game;
 import org.rpgwizard.common.assets.SpecialMove;
 import org.rpgwizard.common.assets.Tile;
 import org.rpgwizard.common.assets.TileSet;
@@ -66,7 +66,7 @@ import org.rpgwizard.editor.editors.CharacterEditor;
 import org.rpgwizard.editor.editors.EnemyEditor;
 import org.rpgwizard.editor.editors.NPCEditor;
 import org.rpgwizard.editor.editors.ProgramEditor;
-import org.rpgwizard.editor.editors.ProjectEditor;
+import org.rpgwizard.editor.editors.GameEditor;
 import org.rpgwizard.editor.editors.board.NewBoardDialog;
 import org.rpgwizard.editor.editors.board.brush.AbstractBrush;
 import org.rpgwizard.editor.editors.board.brush.BoardVectorAreaBrush;
@@ -133,8 +133,8 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
     private final PropertiesPanel propertiesPanel;
     private final LayerPanel layerPanel;
 
-    // Project Related.
-    private Project activeProject;
+    // Game Related.
+    private Game activeProject;
 
     // Board Related.
     private boolean showGrid;
@@ -412,11 +412,11 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         return null;
     }
 
-    public Project getActiveProject() {
+    public Game getActiveProject() {
         return activeProject;
     }
 
-    public void setActiveProject(Project project) {
+    public void setActiveProject(Game project) {
         this.activeProject = project;
     }
 
@@ -748,7 +748,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
             openTileset(file);
         } else if (fileName.endsWith(CoreProperties.getDefaultExtension(SpecialMove.class))) {
             addToolkitEditorWindow(EditorFactory.getEditor(openSpecialMove(file)));
-        } else if (fileName.endsWith(CoreProperties.getDefaultExtension(Project.class))) {
+        } else if (fileName.endsWith(CoreProperties.getDefaultExtension(Game.class))) {
             addToolkitEditorWindow(EditorFactory.getEditor(openProject(file)));
         } else if (fileName.endsWith(CoreProperties.getDefaultExtension(Program.class))) {
             addToolkitEditorWindow(EditorFactory.getEditor(openProgram(file)));
@@ -758,38 +758,38 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         }
     }
 
-    public Project openProject(File file) {
-        LOGGER.info("Opening {} file=[{}].", Project.class.getSimpleName(), file);
+    public Game openProject(File file) {
+        LOGGER.info("Opening {} file=[{}].", Game.class.getSimpleName(), file);
 
         try {
             AssetHandle handle = AssetManager.getInstance().deserialize(new AssetDescriptor(file.toURI()));
-            return (Project) handle.getAsset();
+            return (Game) handle.getAsset();
         } catch (IOException | AssetException ex) {
-            LOGGER.error("Failed to open {} file=[{}].", Project.class.getSimpleName(), file, ex);
+            LOGGER.error("Failed to open {} file=[{}].", Game.class.getSimpleName(), file, ex);
         }
 
         return null;
     }
 
     public void createNewProject(String projectName) {
-        LOGGER.info("Creating new {}.", Project.class.getSimpleName());
+        LOGGER.info("Creating new {}.", Game.class.getSimpleName());
 
         // Remove any extensions the user may have tried to add.
         projectName = FilenameUtils.removeExtension(projectName);
         boolean result = FileTools.createBlankProject(FileTools.getProjectsDirectory(), projectName);
         if (result) {
             String fileName = FileTools.getProjectsDirectory() + File.separator + projectName + File.separator
-                    + projectName + CoreProperties.getDefaultExtension(Project.class);
+                    + projectName + CoreProperties.getDefaultExtension(Game.class);
             File file = new File(fileName);
 
-            Project project = new Project(new AssetDescriptor(file.toURI()), projectName);
+            Game project = new Game(new AssetDescriptor(file.toURI()), projectName);
             try {
                 // Write out new project file.
                 AssetManager.getInstance().serialize(AssetManager.getInstance().getHandle(project));
                 setProjectPath(file.getParent());
                 setupProject(project, true);
             } catch (IOException | AssetException ex) {
-                LOGGER.error("Failed to create new {} projectName=[{}].", Project.class, projectName, ex);
+                LOGGER.error("Failed to create new {} projectName=[{}].", Game.class, projectName, ex);
             }
         } else {
             // TODO: clean up directory structure?
@@ -797,16 +797,15 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
     }
 
     public void createNewProject(String projectName, String template) {
-        LOGGER.info("Creating new {}.", Project.class.getSimpleName());
+        LOGGER.info("Creating new {}.", Game.class.getSimpleName());
         try {
             // Remove any extensions the user may have tried to add.
             projectName = FilenameUtils.removeExtension(projectName);
-            Project project = FileTools.createProjectFromTemplate(FileTools.getProjectsDirectory(), projectName,
-                    template);
+            Game project = FileTools.createProjectFromTemplate(FileTools.getProjectsDirectory(), projectName, template);
             setProjectPath(project.getFile().getParent());
             setupProject(project, true);
         } catch (IOException | AssetException ex) {
-            LOGGER.error("Failed to create new {} projectName=[{}].", Project.class, projectName, ex);
+            LOGGER.error("Failed to create new {} projectName=[{}].", Game.class, projectName, ex);
         }
     }
 
@@ -1119,7 +1118,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         LOGGER.info("Project path set to project.path=[{}].", System.getProperty("project.path"));
     }
 
-    public void setupProject(Project project, boolean showProjectEditor) {
+    public void setupProject(Game project, boolean showProjectEditor) {
         // Clean up previous project.
         closeAllFrames();
         tileSetPanel.removeTileSets();
@@ -1133,7 +1132,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         projectPanel.setup(EditorFileManager.getProjectPath());
 
         if (showProjectEditor) {
-            ProjectEditor projectEditor = new ProjectEditor(activeProject);
+            GameEditor projectEditor = new GameEditor(activeProject);
             addToolkitEditorWindow(projectEditor);
         }
 

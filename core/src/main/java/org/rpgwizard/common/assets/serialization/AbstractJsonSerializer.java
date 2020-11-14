@@ -7,6 +7,7 @@
  */
 package org.rpgwizard.common.assets.serialization;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.awt.Point;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -28,6 +29,7 @@ import org.rpgwizard.common.assets.AssetException;
 import org.rpgwizard.common.assets.AssetHandle;
 import org.rpgwizard.common.assets.Event;
 import org.rpgwizard.common.assets.EventType;
+import org.rpgwizard.common.assets.Game;
 import org.rpgwizard.common.assets.KeyPressEvent;
 import org.rpgwizard.common.assets.board.BoardLayerImage;
 import org.rpgwizard.common.assets.board.BoardVector;
@@ -44,6 +46,7 @@ public abstract class AbstractJsonSerializer extends AbstractAssetSerializer {
 
     public static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
     public static final String FILE_FORMAT_VERSION = "2.0.0";
+    public static final ObjectMapper MAPPER = new ObjectMapper();
 
     @Override
     public void serialize(AssetHandle handle) throws IOException, AssetException {
@@ -51,8 +54,12 @@ public abstract class AbstractJsonSerializer extends AbstractAssetSerializer {
         try (final WritableByteChannel channel = handle.write()) {
 
             // Store the asset contents into a JSON representation
-            final JSONObject obj = new JSONObject();
-            store(handle, obj);
+            JSONObject obj = new JSONObject();
+            if (handle.getAsset() instanceof Game) { // REFACTOR: Remove this
+                obj = store(handle);
+            } else {
+                store(handle, obj);
+            }
 
             // Encode JSON representation with the specified character set encoding
             final String contents = obj.toString();
@@ -88,6 +95,8 @@ public abstract class AbstractJsonSerializer extends AbstractAssetSerializer {
     }
 
     protected abstract void load(AssetHandle handle, JSONObject json) throws AssetException;
+
+    protected abstract JSONObject store(AssetHandle handle) throws AssetException;
 
     protected void store(AssetHandle handle, JSONObject json) throws AssetException {
         json.put("version", FILE_FORMAT_VERSION);

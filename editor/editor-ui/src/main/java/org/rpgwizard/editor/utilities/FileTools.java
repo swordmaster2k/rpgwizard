@@ -18,7 +18,7 @@ import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.AssetException;
 import org.rpgwizard.common.assets.AssetHandle;
 import org.rpgwizard.common.assets.AssetManager;
-import org.rpgwizard.common.assets.Project;
+import org.rpgwizard.common.assets.Game;
 import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.properties.EditorProperties;
@@ -82,7 +82,7 @@ public final class FileTools {
         return result;
     }
 
-    public static Project createProjectFromTemplate(String path, String projectName, String template)
+    public static Game createProjectFromTemplate(String path, String projectName, String template)
             throws IOException, AssetException {
         // Copy the template into new directory
         File srcDir = new File(path + File.separator + template);
@@ -91,7 +91,7 @@ public final class FileTools {
 
         // Replace the .game file with new one
         final String projectsDir = FileTools.getProjectsDirectory();
-        final String projectExt = CoreProperties.getDefaultExtension(Project.class);
+        final String projectExt = CoreProperties.getDefaultExtension(Game.class);
         final String prefix = projectsDir + File.separator + projectName + File.separator;
         File srcFile = new File(prefix + template + projectExt);
         File destFile = new File(prefix + projectName + projectExt);
@@ -100,7 +100,7 @@ public final class FileTools {
 
         // Update the project name
         AssetHandle handle = AssetManager.getInstance().deserialize(new AssetDescriptor(destFile.toURI()));
-        Project project = (Project) handle.getAsset();
+        Game project = (Game) handle.getAsset();
         project.setName(projectName);
         AssetManager.getInstance().serialize(AssetManager.getInstance().getHandle(project));
 

@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.AssetManager;
 import org.rpgwizard.editor.MainWindow;
-import org.rpgwizard.editor.editors.ProjectEditor;
+import org.rpgwizard.editor.editors.GameEditor;
 import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.slf4j.Logger;
@@ -34,7 +34,7 @@ public class SaveAsAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         MainWindow mainWindow = MainWindow.getInstance();
         JInternalFrame frame = mainWindow.getDesktopPane().getSelectedFrame();
-        if (frame != null && frame instanceof AbstractAssetEditorWindow && !(frame instanceof ProjectEditor)) {
+        if (frame != null && frame instanceof AbstractAssetEditorWindow && !(frame instanceof GameEditor)) {
             AbstractAssetEditorWindow window = (AbstractAssetEditorWindow) frame;
             AbstractAsset asset = window.getAsset();
             if (asset != null) {

@@ -29,7 +29,7 @@ import org.rpgwizard.common.assets.Image;
 import org.rpgwizard.common.assets.Item;
 import org.rpgwizard.common.assets.NPC;
 import org.rpgwizard.common.assets.Program;
-import org.rpgwizard.common.assets.Project;
+import org.rpgwizard.common.assets.Game;
 import org.rpgwizard.common.assets.SpriteSheet;
 import org.rpgwizard.common.assets.TileSet;
 import org.rpgwizard.common.assets.board.BoardLayer;
@@ -74,7 +74,7 @@ public class AssetSerializerTest {
         JsonProjectSerializer serializer = new JsonProjectSerializer();
 
         // Deserialize original.
-        Project asset = AssetSerializerTestHelper.deserializeFile(path, serializer);
+        Game asset = AssetSerializerTestHelper.deserializeFile(path, serializer);
         checkProject(asset);
 
         // Serialize a temporary version and deserialize it.
@@ -83,16 +83,17 @@ public class AssetSerializerTest {
         checkProject(asset);
     }
 
-    private void checkProject(Project asset) {
+    private void checkProject(Game asset) {
         Assert.assertEquals("The Wizard's Tower", asset.getName());
-        Assert.assertEquals(640, asset.getResolutionWidth());
-        Assert.assertEquals(480, asset.getResolutionHeight());
-        Assert.assertEquals(false, asset.isFullScreen());
-        Assert.assertEquals("Room1.board", asset.getInitialBoard());
-        Assert.assertEquals("Hero.character", asset.getInitialCharacter());
-        Assert.assertEquals("Start.program", asset.getStartupProgram());
-        Assert.assertEquals("GameOver.program", asset.getGameOverProgram());
-        Assert.assertEquals(true, asset.isShowVectors());
+        
+        Assert.assertNotNull(asset.getViewport());
+        Assert.assertEquals(1600, asset.getViewport().getWidth());
+        Assert.assertEquals(900, asset.getViewport().getHeight());
+        Assert.assertTrue(asset.getViewport().isFullScreen());
+        
+        Assert.assertNotNull(asset.getDebug());
+        Assert.assertTrue(asset.getDebug().isShowColliders());
+        Assert.assertTrue(asset.getDebug().isShowTriggers());
     }
 
     @Test

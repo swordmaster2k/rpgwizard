@@ -340,4 +340,10 @@ public class JsonBoardSerializer extends AbstractJsonSerializer {
 
         return sprites;
     }
+
+    @Override
+    protected JSONObject store(AssetHandle handle) throws AssetException {
+        throw new UnsupportedOperationException("Not supported yet."); // To change body of generated methods, choose
+                                                                       // Tools | Templates.
+    }
 }

@@ -78,6 +78,7 @@
         <trident.version>1.5.00</trident.version>
         <jcef.version>67.0</jcef.version>
         <lombok.version>1.18.12</lombok.version>
+        <jackson.version>2.11.1</jackson.version>
     </properties>
 
     <dependencies>

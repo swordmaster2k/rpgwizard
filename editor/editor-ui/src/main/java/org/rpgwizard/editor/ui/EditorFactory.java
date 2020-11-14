@@ -16,7 +16,7 @@ import org.rpgwizard.common.assets.Image;
 import org.rpgwizard.common.assets.Item;
 import org.rpgwizard.common.assets.NPC;
 import org.rpgwizard.common.assets.Program;
-import org.rpgwizard.common.assets.Project;
+import org.rpgwizard.common.assets.Game;
 import org.rpgwizard.editor.editors.AnimationEditor;
 import org.rpgwizard.editor.editors.BoardEditor;
 import org.rpgwizard.editor.editors.CharacterEditor;
@@ -24,7 +24,7 @@ import org.rpgwizard.editor.editors.EnemyEditor;
 import org.rpgwizard.editor.editors.ItemEditor;
 import org.rpgwizard.editor.editors.NPCEditor;
 import org.rpgwizard.editor.editors.ProgramEditor;
-import org.rpgwizard.editor.editors.ProjectEditor;
+import org.rpgwizard.editor.editors.GameEditor;
 import org.rpgwizard.editor.editors.image.ImageEditor;
 
 /**
@@ -59,8 +59,8 @@ public class EditorFactory {
             return new CharacterEditor((Character) asset);
         } else if (asset instanceof Program) {
             return new ProgramEditor((Program) asset);
-        } else if (asset instanceof Project) {
-            return new ProjectEditor((Project) asset);
+        } else if (asset instanceof Game) {
+            return new GameEditor((Game) asset);
         } else if (asset instanceof Image) {
             return new ImageEditor((Image) asset);
         }

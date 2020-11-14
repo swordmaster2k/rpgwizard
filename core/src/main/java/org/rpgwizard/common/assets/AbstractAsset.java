@@ -7,13 +7,18 @@
  */
 package org.rpgwizard.common.assets;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.File;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public abstract class AbstractAsset implements Asset {
 
     protected String version;
+
+    @JsonIgnore
     protected AssetDescriptor descriptor;
 
     /**
@@ -35,6 +40,7 @@ public abstract class AbstractAsset implements Asset {
     }
 
     @Override
+    @JsonIgnore
     public File getFile() {
         if (descriptor == null) {
             return null;

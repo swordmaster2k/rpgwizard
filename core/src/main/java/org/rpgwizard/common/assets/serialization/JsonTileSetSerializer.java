@@ -73,4 +73,10 @@ public class JsonTileSetSerializer extends AbstractJsonSerializer {
         json.put("tileData", tileSet.getTileData());
     }
 
+    @Override
+    protected JSONObject store(AssetHandle handle) throws AssetException {
+        throw new UnsupportedOperationException("Not supported yet."); // To change body of generated methods, choose
+                                                                       // Tools | Templates.
+    }
+
 }

@@ -19,7 +19,7 @@ import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.AssetException;
 import org.rpgwizard.common.assets.AssetHandle;
 import org.rpgwizard.common.assets.AssetManager;
-import org.rpgwizard.common.assets.Project;
+import org.rpgwizard.common.assets.Game;
 import org.rpgwizard.common.assets.files.FileAssetHandleResolver;
 import org.rpgwizard.common.assets.serialization.JsonProjectSerializer;
 import org.rpgwizard.html5.engine.plugin.EngineRunnable;
@@ -65,15 +65,15 @@ public class Standalone {
         JOptionPane.showMessageDialog(new JFrame(), message, title, JOptionPane.ERROR_MESSAGE);
     }
 
-    private static Project openProject(File projectFile) throws AssetException, IOException {
+    private static Game openProject(File projectFile) throws AssetException, IOException {
         AssetManager assetManager = AssetManager.getInstance();
         assetManager.registerResolver(new FileAssetHandleResolver());
         assetManager.registerSerializer(new JsonProjectSerializer());
         AssetHandle handle = AssetManager.getInstance().deserialize(new AssetDescriptor(projectFile.toURI()));
-        return (Project) handle.getAsset();
+        return (Game) handle.getAsset();
     }
 
-    private static void start(String resourceBase, Project project) {
+    private static void start(String resourceBase, Game game) {
         // Start the Embedded Jetty.
         ENGINE_RUNNABLE = new EngineRunnable(resourceBase);
         ENGINE_THREAD = new Thread(ENGINE_RUNNABLE);
@@ -81,8 +81,9 @@ public class Standalone {
 
         javax.swing.SwingUtilities.invokeLater(() -> {
             // Show the JCEF browser window.
-            EMBEDDED_BROWSER = new EmbeddedBrowser(project.getName(), "http://localhost:8080", OS.isLinux(), false,
-                    project.getResolutionWidth(), project.getResolutionHeight(), project.isFullScreen(), null);
+            EMBEDDED_BROWSER = new EmbeddedBrowser(game.getName(), "http://localhost:8080", OS.isLinux(), false,
+                    game.getViewport().getWidth(), game.getViewport().getHeight(), game.getViewport().isFullScreen(),
+                    null);
             EMBEDDED_BROWSER.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
@@ -111,7 +112,7 @@ public class Standalone {
         File projectFile = new File(new File(resourceBase), "default.game");
 
         if (projectFile.exists()) {
-            Project project;
+            Game project;
             try {
                 project = openProject(projectFile);
                 start(resourceBase, project);

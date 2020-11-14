@@ -23,8 +23,7 @@ import javax.swing.SwingWorker;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.pluginsystem.Engine;
 import org.apache.commons.io.FileUtils;
-import org.rpgwizard.common.assets.Project;
-import org.rpgwizard.editor.utilities.EditorFileManager;
+import org.rpgwizard.common.assets.Game;
 import org.rpgwizard.editor.utilities.FileTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,7 +47,7 @@ public class CompileAction extends AbstractAction {
             instance.getMainToolBar().getCompileButton().setEnabled(false);
             instance.getMainToolBar().getSaveAllButton().doClick();
 
-            Project project = instance.getActiveProject();
+            Game project = instance.getActiveProject();
 
             // Make a temporary copy of the user's project for the engine to
             // use.
@@ -105,19 +104,14 @@ public class CompileAction extends AbstractAction {
         }
     }
 
-    private File compileGame(Engine engine, Project project, File projectCopy, File executionPath,
+    private File compileGame(Engine engine, Game project, File projectCopy, File executionPath,
             ProgressMonitor progressMonitor) throws InterruptedException, InvocationTargetException {
         try {
-            File projectIcon = null;
-            if (!project.getProjectIcon().isEmpty()) {
-                // Get the project icon that was set.
-                projectIcon = new File(EditorFileManager.getGraphicsPath() + project.getProjectIcon());
-            } else {
-                // Default to the editor icon instead.
-                String path = FileTools.getExecutionPath(CompileAction.class);
-                path += File.separator + "editor.ico";
-                projectIcon = new File(path);
-            }
+            File projectIcon; // REFACTOR: Move to game.ico way
+            // Default to the editor icon instead.
+            String path = FileTools.getExecutionPath(CompileAction.class);
+            path += File.separator + "editor.ico";
+            projectIcon = new File(path);
             return engine.compile(project.getName(), projectCopy, executionPath, progressMonitor, projectIcon);
         } catch (Exception ex) {
             LOGGER.error("Failed to run engine.", ex);

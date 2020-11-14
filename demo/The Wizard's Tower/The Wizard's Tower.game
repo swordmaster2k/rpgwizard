@@ -1,1 +1,13 @@
-{"initialCharacter":"Hero.character","gameOverProgram":"GameOver.js","startupProgram":"Startup.js","showVectors":false,"resolutionHeight":480,"projectIcon":"1_icon.png","name":"The Wizard's Tower","isFullScreen":false,"resolutionWidth":640,"version":1.7,"initialBoard":"Outside.board"}
+{
+    "name": "The Wizard's Tower",
+    "viewport": {
+        "width": 640,
+        "height": 480,
+        "fullScreen": false
+    },
+    "debug": {
+        "showColliders": false,
+        "showTriggers": false
+    },
+    "version": "2.0.0"
+}

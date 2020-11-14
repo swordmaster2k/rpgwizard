@@ -27,7 +27,7 @@ import org.rpgwizard.common.assets.Enemy;
 import org.rpgwizard.common.assets.Item;
 import org.rpgwizard.common.assets.NPC;
 import org.rpgwizard.common.assets.Program;
-import org.rpgwizard.common.assets.Project;
+import org.rpgwizard.common.assets.Game;
 import org.rpgwizard.common.assets.SpecialMove;
 import org.rpgwizard.common.assets.TileSet;
 import org.rpgwizard.common.utilities.CoreProperties;
@@ -140,7 +140,7 @@ public class EditorFileManager {
             return "Characters";
         } else if (type == Program.class) {
             return "Programs";
-        } else if (type == Project.class) {
+        } else if (type == Game.class) {
             return "Projects";
         } else if (type == TileSet.class) {
             return "Tilesets";
@@ -174,7 +174,7 @@ public class EditorFileManager {
             return new String[] { CoreProperties.getProperty("toolkit.character.extension.default") };
         } else if (type == Program.class) {
             return new String[] { CoreProperties.getProperty("toolkit.program.extension.default") };
-        } else if (type == Project.class) {
+        } else if (type == Game.class) {
             return new String[] { CoreProperties.getProperty("toolkit.project.extension.default") };
         } else if (type == TileSet.class) {
             return new String[] { CoreProperties.getProperty("toolkit.tileset.extension.default") };

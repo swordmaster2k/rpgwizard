@@ -48,4 +48,10 @@ public class JsonNPCSerializer extends AbstractSpriteSerializer {
         json.put("description", npc.getDescription());
     }
 
+    @Override
+    protected JSONObject store(AssetHandle handle) throws AssetException {
+        throw new UnsupportedOperationException("Not supported yet."); // To change body of generated methods, choose
+                                                                       // Tools | Templates.
+    }
+
 }

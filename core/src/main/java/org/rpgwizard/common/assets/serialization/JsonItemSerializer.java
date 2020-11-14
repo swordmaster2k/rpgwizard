@@ -75,4 +75,10 @@ public class JsonItemSerializer extends AbstractJsonSerializer {
         json.put("effects", effects);
     }
 
+    @Override
+    protected JSONObject store(AssetHandle handle) throws AssetException {
+        throw new UnsupportedOperationException("Not supported yet."); // To change body of generated methods, choose
+                                                                       // Tools | Templates.
+    }
+
 }

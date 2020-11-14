@@ -19,9 +19,8 @@ import javax.swing.ProgressMonitor;
 import javax.swing.SwingWorker;
 import org.apache.commons.io.FileUtils;
 import org.pf4j.PluginManager;
-import org.rpgwizard.common.assets.Project;
+import org.rpgwizard.common.assets.Game;
 import org.rpgwizard.editor.MainWindow;
-import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.rpgwizard.pluginsystem.Engine;
 
 /**
@@ -51,10 +50,10 @@ public abstract class AbstractRunAction extends AbstractAction {
 
     protected void startEngine(File projectCopy) {
         MainWindow instance = MainWindow.getInstance();
-        Project project = instance.getActiveProject();
-        int projectWidth = project.getResolutionWidth();
-        int projectHeight = project.getResolutionHeight();
-        boolean isFullScreen = project.isFullScreen();
+        Game project = instance.getActiveProject();
+        int projectWidth = project.getViewport().getWidth();
+        int projectHeight = project.getViewport().getHeight();
+        boolean isFullScreen = project.getViewport().isFullScreen();
 
         PluginManager pluginManager = instance.getPluginManager();
         List<Engine> engines = pluginManager.getExtensions(Engine.class);
@@ -81,13 +80,10 @@ public abstract class AbstractRunAction extends AbstractAction {
         }
     }
 
-    private void runEngine(Engine engine, Project project, Dimension dimensions, boolean isFullScreen, File projectCopy,
+    private void runEngine(Engine engine, Game project, Dimension dimensions, boolean isFullScreen, File projectCopy,
             ProgressMonitor progressMonitor) throws InterruptedException, InvocationTargetException, Exception {
         // Get the project icon if available.
-        File projectIcon = null;
-        if (!project.getProjectIcon().isEmpty()) {
-            projectIcon = new File(EditorFileManager.getGraphicsPath() + project.getProjectIcon());
-        }
+        File projectIcon = null; // REFACTOR: Move to game.ico way
         engine.run(project.getName(), dimensions.width, dimensions.height, isFullScreen, projectCopy, progressMonitor,
                 projectIcon);
     }

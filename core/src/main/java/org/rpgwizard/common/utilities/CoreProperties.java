@@ -21,7 +21,7 @@ import org.rpgwizard.common.assets.NPC;
 import org.rpgwizard.common.assets.Character;
 import org.rpgwizard.common.assets.Item;
 import org.rpgwizard.common.assets.Program;
-import org.rpgwizard.common.assets.Project;
+import org.rpgwizard.common.assets.Game;
 import org.rpgwizard.common.assets.SpecialMove;
 import org.rpgwizard.common.assets.TileSet;
 
@@ -80,7 +80,7 @@ public class CoreProperties {
             return getFullExtension("toolkit.npc.extension.default");
         } else if (type == Character.class) {
             return getFullExtension("toolkit.character.extension.default");
-        } else if (type == Project.class) {
+        } else if (type == Game.class) {
             return getFullExtension("toolkit.project.extension.default");
         } else if (type == TileSet.class) {
             return getFullExtension("toolkit.tileset.extension.default");

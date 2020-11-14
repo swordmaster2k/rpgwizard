@@ -36,11 +36,13 @@ public class ProjectUpgrader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProjectUpgrader.class);
 
-    private static final double CURRENT_VERSION = AbstractJsonSerializer.FILE_FORMAT_VERSION;
-    private static final double LEGACY_VERSION = 4.0;
+    private static final String CURRENT_VERSION = AbstractJsonSerializer.FILE_FORMAT_VERSION;
 
     public static void upgrade(File path) {
         LOGGER.info("Upgrading project located at path=[{}]", path.getAbsolutePath());
+        if (true == true) {
+            return; // REFACTOR: Disable this for now
+        }
 
         int filesUpgraded = 0;
 
@@ -122,8 +124,7 @@ public class ProjectUpgrader {
         if (asset == null) {
             return false;
         }
-
-        return asset.getVersion() == LEGACY_VERSION || asset.getVersion() < CURRENT_VERSION;
+        return Double.valueOf(asset.getVersion()) < Double.valueOf(CURRENT_VERSION);
     }
 
     public static void main(String[] args) {

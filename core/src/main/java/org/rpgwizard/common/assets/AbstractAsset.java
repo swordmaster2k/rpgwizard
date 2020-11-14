@@ -8,12 +8,12 @@
 package org.rpgwizard.common.assets;
 
 import java.io.File;
-import java.util.Objects;
+import lombok.Data;
 
+@Data
 public abstract class AbstractAsset implements Asset {
 
-    protected double version;
-
+    protected String version;
     protected AssetDescriptor descriptor;
 
     /**
@@ -30,14 +30,6 @@ public abstract class AbstractAsset implements Asset {
         this.descriptor = descriptor;
     }
 
-    public double getVersion() {
-        return version;
-    }
-
-    public void setVersion(double version) {
-        this.version = version;
-    }
-
     @Override
     public void reset() {
     }
@@ -51,43 +43,8 @@ public abstract class AbstractAsset implements Asset {
         return new File(descriptor.getURI());
     }
 
-    @Override
-    public AssetDescriptor getDescriptor() {
-        return this.descriptor;
-    }
-
-    @Override
-    public void setDescriptor(AssetDescriptor assetDescriptor) {
-        descriptor = assetDescriptor;
-    }
-
     public boolean exists() {
         return descriptor != null && new File(descriptor.getURI()).exists();
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 43 * hash + Objects.hashCode(this.descriptor);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final AbstractAsset other = (AbstractAsset) obj;
-        if (!Objects.equals(this.descriptor, other.descriptor)) {
-            return false;
-        }
-        return true;
     }
 
 }

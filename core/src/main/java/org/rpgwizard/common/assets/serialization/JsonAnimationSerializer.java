@@ -37,15 +37,15 @@ public class JsonAnimationSerializer extends AbstractJsonSerializer {
     protected void load(AssetHandle handle, JSONObject json) throws AssetException {
         final Animation animation = new Animation(handle.getDescriptor());
 
-        animation.setVersion(json.getDouble("version"));
-        animation.setAnimationWidth(json.optInt("width"));
-        animation.setAnimationHeight(json.optInt("height"));
+        animation.setVersion(String.valueOf(json.get("version"))); // REFACTOR: Fix this
+
+        animation.setWidth(json.optInt("width"));
+        animation.setHeight(json.optInt("height"));
         animation.setFramRate(json.getInt("frameRate"));
 
         JSONObject object = json.getJSONObject("spriteSheet");
         animation.setSpriteSheet(new SpriteSheet(object.getString("image"), object.getInt("x"), object.getInt("y"),
-                object.getInt("width"), object.getInt("height"), animation.getAnimationWidth(),
-                animation.getAnimationHeight()));
+                object.getInt("width"), object.getInt("height"), animation.getWidth(), animation.getHeight()));
 
         animation.setSoundEffect(json.getString("soundEffect"));
 
@@ -58,8 +58,8 @@ public class JsonAnimationSerializer extends AbstractJsonSerializer {
 
         Animation animation = (Animation) handle.getAsset();
 
-        json.put("width", animation.getAnimationWidth());
-        json.put("height", animation.getAnimationHeight());
+        json.put("width", animation.getWidth());
+        json.put("height", animation.getHeight());
         json.put("frameRate", animation.getFrameRate());
 
         final SpriteSheet spriteSheet = animation.getSpriteSheet();

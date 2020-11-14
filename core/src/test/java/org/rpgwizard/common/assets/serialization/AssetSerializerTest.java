@@ -113,8 +113,8 @@ public class AssetSerializerTest {
 
     private void checkAnimation(Animation asset) {
         Assert.assertEquals(0.2, asset.getFrameRate(), 25);
-        Assert.assertEquals(90, asset.getAnimationHeight());
-        Assert.assertEquals(55, asset.getAnimationWidth());
+        Assert.assertEquals(55, asset.getWidth());
+        Assert.assertEquals(90, asset.getHeight());
 
         SpriteSheet spriteSheet = asset.getSpriteSheet();
         Assert.assertEquals("attack1_north.png", spriteSheet.getFileName());

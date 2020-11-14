@@ -1,5 +1,5 @@
 {
-   "version": 1.5,
+   "version": "2.0.0",
    "frameRate":0.2,
    "spriteSheet": {  
          "image":"attack1_north.png",

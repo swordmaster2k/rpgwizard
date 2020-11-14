@@ -39,7 +39,8 @@ public class JsonSpecialMoveSerializer extends AbstractJsonSerializer {
 
         final SpecialMove smove = new SpecialMove(handle.getDescriptor());
 
-        smove.setVersion(json.getDouble("version"));
+        smove.setVersion(String.valueOf(json.get("version"))); // REFACTOR: Fix this
+
         smove.setName(json.optString("name"));
         smove.setDescription(json.optString("description"));
         smove.setFightPower(json.optInt("fightPower"));

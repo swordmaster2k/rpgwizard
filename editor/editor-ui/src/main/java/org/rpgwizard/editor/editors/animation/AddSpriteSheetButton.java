@@ -58,8 +58,8 @@ public class AddSpriteSheetButton extends SpriteSheetButton {
                     + animation.getSpriteSheet().getFileName());
             if (EditorFileManager.validatePathStartsWith(imageFile, new File(EditorFileManager.getGraphicsPath()))) {
                 animation.setSpriteSheet(dialog.getValue());
-                animation.setAnimationWidth(animation.getSpriteSheet().getTileWidth());
-                animation.setAnimationHeight(animation.getSpriteSheet().getTileHeight());
+                animation.setWidth(animation.getSpriteSheet().getTileWidth());
+                animation.setHeight(animation.getSpriteSheet().getTileHeight());
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(MainWindow.getInstance(), "Error loading sprite sheet!", "Error on Load",

@@ -37,7 +37,8 @@ public class JsonProjectSerializer extends AbstractJsonSerializer {
 
         final Project project = new Project(handle.getDescriptor());
 
-        project.setVersion(json.getDouble("version"));
+        project.setVersion(String.valueOf(json.get("version"))); // REFACTOR: Fix this
+
         project.setName(json.getString("name"));
         project.setResolutionWidth(json.getInt("resolutionWidth"));
         project.setResolutionHeight(json.getInt("resolutionHeight"));

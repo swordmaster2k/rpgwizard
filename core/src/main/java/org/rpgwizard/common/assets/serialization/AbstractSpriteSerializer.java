@@ -18,7 +18,8 @@ import org.json.JSONObject;
 public abstract class AbstractSpriteSerializer extends AbstractJsonSerializer {
 
     protected <T extends AbstractSprite> T load(T sprite, JSONObject json) throws AssetException {
-        sprite.setVersion(json.getDouble("version"));
+        sprite.setVersion(String.valueOf(json.get("version"))); // REFACTOR: Fix this
+
         sprite.setName(json.getString("name"));
         sprite.setFrameRate(json.optDouble("frameRate"));
         sprite.setGraphics(deserializeStringMap(json.getJSONObject("graphics")));

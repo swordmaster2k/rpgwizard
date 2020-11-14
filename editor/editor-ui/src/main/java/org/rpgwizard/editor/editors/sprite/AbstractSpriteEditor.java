@@ -65,7 +65,7 @@ public abstract class AbstractSpriteEditor extends AbstractAssetEditorWindow imp
     public static final int DEFAULT_INPUT_COLUMNS = 12;
 
     // Model for the animation tab.
-    private final AbstractSprite sprite;
+    protected final AbstractSprite sprite;
 
     protected static final List<String> STANDARD_PLACE_HOLDERS = Arrays.asList("SOUTH", "NORTH", "EAST", "WEST",
             "NORTH_WEST", "NORTH_EAST", "SOUTH_WEST", "SOUTH_EAST", "ATTACK", "DEFEND", "SPECIAL_MOVE", "DIE", "REST");
@@ -74,7 +74,7 @@ public abstract class AbstractSpriteEditor extends AbstractAssetEditorWindow imp
             "WEST_IDLE", "NORTH_WEST_IDLE", "NORTH_EAST_IDLE", "SOUTH_WEST_IDLE", "SOUTH_EAST_IDLE");
 
     // Default dimensions.
-    private static final Dimension PROFILE_DIMENSION = new Dimension(100, 100);
+    protected static final Dimension PROFILE_DIMENSION = new Dimension(100, 100);
 
     // Tabs.
     protected final JTabbedPane tabbedPane;
@@ -94,9 +94,9 @@ public abstract class AbstractSpriteEditor extends AbstractAssetEditorWindow imp
 
     protected final Border defaultEtchedBorder;
 
-    private JButton browseButton;
-    private JButton addButton;
-    private JButton removeButton;
+    protected JButton browseButton;
+    protected JButton addButton;
+    protected JButton removeButton;
 
     public AbstractSpriteEditor(String title, AbstractSprite model, ImageIcon icon) {
         super(title, true, true, true, true, icon);

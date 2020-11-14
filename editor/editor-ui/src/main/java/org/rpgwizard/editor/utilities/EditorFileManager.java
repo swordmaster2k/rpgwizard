@@ -29,7 +29,6 @@ import org.rpgwizard.common.assets.NPC;
 import org.rpgwizard.common.assets.Program;
 import org.rpgwizard.common.assets.Project;
 import org.rpgwizard.common.assets.SpecialMove;
-import org.rpgwizard.common.assets.StatusEffect;
 import org.rpgwizard.common.assets.TileSet;
 import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.editor.MainWindow;
@@ -113,8 +112,6 @@ public class EditorFileManager {
             return CoreProperties.getProperty("toolkit.directory.character");
         } else if (type == Program.class) {
             return CoreProperties.getProperty("toolkit.directory.program");
-        } else if (type == StatusEffect.class) {
-            return CoreProperties.getProperty("toolkit.directory.statuseffect");
         } else if (type == SpecialMove.class) {
             return CoreProperties.getProperty("toolkit.directory.specialmove");
         } else if (type == TileSet.class) {
@@ -145,8 +142,6 @@ public class EditorFileManager {
             return "Programs";
         } else if (type == Project.class) {
             return "Projects";
-        } else if (type == StatusEffect.class) {
-            return "Status Effects";
         } else if (type == TileSet.class) {
             return "Tilesets";
         } else if (type == SpecialMove.class) {
@@ -181,8 +176,6 @@ public class EditorFileManager {
             return new String[] { CoreProperties.getProperty("toolkit.program.extension.default") };
         } else if (type == Project.class) {
             return new String[] { CoreProperties.getProperty("toolkit.project.extension.default") };
-        } else if (type == StatusEffect.class) {
-            return new String[] { CoreProperties.getProperty("toolkit.statuseffect.extension.default") };
         } else if (type == TileSet.class) {
             return new String[] { CoreProperties.getProperty("toolkit.tileset.extension.default") };
         } else if (type == SpecialMove.class) {

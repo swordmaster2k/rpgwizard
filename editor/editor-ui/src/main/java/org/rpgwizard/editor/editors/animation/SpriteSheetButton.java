@@ -108,8 +108,8 @@ public class SpriteSheetButton extends JPanel implements MouseListener {
                 if (EditorFileManager.validatePathStartsWith(imageFile,
                         new File(EditorFileManager.getGraphicsPath()))) {
                     animation.setSpriteSheet(dialog.getValue());
-                    animation.setAnimationWidth(animation.getSpriteSheet().getTileWidth());
-                    animation.setAnimationHeight(animation.getSpriteSheet().getTileHeight());
+                    animation.setWidth(animation.getSpriteSheet().getTileWidth());
+                    animation.setHeight(animation.getSpriteSheet().getTileHeight());
                     repaint();
                 }
             } catch (IOException ex) {

@@ -77,6 +77,7 @@
         <substance.version>8.0.00</substance.version>
         <trident.version>1.5.00</trident.version>
         <jcef.version>67.0</jcef.version>
+        <lombok.version>1.18.12</lombok.version>
     </properties>
 
     <dependencies>

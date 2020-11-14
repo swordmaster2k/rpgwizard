@@ -167,12 +167,12 @@ public class AnimatedPanel extends AbstractImagePanel implements AnimationChange
         int x;
         int y;
         if (animation != null) {
-            x = (getWidth() / 2) - (animation.getAnimationWidth() / 2);
-            y = (getHeight() / 2) - (animation.getAnimationHeight() / 2);
+            x = (getWidth() / 2) - (animation.getWidth() / 2);
+            y = (getHeight() / 2) - (animation.getHeight() / 2);
 
             if (frameImage != null) {
-                int width = (int) animation.getAnimationWidth();
-                int height = (int) animation.getAnimationHeight();
+                int width = (int) animation.getWidth();
+                int height = (int) animation.getHeight();
 
                 if (frameImage.getWidth() > width || frameImage.getHeight() > height) {
                     makeSubImage();
@@ -260,8 +260,8 @@ public class AnimatedPanel extends AbstractImagePanel implements AnimationChange
     }
 
     private void makeSubImage() {
-        int width = (int) animation.getAnimationWidth();
-        int height = (int) animation.getAnimationHeight();
+        int width = (int) animation.getWidth();
+        int height = (int) animation.getHeight();
         int frameWidth = frameImage.getWidth();
         int frameHeight = frameImage.getHeight();
 

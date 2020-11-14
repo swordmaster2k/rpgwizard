@@ -23,7 +23,6 @@ import org.rpgwizard.common.assets.Item;
 import org.rpgwizard.common.assets.Program;
 import org.rpgwizard.common.assets.Project;
 import org.rpgwizard.common.assets.SpecialMove;
-import org.rpgwizard.common.assets.StatusEffect;
 import org.rpgwizard.common.assets.TileSet;
 
 /**
@@ -83,8 +82,6 @@ public class CoreProperties {
             return getFullExtension("toolkit.character.extension.default");
         } else if (type == Project.class) {
             return getFullExtension("toolkit.project.extension.default");
-        } else if (type == StatusEffect.class) {
-            return getFullExtension("toolkit.statuseffect.extension.default");
         } else if (type == TileSet.class) {
             return getFullExtension("toolkit.tileset.extension.default");
         } else if (type == SpecialMove.class) {

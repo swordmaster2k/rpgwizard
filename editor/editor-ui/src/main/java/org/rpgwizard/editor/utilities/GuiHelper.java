@@ -11,6 +11,7 @@ import java.awt.AlphaComposite;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -30,6 +31,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.ListModel;
@@ -385,6 +387,13 @@ public abstract class GuiHelper {
             TableColumn column = table.getColumnModel().getColumn(i);
             column.setPreferredWidth((int) (preferredWidth * (percentages[i] / total)));
         }
+    }
+
+    public static JSeparator getJSeparator() {
+        JSeparator separator = new JSeparator(SwingConstants.VERTICAL);
+        separator.setMinimumSize(new Dimension(2, 12));
+        separator.setPreferredSize(new Dimension(2, 12));
+        return separator;
     }
 
 }

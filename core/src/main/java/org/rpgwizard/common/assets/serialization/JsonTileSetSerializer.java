@@ -39,7 +39,8 @@ public class JsonTileSetSerializer extends AbstractJsonSerializer {
         final TileSet tileSet = new TileSet(handle.getDescriptor(), json.optInt("tileWidth"),
                 json.optInt("tileHeight"));
 
-        tileSet.setVersion(json.getDouble("version"));
+        tileSet.setVersion(String.valueOf(json.get("version"))); // REFACTOR: Fix this
+
         tileSet.setName(json.getString("name"));
         tileSet.setImage(json.getString("image"));
         if (json.has("tileData")) {

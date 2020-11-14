@@ -43,7 +43,7 @@ import org.rpgwizard.common.assets.board.BoardVectorType;
 public abstract class AbstractJsonSerializer extends AbstractAssetSerializer {
 
     public static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
-    public static final double FILE_FORMAT_VERSION = 1.7;
+    public static final String FILE_FORMAT_VERSION = "2.0.0";
 
     @Override
     public void serialize(AssetHandle handle) throws IOException, AssetException {

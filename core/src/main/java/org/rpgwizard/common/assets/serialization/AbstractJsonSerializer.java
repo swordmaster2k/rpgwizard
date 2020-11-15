@@ -31,6 +31,7 @@ import org.rpgwizard.common.assets.Event;
 import org.rpgwizard.common.assets.EventType;
 import org.rpgwizard.common.assets.Game;
 import org.rpgwizard.common.assets.KeyPressEvent;
+import org.rpgwizard.common.assets.Tileset;
 import org.rpgwizard.common.assets.board.BoardLayerImage;
 import org.rpgwizard.common.assets.board.BoardVector;
 import org.rpgwizard.common.assets.board.BoardVectorType;
@@ -55,7 +56,7 @@ public abstract class AbstractJsonSerializer extends AbstractAssetSerializer {
 
             // Store the asset contents into a JSON representation
             JSONObject obj = new JSONObject();
-            if (handle.getAsset() instanceof Game) { // REFACTOR: Remove this
+            if (handle.getAsset() instanceof Game || handle.getAsset() instanceof Tileset) { // REFACTOR: Remove this
                 obj = store(handle);
             } else {
                 store(handle, obj);

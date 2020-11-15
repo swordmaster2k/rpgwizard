@@ -57,7 +57,7 @@ public final class Board extends AbstractAsset implements Selectable {
     private int height;
     private int tileWidth;
     private int tileHeight;
-    private LinkedHashMap<String, TileSet> tileSets;
+    private LinkedHashMap<String, Tileset> tileSets;
     private LinkedList<BoardLayer> layers;
     private int[][][] boardDimensions; // x, y, z
     private StartingPosition startingPosition;
@@ -458,7 +458,7 @@ public final class Board extends AbstractAsset implements Selectable {
      *
      * @return tile set hash
      */
-    public Map<String, TileSet> getTileSets() {
+    public Map<String, Tileset> getTileSets() {
         return tileSets;
     }
 
@@ -468,7 +468,7 @@ public final class Board extends AbstractAsset implements Selectable {
      * @param tileSets
      *            new tile set hash
      */
-    public void setTileSets(Map<String, TileSet> tileSets) {
+    public void setTileSets(Map<String, Tileset> tileSets) {
         this.tileSets.clear();
         this.tileSets.putAll(tileSets);
     }

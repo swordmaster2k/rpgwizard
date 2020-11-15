@@ -15,7 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JViewport;
 import javax.swing.event.ChangeEvent;
-import org.rpgwizard.common.assets.TileSet;
+import org.rpgwizard.common.assets.Tileset;
 import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.editors.tileset.TileSetCanvas;
@@ -34,8 +34,8 @@ public final class TileSetTabbedPane extends JClosableTabbedPane {
         addTabChangeListener();
     }
 
-    public void addTileSet(TileSet tileSet) {
-        String tabName = tileSet.getName().replace(CoreProperties.getDefaultExtension(TileSet.class), "");
+    public void addTileSet(Tileset tileSet) {
+        String tabName = tileSet.getName().replace(CoreProperties.getDefaultExtension(Tileset.class), "");
 
         if (indexOfTab(tabName) < 0) {
             JScrollPane scrollPane = new JScrollPane();
@@ -52,8 +52,8 @@ public final class TileSetTabbedPane extends JClosableTabbedPane {
         }
     }
 
-    public void addTileSets(Collection<TileSet> tileSets) {
-        for (TileSet tileSet : tileSets) {
+    public void addTileSets(Collection<Tileset> tileSets) {
+        for (Tileset tileSet : tileSets) {
             addTileSet(tileSet);
         }
     }

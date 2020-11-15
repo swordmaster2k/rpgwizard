@@ -31,7 +31,7 @@ import org.rpgwizard.common.assets.NPC;
 import org.rpgwizard.common.assets.Program;
 import org.rpgwizard.common.assets.Game;
 import org.rpgwizard.common.assets.SpriteSheet;
-import org.rpgwizard.common.assets.TileSet;
+import org.rpgwizard.common.assets.Tileset;
 import org.rpgwizard.common.assets.board.BoardLayer;
 import org.rpgwizard.common.assets.board.BoardLayerImage;
 import org.rpgwizard.common.assets.board.BoardSprite;
@@ -58,20 +58,20 @@ public class AssetSerializerTest {
         assetManager.registerSerializer(new JsonAnimationSerializer());
         assetManager.registerSerializer(new JsonCharacterSerializer());
         assetManager.registerSerializer(new JsonBoardSerializer());
-        assetManager.registerSerializer(new JsonProjectSerializer());
+        assetManager.registerSerializer(new JsonGameSerializer());
         assetManager.registerSerializer(new JsonSpecialMoveSerializer());
         assetManager.registerSerializer(new JsonEnemySerializer());
         assetManager.registerSerializer(new JsonItemSerializer());
         assetManager.registerSerializer(new JsonNPCSerializer());
         assetManager.registerSerializer(new TextProgramSerializer());
-        assetManager.registerSerializer(new JsonTileSetSerializer());
+        assetManager.registerSerializer(new JsonTilesetSerializer());
         assetManager.registerSerializer(new ImageSerializer());
     }
 
     @Test
     public void testProjectSerializer() throws Exception {
         String path = AssetSerializerTestHelper.getPath("Test.game");
-        JsonProjectSerializer serializer = new JsonProjectSerializer();
+        JsonGameSerializer serializer = new JsonGameSerializer();
 
         // Deserialize original.
         Game asset = AssetSerializerTestHelper.deserializeFile(path, serializer);
@@ -203,10 +203,10 @@ public class AssetSerializerTest {
     public void testTileSetSerializer() throws Exception {
         String path = AssetSerializerTestHelper.getPath(
                 "TileSets/Default.tileset");
-        JsonTileSetSerializer serializer = new JsonTileSetSerializer();
+        JsonTilesetSerializer serializer = new JsonTilesetSerializer();
 
         // Deserialize original.
-        TileSet asset = AssetSerializerTestHelper.deserializeFile(path, serializer);
+        Tileset asset = AssetSerializerTestHelper.deserializeFile(path, serializer);
         checkTileSet(asset);
 
         // Serialize a temporary version and deserialize it.
@@ -215,15 +215,15 @@ public class AssetSerializerTest {
         checkTileSet(asset);
     }
 
-    private void checkTileSet(TileSet asset) {
-        Assert.assertEquals("Default", asset.getName());
-        Assert.assertEquals(32, asset.getTileWidth());
-        Assert.assertEquals(32, asset.getTileHeight());
-        Assert.assertEquals("source1.png", asset.getImage());
+    private void checkTileSet(Tileset asset) {
+        Assert.assertEquals("Default.tileset", asset.getName());
+        Assert.assertEquals(24, asset.getTileWidth());
+        Assert.assertEquals(24, asset.getTileHeight());
+        Assert.assertEquals("tiles/oryx_16bit_scifi_world_trans.png", asset.getImage());
         
         Map<String, Map<String, String>> tileData = new HashMap<>();
-        tileData.put("10", Map.of("key1", "value1", "key2", "value2"));
-        tileData.put("42", Map.of("key1", "value1", "key2", "value2", "key3", "value3"));
+        tileData.put("44", Map.of("defence", "1", "custom", "", "type", "plain"));
+        tileData.put("36", Map.of("defence", "4", "custom", "", "type", "mountain"));
         Assert.assertEquals(tileData, asset.getTileData());
     }
 

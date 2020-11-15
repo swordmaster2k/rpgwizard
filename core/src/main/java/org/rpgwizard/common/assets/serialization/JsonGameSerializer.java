@@ -20,7 +20,7 @@ import org.rpgwizard.common.utilities.CoreProperties;
  *
  * @author Joshua Michael Daly
  */
-public class JsonProjectSerializer extends AbstractJsonSerializer {
+public class JsonGameSerializer extends AbstractJsonSerializer {
 
     @Override
     public boolean serializable(AssetDescriptor descriptor) {
@@ -36,9 +36,9 @@ public class JsonProjectSerializer extends AbstractJsonSerializer {
     @Override
     protected void load(AssetHandle handle, JSONObject json) throws AssetException {
         try {
-            final Game game = MAPPER.readValue(json.toString(), Game.class);
-            game.setDescriptor(handle.getDescriptor());
-            handle.setAsset(game);
+            final Game asset = MAPPER.readValue(json.toString(), Game.class);
+            asset.setDescriptor(handle.getDescriptor());
+            handle.setAsset(asset);
         } catch (JsonProcessingException ex) {
             throw new AssetException(ex.getMessage());
         }
@@ -47,8 +47,8 @@ public class JsonProjectSerializer extends AbstractJsonSerializer {
     @Override
     protected JSONObject store(AssetHandle handle) throws AssetException {
         try {
-            final Game game = (Game) handle.getAsset();
-            return new JSONObject(MAPPER.writeValueAsString(game));
+            final Game asset = (Game) handle.getAsset();
+            return new JSONObject(MAPPER.writeValueAsString(asset));
         } catch (JsonProcessingException ex) {
             throw new AssetException(ex.getMessage());
         }

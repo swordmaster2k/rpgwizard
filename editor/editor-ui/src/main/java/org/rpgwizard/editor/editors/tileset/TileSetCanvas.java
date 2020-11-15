@@ -28,7 +28,7 @@ import javax.swing.KeyStroke;
 import javax.swing.Scrollable;
 import javax.swing.SwingUtilities;
 import org.rpgwizard.common.assets.Tile;
-import org.rpgwizard.common.assets.TileSet;
+import org.rpgwizard.common.assets.Tileset;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.ui.listeners.TileSelectionListener;
 import org.rpgwizard.editor.utilities.GuiHelper;
@@ -46,7 +46,7 @@ public final class TileSetCanvas extends JPanel implements Scrollable {
 
     private final LinkedList<TileSelectionListener> tileSelectionListeners = new LinkedList<>();
 
-    private final TileSet tileSet;
+    private final Tileset tileSet;
     private BufferedImage bufferedImage;
 
     private Rectangle selection;
@@ -57,7 +57,7 @@ public final class TileSetCanvas extends JPanel implements Scrollable {
      *
      * @param tileSet
      */
-    public TileSetCanvas(TileSet tileSet) {
+    public TileSetCanvas(Tileset tileSet) {
         super();
 
         this.tileSet = tileSet;

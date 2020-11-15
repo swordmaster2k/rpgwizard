@@ -21,7 +21,7 @@ import org.rpgwizard.common.assets.AssetHandle;
 import org.rpgwizard.common.assets.AssetManager;
 import org.rpgwizard.common.assets.Game;
 import org.rpgwizard.common.assets.files.FileAssetHandleResolver;
-import org.rpgwizard.common.assets.serialization.JsonProjectSerializer;
+import org.rpgwizard.common.assets.serialization.JsonGameSerializer;
 import org.rpgwizard.html5.engine.plugin.EngineRunnable;
 import org.rpgwizard.html5.engine.plugin.browser.EmbeddedBrowser;
 import org.slf4j.Logger;
@@ -68,7 +68,7 @@ public class Standalone {
     private static Game openProject(File projectFile) throws AssetException, IOException {
         AssetManager assetManager = AssetManager.getInstance();
         assetManager.registerResolver(new FileAssetHandleResolver());
-        assetManager.registerSerializer(new JsonProjectSerializer());
+        assetManager.registerSerializer(new JsonGameSerializer());
         AssetHandle handle = AssetManager.getInstance().deserialize(new AssetDescriptor(projectFile.toURI()));
         return (Game) handle.getAsset();
     }

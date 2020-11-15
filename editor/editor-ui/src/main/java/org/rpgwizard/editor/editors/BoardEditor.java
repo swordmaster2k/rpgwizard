@@ -19,7 +19,7 @@ import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.Board;
 import org.rpgwizard.common.assets.Tile;
-import org.rpgwizard.common.assets.TileSet;
+import org.rpgwizard.common.assets.Tileset;
 import org.rpgwizard.common.assets.board.BoardLayer;
 import org.rpgwizard.common.assets.board.BoardLayerImage;
 import org.rpgwizard.common.assets.board.BoardSprite;
@@ -280,7 +280,7 @@ public final class BoardEditor extends AbstractAssetEditorWindow
             int x = 0;
             int y = 0;
             for (int j = 0; j < count; j++) {
-                TileSet tileSet = layerTiles[x][y].getTileSet();
+                Tileset tileSet = layerTiles[x][y].getTileSet();
 
                 if (tileSet != null) {
                     if (!board.getTileSets().containsKey(tileSet.getName())) {

@@ -1,18 +1,19 @@
 {
-    "version": 4.0,
-    "name": "Default",
-    "tileWidth": 32,
-    "tileHeight": 32,
-    "image": "source1.png",
+    "name": "Default.tileset",
+    "image": "tiles/oryx_16bit_scifi_world_trans.png",
+    "tileWidth": 24,
+    "tileHeight": 24,
     "tileData": {
-        "10": {
-            "key1": "value1",
-            "key2": "value2"
+        "44": {
+            "defence": "1",
+            "custom": "",
+            "type": "plain"
         },
-        "42": {
-            "key1": "value1",
-            "key2": "value2",
-            "key3": "value3"
+        "36": {
+            "defence": "4",
+            "custom": "",
+            "type": "mountain"
         }
-    }
+    },
+    "version": "2.0.0"
 }

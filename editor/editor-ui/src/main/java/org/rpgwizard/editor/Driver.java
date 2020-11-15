@@ -32,9 +32,9 @@ import org.rpgwizard.common.assets.serialization.JsonCharacterSerializer;
 import org.rpgwizard.common.assets.serialization.JsonEnemySerializer;
 import org.rpgwizard.common.assets.serialization.JsonItemSerializer;
 import org.rpgwizard.common.assets.serialization.JsonNPCSerializer;
-import org.rpgwizard.common.assets.serialization.JsonProjectSerializer;
+import org.rpgwizard.common.assets.serialization.JsonGameSerializer;
 import org.rpgwizard.common.assets.serialization.JsonSpecialMoveSerializer;
-import org.rpgwizard.common.assets.serialization.JsonTileSetSerializer;
+import org.rpgwizard.common.assets.serialization.JsonTilesetSerializer;
 import org.rpgwizard.common.assets.serialization.TextProgramSerializer;
 import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.editor.properties.EditorProperties;
@@ -87,13 +87,13 @@ public class Driver {
         assetManager.registerSerializer(new JsonAnimationSerializer());
         assetManager.registerSerializer(new JsonCharacterSerializer());
         assetManager.registerSerializer(new JsonBoardSerializer());
-        assetManager.registerSerializer(new JsonProjectSerializer());
+        assetManager.registerSerializer(new JsonGameSerializer());
         assetManager.registerSerializer(new JsonSpecialMoveSerializer());
         assetManager.registerSerializer(new JsonEnemySerializer());
         assetManager.registerSerializer(new JsonItemSerializer());
         assetManager.registerSerializer(new JsonNPCSerializer());
         assetManager.registerSerializer(new TextProgramSerializer());
-        assetManager.registerSerializer(new JsonTileSetSerializer());
+        assetManager.registerSerializer(new JsonTilesetSerializer());
         assetManager.registerSerializer(new ImageSerializer());
     }
 

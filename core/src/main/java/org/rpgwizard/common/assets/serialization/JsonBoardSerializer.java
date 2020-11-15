@@ -25,10 +25,10 @@ import org.rpgwizard.common.io.Paths;
 import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.common.assets.StartingPosition;
 import org.rpgwizard.common.assets.Tile;
-import org.rpgwizard.common.assets.TileSet;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.rpgwizard.common.assets.Tileset;
 import org.rpgwizard.common.assets.board.BoardLayerImage;
 
 /**
@@ -104,7 +104,7 @@ public class JsonBoardSerializer extends AbstractJsonSerializer {
         // Serialize TileSets.
         // Stored in LinkedHashMap which the original insertion order.
         final JSONArray tileSets = new JSONArray();
-        for (TileSet tileSet : board.getTileSets().values()) {
+        for (Tileset tileSet : board.getTileSets().values()) {
             tileSets.put(serializePath(tileSet.getName()));
         }
         json.put("tileSets", tileSets);
@@ -212,14 +212,14 @@ public class JsonBoardSerializer extends AbstractJsonSerializer {
         handle.setAsset(board);
     }
 
-    private Map<String, TileSet> getTileSets(JSONArray array) {
-        Map<String, TileSet> tileSets = new HashMap<>();
+    private Map<String, Tileset> getTileSets(JSONArray array) {
+        Map<String, Tileset> tileSets = new HashMap<>();
 
-        TileSet tileSet;
+        Tileset tileSet;
         int length = array.length();
         for (int i = 0; i < length; i++) {
             AssetDescriptor descriptor = null;
-            tileSet = new TileSet(descriptor);
+            tileSet = new Tileset(descriptor);
             String name = array.getString(i);
             tileSet.setName(name);
 
@@ -256,7 +256,7 @@ public class JsonBoardSerializer extends AbstractJsonSerializer {
 
                 Tile tile = new Tile();
                 if (!(tileSetIndex == -1 && tileIndex == -1)) { // Check for blank tile.
-                    TileSet tileSet = board.getTileSets().get(tileSetNames.get(tileSetIndex));
+                    Tileset tileSet = board.getTileSets().get(tileSetNames.get(tileSetIndex));
                     tile = new Tile(tileSet, tileIndex);
                 }
 

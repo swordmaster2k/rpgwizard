@@ -57,7 +57,7 @@ import org.rpgwizard.common.assets.Program;
 import org.rpgwizard.common.assets.Game;
 import org.rpgwizard.common.assets.SpecialMove;
 import org.rpgwizard.common.assets.Tile;
-import org.rpgwizard.common.assets.TileSet;
+import org.rpgwizard.common.assets.Tileset;
 import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.common.utilities.TileSetCache;
 import org.rpgwizard.editor.editors.AnimationEditor;
@@ -744,7 +744,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
             addToolkitEditorWindow(EditorFactory.getEditor(openNPC(file)));
         } else if (fileName.endsWith(CoreProperties.getDefaultExtension(Character.class))) {
             addToolkitEditorWindow(EditorFactory.getEditor(openCharacter(file)));
-        } else if (fileName.endsWith(CoreProperties.getDefaultExtension(TileSet.class))) {
+        } else if (fileName.endsWith(CoreProperties.getDefaultExtension(Tileset.class))) {
             openTileset(file);
         } else if (fileName.endsWith(CoreProperties.getDefaultExtension(SpecialMove.class))) {
             addToolkitEditorWindow(EditorFactory.getEditor(openSpecialMove(file)));
@@ -887,9 +887,9 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
                 Board board = (Board) handle.getAsset();
 
                 // Setup the TileSets used on this Board.
-                for (TileSet tileSet : board.getTileSets().values()) {
+                for (Tileset tileSet : board.getTileSets().values()) {
                     String path = System.getProperty("project.path") + File.separator
-                            + EditorFileManager.getTypeSubdirectory(TileSet.class) + File.separator + tileSet.getName();
+                            + EditorFileManager.getTypeSubdirectory(Tileset.class) + File.separator + tileSet.getName();
                     openTileset(new File(path));
                 }
 
@@ -1013,7 +1013,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
     }
 
     public void createNewTileset() {
-        LOGGER.info("Creating new {}.", TileSet.class.getSimpleName());
+        LOGGER.info("Creating new {}.", Tileset.class.getSimpleName());
 
         NewTilesetDialog dialog = new NewTilesetDialog();
         dialog.setLocationRelativeTo(this);
@@ -1032,13 +1032,13 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
                 File file = EditorFileManager.getFileChooser().getSelectedFile();
 
                 try {
-                    File tileSetFile = EditorFileManager.saveByType(TileSet.class);
+                    File tileSetFile = EditorFileManager.saveByType(Tileset.class);
 
                     if (tileSetFile == null) {
                         return; // Cancelled by the user.
                     }
 
-                    TileSet tileSet = new TileSet(new AssetDescriptor(tileSetFile.toURI()), tileWidth, tileHeight);
+                    Tileset tileSet = new Tileset(new AssetDescriptor(tileSetFile.toURI()), tileWidth, tileHeight);
                     tileSet.setDescriptor(new AssetDescriptor(tileSetFile.toURI()));
                     tileSet.setName(tileSetFile.getName());
 
@@ -1050,17 +1050,17 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
 
                     openTileset(tileSetFile);
                 } catch (IOException | AssetException ex) {
-                    LOGGER.error("Failed to create new {} file=[{}].", TileSet.class.getSimpleName(), file, ex);
+                    LOGGER.error("Failed to create new {} file=[{}].", Tileset.class.getSimpleName(), file, ex);
                 }
             }
         }
     }
 
     public void openTileset(File file) {
-        LOGGER.info("Opening {} file=[{}].", TileSet.class.getSimpleName(), file);
+        LOGGER.info("Opening {} file=[{}].", Tileset.class.getSimpleName(), file);
 
         try {
-            TileSet tileSet;
+            Tileset tileSet;
             String key = file.getName();
             if (!TileSetCache.contains(key)) {
                 tileSet = TileSetCache.addTileSet(key);
@@ -1074,7 +1074,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
                 westUpperTabbedPane.setSelectedComponent(tileSetPanel);
             }
         } catch (IOException ex) {
-            LOGGER.error("Failed to open {} file=[{}].", TileSet.class.getSimpleName(), file, ex);
+            LOGGER.error("Failed to open {} file=[{}].", Tileset.class.getSimpleName(), file, ex);
         }
     }
 

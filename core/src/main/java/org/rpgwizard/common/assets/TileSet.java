@@ -7,20 +7,25 @@
  */
 package org.rpgwizard.common.assets;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Objects;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * This class is responsible for managing a tilset inside the editor It stores all of the tiles in the set in a big
  * Array of tiles!
  *
- * @author Geoff Wilson
  * @author Joshua Michael Daly
  */
-public class TileSet extends AbstractAsset {
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true, includeFieldNames = true)
+public class Tileset extends AbstractAsset {
 
     private String name;
     private int tileWidth;
@@ -28,10 +33,17 @@ public class TileSet extends AbstractAsset {
     private String image;
     private Map<String, Map<String, String>> tileData;
 
+    @JsonIgnore
     private BufferedImage bufferedImage;
+    @JsonIgnore
     private LinkedList<Tile> tiles;
 
-    public TileSet(AssetDescriptor descriptor) {
+    public Tileset() {
+        tiles = new LinkedList<>();
+        tileData = new HashMap<>();
+    }
+    
+    public Tileset(AssetDescriptor descriptor) {
         super(descriptor);
         image = null;
         tiles = new LinkedList<>();
@@ -45,21 +57,13 @@ public class TileSet extends AbstractAsset {
      * @param tileWidth
      * @param tileHeight
      */
-    public TileSet(AssetDescriptor descriptor, int tileWidth, int tileHeight) {
+    public Tileset(AssetDescriptor descriptor, int tileWidth, int tileHeight) {
         super(descriptor);
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
         image = null;
         tiles = new LinkedList<>();
         tileData = new HashMap<>();
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     /**
@@ -69,65 +73,14 @@ public class TileSet extends AbstractAsset {
      *            Index of the array to get the tile from
      * @return Tile object representing the tile from the requested index
      */
+    @JsonIgnore
     public Tile getTile(int index) {
         return tiles.get(index);
     }
 
+    @JsonIgnore
     public int getTileIndex(Tile tile) {
         return tiles.indexOf(tile);
-    }
-
-    /**
-     * Returns an array of all the tiles in the tiles
-     *
-     * @return Object array of all the tiles in the tiles
-     */
-    public LinkedList<Tile> getTiles() {
-        return tiles;
-    }
-
-    public int getTileWidth() {
-        return tileWidth;
-    }
-
-    public void setTileWidth(int tileWidth) {
-        this.tileWidth = tileWidth;
-    }
-
-    public int getTileHeight() {
-        return tileHeight;
-    }
-
-    public void setTileHeight(int tileHeight) {
-        this.tileHeight = tileHeight;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public Map<String, Map<String, String>> getTileData() {
-        return tileData;
-    }
-
-    public void setTileData(Map<String, Map<String, String>> tileData) {
-        this.tileData = tileData;
-    }
-
-    public BufferedImage getBufferedImage() {
-        return bufferedImage;
-    }
-
-    public void setBufferedImage(BufferedImage bufferedImage) {
-        this.bufferedImage = bufferedImage;
-    }
-
-    public void setTiles(LinkedList<Tile> tiles) {
-        this.tiles = tiles;
     }
 
     /**
@@ -161,40 +114,6 @@ public class TileSet extends AbstractAsset {
             return tileData.get(String.valueOf(index));
         }
         return Map.of();
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 83 * hash + Objects.hashCode(this.name);
-        hash = 83 * hash + this.tileWidth;
-        hash = 83 * hash + this.tileHeight;
-        hash = 83 * hash + Objects.hashCode(this.image);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final TileSet other = (TileSet) obj;
-        if (this.tileWidth != other.tileWidth) {
-            return false;
-        }
-        if (this.tileHeight != other.tileHeight) {
-            return false;
-        }
-        if (!Objects.equals(this.name, other.name)) {
-            return false;
-        }
-        return Objects.equals(this.image, other.image);
     }
 
 }

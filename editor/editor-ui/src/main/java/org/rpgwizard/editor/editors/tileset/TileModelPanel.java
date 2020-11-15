@@ -21,7 +21,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import org.rpgwizard.common.assets.Tile;
-import org.rpgwizard.common.assets.TileSet;
+import org.rpgwizard.common.assets.Tileset;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.ui.AbstractModelPanel;
 import org.rpgwizard.editor.utilities.FileTools;
@@ -162,7 +162,7 @@ public final class TileModelPanel extends AbstractModelPanel {
             newData.put(DEFENCE_KEY, String.valueOf(defenceSlider.getValue()));
             newData.put(CUSTOM_KEY, customField.getText());
 
-            TileSet tileSet = tile.getTileSet();
+            Tileset tileSet = tile.getTileSet();
             tileSet.addTileData(tile.getIndex(), newData);
 
             try {

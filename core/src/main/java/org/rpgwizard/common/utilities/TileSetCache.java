@@ -17,7 +17,7 @@ import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.AssetException;
 import org.rpgwizard.common.assets.AssetHandle;
 import org.rpgwizard.common.assets.AssetManager;
-import org.rpgwizard.common.assets.TileSet;
+import org.rpgwizard.common.assets.Tileset;
 
 /**
  * Stores a cache of loaded TileSets for reuse between boards.
@@ -27,7 +27,7 @@ import org.rpgwizard.common.assets.TileSet;
  */
 public class TileSetCache {
 
-    private static final HashMap<String, TileSet> TILE_SETS = new HashMap<>();
+    private static final HashMap<String, Tileset> TILE_SETS = new HashMap<>();
 
     /**
      * Gets the tile set with the specified key, if it is present in the cache
@@ -36,7 +36,7 @@ public class TileSetCache {
      *            Filename of the tile set to retrieve
      * @return the Tile set with the corresponding filename
      */
-    public static TileSet getTileSet(String key) {
+    public static Tileset getTileSet(String key) {
         if (TILE_SETS.containsKey(key)) {
             return TILE_SETS.get(key);
         } else {
@@ -72,8 +72,8 @@ public class TileSetCache {
      * @return The loaded tile set is returned, this is to remove the need to call getTileSet(String key) straight after
      *         loading a set
      */
-    public static TileSet addTileSet(String fileName) {
-        TileSet set;
+    public static Tileset addTileSet(String fileName) {
+        Tileset set;
 
         if (!TILE_SETS.containsKey(fileName)) {
             try {
@@ -81,7 +81,7 @@ public class TileSetCache {
                         + CoreProperties.getProperty("toolkit.directory.tileset") + File.separator + fileName);
 
                 AssetHandle handle = AssetManager.getInstance().deserialize(new AssetDescriptor(file.toURI()));
-                set = (TileSet) handle.getAsset();
+                set = (Tileset) handle.getAsset();
 
                 TILE_SETS.put(set.getName(), set);
 
@@ -98,16 +98,16 @@ public class TileSetCache {
     }
 
     /**
-     * Removes the specified TileSet from the cache, it will only remove the TileSet if the number of board references
+     * Removes the specified Tileset from the cache, it will only remove the Tileset if the number of board references
      * have reached 0.
      *
      * @param fileName
-     *            TileSet to attempt to load into the cache
-     * @return the remove TileSet is returned.
+     *            Tileset to attempt to load into the cache
+     * @return the remove Tileset is returned.
      */
-    public static TileSet removeTileSet(String fileName) {
+    public static Tileset removeTileSet(String fileName) {
         if (TILE_SETS.containsKey(fileName)) {
-            TileSet set = TILE_SETS.get(fileName);
+            Tileset set = TILE_SETS.get(fileName);
 
             return set;
         }
@@ -116,15 +116,15 @@ public class TileSetCache {
     }
 
     /**
-     * Removes the specified TileSets from the cache, it will only remove the TileSet if the number of board references
+     * Removes the specified TileSets from the cache, it will only remove the Tileset if the number of board references
      * have reached 0.
      *
      * @param fileNames
-     *            list of TileSet file names to remove
+     *            list of Tileset file names to remove
      * @return the removed TileSets
      */
-    public static LinkedList<TileSet> removeTileSets(LinkedList<String> fileNames) {
-        LinkedList<TileSet> removedSets = new LinkedList<>();
+    public static LinkedList<Tileset> removeTileSets(LinkedList<String> fileNames) {
+        LinkedList<Tileset> removedSets = new LinkedList<>();
 
         for (String fileName : fileNames) {
             removedSets.add(removeTileSet(fileName));

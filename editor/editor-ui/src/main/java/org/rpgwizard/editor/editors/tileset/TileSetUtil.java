@@ -14,7 +14,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import org.rpgwizard.common.assets.Tile;
-import org.rpgwizard.common.assets.TileSet;
+import org.rpgwizard.common.assets.Tileset;
 import org.rpgwizard.editor.utilities.EditorFileManager;
 
 /**
@@ -23,7 +23,7 @@ import org.rpgwizard.editor.utilities.EditorFileManager;
  */
 public class TileSetUtil {
 
-    public static TileSet load(TileSet tileSet) throws IOException {
+    public static Tileset load(Tileset tileSet) throws IOException {
         int tileWidth = tileSet.getTileWidth();
         int tileHeight = tileSet.getTileHeight();
         String image = tileSet.getImage();
@@ -39,7 +39,7 @@ public class TileSetUtil {
         return tileSet;
     }
 
-    public static TileSet loadImageIntoTileSet(TileSet tileSet, BufferedImage source, int tileWidth, int tileHeight) {
+    public static Tileset loadImageIntoTileSet(Tileset tileSet, BufferedImage source, int tileWidth, int tileHeight) {
         int sourceWidth = source.getWidth();
         int sourceHeight = source.getHeight();
 

@@ -20,7 +20,7 @@ import org.rpgwizard.common.assets.Character;
 import org.rpgwizard.common.assets.Enemy;
 import org.rpgwizard.common.assets.Item;
 import org.rpgwizard.common.assets.NPC;
-import org.rpgwizard.common.assets.TileSet;
+import org.rpgwizard.common.assets.Tileset;
 import org.rpgwizard.common.assets.serialization.AbstractJsonSerializer;
 import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.editor.Driver;
@@ -83,7 +83,7 @@ public class ProjectUpgrader {
 
         // Upgrade tileset files.
         extension = CoreProperties.getFullExtension("toolkit.tileset.extension.json");
-        subPath = EditorFileManager.getFullPath(TileSet.class);
+        subPath = EditorFileManager.getFullPath(Tileset.class);
         filesUpgraded += upgradeFiles(new String[] { extension.replace(".", "") }, subPath);
 
         LOGGER.info("Upgrade report filesUpgraded=[{}]", filesUpgraded);

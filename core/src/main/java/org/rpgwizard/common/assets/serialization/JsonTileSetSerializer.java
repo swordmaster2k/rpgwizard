@@ -7,13 +7,13 @@
  */
 package org.rpgwizard.common.assets.serialization;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.JSONObject;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.AssetException;
 import org.rpgwizard.common.assets.AssetHandle;
-import org.rpgwizard.common.assets.TileSet;
+import org.rpgwizard.common.assets.Tileset;
+import static org.rpgwizard.common.assets.serialization.AbstractJsonSerializer.MAPPER;
 import org.rpgwizard.common.io.Paths;
 import org.rpgwizard.common.utilities.CoreProperties;
 
@@ -21,7 +21,7 @@ import org.rpgwizard.common.utilities.CoreProperties;
  *
  * @author Joshua Michael Daly
  */
-public class JsonTileSetSerializer extends AbstractJsonSerializer {
+public class JsonTilesetSerializer extends AbstractJsonSerializer {
 
     @Override
     public boolean serializable(AssetDescriptor descriptor) {
@@ -36,47 +36,23 @@ public class JsonTileSetSerializer extends AbstractJsonSerializer {
 
     @Override
     protected void load(AssetHandle handle, JSONObject json) throws AssetException {
-        final TileSet tileSet = new TileSet(handle.getDescriptor(), json.optInt("tileWidth"),
-                json.optInt("tileHeight"));
-
-        tileSet.setVersion(String.valueOf(json.get("version"))); // REFACTOR: Fix this
-
-        tileSet.setName(json.getString("name"));
-        tileSet.setImage(json.getString("image"));
-        if (json.has("tileData")) {
-            final Map<String, Map<String, String>> tileData = new HashMap<>();
-            JSONObject jsonObject = json.getJSONObject("tileData");
-            jsonObject.keySet().forEach((tileIndex) -> {
-                JSONObject tileEntry = jsonObject.getJSONObject(tileIndex);
-                Map<String, String> metaData = new HashMap<>();
-                tileEntry.keySet().forEach((k) -> {
-                    metaData.put(k, tileEntry.getString(k));
-                });
-                tileData.put(tileIndex, metaData);
-            });
-            tileSet.setTileData(tileData);
+        try {
+            final Tileset asset = MAPPER.readValue(json.toString(), Tileset.class);
+            asset.setDescriptor(handle.getDescriptor());
+            handle.setAsset(asset);
+        } catch (JsonProcessingException ex) {
+            throw new AssetException(ex.getMessage());
         }
-
-        handle.setAsset(tileSet);
-    }
-
-    @Override
-    protected void store(AssetHandle handle, JSONObject json) throws AssetException {
-        super.store(handle, json);
-
-        final TileSet tileSet = (TileSet) handle.getAsset();
-
-        json.put("name", tileSet.getName());
-        json.put("tileWidth", tileSet.getTileWidth());
-        json.put("tileHeight", tileSet.getTileHeight());
-        json.put("image", serializePath(tileSet.getImage()));
-        json.put("tileData", tileSet.getTileData());
     }
 
     @Override
     protected JSONObject store(AssetHandle handle) throws AssetException {
-        throw new UnsupportedOperationException("Not supported yet."); // To change body of generated methods, choose
-                                                                       // Tools | Templates.
+        try {
+            final Tileset asset = (Tileset) handle.getAsset();
+            return new JSONObject(MAPPER.writeValueAsString(asset));
+        } catch (JsonProcessingException ex) {
+            throw new AssetException(ex.getMessage());
+        }
     }
 
 }

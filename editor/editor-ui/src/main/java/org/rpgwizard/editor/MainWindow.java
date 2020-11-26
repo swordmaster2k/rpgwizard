@@ -48,24 +48,20 @@ import org.rpgwizard.common.assets.AssetException;
 import org.rpgwizard.common.assets.AssetHandle;
 import org.rpgwizard.common.assets.AssetManager;
 import org.rpgwizard.common.assets.board.Board;
-import org.rpgwizard.common.assets.sprite.Character;
-import org.rpgwizard.common.assets.sprite.Enemy;
 import org.rpgwizard.common.assets.Image;
 import org.rpgwizard.common.assets.Item;
-import org.rpgwizard.common.assets.sprite.NPC;
 import org.rpgwizard.common.assets.Program;
 import org.rpgwizard.common.assets.game.Game;
+import org.rpgwizard.common.assets.sprite.Sprite;
 import org.rpgwizard.common.assets.tileset.Tile;
 import org.rpgwizard.common.assets.tileset.Tileset;
 import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.common.utilities.TileSetCache;
 import org.rpgwizard.editor.editors.AnimationEditor;
 import org.rpgwizard.editor.editors.BoardEditor;
-import org.rpgwizard.editor.editors.CharacterEditor;
-import org.rpgwizard.editor.editors.EnemyEditor;
-import org.rpgwizard.editor.editors.NPCEditor;
 import org.rpgwizard.editor.editors.ProgramEditor;
 import org.rpgwizard.editor.editors.GameEditor;
+import org.rpgwizard.editor.editors.SpriteEditor;
 import org.rpgwizard.editor.editors.board.NewBoardDialog;
 import org.rpgwizard.editor.editors.board.brush.AbstractBrush;
 import org.rpgwizard.editor.editors.board.brush.BoardVectorAreaBrush;
@@ -493,9 +489,9 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
             }
             westLowerTabbedPane.setSelectedComponent(layerPanel);
             propertiesPanel.setModel(editor.getBoard());
-        } else if (window instanceof CharacterEditor) {
-            CharacterEditor editor = (CharacterEditor) window;
-            propertiesPanel.setModel(editor.getPlayer());
+        } else if (window instanceof SpriteEditor) {
+            SpriteEditor editor = (SpriteEditor) window;
+            propertiesPanel.setModel(editor.getSprite());
         }
     }
 
@@ -592,15 +588,9 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
             } else {
                 this.propertiesPanel.setModel(editor.getBoard());
             }
-        } else if (window instanceof CharacterEditor) {
-            CharacterEditor editor = (CharacterEditor) window;
-            propertiesPanel.setModel(editor.getPlayer());
-        } else if (window instanceof NPCEditor) {
-            NPCEditor editor = (NPCEditor) window;
-            propertiesPanel.setModel(editor.getNPC());
-        } else if (window instanceof EnemyEditor) {
-            EnemyEditor editor = (EnemyEditor) window;
-            propertiesPanel.setModel(editor.getEnemy());
+        } else if (window instanceof SpriteEditor) {
+            SpriteEditor editor = (SpriteEditor) window;
+            propertiesPanel.setModel(editor.getSprite());
         } else if (window instanceof ProgramEditor) {
             ProgramEditor editor = (ProgramEditor) window;
             editor.forceReparsing();
@@ -650,22 +640,10 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
                     brush.abort();
                 }
             }
-        } else if (frame instanceof CharacterEditor) {
-            CharacterEditor editor = (CharacterEditor) frame;
+        } else if (frame instanceof SpriteEditor) {
+            SpriteEditor editor = (SpriteEditor) frame;
 
-            if (propertiesPanel.getModel() == editor.getPlayer()) {
-                propertiesPanel.setModel(null);
-            }
-        } else if (frame instanceof NPCEditor) {
-            NPCEditor editor = (NPCEditor) frame;
-
-            if (propertiesPanel.getModel() == editor.getNPC()) {
-                propertiesPanel.setModel(null);
-            }
-        } else if (frame instanceof EnemyEditor) {
-            EnemyEditor editor = (EnemyEditor) frame;
-
-            if (propertiesPanel.getModel() == editor.getEnemy()) {
+            if (propertiesPanel.getModel() == editor.getSprite()) {
                 propertiesPanel.setModel(null);
             }
         } else if (frame instanceof ProgramEditor) {
@@ -735,14 +713,10 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
             addToolkitEditorWindow(EditorFactory.getEditor(openAnimation(file)));
         } else if (fileName.endsWith(CoreProperties.getDefaultExtension(Board.class))) {
             addToolkitEditorWindow(EditorFactory.getEditor(openBoard(file)));
-        } else if (fileName.endsWith(CoreProperties.getDefaultExtension(Enemy.class))) {
-            addToolkitEditorWindow(EditorFactory.getEditor(openEnemy(file)));
         } else if (fileName.endsWith(CoreProperties.getDefaultExtension(Item.class))) {
             addToolkitEditorWindow(EditorFactory.getEditor(openItem(file)));
-        } else if (fileName.endsWith(CoreProperties.getDefaultExtension(NPC.class))) {
-            addToolkitEditorWindow(EditorFactory.getEditor(openNPC(file)));
-        } else if (fileName.endsWith(CoreProperties.getDefaultExtension(Character.class))) {
-            addToolkitEditorWindow(EditorFactory.getEditor(openCharacter(file)));
+        } else if (fileName.endsWith(CoreProperties.getDefaultExtension(Sprite.class))) {
+            addToolkitEditorWindow(EditorFactory.getEditor(openSprite(file)));
         } else if (fileName.endsWith(CoreProperties.getDefaultExtension(Tileset.class))) {
             openTileset(file);
         } else if (fileName.endsWith(CoreProperties.getDefaultExtension(Game.class))) {
@@ -901,36 +875,6 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         return null;
     }
 
-    public void createNewEnemy() {
-        LOGGER.info("Creating new {}.", Enemy.class.getSimpleName());
-        Enemy enemy = new Enemy(null);
-        enemy.setName("Untitled");
-        addToolkitEditorWindow(EditorFactory.getEditor(enemy));
-    }
-
-    /**
-     * Creates an animation editor window for modifying the specified animation file.
-     *
-     * @param file
-     * @return
-     */
-    public Enemy openEnemy(File file) {
-        LOGGER.info("Opening {} file=[{}].", Enemy.class.getSimpleName(), file);
-
-        try {
-            if (file.canRead()) {
-                AssetHandle handle = AssetManager.getInstance().deserialize(new AssetDescriptor(file.toURI()));
-                Enemy enemy = (Enemy) handle.getAsset();
-
-                return enemy;
-            }
-        } catch (IOException | AssetException ex) {
-            LOGGER.error("Failed to open {} file=[{}].", Enemy.class.getSimpleName(), file, ex);
-        }
-
-        return null;
-    }
-
     public void createNewItem() {
         LOGGER.info("Creating new {}.", Item.class.getSimpleName());
         Item item = new Item(null);
@@ -949,41 +893,17 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
                 return item;
             }
         } catch (IOException | AssetException ex) {
-            LOGGER.error("Failed to open {} file=[{}].", Enemy.class.getSimpleName(), file, ex);
-        }
-
-        return null;
-    }
-
-    public void createNewNPC() {
-        LOGGER.info("Creating new {}.", NPC.class.getSimpleName());
-        NPC npc = new NPC(null);
-        npc.setName("Untitled");
-        addToolkitEditorWindow(EditorFactory.getEditor(npc));
-    }
-
-    public NPC openNPC(File file) {
-        LOGGER.info("Opening {} file=[{}].", NPC.class.getSimpleName(), file);
-
-        try {
-            if (file.canRead()) {
-                AssetHandle handle = AssetManager.getInstance().deserialize(new AssetDescriptor(file.toURI()));
-                NPC npc = (NPC) handle.getAsset();
-
-                return npc;
-            }
-        } catch (IOException | AssetException ex) {
-            LOGGER.error("Failed to open {} file=[{}].", NPC.class.getSimpleName(), file, ex);
+            LOGGER.error("Failed to open {} file=[{}].", Item.class.getSimpleName(), file, ex);
         }
 
         return null;
     }
 
     public void createNewCharacter() {
-        LOGGER.info("Creating new {}.", Character.class.getSimpleName());
-        Character character = new Character(null);
-        character.setName("Untitled");
-        addToolkitEditorWindow(EditorFactory.getEditor(character));
+        LOGGER.info("Creating new {}.", Sprite.class.getSimpleName());
+        Sprite sprite = new Sprite();
+        sprite.setName("Untitled");
+        addToolkitEditorWindow(EditorFactory.getEditor(sprite));
     }
 
     /**
@@ -992,15 +912,15 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
      * @param file
      * @return
      */
-    public Character openCharacter(File file) {
-        LOGGER.info("Opening {} file=[{}].", Character.class.getSimpleName(), file);
+    public Sprite openSprite(File file) {
+        LOGGER.info("Opening {} file=[{}].", Sprite.class.getSimpleName(), file);
 
         try {
             if (file.canRead()) {
                 AssetHandle handle = AssetManager.getInstance().deserialize(new AssetDescriptor(file.toURI()));
-                Character player = (Character) handle.getAsset();
+                Sprite sprite = (Sprite) handle.getAsset();
 
-                return player;
+                return sprite;
             }
         } catch (IOException | AssetException ex) {
             LOGGER.error("Failed to open {} file=[{}].", Character.class.getSimpleName(), file, ex);

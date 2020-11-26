@@ -5,22 +5,22 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package org.rpgwizard.editor.editors.character;
+package org.rpgwizard.editor.editors.sprite;
 
-import org.rpgwizard.common.assets.sprite.Character;
+import org.rpgwizard.common.assets.sprite.Sprite;
 import org.rpgwizard.editor.editors.sprite.AbstractSpriteModelPanel;
 
 /**
  *
  * @author Joshua Michael Daly
  */
-public class CharacterModelPanel extends AbstractSpriteModelPanel {
+public class SpriteModelPanel extends AbstractSpriteModelPanel {
 
-    private final Character player;
+    private final Sprite sprite;
 
-    public CharacterModelPanel(Character model) {
+    public SpriteModelPanel(Sprite model) {
         super(model);
-        player = model;
+        sprite = model;
     }
 
 }

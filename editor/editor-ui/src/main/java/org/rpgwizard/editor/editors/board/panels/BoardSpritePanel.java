@@ -17,13 +17,12 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import org.apache.commons.lang3.ArrayUtils;
-import org.rpgwizard.common.assets.sprite.Enemy;
 import org.rpgwizard.common.assets.board.EventType;
 import org.rpgwizard.common.assets.board.KeyType;
-import org.rpgwizard.common.assets.sprite.NPC;
 import org.rpgwizard.common.assets.Program;
 import org.rpgwizard.common.assets.board.BoardSprite;
 import org.rpgwizard.common.assets.board.model.BoardModelEvent;
+import org.rpgwizard.common.assets.sprite.Sprite;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.editors.board.BoardLayerView;
 import org.rpgwizard.editor.editors.board.generation.ProgramDialog;
@@ -62,10 +61,9 @@ public final class BoardSpritePanel extends BoardModelPanel {
         ///
         /// fileComboBox
         ///
-        String[] exts = (String[]) ArrayUtils.addAll(EditorFileManager.getTypeExtensions(NPC.class),
-                EditorFileManager.getTypeExtensions(Enemy.class));
+        String[] exts = (String[]) ArrayUtils.addAll(EditorFileManager.getTypeExtensions(Sprite.class));
         fileComboBox = GuiHelper.getFileListJComboBox(
-                new File[] { EditorFileManager.getFullPath(Enemy.class), EditorFileManager.getFullPath(NPC.class) },
+                new File[] { EditorFileManager.getFullPath(Sprite.class) },
                 exts, true);
         fileComboBox.setSelectedItem(boardSprite.getFileName());
         fileComboBox.addActionListener((ActionEvent e) -> {

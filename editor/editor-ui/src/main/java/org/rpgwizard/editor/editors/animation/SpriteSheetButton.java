@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import org.rpgwizard.common.assets.animation.Animation;
-import org.rpgwizard.common.assets.sprite.SpriteSheet;
+import org.rpgwizard.common.assets.animation.SpriteSheet;
 import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.utilities.EditorFileManager;

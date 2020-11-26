@@ -30,7 +30,7 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.text.DefaultFormatter;
-import org.rpgwizard.common.assets.sprite.SpriteSheet;
+import org.rpgwizard.common.assets.animation.SpriteSheet;
 import org.rpgwizard.editor.ui.listeners.ImagePanelChangeListener;
 
 /**

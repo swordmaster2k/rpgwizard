@@ -11,7 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JTable;
 import org.rpgwizard.common.assets.animation.Animation;
-import org.rpgwizard.common.assets.sprite.AbstractSprite;
+import org.rpgwizard.common.assets.sprite.Sprite;
+import org.rpgwizard.editor.editors.SpriteEditor;
 import org.rpgwizard.editor.editors.sprite.AbstractSpriteEditor;
 import org.rpgwizard.editor.utilities.EditorFileManager;
 
@@ -21,13 +22,13 @@ import org.rpgwizard.editor.utilities.EditorFileManager;
  */
 public class BrowseAnimationActionListener implements ActionListener {
 
-    private final AbstractSprite sprite;
+    private final Sprite sprite;
 
     private final AbstractSpriteEditor spriteEditor;
 
     private final JTable animationsTable;
 
-    public BrowseAnimationActionListener(AbstractSpriteEditor editor) {
+    public BrowseAnimationActionListener(SpriteEditor editor) {
         spriteEditor = editor;
         sprite = editor.getSprite();
         animationsTable = editor.getAnimationsTable();

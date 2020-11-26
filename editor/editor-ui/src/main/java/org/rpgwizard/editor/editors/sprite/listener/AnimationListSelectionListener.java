@@ -10,8 +10,9 @@ package org.rpgwizard.editor.editors.sprite.listener;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import org.rpgwizard.common.assets.sprite.AbstractSprite;
+import org.rpgwizard.common.assets.sprite.Sprite;
 import org.rpgwizard.common.assets.animation.AnimationEnum;
+import org.rpgwizard.editor.editors.SpriteEditor;
 import org.rpgwizard.editor.editors.sprite.AbstractSpriteEditor;
 
 /**
@@ -20,13 +21,13 @@ import org.rpgwizard.editor.editors.sprite.AbstractSpriteEditor;
  */
 public class AnimationListSelectionListener implements ListSelectionListener {
 
-    private final AbstractSprite sprite;
+    private final Sprite sprite;
 
     private final AbstractSpriteEditor spriteEditor;
 
     private final JTable animationsTable;
 
-    public AnimationListSelectionListener(AbstractSpriteEditor editor) {
+    public AnimationListSelectionListener(SpriteEditor editor) {
         spriteEditor = editor;
         sprite = editor.getSprite();
         animationsTable = editor.getAnimationsTable();

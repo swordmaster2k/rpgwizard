@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package org.rpgwizard.editor.editors.sprite;
+package org.rpgwizard.editor.editors;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -37,8 +37,11 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.AssetDescriptor;
-import org.rpgwizard.common.assets.sprite.Character;
 import org.rpgwizard.common.assets.listeners.SpriteChangeListener;
+import org.rpgwizard.common.assets.sprite.Sprite;
+import org.rpgwizard.editor.editors.sprite.AbstractSpriteEditor;
+import org.rpgwizard.editor.editors.sprite.AnimationsTableModel;
+import org.rpgwizard.editor.editors.sprite.AnimationsTablePanel;
 import org.rpgwizard.editor.editors.sprite.listener.AddAnimationActionListener;
 import org.rpgwizard.editor.editors.sprite.listener.AnimationListSelectionListener;
 import org.rpgwizard.editor.editors.sprite.listener.BrowseAnimationActionListener;
@@ -58,7 +61,7 @@ public final class SpriteEditor extends AbstractSpriteEditor implements SpriteCh
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SpriteEditor.class);
 
-    private final Character player;
+    private final Sprite sprite;
 
     private JTextField name;
     private JTextArea properties;
@@ -66,15 +69,15 @@ public final class SpriteEditor extends AbstractSpriteEditor implements SpriteCh
     private JSpinner originX;
     private JSpinner originY;
 
-    public SpriteEditor(Character player) {
-        super("Untitled", player, Icons.getIcon("character"));
+    public SpriteEditor(Sprite sprite) {
+        super("Untitled", sprite, Icons.getIcon("character"));
 
-        this.player = player;
-        this.player.addSpriteChangeListener(this);
-        if (this.player.getDescriptor() == null) {
-            setupNewPlayer();
+        this.sprite = sprite;
+        this.sprite.addSpriteChangeListener(this);
+        if (this.sprite.getDescriptor() == null) {
+            setupNewSprite();
         } else {
-            setTitle(new File(player.getDescriptor().getURI()).getName());
+            setTitle(new File(sprite.getDescriptor().getURI()).getName());
         }
 
         constructWindow();
@@ -84,19 +87,19 @@ public final class SpriteEditor extends AbstractSpriteEditor implements SpriteCh
 
     @Override
     public AbstractAsset getAsset() {
-        return player;
+        return sprite;
     }
 
-    public Character getPlayer() {
-        return player;
+    public Sprite getSprite() {
+        return sprite;
     }
 
     @Override
     public void save() throws Exception {
         // Update all player variables from stats panel.
-        player.setName(name.getText());
+        sprite.setName(name.getText());
 
-        save(player);
+        save(sprite);
     }
 
     /**
@@ -107,12 +110,12 @@ public final class SpriteEditor extends AbstractSpriteEditor implements SpriteCh
      */
     @Override
     public void saveAs(File file) throws Exception {
-        player.setDescriptor(new AssetDescriptor(file.toURI()));
+        sprite.setDescriptor(new AssetDescriptor(file.toURI()));
         this.setTitle(file.getName());
         save();
     }
 
-    private void setupNewPlayer() {
+    private void setupNewSprite() {
 
     }
 
@@ -131,7 +134,7 @@ public final class SpriteEditor extends AbstractSpriteEditor implements SpriteCh
         labels.add(new JLabel("Name"));
         labels.add(new JLabel("Properties"));
 
-        name = new JTextField(player.getName());
+        name = new JTextField(sprite.getName());
         name.setColumns(DEFAULT_INPUT_COLUMNS);
         name.getDocument().addDocumentListener(saveDocumentListener);
 
@@ -272,7 +275,7 @@ public final class SpriteEditor extends AbstractSpriteEditor implements SpriteCh
     public static void main(String[] args) {
         JFrame frame = new JFrame("Test InternalJFrame");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(new SpriteEditor(new Character(null)));
+        frame.add(new SpriteEditor(new Sprite()));
         frame.setSize(1200, 600);
         frame.setVisible(true);
     }

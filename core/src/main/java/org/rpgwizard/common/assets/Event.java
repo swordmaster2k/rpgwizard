@@ -5,22 +5,25 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package org.rpgwizard.editor.editors.npc;
+package org.rpgwizard.common.assets;
 
-import org.rpgwizard.common.assets.sprite.NPC;
-import org.rpgwizard.editor.editors.sprite.AbstractSpriteModelPanel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 /**
  *
  * @author Joshua Michael Daly
  */
-public class NPCModelPanel extends AbstractSpriteModelPanel {
-
-    private final NPC npc;
-
-    public NPCModelPanel(NPC model) {
-        super(model);
-        npc = model;
+@Data
+@AllArgsConstructor
+public class Event {
+    
+    private String type;
+    private String script;
+    private String key;
+    
+    public Event() {
+        
     }
-
+    
 }

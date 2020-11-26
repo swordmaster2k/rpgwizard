@@ -39,11 +39,10 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import org.rpgwizard.common.assets.sprite.AbstractSprite;
 import org.rpgwizard.common.assets.animation.Animation;
-import org.rpgwizard.common.assets.sprite.GraphicEnum;
 import org.rpgwizard.common.assets.events.SpriteChangedEvent;
 import org.rpgwizard.common.assets.listeners.SpriteChangeListener;
+import org.rpgwizard.common.assets.sprite.Sprite;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.editors.sprite.listener.AddAnimationActionListener;
 import org.rpgwizard.editor.editors.sprite.listener.AnimationListSelectionListener;
@@ -65,7 +64,7 @@ public abstract class AbstractSpriteEditor extends AbstractAssetEditorWindow imp
     public static final int DEFAULT_INPUT_COLUMNS = 12;
 
     // Model for the animation tab.
-    protected final AbstractSprite sprite;
+    protected final Sprite sprite;
 
     protected static final List<String> STANDARD_PLACE_HOLDERS = Arrays.asList("SOUTH", "NORTH", "EAST", "WEST",
             "NORTH_WEST", "NORTH_EAST", "SOUTH_WEST", "SOUTH_EAST", "ATTACK", "DEFEND", "SPECIAL_MOVE", "DIE", "REST");
@@ -98,7 +97,7 @@ public abstract class AbstractSpriteEditor extends AbstractAssetEditorWindow imp
     protected JButton addButton;
     protected JButton removeButton;
 
-    public AbstractSpriteEditor(String title, AbstractSprite model, ImageIcon icon) {
+    public AbstractSpriteEditor(String title, Sprite model, ImageIcon icon) {
         super(title, true, true, true, true, icon);
         this.sprite = model;
         tabbedPane = new JTabbedPane();
@@ -110,10 +109,6 @@ public abstract class AbstractSpriteEditor extends AbstractAssetEditorWindow imp
         statsEditPanel = new JPanel();
 
         defaultEtchedBorder = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
-    }
-
-    public AbstractSprite getSprite() {
-        return sprite;
     }
 
     public ImagePanel getProfilePanel() {
@@ -363,14 +358,6 @@ public abstract class AbstractSpriteEditor extends AbstractAssetEditorWindow imp
         configurationPanel.add(browseButton);
         configurationPanel.add(removeButton);
 
-        // configurationPanel.add(new JLabel("Idle Timeout: "));
-        // idleTimeoutField = new DoubleField(sprite.getIdleTimeBeforeStanding());
-        // configurationPanel.add(idleTimeoutField);
-
-        // configurationPanel.add(new JLabel("Step Rate: "));
-        // stepRateField = new DoubleField(sprite.getFrameRate());
-        // configurationPanel.add(stepRateField);
-
         // Fix the size of this panel to stop the JTable growing beyond the Window.
         AnimationsTablePanel southPanel = new AnimationsTablePanel(500);
         southPanel.add(animationScrollPane, BorderLayout.CENTER);
@@ -383,14 +370,6 @@ public abstract class AbstractSpriteEditor extends AbstractAssetEditorWindow imp
         layout.setHorizontalGroup(layout.createParallelGroup().addComponent(animatedPanel).addComponent(southPanel));
 
         layout.setVerticalGroup(layout.createSequentialGroup().addComponent(animatedPanel).addComponent(southPanel));
-    }
-
-    protected void checkProfileImagePath() {
-        if (profilePanel.getFile() != null) {
-            String remove = EditorFileManager.getGraphicsPath();
-            String path = profilePanel.getFile().getAbsolutePath().replace(remove, "");
-            sprite.getGraphics().put(GraphicEnum.PROFILE.toString(), path);
-        }
     }
 
 }

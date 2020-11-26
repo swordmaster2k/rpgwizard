@@ -26,7 +26,6 @@ import javax.swing.event.DocumentListener;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.Item;
-import static org.rpgwizard.editor.editors.sprite.AbstractSpriteEditor.DEFAULT_INPUT_COLUMNS;
 import org.rpgwizard.editor.ui.ImagePanel;
 import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 import org.rpgwizard.editor.ui.DoubleField;
@@ -34,6 +33,7 @@ import org.rpgwizard.editor.ui.IntegerField;
 import org.rpgwizard.editor.ui.resources.Icons;
 import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.rpgwizard.editor.utilities.GuiHelper;
+import static org.rpgwizard.editor.utilities.GuiHelper.DEFAULT_INPUT_COLUMNS;
 
 /**
  *

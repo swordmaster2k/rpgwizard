@@ -17,7 +17,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FilenameUtils;
 import org.rpgwizard.common.Selectable;
-import org.rpgwizard.common.assets.sprite.AbstractSprite;
 import org.rpgwizard.common.assets.animation.Animation;
 import org.rpgwizard.common.assets.animation.AnimationEnum;
 import org.rpgwizard.common.assets.AssetDescriptor;
@@ -25,6 +24,7 @@ import org.rpgwizard.common.assets.AssetException;
 import org.rpgwizard.common.assets.AssetHandle;
 import org.rpgwizard.common.assets.AssetManager;
 import org.rpgwizard.common.assets.board.model.AbstractBoardModel;
+import org.rpgwizard.common.assets.sprite.Sprite;
 import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.common.utilities.CoreUtil;
 
@@ -35,7 +35,7 @@ import org.rpgwizard.common.utilities.CoreUtil;
  */
 public class BoardSprite extends AbstractBoardModel implements Cloneable, Selectable {
 
-    private AbstractSprite sprite;
+    private Sprite sprite;
     private String fileName;
 
     private String id;
@@ -140,7 +140,7 @@ public class BoardSprite extends AbstractBoardModel implements Cloneable, Select
      *
      * @return
      */
-    public AbstractSprite getSprite() {
+    public Sprite getSprite() {
         return sprite;
     }
 
@@ -148,7 +148,7 @@ public class BoardSprite extends AbstractBoardModel implements Cloneable, Select
      *
      * @param sprite
      */
-    public void setSprite(AbstractSprite sprite) {
+    public void setSprite(Sprite sprite) {
         this.sprite = sprite;
     }
 
@@ -370,7 +370,7 @@ public class BoardSprite extends AbstractBoardModel implements Cloneable, Select
             try {
                 handle = AssetManager.getInstance().deserialize(new AssetDescriptor(file.toURI()));
 
-                sprite = (AbstractSprite) handle.getAsset();
+                sprite = (Sprite) handle.getAsset();
 
                 String southAnimation = sprite.getAnimations().get(AnimationEnum.SOUTH.toString());
                 if (!southAnimation.isEmpty()) {

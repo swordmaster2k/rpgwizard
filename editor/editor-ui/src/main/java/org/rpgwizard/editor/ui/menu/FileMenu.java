@@ -117,12 +117,8 @@ public final class FileMenu extends JMenu implements ActionListener {
             MainWindow.getInstance().createNewBoard();
         } else if (e.getSource() == newCharacterMenuItem) {
             MainWindow.getInstance().createNewCharacter();
-        } else if (e.getSource() == newEnemyMenuItem) {
-            MainWindow.getInstance().createNewEnemy();
         } else if (e.getSource() == newItemMenuItem) {
             MainWindow.getInstance().createNewItem();
-        } else if (e.getSource() == newNPCMenuItem) {
-            MainWindow.getInstance().createNewNPC();
         } else if (e.getSource() == newProgramMenuItem) {
             MainWindow.getInstance().createNewProgram();
         } else if (e.getSource() == newTilesetMenuItem) {

@@ -22,7 +22,7 @@ import javax.swing.JButton;
 import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
 import org.apache.commons.lang3.StringUtils;
-import org.rpgwizard.common.assets.sprite.SpriteSheet;
+import org.rpgwizard.common.assets.animation.SpriteSheet;
 import org.rpgwizard.editor.ui.AbstractImagePanel;
 import org.rpgwizard.editor.ui.resources.Icons;
 import org.rpgwizard.editor.utilities.EditorFileManager;

@@ -52,6 +52,7 @@ public abstract class GuiHelper {
 
     public static final int JTF_HEIGHT = 24;
     public static final Color INVALID_INPUT_COLOR = new Color(255, 186, 186);
+    public static final int DEFAULT_INPUT_COLUMNS = 12;
 
     /**
      * Creates a GroupLayout for the specified panel and assigns it to that panel. Common settings are applied: auto

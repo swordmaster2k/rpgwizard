@@ -16,12 +16,10 @@ import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.animation.AnimatedTile;
 import org.rpgwizard.common.assets.animation.Animation;
 import org.rpgwizard.common.assets.board.Board;
-import org.rpgwizard.common.assets.sprite.Enemy;
-import org.rpgwizard.common.assets.sprite.NPC;
-import org.rpgwizard.common.assets.sprite.Character;
 import org.rpgwizard.common.assets.Item;
 import org.rpgwizard.common.assets.Program;
 import org.rpgwizard.common.assets.game.Game;
+import org.rpgwizard.common.assets.sprite.Sprite;
 import org.rpgwizard.common.assets.tileset.Tileset;
 
 /**
@@ -38,15 +36,15 @@ public class CoreProperties {
         try (InputStream in = CoreProperties.class.getResourceAsStream("/core/properties/toolkit.properties")) {
             properties.load(in);
 
-            directories = new String[] { properties.getProperty("toolkit.directory.graphics"),
+            directories = new String[] { 
+                    properties.getProperty("toolkit.directory.graphics"),
                     properties.getProperty("toolkit.directory.board"),
-                    properties.getProperty("toolkit.directory.character"),
-                    properties.getProperty("toolkit.directory.enemy"), properties.getProperty("toolkit.directory.item"),
-                    properties.getProperty("toolkit.directory.npc"), properties.getProperty("toolkit.directory.sounds"),
+                    properties.getProperty("toolkit.directory.sounds"),
                     properties.getProperty("toolkit.directory.animations"),
                     properties.getProperty("toolkit.directory.program"),
                     properties.getProperty("toolkit.directory.tileset"),
-                    properties.getProperty("toolkit.directory.fonts") };
+                    properties.getProperty("toolkit.directory.fonts") 
+            };
         } catch (IOException ex) {
             Logger.getLogger(CoreProperties.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -71,14 +69,10 @@ public class CoreProperties {
             return getFullExtension("toolkit.animatedtile.extension.default");
         } else if (type == Board.class) {
             return getFullExtension("toolkit.board.extension.default");
-        } else if (type == Enemy.class) {
-            return getFullExtension("toolkit.enemy.extension.default");
+        } else if (type == Sprite.class) {
+            return getFullExtension("toolkit.sprite.extension.default");
         } else if (type == Item.class) {
             return getFullExtension("toolkit.item.extension.default");
-        } else if (type == NPC.class) {
-            return getFullExtension("toolkit.npc.extension.default");
-        } else if (type == Character.class) {
-            return getFullExtension("toolkit.character.extension.default");
         } else if (type == Game.class) {
             return getFullExtension("toolkit.project.extension.default");
         } else if (type == Tileset.class) {

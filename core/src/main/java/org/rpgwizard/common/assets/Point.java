@@ -5,20 +5,24 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package org.rpgwizard.common.assets.events;
+package org.rpgwizard.common.assets;
 
-import java.util.EventObject;
-import org.rpgwizard.common.assets.sprite.Sprite;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 /**
- * An <code>EventObject</code> used to contain information of a change that has happened on a sprite.
- * 
+ *
  * @author Joshua Michael Daly
  */
-public class SpriteChangedEvent extends EventObject {
-
-    public SpriteChangedEvent(Sprite sprite) {
-        super(sprite);
+@Data
+@AllArgsConstructor
+public class Point {
+    
+    private int x;
+    private int y;
+    
+    public Point() {
+        
     }
-
+    
 }

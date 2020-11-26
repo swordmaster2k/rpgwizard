@@ -22,12 +22,10 @@ import org.apache.commons.io.FileUtils;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.animation.Animation;
 import org.rpgwizard.common.assets.board.Board;
-import org.rpgwizard.common.assets.sprite.Character;
-import org.rpgwizard.common.assets.sprite.Enemy;
 import org.rpgwizard.common.assets.Item;
-import org.rpgwizard.common.assets.sprite.NPC;
 import org.rpgwizard.common.assets.Program;
 import org.rpgwizard.common.assets.game.Game;
+import org.rpgwizard.common.assets.sprite.Sprite;
 import org.rpgwizard.common.assets.tileset.Tileset;
 import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.editor.MainWindow;
@@ -101,14 +99,10 @@ public class EditorFileManager {
             return CoreProperties.getProperty("toolkit.directory.animations");
         } else if (type == Board.class) {
             return CoreProperties.getProperty("toolkit.directory.board");
-        } else if (type == Enemy.class) {
-            return CoreProperties.getProperty("toolkit.directory.enemy");
         } else if (type == Item.class) {
             return CoreProperties.getProperty("toolkit.directory.item");
-        } else if (type == NPC.class) {
-            return CoreProperties.getProperty("toolkit.directory.npc");
-        } else if (type == Character.class) {
-            return CoreProperties.getProperty("toolkit.directory.character");
+        } else if (type == Sprite.class) {
+            return CoreProperties.getProperty("toolkit.directory.sprite");
         } else if (type == Program.class) {
             return CoreProperties.getProperty("toolkit.directory.program");
         } else if (type == Tileset.class) {
@@ -127,14 +121,10 @@ public class EditorFileManager {
             return "Animations";
         } else if (type == Board.class) {
             return "Boards";
-        } else if (type == Enemy.class) {
-            return "Enemies";
         } else if (type == Item.class) {
             return "Items";
-        } else if (type == NPC.class) {
-            return "NPCs";
-        } else if (type == Character.class) {
-            return "Characters";
+        } else if (type == Sprite.class) {
+            return "Sprites";
         } else if (type == Program.class) {
             return "Programs";
         } else if (type == Game.class) {
@@ -159,14 +149,10 @@ public class EditorFileManager {
             return new String[] { CoreProperties.getProperty("toolkit.animation.extension.default") };
         } else if (type == Board.class) {
             return new String[] { CoreProperties.getProperty("toolkit.board.extension.default") };
-        } else if (type == Enemy.class) {
-            return new String[] { CoreProperties.getProperty("toolkit.enemy.extension.default") };
         } else if (type == Item.class) {
             return new String[] { CoreProperties.getProperty("toolkit.item.extension.default") };
-        } else if (type == NPC.class) {
-            return new String[] { CoreProperties.getProperty("toolkit.npc.extension.default") };
-        } else if (type == Character.class) {
-            return new String[] { CoreProperties.getProperty("toolkit.character.extension.default") };
+        } else if (type == Sprite.class) {
+            return new String[] { CoreProperties.getProperty("toolkit.sprite.extension.default") };
         } else if (type == Program.class) {
             return new String[] { CoreProperties.getProperty("toolkit.program.extension.default") };
         } else if (type == Game.class) {

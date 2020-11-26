@@ -8,7 +8,7 @@
 package org.rpgwizard.editor.editors.sprite;
 
 import javax.swing.table.AbstractTableModel;
-import org.rpgwizard.common.assets.sprite.AbstractSprite;
+import org.rpgwizard.common.assets.sprite.Sprite;
 import org.rpgwizard.common.assets.events.SpriteChangedEvent;
 import org.rpgwizard.common.assets.listeners.SpriteChangeListener;
 
@@ -18,11 +18,11 @@ import org.rpgwizard.common.assets.listeners.SpriteChangeListener;
  */
 public class AnimationsTableModel extends AbstractTableModel implements SpriteChangeListener {
 
-    private final AbstractSprite sprite;
+    private final Sprite sprite;
 
     private static final String[] COLUMNS = { "Name", "Animation" };
 
-    public AnimationsTableModel(AbstractSprite sprite) {
+    public AnimationsTableModel(Sprite sprite) {
         this.sprite = sprite;
     }
 

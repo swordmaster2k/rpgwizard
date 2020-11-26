@@ -9,24 +9,20 @@ package org.rpgwizard.editor.ui;
 
 import org.rpgwizard.common.assets.animation.Animation;
 import org.rpgwizard.common.assets.board.Board;
-import org.rpgwizard.common.assets.sprite.Character;
-import org.rpgwizard.common.assets.sprite.Enemy;
 import org.rpgwizard.common.assets.Image;
-import org.rpgwizard.common.assets.sprite.NPC;
 import org.rpgwizard.common.assets.tileset.Tile;
 import org.rpgwizard.common.assets.board.BoardLayerImage;
 import org.rpgwizard.common.assets.board.BoardLight;
 import org.rpgwizard.common.assets.board.BoardSprite;
 import org.rpgwizard.common.assets.board.BoardVector;
+import org.rpgwizard.common.assets.sprite.Sprite;
 import org.rpgwizard.editor.editors.animation.AnimationModelPanel;
 import org.rpgwizard.editor.editors.board.panels.BoardLayerImagePanel;
 import org.rpgwizard.editor.editors.board.panels.BoardPanel;
 import org.rpgwizard.editor.editors.board.panels.BoardSpritePanel;
 import org.rpgwizard.editor.editors.board.panels.BoardVectorPanel;
-import org.rpgwizard.editor.editors.character.CharacterModelPanel;
-import org.rpgwizard.editor.editors.enemy.EnemyModelPanel;
+import org.rpgwizard.editor.editors.sprite.SpriteModelPanel;
 import org.rpgwizard.editor.editors.image.ImageModelPanel;
-import org.rpgwizard.editor.editors.npc.NPCModelPanel;
 import org.rpgwizard.editor.editors.tileset.TileModelPanel;
 
 /**
@@ -50,15 +46,11 @@ public final class ModelPanelFactory {
         } else if (model instanceof BoardLayerImage) {
             return new BoardLayerImagePanel((BoardLayerImage) model);
         } else if (model instanceof BoardLight) {
-
+            // TODO
         } else if (model instanceof Animation) {
             return new AnimationModelPanel((Animation) model);
         } else if (model instanceof Character) {
-            return new CharacterModelPanel((Character) model);
-        } else if (model instanceof NPC) {
-            return new NPCModelPanel((NPC) model);
-        } else if (model instanceof Enemy) {
-            return new EnemyModelPanel((Enemy) model);
+            return new SpriteModelPanel((Sprite) model);
         } else if (model instanceof Tile) {
             return new TileModelPanel((Tile) model);
         } else if (model instanceof Image) {

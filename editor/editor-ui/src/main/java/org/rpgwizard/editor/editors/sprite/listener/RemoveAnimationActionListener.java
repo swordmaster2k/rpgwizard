@@ -10,9 +10,9 @@ package org.rpgwizard.editor.editors.sprite.listener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JTable;
-import org.rpgwizard.common.assets.sprite.AbstractSprite;
+import org.rpgwizard.common.assets.sprite.Sprite;
 import org.rpgwizard.common.assets.animation.AnimationEnum;
-import org.rpgwizard.editor.editors.sprite.AbstractSpriteEditor;
+import org.rpgwizard.editor.editors.SpriteEditor;
 import org.rpgwizard.editor.editors.sprite.AnimationsTableModel;
 
 /**
@@ -21,14 +21,14 @@ import org.rpgwizard.editor.editors.sprite.AnimationsTableModel;
  */
 public class RemoveAnimationActionListener implements ActionListener {
 
-    private final AbstractSpriteEditor spriteEditor;
+    private final SpriteEditor spriteEditor;
 
-    private final AbstractSprite sprite;
+    private final Sprite sprite;
 
     private final JTable animationsTable;
     private final AnimationsTableModel animationsTableModel;
 
-    public RemoveAnimationActionListener(AbstractSpriteEditor editor) {
+    public RemoveAnimationActionListener(SpriteEditor editor) {
         spriteEditor = editor;
         sprite = spriteEditor.getSprite();
         animationsTable = spriteEditor.getAnimationsTable();

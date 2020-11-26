@@ -11,7 +11,7 @@ import org.rpgwizard.common.assets.animation.Animation;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.AssetException;
 import org.rpgwizard.common.assets.AssetHandle;
-import org.rpgwizard.common.assets.sprite.SpriteSheet;
+import org.rpgwizard.common.assets.animation.SpriteSheet;
 import org.rpgwizard.common.io.Paths;
 import org.rpgwizard.common.utilities.CoreProperties;
 import org.json.JSONObject;

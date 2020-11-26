@@ -35,6 +35,7 @@ import org.rpgwizard.common.assets.tileset.Tileset;
 import org.rpgwizard.common.assets.board.BoardLayerImage;
 import org.rpgwizard.common.assets.board.BoardVector;
 import org.rpgwizard.common.assets.board.BoardVectorType;
+import org.rpgwizard.common.assets.sprite.Sprite;
 
 /**
  * Abstract base class for implementing asset serializers that load or store their contents using JSON encoding.
@@ -56,7 +57,7 @@ public abstract class AbstractJsonSerializer extends AbstractAssetSerializer {
 
             // Store the asset contents into a JSON representation
             JSONObject obj = new JSONObject();
-            if (handle.getAsset() instanceof Game || handle.getAsset() instanceof Tileset) { // REFACTOR: Remove this
+            if (handle.getAsset() instanceof Game || handle.getAsset() instanceof Tileset || handle.getAsset() instanceof Sprite) { // REFACTOR: Remove this
                 obj = store(handle);
             } else {
                 store(handle, obj);

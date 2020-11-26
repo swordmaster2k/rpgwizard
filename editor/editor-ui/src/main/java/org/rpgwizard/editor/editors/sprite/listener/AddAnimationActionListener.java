@@ -11,8 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import org.rpgwizard.common.assets.sprite.AbstractSprite;
-import org.rpgwizard.editor.editors.sprite.AbstractSpriteEditor;
+import org.rpgwizard.common.assets.sprite.Sprite;
+import org.rpgwizard.editor.editors.SpriteEditor;
 
 /**
  *
@@ -20,11 +20,11 @@ import org.rpgwizard.editor.editors.sprite.AbstractSpriteEditor;
  */
 public class AddAnimationActionListener implements ActionListener {
 
-    private final AbstractSprite sprite;
+    private final Sprite sprite;
 
     private final JPanel animationsPanel;
 
-    public AddAnimationActionListener(AbstractSpriteEditor editor) {
+    public AddAnimationActionListener(SpriteEditor editor) {
         sprite = editor.getSprite();
         animationsPanel = editor.getAnimationsPanel();
     }

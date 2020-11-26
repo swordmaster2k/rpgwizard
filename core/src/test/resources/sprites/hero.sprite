@@ -1,0 +1,59 @@
+{
+  "name": "hero",
+  "description": "The hero of time",
+  "animations": {
+    "north": "north.animation",
+    "south": "south.animation",
+    "east": "east.animation",
+    "west": "west.animation"
+  },
+  "collider": {
+    "enabled": true,
+    "x": -15,
+    "y": 0,
+    "points": [{
+            "x": 0,
+            "y": 0
+        }, {
+            "x": 30,
+            "y": 0
+        }, {
+            "x": 30,
+            "y": 20
+        }, {
+            "x": 0,
+            "y": 20
+        }
+    ]
+  },
+  "trigger" : {
+    "enabled": true,
+    "x": -20,
+    "y": -5,
+    "events": [{
+            "script": "my-event.js",
+            "type": "keypress",
+            "key": "E"
+        }
+    ],
+    "points": [{
+            "x": 0,
+            "y": 0
+        }, {
+            "x": 40,
+            "y": 0
+        }, {
+            "x": 40,
+            "y": 30
+        }, {
+            "x": 0,
+            "y": 30
+        }
+    ]
+  },
+  "data": {
+    "key-1": "value-1",
+    "key-2": "value-2"
+  },
+  "version": "2.0.0"
+}

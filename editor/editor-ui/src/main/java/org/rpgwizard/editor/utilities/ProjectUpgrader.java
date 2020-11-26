@@ -16,12 +16,10 @@ import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.AssetHandle;
 import org.rpgwizard.common.assets.AssetManager;
 import org.rpgwizard.common.assets.board.Board;
-import org.rpgwizard.common.assets.sprite.Character;
-import org.rpgwizard.common.assets.sprite.Enemy;
 import org.rpgwizard.common.assets.Item;
-import org.rpgwizard.common.assets.sprite.NPC;
 import org.rpgwizard.common.assets.tileset.Tileset;
 import org.rpgwizard.common.assets.serialization.AbstractJsonSerializer;
+import org.rpgwizard.common.assets.sprite.Sprite;
 import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.editor.Driver;
 import org.slf4j.Logger;
@@ -61,24 +59,14 @@ public class ProjectUpgrader {
         subPath = EditorFileManager.getFullPath(Animation.class);
         filesUpgraded += upgradeFiles(new String[] { extension.replace(".", "") }, subPath);
 
-        // Upgrade character files.
-        extension = CoreProperties.getFullExtension("toolkit.character.extension.json");
-        subPath = EditorFileManager.getFullPath(Character.class);
-        filesUpgraded += upgradeFiles(new String[] { extension.replace(".", "") }, subPath);
-
-        // Upgrade enemy files.
-        extension = CoreProperties.getFullExtension("toolkit.enemy.extension.json");
-        subPath = EditorFileManager.getFullPath(Enemy.class);
+        // Upgrade sprite files.
+        extension = CoreProperties.getFullExtension("toolkit.sprite.extension.json");
+        subPath = EditorFileManager.getFullPath(Sprite.class);
         filesUpgraded += upgradeFiles(new String[] { extension.replace(".", "") }, subPath);
 
         // Upgrade item files.
         extension = CoreProperties.getFullExtension("toolkit.item.extension.json");
         subPath = EditorFileManager.getFullPath(Item.class);
-        filesUpgraded += upgradeFiles(new String[] { extension.replace(".", "") }, subPath);
-
-        // Upgrade NPC files.
-        extension = CoreProperties.getFullExtension("toolkit.npc.extension.json");
-        subPath = EditorFileManager.getFullPath(NPC.class);
         filesUpgraded += upgradeFiles(new String[] { extension.replace(".", "") }, subPath);
 
         // Upgrade tileset files.

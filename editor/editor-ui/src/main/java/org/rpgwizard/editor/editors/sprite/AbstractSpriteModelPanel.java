@@ -13,8 +13,8 @@ import javax.swing.JCheckBox;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
-import org.rpgwizard.common.assets.sprite.AbstractSprite;
 import org.rpgwizard.common.assets.board.BoardVector;
+import org.rpgwizard.common.assets.sprite.Sprite;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.ui.AbstractModelPanel;
 
@@ -36,9 +36,9 @@ public abstract class AbstractSpriteModelPanel extends AbstractModelPanel {
     private final JSpinner activationVectorOffsetXSpinner;
     private final JSpinner activationVectorOffsetYSpinner;
 
-    private final AbstractSprite sprite;
+    private final Sprite sprite;
 
-    public AbstractSpriteModelPanel(AbstractSprite model) {
+    public AbstractSpriteModelPanel(Sprite model) {
         // /
         // / super
         // /

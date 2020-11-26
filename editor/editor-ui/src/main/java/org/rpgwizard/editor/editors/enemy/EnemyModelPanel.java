@@ -12,7 +12,7 @@
  */
 package org.rpgwizard.editor.editors.enemy;
 
-import org.rpgwizard.common.assets.Enemy;
+import org.rpgwizard.common.assets.sprite.Enemy;
 import org.rpgwizard.editor.editors.sprite.AbstractSpriteModelPanel;
 
 /**

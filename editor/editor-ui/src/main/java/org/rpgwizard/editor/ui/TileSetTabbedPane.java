@@ -15,7 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JViewport;
 import javax.swing.event.ChangeEvent;
-import org.rpgwizard.common.assets.Tileset;
+import org.rpgwizard.common.assets.tileset.Tileset;
 import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.editors.tileset.TileSetCanvas;

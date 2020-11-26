@@ -16,7 +16,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.SwingConstants;
-import org.rpgwizard.common.assets.Board;
+import org.rpgwizard.common.assets.board.Board;
 import org.rpgwizard.editor.editors.board.generation.ProgramType;
 import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.rpgwizard.editor.utilities.GuiHelper;

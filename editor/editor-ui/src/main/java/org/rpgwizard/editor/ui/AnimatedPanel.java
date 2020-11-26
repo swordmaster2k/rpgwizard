@@ -19,7 +19,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.Timer;
-import org.rpgwizard.common.assets.Animation;
+import org.rpgwizard.common.assets.animation.Animation;
 import org.rpgwizard.common.assets.board.BoardVector;
 import org.rpgwizard.common.assets.events.AnimationChangedEvent;
 import org.rpgwizard.common.assets.listeners.AnimationChangeListener;

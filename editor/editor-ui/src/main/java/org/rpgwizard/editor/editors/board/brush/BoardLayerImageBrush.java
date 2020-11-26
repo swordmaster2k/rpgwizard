@@ -13,7 +13,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.image.BufferedImage;
-import org.rpgwizard.common.assets.Board;
+import org.rpgwizard.common.assets.board.Board;
 import org.rpgwizard.common.assets.board.BoardLayerImage;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.editors.BoardEditor;

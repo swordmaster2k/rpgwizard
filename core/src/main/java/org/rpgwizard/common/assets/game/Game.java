@@ -5,12 +5,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package org.rpgwizard.common.assets;
+package org.rpgwizard.common.assets.game;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.rpgwizard.common.assets.AbstractAsset;
+import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.game.Debug;
 import org.rpgwizard.common.assets.game.Viewport;
 

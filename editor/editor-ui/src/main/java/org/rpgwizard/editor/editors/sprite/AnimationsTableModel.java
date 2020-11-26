@@ -8,7 +8,7 @@
 package org.rpgwizard.editor.editors.sprite;
 
 import javax.swing.table.AbstractTableModel;
-import org.rpgwizard.common.assets.AbstractSprite;
+import org.rpgwizard.common.assets.sprite.AbstractSprite;
 import org.rpgwizard.common.assets.events.SpriteChangedEvent;
 import org.rpgwizard.common.assets.listeners.SpriteChangeListener;
 

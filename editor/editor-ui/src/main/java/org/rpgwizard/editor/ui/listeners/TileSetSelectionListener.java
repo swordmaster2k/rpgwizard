@@ -13,7 +13,7 @@
 package org.rpgwizard.editor.ui.listeners;
 
 import java.awt.Rectangle;
-import org.rpgwizard.common.assets.Tile;
+import org.rpgwizard.common.assets.tileset.Tile;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.editors.tileset.TileRegionSelectionEvent;
 import org.rpgwizard.editor.editors.tileset.TileSelectionEvent;

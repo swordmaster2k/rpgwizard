@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package org.rpgwizard.common.assets;
+package org.rpgwizard.common.assets.tileset;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.awt.image.BufferedImage;
@@ -15,6 +15,8 @@ import java.util.Map;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.rpgwizard.common.assets.AbstractAsset;
+import org.rpgwizard.common.assets.AssetDescriptor;
 
 /**
  * This class is responsible for managing a tilset inside the editor It stores all of the tiles in the set in a big
@@ -42,7 +44,7 @@ public class Tileset extends AbstractAsset {
         tiles = new LinkedList<>();
         tileData = new HashMap<>();
     }
-    
+
     public Tileset(AssetDescriptor descriptor) {
         super(descriptor);
         image = null;

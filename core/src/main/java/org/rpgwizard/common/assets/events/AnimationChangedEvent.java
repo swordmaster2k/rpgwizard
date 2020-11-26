@@ -8,7 +8,7 @@
 package org.rpgwizard.common.assets.events;
 
 import java.util.EventObject;
-import org.rpgwizard.common.assets.Animation;
+import org.rpgwizard.common.assets.animation.Animation;
 
 /**
  * An <code>EventObject</code> used to contain information of a change that has happened on a animation.

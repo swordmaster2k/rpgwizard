@@ -9,7 +9,7 @@ package org.rpgwizard.editor.editors.board.brush;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import org.rpgwizard.common.assets.Tile;
+import org.rpgwizard.common.assets.tileset.Tile;
 import org.rpgwizard.editor.editors.BoardEditor;
 import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 

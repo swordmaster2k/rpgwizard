@@ -10,8 +10,8 @@ package org.rpgwizard.editor.editors.sprite.listener;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import org.rpgwizard.common.assets.AbstractSprite;
-import org.rpgwizard.common.assets.AnimationEnum;
+import org.rpgwizard.common.assets.sprite.AbstractSprite;
+import org.rpgwizard.common.assets.animation.AnimationEnum;
 import org.rpgwizard.editor.editors.sprite.AbstractSpriteEditor;
 
 /**

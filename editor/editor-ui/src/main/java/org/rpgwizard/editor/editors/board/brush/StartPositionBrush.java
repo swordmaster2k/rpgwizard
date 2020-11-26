@@ -11,7 +11,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
-import org.rpgwizard.common.assets.Board;
+import org.rpgwizard.common.assets.board.Board;
 import org.rpgwizard.editor.editors.BoardEditor;
 import org.rpgwizard.editor.editors.board.AbstractBoardView;
 import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;

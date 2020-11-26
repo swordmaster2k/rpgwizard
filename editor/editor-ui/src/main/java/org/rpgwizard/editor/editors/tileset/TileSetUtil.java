@@ -13,8 +13,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import org.rpgwizard.common.assets.Tile;
-import org.rpgwizard.common.assets.Tileset;
+import org.rpgwizard.common.assets.tileset.Tile;
+import org.rpgwizard.common.assets.tileset.Tileset;
 import org.rpgwizard.editor.utilities.EditorFileManager;
 
 /**

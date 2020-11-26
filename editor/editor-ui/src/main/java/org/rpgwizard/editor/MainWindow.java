@@ -42,22 +42,21 @@ import org.fife.rsta.ui.search.SearchEvent;
 import org.fife.rsta.ui.search.SearchListener;
 import org.fife.ui.rtextarea.SearchContext;
 import org.pf4j.PluginManager;
-import org.rpgwizard.common.assets.Animation;
+import org.rpgwizard.common.assets.animation.Animation;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.AssetException;
 import org.rpgwizard.common.assets.AssetHandle;
 import org.rpgwizard.common.assets.AssetManager;
-import org.rpgwizard.common.assets.Board;
-import org.rpgwizard.common.assets.Character;
-import org.rpgwizard.common.assets.Enemy;
+import org.rpgwizard.common.assets.board.Board;
+import org.rpgwizard.common.assets.sprite.Character;
+import org.rpgwizard.common.assets.sprite.Enemy;
 import org.rpgwizard.common.assets.Image;
 import org.rpgwizard.common.assets.Item;
-import org.rpgwizard.common.assets.NPC;
+import org.rpgwizard.common.assets.sprite.NPC;
 import org.rpgwizard.common.assets.Program;
-import org.rpgwizard.common.assets.Game;
-import org.rpgwizard.common.assets.SpecialMove;
-import org.rpgwizard.common.assets.Tile;
-import org.rpgwizard.common.assets.Tileset;
+import org.rpgwizard.common.assets.game.Game;
+import org.rpgwizard.common.assets.tileset.Tile;
+import org.rpgwizard.common.assets.tileset.Tileset;
 import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.common.utilities.TileSetCache;
 import org.rpgwizard.editor.editors.AnimationEditor;
@@ -746,8 +745,6 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
             addToolkitEditorWindow(EditorFactory.getEditor(openCharacter(file)));
         } else if (fileName.endsWith(CoreProperties.getDefaultExtension(Tileset.class))) {
             openTileset(file);
-        } else if (fileName.endsWith(CoreProperties.getDefaultExtension(SpecialMove.class))) {
-            addToolkitEditorWindow(EditorFactory.getEditor(openSpecialMove(file)));
         } else if (fileName.endsWith(CoreProperties.getDefaultExtension(Game.class))) {
             addToolkitEditorWindow(EditorFactory.getEditor(openProject(file)));
         } else if (fileName.endsWith(CoreProperties.getDefaultExtension(Program.class))) {
@@ -1076,23 +1073,6 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         } catch (IOException ex) {
             LOGGER.error("Failed to open {} file=[{}].", Tileset.class.getSimpleName(), file, ex);
         }
-    }
-
-    public SpecialMove openSpecialMove(File file) {
-        LOGGER.info("Opening {} file=[{}].", SpecialMove.class.getSimpleName(), file);
-
-        try {
-            if (file.canRead()) {
-                AssetHandle handle = AssetManager.getInstance().deserialize(new AssetDescriptor(file.toURI()));
-                SpecialMove move = (SpecialMove) handle.getAsset();
-
-                return move;
-            }
-        } catch (IOException | AssetException ex) {
-            LOGGER.error("Failed to open {} file=[{}].", SpecialMove.class.getSimpleName(), file, ex);
-        }
-
-        return null;
     }
 
     public Image openImage(File file) {

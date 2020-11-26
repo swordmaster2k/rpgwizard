@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package org.rpgwizard.common.assets;
+package org.rpgwizard.common.assets.animation;
 
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
@@ -13,6 +13,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.rpgwizard.common.assets.AbstractAsset;
+import org.rpgwizard.common.assets.AssetDescriptor;
+import org.rpgwizard.common.assets.sprite.SpriteSheet;
 import org.rpgwizard.common.assets.events.AnimationChangedEvent;
 import org.rpgwizard.common.assets.listeners.AnimationChangeListener;
 

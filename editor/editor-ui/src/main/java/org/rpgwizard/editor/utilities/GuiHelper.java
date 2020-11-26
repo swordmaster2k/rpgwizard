@@ -40,7 +40,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.table.TableColumn;
 import javax.swing.text.DefaultFormatter;
-import org.rpgwizard.common.assets.Board;
+import org.rpgwizard.common.assets.board.Board;
 import org.rpgwizard.editor.ui.listeners.PopupListFilesListener;
 
 /**

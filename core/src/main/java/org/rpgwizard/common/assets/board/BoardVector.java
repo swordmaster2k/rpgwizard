@@ -12,9 +12,6 @@ import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.Objects;
 import org.rpgwizard.common.Selectable;
-import org.rpgwizard.common.assets.Event;
-import org.rpgwizard.common.assets.EventType;
-import org.rpgwizard.common.assets.KeyPressEvent;
 
 /**
  *

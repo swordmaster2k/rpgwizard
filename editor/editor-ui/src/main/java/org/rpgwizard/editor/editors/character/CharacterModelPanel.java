@@ -7,7 +7,7 @@
  */
 package org.rpgwizard.editor.editors.character;
 
-import org.rpgwizard.common.assets.Character;
+import org.rpgwizard.common.assets.sprite.Character;
 import org.rpgwizard.editor.editors.sprite.AbstractSpriteModelPanel;
 
 /**

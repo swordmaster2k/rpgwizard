@@ -12,7 +12,7 @@ import java.io.File;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import org.rpgwizard.common.assets.Game;
+import org.rpgwizard.common.assets.game.Game;
 import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.utilities.EditorFileManager;

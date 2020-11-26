@@ -15,7 +15,7 @@ import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import org.rpgwizard.common.assets.Animation;
+import org.rpgwizard.common.assets.animation.Animation;
 import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.utilities.EditorFileManager;

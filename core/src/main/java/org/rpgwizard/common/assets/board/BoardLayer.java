@@ -13,8 +13,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
-import org.rpgwizard.common.assets.Board;
-import org.rpgwizard.common.assets.Tile;
+import org.rpgwizard.common.assets.tileset.Tile;
 
 /**
  * Represents a layer on a board.

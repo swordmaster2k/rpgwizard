@@ -31,7 +31,7 @@ import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.AssetDescriptor;
-import org.rpgwizard.common.assets.Game;
+import org.rpgwizard.common.assets.game.Game;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 import org.rpgwizard.editor.ui.ImagePanel;

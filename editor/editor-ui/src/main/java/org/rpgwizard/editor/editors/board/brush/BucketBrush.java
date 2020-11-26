@@ -12,7 +12,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.util.Stack;
-import org.rpgwizard.common.assets.Tile;
+import org.rpgwizard.common.assets.tileset.Tile;
 import org.rpgwizard.common.assets.board.BoardLayer;
 import org.rpgwizard.editor.editors.BoardEditor;
 import org.rpgwizard.editor.editors.board.AbstractBoardView;

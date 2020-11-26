@@ -16,19 +16,19 @@ import java.util.Map;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.AssetException;
 import org.rpgwizard.common.assets.AssetHandle;
-import org.rpgwizard.common.assets.Board;
+import org.rpgwizard.common.assets.board.Board;
 import org.rpgwizard.common.assets.board.BoardLayer;
 import org.rpgwizard.common.assets.board.BoardSprite;
 import org.rpgwizard.common.assets.board.BoardVector;
-import org.rpgwizard.common.assets.EventType;
+import org.rpgwizard.common.assets.board.EventType;
 import org.rpgwizard.common.io.Paths;
 import org.rpgwizard.common.utilities.CoreProperties;
-import org.rpgwizard.common.assets.StartingPosition;
-import org.rpgwizard.common.assets.Tile;
+import org.rpgwizard.common.assets.board.StartingPosition;
+import org.rpgwizard.common.assets.tileset.Tile;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.rpgwizard.common.assets.Tileset;
+import org.rpgwizard.common.assets.tileset.Tileset;
 import org.rpgwizard.common.assets.board.BoardLayerImage;
 
 /**

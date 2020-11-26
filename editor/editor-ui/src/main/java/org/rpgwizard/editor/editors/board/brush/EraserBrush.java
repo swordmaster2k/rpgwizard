@@ -14,7 +14,7 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
-import org.rpgwizard.common.assets.Tile;
+import org.rpgwizard.common.assets.tileset.Tile;
 import org.rpgwizard.common.assets.board.BoardLayer;
 import org.rpgwizard.editor.editors.BoardEditor;
 import org.rpgwizard.editor.editors.board.AbstractBoardView;

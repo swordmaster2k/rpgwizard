@@ -8,7 +8,7 @@
 package org.rpgwizard.common.assets.events;
 
 import java.util.EventObject;
-import org.rpgwizard.common.assets.AbstractSprite;
+import org.rpgwizard.common.assets.sprite.AbstractSprite;
 
 /**
  * An <code>EventObject</code> used to contain information of a change that has happened on a sprite.

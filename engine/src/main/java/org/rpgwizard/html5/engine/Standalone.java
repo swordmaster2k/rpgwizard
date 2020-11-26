@@ -19,7 +19,7 @@ import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.AssetException;
 import org.rpgwizard.common.assets.AssetHandle;
 import org.rpgwizard.common.assets.AssetManager;
-import org.rpgwizard.common.assets.Game;
+import org.rpgwizard.common.assets.game.Game;
 import org.rpgwizard.common.assets.files.FileAssetHandleResolver;
 import org.rpgwizard.common.assets.serialization.JsonGameSerializer;
 import org.rpgwizard.html5.engine.plugin.EngineRunnable;

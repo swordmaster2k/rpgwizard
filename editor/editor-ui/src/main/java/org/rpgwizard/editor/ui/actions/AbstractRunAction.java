@@ -19,7 +19,7 @@ import javax.swing.ProgressMonitor;
 import javax.swing.SwingWorker;
 import org.apache.commons.io.FileUtils;
 import org.pf4j.PluginManager;
-import org.rpgwizard.common.assets.Game;
+import org.rpgwizard.common.assets.game.Game;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.pluginsystem.Engine;
 

@@ -37,7 +37,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.AssetDescriptor;
-import org.rpgwizard.common.assets.Character;
+import org.rpgwizard.common.assets.sprite.Character;
 import org.rpgwizard.common.assets.listeners.SpriteChangeListener;
 import org.rpgwizard.editor.editors.sprite.listener.AddAnimationActionListener;
 import org.rpgwizard.editor.editors.sprite.listener.AnimationListSelectionListener;

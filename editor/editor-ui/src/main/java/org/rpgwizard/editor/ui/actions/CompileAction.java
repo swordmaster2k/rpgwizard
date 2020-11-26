@@ -23,7 +23,7 @@ import javax.swing.SwingWorker;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.pluginsystem.Engine;
 import org.apache.commons.io.FileUtils;
-import org.rpgwizard.common.assets.Game;
+import org.rpgwizard.common.assets.game.Game;
 import org.rpgwizard.editor.utilities.FileTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

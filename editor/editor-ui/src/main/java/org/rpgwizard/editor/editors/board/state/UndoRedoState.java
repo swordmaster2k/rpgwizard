@@ -7,7 +7,7 @@
  */
 package org.rpgwizard.editor.editors.board.state;
 
-import org.rpgwizard.common.assets.Board;
+import org.rpgwizard.common.assets.board.Board;
 
 /**
  *

@@ -5,7 +5,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package org.rpgwizard.common.assets;
+package org.rpgwizard.common.assets.sprite;
+
+import org.rpgwizard.common.assets.AssetDescriptor;
+import org.rpgwizard.common.assets.sprite.AbstractSprite;
 
 public class NPC extends AbstractSprite {
 

@@ -9,7 +9,7 @@ package org.rpgwizard.editor.ui.actions;
 
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
-import org.rpgwizard.common.assets.Tile;
+import org.rpgwizard.common.assets.tileset.Tile;
 import org.rpgwizard.editor.editors.BoardEditor;
 import org.rpgwizard.editor.editors.board.brush.SelectionBrush;
 import org.rpgwizard.editor.MainWindow;

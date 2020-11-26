@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package org.rpgwizard.common.assets;
+package org.rpgwizard.common.assets.board;
 
 import org.rpgwizard.common.assets.board.BoardLayer;
 import org.rpgwizard.common.assets.board.BoardSprite;
@@ -19,6 +19,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.rpgwizard.common.Selectable;
+import org.rpgwizard.common.assets.AbstractAsset;
+import org.rpgwizard.common.assets.AssetDescriptor;
+import org.rpgwizard.common.assets.tileset.Tile;
+import org.rpgwizard.common.assets.tileset.Tileset;
 import org.rpgwizard.common.assets.events.BoardChangedEvent;
 import org.rpgwizard.common.assets.listeners.BoardChangeListener;
 import org.rpgwizard.common.utilities.TileSetCache;

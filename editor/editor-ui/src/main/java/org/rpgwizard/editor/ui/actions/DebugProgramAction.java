@@ -18,7 +18,7 @@ import org.rpgwizard.common.assets.AssetException;
 import org.rpgwizard.common.assets.AssetHandle;
 import org.rpgwizard.common.assets.AssetManager;
 import org.rpgwizard.common.assets.Program;
-import org.rpgwizard.common.assets.Game;
+import org.rpgwizard.common.assets.game.Game;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.editors.ProgramEditor;
 import org.rpgwizard.editor.utilities.EditorFileManager;

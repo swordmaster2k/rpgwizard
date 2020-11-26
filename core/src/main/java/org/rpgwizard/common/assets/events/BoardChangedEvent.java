@@ -8,7 +8,7 @@
 package org.rpgwizard.common.assets.events;
 
 import java.util.EventObject;
-import org.rpgwizard.common.assets.Board;
+import org.rpgwizard.common.assets.board.Board;
 import org.rpgwizard.common.assets.board.BoardLayer;
 import org.rpgwizard.common.assets.board.BoardLayerImage;
 import org.rpgwizard.common.assets.board.BoardSprite;

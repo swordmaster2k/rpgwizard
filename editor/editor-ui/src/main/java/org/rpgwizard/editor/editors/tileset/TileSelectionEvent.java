@@ -8,7 +8,7 @@
 package org.rpgwizard.editor.editors.tileset;
 
 import java.util.EventObject;
-import org.rpgwizard.common.assets.Tile;
+import org.rpgwizard.common.assets.tileset.Tile;
 
 /**
  *

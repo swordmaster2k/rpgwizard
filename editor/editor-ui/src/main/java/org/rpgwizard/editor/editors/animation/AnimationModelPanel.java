@@ -13,7 +13,7 @@ import javax.swing.JComboBox;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
-import org.rpgwizard.common.assets.Animation;
+import org.rpgwizard.common.assets.animation.Animation;
 import org.rpgwizard.common.assets.events.AnimationChangedEvent;
 import org.rpgwizard.common.assets.listeners.AnimationChangeListener;
 import org.rpgwizard.common.utilities.CoreProperties;

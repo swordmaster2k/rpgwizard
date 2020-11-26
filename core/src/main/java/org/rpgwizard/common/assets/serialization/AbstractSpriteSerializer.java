@@ -7,7 +7,7 @@
  */
 package org.rpgwizard.common.assets.serialization;
 
-import org.rpgwizard.common.assets.AbstractSprite;
+import org.rpgwizard.common.assets.sprite.AbstractSprite;
 import org.rpgwizard.common.assets.AssetException;
 import org.json.JSONObject;
 

@@ -13,7 +13,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
-import org.rpgwizard.common.assets.AbstractSprite;
+import org.rpgwizard.common.assets.sprite.AbstractSprite;
 import org.rpgwizard.common.assets.board.BoardVector;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.ui.AbstractModelPanel;

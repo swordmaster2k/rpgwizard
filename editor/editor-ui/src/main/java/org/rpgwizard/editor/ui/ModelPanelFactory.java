@@ -7,13 +7,13 @@
  */
 package org.rpgwizard.editor.ui;
 
-import org.rpgwizard.common.assets.Animation;
-import org.rpgwizard.common.assets.Board;
-import org.rpgwizard.common.assets.Character;
-import org.rpgwizard.common.assets.Enemy;
+import org.rpgwizard.common.assets.animation.Animation;
+import org.rpgwizard.common.assets.board.Board;
+import org.rpgwizard.common.assets.sprite.Character;
+import org.rpgwizard.common.assets.sprite.Enemy;
 import org.rpgwizard.common.assets.Image;
-import org.rpgwizard.common.assets.NPC;
-import org.rpgwizard.common.assets.Tile;
+import org.rpgwizard.common.assets.sprite.NPC;
+import org.rpgwizard.common.assets.tileset.Tile;
 import org.rpgwizard.common.assets.board.BoardLayerImage;
 import org.rpgwizard.common.assets.board.BoardLight;
 import org.rpgwizard.common.assets.board.BoardSprite;

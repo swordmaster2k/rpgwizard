@@ -16,8 +16,8 @@ import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.SwingUtilities;
-import org.rpgwizard.common.assets.Board;
-import org.rpgwizard.common.assets.Tile;
+import org.rpgwizard.common.assets.board.Board;
+import org.rpgwizard.common.assets.tileset.Tile;
 
 import org.rpgwizard.editor.editors.BoardEditor;
 import org.rpgwizard.editor.MainWindow;

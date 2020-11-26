@@ -12,7 +12,7 @@ import org.json.JSONObject;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.AssetException;
 import org.rpgwizard.common.assets.AssetHandle;
-import org.rpgwizard.common.assets.Tileset;
+import org.rpgwizard.common.assets.tileset.Tileset;
 import static org.rpgwizard.common.assets.serialization.AbstractJsonSerializer.MAPPER;
 import org.rpgwizard.common.io.Paths;
 import org.rpgwizard.common.utilities.CoreProperties;

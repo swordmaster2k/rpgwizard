@@ -5,14 +5,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package org.rpgwizard.common.assets;
+package org.rpgwizard.common.assets.sprite;
 
+import org.rpgwizard.common.assets.animation.Animation;
+import org.rpgwizard.common.assets.animation.AnimationEnum;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import org.rpgwizard.common.assets.AbstractAsset;
+import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.board.BoardVector;
 import org.rpgwizard.common.assets.events.SpriteChangedEvent;
 import org.rpgwizard.common.assets.listeners.SpriteChangeListener;

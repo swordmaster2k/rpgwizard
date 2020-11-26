@@ -13,17 +13,16 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.rpgwizard.common.assets.AbstractAsset;
-import org.rpgwizard.common.assets.AnimatedTile;
-import org.rpgwizard.common.assets.Animation;
-import org.rpgwizard.common.assets.Board;
-import org.rpgwizard.common.assets.Enemy;
-import org.rpgwizard.common.assets.NPC;
-import org.rpgwizard.common.assets.Character;
+import org.rpgwizard.common.assets.animation.AnimatedTile;
+import org.rpgwizard.common.assets.animation.Animation;
+import org.rpgwizard.common.assets.board.Board;
+import org.rpgwizard.common.assets.sprite.Enemy;
+import org.rpgwizard.common.assets.sprite.NPC;
+import org.rpgwizard.common.assets.sprite.Character;
 import org.rpgwizard.common.assets.Item;
 import org.rpgwizard.common.assets.Program;
-import org.rpgwizard.common.assets.Game;
-import org.rpgwizard.common.assets.SpecialMove;
-import org.rpgwizard.common.assets.Tileset;
+import org.rpgwizard.common.assets.game.Game;
+import org.rpgwizard.common.assets.tileset.Tileset;
 
 /**
  *
@@ -84,8 +83,6 @@ public class CoreProperties {
             return getFullExtension("toolkit.project.extension.default");
         } else if (type == Tileset.class) {
             return getFullExtension("toolkit.tileset.extension.default");
-        } else if (type == SpecialMove.class) {
-            return getFullExtension("toolkit.specialmove.extension.default");
         } else if (type == Program.class) {
             return getFullExtension("toolkit.program.extension.default");
         } else {

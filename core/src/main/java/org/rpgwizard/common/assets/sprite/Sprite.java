@@ -29,24 +29,24 @@ import org.rpgwizard.common.assets.listeners.SpriteChangeListener;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true, includeFieldNames = true)
 public class Sprite extends AbstractAsset {
-    
+
     private String name;
     private String description;
     private Map<String, String> animations;
     private Collider collider;
     private Trigger trigger;
     private Map<String, String> data;
-    
+
     @JsonIgnore
     protected LinkedList<SpriteChangeListener> spriteChangeListeners = new LinkedList<>();
-    
+
     public Sprite() {
         animations = new HashMap<>();
         collider = new Collider();
         trigger = new Trigger();
         data = new HashMap<>();
     }
-    
+
     public void addAnimation(String key, String value) {
         animations.put(key, value);
         fireSpriteAnimationAdded();
@@ -61,8 +61,8 @@ public class Sprite extends AbstractAsset {
         animations.remove(key);
         fireSpriteAnimationRemoved();
     }
-    
-        /**
+
+    /**
      * Add a new <code>SpriteChangeListener</code> for this sprite.
      *
      * @param listener
@@ -81,8 +81,8 @@ public class Sprite extends AbstractAsset {
     public void removeSpriteChangeListener(SpriteChangeListener listener) {
         spriteChangeListeners.remove(listener);
     }
-    
-       /**
+
+    /**
      * Fires the <code>SpriteChangedEvent</code> informs all the listeners that this sprite has changed.
      */
     public void fireSpriteChanged() {
@@ -147,5 +147,5 @@ public class Sprite extends AbstractAsset {
             ((SpriteChangeListener) iterator.next()).spriteAnimationRemoved(event);
         }
     }
-    
+
 }

@@ -17,13 +17,13 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class Event {
-    
+
     private String type;
     private String script;
     private String key;
-    
+
     public Event() {
-        
+
     }
-    
+
 }

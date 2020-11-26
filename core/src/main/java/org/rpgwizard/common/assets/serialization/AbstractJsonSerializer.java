@@ -57,7 +57,8 @@ public abstract class AbstractJsonSerializer extends AbstractAssetSerializer {
 
             // Store the asset contents into a JSON representation
             JSONObject obj = new JSONObject();
-            if (handle.getAsset() instanceof Game || handle.getAsset() instanceof Tileset || handle.getAsset() instanceof Sprite) { // REFACTOR: Remove this
+            if (handle.getAsset() instanceof Game || handle.getAsset() instanceof Tileset
+                    || handle.getAsset() instanceof Sprite) { // REFACTOR: Remove this
                 obj = store(handle);
             } else {
                 store(handle, obj);

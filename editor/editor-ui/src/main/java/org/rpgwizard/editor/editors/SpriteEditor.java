@@ -13,8 +13,11 @@ import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -23,6 +26,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -31,48 +35,91 @@ import javax.swing.RowSorter;
 import javax.swing.SortOrder;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
+import javax.swing.border.EtchedBorder;
+import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import lombok.Getter;
+import lombok.Setter;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.AssetDescriptor;
+import org.rpgwizard.common.assets.animation.Animation;
+import org.rpgwizard.common.assets.events.SpriteChangedEvent;
 import org.rpgwizard.common.assets.listeners.SpriteChangeListener;
 import org.rpgwizard.common.assets.sprite.Sprite;
-import org.rpgwizard.editor.editors.sprite.AbstractSpriteEditor;
+import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.editors.sprite.AnimationsTableModel;
 import org.rpgwizard.editor.editors.sprite.AnimationsTablePanel;
 import org.rpgwizard.editor.editors.sprite.listener.AddAnimationActionListener;
 import org.rpgwizard.editor.editors.sprite.listener.AnimationListSelectionListener;
 import org.rpgwizard.editor.editors.sprite.listener.BrowseAnimationActionListener;
 import org.rpgwizard.editor.editors.sprite.listener.RemoveAnimationActionListener;
+import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 import org.rpgwizard.editor.ui.AnimatedPanel;
 import org.rpgwizard.editor.ui.resources.Icons;
+import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.rpgwizard.editor.utilities.GuiHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Character Character Editor
+ * Sprite Editor
  *
  * @author Joshua Michael Daly
  */
-public final class SpriteEditor extends AbstractSpriteEditor implements SpriteChangeListener {
+@Getter
+@Setter
+public final class SpriteEditor extends AbstractAssetEditorWindow implements SpriteChangeListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SpriteEditor.class);
 
+    public static final int DEFAULT_INPUT_COLUMNS = 12;
+    protected static final List<String> STANDARD_PLACE_HOLDERS = Arrays.asList("SOUTH", "NORTH", "EAST", "WEST",
+            "NORTH_WEST", "NORTH_EAST", "SOUTH_WEST", "SOUTH_EAST", "ATTACK", "DEFEND", "SPECIAL_MOVE", "DIE", "REST");
+    protected static final List<String> STANDING_PLACE_HOLDERS = Arrays.asList("SOUTH_IDLE", "NORTH_IDLE", "EAST_IDLE",
+            "WEST_IDLE", "NORTH_WEST_IDLE", "NORTH_EAST_IDLE", "SOUTH_WEST_IDLE", "SOUTH_EAST_IDLE");
+    protected static final Dimension PROFILE_DIMENSION = new Dimension(100, 100);
+
     private final Sprite sprite;
 
-    private JTextField name;
+    private JTextField nameField;
     private JTextArea properties;
 
     private JSpinner originX;
     private JSpinner originY;
 
-    public SpriteEditor(Sprite sprite) {
-        super("Untitled", sprite, Icons.getIcon("character"));
+    // Tabs
+    protected JTabbedPane tabbedPane;
 
+    // Stats
+    private final JPanel statsPanel;
+    private final JPanel statsEditPanel;
+
+    // Animations
+    private AnimatedPanel animatedPanel;
+    private JTable animationsTable;
+    private AnimationsTableModel animationsTableModel;
+    private Animation selectedAnim;
+
+    private final Border defaultEtchedBorder;
+
+    private JButton browseButton;
+    private JButton addButton;
+    private JButton removeButton;
+
+    public SpriteEditor(Sprite sprite) {
+        super("Untitled", true, true, true, true, Icons.getIcon("character"));
         this.sprite = sprite;
+        tabbedPane = new JTabbedPane();
+
+        statsPanel = new JPanel();
+        statsEditPanel = new JPanel();
+
+        defaultEtchedBorder = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
+
         this.sprite.addSpriteChangeListener(this);
         if (this.sprite.getDescriptor() == null) {
             setupNewSprite();
@@ -97,7 +144,7 @@ public final class SpriteEditor extends AbstractSpriteEditor implements SpriteCh
     @Override
     public void save() throws Exception {
         // Update all player variables from stats panel.
-        sprite.setName(name.getText());
+        sprite.setName(nameField.getText());
 
         save(sprite);
     }
@@ -134,16 +181,16 @@ public final class SpriteEditor extends AbstractSpriteEditor implements SpriteCh
         labels.add(new JLabel("Name"));
         labels.add(new JLabel("Properties"));
 
-        name = new JTextField(sprite.getName());
-        name.setColumns(DEFAULT_INPUT_COLUMNS);
-        name.getDocument().addDocumentListener(saveDocumentListener);
+        nameField = new JTextField(sprite.getName());
+        nameField.setColumns(DEFAULT_INPUT_COLUMNS);
+        nameField.getDocument().addDocumentListener(saveDocumentListener);
 
         properties = new JTextArea();
         properties.setColumns(DEFAULT_INPUT_COLUMNS);
         properties.setRows(20);
 
         List<Component> inputs = new ArrayList<>();
-        inputs.add(name);
+        inputs.add(nameField);
         inputs.add(properties);
 
         buildPanels(labels, inputs);
@@ -278,6 +325,68 @@ public final class SpriteEditor extends AbstractSpriteEditor implements SpriteCh
         frame.add(new SpriteEditor(new Sprite()));
         frame.setSize(1200, 600);
         frame.setVisible(true);
+    }
+
+    // REFACTOR: Sort out
+
+    @Override
+    public void internalFrameClosed(InternalFrameEvent e) {
+        sprite.removeSpriteChangeListener(this);
+        sprite.removeSpriteChangeListener(animationsTableModel);
+    }
+
+    @Override
+    public void spriteChanged(SpriteChangedEvent e) {
+        updateAnimatedPanel();
+        setNeedSave(true);
+    }
+
+    @Override
+    public void spriteAnimationAdded(SpriteChangedEvent e) {
+        setNeedSave(true);
+    }
+
+    @Override
+    public void spriteAnimationUpdated(SpriteChangedEvent e) {
+        setNeedSave(true);
+    }
+
+    @Override
+    public void spriteAnimationRemoved(SpriteChangedEvent e) {
+        setNeedSave(true);
+    }
+
+    public void updateAnimatedPanel() {
+        if (animatedPanel == null) {
+            return;
+        }
+
+        if (selectedAnim != null) {
+            // animatedPanel.setBaseVector(sprite.getBaseVector());
+            // animatedPanel.setActivationVector(sprite.getActivationVector());
+            // animatedPanel.setBaseVectorOffset(sprite.getBaseVectorOffset());
+            // animatedPanel.setActivationVectorOffset(sprite.getActivationVectorOffset());
+        }
+
+        try {
+            animatedPanel.setAnimation(selectedAnim);
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(SpriteEditor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void openAnimation(String path) {
+        if (!path.isEmpty()) {
+            File file = EditorFileManager
+                    .getPath(EditorFileManager.getTypeSubdirectory(Animation.class) + File.separator + path);
+            if (file.exists()) {
+                selectedAnim = MainWindow.getInstance().openAnimation(file);
+            } else {
+                selectedAnim = null;
+            }
+
+            updateAnimatedPanel();
+        }
     }
 
 }

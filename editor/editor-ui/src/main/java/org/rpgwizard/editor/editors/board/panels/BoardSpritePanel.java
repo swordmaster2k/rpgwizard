@@ -62,9 +62,8 @@ public final class BoardSpritePanel extends BoardModelPanel {
         /// fileComboBox
         ///
         String[] exts = (String[]) ArrayUtils.addAll(EditorFileManager.getTypeExtensions(Sprite.class));
-        fileComboBox = GuiHelper.getFileListJComboBox(
-                new File[] { EditorFileManager.getFullPath(Sprite.class) },
-                exts, true);
+        fileComboBox = GuiHelper.getFileListJComboBox(new File[] { EditorFileManager.getFullPath(Sprite.class) }, exts,
+                true);
         fileComboBox.setSelectedItem(boardSprite.getFileName());
         fileComboBox.addActionListener((ActionEvent e) -> {
             String fileName = (String) fileComboBox.getSelectedItem();

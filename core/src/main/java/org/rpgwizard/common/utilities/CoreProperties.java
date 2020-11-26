@@ -36,15 +36,13 @@ public class CoreProperties {
         try (InputStream in = CoreProperties.class.getResourceAsStream("/core/properties/toolkit.properties")) {
             properties.load(in);
 
-            directories = new String[] { 
-                    properties.getProperty("toolkit.directory.graphics"),
+            directories = new String[] { properties.getProperty("toolkit.directory.graphics"),
                     properties.getProperty("toolkit.directory.board"),
                     properties.getProperty("toolkit.directory.sounds"),
                     properties.getProperty("toolkit.directory.animations"),
                     properties.getProperty("toolkit.directory.program"),
                     properties.getProperty("toolkit.directory.tileset"),
-                    properties.getProperty("toolkit.directory.fonts") 
-            };
+                    properties.getProperty("toolkit.directory.fonts") };
         } catch (IOException ex) {
             Logger.getLogger(CoreProperties.class.getName()).log(Level.SEVERE, null, ex);
         }

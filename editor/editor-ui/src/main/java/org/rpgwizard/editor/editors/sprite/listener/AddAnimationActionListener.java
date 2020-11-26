@@ -10,7 +10,6 @@ package org.rpgwizard.editor.editors.sprite.listener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import org.rpgwizard.common.assets.sprite.Sprite;
 import org.rpgwizard.editor.editors.SpriteEditor;
 
@@ -21,17 +20,16 @@ import org.rpgwizard.editor.editors.SpriteEditor;
 public class AddAnimationActionListener implements ActionListener {
 
     private final Sprite sprite;
-
-    private final JPanel animationsPanel;
+    private final SpriteEditor editor;
 
     public AddAnimationActionListener(SpriteEditor editor) {
         sprite = editor.getSprite();
-        animationsPanel = editor.getAnimationsPanel();
+        this.editor = editor;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String key = (String) JOptionPane.showInputDialog(animationsPanel, "Enter the handle for the new animation:",
+        String key = (String) JOptionPane.showInputDialog(editor, "Enter the handle for the new animation:",
                 "Add Animation", JOptionPane.PLAIN_MESSAGE);
 
         if (key == null || key.isEmpty()) {

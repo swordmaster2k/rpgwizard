@@ -7,13 +7,16 @@
  */
 package org.rpgwizard.editor.editors.sprite;
 
-import java.awt.Point;
+import java.awt.Polygon;
 import java.awt.event.ItemEvent;
+import java.util.List;
 import javax.swing.JCheckBox;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
-import org.rpgwizard.common.assets.board.BoardVector;
+import org.rpgwizard.common.assets.Collider;
+import org.rpgwizard.common.assets.Point;
+import org.rpgwizard.common.assets.Trigger;
 import org.rpgwizard.common.assets.sprite.Sprite;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.ui.AbstractModelPanel;
@@ -39,175 +42,191 @@ public abstract class AbstractSpriteModelPanel extends AbstractModelPanel {
     private final Sprite sprite;
 
     public AbstractSpriteModelPanel(Sprite model) {
-        // /
-        // / super
-        // /
+        ///
+        /// super
+        ///
         super(model);
-        // /
-        // / sprite
-        // /
+        ///
+        /// sprite
+        ///
         sprite = model;
-        // /
-        // / baseVectorWidthSpinner
-        // /
-        baseVectorWidthSpinner = getJSpinner(sprite.getBaseVector().getWidth());
-        baseVectorWidthSpinner.setModel(new SpinnerNumberModel(sprite.getBaseVector().getWidth(), 1, 100, 1));
-        baseVectorWidthSpinner.setEnabled(!sprite.isBaseVectorDisabled());
+        ///
+        /// Local Polygons
+        ///
+        Polygon colliderPolygon = pointsToPolygon(sprite.getCollider().getPoints());
+        Polygon triggerPolygon = pointsToPolygon(sprite.getTrigger().getPoints());
+        ///
+        /// baseVectorWidthSpinner
+        ///
+        baseVectorWidthSpinner = getJSpinner(colliderPolygon.getBounds().getWidth());
+        baseVectorWidthSpinner.setModel(new SpinnerNumberModel(colliderPolygon.getBounds().getWidth(), 1, 100, 1));
+        baseVectorWidthSpinner.setEnabled(sprite.getCollider().isEnabled());
         baseVectorWidthSpinner.addChangeListener((ChangeEvent e) -> {
+            Polygon localPolygon = pointsToPolygon(sprite.getCollider().getPoints());
             int width1 = ((Double) baseVectorWidthSpinner.getValue()).intValue();
-            int height1 = (int) sprite.getBaseVector().getHeight();
-            // Assumes sprite base vector is rectangular in shape, will be a
-            // limitiation.
-            BoardVector boardVector = new BoardVector();
-            boardVector.addPoint(0, 0);
-            boardVector.addPoint(width1, 0);
-            boardVector.addPoint(width1, height1);
-            boardVector.addPoint(0, height1);
-            boardVector.setClosed(true);
-            sprite.setBaseVector(boardVector, true);
+            int height1 = (int) localPolygon.getBounds().getHeight();
+
+            Collider collider = new Collider();
+            collider.addPoint(0, 0);
+            collider.addPoint(width1, 0);
+            collider.addPoint(width1, height1);
+            collider.addPoint(0, height1);
+            collider.setX(sprite.getCollider().getX());
+            collider.setY(sprite.getCollider().getY());
+            collider.setEnabled(sprite.getCollider().isEnabled());
+
+            sprite.setCollider(collider);
+
             MainWindow.getInstance().markWindowForSaving();
         });
-        // /
-        // / baseVectorHeightSpinner
-        // /
-        baseVectorHeightSpinner = getJSpinner(sprite.getBaseVector().getHeight());
-        baseVectorHeightSpinner.setModel(new SpinnerNumberModel(sprite.getBaseVector().getHeight(), 1, 100, 1));
-        baseVectorHeightSpinner.setEnabled(!sprite.isBaseVectorDisabled());
+        ///
+        /// baseVectorHeightSpinner
+        ///
+        baseVectorHeightSpinner = getJSpinner(colliderPolygon.getBounds().getHeight());
+        baseVectorHeightSpinner.setModel(new SpinnerNumberModel(colliderPolygon.getBounds().getHeight(), 1, 100, 1));
+        baseVectorHeightSpinner.setEnabled(sprite.getCollider().isEnabled());
         baseVectorHeightSpinner.addChangeListener((ChangeEvent e) -> {
-            int width1 = (int) sprite.getBaseVector().getWidth();
+            Polygon localPolygon = pointsToPolygon(sprite.getCollider().getPoints());
+            int width1 = (int) localPolygon.getBounds().getWidth();
             int height1 = ((Double) baseVectorHeightSpinner.getValue()).intValue();
-            // Assumes sprite base vector is rectangular in shape, will be a
-            // limitiation.
-            BoardVector boardVector = new BoardVector();
-            boardVector.addPoint(0, 0);
-            boardVector.addPoint(width1, 0);
-            boardVector.addPoint(width1, height1);
-            boardVector.addPoint(0, height1);
-            boardVector.setClosed(true);
-            sprite.setBaseVector(boardVector, true);
+
+            Collider collider = new Collider();
+            collider.addPoint(0, 0);
+            collider.addPoint(width1, 0);
+            collider.addPoint(width1, height1);
+            collider.addPoint(0, height1);
+            collider.setX(sprite.getCollider().getX());
+            collider.setY(sprite.getCollider().getY());
+            collider.setEnabled(sprite.getCollider().isEnabled());
+
+            sprite.setCollider(collider);
+
             MainWindow.getInstance().markWindowForSaving();
         });
-        // /
-        // / baseVectorOffsetXSpinner
-        // /
-        baseVectorOffsetXSpinner = getJSpinner(sprite.getBaseVectorOffset().getX());
-        baseVectorOffsetXSpinner.setModel(new SpinnerNumberModel(sprite.getBaseVectorOffset().getX(), -1000, 1000, 1));
-        baseVectorOffsetXSpinner.setEnabled(!sprite.isBaseVectorDisabled());
+        ///
+        /// baseVectorOffsetXSpinner
+        ///
+        baseVectorOffsetXSpinner = getJSpinner(sprite.getCollider().getX());
+        baseVectorOffsetXSpinner.setModel(new SpinnerNumberModel(sprite.getCollider().getX(), -1000, 1000, 1));
+        baseVectorOffsetXSpinner.setEnabled(sprite.getCollider().isEnabled());
         baseVectorOffsetXSpinner.addChangeListener((ChangeEvent e) -> {
             int x1 = ((Double) baseVectorOffsetXSpinner.getValue()).intValue();
-            int y1 = (int) sprite.getBaseVectorOffset().getY();
-            sprite.setBaseVectorOffset(new Point(x1, y1), true);
+            sprite.getCollider().setX(x1);
             MainWindow.getInstance().markWindowForSaving();
         });
-        // /
-        // / baseVectorOffsetYSpinner
-        // /
-        baseVectorOffsetYSpinner = getJSpinner(sprite.getBaseVectorOffset().getY());
-        baseVectorOffsetYSpinner.setModel(new SpinnerNumberModel(sprite.getBaseVectorOffset().getY(), -1000, 1000, 1));
-        baseVectorOffsetYSpinner.setEnabled(!sprite.isBaseVectorDisabled());
+        ///
+        /// baseVectorOffsetYSpinner
+        ///
+        baseVectorOffsetYSpinner = getJSpinner(sprite.getCollider().getY());
+        baseVectorOffsetYSpinner.setModel(new SpinnerNumberModel(sprite.getCollider().getY(), -1000, 1000, 1));
+        baseVectorOffsetYSpinner.setEnabled(sprite.getCollider().isEnabled());
         baseVectorOffsetYSpinner.addChangeListener((ChangeEvent e) -> {
-            int x1 = (int) sprite.getBaseVectorOffset().getX();
             int y1 = ((Double) baseVectorOffsetYSpinner.getValue()).intValue();
-            sprite.setBaseVectorOffset(new Point(x1, y1), true);
+            sprite.getCollider().setY(y1);
             MainWindow.getInstance().markWindowForSaving();
         });
-        // /
-        // / baseVectorDisableCheckBox
-        // /
-        baseVectorDisableCheckBox = getJCheckBox(sprite.isBaseVectorDisabled());
+        ///
+        /// baseVectorDisableCheckBox
+        ///
+        baseVectorDisableCheckBox = getJCheckBox(!sprite.getCollider().isEnabled());
         baseVectorDisableCheckBox.addItemListener((ItemEvent e) -> {
             boolean disabled = e.getStateChange() == 1;
             baseVectorWidthSpinner.setEnabled(!disabled);
             baseVectorHeightSpinner.setEnabled(!disabled);
             baseVectorOffsetXSpinner.setEnabled(!disabled);
             baseVectorOffsetYSpinner.setEnabled(!disabled);
-            sprite.setBaseVectorDisabled(disabled);
+            sprite.getCollider().setEnabled(disabled);
             MainWindow.getInstance().markWindowForSaving();
         });
-        // /
-        // / activationVectorWidthSpinner
-        // /
-        activationVectorWidthSpinner = getJSpinner(sprite.getActivationVector().getWidth());
-        activationVectorWidthSpinner
-                .setModel(new SpinnerNumberModel(sprite.getActivationVector().getWidth(), 1, 100, 1));
-        activationVectorWidthSpinner.setEnabled(!sprite.isActivationVectorDisabled());
+        ///
+        /// activationVectorWidthSpinner
+        ///
+        activationVectorWidthSpinner = getJSpinner(triggerPolygon.getBounds().getWidth());
+        activationVectorWidthSpinner.setModel(new SpinnerNumberModel(triggerPolygon.getBounds().getWidth(), 1, 100, 1));
+        activationVectorWidthSpinner.setEnabled(sprite.getTrigger().isEnabled());
         activationVectorWidthSpinner.addChangeListener((ChangeEvent e) -> {
+            Polygon localPolygon = pointsToPolygon(sprite.getTrigger().getPoints());
             int width1 = ((Double) activationVectorWidthSpinner.getValue()).intValue();
-            int height1 = (int) sprite.getActivationVector().getHeight();
-            // Assumes sprite base vector is rectangular in shape, will be a
-            // limitiation.
-            BoardVector boardVector = new BoardVector();
-            boardVector.addPoint(0, 0);
-            boardVector.addPoint(width1, 0);
-            boardVector.addPoint(width1, height1);
-            boardVector.addPoint(0, height1);
-            boardVector.setClosed(true);
-            sprite.setActivationVector(boardVector, true);
+            int height1 = (int) localPolygon.getBounds().getHeight();
+
+            Trigger trigger = new Trigger();
+            trigger.addPoint(0, 0);
+            trigger.addPoint(width1, 0);
+            trigger.addPoint(width1, height1);
+            trigger.addPoint(0, height1);
+            trigger.setX(sprite.getCollider().getX());
+            trigger.setY(sprite.getCollider().getY());
+            trigger.setEnabled(sprite.getCollider().isEnabled());
+            trigger.setEvents(sprite.getTrigger().getEvents());
+
+            sprite.setTrigger(trigger);
+
             MainWindow.getInstance().markWindowForSaving();
         });
-        // /
-        // / baseVectorHeightSpinner
-        // /
-        activationVectorHeightSpinner = getJSpinner(sprite.getActivationVector().getHeight());
+        ///
+        /// baseVectorHeightSpinner
+        ///
+        activationVectorHeightSpinner = getJSpinner(triggerPolygon.getBounds().getHeight());
         activationVectorHeightSpinner
-                .setModel(new SpinnerNumberModel(sprite.getActivationVector().getHeight(), 1, 100, 1));
-        activationVectorHeightSpinner.setEnabled(!sprite.isActivationVectorDisabled());
+                .setModel(new SpinnerNumberModel(triggerPolygon.getBounds().getHeight(), 1, 100, 1));
+        activationVectorHeightSpinner.setEnabled(sprite.getTrigger().isEnabled());
         activationVectorHeightSpinner.addChangeListener((ChangeEvent e) -> {
-            int width1 = (int) sprite.getActivationVector().getWidth();
+            Polygon localPolygon = pointsToPolygon(sprite.getTrigger().getPoints());
+            int width1 = (int) localPolygon.getBounds().getWidth();
             int height1 = ((Double) activationVectorHeightSpinner.getValue()).intValue();
-            // Assumes sprite base vector is rectangular in shape, will be a
-            // limitiation.
-            BoardVector boardVector = new BoardVector();
-            boardVector.addPoint(0, 0);
-            boardVector.addPoint(width1, 0);
-            boardVector.addPoint(width1, height1);
-            boardVector.addPoint(0, height1);
-            boardVector.setClosed(true);
-            sprite.setActivationVector(boardVector, true);
+
+            Trigger trigger = new Trigger();
+            trigger.addPoint(0, 0);
+            trigger.addPoint(width1, 0);
+            trigger.addPoint(width1, height1);
+            trigger.addPoint(0, height1);
+            trigger.setX(sprite.getCollider().getX());
+            trigger.setY(sprite.getCollider().getY());
+            trigger.setEnabled(sprite.getCollider().isEnabled());
+            trigger.setEvents(sprite.getTrigger().getEvents());
+
+            sprite.setTrigger(trigger);
+
             MainWindow.getInstance().markWindowForSaving();
         });
-        // /
-        // / activationVectorOffsetXSpinner
-        // /
-        activationVectorOffsetXSpinner = getJSpinner(sprite.getActivationVectorOffset().getX());
-        activationVectorOffsetXSpinner
-                .setModel(new SpinnerNumberModel(sprite.getActivationVectorOffset().getX(), -1000, 1000, 1));
-        activationVectorOffsetXSpinner.setEnabled(!sprite.isActivationVectorDisabled());
+        ///
+        /// activationVectorOffsetXSpinner
+        ///
+        activationVectorOffsetXSpinner = getJSpinner(sprite.getTrigger().getX());
+        activationVectorOffsetXSpinner.setModel(new SpinnerNumberModel(sprite.getTrigger().getX(), -1000, 1000, 1));
+        activationVectorOffsetXSpinner.setEnabled(sprite.getTrigger().isEnabled());
         activationVectorOffsetXSpinner.addChangeListener((ChangeEvent e) -> {
             int x1 = ((Double) activationVectorOffsetXSpinner.getValue()).intValue();
-            int y1 = (int) sprite.getActivationVectorOffset().getY();
-            sprite.setActivationVectorOffset(new Point(x1, y1), true);
+            sprite.getTrigger().setX(x1);
             MainWindow.getInstance().markWindowForSaving();
         });
-        // /
-        // / activationVectorOffsetYSpinner
-        // /
-        activationVectorOffsetYSpinner = getJSpinner(sprite.getActivationVectorOffset().getY());
-        activationVectorOffsetYSpinner
-                .setModel(new SpinnerNumberModel(sprite.getActivationVectorOffset().getY(), -1000, 1000, 1));
-        activationVectorOffsetYSpinner.setEnabled(!sprite.isActivationVectorDisabled());
+        ///
+        /// activationVectorOffsetYSpinner
+        ///
+        activationVectorOffsetYSpinner = getJSpinner(sprite.getTrigger().getY());
+        activationVectorOffsetYSpinner.setModel(new SpinnerNumberModel(sprite.getTrigger().getY(), -1000, 1000, 1));
+        activationVectorOffsetYSpinner.setEnabled(sprite.getTrigger().isEnabled());
         activationVectorOffsetYSpinner.addChangeListener((ChangeEvent e) -> {
-            int x1 = (int) sprite.getActivationVectorOffset().getX();
             int y1 = ((Double) activationVectorOffsetYSpinner.getValue()).intValue();
-            sprite.setActivationVectorOffset(new Point(x1, y1), true);
+            sprite.getTrigger().setX(y1);
             MainWindow.getInstance().markWindowForSaving();
         });
-        // /
-        // / baseVectorDisableCheckBox
-        // /
-        activationVectorDisableCheckBox = getJCheckBox(sprite.isActivationVectorDisabled());
+        ///
+        /// baseVectorDisableCheckBox
+        ///
+        activationVectorDisableCheckBox = getJCheckBox(!sprite.getTrigger().isEnabled());
         activationVectorDisableCheckBox.addItemListener((ItemEvent e) -> {
             boolean disabled = e.getStateChange() == 1;
             activationVectorWidthSpinner.setEnabled(!disabled);
             activationVectorHeightSpinner.setEnabled(!disabled);
             activationVectorOffsetXSpinner.setEnabled(!disabled);
             activationVectorOffsetYSpinner.setEnabled(!disabled);
-            sprite.setActivationVectorDisabled(disabled);
+            sprite.getTrigger().setEnabled(disabled);
             MainWindow.getInstance().markWindowForSaving();
         });
-        // /
-        // / this
-        // /
+        ///
+        /// this
+        ///
         insert(getJLabel("Disable Base Vector"), baseVectorDisableCheckBox);
         insert(getJLabel("Base Vector Width"), baseVectorWidthSpinner);
         insert(getJLabel("Base Vector Height"), baseVectorHeightSpinner);
@@ -218,6 +237,14 @@ public abstract class AbstractSpriteModelPanel extends AbstractModelPanel {
         insert(getJLabel("Activation Vector Height"), activationVectorHeightSpinner);
         insert(getJLabel("Activation Vector Offset X"), activationVectorOffsetXSpinner);
         insert(getJLabel("Activation Vector Offset Y"), activationVectorOffsetYSpinner);
+    }
+
+    private Polygon pointsToPolygon(List<Point> points) {
+        Polygon polygon = new Polygon();
+        points.forEach(p -> {
+            polygon.addPoint(p.getX(), p.getY());
+        });
+        return polygon;
     }
 
 }

@@ -17,15 +17,19 @@ import lombok.Data;
  */
 @Data
 public class Collider {
-    
+
     private boolean enabled;
     private int x;
     private int y;
     private List<Point> points;
-    
+
     public Collider() {
         enabled = true;
         points = new ArrayList<>();
     }
-    
+
+    public void addPoint(int x, int y) {
+        points.add(new Point(x, y));
+    }
+
 }

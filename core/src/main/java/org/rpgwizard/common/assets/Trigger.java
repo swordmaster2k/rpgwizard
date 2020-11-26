@@ -17,17 +17,21 @@ import lombok.Data;
  */
 @Data
 public class Trigger {
-    
+
     private boolean enabled;
     private int x;
     private int y;
     private List<Point> points;
     private List<Event> events;
-    
+
     public Trigger() {
         enabled = true;
         points = new ArrayList<>();
         events = new ArrayList<>();
     }
-    
+
+    public void addPoint(int x, int y) {
+        points.add(new Point(x, y));
+    }
+
 }

@@ -13,7 +13,6 @@ import javax.swing.event.ListSelectionListener;
 import org.rpgwizard.common.assets.sprite.Sprite;
 import org.rpgwizard.common.assets.animation.AnimationEnum;
 import org.rpgwizard.editor.editors.SpriteEditor;
-import org.rpgwizard.editor.editors.sprite.AbstractSpriteEditor;
 
 /**
  *
@@ -23,7 +22,7 @@ public class AnimationListSelectionListener implements ListSelectionListener {
 
     private final Sprite sprite;
 
-    private final AbstractSpriteEditor spriteEditor;
+    private final SpriteEditor spriteEditor;
 
     private final JTable animationsTable;
 

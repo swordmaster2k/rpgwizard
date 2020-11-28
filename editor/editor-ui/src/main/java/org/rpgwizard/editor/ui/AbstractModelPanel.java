@@ -82,7 +82,14 @@ public abstract class AbstractModelPanel extends JPanel {
 
     public final JSpinner getJSpinner(Integer value) {
         JSpinner spinner = new JSpinner(
-                new SpinnerNumberModel(value, new Integer(0), new Integer(Integer.MAX_VALUE), new Integer(1)));
+                new SpinnerNumberModel(value, Integer.valueOf(0), Integer.valueOf(Integer.MAX_VALUE), Integer.valueOf(1)));
+        spinner.setFont(font);
+        return spinner;
+    }
+    
+    public final JSpinner getJSpinner(Integer value, Integer min, Integer max) {
+        JSpinner spinner = new JSpinner(
+                new SpinnerNumberModel(value, min, max, Integer.valueOf(1)));
         spinner.setFont(font);
         return spinner;
     }

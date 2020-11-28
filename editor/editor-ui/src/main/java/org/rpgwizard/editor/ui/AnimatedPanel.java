@@ -11,7 +11,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -19,8 +18,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.Timer;
+import org.rpgwizard.common.assets.Collider;
+import org.rpgwizard.common.assets.Trigger;
 import org.rpgwizard.common.assets.animation.Animation;
-import org.rpgwizard.common.assets.board.BoardVector;
 import org.rpgwizard.common.assets.events.AnimationChangedEvent;
 import org.rpgwizard.common.assets.listeners.AnimationChangeListener;
 import org.rpgwizard.common.utilities.CoreProperties;
@@ -43,11 +43,8 @@ public class AnimatedPanel extends AbstractImagePanel implements AnimationChange
     private BufferedImage frameImage;
     private Timer timer;
 
-    private BoardVector baseVector;
-    private BoardVector activationVector;
-
-    private Point baseVectorOffset;
-    private Point activationVectorOffset;
+    private Collider collider;
+    private Trigger trigger;
 
     private final ActionListener animate = new ActionListener() {
         private int index = 0;
@@ -76,7 +73,31 @@ public class AnimatedPanel extends AbstractImagePanel implements AnimationChange
         super(dimension);
         init();
     }
+    
+    @Override
+    public Dimension getPreferredSize() {
+        if (dimension == null) {
+            return super.getPreferredSize();
+        }
+        return dimension;
+    }
 
+    @Override
+    public Dimension getMaximumSize() {
+        if (dimension == null) {
+            return super.getMaximumSize();
+        }
+        return dimension;
+    }
+
+    @Override
+    public Dimension getMinimumSize() {
+        if (dimension == null) {
+            return super.getMinimumSize();
+        }
+        return dimension;
+    }
+    
     public Animation getAnimation() {
         return animation;
     }
@@ -100,36 +121,20 @@ public class AnimatedPanel extends AbstractImagePanel implements AnimationChange
         repaint();
     }
 
-    public BoardVector getBaseVector() {
-        return baseVector;
+    public Collider getCollider() {
+        return collider;
     }
 
-    public void setBaseVector(BoardVector baseVector) {
-        this.baseVector = baseVector;
+    public void setCollider(Collider collider) {
+        this.collider = collider;
     }
 
-    public BoardVector getActivationVector() {
-        return activationVector;
+    public Trigger getTrigger() {
+        return trigger;
     }
 
-    public void setActivationVector(BoardVector activationVector) {
-        this.activationVector = activationVector;
-    }
-
-    public Point getBaseVectorOffset() {
-        return baseVectorOffset;
-    }
-
-    public void setBaseVectorOffset(Point baseVectorOffset) {
-        this.baseVectorOffset = baseVectorOffset;
-    }
-
-    public Point getActivationVectorOffset() {
-        return activationVectorOffset;
-    }
-
-    public void setActivationVectorOffset(Point activationVectorOffset) {
-        this.activationVectorOffset = activationVectorOffset;
+    public void setTrigger(Trigger trigger) {
+        this.trigger = trigger;
     }
 
     @Override
@@ -187,15 +192,14 @@ public class AnimatedPanel extends AbstractImagePanel implements AnimationChange
             // Define them for drawing the vectors at the animations base.
             x = getWidth() / 2;
             y = getHeight() / 2;
-            if (baseVector != null) {
+            if (collider != null) {
                 g.setColor(Color.RED);
-                drawVector(baseVector, g, x, y, (int) baseVectorOffset.getX(), (int) baseVectorOffset.getY());
+                drawCollider(collider, g, x, y, (int) collider.getX(), (int) collider.getY());
             }
 
-            if (activationVector != null) {
+            if (trigger != null) {
                 g.setColor(Color.YELLOW);
-                drawVector(activationVector, g, x, y, (int) activationVectorOffset.getX(),
-                        (int) activationVectorOffset.getY());
+                drawTrigger(trigger, g, x, y, (int) trigger.getX(), (int) trigger.getY());
             }
         }
 
@@ -245,9 +249,6 @@ public class AnimatedPanel extends AbstractImagePanel implements AnimationChange
         playImage = Icons.getLargeIcon("animation-play").getImage();
         stopImage = Icons.getLargeIcon("animation-stop").getImage();
         currentActionImage = playImage;
-
-        baseVectorOffset = new Point(0, 0);
-        activationVectorOffset = new Point(0, 0);
     }
 
     private void updateAnimation() {
@@ -276,15 +277,26 @@ public class AnimatedPanel extends AbstractImagePanel implements AnimationChange
         }
     }
 
-    private void drawVector(BoardVector vector, Graphics g, int x, int y, int xOffset, int yOffset) {
-        int count = vector.getPointCount();
+    private void drawCollider(Collider collider, Graphics g, int x, int y, int xOffset, int yOffset) {
+        int count = collider.getPointCount();
         for (int i = 0; i < count - 1; i++) {
-            g.drawLine(x + vector.getPointX(i) + xOffset, y + vector.getPointY(i) + yOffset,
-                    x + vector.getPointX(i + 1) + xOffset, y + vector.getPointY(i + 1) + yOffset);
+            g.drawLine(x + collider.getPointX(i) + xOffset, y + collider.getPointY(i) + yOffset,
+                    x + collider.getPointX(i + 1) + xOffset, y + collider.getPointY(i + 1) + yOffset);
         }
         // Draw the final lines
-        g.drawLine(x + vector.getPointX(count - 1) + xOffset, y + vector.getPointY(count - 1) + yOffset,
-                x + vector.getPointX(0) + xOffset, y + vector.getPointY(0) + yOffset);
+        g.drawLine(x + collider.getPointX(count - 1) + xOffset, y + collider.getPointY(count - 1) + yOffset,
+                x + collider.getPointX(0) + xOffset, y + collider.getPointY(0) + yOffset);
+    }
+    
+    private void drawTrigger(Trigger trigger, Graphics g, int x, int y, int xOffset, int yOffset) {
+        int count = trigger.getPointCount();
+        for (int i = 0; i < count - 1; i++) {
+            g.drawLine(x + trigger.getPointX(i) + xOffset, y + trigger.getPointY(i) + yOffset,
+                    x + trigger.getPointX(i + 1) + xOffset, y + trigger.getPointY(i + 1) + yOffset);
+        }
+        // Draw the final lines
+        g.drawLine(x + trigger.getPointX(count - 1) + xOffset, y + trigger.getPointY(count - 1) + yOffset,
+                x + trigger.getPointX(0) + xOffset, y + trigger.getPointY(0) + yOffset);
     }
 
 }

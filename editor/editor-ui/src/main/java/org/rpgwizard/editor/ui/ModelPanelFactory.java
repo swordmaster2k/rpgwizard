@@ -49,7 +49,7 @@ public final class ModelPanelFactory {
             // TODO
         } else if (model instanceof Animation) {
             return new AnimationModelPanel((Animation) model);
-        } else if (model instanceof Character) {
+        } else if (model instanceof Sprite) {
             return new SpriteModelPanel((Sprite) model);
         } else if (model instanceof Tile) {
             return new TileModelPanel((Tile) model);

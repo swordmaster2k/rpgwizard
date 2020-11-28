@@ -899,7 +899,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         return null;
     }
 
-    public void createNewCharacter() {
+    public void createNewSprite() {
         LOGGER.info("Creating new {}.", Sprite.class.getSimpleName());
         Sprite sprite = new Sprite();
         sprite.setName("Untitled");

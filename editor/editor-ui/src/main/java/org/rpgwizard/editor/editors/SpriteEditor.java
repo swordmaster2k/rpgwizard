@@ -201,23 +201,30 @@ public final class SpriteEditor extends AbstractAssetEditorWindow implements Spr
         GroupLayout statsLayout = GuiHelper.createGroupLayout(statsEditPanel);
 
         GroupLayout.ParallelGroup horizontalParallelGroup = statsLayout.createParallelGroup();
-        GroupLayout.SequentialGroup sequentialGroup;
+        GroupLayout.SequentialGroup sequentialGroup1;
+        GroupLayout.SequentialGroup sequentialGroup2;
         int length = labels.size();
         for (int i = 0; i < length; i++) {
-            sequentialGroup = statsLayout.createSequentialGroup();
-            sequentialGroup.addComponent(labels.get(i));
-            sequentialGroup.addComponent(inputs.get(i));
-
-            statsLayout.setHorizontalGroup(horizontalParallelGroup.addGroup(sequentialGroup));
+            sequentialGroup1 = statsLayout.createSequentialGroup();
+            sequentialGroup1.addComponent(labels.get(i));
+            statsLayout.setHorizontalGroup(horizontalParallelGroup.addGroup(sequentialGroup1));
+            
+            sequentialGroup2 = statsLayout.createSequentialGroup();
+            sequentialGroup2.addComponent(inputs.get(i));
+            statsLayout.setHorizontalGroup(horizontalParallelGroup.addGroup(sequentialGroup2));
         }
 
         GroupLayout.SequentialGroup verticalSequentialGroup = statsLayout.createSequentialGroup();
-        GroupLayout.ParallelGroup parallelGroup;
+        GroupLayout.ParallelGroup parallelGroup1;
+        GroupLayout.ParallelGroup parallelGroup2;
         for (int i = 0; i < length; i++) {
-            parallelGroup = statsLayout.createParallelGroup();
-            parallelGroup.addComponent(labels.get(i));
-            parallelGroup.addComponent(inputs.get(i));
-            statsLayout.setVerticalGroup(verticalSequentialGroup.addGroup(parallelGroup));
+            parallelGroup1 = statsLayout.createParallelGroup();
+            parallelGroup1.addComponent(labels.get(i));
+            statsLayout.setVerticalGroup(verticalSequentialGroup.addGroup(parallelGroup1));
+            
+            parallelGroup2 = statsLayout.createParallelGroup();
+            parallelGroup2.addComponent(inputs.get(i));
+            statsLayout.setVerticalGroup(verticalSequentialGroup.addGroup(parallelGroup2));
         }
 
         statsLayout.linkSize(SwingConstants.HORIZONTAL, labels.toArray(new Component[labels.size()]));
@@ -226,8 +233,8 @@ public final class SpriteEditor extends AbstractAssetEditorWindow implements Spr
 
         JPanel westPanel = new JPanel(new BorderLayout());
         westPanel.add(statsEditPanel, BorderLayout.NORTH);
-        westPanel.setPreferredSize(new Dimension(250, 500));
-        westPanel.setBorder(BorderFactory.createTitledBorder(defaultEtchedBorder, "Starting Stats"));
+        westPanel.setPreferredSize(new Dimension(200, 500));
+        westPanel.setBorder(BorderFactory.createTitledBorder(defaultEtchedBorder, "Configuration"));
 
         // DIVIDER
 
@@ -240,7 +247,7 @@ public final class SpriteEditor extends AbstractAssetEditorWindow implements Spr
 
         JScrollPane animationScrollPane = new JScrollPane(animationsTable);
 
-        animatedPanel = new AnimatedPanel(new Dimension(0, AnimatedPanel.DEFAULT_HEIGHT));
+        animatedPanel = new AnimatedPanel(new Dimension(700, AnimatedPanel.DEFAULT_HEIGHT));
 
         addButton = new JButton();
         addButton.setIcon(Icons.getSmallIcon("new"));
@@ -362,10 +369,8 @@ public final class SpriteEditor extends AbstractAssetEditorWindow implements Spr
         }
 
         if (selectedAnim != null) {
-            // animatedPanel.setBaseVector(sprite.getBaseVector());
-            // animatedPanel.setActivationVector(sprite.getActivationVector());
-            // animatedPanel.setBaseVectorOffset(sprite.getBaseVectorOffset());
-            // animatedPanel.setActivationVectorOffset(sprite.getActivationVectorOffset());
+            animatedPanel.setCollider(sprite.getCollider());
+            animatedPanel.setTrigger(sprite.getTrigger());
         }
 
         try {

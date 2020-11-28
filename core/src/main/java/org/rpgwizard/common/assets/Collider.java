@@ -7,6 +7,7 @@
  */
 package org.rpgwizard.common.assets;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
@@ -26,6 +27,21 @@ public class Collider {
     public Collider() {
         enabled = true;
         points = new ArrayList<>();
+    }
+    
+    @JsonIgnore
+    public int getPointCount() {
+        return points.size();
+    }
+
+    @JsonIgnore
+    public int getPointX(int index) {
+        return (int) points.get(index).getX();
+    }
+
+    @JsonIgnore
+    public int getPointY(int index) {
+        return (int) points.get(index).getY();
     }
 
     public void addPoint(int x, int y) {

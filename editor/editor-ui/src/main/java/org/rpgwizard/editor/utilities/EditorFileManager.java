@@ -102,7 +102,7 @@ public class EditorFileManager {
         } else if (type == Item.class) {
             return CoreProperties.getProperty("toolkit.directory.item");
         } else if (type == Sprite.class) {
-            return CoreProperties.getProperty("toolkit.directory.sprite");
+            return CoreProperties.getProperty("toolkit.directory.sprites");
         } else if (type == Program.class) {
             return CoreProperties.getProperty("toolkit.directory.program");
         } else if (type == Tileset.class) {

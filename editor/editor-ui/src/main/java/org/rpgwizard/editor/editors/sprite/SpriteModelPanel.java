@@ -8,7 +8,6 @@
 package org.rpgwizard.editor.editors.sprite;
 
 import org.rpgwizard.common.assets.sprite.Sprite;
-import org.rpgwizard.editor.editors.sprite.AbstractSpriteModelPanel;
 
 /**
  *

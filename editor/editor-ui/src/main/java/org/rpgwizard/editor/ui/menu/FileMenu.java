@@ -34,10 +34,8 @@ public final class FileMenu extends JMenu implements ActionListener {
     private JMenuItem newProjectMenuItem;
     private JMenuItem newAnimationMenuItem;
     private JMenuItem newBoardMenuItem;
-    private JMenuItem newCharacterMenuItem;
-    private JMenuItem newEnemyMenuItem;
     private JMenuItem newItemMenuItem;
-    private JMenuItem newNPCMenuItem;
+    private JMenuItem newSpriteMenuItem;
     private JMenuItem newProgramMenuItem;
     private JMenuItem newTilesetMenuItem;
 
@@ -115,8 +113,8 @@ public final class FileMenu extends JMenu implements ActionListener {
             MainWindow.getInstance().createNewAnimation();
         } else if (e.getSource() == newBoardMenuItem) {
             MainWindow.getInstance().createNewBoard();
-        } else if (e.getSource() == newCharacterMenuItem) {
-            MainWindow.getInstance().createNewCharacter();
+        } else if (e.getSource() == newSpriteMenuItem) {
+            MainWindow.getInstance().createNewSprite();
         } else if (e.getSource() == newItemMenuItem) {
             MainWindow.getInstance().createNewItem();
         } else if (e.getSource() == newProgramMenuItem) {
@@ -133,10 +131,8 @@ public final class FileMenu extends JMenu implements ActionListener {
         openFileMenuItem.setEnabled(true);
         newAnimationMenuItem.setEnabled(true);
         newBoardMenuItem.setEnabled(true);
-        newCharacterMenuItem.setEnabled(true);
-        newEnemyMenuItem.setEnabled(true);
         newItemMenuItem.setEnabled(true);
-        newNPCMenuItem.setEnabled(true);
+        newSpriteMenuItem.setEnabled(true);
         newProgramMenuItem.setEnabled(true);
         newTilesetMenuItem.setEnabled(true);
         saveMenuItem.setEnabled(true);
@@ -163,10 +159,8 @@ public final class FileMenu extends JMenu implements ActionListener {
         configureNewProjectMenuItem();
         configureNewAnimationMenuItem();
         configureNewBoardMenuItem();
-        configureNewCharacterMenuItem();
-        configureNewEnemyMenuItem();
         configureNewItemMenuItem();
-        configureNewNPCMenuItem();
+        configureNewSpriteMenuItem();
         configureNewProgramMenuItem();
         configureNewTilesetMenuItem();
 
@@ -174,10 +168,8 @@ public final class FileMenu extends JMenu implements ActionListener {
         newMenu.setEnabled(true);
         newMenu.add(newAnimationMenuItem);
         newMenu.add(newBoardMenuItem);
-        newMenu.add(newCharacterMenuItem);
-        newMenu.add(newEnemyMenuItem);
         newMenu.add(newItemMenuItem);
-        newMenu.add(newNPCMenuItem);
+        newMenu.add(newSpriteMenuItem);
         newMenu.add(newProgramMenuItem);
         newMenu.add(newTilesetMenuItem);
     }
@@ -214,20 +206,6 @@ public final class FileMenu extends JMenu implements ActionListener {
         newBoardMenuItem.setIcon(Icons.getSmallIcon("new-board"));
     }
 
-    private void configureNewCharacterMenuItem() {
-        newCharacterMenuItem = new JMenuItem("New Character");
-        newCharacterMenuItem.setEnabled(false);
-        newCharacterMenuItem.addActionListener(this);
-        newCharacterMenuItem.setIcon(Icons.getSmallIcon("new-character"));
-    }
-
-    private void configureNewEnemyMenuItem() {
-        newEnemyMenuItem = new JMenuItem("New Enemy");
-        newEnemyMenuItem.setEnabled(false);
-        newEnemyMenuItem.addActionListener(this);
-        newEnemyMenuItem.setIcon(Icons.getSmallIcon("new-enemy"));
-    }
-
     private void configureNewItemMenuItem() {
         newItemMenuItem = new JMenuItem("New Item");
         newItemMenuItem.setEnabled(false);
@@ -235,11 +213,11 @@ public final class FileMenu extends JMenu implements ActionListener {
         newItemMenuItem.setIcon(Icons.getSmallIcon("new-item"));
     }
 
-    private void configureNewNPCMenuItem() {
-        newNPCMenuItem = new JMenuItem("New NPC");
-        newNPCMenuItem.setEnabled(false);
-        newNPCMenuItem.addActionListener(this);
-        newNPCMenuItem.setIcon(Icons.getSmallIcon("new-npc"));
+    private void configureNewSpriteMenuItem() {
+        newSpriteMenuItem = new JMenuItem("New Sprite");
+        newSpriteMenuItem.setEnabled(false);
+        newSpriteMenuItem.addActionListener(this);
+        newSpriteMenuItem.setIcon(Icons.getSmallIcon("new-npc"));
     }
 
     private void configureOpenProjectMenuItem() {

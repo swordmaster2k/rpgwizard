@@ -19,17 +19,17 @@ import org.rpgwizard.common.assets.Location;
  */
 @Data
 public class MapSprite {
-    
+
     private String asset;
     private String thread;
     private Location startLocation;
     private List<Event> events;
-    
+
     public MapSprite() {
         startLocation = new Location();
         events = new ArrayList<>();
     }
-    
+
     /**
      * Copy constructor.
      *
@@ -44,5 +44,5 @@ public class MapSprite {
             events.add(new Event(e));
         });
     }
-    
+
 }

@@ -84,7 +84,8 @@ public abstract class AbstractSpriteModelPanel extends AbstractModelPanel {
         /// colliderHeightSpinner
         ///
         colliderHeightSpinner = getJSpinner((int) colliderPolygon.getBounds().getHeight());
-        colliderHeightSpinner.setModel(new SpinnerNumberModel((int) colliderPolygon.getBounds().getHeight(), 1, 100, 1));
+        colliderHeightSpinner
+                .setModel(new SpinnerNumberModel((int) colliderPolygon.getBounds().getHeight(), 1, 100, 1));
         colliderHeightSpinner.setEnabled(sprite.getCollider().isEnabled());
         colliderHeightSpinner.addChangeListener((ChangeEvent e) -> {
             Polygon localPolygon = pointsToPolygon(sprite.getCollider().getPoints());
@@ -173,8 +174,7 @@ public abstract class AbstractSpriteModelPanel extends AbstractModelPanel {
         /// triggerHeightSpinner
         ///
         triggerHeightSpinner = getJSpinner((int) triggerPolygon.getBounds().getHeight());
-        triggerHeightSpinner
-                .setModel(new SpinnerNumberModel((int) triggerPolygon.getBounds().getHeight(), 1, 100, 1));
+        triggerHeightSpinner.setModel(new SpinnerNumberModel((int) triggerPolygon.getBounds().getHeight(), 1, 100, 1));
         triggerHeightSpinner.setEnabled(sprite.getTrigger().isEnabled());
         triggerHeightSpinner.addChangeListener((ChangeEvent e) -> {
             Polygon localPolygon = pointsToPolygon(sprite.getTrigger().getPoints());

@@ -19,11 +19,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MapImage {
-    
+
     private String image;
     private int x;
     private int y;
-    
+
     /**
      * Copy constructor.
      *
@@ -34,5 +34,5 @@ public class MapImage {
         this.x = mapImage.x;
         this.y = mapImage.y;
     }
-    
+
 }

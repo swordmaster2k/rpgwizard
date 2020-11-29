@@ -73,7 +73,7 @@ public class AnimatedPanel extends AbstractImagePanel implements AnimationChange
         super(dimension);
         init();
     }
-    
+
     @Override
     public Dimension getPreferredSize() {
         if (dimension == null) {
@@ -97,7 +97,7 @@ public class AnimatedPanel extends AbstractImagePanel implements AnimationChange
         }
         return dimension;
     }
-    
+
     public Animation getAnimation() {
         return animation;
     }
@@ -287,7 +287,7 @@ public class AnimatedPanel extends AbstractImagePanel implements AnimationChange
         g.drawLine(x + collider.getPointX(count - 1) + xOffset, y + collider.getPointY(count - 1) + yOffset,
                 x + collider.getPointX(0) + xOffset, y + collider.getPointY(0) + yOffset);
     }
-    
+
     private void drawTrigger(Trigger trigger, Graphics g, int x, int y, int xOffset, int yOffset) {
         int count = trigger.getPointCount();
         for (int i = 0; i < count - 1; i++) {

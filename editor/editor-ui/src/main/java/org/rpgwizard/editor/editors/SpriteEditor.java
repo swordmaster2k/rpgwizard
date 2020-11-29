@@ -208,7 +208,7 @@ public final class SpriteEditor extends AbstractAssetEditorWindow implements Spr
             sequentialGroup1 = statsLayout.createSequentialGroup();
             sequentialGroup1.addComponent(labels.get(i));
             statsLayout.setHorizontalGroup(horizontalParallelGroup.addGroup(sequentialGroup1));
-            
+
             sequentialGroup2 = statsLayout.createSequentialGroup();
             sequentialGroup2.addComponent(inputs.get(i));
             statsLayout.setHorizontalGroup(horizontalParallelGroup.addGroup(sequentialGroup2));
@@ -221,7 +221,7 @@ public final class SpriteEditor extends AbstractAssetEditorWindow implements Spr
             parallelGroup1 = statsLayout.createParallelGroup();
             parallelGroup1.addComponent(labels.get(i));
             statsLayout.setVerticalGroup(verticalSequentialGroup.addGroup(parallelGroup1));
-            
+
             parallelGroup2 = statsLayout.createParallelGroup();
             parallelGroup2.addComponent(inputs.get(i));
             statsLayout.setVerticalGroup(verticalSequentialGroup.addGroup(parallelGroup2));

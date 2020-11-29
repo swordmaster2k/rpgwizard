@@ -28,7 +28,7 @@ public class Collider {
         enabled = true;
         points = new ArrayList<>();
     }
-    
+
     /**
      * Copy constructor.
      *
@@ -40,7 +40,7 @@ public class Collider {
         this.y = collider.y;
         this.points = collider.points;
     }
-    
+
     @JsonIgnore
     public int getPointCount() {
         return points.size();

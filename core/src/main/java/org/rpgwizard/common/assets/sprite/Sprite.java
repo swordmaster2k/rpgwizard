@@ -42,7 +42,7 @@ public class Sprite extends AbstractAsset {
 
     public Sprite() {
         animations = new HashMap<>();
-        
+
         collider = new Collider();
         collider.addPoint(0, 0);
         collider.addPoint(0, 20);
@@ -51,7 +51,7 @@ public class Sprite extends AbstractAsset {
         collider.addPoint(0, 0);
         collider.setX(-10);
         collider.setY(-10);
-        
+
         trigger = new Trigger();
         trigger.addPoint(0, 0);
         trigger.addPoint(0, 30);
@@ -60,7 +60,7 @@ public class Sprite extends AbstractAsset {
         trigger.addPoint(0, 0);
         trigger.setX(-15);
         trigger.setY(-15);
-        
+
         data = new HashMap<>();
     }
 

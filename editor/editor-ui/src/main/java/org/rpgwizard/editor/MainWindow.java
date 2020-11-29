@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
 import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -47,11 +46,11 @@ import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.AssetException;
 import org.rpgwizard.common.assets.AssetHandle;
 import org.rpgwizard.common.assets.AssetManager;
-import org.rpgwizard.common.assets.board.Board;
 import org.rpgwizard.common.assets.Image;
 import org.rpgwizard.common.assets.Item;
 import org.rpgwizard.common.assets.Program;
 import org.rpgwizard.common.assets.game.Game;
+import org.rpgwizard.common.assets.map.Map;
 import org.rpgwizard.common.assets.sprite.Sprite;
 import org.rpgwizard.common.assets.tileset.Tile;
 import org.rpgwizard.common.assets.tileset.Tileset;
@@ -106,7 +105,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
     private static final MainWindow INSTANCE = new MainWindow();
 
     private final JDesktopPane desktopPane;
-    private final Map<File, AbstractAssetEditorWindow> editorMap;
+    private final java.util.Map<File, AbstractAssetEditorWindow> editorMap;
 
     private final MainMenuBar menuBar;
     private final MainToolBar toolBar;
@@ -711,7 +710,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         String fileName = file.getName().toLowerCase();
         if (fileName.endsWith(CoreProperties.getDefaultExtension(Animation.class))) {
             addToolkitEditorWindow(EditorFactory.getEditor(openAnimation(file)));
-        } else if (fileName.endsWith(CoreProperties.getDefaultExtension(Board.class))) {
+        } else if (fileName.endsWith(CoreProperties.getDefaultExtension(Map.class))) {
             addToolkitEditorWindow(EditorFactory.getEditor(openBoard(file)));
         } else if (fileName.endsWith(CoreProperties.getDefaultExtension(Item.class))) {
             addToolkitEditorWindow(EditorFactory.getEditor(openItem(file)));
@@ -835,41 +834,41 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         return null;
     }
 
-    public void createNewBoard() {
-        LOGGER.info("Creating new {}.", Board.class.getSimpleName());
+    public void createNewMap() {
+        LOGGER.info("Creating new {}.", Map.class.getSimpleName());
 
         NewBoardDialog dialog = new NewBoardDialog(this);
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
 
         if (dialog.getValue() != null) {
-            Board board = new Board(null, dialog.getValue()[0], dialog.getValue()[1], dialog.getValue()[2],
+            Map board = new Map(null, dialog.getValue()[0], dialog.getValue()[1], dialog.getValue()[2],
                     dialog.getValue()[3]);
             addToolkitEditorWindow(EditorFactory.getEditor(board));
         }
     }
 
-    public Board openBoard(File file) {
-        LOGGER.info("Opening {} file=[{}].", Board.class.getSimpleName(), file);
+    public Map openBoard(File file) {
+        LOGGER.info("Opening {} file=[{}].", Map.class.getSimpleName(), file);
 
         try {
             if (file.canRead()) {
                 AssetHandle handle = AssetManager.getInstance().deserialize(new AssetDescriptor(file.toURI()));
-                Board board = (Board) handle.getAsset();
+                Map map = (Map) handle.getAsset();
 
                 // Setup the TileSets used on this Board.
-                for (Tileset tileSet : board.getTileSets().values()) {
+                for (String tileset : map.getTilesets()) {
                     String path = System.getProperty("project.path") + File.separator
-                            + EditorFileManager.getTypeSubdirectory(Tileset.class) + File.separator + tileSet.getName();
+                            + EditorFileManager.getTypeSubdirectory(Tileset.class) + File.separator + tileset;
                     openTileset(new File(path));
                 }
+                
+                map.loadTiles();
 
-                board.loadTiles();
-
-                return board;
+                return map;
             }
         } catch (IOException | AssetException ex) {
-            LOGGER.error("Failed to open {} file=[{}].", Board.class.getSimpleName(), file, ex);
+            LOGGER.error("Failed to open {} file=[{}].", Map.class.getSimpleName(), file, ex);
         }
 
         return null;

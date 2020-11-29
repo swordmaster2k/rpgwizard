@@ -25,7 +25,7 @@ public class Event {
     public Event() {
 
     }
-    
+
     /**
      * Copy constructor.
      *

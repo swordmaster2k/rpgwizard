@@ -104,6 +104,28 @@ public class BoardLayer implements Cloneable {
         locked = boardLayer.locked;
         opacity = boardLayer.opacity;
     }
+    
+    /**
+     * Directly clones the layer.
+     *
+     * @return clone of layer
+     * @throws CloneNotSupportedException
+     */
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        super.clone();
+
+        BoardLayer layer = new BoardLayer(board);
+        layer.images = (ArrayList<BoardLayerImage>) images.clone();
+        layer.name = name + "_clone";
+        layer.number = number;
+        layer.sprites = (ArrayList<BoardSprite>) sprites.clone();
+        layer.tiles = (Tile[][]) tiles.clone();
+        layer.vectors = (ArrayList<BoardVector>) vectors.clone();
+        layer.moveLayerUp();
+
+        return layer;
+    }
 
     public boolean isVisible() {
         return visible;
@@ -395,28 +417,6 @@ public class BoardLayer implements Cloneable {
         for (BoardLayerImage image : images) {
             image.setLayer(number);
         }
-    }
-
-    /**
-     * Directly clones the layer.
-     *
-     * @return clone of layer
-     * @throws CloneNotSupportedException
-     */
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        super.clone();
-
-        BoardLayer layer = new BoardLayer(board);
-        layer.images = (ArrayList<BoardLayerImage>) images.clone();
-        layer.name = name + "_clone";
-        layer.number = number;
-        layer.sprites = (ArrayList<BoardSprite>) sprites.clone();
-        layer.tiles = (Tile[][]) tiles.clone();
-        layer.vectors = (ArrayList<BoardVector>) vectors.clone();
-        layer.moveLayerUp();
-
-        return layer;
     }
 
     /**

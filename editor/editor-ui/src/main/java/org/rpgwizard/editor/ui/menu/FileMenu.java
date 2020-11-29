@@ -112,7 +112,7 @@ public final class FileMenu extends JMenu implements ActionListener {
         } else if (e.getSource() == newAnimationMenuItem) {
             MainWindow.getInstance().createNewAnimation();
         } else if (e.getSource() == newBoardMenuItem) {
-            MainWindow.getInstance().createNewBoard();
+            MainWindow.getInstance().createNewMap();
         } else if (e.getSource() == newSpriteMenuItem) {
             MainWindow.getInstance().createNewSprite();
         } else if (e.getSource() == newItemMenuItem) {

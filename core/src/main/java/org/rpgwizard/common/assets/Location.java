@@ -19,11 +19,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Location {
-    
+
     private int x;
     private int y;
     private int layer;
-    
+
     /**
      * Copy constructor.
      *
@@ -34,5 +34,5 @@ public class Location {
         this.y = location.y;
         this.layer = location.layer;
     }
-    
+
 }

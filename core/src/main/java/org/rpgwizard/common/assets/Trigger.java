@@ -43,7 +43,7 @@ public class Trigger {
         this.points = trigger.points;
         this.events = trigger.events;
     }
-    
+
     @JsonIgnore
     public int getPointCount() {
         return points.size();
@@ -58,7 +58,7 @@ public class Trigger {
     public int getPointY(int index) {
         return (int) points.get(index).getY();
     }
-    
+
     public void addPoint(int x, int y) {
         points.add(new Point(x, y));
     }

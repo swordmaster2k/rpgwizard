@@ -44,10 +44,6 @@ public class BoardLayer implements Cloneable {
      */
     private Tile[][] tiles;
     /**
-     * A list of all the lights used on this layer.
-     */
-    private ArrayList<BoardLight> lights;
-    /**
      * A list of all the vectors on this layer.
      */
     private ArrayList<BoardVector> vectors;
@@ -69,7 +65,6 @@ public class BoardLayer implements Cloneable {
     public BoardLayer(Board parentBoard) {
         board = parentBoard;
         tiles = new Tile[board.getWidth()][board.getHeight()];
-        lights = new ArrayList<>();
         vectors = new ArrayList<>();
         sprites = new ArrayList<>();
         images = new ArrayList<>();
@@ -93,8 +88,6 @@ public class BoardLayer implements Cloneable {
         number = boardLayer.number;
         images = new ArrayList<>(
                 boardLayer.images.stream().map(item -> new BoardLayerImage(item)).collect(Collectors.toList()));
-        lights = new ArrayList<>(
-                boardLayer.lights.stream().map(item -> new BoardLight(item)).collect(Collectors.toList()));
         sprites = new ArrayList<>(
                 boardLayer.sprites.stream().map(item -> new BoardSprite(item)).collect(Collectors.toList()));
         vectors = new ArrayList<>(
@@ -210,25 +203,6 @@ public class BoardLayer implements Cloneable {
      */
     public void setTiles(Tile[][] tiles) {
         this.tiles = tiles;
-    }
-
-    /**
-     * Gets the board lights used on this layer.
-     *
-     * @return board lights on this layer
-     */
-    public ArrayList<BoardLight> getLights() {
-        return lights;
-    }
-
-    /**
-     * Sets the board lights used on this layer.
-     *
-     * @param lights
-     *            board lights on this layer
-     */
-    public void setLights(ArrayList<BoardLight> lights) {
-        this.lights = lights;
     }
 
     /**
@@ -391,10 +365,6 @@ public class BoardLayer implements Cloneable {
     public void moveLayerUp() {
         number++;
 
-        for (BoardLight light : lights) {
-            light.setLayer(number);
-        }
-
         for (BoardVector vector : vectors) {
             vector.setLayer(number);
         }
@@ -413,10 +383,6 @@ public class BoardLayer implements Cloneable {
      */
     public void moveLayerDown() {
         number--;
-
-        for (BoardLight light : lights) {
-            light.setLayer(number);
-        }
 
         for (BoardVector vector : vectors) {
             vector.setLayer(number);
@@ -443,7 +409,6 @@ public class BoardLayer implements Cloneable {
 
         BoardLayer layer = new BoardLayer(board);
         layer.images = (ArrayList<BoardLayerImage>) images.clone();
-        layer.lights = (ArrayList<BoardLight>) lights.clone();
         layer.name = name + "_clone";
         layer.number = number;
         layer.sprites = (ArrayList<BoardSprite>) sprites.clone();

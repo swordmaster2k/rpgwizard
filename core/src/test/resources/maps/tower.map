@@ -1,0 +1,96 @@
+
+{
+    "name": "Tower",
+    "width": 12,
+    "height": 20,
+    "tileWidth": 32,
+    "tileHeight": 32,
+    "music": "Tower.ogg",
+    "tilesets": ["tower.tileset"],
+    "entryScript": "some-script.js",
+    "startLocation": {
+        "x": 191,
+        "y": 558,
+        "layer": 0
+    },
+    "layers": [{
+            "id": "Floor",
+            "tiles": ["-1:-1", "0:1", "0:2"],
+            "colliders": {
+                "collider-1": {
+                    "points": [{
+                            "x": 64,
+                            "y": 352
+                        }, {
+                            "x": 320,
+                            "y": 352
+                        }
+                    ]
+                },
+                "collider-2": {
+                    "points": [{
+                            "x": 160,
+                            "y": 128
+                        }, {
+                            "x": 160,
+                            "y": 160
+                        }, {
+                            "x": 224,
+                            "y": 160
+                        }, {
+                            "x": 224,
+                            "y": 128
+                        }
+                    ]
+                }
+            },
+            "triggers": {
+                "trigger-1": {
+                    "events": [{
+                            "script": "GameOver.js",
+                            "type": "overlap"
+                        }
+                    ],
+                    "points": [{
+                            "x": 160,
+                            "y": 128
+                        }, {
+                            "x": 160,
+                            "y": 160
+                        }, {
+                            "x": 224,
+                            "y": 160
+                        }, {
+                            "x": 224,
+                            "y": 128
+                        }
+                    ]
+                }
+            },
+            "sprites": {
+                "sprite-1": {
+                    "asset": "Torch.npc",
+                    "thread": "Idle.js",
+                    "startLocation": {
+                        "x": 112,
+                        "y": 80,
+                        "layer": 0
+                    },
+                    "events": [{
+                            "script": "turn-off.js",
+                            "type": "keypress"
+                        }
+                    ]
+                }
+            },
+            "images": {
+                "image-1": {
+                    "image": "rooms/above.png",
+                    "x": 120,
+                    "y": 12
+                }
+            }
+        }
+    ],
+    "version": "2.0.0"
+}

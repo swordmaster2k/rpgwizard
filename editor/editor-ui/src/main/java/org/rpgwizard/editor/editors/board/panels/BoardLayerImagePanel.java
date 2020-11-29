@@ -17,7 +17,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import org.apache.commons.lang3.ArrayUtils;
 import org.rpgwizard.common.assets.board.BoardLayerImage;
-import org.rpgwizard.common.assets.board.model.BoardModelEvent;
+import org.rpgwizard.common.assets.board.BoardModelEvent;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.editors.board.BoardLayerView;
 import org.rpgwizard.editor.utilities.EditorFileManager;

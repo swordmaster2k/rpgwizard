@@ -31,6 +31,19 @@ public class Trigger {
         events = new ArrayList<>();
     }
 
+    /**
+     * Copy constructor.
+     *
+     * @param trigger
+     */
+    public Trigger(Trigger trigger) {
+        this.enabled = trigger.enabled;
+        this.x = trigger.x;
+        this.y = trigger.y;
+        this.points = trigger.points;
+        this.events = trigger.events;
+    }
+    
     @JsonIgnore
     public int getPointCount() {
         return points.size();

@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import org.apache.commons.io.FilenameUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,6 +34,7 @@ import org.rpgwizard.common.assets.tileset.Tileset;
 import org.rpgwizard.common.assets.board.BoardLayerImage;
 import org.rpgwizard.common.assets.board.BoardVector;
 import org.rpgwizard.common.assets.board.BoardVectorType;
+import org.rpgwizard.common.assets.map.Map;
 import org.rpgwizard.common.assets.sprite.Sprite;
 
 /**
@@ -58,7 +58,7 @@ public abstract class AbstractJsonSerializer extends AbstractAssetSerializer {
             // Store the asset contents into a JSON representation
             JSONObject obj = new JSONObject();
             if (handle.getAsset() instanceof Game || handle.getAsset() instanceof Tileset
-                    || handle.getAsset() instanceof Sprite) { // REFACTOR: Remove this
+                    || handle.getAsset() instanceof Sprite || handle.getAsset() instanceof Map) { // REFACTOR: Remove this
                 obj = store(handle);
             } else {
                 store(handle, obj);
@@ -326,7 +326,7 @@ public abstract class AbstractJsonSerializer extends AbstractAssetSerializer {
         return map;
     }
 
-    protected static JSONObject serializeMap(Map map) throws JSONException {
+    protected static JSONObject serializeMap(java.util.Map map) throws JSONException {
         JSONObject json = new JSONObject();
         for (Object key : map.keySet()) {
             json.put(key.toString(), serializePath(map.get(key).toString()));

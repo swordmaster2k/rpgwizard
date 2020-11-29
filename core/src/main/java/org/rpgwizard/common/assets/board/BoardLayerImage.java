@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.UUID;
 import org.rpgwizard.common.Selectable;
-import org.rpgwizard.common.assets.board.model.AbstractBoardModel;
 
 /**
  *

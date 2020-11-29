@@ -12,7 +12,6 @@ import org.rpgwizard.common.assets.board.Board;
 import org.rpgwizard.common.assets.Image;
 import org.rpgwizard.common.assets.tileset.Tile;
 import org.rpgwizard.common.assets.board.BoardLayerImage;
-import org.rpgwizard.common.assets.board.BoardLight;
 import org.rpgwizard.common.assets.board.BoardSprite;
 import org.rpgwizard.common.assets.board.BoardVector;
 import org.rpgwizard.common.assets.sprite.Sprite;
@@ -45,8 +44,6 @@ public final class ModelPanelFactory {
             return new BoardSpritePanel((BoardSprite) model);
         } else if (model instanceof BoardLayerImage) {
             return new BoardLayerImagePanel((BoardLayerImage) model);
-        } else if (model instanceof BoardLight) {
-            // TODO
         } else if (model instanceof Animation) {
             return new AnimationModelPanel((Animation) model);
         } else if (model instanceof Sprite) {

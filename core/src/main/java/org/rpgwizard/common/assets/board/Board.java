@@ -21,6 +21,7 @@ import java.util.Map;
 import org.rpgwizard.common.Selectable;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.AssetDescriptor;
+import org.rpgwizard.common.assets.Location;
 import org.rpgwizard.common.assets.tileset.Tile;
 import org.rpgwizard.common.assets.tileset.Tileset;
 import org.rpgwizard.common.assets.events.BoardChangedEvent;
@@ -64,7 +65,7 @@ public final class Board extends AbstractAsset implements Selectable {
     private LinkedHashMap<String, Tileset> tileSets;
     private LinkedList<BoardLayer> layers;
     private int[][][] boardDimensions; // x, y, z
-    private StartingPosition startingPosition;
+    private Location startingPosition;
     private String backgroundMusic;
     private String firstRunProgram;
 
@@ -75,7 +76,7 @@ public final class Board extends AbstractAsset implements Selectable {
      */
     public Board(AssetDescriptor descriptor) {
         super(descriptor);
-        startingPosition = new StartingPosition();
+        startingPosition = new Location();
         tileSets = new LinkedHashMap<>();
         layers = new LinkedList<>();
         boardChangeListeners = new LinkedList<>();
@@ -100,8 +101,8 @@ public final class Board extends AbstractAsset implements Selectable {
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
         addLayer();
-        startingPosition.x = (width * tileWidth) / 2;
-        startingPosition.y = (height * tileHeight) / 2;
+        startingPosition.setX((width * tileWidth) / 2);
+        startingPosition.setY((height * tileHeight) / 2);
     }
 
     /**
@@ -130,7 +131,7 @@ public final class Board extends AbstractAsset implements Selectable {
         name = board.name;
         perspective = board.perspective;
         selectedState = board.selectedState;
-        startingPosition = new StartingPosition(board.startingPosition);
+        startingPosition = new Location(board.startingPosition);
         tileWidth = board.tileWidth;
         tileHeight = board.tileHeight;
         tileSets = board.tileSets; // No need to deep copy
@@ -254,11 +255,11 @@ public final class Board extends AbstractAsset implements Selectable {
         fireBoardLayerImageRemoved(image);
     }
 
-    public StartingPosition getStartingPosition() {
+    public Location getStartingPosition() {
         return startingPosition;
     }
 
-    public void setStartingPosition(StartingPosition startingPosition) {
+    public void setStartingPosition(Location startingPosition) {
         this.startingPosition = startingPosition;
     }
 
@@ -268,7 +269,7 @@ public final class Board extends AbstractAsset implements Selectable {
      * @return starting x position
      */
     public int getStartingPositionX() {
-        return startingPosition.x;
+        return startingPosition.getX();
     }
 
     /**
@@ -278,7 +279,7 @@ public final class Board extends AbstractAsset implements Selectable {
      *            new starting x position
      */
     public void setStartingPositionX(int startingPositionX) {
-        startingPosition.x = startingPositionX;
+        startingPosition.setX(startingPositionX);
     }
 
     /**
@@ -287,7 +288,7 @@ public final class Board extends AbstractAsset implements Selectable {
      * @return starting y position
      */
     public int getStartingPositionY() {
-        return startingPosition.y;
+        return startingPosition.getY();
     }
 
     /**
@@ -297,7 +298,7 @@ public final class Board extends AbstractAsset implements Selectable {
      *            new starting y position
      */
     public void setStartingPositionY(int startingPositionY) {
-        this.startingPosition.y = startingPositionY;
+        this.startingPosition.setY(startingPositionY);
     }
 
     /**
@@ -306,7 +307,7 @@ public final class Board extends AbstractAsset implements Selectable {
      * @return starting layer index.
      */
     public int getStartingLayer() {
-        return startingPosition.layer;
+        return startingPosition.getLayer();
     }
 
     /**
@@ -316,7 +317,7 @@ public final class Board extends AbstractAsset implements Selectable {
      *            new starting layer index
      */
     public void setStartingLayer(int startingLayer) {
-        this.startingPosition.layer = startingLayer;
+        this.startingPosition.setLayer(startingLayer);
     }
 
     /**
@@ -507,7 +508,7 @@ public final class Board extends AbstractAsset implements Selectable {
         boardDimensions = new int[width][height][layers.size()];
         backgroundMusic = "";
         firstRunProgram = "";
-        startingPosition = new StartingPosition();
+        startingPosition = new Location();
     }
 
     /**

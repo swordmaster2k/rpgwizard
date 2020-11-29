@@ -5,16 +5,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package org.rpgwizard.common.assets.board.model;
+package org.rpgwizard.common.assets.board;
+
+import java.util.EventObject;
 
 /**
  *
  * @author Joshua Michael Daly
  */
-public interface BoardModelChangeListener {
+public class BoardModelEvent extends EventObject {
 
-    public void modelChanged(BoardModelEvent e);
-
-    public void modelMoved(BoardModelEvent e);
+    public BoardModelEvent(AbstractBoardModel source) {
+        super(source);
+    }
 
 }

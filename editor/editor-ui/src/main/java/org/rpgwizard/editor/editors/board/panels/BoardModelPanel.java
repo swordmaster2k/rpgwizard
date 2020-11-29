@@ -7,9 +7,9 @@
  */
 package org.rpgwizard.editor.editors.board.panels;
 
-import org.rpgwizard.common.assets.board.model.AbstractBoardModel;
-import org.rpgwizard.common.assets.board.model.BoardModelChangeListener;
-import org.rpgwizard.common.assets.board.model.BoardModelEvent;
+import org.rpgwizard.common.assets.board.AbstractBoardModel;
+import org.rpgwizard.common.assets.board.BoardModelChangeListener;
+import org.rpgwizard.common.assets.board.BoardModelEvent;
 import org.rpgwizard.editor.editors.BoardEditor;
 import org.rpgwizard.editor.ui.AbstractModelPanel;
 import org.rpgwizard.editor.MainWindow;

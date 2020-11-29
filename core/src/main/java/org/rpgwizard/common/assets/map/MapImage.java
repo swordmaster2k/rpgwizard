@@ -5,36 +5,34 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package org.rpgwizard.common.assets;
+package org.rpgwizard.common.assets.map;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  *
  * @author Joshua Michael Daly
  */
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
-public class Event {
-
-    private String type;
-    private String script;
-    private String key;
-
-    public Event() {
-
-    }
+public class MapImage {
+    
+    private String image;
+    private int x;
+    private int y;
     
     /**
      * Copy constructor.
      *
-     * @param event
+     * @param mapImage
      */
-    public Event(Event event) {
-        this.type = event.type;
-        this.script = event.script;
-        this.key = event.key;
+    public MapImage(MapImage mapImage) {
+        this.image = mapImage.image;
+        this.x = mapImage.x;
+        this.y = mapImage.y;
     }
-
+    
 }

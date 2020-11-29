@@ -7,9 +7,6 @@
  */
 package org.rpgwizard.common.assets.board;
 
-import org.rpgwizard.common.assets.board.EventType;
-import org.rpgwizard.common.assets.board.Event;
-
 /**
  *
  * @author Joshua Michael Daly

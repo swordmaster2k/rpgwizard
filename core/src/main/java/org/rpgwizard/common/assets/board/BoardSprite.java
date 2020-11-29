@@ -23,7 +23,6 @@ import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.AssetException;
 import org.rpgwizard.common.assets.AssetHandle;
 import org.rpgwizard.common.assets.AssetManager;
-import org.rpgwizard.common.assets.board.model.AbstractBoardModel;
 import org.rpgwizard.common.assets.sprite.Sprite;
 import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.common.utilities.CoreUtil;

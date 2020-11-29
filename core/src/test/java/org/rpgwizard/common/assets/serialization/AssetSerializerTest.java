@@ -8,10 +8,8 @@
 package org.rpgwizard.common.assets.serialization;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -19,22 +17,21 @@ import org.junit.Test;
 import org.rpgwizard.common.assets.animation.Animation;
 import org.rpgwizard.common.assets.AssetManager;
 import org.rpgwizard.common.assets.Collider;
-import org.rpgwizard.common.assets.board.Board;
-import org.rpgwizard.common.assets.board.Event;
+import org.rpgwizard.common.assets.Event;
 import org.rpgwizard.common.assets.Image;
 import org.rpgwizard.common.assets.Item;
+import org.rpgwizard.common.assets.Location;
 import org.rpgwizard.common.assets.Point;
 import org.rpgwizard.common.assets.Program;
 import org.rpgwizard.common.assets.Trigger;
 import org.rpgwizard.common.assets.game.Game;
 import org.rpgwizard.common.assets.animation.SpriteSheet;
 import org.rpgwizard.common.assets.tileset.Tileset;
-import org.rpgwizard.common.assets.board.BoardLayer;
-import org.rpgwizard.common.assets.board.BoardLayerImage;
-import org.rpgwizard.common.assets.board.BoardSprite;
-import org.rpgwizard.common.assets.board.BoardVector;
-import org.rpgwizard.common.assets.board.BoardVectorType;
 import org.rpgwizard.common.assets.files.FileAssetHandleResolver;
+import org.rpgwizard.common.assets.map.Map;
+import org.rpgwizard.common.assets.map.MapImage;
+import org.rpgwizard.common.assets.map.MapLayer;
+import org.rpgwizard.common.assets.map.MapSprite;
 import org.rpgwizard.common.assets.sprite.Sprite;
 
 /**
@@ -123,75 +120,77 @@ public class AssetSerializerTest {
     }
 
     @Test
-    public void testBoardSerializier() throws Exception {
-        String path = AssetSerializerTestHelper.getPath(
-                "Boards/Room.board");
-        JsonBoardSerializer serializer = new JsonBoardSerializer();
+    public void testMapSerializier() throws Exception {
+        String path = AssetSerializerTestHelper.getPath("maps/tower.map");
+        JsonMapSerializer serializer = new JsonMapSerializer();
 
         // Deserialize original.
-        Board asset = AssetSerializerTestHelper.deserializeFile(path, serializer);
-        checkBoard(asset);
+        Map asset = AssetSerializerTestHelper.deserializeFile(path, serializer);
+        checkMap(asset);
 
         // Serialize a temporary version and deserialize it.
         path = AssetSerializerTestHelper.serialize(asset, serializer);
         asset = AssetSerializerTestHelper.deserializeFile(path, serializer);
-        checkBoard(asset);
+        checkMap(asset);
     }
-
-    private void checkBoard(Board asset) {
-        Assert.assertEquals("Room", asset.getName());
-        Assert.assertEquals("An empty room.", asset.getDescription());
-        Assert.assertEquals(3, asset.getWidth());
-        Assert.assertEquals(3, asset.getHeight());
-        Assert.assertEquals(32, asset.getTileWidth());
-        Assert.assertEquals(32, asset.getTileHeight());
-        Assert.assertTrue(asset.getTileSets().containsKey("Default.tileset"));
-
-        Assert.assertTrue(asset.getLayers().get(0).getSprites().size() == 1);
-        BoardSprite sprite = asset.getLayers().get(0).getSprites().get(0);
-        Assert.assertEquals("block1", sprite.getId());
-        Assert.assertEquals("Block.npc", sprite.getFileName());
-        Assert.assertEquals(1, sprite.getX());
-        Assert.assertEquals(2, sprite.getY());
-        Assert.assertEquals(0, sprite.getLayer());
-
-        Assert.assertTrue(asset.getLayers().size() == 1);
-        BoardLayer layer = asset.getLayers().get(0);
-        Assert.assertEquals("Floor", layer.getName());
-        Assert.assertEquals(3, layer.getTiles()[0].length);
-        Assert.assertEquals(3, layer.getTiles()[1].length);
-
-        Assert.assertTrue(layer.getVectors().size() == 2);
-        BoardVector vector = layer.getVectors().get(0);
-        Assert.assertEquals("walls", vector.getId());
-        Assert.assertEquals(2, vector.getPoints().size());
-        Assert.assertEquals(true, vector.isClosed());
-        Assert.assertEquals(BoardVectorType.SOLID, vector.getType());
-        vector = layer.getVectors().get(1);
-        Assert.assertEquals("trigger", vector.getId());
-        Assert.assertEquals(2, vector.getPoints().size());
-        Assert.assertEquals(true, vector.isClosed());
-        Assert.assertEquals(BoardVectorType.PASSABLE, vector.getType());
+    
+    private void checkMap(Map map) {
+        Assert.assertEquals("Tower", map.getName());
+        Assert.assertEquals(12, map.getWidth());
+        Assert.assertEquals(20, map.getHeight());
+        Assert.assertEquals(32, map.getTileWidth());
+        Assert.assertEquals(32, map.getTileHeight());
+        Assert.assertEquals("Tower.ogg", map.getMusic());
+        Assert.assertEquals(List.of("tower.tileset"), map.getTilesets());
+        Assert.assertEquals("some-script.js", map.getEntryScript());
+        Assert.assertEquals(new Location(191, 558, 0), map.getStartLocation());
         
-        Assert.assertTrue(layer.getImages().size() == 2);
-        BoardLayerImage image = layer.getImages().get(0);
-        Assert.assertEquals("image1", image.getId());
-        Assert.assertEquals(40, image.getX());
-        Assert.assertEquals(40, image.getY());
-        Assert.assertEquals("1.png", image.getSrc());
+        Assert.assertEquals(1, map.getLayers().size());
+        MapLayer layer = map.getLayers().get(0);
+        Assert.assertEquals("Floor", layer.getId());
+        Assert.assertEquals(List.of("-1:-1", "0:1", "0:2"), layer.getTiles());
         
-        image = layer.getImages().get(1);
-        Assert.assertEquals("image2", image.getId());
-        Assert.assertEquals(80, image.getX());
-        Assert.assertEquals(80, image.getY());
-        Assert.assertEquals("2.png", image.getSrc());
-
-        Assert.assertEquals(1, asset.getStartingPositionX());
-        Assert.assertEquals(3, asset.getStartingPositionY());
-        Assert.assertEquals(0, asset.getStartingLayer());
-
-        Assert.assertEquals("room.prg", asset.getFirstRunProgram());
-        Assert.assertEquals("room.wav", asset.getBackgroundMusic());
+        Assert.assertEquals(2, layer.getColliders().size());
+        Collider collider1 = layer.getColliders().get("collider-1");
+        // @formatter:off
+        Assert.assertEquals(List.of(
+                new Point(64, 352),
+                new Point(320, 352)
+        ), collider1.getPoints());
+        // @formatter:on
+        Collider collider2 = layer.getColliders().get("collider-2");
+        // @formatter:off
+        Assert.assertEquals(List.of(
+                new Point(160, 128),
+                new Point(160, 160),
+                new Point(224, 160),
+                new Point(224, 128)
+        ), collider2.getPoints());
+        // @formatter:on
+        
+        Assert.assertEquals(1, layer.getTriggers().size());
+        Trigger trigger1 = layer.getTriggers().get("trigger-1");
+        Assert.assertEquals(List.of(new Event("overlap", "GameOver.js", null)), trigger1.getEvents());
+        // @formatter:off
+        Assert.assertEquals(List.of(
+                new Point(160, 128),
+                new Point(160, 160),
+                new Point(224, 160),
+                new Point(224, 128)
+        ), trigger1.getPoints());
+        // @formatter:on
+        
+        Assert.assertEquals(1, layer.getSprites().size());
+        MapSprite sprite1 = layer.getSprites().get("sprite-1");
+        Assert.assertEquals("Torch.npc", sprite1.getAsset());
+        Assert.assertEquals("Idle.js", sprite1.getThread());
+        Assert.assertEquals(new Location(112, 80, 0), sprite1.getStartLocation());
+        Assert.assertEquals(List.of(new Event("keypress", "turn-off.js", null)), sprite1.getEvents());
+        
+        Assert.assertEquals(1, layer.getImages().size());
+        Assert.assertEquals(java.util.Map.of("image-1", new MapImage("rooms/above.png", 120, 12)), layer.getImages());
+        
+        Assert.assertEquals("2.0.0", map.getVersion());
     }
 
     @Test
@@ -216,9 +215,9 @@ public class AssetSerializerTest {
         Assert.assertEquals(24, asset.getTileHeight());
         Assert.assertEquals("tiles/oryx_16bit_scifi_world_trans.png", asset.getImage());
         
-        Map<String, Map<String, String>> tileData = new HashMap<>();
-        tileData.put("44", Map.of("defence", "1", "custom", "", "type", "plain"));
-        tileData.put("36", Map.of("defence", "4", "custom", "", "type", "mountain"));
+        java.util.Map<String, java.util.Map<String, String>> tileData = new HashMap<>();
+        tileData.put("44", java.util.Map.of("defence", "1", "custom", "", "type", "plain"));
+        tileData.put("36", java.util.Map.of("defence", "4", "custom", "", "type", "mountain"));
         Assert.assertEquals(tileData, asset.getTileData());
     }
 
@@ -243,13 +242,13 @@ public class AssetSerializerTest {
         Assert.assertEquals("The hero of time", asset.getDescription());
         
         // @formatter:off
-        Map<String, String> animations = Map.of(
+        java.util.Map<String, String> animations = java.util.Map.of(
                 "north", "north.animation",
                 "south", "south.animation",
                 "east", "east.animation",
                 "west", "west.animation"
         );
-        // @formatter:off
+        // @formatter:on
         Assert.assertEquals(animations, asset.getAnimations());
         
         Collider collider = new Collider();
@@ -263,7 +262,7 @@ public class AssetSerializerTest {
                 new Point(30, 20),
                 new Point(0, 20)
         ));
-        // @formatter:off
+        // @formatter:on
         Assert.assertEquals(collider, asset.getCollider());
         
         Trigger trigger = new Trigger();
@@ -278,15 +277,15 @@ public class AssetSerializerTest {
                 new Point(40, 30),
                 new Point(0, 30)
         ));
-        // @formatter:off
+        // @formatter:on
         Assert.assertEquals(trigger, asset.getTrigger());
         
         // @formatter:off
-        Map<String, String> data = Map.of(
+        java.util.Map<String, String> data = java.util.Map.of(
                 "key-1", "value-1",
                 "key-2", "value-2"
         );
-        // @formatter:off
+        // @formatter:on
         Assert.assertEquals(data, asset.getData());
         
         Assert.assertEquals("2.0.0", asset.getVersion());
@@ -348,21 +347,9 @@ public class AssetSerializerTest {
         Assert.assertEquals(code, asset.getProgramBuffer().toString());
     }
 
-    private void checkMapsEqual(Map<String, String> expected, Map<String, String> actual) {
+    private void checkMapsEqual(java.util.Map<String, String> expected, java.util.Map<String, String> actual) {
         Assert.assertEquals(expected.keySet(), actual.keySet());
         Assert.assertArrayEquals(expected.values().toArray(), actual.values().toArray());
-    }
-
-    private BoardVector buildBoardVector(BoardVectorType type, boolean isClosed, String handle, int layer, ArrayList<java.awt.Point> points, ArrayList<Event> events) {
-        BoardVector boardVector = new BoardVector();
-        boardVector.setType(type);
-        boardVector.setIsClosed(isClosed);
-        boardVector.setId(handle);
-        boardVector.setLayer(layer);
-        boardVector.setPoints(points);
-        boardVector.setEvents(events);
-
-        return boardVector;
     }
 
 }

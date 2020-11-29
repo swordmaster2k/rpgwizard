@@ -21,7 +21,7 @@ import org.rpgwizard.common.assets.board.EventType;
 import org.rpgwizard.common.assets.board.KeyType;
 import org.rpgwizard.common.assets.Program;
 import org.rpgwizard.common.assets.board.BoardSprite;
-import org.rpgwizard.common.assets.board.model.BoardModelEvent;
+import org.rpgwizard.common.assets.board.BoardModelEvent;
 import org.rpgwizard.common.assets.sprite.Sprite;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.editors.board.BoardLayerView;

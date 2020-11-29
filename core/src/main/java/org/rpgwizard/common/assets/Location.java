@@ -9,32 +9,30 @@ package org.rpgwizard.common.assets;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  *
  * @author Joshua Michael Daly
  */
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
-public class Event {
-
-    private String type;
-    private String script;
-    private String key;
-
-    public Event() {
-
-    }
+public class Location {
+    
+    private int x;
+    private int y;
+    private int layer;
     
     /**
      * Copy constructor.
      *
-     * @param event
+     * @param location
      */
-    public Event(Event event) {
-        this.type = event.type;
-        this.script = event.script;
-        this.key = event.key;
+    public Location(Location location) {
+        this.x = location.x;
+        this.y = location.y;
+        this.layer = location.layer;
     }
-
+    
 }

@@ -23,11 +23,11 @@ import org.rpgwizard.common.assets.board.BoardVector;
 import org.rpgwizard.common.assets.board.EventType;
 import org.rpgwizard.common.io.Paths;
 import org.rpgwizard.common.utilities.CoreProperties;
-import org.rpgwizard.common.assets.board.StartingPosition;
 import org.rpgwizard.common.assets.tileset.Tile;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.rpgwizard.common.assets.Location;
 import org.rpgwizard.common.assets.tileset.Tileset;
 import org.rpgwizard.common.assets.board.BoardLayerImage;
 
@@ -76,7 +76,7 @@ public class JsonBoardSerializer extends AbstractJsonSerializer {
         board.setLayers(getBoardLayers(json.getJSONArray("layers"), board, tileSetNames, sprites));
 
         JSONObject startingPosition = json.getJSONObject("startingPosition");
-        board.setStartingPosition(new StartingPosition(startingPosition.getInt("x"), startingPosition.getInt("y"),
+        board.setStartingPosition(new Location(startingPosition.getInt("x"), startingPosition.getInt("y"),
                 startingPosition.getInt("layer")));
 
         board.setFirstRunProgram(json.getString("firstRunProgram"));

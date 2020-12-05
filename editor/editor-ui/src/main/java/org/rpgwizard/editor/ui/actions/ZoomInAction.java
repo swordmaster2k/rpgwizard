@@ -10,7 +10,7 @@ package org.rpgwizard.editor.ui.actions;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import org.rpgwizard.editor.MainWindow;
-import org.rpgwizard.editor.editors.BoardEditor;
+import org.rpgwizard.editor.editors.MapEditor;
 
 /**
  *
@@ -24,7 +24,7 @@ public class ZoomInAction extends AbstractAction {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        BoardEditor editor = MainWindow.getInstance().getCurrentBoardEditor();
+        MapEditor editor = MainWindow.getInstance().getCurrentMapEditor();
 
         if (editor != null) {
             editor.zoomIn();

@@ -104,7 +104,7 @@ public class BoardLayer implements Cloneable {
         locked = boardLayer.locked;
         opacity = boardLayer.opacity;
     }
-    
+
     /**
      * Directly clones the layer.
      *

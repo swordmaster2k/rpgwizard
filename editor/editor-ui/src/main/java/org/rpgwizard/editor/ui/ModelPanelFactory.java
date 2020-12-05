@@ -8,18 +8,16 @@
 package org.rpgwizard.editor.ui;
 
 import org.rpgwizard.common.assets.animation.Animation;
-import org.rpgwizard.common.assets.board.Board;
+import org.rpgwizard.common.assets.map.Map;
 import org.rpgwizard.common.assets.Image;
 import org.rpgwizard.common.assets.tileset.Tile;
-import org.rpgwizard.common.assets.board.BoardLayerImage;
-import org.rpgwizard.common.assets.board.BoardSprite;
-import org.rpgwizard.common.assets.board.BoardVector;
+import org.rpgwizard.common.assets.map.MapImage;
+import org.rpgwizard.common.assets.map.MapSprite;
 import org.rpgwizard.common.assets.sprite.Sprite;
 import org.rpgwizard.editor.editors.animation.AnimationModelPanel;
-import org.rpgwizard.editor.editors.board.panels.BoardLayerImagePanel;
-import org.rpgwizard.editor.editors.board.panels.BoardPanel;
-import org.rpgwizard.editor.editors.board.panels.BoardSpritePanel;
-import org.rpgwizard.editor.editors.board.panels.BoardVectorPanel;
+import org.rpgwizard.editor.editors.map.panels.MapImagePanel;
+import org.rpgwizard.editor.editors.map.panels.MapPanel;
+import org.rpgwizard.editor.editors.map.panels.MapSpritePanel;
 import org.rpgwizard.editor.editors.sprite.SpriteModelPanel;
 import org.rpgwizard.editor.editors.image.ImageModelPanel;
 import org.rpgwizard.editor.editors.tileset.TileModelPanel;
@@ -36,14 +34,15 @@ public final class ModelPanelFactory {
     }
 
     public static AbstractModelPanel getModelPanel(Object model) {
-        if (model instanceof Board) {
-            return new BoardPanel((Board) model);
-        } else if (model instanceof BoardVector) {
-            return new BoardVectorPanel((BoardVector) model);
-        } else if (model instanceof BoardSprite) {
-            return new BoardSpritePanel((BoardSprite) model);
-        } else if (model instanceof BoardLayerImage) {
-            return new BoardLayerImagePanel((BoardLayerImage) model);
+        if (model instanceof Map) {
+            return new MapPanel((Map) model);
+            // REFACTOR: FIX ME
+            // } else if (model instanceof MapVector) {
+            // return new MapVectorPanel((MapVector) model);
+        } else if (model instanceof MapSprite) {
+            return new MapSpritePanel((MapSprite) model);
+        } else if (model instanceof MapImage) {
+            return new MapImagePanel((MapImage) model);
         } else if (model instanceof Animation) {
             return new AnimationModelPanel((Animation) model);
         } else if (model instanceof Sprite) {

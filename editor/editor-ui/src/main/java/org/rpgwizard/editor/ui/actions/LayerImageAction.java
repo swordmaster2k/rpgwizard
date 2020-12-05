@@ -10,8 +10,8 @@ package org.rpgwizard.editor.ui.actions;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import org.rpgwizard.editor.MainWindow;
-import org.rpgwizard.editor.editors.BoardEditor;
-import org.rpgwizard.editor.editors.board.brush.BoardLayerImageBrush;
+import org.rpgwizard.editor.editors.MapEditor;
+import org.rpgwizard.editor.editors.map.brush.MapImageBrush;
 
 /**
  *
@@ -21,9 +21,9 @@ public class LayerImageAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        BoardEditor.toggleSelectedOnBoardEditor();
+        MapEditor.toggleSelectedOnMapEditor();
 
-        BoardLayerImageBrush brush = new BoardLayerImageBrush();
+        MapImageBrush brush = new MapImageBrush();
         MainWindow.getInstance().setCurrentBrush(brush);
     }
 

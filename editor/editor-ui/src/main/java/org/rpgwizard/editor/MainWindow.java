@@ -57,17 +57,18 @@ import org.rpgwizard.common.assets.tileset.Tileset;
 import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.common.utilities.TileSetCache;
 import org.rpgwizard.editor.editors.AnimationEditor;
-import org.rpgwizard.editor.editors.BoardEditor;
+import org.rpgwizard.editor.editors.MapEditor;
 import org.rpgwizard.editor.editors.ProgramEditor;
 import org.rpgwizard.editor.editors.GameEditor;
 import org.rpgwizard.editor.editors.SpriteEditor;
-import org.rpgwizard.editor.editors.board.NewBoardDialog;
-import org.rpgwizard.editor.editors.board.brush.AbstractBrush;
-import org.rpgwizard.editor.editors.board.brush.BoardVectorAreaBrush;
-import org.rpgwizard.editor.editors.board.brush.BoardVectorBrush;
-import org.rpgwizard.editor.editors.board.brush.ShapeBrush;
-import org.rpgwizard.editor.editors.board.panels.LayerPanel;
+import org.rpgwizard.editor.editors.map.NewMapDialog;
+import org.rpgwizard.editor.editors.map.brush.AbstractBrush;
+// REFACTOR: FIX ME
+//import org.rpgwizard.editor.editors.map.brush.MapVectorAreaBrush;
+//import org.rpgwizard.editor.editors.map.brush.MapVectorBrush;
+import org.rpgwizard.editor.editors.map.brush.ShapeBrush;
 import org.rpgwizard.editor.editors.image.ImageEditor;
+import org.rpgwizard.editor.editors.map.panels.LayerPanel;
 import org.rpgwizard.editor.editors.program.IssuesTablePanel;
 import org.rpgwizard.editor.editors.tileset.NewTilesetDialog;
 import org.rpgwizard.editor.editors.tileset.TileSetUtil;
@@ -130,7 +131,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
     // Game Related.
     private Game activeProject;
 
-    // Board Related.
+    // Map Related.
     private boolean showGrid;
     private boolean showVectors;
     private boolean showCoordinates;
@@ -399,9 +400,9 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         return desktopPane.getSelectedFrame();
     }
 
-    public BoardEditor getCurrentBoardEditor() {
-        if (this.desktopPane.getSelectedFrame() instanceof BoardEditor) {
-            return (BoardEditor) this.desktopPane.getSelectedFrame();
+    public MapEditor getCurrentMapEditor() {
+        if (this.desktopPane.getSelectedFrame() instanceof MapEditor) {
+            return (MapEditor) this.desktopPane.getSelectedFrame();
         }
         return null;
     }
@@ -481,13 +482,13 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         if (window instanceof AnimationEditor) {
             AnimationEditor editor = (AnimationEditor) window;
             propertiesPanel.setModel(editor.getAnimation());
-        } else if (window instanceof BoardEditor) {
-            BoardEditor editor = (BoardEditor) window;
+        } else if (window instanceof MapEditor) {
+            MapEditor editor = (MapEditor) window;
             if (westUpperTabbedPane.indexOfComponent(tileSetPanel) > -1) {
                 westUpperTabbedPane.setSelectedComponent(tileSetPanel);
             }
             westLowerTabbedPane.setSelectedComponent(layerPanel);
-            propertiesPanel.setModel(editor.getBoard());
+            propertiesPanel.setModel(editor.getMap());
         } else if (window instanceof SpriteEditor) {
             SpriteEditor editor = (SpriteEditor) window;
             propertiesPanel.setModel(editor.getSprite());
@@ -578,14 +579,14 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         if (window instanceof AnimationEditor) {
             AnimationEditor editor = (AnimationEditor) window;
             propertiesPanel.setModel(editor.getAnimation());
-        } else if (window instanceof BoardEditor) {
-            BoardEditor editor = (BoardEditor) window;
-            this.layerPanel.setBoardView(editor.getBoardView());
+        } else if (window instanceof MapEditor) {
+            MapEditor editor = (MapEditor) window;
+            this.layerPanel.setMapView(editor.getMapView());
 
             if (editor.getSelectedObject() != null) {
                 this.propertiesPanel.setModel(editor.getSelectedObject());
             } else {
-                this.propertiesPanel.setModel(editor.getBoard());
+                this.propertiesPanel.setModel(editor.getMap());
             }
         } else if (window instanceof SpriteEditor) {
             SpriteEditor editor = (SpriteEditor) window;
@@ -614,31 +615,31 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
             if (propertiesPanel.getModel() == editor.getAnimation()) {
                 propertiesPanel.setModel(null);
             }
-        } else if (frame instanceof BoardEditor) {
-            BoardEditor editor = (BoardEditor) frame;
+        } else if (frame instanceof MapEditor) {
+            MapEditor editor = (MapEditor) frame;
 
-            if (layerPanel.getBoardView().equals(editor.getBoardView())) {
+            if (layerPanel.getMapView().equals(editor.getMapView())) {
                 layerPanel.clearTable();
             }
 
             if (propertiesPanel.getModel() == editor.getSelectedObject()
-                    || propertiesPanel.getModel() == editor.getBoard()) {
+                    || propertiesPanel.getModel() == editor.getMap()) {
                 propertiesPanel.setModel(null);
             }
 
             // So we do not end up drawing the vector on the other
-            // board after it has been deactivated.
-            if (currentBrush instanceof BoardVectorBrush) {
-                BoardVectorBrush brush = (BoardVectorBrush) currentBrush;
-                if (brush.isDrawing() && brush.getBoardVector() != null) {
-                    brush.abort();
-                }
-            } else if (currentBrush instanceof BoardVectorAreaBrush) {
-                BoardVectorAreaBrush brush = (BoardVectorAreaBrush) currentBrush;
-                if (brush.isDrawing() && brush.getBoardVector() != null) {
-                    brush.abort();
-                }
-            }
+            // map after it has been deactivated.
+            // if (currentBrush instanceof MapVectorBrush) {
+            // MapVectorBrush brush = (MapVectorBrush) currentBrush;
+            // if (brush.isDrawing() && brush.getMapVector() != null) {
+            // brush.abort();
+            // }
+            // } else if (currentBrush instanceof MapVectorAreaBrush) {
+            // MapVectorAreaBrush brush = (MapVectorAreaBrush) currentBrush;
+            // if (brush.isDrawing() && brush.getMapVector() != null) {
+            // brush.abort();
+            // }
+            // }
         } else if (frame instanceof SpriteEditor) {
             SpriteEditor editor = (SpriteEditor) frame;
 
@@ -711,7 +712,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         if (fileName.endsWith(CoreProperties.getDefaultExtension(Animation.class))) {
             addToolkitEditorWindow(EditorFactory.getEditor(openAnimation(file)));
         } else if (fileName.endsWith(CoreProperties.getDefaultExtension(Map.class))) {
-            addToolkitEditorWindow(EditorFactory.getEditor(openBoard(file)));
+            addToolkitEditorWindow(EditorFactory.getEditor(openMap(file)));
         } else if (fileName.endsWith(CoreProperties.getDefaultExtension(Item.class))) {
             addToolkitEditorWindow(EditorFactory.getEditor(openItem(file)));
         } else if (fileName.endsWith(CoreProperties.getDefaultExtension(Sprite.class))) {
@@ -837,18 +838,18 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
     public void createNewMap() {
         LOGGER.info("Creating new {}.", Map.class.getSimpleName());
 
-        NewBoardDialog dialog = new NewBoardDialog(this);
+        NewMapDialog dialog = new NewMapDialog(this);
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
 
         if (dialog.getValue() != null) {
-            Map board = new Map(null, dialog.getValue()[0], dialog.getValue()[1], dialog.getValue()[2],
+            Map map = new Map(null, dialog.getValue()[0], dialog.getValue()[1], dialog.getValue()[2],
                     dialog.getValue()[3]);
-            addToolkitEditorWindow(EditorFactory.getEditor(board));
+            addToolkitEditorWindow(EditorFactory.getEditor(map));
         }
     }
 
-    public Map openBoard(File file) {
+    public Map openMap(File file) {
         LOGGER.info("Opening {} file=[{}].", Map.class.getSimpleName(), file);
 
         try {
@@ -856,13 +857,13 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
                 AssetHandle handle = AssetManager.getInstance().deserialize(new AssetDescriptor(file.toURI()));
                 Map map = (Map) handle.getAsset();
 
-                // Setup the TileSets used on this Board.
+                // Setup the TileSets used on this Map.
                 for (String tileset : map.getTilesets()) {
                     String path = System.getProperty("project.path") + File.separator
                             + EditorFileManager.getTypeSubdirectory(Tileset.class) + File.separator + tileset;
                     openTileset(new File(path));
                 }
-                
+
                 map.loadTiles();
 
                 return map;

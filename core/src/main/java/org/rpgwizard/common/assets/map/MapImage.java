@@ -7,9 +7,17 @@
  */
 package org.rpgwizard.common.assets.map;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.rpgwizard.common.Selectable;
+import org.rpgwizard.common.utilities.CoreUtil;
 
 /**
  *
@@ -18,11 +26,18 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MapImage {
+public class MapImage implements Selectable {
 
     private String image;
     private int x;
     private int y;
+
+    @JsonIgnore
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private boolean selected; // TODO: This is editor specific, move it!
+    @JsonIgnore
+    private BufferedImage bufferedImage;
 
     /**
      * Copy constructor.
@@ -33,6 +48,55 @@ public class MapImage {
         this.image = mapImage.image;
         this.x = mapImage.x;
         this.y = mapImage.y;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Model Operations
+    ////////////////////////////////////////////////////////////////////////////
+
+    public final void loadBufferedImage() {
+        if (image.isEmpty()) {
+            return;
+        }
+        try {
+            bufferedImage = CoreUtil.loadBufferedImage(image);
+        } catch (IOException ex) {
+            bufferedImage = null;
+        }
+    }
+
+    public final void loadBufferedImage(String image) {
+        this.image = image;
+        try {
+            bufferedImage = CoreUtil.loadBufferedImage(image);
+        } catch (IOException ex) {
+            bufferedImage = null;
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Selection Listeners
+    ////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Is this selected in the editor?
+     *
+     * @return selected state
+     */
+    @Override
+    public boolean isSelected() {
+        return selected;
+    }
+
+    /**
+     * Set the selected state of this in the editor
+     *
+     * @param state
+     *            new state
+     */
+    @Override
+    public void setSelectedState(boolean state) {
+        selected = state;
     }
 
 }

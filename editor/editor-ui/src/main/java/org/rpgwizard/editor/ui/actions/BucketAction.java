@@ -9,8 +9,8 @@ package org.rpgwizard.editor.ui.actions;
 
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
-import org.rpgwizard.editor.editors.BoardEditor;
-import org.rpgwizard.editor.editors.board.brush.BucketBrush;
+import org.rpgwizard.editor.editors.MapEditor;
+import org.rpgwizard.editor.editors.map.brush.BucketBrush;
 import org.rpgwizard.editor.MainWindow;
 
 /**
@@ -21,7 +21,7 @@ public class BucketAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        BoardEditor.toggleSelectedOnBoardEditor();
+        MapEditor.toggleSelectedOnMapEditor();
 
         BucketBrush brush = new BucketBrush();
         brush.setPourTile(MainWindow.getInstance().getLastSelectedTile());

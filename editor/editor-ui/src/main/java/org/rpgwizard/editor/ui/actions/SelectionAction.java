@@ -10,8 +10,8 @@ package org.rpgwizard.editor.ui.actions;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import org.rpgwizard.common.assets.tileset.Tile;
-import org.rpgwizard.editor.editors.BoardEditor;
-import org.rpgwizard.editor.editors.board.brush.SelectionBrush;
+import org.rpgwizard.editor.editors.MapEditor;
+import org.rpgwizard.editor.editors.map.brush.SelectionBrush;
 import org.rpgwizard.editor.MainWindow;
 
 /**
@@ -22,7 +22,7 @@ public class SelectionAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        BoardEditor.toggleSelectedOnBoardEditor();
+        MapEditor.toggleSelectedOnMapEditor();
 
         SelectionBrush brush = new SelectionBrush(new Tile[1][1]);
         MainWindow.getInstance().setCurrentBrush(brush);

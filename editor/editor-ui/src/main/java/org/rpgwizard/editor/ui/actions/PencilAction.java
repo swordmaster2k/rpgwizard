@@ -10,8 +10,8 @@ package org.rpgwizard.editor.ui.actions;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
-import org.rpgwizard.editor.editors.BoardEditor;
-import org.rpgwizard.editor.editors.board.brush.ShapeBrush;
+import org.rpgwizard.editor.editors.MapEditor;
+import org.rpgwizard.editor.editors.map.brush.ShapeBrush;
 import org.rpgwizard.editor.MainWindow;
 
 /**
@@ -22,7 +22,7 @@ public class PencilAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        BoardEditor.toggleSelectedOnBoardEditor();
+        MapEditor.toggleSelectedOnMapEditor();
 
         ShapeBrush brush = new ShapeBrush();
         brush.setTile(MainWindow.getInstance().getLastSelectedTile());

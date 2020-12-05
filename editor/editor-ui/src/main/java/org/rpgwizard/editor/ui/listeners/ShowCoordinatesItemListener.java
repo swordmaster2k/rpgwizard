@@ -11,7 +11,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import javax.swing.JCheckBoxMenuItem;
 import org.rpgwizard.editor.MainWindow;
-import org.rpgwizard.editor.editors.BoardEditor;
+import org.rpgwizard.editor.editors.MapEditor;
 
 /**
  *
@@ -22,10 +22,10 @@ public class ShowCoordinatesItemListener implements ItemListener {
     @Override
     public void itemStateChanged(ItemEvent e) {
         JCheckBoxMenuItem showCoordinatesMenuItem = (JCheckBoxMenuItem) e.getItem();
-        BoardEditor editor = MainWindow.getInstance().getCurrentBoardEditor();
+        MapEditor editor = MainWindow.getInstance().getCurrentMapEditor();
         if (editor != null) {
             MainWindow.getInstance().setShowCoordinates(showCoordinatesMenuItem.isSelected());
-            editor.getBoardView().repaint();
+            editor.getMapView().repaint();
         }
     }
 

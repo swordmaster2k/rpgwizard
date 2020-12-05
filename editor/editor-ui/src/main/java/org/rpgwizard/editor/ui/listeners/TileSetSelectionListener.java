@@ -17,10 +17,10 @@ import org.rpgwizard.common.assets.tileset.Tile;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.editors.tileset.TileRegionSelectionEvent;
 import org.rpgwizard.editor.editors.tileset.TileSelectionEvent;
-import org.rpgwizard.editor.editors.board.brush.Brush;
-import org.rpgwizard.editor.editors.board.brush.BucketBrush;
-import org.rpgwizard.editor.editors.board.brush.CustomBrush;
-import org.rpgwizard.editor.editors.board.brush.ShapeBrush;
+import org.rpgwizard.editor.editors.map.brush.Brush;
+import org.rpgwizard.editor.editors.map.brush.BucketBrush;
+import org.rpgwizard.editor.editors.map.brush.CustomBrush;
+import org.rpgwizard.editor.editors.map.brush.ShapeBrush;
 
 /**
  *

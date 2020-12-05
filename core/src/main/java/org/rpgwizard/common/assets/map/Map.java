@@ -8,6 +8,7 @@
 package org.rpgwizard.common.assets.map;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -47,7 +48,7 @@ public final class Map extends AbstractAsset implements Selectable {
     @JsonIgnore
     protected LinkedList<MapChangeListener> changeListeners = new LinkedList<>();
     @JsonIgnore
-    private boolean selectedState; // TODO: This is editor specific, move it!
+    private boolean selected; // TODO: This is editor specific, move it!
 
     public Map() {
         name = "";
@@ -57,25 +58,76 @@ public final class Map extends AbstractAsset implements Selectable {
         startLocation = new Location();
         layers = new ArrayList<>();
     }
-    
+
+    public Map(AssetDescriptor descriptor) {
+        this();
+
+        this.descriptor = descriptor;
+    }
+
     public Map(AssetDescriptor descriptor, int width, int height, int tileWidth, int tileHeight) {
         this();
-        
+
         this.descriptor = descriptor;
         this.width = width;
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
-        
+
         startLocation.setX((width * tileWidth) / 2);
         startLocation.setY((height * tileHeight) / 2);
-        
+
         addLayer();
     }
-    
+
+    /**
+     * Copy constructor.
+     * 
+     * @param map
+     */
+    public Map(Map map) {
+
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Getters & Setters
+    ////////////////////////////////////////////////////////////////////////////
+
+    @JsonIgnore
+    public List<String> getLayerIds() {
+        List<String> ids = new ArrayList<>();
+        layers.forEach(layer -> {
+            ids.add(layer.getId());
+        });
+        return ids;
+    }
+
+    @JsonIgnore
+    public String getLayerId(int index) {
+        return layers.get(index).getId();
+    }
+
+    @JsonIgnore
+    public void setLayerId(int index, String id) {
+        layers.get(index).setId(id);
+        fireMapChanged();
+    }
+
+    // REFACTOR: setTilesets?
+
+    /**
+     * Gets the maps width and height in pixels.
+     * 
+     * @return
+     */
+    @JsonIgnore
+    public Dimension getMapPixelDimensions() {
+        return new Dimension(width * tileWidth, height * tileHeight);
+    }
+
     ////////////////////////////////////////////////////////////////////////////
     // Model Operations
     ////////////////////////////////////////////////////////////////////////////
-    
+
     public void loadTiles() {
         for (MapLayer layer : layers) {
             int count = width * height;
@@ -102,7 +154,7 @@ public final class Map extends AbstractAsset implements Selectable {
             }
         }
     }
-    
+
     /**
      * Add a new blank layer to this map.
      */
@@ -113,17 +165,18 @@ public final class Map extends AbstractAsset implements Selectable {
 
         fireMapLayerAdded(layer);
     }
-    
+
     public void addSprite(int layer, String id, MapSprite sprite) {
         MapLayer mapLayer = layers.get(layer);
         mapLayer.getSprites().put(id, sprite);
         fireMapSpriteAdded(sprite);
     }
 
-    public void removeSprite(int layer, String id) {
+    public MapSprite removeSprite(int layer, String id) {
         MapLayer mapLayer = layers.get(layer);
         MapSprite sprite = mapLayer.getSprites().remove(id);
         fireMapSpriteRemoved(sprite);
+        return sprite;
     }
 
     public void addLayerImage(int layer, String id, MapImage image) {
@@ -132,16 +185,67 @@ public final class Map extends AbstractAsset implements Selectable {
         fireMapImageAdded(image);
     }
 
-    public void removeLayerImage(int layer, String id) {
+    public MapImage removeLayerImage(int layer, String id) {
         MapLayer mapLayer = layers.get(layer);
         MapImage image = mapLayer.getImages().remove(id);
         fireMapImageRemoved(image);
+        return image;
     }
-    
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Layer Actions
+    ////////////////////////////////////////////////////////////////////////////
+
+    public boolean moveLayerUp(int index) {
+        // Highest possible index, can't be move up!
+        if (index == layers.size()) {
+            return false;
+        }
+
+        MapLayer down = layers.get(index + 1);
+        MapLayer up = layers.get(index);
+        layers.set(index + 1, up);
+        layers.set(index, down);
+
+        fireMapLayerMovedUp(up);
+
+        return true;
+    }
+
+    public boolean moveLayerDown(int index) {
+        // Lowest possible layer, can't be move down!
+        if (index == 0) {
+            return false;
+        }
+
+        MapLayer down = layers.get(index);
+        MapLayer up = layers.get(index - 1);
+        layers.set(index - 1, down);
+        layers.set(index, up);
+
+        fireMapLayerMovedDown(down);
+
+        return true;
+    }
+
+    public void cloneLayer(int index) {
+        MapLayer clone = new MapLayer(layers.get(index));
+        layers.add(index + 1, clone);
+
+        fireMapLayerCloned(clone);
+    }
+
+    public void deleteLayer(int index) {
+        MapLayer removedLayer = layers.get(index);
+        layers.remove(index);
+
+        fireMapLayerDeleted(removedLayer);
+    }
+
     ////////////////////////////////////////////////////////////////////////////
     // Selection Listeners
     ////////////////////////////////////////////////////////////////////////////
-    
+
     /**
      * Is this map selected in the editor?
      *
@@ -149,7 +253,7 @@ public final class Map extends AbstractAsset implements Selectable {
      */
     @Override
     public boolean isSelected() {
-        return selectedState;
+        return selected;
     }
 
     /**
@@ -160,9 +264,9 @@ public final class Map extends AbstractAsset implements Selectable {
      */
     @Override
     public void setSelectedState(boolean state) {
-        selectedState = state;
+        selected = state;
     }
-    
+
     ////////////////////////////////////////////////////////////////////////////
     // Listeners & Events
     ////////////////////////////////////////////////////////////////////////////
@@ -187,7 +291,7 @@ public final class Map extends AbstractAsset implements Selectable {
         changeListeners.remove(listener);
     }
 
-        /**
+    /**
      * Fires the <code>MapChangedEvent</code> informs all the listeners that this map has changed.
      */
     public void fireMapChanged() {

@@ -8,7 +8,7 @@
 package org.rpgwizard.editor.ui.listeners;
 
 import java.util.EventListener;
-import org.rpgwizard.editor.editors.board.LayerChangedEvent;
+import org.rpgwizard.editor.editors.map.LayerChangedEvent;
 
 /**
  *

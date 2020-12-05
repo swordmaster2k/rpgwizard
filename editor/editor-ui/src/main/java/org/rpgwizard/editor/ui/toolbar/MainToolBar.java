@@ -37,8 +37,6 @@ import org.rpgwizard.editor.ui.actions.SpriteAction;
 import org.rpgwizard.editor.ui.actions.StartPositionAction;
 import org.rpgwizard.editor.ui.actions.StopAction;
 import org.rpgwizard.editor.ui.actions.UndoAction;
-import org.rpgwizard.editor.ui.actions.VectorAction;
-import org.rpgwizard.editor.ui.actions.VectorAreaAction;
 import org.rpgwizard.editor.ui.actions.ZoomInAction;
 import org.rpgwizard.editor.ui.actions.ZoomOutAction;
 import org.rpgwizard.editor.ui.resources.Icons;
@@ -182,14 +180,14 @@ public final class MainToolBar extends JToolBar {
 
         vectorAreaButton = new JToggleButton();
         vectorAreaButton.setFocusable(false);
-        vectorAreaButton.setAction(new VectorAreaAction());
+        // vectorAreaButton.setAction(new VectorAreaAction()); // REFACTOR: FIX ME
         vectorAreaButton.setIcon(Icons.getSmallIcon("layer-select"));
         vectorAreaButton
                 .setToolTipText(EditorProperties.getProperty(EditorProperty.EDITOR_UI_TOOLTIP_DRAW_VECTOR_AREA));
 
         vectorButton = new JToggleButton();
         vectorButton.setFocusable(false);
-        vectorButton.setAction(new VectorAction());
+        // vectorButton.setAction(new VectorAction()); // REFACTOR: FIX ME
         vectorButton.setIcon(Icons.getSmallIcon("layer-shape-polyline"));
         vectorButton.setToolTipText(EditorProperties.getProperty(EditorProperty.EDITOR_UI_TOOLTIP_DRAW_VECTOR));
 

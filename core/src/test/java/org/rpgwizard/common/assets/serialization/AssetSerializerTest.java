@@ -188,7 +188,7 @@ public class AssetSerializerTest {
         Assert.assertEquals(List.of(new Event("keypress", "turn-off.js", null)), sprite1.getEvents());
         
         Assert.assertEquals(1, layer.getImages().size());
-        Assert.assertEquals(java.util.Map.of("image-1", new MapImage("rooms/above.png", 120, 12)), layer.getImages());
+        Assert.assertEquals(java.util.Map.of("image-1", new MapImage("rooms/above.png", 120, 12, false, null)), layer.getImages());
         
         Assert.assertEquals("2.0.0", map.getVersion());
     }

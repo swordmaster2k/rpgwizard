@@ -9,8 +9,8 @@ package org.rpgwizard.editor.ui.actions;
 
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
-import org.rpgwizard.common.assets.board.BoardSprite;
-import org.rpgwizard.editor.editors.BoardEditor;
+import org.rpgwizard.common.assets.map.MapSprite;
+import org.rpgwizard.editor.editors.MapEditor;
 
 /**
  *
@@ -18,20 +18,23 @@ import org.rpgwizard.editor.editors.BoardEditor;
  */
 public class RemoveSpriteAction extends AbstractAction {
 
-    private final BoardEditor boardEditor;
-    private final BoardSprite boardSprite;
+    private final MapEditor mapEditor;
 
-    public RemoveSpriteAction(BoardEditor boardEditor, BoardSprite boardSprite) {
-        this.boardEditor = boardEditor;
-        this.boardSprite = boardSprite;
+    private final int layerIndex;
+    private final String spriteId;
+
+    public RemoveSpriteAction(MapEditor mapEditor, int layerIndex, String spriteId) {
+        this.mapEditor = mapEditor;
+        this.layerIndex = layerIndex;
+        this.spriteId = spriteId;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        boardEditor.getBoard().removeSprite(boardSprite);
-        if (boardSprite == boardEditor.getSelectedObject()) {
-            boardEditor.getSelectedObject().setSelectedState(false);
-            boardEditor.setSelectedObject(null);
+        MapSprite mapSprite = mapEditor.getMap().removeSprite(layerIndex, spriteId);
+        if (mapSprite == mapEditor.getSelectedObject()) {
+            mapEditor.getSelectedObject().setSelectedState(false);
+            mapEditor.setSelectedObject(null);
         }
     }
 

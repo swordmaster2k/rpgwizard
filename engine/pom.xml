@@ -22,7 +22,7 @@
         <plugin.provider>Joshua Michael Daly</plugin.provider>
         <plugin.dependencies />
 
-        <commons-io.verison>2.4</commons-io.verison>
+        <commons-io.verison>2.7</commons-io.verison>
         <zip4j.version>1.3.2</zip4j.version>
 
         <jetty.version>9.4.14.v20181114</jetty.version>

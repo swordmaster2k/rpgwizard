@@ -70,6 +70,7 @@ public final class Map extends AbstractAsset implements Selectable {
 
         this.descriptor = descriptor;
         this.width = width;
+        this.height = height;
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
 
@@ -159,7 +160,7 @@ public final class Map extends AbstractAsset implements Selectable {
      * Add a new blank layer to this map.
      */
     public void addLayer() {
-        MapLayer layer = new MapLayer();
+        MapLayer layer = new MapLayer(this);
         layer.setId("Untitled Layer " + layers.size());
         layers.add(layer);
 

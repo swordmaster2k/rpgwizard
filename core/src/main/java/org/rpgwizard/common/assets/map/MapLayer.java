@@ -8,6 +8,9 @@
 package org.rpgwizard.common.assets.map;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -218,28 +221,102 @@ public class MapLayer {
         return x < loadedTiles.length && y < loadedTiles[0].length;
     }
 
-    public void findColliderAt(int x, int y) {
-        // REFACTOR: implement me
+    public Pair<String, Collider> findColliderAt(int x, int y) {
+        Rectangle2D mouse = new Rectangle2D.Double(x - 5, y - 5, 10, 10);
+
+        for (java.util.Map.Entry<String, Collider> entry : colliders.entrySet()) {
+            Collider collider = entry.getValue();
+
+            // There are no lines.
+            if (collider.getPoints().size() < 2) {
+                continue;
+            }
+
+            for (int i = 0; i < collider.getPoints().size() - 1; i++) {
+                // Build a line from the points in the polygon.
+                Point2D.Double p1 = new Point2D.Double(collider.getPoints().get(i).getX(),
+                        collider.getPoints().get(i).getY());
+                Point2D.Double p2 = new Point2D.Double(collider.getPoints().get(i + 1).getX(),
+                        collider.getPoints().get(i + 1).getY());
+
+                Line2D line2D = new Line2D.Double(p1, p2);
+
+                // See if the mouse intersects the line of the polygon.
+                if (line2D.intersects(mouse)) {
+                    return Pair.of(entry.getKey(), entry.getValue());
+                }
+            }
+
+        }
+
+        return null;
     }
 
-    public void removeColliderAt(int x, int y) {
-        // REFACTOR: implement me
+    public Pair<String, Collider> removeColliderAt(int x, int y) {
+        Pair<String, Collider> pair = findColliderAt(x, y);
+        if (pair == null) {
+            return null;
+        } else {
+            colliders.remove(pair.getKey());
+            map.fireMapChanged();
+            return pair;
+        }
     }
 
-    public void removeCollider(Collider collider) {
-
+    public Pair<String, Collider> removeCollider(String id, Collider collider) {
+        if (colliders.remove(id) != null) {
+            return Pair.of(id, collider);
+        }
+        return null;
     }
 
-    public void findTriggerAt(int x, int y) {
-        // REFACTOR: implement me
+    public Pair<String, Trigger> findTriggerAt(int x, int y) {
+        Rectangle2D mouse = new Rectangle2D.Double(x - 5, y - 5, 10, 10);
+
+        for (java.util.Map.Entry<String, Trigger> entry : triggers.entrySet()) {
+            Trigger trigger = entry.getValue();
+
+            // There are no lines.
+            if (trigger.getPoints().size() < 2) {
+                continue;
+            }
+
+            for (int i = 0; i < trigger.getPoints().size() - 1; i++) {
+                // Build a line from the points in the polygon.
+                Point2D.Double p1 = new Point2D.Double(trigger.getPoints().get(i).getX(),
+                        trigger.getPoints().get(i).getY());
+                Point2D.Double p2 = new Point2D.Double(trigger.getPoints().get(i + 1).getX(),
+                        trigger.getPoints().get(i + 1).getY());
+
+                Line2D line2D = new Line2D.Double(p1, p2);
+
+                // See if the mouse intersects the line of the polygon.
+                if (line2D.intersects(mouse)) {
+                    return Pair.of(entry.getKey(), entry.getValue());
+                }
+            }
+
+        }
+
+        return null;
     }
 
-    public void removeTriggerAt(int x, int y) {
-        // REFACTOR: implement me
+    public Pair<String, Trigger> removeTriggerAt(int x, int y) {
+        Pair<String, Trigger> pair = findTriggerAt(x, y);
+        if (pair == null) {
+            return null;
+        } else {
+            triggers.remove(pair.getKey());
+            map.fireMapChanged();
+            return pair;
+        }
     }
 
-    public void removeTrigger(Trigger trigger) {
-        // REFACTOR: implement me
+    public Pair<String, Trigger> removeTrigger(String id, Trigger trigger) {
+        if (triggers.remove(id) != null) {
+            return Pair.of(id, trigger);
+        }
+        return null;
     }
 
     public Pair<String, MapSprite> findSpriteAt(int x, int y, int width, int height) {
@@ -267,13 +344,13 @@ public class MapLayer {
 
     public Pair<String, MapSprite> removeSpriteAt(int x, int y, int width, int height) {
         Pair<String, MapSprite> pair = findSpriteAt(x, y, width, height);
-
-        if (pair != null) {
+        if (pair == null) {
+            return null;
+        } else {
             sprites.remove(pair.getKey());
             map.fireMapChanged();
+            return pair;
         }
-
-        return pair;
     }
 
     public Pair<String, MapImage> findImageAt(int x, int y, int width, int height) {
@@ -301,13 +378,13 @@ public class MapLayer {
 
     public Pair<String, MapImage> removeImageAt(int x, int y, int width, int height) {
         Pair<String, MapImage> pair = findImageAt(x, y, width, height);
-
-        if (pair != null) {
+        if (pair == null) {
+            return null;
+        } else {
             images.remove(pair.getKey());
             map.fireMapChanged();
+            return pair;
         }
-
-        return pair;
     }
 
 }

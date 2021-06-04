@@ -7,22 +7,17 @@
  */
 package org.rpgwizard.common.assets;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
-import java.util.List;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  *
  * @author Joshua Michael Daly
  */
 @Data
-public class Collider {
-
-    private boolean enabled;
-    private int x;
-    private int y;
-    private List<Point> points;
+@EqualsAndHashCode(callSuper = true)
+public class Collider extends AbstractPolygon {
 
     public Collider() {
         enabled = true;
@@ -39,25 +34,6 @@ public class Collider {
         this.x = collider.x;
         this.y = collider.y;
         this.points = collider.points;
-    }
-
-    @JsonIgnore
-    public int getPointCount() {
-        return points.size();
-    }
-
-    @JsonIgnore
-    public int getPointX(int index) {
-        return (int) points.get(index).getX();
-    }
-
-    @JsonIgnore
-    public int getPointY(int index) {
-        return (int) points.get(index).getY();
-    }
-
-    public void addPoint(int x, int y) {
-        points.add(new Point(x, y));
     }
 
 }

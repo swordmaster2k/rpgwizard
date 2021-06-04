@@ -263,9 +263,18 @@ public class MapLayer {
         }
     }
 
-    public Pair<String, Collider> removeCollider(String id, Collider collider) {
-        if (colliders.remove(id) != null) {
-            return Pair.of(id, collider);
+    public Pair<String, Collider> removeCollider(Collider collider) {
+        // REFACTOR: optimise me
+        String key = null;
+        for (java.util.Map.Entry<String, Collider> entry : colliders.entrySet()) {
+            if (collider.equals(entry.getValue())) {
+                key = entry.getKey();
+                break;
+            }
+        }
+
+        if (key != null) {
+            return Pair.of(key, colliders.remove(key));
         }
         return null;
     }

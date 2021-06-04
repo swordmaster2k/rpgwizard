@@ -7,22 +7,19 @@
  */
 package org.rpgwizard.common.assets;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  *
  * @author Joshua Michael Daly
  */
 @Data
-public class Trigger {
+@EqualsAndHashCode(callSuper = true)
+public class Trigger extends AbstractPolygon {
 
-    private boolean enabled;
-    private int x;
-    private int y;
-    private List<Point> points;
     private List<Event> events;
 
     public Trigger() {
@@ -42,25 +39,6 @@ public class Trigger {
         this.y = trigger.y;
         this.points = trigger.points;
         this.events = trigger.events;
-    }
-
-    @JsonIgnore
-    public int getPointCount() {
-        return points.size();
-    }
-
-    @JsonIgnore
-    public int getPointX(int index) {
-        return (int) points.get(index).getX();
-    }
-
-    @JsonIgnore
-    public int getPointY(int index) {
-        return (int) points.get(index).getY();
-    }
-
-    public void addPoint(int x, int y) {
-        points.add(new Point(x, y));
     }
 
 }

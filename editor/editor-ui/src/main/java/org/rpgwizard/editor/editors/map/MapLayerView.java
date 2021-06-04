@@ -8,6 +8,7 @@
 package org.rpgwizard.editor.editors.map;
 
 import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Dimension;
@@ -15,7 +16,9 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import org.rpgwizard.common.assets.Collider;
 import org.rpgwizard.common.assets.map.Map;
 import org.rpgwizard.common.assets.tileset.Tile;
 import org.rpgwizard.common.assets.tileset.TilePixelOutOfRangeException;
@@ -23,6 +26,7 @@ import org.rpgwizard.common.assets.map.MapLayer;
 import org.rpgwizard.common.assets.map.MapSprite;
 import org.rpgwizard.common.assets.events.MapChangedEvent;
 import org.rpgwizard.editor.ui.resources.Icons;
+import org.rpgwizard.editor.utilities.GuiHelper;
 
 /**
  *
@@ -270,41 +274,19 @@ public class MapLayerView {
         }
     }
 
-    /**
-     * Draws the vectors for this layer.
-     *
-     * @param g
-     *            The graphics context to draw to.
-     */
     public void drawVectors(Graphics2D g) {
-        // REFACTOR: FIX ME
-
-        // g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, layer.getOpacity()));
-        //
-        // // Draw Vectors
-        // ArrayList<MapVector> vectors = layer.getVectors();
-        //
-        // for (MapVector vector : vectors) {
-        // if (vector.isSelected()) {
-        // g.setStroke(new BasicStroke(3.0f)); // Draw it thicker.
-        // }
-        //
-        // switch (vector.getType()) {
-        // case PASSABLE:
-        // g.setColor(Color.YELLOW);
-        // break;
-        // case SOLID:
-        // g.setColor(Color.RED);
-        // break;
-        // default:
-        // }
-        //
-        // drawVectorLines(g, vector);
-        //
-        // if (vector.isSelected()) {
-        // g.setStroke(new BasicStroke(1.0f)); // Return to normal stroke.
-        // }
-        // }
+        Collection<Collider> colliders = layer.getColliders().values();
+        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, layer.getOpacity()));
+        for (Collider collider : colliders) {
+            if (collider.isSelected()) {
+                g.setStroke(new BasicStroke(3.0f)); // Draw it thicker.
+            }
+            g.setColor(Color.YELLOW);
+            drawVectorLines(g, collider);
+            if (collider.isSelected()) {
+                g.setStroke(new BasicStroke(1.0f)); // Return to normal stroke.
+            }
+        }
     }
 
     /**
@@ -360,29 +342,30 @@ public class MapLayerView {
     }
 
     // REFACTOR: FIX ME
-    // /**
-    // *
-    // *
-    // * @param g
-    // * @param vector
-    // */
-    // private void drawVectorLines(Graphics2D g, MapVector vector) {
-    // // Draw lines from points 0 > 1 , 1 > 2, 2 > 3 etc..
-    // int count = vector.getPointCount();
-    //
-    // for (int i = 0; i < count - 1; i++) {
-    // int[] points = GuiHelper.ensureVectorVisible(layer.getMap(), vector.getPointX(i), vector.getPointY(i),
-    // vector.getPointX(i + 1), vector.getPointY(i + 1));
-    // g.drawLine(points[0], points[1], points[2], points[3]);
-    // }
-    //
-    // if (vector.isClosed()) {
-    // // Draw the final lines
-    // int[] points = GuiHelper.ensureVectorVisible(layer.getMap(), vector.getPointX(count - 1),
-    // vector.getPointY(count - 1), vector.getPointX(0), vector.getPointY(0));
-    // g.drawLine(points[0], points[1], points[2], points[3]);
-    // }
-    // }
+    /**
+     *
+     *
+     * @param g
+     * @param vector
+     */
+    private void drawVectorLines(Graphics2D g, Collider collider) {
+        // Draw lines from points 0 > 1 , 1 > 2, 2 > 3 etc..
+        int count = collider.getPointCount();
+
+        for (int i = 0; i < count - 1; i++) {
+            int[] points = GuiHelper.ensureVisible(layer.getMap(), collider.getPointX(i), collider.getPointY(i),
+                    collider.getPointX(i + 1), collider.getPointY(i + 1));
+            g.drawLine(points[0], points[1], points[2], points[3]);
+        }
+
+        // REFACTOR: Revisit this
+        // if (collider.isClosed()) {
+        // // Draw the final lines
+        // int[] points = GuiHelper.ensureVisible(layer.getMap(), vector.getPointX(count - 1),
+        // vector.getPointY(count - 1), vector.getPointX(0), vector.getPointY(0));
+        // g.drawLine(points[0], points[1], points[2], points[3]);
+        // }
+    }
 
     private void drawSelection(Graphics2D g, int x, int y, int width, int height) {
         Dimension dimensions = layer.getMap().getMapPixelDimensions();

@@ -40,7 +40,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.table.TableColumn;
 import javax.swing.text.DefaultFormatter;
-import org.rpgwizard.common.assets.board.Board;
+import org.rpgwizard.common.assets.map.Map;
 import org.rpgwizard.editor.ui.listeners.PopupListFilesListener;
 
 /**
@@ -308,9 +308,9 @@ public abstract class GuiHelper {
         return !(x < 0 || y < 0);
     }
 
-    public static int[] ensureVectorVisible(Board board, int x1, int y1, int x2, int y2) {
-        int width = board.getWidth() * board.getTileWidth();
-        int height = board.getHeight() * board.getTileHeight();
+    public static int[] ensureVisible(Map map, int x1, int y1, int x2, int y2) {
+        int width = map.getWidth() * map.getTileWidth();
+        int height = map.getHeight() * map.getTileHeight();
 
         if (x1 == width && x2 == width) {
             x1 -= 1;

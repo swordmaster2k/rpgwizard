@@ -7,7 +7,6 @@
  */
 package org.rpgwizard.common.assets.map;
 
-import org.rpgwizard.common.assets.board.*;
 import java.util.stream.Stream;
 
 /**

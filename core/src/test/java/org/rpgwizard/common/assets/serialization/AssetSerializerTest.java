@@ -51,7 +51,6 @@ public class AssetSerializerTest {
 
         // Serializers
         assetManager.registerSerializer(new JsonAnimationSerializer());
-        assetManager.registerSerializer(new JsonBoardSerializer());
         assetManager.registerSerializer(new JsonGameSerializer());
         assetManager.registerSerializer(new JsonItemSerializer());
         assetManager.registerSerializer(new JsonSpriteSerializer());

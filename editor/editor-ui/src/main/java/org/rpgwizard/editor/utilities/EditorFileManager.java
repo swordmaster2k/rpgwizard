@@ -21,10 +21,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.commons.io.FileUtils;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.animation.Animation;
-import org.rpgwizard.common.assets.board.Board;
 import org.rpgwizard.common.assets.Item;
 import org.rpgwizard.common.assets.Program;
 import org.rpgwizard.common.assets.game.Game;
+import org.rpgwizard.common.assets.map.Map;
 import org.rpgwizard.common.assets.sprite.Sprite;
 import org.rpgwizard.common.assets.tileset.Tileset;
 import org.rpgwizard.common.utilities.CoreProperties;
@@ -97,7 +97,7 @@ public class EditorFileManager {
     public static String getTypeSubdirectory(Class<? extends AbstractAsset> type) {
         if (type == Animation.class) {
             return CoreProperties.getProperty("toolkit.directory.animations");
-        } else if (type == Board.class) {
+        } else if (type == Map.class) {
             return CoreProperties.getProperty("toolkit.directory.board");
         } else if (type == Item.class) {
             return CoreProperties.getProperty("toolkit.directory.item");
@@ -119,8 +119,8 @@ public class EditorFileManager {
     public static String getTypeFilterDescription(Class<? extends AbstractAsset> type) {
         if (type == Animation.class) {
             return "Animations";
-        } else if (type == Board.class) {
-            return "Boards";
+        } else if (type == Map.class) {
+            return "maps";
         } else if (type == Item.class) {
             return "Items";
         } else if (type == Sprite.class) {
@@ -147,7 +147,7 @@ public class EditorFileManager {
     public static String[] getTypeExtensions(Class<? extends AbstractAsset> type) {
         if (type == Animation.class) {
             return new String[] { CoreProperties.getProperty("toolkit.animation.extension.default") };
-        } else if (type == Board.class) {
+        } else if (type == Map.class) {
             return new String[] { CoreProperties.getProperty("toolkit.board.extension.default") };
         } else if (type == Item.class) {
             return new String[] { CoreProperties.getProperty("toolkit.item.extension.default") };

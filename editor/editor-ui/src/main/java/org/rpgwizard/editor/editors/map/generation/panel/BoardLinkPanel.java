@@ -16,7 +16,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.SwingConstants;
-import org.rpgwizard.common.assets.board.Board;
 import org.rpgwizard.editor.editors.map.generation.ProgramType;
 import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.rpgwizard.editor.utilities.GuiHelper;
@@ -61,9 +60,9 @@ public final class BoardLinkPanel extends AbstractProgramPanel {
 
         add(new JLabel("Board", SwingConstants.LEFT));
 
-        String[] exts = EditorFileManager.getTypeExtensions(Board.class);
-        boardCombo = GuiHelper.getFileListJComboBox(new File[] { EditorFileManager.getFullPath(Board.class) }, exts,
-                true);
+        String[] exts = EditorFileManager.getTypeExtensions(org.rpgwizard.common.assets.map.Map.class);
+        boardCombo = GuiHelper.getFileListJComboBox(
+                new File[] { EditorFileManager.getFullPath(org.rpgwizard.common.assets.map.Map.class) }, exts, true);
         boardCombo.setSelectedItem(board);
         add(boardCombo);
 

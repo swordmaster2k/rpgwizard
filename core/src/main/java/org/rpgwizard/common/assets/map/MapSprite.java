@@ -25,7 +25,6 @@ import org.rpgwizard.common.assets.Event;
 import org.rpgwizard.common.assets.Location;
 import org.rpgwizard.common.assets.animation.Animation;
 import org.rpgwizard.common.assets.animation.AnimationEnum;
-import org.rpgwizard.common.assets.board.BoardSprite;
 import org.rpgwizard.common.assets.sprite.Sprite;
 import org.rpgwizard.common.utilities.CoreProperties;
 
@@ -115,7 +114,7 @@ public class MapSprite implements Selectable {
                     }
                 }
             } catch (IOException | AssetException ex) {
-                Logger.getLogger(BoardSprite.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(MapSprite.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 

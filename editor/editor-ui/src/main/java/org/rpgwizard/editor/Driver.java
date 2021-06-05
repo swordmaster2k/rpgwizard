@@ -27,9 +27,9 @@ import org.rpgwizard.common.assets.game.Game;
 import org.rpgwizard.common.assets.files.FileAssetHandleResolver;
 import org.rpgwizard.common.assets.serialization.ImageSerializer;
 import org.rpgwizard.common.assets.serialization.JsonAnimationSerializer;
-import org.rpgwizard.common.assets.serialization.JsonBoardSerializer;
 import org.rpgwizard.common.assets.serialization.JsonItemSerializer;
 import org.rpgwizard.common.assets.serialization.JsonGameSerializer;
+import org.rpgwizard.common.assets.serialization.JsonMapSerializer;
 import org.rpgwizard.common.assets.serialization.JsonSpriteSerializer;
 import org.rpgwizard.common.assets.serialization.JsonTilesetSerializer;
 import org.rpgwizard.common.assets.serialization.TextProgramSerializer;
@@ -82,9 +82,9 @@ public class Driver {
 
         AssetManager assetManager = AssetManager.getInstance();
         assetManager.registerSerializer(new JsonAnimationSerializer());
-        assetManager.registerSerializer(new JsonBoardSerializer());
         assetManager.registerSerializer(new JsonGameSerializer());
         assetManager.registerSerializer(new JsonItemSerializer());
+        assetManager.registerSerializer(new JsonMapSerializer());
         assetManager.registerSerializer(new JsonSpriteSerializer());
         assetManager.registerSerializer(new TextProgramSerializer());
         assetManager.registerSerializer(new JsonTilesetSerializer());

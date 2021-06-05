@@ -29,7 +29,6 @@ import org.rpgwizard.common.assets.AssetDescriptor;
 @ToString(callSuper = true, includeFieldNames = true)
 public class Tileset extends AbstractAsset {
 
-    private String name;
     private int tileWidth;
     private int tileHeight;
     private String image;
@@ -116,6 +115,11 @@ public class Tileset extends AbstractAsset {
             return tileData.get(String.valueOf(index));
         }
         return Map.of();
+    }
+
+    @JsonIgnore
+    public String getName() {
+        return getFile() != null ? getFile().getName() : "none";
     }
 
 }

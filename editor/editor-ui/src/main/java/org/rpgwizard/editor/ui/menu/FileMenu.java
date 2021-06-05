@@ -33,8 +33,7 @@ public final class FileMenu extends JMenu implements ActionListener {
     private JMenu newMenu;
     private JMenuItem newProjectMenuItem;
     private JMenuItem newAnimationMenuItem;
-    private JMenuItem newBoardMenuItem;
-    private JMenuItem newItemMenuItem;
+    private JMenuItem newMapMenuItem;
     private JMenuItem newSpriteMenuItem;
     private JMenuItem newProgramMenuItem;
     private JMenuItem newTilesetMenuItem;
@@ -111,12 +110,10 @@ public final class FileMenu extends JMenu implements ActionListener {
 
         } else if (e.getSource() == newAnimationMenuItem) {
             MainWindow.getInstance().createNewAnimation();
-        } else if (e.getSource() == newBoardMenuItem) {
+        } else if (e.getSource() == newMapMenuItem) {
             MainWindow.getInstance().createNewMap();
         } else if (e.getSource() == newSpriteMenuItem) {
             MainWindow.getInstance().createNewSprite();
-        } else if (e.getSource() == newItemMenuItem) {
-            MainWindow.getInstance().createNewItem();
         } else if (e.getSource() == newProgramMenuItem) {
             MainWindow.getInstance().createNewProgram();
         } else if (e.getSource() == newTilesetMenuItem) {
@@ -130,8 +127,7 @@ public final class FileMenu extends JMenu implements ActionListener {
     public void doEnableItems() {
         openFileMenuItem.setEnabled(true);
         newAnimationMenuItem.setEnabled(true);
-        newBoardMenuItem.setEnabled(true);
-        newItemMenuItem.setEnabled(true);
+        newMapMenuItem.setEnabled(true);
         newSpriteMenuItem.setEnabled(true);
         newProgramMenuItem.setEnabled(true);
         newTilesetMenuItem.setEnabled(true);
@@ -158,8 +154,7 @@ public final class FileMenu extends JMenu implements ActionListener {
     private void configureNewSubMenu() {
         configureNewProjectMenuItem();
         configureNewAnimationMenuItem();
-        configureNewBoardMenuItem();
-        configureNewItemMenuItem();
+        configureNewMapMenuItem();
         configureNewSpriteMenuItem();
         configureNewProgramMenuItem();
         configureNewTilesetMenuItem();
@@ -167,8 +162,7 @@ public final class FileMenu extends JMenu implements ActionListener {
         newMenu = new JMenu("New");
         newMenu.setEnabled(true);
         newMenu.add(newAnimationMenuItem);
-        newMenu.add(newBoardMenuItem);
-        newMenu.add(newItemMenuItem);
+        newMenu.add(newMapMenuItem);
         newMenu.add(newSpriteMenuItem);
         newMenu.add(newProgramMenuItem);
         newMenu.add(newTilesetMenuItem);
@@ -199,18 +193,11 @@ public final class FileMenu extends JMenu implements ActionListener {
         newAnimationMenuItem.setIcon(Icons.getSmallIcon("new-animation"));
     }
 
-    private void configureNewBoardMenuItem() {
-        newBoardMenuItem = new JMenuItem("New Board");
-        newBoardMenuItem.setEnabled(false);
-        newBoardMenuItem.addActionListener(this);
-        newBoardMenuItem.setIcon(Icons.getSmallIcon("new-board"));
-    }
-
-    private void configureNewItemMenuItem() {
-        newItemMenuItem = new JMenuItem("New Item");
-        newItemMenuItem.setEnabled(false);
-        newItemMenuItem.addActionListener(this);
-        newItemMenuItem.setIcon(Icons.getSmallIcon("new-item"));
+    private void configureNewMapMenuItem() {
+        newMapMenuItem = new JMenuItem("New Map");
+        newMapMenuItem.setEnabled(false);
+        newMapMenuItem.addActionListener(this);
+        newMapMenuItem.setIcon(Icons.getSmallIcon("new-map"));
     }
 
     private void configureNewSpriteMenuItem() {

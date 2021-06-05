@@ -28,7 +28,7 @@ public class OpenProjectAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         EditorFileManager.getFileChooser().resetChoosableFileFilters();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("Toolkit Project",
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Project",
                 CoreProperties.getDefaultExtension(Game.class).replace(".", ""));
         EditorFileManager.getFileChooser().setFileFilter(filter);
 

@@ -19,10 +19,9 @@ import org.rpgwizard.common.assets.AssetManager;
 import org.rpgwizard.common.assets.Collider;
 import org.rpgwizard.common.assets.Event;
 import org.rpgwizard.common.assets.Image;
-import org.rpgwizard.common.assets.Item;
 import org.rpgwizard.common.assets.Location;
 import org.rpgwizard.common.assets.Point;
-import org.rpgwizard.common.assets.Program;
+import org.rpgwizard.common.assets.Script;
 import org.rpgwizard.common.assets.Trigger;
 import org.rpgwizard.common.assets.game.Game;
 import org.rpgwizard.common.assets.animation.SpriteSheet;
@@ -52,9 +51,8 @@ public class AssetSerializerTest {
         // Serializers
         assetManager.registerSerializer(new JsonAnimationSerializer());
         assetManager.registerSerializer(new JsonGameSerializer());
-        assetManager.registerSerializer(new JsonItemSerializer());
         assetManager.registerSerializer(new JsonSpriteSerializer());
-        assetManager.registerSerializer(new TextProgramSerializer());
+        assetManager.registerSerializer(new ScriptSerializer());
         assetManager.registerSerializer(new JsonTilesetSerializer());
         assetManager.registerSerializer(new ImageSerializer());
     }
@@ -209,7 +207,7 @@ public class AssetSerializerTest {
     }
 
     private void checkTileSet(Tileset asset) {
-        Assert.assertEquals("Default.tileset", asset.getName());
+        Assert.assertNotNull(asset.getName());
         Assert.assertEquals(24, asset.getTileWidth());
         Assert.assertEquals(24, asset.getTileHeight());
         Assert.assertEquals("tiles/oryx_16bit_scifi_world_trans.png", asset.getImage());
@@ -291,35 +289,19 @@ public class AssetSerializerTest {
     }
 
     @Test
-    public void testProgramSerializer() throws Exception {
+    public void testScriptSerializer() throws Exception {
         String path = AssetSerializerTestHelper.getPath(
-                "Programs/Startup.js");
-        TextProgramSerializer serializer = new TextProgramSerializer();
+                "scripts/Startup.js");
+        ScriptSerializer serializer = new ScriptSerializer();
 
         // Deserialize original.
-        Program asset = AssetSerializerTestHelper.deserializeFile(path, serializer);
-        checkProgram(asset);
-    }
-
-    @Test
-    public void testItemSerializier() throws Exception {
-        String path = AssetSerializerTestHelper.getPath(
-                "Items/sword.item");
-        JsonItemSerializer serializer = new JsonItemSerializer();
-
-        // Deserialize original.
-        Item asset = AssetSerializerTestHelper.deserializeFile(path, serializer);
-        checkItem(asset);
-
-        // Serialize a temporary version and deserialize it.
-        path = AssetSerializerTestHelper.serialize(asset, serializer);
-        asset = AssetSerializerTestHelper.deserializeFile(path, serializer);
-        checkItem(asset);
+        Script asset = AssetSerializerTestHelper.deserializeFile(path, serializer);
+        checkScript(asset);
     }
     
     @Test
     public void testImageSerializier() throws Exception {
-        String path = AssetSerializerTestHelper.getPath("Graphics/Idle_north.png");
+        String path = AssetSerializerTestHelper.getPath("textures/Idle_north.png");
         ImageSerializer serializer = new ImageSerializer();
 
         // Deserialize original.
@@ -329,26 +311,9 @@ public class AssetSerializerTest {
         Assert.assertEquals(90, asset.getBufferedImage().getHeight());
     }
 
-    private void checkItem(Item asset) {
-        Assert.assertEquals("Sword", asset.getName());
-        Assert.assertEquals("Sword/sword_icon.png", asset.getIcon());
-        Assert.assertEquals("The sword of evil's bane.", asset.getDescription());
-        Assert.assertEquals("sword", asset.getType());
-        Assert.assertEquals(100, asset.getPrice());
-        Assert.assertEquals(0.0, asset.getHealthEffect(), 0.0);
-        Assert.assertEquals(100.0, asset.getAttackEffect(), 0.0);
-        Assert.assertEquals(0.0, asset.getDefenceEffect(), 0.0);
-        Assert.assertEquals(0.0, asset.getMagicEffect(), 0.0);
-    }
-
-    private void checkProgram(Program asset) throws IOException {
+    private void checkScript(Script asset) throws IOException {
         String code = FileUtils.readFileToString(asset.getFile(), "UTF-8");
         Assert.assertEquals(code, asset.getProgramBuffer().toString());
-    }
-
-    private void checkMapsEqual(java.util.Map<String, String> expected, java.util.Map<String, String> actual) {
-        Assert.assertEquals(expected.keySet(), actual.keySet());
-        Assert.assertArrayEquals(expected.values().toArray(), actual.values().toArray());
     }
 
 }

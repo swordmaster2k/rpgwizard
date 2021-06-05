@@ -47,8 +47,7 @@ import org.rpgwizard.common.assets.AssetException;
 import org.rpgwizard.common.assets.AssetHandle;
 import org.rpgwizard.common.assets.AssetManager;
 import org.rpgwizard.common.assets.Image;
-import org.rpgwizard.common.assets.Item;
-import org.rpgwizard.common.assets.Program;
+import org.rpgwizard.common.assets.Script;
 import org.rpgwizard.common.assets.game.Game;
 import org.rpgwizard.common.assets.map.Map;
 import org.rpgwizard.common.assets.sprite.Sprite;
@@ -58,7 +57,7 @@ import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.common.utilities.TileSetCache;
 import org.rpgwizard.editor.editors.AnimationEditor;
 import org.rpgwizard.editor.editors.MapEditor;
-import org.rpgwizard.editor.editors.ProgramEditor;
+import org.rpgwizard.editor.editors.ScriptEditor;
 import org.rpgwizard.editor.editors.GameEditor;
 import org.rpgwizard.editor.editors.SpriteEditor;
 import org.rpgwizard.editor.editors.map.NewMapDialog;
@@ -70,7 +69,7 @@ import org.rpgwizard.editor.editors.map.brush.ShapeBrush;
 import org.rpgwizard.editor.editors.image.ImageEditor;
 import org.rpgwizard.editor.editors.map.brush.AbstractPolygonBrush;
 import org.rpgwizard.editor.editors.map.panels.LayerPanel;
-import org.rpgwizard.editor.editors.program.IssuesTablePanel;
+import org.rpgwizard.editor.editors.script.IssuesTablePanel;
 import org.rpgwizard.editor.editors.tileset.NewTilesetDialog;
 import org.rpgwizard.editor.editors.tileset.TileSetUtil;
 import org.rpgwizard.editor.properties.EditorProperties;
@@ -140,7 +139,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
     private AbstractBrush currentBrush;
     private Tile lastSelectedTile;
 
-    // Program Related.
+    // Script Related.
     private final FindDialog findDialog;
     private final ReplaceDialog replaceDialog;
 
@@ -523,8 +522,8 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
             } catch (Exception ex) {
                 LOGGER.error("Failed to close window=[{}].", window, ex);
             }
-        } else if (window instanceof ProgramEditor) {
-            ((ProgramEditor) window).cleanUp();
+        } else if (window instanceof ScriptEditor) {
+            ((ScriptEditor) window).cleanUp();
             window.dispose();
         } else {
             window.dispose();
@@ -592,8 +591,8 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         } else if (window instanceof SpriteEditor) {
             SpriteEditor editor = (SpriteEditor) window;
             propertiesPanel.setModel(editor.getSprite());
-        } else if (window instanceof ProgramEditor) {
-            ProgramEditor editor = (ProgramEditor) window;
+        } else if (window instanceof ScriptEditor) {
+            ScriptEditor editor = (ScriptEditor) window;
             editor.forceReparsing();
             if (!toolBar.getStopButton().isEnabled()) {
                 // Engine isn't running at the moment
@@ -642,7 +641,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
             if (propertiesPanel.getModel() == editor.getSprite()) {
                 propertiesPanel.setModel(null);
             }
-        } else if (frame instanceof ProgramEditor) {
+        } else if (frame instanceof ScriptEditor) {
             issuesPanel.clearNotices();
             toolBar.getDebugButton().setEnabled(false);
         } else if (frame instanceof ImageEditor) {
@@ -655,16 +654,16 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
 
     @Override
     public void searchEvent(SearchEvent se) {
-        if (getCurrentFrame() instanceof ProgramEditor) {
-            ProgramEditor editor = (ProgramEditor) getCurrentFrame();
+        if (getCurrentFrame() instanceof ScriptEditor) {
+            ScriptEditor editor = (ScriptEditor) getCurrentFrame();
             editor.searchEvent(se);
         }
     }
 
     @Override
     public String getSelectedText() {
-        if (getCurrentFrame() instanceof ProgramEditor) {
-            ProgramEditor editor = (ProgramEditor) getCurrentFrame();
+        if (getCurrentFrame() instanceof ScriptEditor) {
+            ScriptEditor editor = (ScriptEditor) getCurrentFrame();
             return editor.getSelectedText();
         }
         return "";
@@ -709,15 +708,13 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
             addToolkitEditorWindow(EditorFactory.getEditor(openAnimation(file)));
         } else if (fileName.endsWith(CoreProperties.getDefaultExtension(Map.class))) {
             addToolkitEditorWindow(EditorFactory.getEditor(openMap(file)));
-        } else if (fileName.endsWith(CoreProperties.getDefaultExtension(Item.class))) {
-            addToolkitEditorWindow(EditorFactory.getEditor(openItem(file)));
         } else if (fileName.endsWith(CoreProperties.getDefaultExtension(Sprite.class))) {
             addToolkitEditorWindow(EditorFactory.getEditor(openSprite(file)));
         } else if (fileName.endsWith(CoreProperties.getDefaultExtension(Tileset.class))) {
             openTileset(file);
         } else if (fileName.endsWith(CoreProperties.getDefaultExtension(Game.class))) {
             addToolkitEditorWindow(EditorFactory.getEditor(openProject(file)));
-        } else if (fileName.endsWith(CoreProperties.getDefaultExtension(Program.class))) {
+        } else if (fileName.endsWith(CoreProperties.getDefaultExtension(Script.class))) {
             addToolkitEditorWindow(EditorFactory.getEditor(openProgram(file)));
         } else if (Arrays.asList(EditorFileManager.getImageExtensions())
                 .contains(FilenameUtils.getExtension(fileName))) {
@@ -777,24 +774,24 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
     }
 
     public void createNewProgram() {
-        LOGGER.info("Creating new {}.", Program.class.getSimpleName());
-        addToolkitEditorWindow(EditorFactory.getEditor(new Program(null)));
+        LOGGER.info("Creating new {}.", Script.class.getSimpleName());
+        addToolkitEditorWindow(EditorFactory.getEditor(new Script(null)));
     }
 
-    public Program openProgram(File file) {
-        LOGGER.info("Opening {} file=[{}].", Program.class.getSimpleName(), file);
+    public Script openProgram(File file) {
+        LOGGER.info("Opening {} file=[{}].", Script.class.getSimpleName(), file);
 
         try {
             if (file.canRead()) {
-                Program program;
+                Script program;
 
                 AssetHandle handle = AssetManager.getInstance().deserialize(new AssetDescriptor(file.toURI()));
-                program = (Program) handle.getAsset();
+                program = (Script) handle.getAsset();
 
                 return program;
             }
         } catch (IOException | AssetException ex) {
-            LOGGER.error("Failed to open {} file=[{}].", Program.class.getSimpleName(), file, ex);
+            LOGGER.error("Failed to open {} file=[{}].", Script.class.getSimpleName(), file, ex);
         }
 
         return null;
@@ -871,30 +868,6 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         return null;
     }
 
-    public void createNewItem() {
-        LOGGER.info("Creating new {}.", Item.class.getSimpleName());
-        Item item = new Item(null);
-        item.setName("Untitled");
-        addToolkitEditorWindow(EditorFactory.getEditor(item));
-    }
-
-    public Item openItem(File file) {
-        LOGGER.info("Opening {} file=[{}].", Item.class.getSimpleName(), file);
-
-        try {
-            if (file.canRead()) {
-                AssetHandle handle = AssetManager.getInstance().deserialize(new AssetDescriptor(file.toURI()));
-                Item item = (Item) handle.getAsset();
-
-                return item;
-            }
-        } catch (IOException | AssetException ex) {
-            LOGGER.error("Failed to open {} file=[{}].", Item.class.getSimpleName(), file, ex);
-        }
-
-        return null;
-    }
-
     public void createNewSprite() {
         LOGGER.info("Creating new {}.", Sprite.class.getSimpleName());
         Sprite sprite = new Sprite();
@@ -936,7 +909,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
             int tileWidth = dialog.getValue()[0];
             int tileHeight = dialog.getValue()[1];
 
-            String path = CoreProperties.getProperty("toolkit.directory.graphics");
+            String path = CoreProperties.getProperty("rpgwizard.directory.textures");
             String description = "Image Files";
             String[] extensions = EditorFileManager.getImageExtensions();
             EditorFileManager.setFileChooserSubdirAndFilters(path, description, extensions);
@@ -953,7 +926,6 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
 
                     Tileset tileSet = new Tileset(new AssetDescriptor(tileSetFile.toURI()), tileWidth, tileHeight);
                     tileSet.setDescriptor(new AssetDescriptor(tileSetFile.toURI()));
-                    tileSet.setName(tileSetFile.getName());
 
                     String remove = EditorFileManager.getGraphicsPath();
                     String imagePath = file.getAbsolutePath().replace(remove, "");

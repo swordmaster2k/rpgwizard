@@ -17,10 +17,10 @@ import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.AssetException;
 import org.rpgwizard.common.assets.AssetHandle;
 import org.rpgwizard.common.assets.AssetManager;
-import org.rpgwizard.common.assets.Program;
+import org.rpgwizard.common.assets.Script;
 import org.rpgwizard.common.assets.game.Game;
 import org.rpgwizard.editor.MainWindow;
-import org.rpgwizard.editor.editors.ProgramEditor;
+import org.rpgwizard.editor.editors.ScriptEditor;
 import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,12 +36,12 @@ public class DebugProgramAction extends AbstractRunAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
-            if (!(MainWindow.getInstance().getCurrentFrame() instanceof ProgramEditor)) {
+            if (!(MainWindow.getInstance().getCurrentFrame() instanceof ScriptEditor)) {
                 return;
             }
 
-            ProgramEditor programEditor = (ProgramEditor) MainWindow.getInstance().getCurrentFrame();
-            Program program = programEditor.getProgram();
+            ScriptEditor programEditor = (ScriptEditor) MainWindow.getInstance().getCurrentFrame();
+            Script program = programEditor.getProgram();
             if (program == null || program.getDescriptor() == null || programEditor.needsSave()) {
                 JOptionPane.showMessageDialog(MainWindow.getInstance(), "Please save your program first.",
                         "Debug Program", JOptionPane.OK_OPTION);

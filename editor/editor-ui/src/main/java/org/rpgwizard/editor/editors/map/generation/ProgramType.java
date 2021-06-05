@@ -13,7 +13,7 @@ package org.rpgwizard.editor.editors.map.generation;
  */
 public enum ProgramType {
 
-    CUSTOM, BOARD_LINK;
+    CUSTOM, MAP_LINK;
 
     @Override
     public String toString() {

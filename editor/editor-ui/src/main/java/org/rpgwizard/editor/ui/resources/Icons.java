@@ -56,18 +56,10 @@ public final class Icons {
         switch (name.toLowerCase()) {
         case "animation":
             return getIcon("animation");
-        case "board":
-            return getIcon("board");
-        case "character":
-            return getIcon("character");
-        case "enemy":
-            return getIcon("enemy");
-        case "item":
-            return getIcon("item");
+        case "map":
+            return getIcon("map");
         case "js":
             return getIcon("program");
-        case "npc":
-            return getIcon("npc");
         case "game":
             return getIcon("project");
         case "folder":

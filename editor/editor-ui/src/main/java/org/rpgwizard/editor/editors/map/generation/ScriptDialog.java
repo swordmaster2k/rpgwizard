@@ -32,9 +32,9 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.rpgwizard.common.assets.AssetException;
 import org.rpgwizard.common.assets.AssetManager;
 import org.rpgwizard.common.assets.files.FileAssetHandleResolver;
-import org.rpgwizard.common.assets.serialization.TextProgramSerializer;
-import org.rpgwizard.editor.editors.map.generation.panel.AbstractProgramPanel;
-import org.rpgwizard.editor.editors.map.generation.panel.BoardLinkPanel;
+import org.rpgwizard.common.assets.serialization.ScriptSerializer;
+import org.rpgwizard.editor.editors.map.generation.panel.AbstractScriptPanel;
+import org.rpgwizard.editor.editors.map.generation.panel.MapLinkPanel;
 import org.rpgwizard.editor.editors.map.generation.panel.CustomPanel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +53,7 @@ public final class ScriptDialog extends JDialog {
     private final JButton cancelButton;
 
     private final JScrollPane centerPane;
-    private AbstractProgramPanel programPanel;
+    private AbstractScriptPanel programPanel;
 
     private final String oldValue;
     private String newValue;
@@ -70,7 +70,7 @@ public final class ScriptDialog extends JDialog {
         List<String> types = Arrays.asList(ProgramType.values()).stream().map(ProgramType::name)
                 .collect(Collectors.toList());
         programTypeCombo = new JComboBox<>(types.toArray(new String[0]));
-        Pair<ProgramType, Map<String, Object>> pair = ProgramInterpreter.interpret(oldValue);
+        Pair<ProgramType, Map<String, Object>> pair = ScriptInterpreter.interpret(oldValue);
         switchPanel(pair.getKey(), pair.getValue());
         programTypeCombo.addActionListener((e) -> {
             String selected = (String) programTypeCombo.getSelectedItem();
@@ -141,14 +141,14 @@ public final class ScriptDialog extends JDialog {
                 return (String) values.get("program");
             }
 
-            if (oldValue.contains(ProgramGenerator.AUTO_GENERATED_DIR)) {
+            if (oldValue.contains(ScriptGenerator.AUTO_GENERATED_DIR)) {
                 // Replace old auto-generated program
-                String id = oldValue.replace(ProgramGenerator.AUTO_GENERATED_DIR + "/", "")
-                        .replace(ProgramGenerator.TEMPLATE_EXT, "");
-                return ProgramGenerator.generate(id, values, programType);
+                String id = oldValue.replace(ScriptGenerator.AUTO_GENERATED_DIR + "/", "")
+                        .replace(ScriptGenerator.TEMPLATE_EXT, "");
+                return ScriptGenerator.generate(id, values, programType);
             } else {
                 // Generate a new program.
-                return ProgramGenerator.generate(values, programType);
+                return ScriptGenerator.generate(values, programType);
             }
         } catch (IOException | AssetException | URISyntaxException ex) {
             LOGGER.error("Failed to collect new value!", ex);
@@ -160,11 +160,11 @@ public final class ScriptDialog extends JDialog {
 
     private void switchPanel(ProgramType programType, Map<String, Object> parameters) {
         switch (programType) {
-        case BOARD_LINK:
+        case MAP_LINK:
             if (parameters.isEmpty()) {
-                programPanel = new BoardLinkPanel();
+                programPanel = new MapLinkPanel();
             } else {
-                programPanel = new BoardLinkPanel(parameters);
+                programPanel = new MapLinkPanel(parameters);
             }
             break;
         default:
@@ -185,7 +185,7 @@ public final class ScriptDialog extends JDialog {
                 "D:\\Documents\\Software Development\\rpgwizard\\editor\\editor-ui\\target\\classes\\projects\\The Wizard's Tower");
 
         AssetManager.getInstance().registerResolver(new FileAssetHandleResolver());
-        AssetManager.getInstance().registerSerializer(new TextProgramSerializer());
+        AssetManager.getInstance().registerSerializer(new ScriptSerializer());
 
         ScriptDialog dialog = new ScriptDialog(null, "test.js");
         dialog.display();

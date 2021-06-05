@@ -26,7 +26,7 @@ public class JsonTilesetSerializer extends AbstractJsonSerializer {
     @Override
     public boolean serializable(AssetDescriptor descriptor) {
         final String ext = Paths.extension(descriptor.getURI());
-        return (ext.equals(CoreProperties.getFullExtension("toolkit.tileset.extension.json")));
+        return (ext.equals(CoreProperties.getFullExtension("rpgwizard.tileset.extension.json")));
     }
 
     @Override

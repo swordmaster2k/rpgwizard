@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.JInternalFrame;
 import org.rpgwizard.editor.MainWindow;
-import org.rpgwizard.editor.editors.ProgramEditor;
+import org.rpgwizard.editor.editors.ScriptEditor;
 import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 
 /**
@@ -25,8 +25,8 @@ public class PasteAction extends AbstractAction {
         MainWindow instance = MainWindow.getInstance();
         JInternalFrame frame = instance.getCurrentFrame();
         if (frame instanceof AbstractAssetEditorWindow) {
-            if (frame instanceof ProgramEditor) {
-                ProgramEditor editor = (ProgramEditor) frame;
+            if (frame instanceof ScriptEditor) {
+                ScriptEditor editor = (ScriptEditor) frame;
                 editor.handle(this);
             }
         }

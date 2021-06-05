@@ -17,7 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import org.apache.commons.lang3.ArrayUtils;
 import org.rpgwizard.common.assets.map.EventType;
-import org.rpgwizard.common.assets.Program;
+import org.rpgwizard.common.assets.Script;
 import org.rpgwizard.common.assets.map.KeyType;
 import org.rpgwizard.common.assets.map.MapLayer;
 import org.rpgwizard.common.assets.map.MapSprite;
@@ -101,8 +101,8 @@ public final class MapSpritePanel extends MapModelPanel {
         ///
         /// multiTaskingTextField
         ///
-        threadComboBox = GuiHelper.getFileListJComboBox(new File[] { EditorFileManager.getFullPath(Program.class) },
-                EditorFileManager.getTypeExtensions(Program.class), true);
+        threadComboBox = GuiHelper.getFileListJComboBox(new File[] { EditorFileManager.getFullPath(Script.class) },
+                EditorFileManager.getTypeExtensions(Script.class), true);
         threadComboBox.setSelectedItem(getSprite().getThread());
         threadComboBox.addActionListener((ActionEvent e) -> {
             if (threadComboBox.getSelectedItem() != null) {

@@ -11,14 +11,12 @@ import org.rpgwizard.common.assets.animation.Animation;
 import org.rpgwizard.common.assets.Asset;
 import org.rpgwizard.common.assets.map.Map;
 import org.rpgwizard.common.assets.Image;
-import org.rpgwizard.common.assets.Item;
-import org.rpgwizard.common.assets.Program;
+import org.rpgwizard.common.assets.Script;
 import org.rpgwizard.common.assets.game.Game;
 import org.rpgwizard.common.assets.sprite.Sprite;
 import org.rpgwizard.editor.editors.AnimationEditor;
 import org.rpgwizard.editor.editors.MapEditor;
-import org.rpgwizard.editor.editors.ItemEditor;
-import org.rpgwizard.editor.editors.ProgramEditor;
+import org.rpgwizard.editor.editors.ScriptEditor;
 import org.rpgwizard.editor.editors.GameEditor;
 import org.rpgwizard.editor.editors.SpriteEditor;
 import org.rpgwizard.editor.editors.image.ImageEditor;
@@ -45,12 +43,10 @@ public class EditorFactory {
             return new AnimationEditor((Animation) asset);
         } else if (asset instanceof Map) {
             return new MapEditor((Map) asset);
-        } else if (asset instanceof Item) {
-            return new ItemEditor((Item) asset);
         } else if (asset instanceof Sprite) {
             return new SpriteEditor((Sprite) asset);
-        } else if (asset instanceof Program) {
-            return new ProgramEditor((Program) asset);
+        } else if (asset instanceof Script) {
+            return new ScriptEditor((Script) asset);
         } else if (asset instanceof Game) {
             return new GameEditor((Game) asset);
         } else if (asset instanceof Image) {

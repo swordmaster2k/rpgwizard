@@ -1,5 +1,4 @@
 {
-    "name": "Default.tileset",
     "image": "tiles/oryx_16bit_scifi_world_trans.png",
     "tileWidth": 24,
     "tileHeight": 24,

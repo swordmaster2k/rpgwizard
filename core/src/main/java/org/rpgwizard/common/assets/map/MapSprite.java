@@ -90,7 +90,7 @@ public class MapSprite implements Selectable {
             File file;
 
             file = new File(System.getProperty("project.path") + File.separator
-                    + CoreProperties.getProperty("toolkit.directory.sprites") + File.separator + asset);
+                    + CoreProperties.getProperty("rpgwizard.directory.sprites") + File.separator + asset);
 
             AssetHandle handle;
             try {
@@ -101,7 +101,7 @@ public class MapSprite implements Selectable {
                 String southAnimation = sprite.getAnimations().get(AnimationEnum.SOUTH.toString());
                 if (!southAnimation.isEmpty()) {
                     file = new File(System.getProperty("project.path") + File.separator
-                            + CoreProperties.getProperty("toolkit.directory.animations"), southAnimation);
+                            + CoreProperties.getProperty("rpgwizard.directory.animations"), southAnimation);
 
                     handle = AssetManager.getInstance().deserialize(new AssetDescriptor(file.toURI()));
                     Animation animation = (Animation) handle.getAsset();

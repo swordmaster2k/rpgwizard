@@ -45,7 +45,7 @@ public final class AnimationModelPanel extends AbstractModelPanel implements Ani
         /// soundEffectComboBox
         ///
         File directory = new File(System.getProperty("project.path") + File.separator
-                + CoreProperties.getProperty("toolkit.directory.sounds") + File.separator);
+                + CoreProperties.getProperty("rpgwizard.directory.sounds") + File.separator);
         String[] exts = new String[] { "wav", "mp3", "ogg" };
         soundEffectComboBox = GuiHelper.getFileListJComboBox(new File[] { directory }, exts, true);
         soundEffectComboBox.setSelectedItem(animation.getSoundEffect());

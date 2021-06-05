@@ -7,11 +7,11 @@
  */
 package org.rpgwizard.common.assets;
 
-public class Program extends AbstractAsset {
+public class Script extends AbstractAsset {
 
     private final StringBuffer programBuffer;
 
-    public Program(AssetDescriptor assetDescriptor) {
+    public Script(AssetDescriptor assetDescriptor) {
         super(assetDescriptor);
         programBuffer = new StringBuffer();
     }

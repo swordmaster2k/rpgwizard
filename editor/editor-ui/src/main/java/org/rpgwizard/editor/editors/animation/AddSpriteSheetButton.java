@@ -54,7 +54,7 @@ public class AddSpriteSheetButton extends SpriteSheetButton {
             }
 
             File imageFile = new File(System.getProperty("project.path") + File.separator
-                    + CoreProperties.getProperty("toolkit.directory.graphics") + File.separator
+                    + CoreProperties.getProperty("rpgwizard.directory.textures") + File.separator
                     + animation.getSpriteSheet().getFileName());
             if (EditorFileManager.validatePathStartsWith(imageFile, new File(EditorFileManager.getGraphicsPath()))) {
                 animation.setSpriteSheet(dialog.getValue());

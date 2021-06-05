@@ -78,7 +78,7 @@ public class TileSetCache {
         if (!TILE_SETS.containsKey(fileName)) {
             try {
                 File file = new File(System.getProperty("project.path") + File.separator
-                        + CoreProperties.getProperty("toolkit.directory.tileset") + File.separator + fileName);
+                        + CoreProperties.getProperty("rpgwizard.directory.tilesets") + File.separator + fileName);
 
                 AssetHandle handle = AssetManager.getInstance().deserialize(new AssetDescriptor(file.toURI()));
                 set = (Tileset) handle.getAsset();

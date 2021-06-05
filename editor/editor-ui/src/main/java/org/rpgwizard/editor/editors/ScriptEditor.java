@@ -38,9 +38,9 @@ import org.fife.ui.rtextarea.SearchEngine;
 import org.fife.ui.rtextarea.SearchResult;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.AssetDescriptor;
-import org.rpgwizard.common.assets.Program;
+import org.rpgwizard.common.assets.Script;
 import org.rpgwizard.editor.MainWindow;
-import org.rpgwizard.editor.editors.program.RpgCodeCompletionProvider;
+import org.rpgwizard.editor.editors.script.RpgCodeCompletionProvider;
 import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 import org.rpgwizard.editor.ui.actions.ActionHandler;
 import org.rpgwizard.editor.ui.actions.CopyAction;
@@ -59,17 +59,17 @@ import org.slf4j.LoggerFactory;
  *
  * @author Joshua Michael Daly
  */
-public final class ProgramEditor extends AbstractAssetEditorWindow
+public final class ScriptEditor extends AbstractAssetEditorWindow
         implements SearchListener, ActionHandler, PropertyChangeListener {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProgramEditor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ScriptEditor.class);
 
     private static final String JSHINT_RC_FILE = "config" + File.separator + ".jshintrc";
 
-    private final Program program;
+    private final Script program;
     private RSyntaxTextArea textArea;
 
-    public ProgramEditor(Program program) {
+    public ScriptEditor(Script program) {
         super("Untitled", true, true, true, true, Icons.getIcon("program"));
 
         this.program = program;
@@ -85,7 +85,7 @@ public final class ProgramEditor extends AbstractAssetEditorWindow
         return program;
     }
 
-    public Program getProgram() {
+    public Script getProgram() {
         return program;
     }
 
@@ -106,7 +106,7 @@ public final class ProgramEditor extends AbstractAssetEditorWindow
         textArea.forceReparsing(0);
     }
 
-    private void init(Program program, String fileName) {
+    private void init(Script program, String fileName) {
         String code = program.getProgramBuffer().toString();
         textArea = new RSyntaxTextArea(code, 30, 90);
         LanguageSupportFactory.get().register(textArea);
@@ -144,7 +144,7 @@ public final class ProgramEditor extends AbstractAssetEditorWindow
         try {
             // Attempt to configure JSHint for error parsing
             File jsHintRCFile = new File(
-                    FileTools.getExecutionPath(ProgramEditor.class) + File.separator + JSHINT_RC_FILE);
+                    FileTools.getExecutionPath(ScriptEditor.class) + File.separator + JSHINT_RC_FILE);
             if (jsHintRCFile.exists()) {
                 languageSupport.setErrorParser(JsErrorParser.JSHINT);
                 languageSupport.setDefaultJsHintRCFile(jsHintRCFile);
@@ -278,7 +278,7 @@ public final class ProgramEditor extends AbstractAssetEditorWindow
     }
 
     public static void main(String[] args) {
-        ProgramEditor editor = new ProgramEditor(new Program(null));
+        ScriptEditor editor = new ScriptEditor(new Script(null));
         editor.setVisible(true);
 
         JFrame frame = new JFrame("Test InternalJFrame");

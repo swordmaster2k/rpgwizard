@@ -25,7 +25,7 @@ public class JsonGameSerializer extends AbstractJsonSerializer {
     @Override
     public boolean serializable(AssetDescriptor descriptor) {
         final String ext = Paths.extension(descriptor.getURI().getPath());
-        return (ext.contains(CoreProperties.getFullExtension("toolkit.project.extension.json")));
+        return (ext.contains(CoreProperties.getFullExtension("rpgwizard.project.extension.json")));
     }
 
     @Override

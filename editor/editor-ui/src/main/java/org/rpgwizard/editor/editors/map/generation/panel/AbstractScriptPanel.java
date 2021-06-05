@@ -15,11 +15,11 @@ import org.rpgwizard.editor.editors.map.generation.ProgramType;
  *
  * @author Joshua Michael Daly
  */
-public abstract class AbstractProgramPanel extends JPanel {
+public abstract class AbstractScriptPanel extends JPanel {
 
     protected final ProgramType programType;
 
-    public AbstractProgramPanel(ProgramType programType) {
+    public AbstractScriptPanel(ProgramType programType) {
         this.programType = programType;
     }
 

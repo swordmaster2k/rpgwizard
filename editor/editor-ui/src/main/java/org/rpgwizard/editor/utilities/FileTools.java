@@ -48,7 +48,7 @@ public final class FileTools {
     public static String getProjectsDirectory() {
         try {
             return getExecutionPath(FileTools.class) + File.separator
-                    + CoreProperties.getProperty("toolkit.directory.projects");
+                    + CoreProperties.getProperty("rpgwizard.directory.projects");
         } catch (URISyntaxException ex) {
             LOGGER.error("Could not find projects file directory under exectuion path!");
             return System.getProperty("user.home");

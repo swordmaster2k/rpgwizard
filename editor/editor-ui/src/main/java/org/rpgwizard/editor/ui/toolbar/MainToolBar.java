@@ -25,7 +25,6 @@ import org.rpgwizard.editor.ui.actions.DebugProgramAction;
 import org.rpgwizard.editor.ui.actions.EraserAction;
 import org.rpgwizard.editor.ui.actions.HelpAction;
 import org.rpgwizard.editor.ui.actions.LayerImageAction;
-import org.rpgwizard.editor.ui.actions.LightAction;
 import org.rpgwizard.editor.ui.actions.OpenFileAction;
 import org.rpgwizard.editor.ui.actions.PasteAction;
 import org.rpgwizard.editor.ui.actions.PencilAction;
@@ -77,7 +76,6 @@ public final class MainToolBar extends JToolBar {
     private final JToggleButton polygonButton;
     private final JToggleButton spriteButton;
     private final JToggleButton imageButton;
-    private final JToggleButton lightButton;
     private final JToggleButton startPositionButton;
 
     private final EditorButton zoomInButton;
@@ -202,20 +200,13 @@ public final class MainToolBar extends JToolBar {
         spriteButton.setFocusable(false);
         spriteButton.setAction(new SpriteAction());
         spriteButton.setIcon(Icons.getSmallIcon("npc"));
-        spriteButton.setToolTipText(EditorProperties.getProperty(EditorProperty.EDITOR_UI_TOOLTIP_SET_BOARD_SPRITE));
+        spriteButton.setToolTipText(EditorProperties.getProperty(EditorProperty.EDITOR_UI_TOOLTIP_SET_MAP_SPRITE));
 
         imageButton = new JToggleButton();
         imageButton.setFocusable(false);
         imageButton.setAction(new LayerImageAction());
         imageButton.setIcon(Icons.getSmallIcon("image-select"));
-        imageButton.setToolTipText(EditorProperties.getProperty(EditorProperty.EDITOR_UI_TOOLTIP_SET_BOARD_IMAGE));
-
-        lightButton = new JToggleButton();
-        lightButton.setFocusable(false);
-        lightButton.setAction(new LightAction());
-        lightButton.setIcon(Icons.getSmallIcon("flashlight-shine"));
-        lightButton.setToolTipText(EditorProperties.getProperty(EditorProperty.EDITOR_UI_TOOLTIP_SET_BOARD_LIGHT));
-        lightButton.setEnabled(false);
+        imageButton.setToolTipText(EditorProperties.getProperty(EditorProperty.EDITOR_UI_TOOLTIP_SET_MAP_IMAGE));
 
         startPositionButton = new JToggleButton();
         startPositionButton.setFocusable(false);
@@ -276,7 +267,6 @@ public final class MainToolBar extends JToolBar {
         toolButtonGroup.add(polygonButton);
         toolButtonGroup.add(spriteButton);
         toolButtonGroup.add(imageButton);
-        toolButtonGroup.add(lightButton);
         toolButtonGroup.add(startPositionButton);
 
         add(newButton);

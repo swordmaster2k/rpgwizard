@@ -16,7 +16,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import org.apache.commons.lang3.StringUtils;
-import org.rpgwizard.common.assets.Program;
+import org.rpgwizard.common.assets.Script;
 import org.rpgwizard.editor.editors.map.generation.ProgramType;
 import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.rpgwizard.editor.utilities.GuiHelper;
@@ -25,7 +25,7 @@ import org.rpgwizard.editor.utilities.GuiHelper;
  *
  * @author Joshua Michael Daly
  */
-public final class CustomPanel extends AbstractProgramPanel {
+public final class CustomPanel extends AbstractScriptPanel {
 
     private JComboBox programCombo;
 
@@ -47,8 +47,8 @@ public final class CustomPanel extends AbstractProgramPanel {
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         add(new JLabel("Program", SwingConstants.LEFT));
 
-        String[] exts = EditorFileManager.getTypeExtensions(Program.class);
-        programCombo = GuiHelper.getFileListJComboBox(new File[] { EditorFileManager.getFullPath(Program.class) }, exts,
+        String[] exts = EditorFileManager.getTypeExtensions(Script.class);
+        programCombo = GuiHelper.getFileListJComboBox(new File[] { EditorFileManager.getFullPath(Script.class) }, exts,
                 true);
         if (StringUtils.isNotBlank(program)) {
             programCombo.setSelectedItem(program);

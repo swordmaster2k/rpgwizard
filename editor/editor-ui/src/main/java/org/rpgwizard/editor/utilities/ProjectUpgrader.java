@@ -32,22 +32,22 @@ public class ProjectUpgrader {
         // int filesUpgraded = 0;
         //
         // // Upgrade project file.
-        // String extension = CoreProperties.getFullExtension("toolkit.project.extension.json");
+        // String extension = CoreProperties.getFullExtension("rpgwizard.project.extension.json");
         // File subPath = path;
         // filesUpgraded += upgradeFiles(new String[] { extension.replace(".", "") }, subPath);
         //
         // // Upgrade board files.
-        // extension = CoreProperties.getFullExtension("toolkit.board.extension.json");
+        // extension = CoreProperties.getFullExtension("rpgwizard.map.extension.json");
         // subPath = EditorFileManager.getFullPath(Board.class);
         // filesUpgraded += upgradeFiles(new String[] { extension.replace(".", "") }, subPath);
         //
         // // Upgrade animation files.
-        // extension = CoreProperties.getFullExtension("toolkit.animation.extension.json");
+        // extension = CoreProperties.getFullExtension("rpgwizard.animation.extension.json");
         // subPath = EditorFileManager.getFullPath(Animation.class);
         // filesUpgraded += upgradeFiles(new String[] { extension.replace(".", "") }, subPath);
         //
         // // Upgrade sprite files.
-        // extension = CoreProperties.getFullExtension("toolkit.sprite.extension.json");
+        // extension = CoreProperties.getFullExtension("rpgwizard.sprite.extension.json");
         // subPath = EditorFileManager.getFullPath(Sprite.class);
         // filesUpgraded += upgradeFiles(new String[] { extension.replace(".", "") }, subPath);
         //
@@ -57,7 +57,7 @@ public class ProjectUpgrader {
         // filesUpgraded += upgradeFiles(new String[] { extension.replace(".", "") }, subPath);
         //
         // // Upgrade tileset files.
-        // extension = CoreProperties.getFullExtension("toolkit.tileset.extension.json");
+        // extension = CoreProperties.getFullExtension("rpgwizard.tileset.extension.json");
         // subPath = EditorFileManager.getFullPath(Tileset.class);
         // filesUpgraded += upgradeFiles(new String[] { extension.replace(".", "") }, subPath);
         //

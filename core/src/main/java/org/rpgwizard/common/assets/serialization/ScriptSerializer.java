@@ -18,7 +18,7 @@ import org.rpgwizard.common.assets.AbstractAssetSerializer;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.AssetException;
 import org.rpgwizard.common.assets.AssetHandle;
-import org.rpgwizard.common.assets.Program;
+import org.rpgwizard.common.assets.Script;
 import org.rpgwizard.common.io.Paths;
 import org.rpgwizard.common.utilities.CoreProperties;
 import org.apache.commons.io.FileUtils;
@@ -27,12 +27,12 @@ import org.apache.commons.io.FileUtils;
  *
  * @author Joshua Michael Daly
  */
-public class TextProgramSerializer extends AbstractAssetSerializer {
+public class ScriptSerializer extends AbstractAssetSerializer {
 
     @Override
     public boolean serializable(AssetDescriptor descriptor) {
         final String ext = Paths.extension(descriptor.getURI());
-        return (ext.endsWith(CoreProperties.getFullExtension("toolkit.program.extension.default")));
+        return (ext.endsWith(CoreProperties.getFullExtension("rpgwizard.script.extension.default")));
     }
 
     @Override
@@ -42,13 +42,13 @@ public class TextProgramSerializer extends AbstractAssetSerializer {
 
     @Override
     public void serialize(AssetHandle handle) throws IOException, AssetException {
-        final Program program = (Program) handle.getAsset();
+        final Script program = (Script) handle.getAsset();
         FileUtils.writeStringToFile(program.getFile(), program.getProgramBuffer().toString());
     }
 
     @Override
     public void deserialize(AssetHandle handle) throws IOException, AssetException {
-        final Program program = new Program(handle.getDescriptor());
+        final Script program = new Script(handle.getDescriptor());
         File path = new File(handle.getDescriptor().getURI().getPath());
         program.update(FileUtils.readFileToString(path, "UTF-8"));
 

@@ -57,7 +57,7 @@ public class CoreUtil {
         try {
             if (!fileName.equals("")) {
                 FileInputStream fis = new FileInputStream(System.getProperty("project.path") + File.separator
-                        + CoreProperties.getProperty("toolkit.directory.graphics") + File.separator + fileName);
+                        + CoreProperties.getProperty("rpgwizard.directory.textures") + File.separator + fileName);
                 image = ImageIO.read(fis);
             }
         } catch (IOException ex) {

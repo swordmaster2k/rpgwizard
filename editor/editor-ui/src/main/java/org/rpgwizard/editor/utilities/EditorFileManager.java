@@ -21,8 +21,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.commons.io.FileUtils;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.animation.Animation;
-import org.rpgwizard.common.assets.Item;
-import org.rpgwizard.common.assets.Program;
+import org.rpgwizard.common.assets.Script;
 import org.rpgwizard.common.assets.game.Game;
 import org.rpgwizard.common.assets.map.Map;
 import org.rpgwizard.common.assets.sprite.Sprite;
@@ -91,29 +90,27 @@ public class EditorFileManager {
 
     public static String getGraphicsPath() {
         return System.getProperty("project.path") + File.separator
-                + CoreProperties.getProperty("toolkit.directory.graphics") + File.separator;
+                + CoreProperties.getProperty("rpgwizard.directory.textures") + File.separator;
     }
 
     public static String getTypeSubdirectory(Class<? extends AbstractAsset> type) {
         if (type == Animation.class) {
-            return CoreProperties.getProperty("toolkit.directory.animations");
+            return CoreProperties.getProperty("rpgwizard.directory.animations");
         } else if (type == Map.class) {
-            return CoreProperties.getProperty("toolkit.directory.board");
-        } else if (type == Item.class) {
-            return CoreProperties.getProperty("toolkit.directory.item");
+            return CoreProperties.getProperty("rpgwizard.directory.map");
         } else if (type == Sprite.class) {
-            return CoreProperties.getProperty("toolkit.directory.sprites");
-        } else if (type == Program.class) {
-            return CoreProperties.getProperty("toolkit.directory.program");
+            return CoreProperties.getProperty("rpgwizard.directory.sprites");
+        } else if (type == Script.class) {
+            return CoreProperties.getProperty("rpgwizard.directory.script");
         } else if (type == Tileset.class) {
-            return CoreProperties.getProperty("toolkit.directory.tileset");
+            return CoreProperties.getProperty("rpgwizard.directory.tilesets");
         } else {
             return "";
         }
     }
 
     public static String getGraphicsSubdirectory() {
-        return CoreProperties.getProperty("toolkit.directory.graphics");
+        return CoreProperties.getProperty("rpgwizard.directory.textures");
     }
 
     public static String getTypeFilterDescription(Class<? extends AbstractAsset> type) {
@@ -121,11 +118,9 @@ public class EditorFileManager {
             return "Animations";
         } else if (type == Map.class) {
             return "maps";
-        } else if (type == Item.class) {
-            return "Items";
         } else if (type == Sprite.class) {
             return "Sprites";
-        } else if (type == Program.class) {
+        } else if (type == Script.class) {
             return "Programs";
         } else if (type == Game.class) {
             return "Projects";
@@ -146,19 +141,17 @@ public class EditorFileManager {
 
     public static String[] getTypeExtensions(Class<? extends AbstractAsset> type) {
         if (type == Animation.class) {
-            return new String[] { CoreProperties.getProperty("toolkit.animation.extension.default") };
+            return new String[] { CoreProperties.getProperty("rpgwizard.animation.extension.default") };
         } else if (type == Map.class) {
-            return new String[] { CoreProperties.getProperty("toolkit.board.extension.default") };
-        } else if (type == Item.class) {
-            return new String[] { CoreProperties.getProperty("toolkit.item.extension.default") };
+            return new String[] { CoreProperties.getProperty("rpgwizard.map.extension.default") };
         } else if (type == Sprite.class) {
-            return new String[] { CoreProperties.getProperty("toolkit.sprite.extension.default") };
-        } else if (type == Program.class) {
-            return new String[] { CoreProperties.getProperty("toolkit.program.extension.default") };
+            return new String[] { CoreProperties.getProperty("rpgwizard.sprite.extension.default") };
+        } else if (type == Script.class) {
+            return new String[] { CoreProperties.getProperty("rpgwizard.script.extension.default") };
         } else if (type == Game.class) {
-            return new String[] { CoreProperties.getProperty("toolkit.project.extension.default") };
+            return new String[] { CoreProperties.getProperty("rpgwizard.project.extension.default") };
         } else if (type == Tileset.class) {
-            return new String[] { CoreProperties.getProperty("toolkit.tileset.extension.default") };
+            return new String[] { CoreProperties.getProperty("rpgwizard.tileset.extension.default") };
         } else {
             return getTKFileExtensions();
         }
@@ -191,7 +184,7 @@ public class EditorFileManager {
 
     /**
      * Browse for aSystem.setProperty("project.path", this.fileChooser.getCurrentDirectory().getParent() +
-     * File.separator + PropertiesSingleton.getProperty("toolkit.directory.game") + File.separator + fileName +
+     * File.separator + PropertiesSingleton.getProperty("rpgwizard.directory.game") + File.separator + fileName +
      * File.separator);
      *
      * this.activeProject = new Project(this.fileChooser.getSelectedFile(), System.getProperty("project.path"));
@@ -294,7 +287,7 @@ public class EditorFileManager {
      * @param subdirectory
      *            where within the project to start the file chooser
      * @param description
-     *            what to name the filter (for example, "Program Files")
+     *            what to name the filter (for example, "Script Files")
      * @param extensions
      *            the file extensions to filter by (the portion of the file name after the last ".")
      * @return the location of the file the user selects; or null if no file or an invalid file is selected
@@ -316,7 +309,7 @@ public class EditorFileManager {
      * @param subdirectory
      *            where within the project to start the file chooser
      * @param description
-     *            what to name the filter (for example, "Program Files")
+     *            what to name the filter (for example, "Script Files")
      * @param extensions
      *            the file extensions to filter by (the portion of the file name after the last ".")
      * @return the location of the file the user selects; or null if no file or an invalid file is selected
@@ -343,7 +336,7 @@ public class EditorFileManager {
      * @param subdirectory
      *            where within the project to start the file chooser
      * @param description
-     *            what to name the filter (for example, "Program Files")
+     *            what to name the filter (for example, "Script Files")
      * @param extensions
      *            the file extensions to filter by (the portion of the file name after the last ".")
      * @return the location of the file the user selects; or null if no file or an invalid file is selected

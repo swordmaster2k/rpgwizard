@@ -27,12 +27,11 @@ import org.rpgwizard.common.assets.game.Game;
 import org.rpgwizard.common.assets.files.FileAssetHandleResolver;
 import org.rpgwizard.common.assets.serialization.ImageSerializer;
 import org.rpgwizard.common.assets.serialization.JsonAnimationSerializer;
-import org.rpgwizard.common.assets.serialization.JsonItemSerializer;
 import org.rpgwizard.common.assets.serialization.JsonGameSerializer;
 import org.rpgwizard.common.assets.serialization.JsonMapSerializer;
 import org.rpgwizard.common.assets.serialization.JsonSpriteSerializer;
 import org.rpgwizard.common.assets.serialization.JsonTilesetSerializer;
-import org.rpgwizard.common.assets.serialization.TextProgramSerializer;
+import org.rpgwizard.common.assets.serialization.ScriptSerializer;
 import org.rpgwizard.common.utilities.CoreProperties;
 import org.rpgwizard.editor.properties.EditorProperties;
 import org.rpgwizard.editor.properties.EditorProperty;
@@ -83,10 +82,9 @@ public class Driver {
         AssetManager assetManager = AssetManager.getInstance();
         assetManager.registerSerializer(new JsonAnimationSerializer());
         assetManager.registerSerializer(new JsonGameSerializer());
-        assetManager.registerSerializer(new JsonItemSerializer());
         assetManager.registerSerializer(new JsonMapSerializer());
         assetManager.registerSerializer(new JsonSpriteSerializer());
-        assetManager.registerSerializer(new TextProgramSerializer());
+        assetManager.registerSerializer(new ScriptSerializer());
         assetManager.registerSerializer(new JsonTilesetSerializer());
         assetManager.registerSerializer(new ImageSerializer());
     }
@@ -119,9 +117,9 @@ public class Driver {
     public static void loadLastProject() {
         String lastProject = UserPreferencesProperties.getProperty(UserPreference.LAST_OPEN_PROJECT);
         File file = new File(lastProject);
-        if (lastProject.equals("demo")) {
+        if (lastProject.equals("Sample")) {
             // Load default from "projects" directory.
-            file = new File(FileTools.getProjectsDirectory() + File.separator + "demo" + File.separator + "demo"
+            file = new File(FileTools.getProjectsDirectory() + File.separator + "Sample" + File.separator + "default"
                     + CoreProperties.getDefaultExtension(Game.class));
         }
         if (file.exists()) {

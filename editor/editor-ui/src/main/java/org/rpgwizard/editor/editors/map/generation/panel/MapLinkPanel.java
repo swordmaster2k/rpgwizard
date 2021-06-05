@@ -26,22 +26,22 @@ import org.slf4j.LoggerFactory;
  *
  * @author Joshua Michael Daly
  */
-public final class BoardLinkPanel extends AbstractProgramPanel {
+public final class MapLinkPanel extends AbstractScriptPanel {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BoardLinkPanel.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MapLinkPanel.class);
 
-    private JComboBox boardCombo;
+    private JComboBox mapCombo;
     private JSpinner tileXSpinner;
     private JSpinner tileYSpinner;
     private JSpinner layerSpinner;
 
-    public BoardLinkPanel() {
-        super(ProgramType.BOARD_LINK);
+    public MapLinkPanel() {
+        super(ProgramType.MAP_LINK);
         init("", 10, 20, 1);
     }
 
-    public BoardLinkPanel(Map<String, Object> parameters) {
-        super(ProgramType.BOARD_LINK);
+    public MapLinkPanel(Map<String, Object> parameters) {
+        super(ProgramType.MAP_LINK);
         String boardName = String.valueOf(parameters.get("boardName"));
         double x = Double.valueOf(String.valueOf(parameters.get("tileX")));
         double y = Double.valueOf(String.valueOf(parameters.get("tileY")));
@@ -61,10 +61,10 @@ public final class BoardLinkPanel extends AbstractProgramPanel {
         add(new JLabel("Board", SwingConstants.LEFT));
 
         String[] exts = EditorFileManager.getTypeExtensions(org.rpgwizard.common.assets.map.Map.class);
-        boardCombo = GuiHelper.getFileListJComboBox(
+        mapCombo = GuiHelper.getFileListJComboBox(
                 new File[] { EditorFileManager.getFullPath(org.rpgwizard.common.assets.map.Map.class) }, exts, true);
-        boardCombo.setSelectedItem(board);
-        add(boardCombo);
+        mapCombo.setSelectedItem(board);
+        add(mapCombo);
 
         add(new JLabel("X", SwingConstants.LEFT));
         tileXSpinner = GuiHelper.getJSpinner(Double.valueOf(x));
@@ -82,7 +82,7 @@ public final class BoardLinkPanel extends AbstractProgramPanel {
     @Override
     public Map<String, Object> collect() {
         Map<String, Object> values = new HashMap<>();
-        values.put("boardName", String.valueOf(boardCombo.getSelectedItem()));
+        values.put("boardName", String.valueOf(mapCombo.getSelectedItem()));
         values.put("tileX", Double.valueOf(tileXSpinner.getValue().toString()));
         values.put("tileY", Double.valueOf(tileYSpinner.getValue().toString()));
         values.put("layer", Integer.valueOf(layerSpinner.getValue().toString()));

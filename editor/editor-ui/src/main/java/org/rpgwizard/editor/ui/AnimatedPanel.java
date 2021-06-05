@@ -223,7 +223,7 @@ public class AnimatedPanel extends AbstractImagePanel implements AnimationChange
 
         if (!animation.getSoundEffect().isEmpty()) {
             String path = System.getProperty("project.path") + File.separator
-                    + CoreProperties.getProperty("toolkit.directory.sounds") + File.separator
+                    + CoreProperties.getProperty("rpgwizard.directory.sounds") + File.separator
                     + animation.getSoundEffect();
         }
     }

@@ -20,7 +20,7 @@ import org.apache.commons.io.IOUtils;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.AssetException;
 import org.rpgwizard.common.assets.AssetManager;
-import org.rpgwizard.common.assets.Program;
+import org.rpgwizard.common.assets.Script;
 import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,9 +29,9 @@ import org.slf4j.LoggerFactory;
  *
  * @author Joshua Michael Daly
  */
-public class ProgramGenerator {
+public class ScriptGenerator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProgramGenerator.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ScriptGenerator.class);
 
     public static final String TEMPLATE_DIR = "program/templates";
     public static final String AUTO_GENERATED_DIR = "auto_generated";
@@ -53,7 +53,7 @@ public class ProgramGenerator {
     }
 
     private static String readTemplate(String template) throws IOException, URISyntaxException {
-        try (InputStream in = ProgramGenerator.class
+        try (InputStream in = ScriptGenerator.class
                 .getResourceAsStream("/" + TEMPLATE_DIR + "/" + template + TEMPLATE_EXT)) {
             return IOUtils.toString(in, StandardCharsets.UTF_8);
         }
@@ -72,13 +72,13 @@ public class ProgramGenerator {
     }
 
     private static String saveProgram(String id, String code) throws IOException, AssetException {
-        String typeExt = EditorFileManager.getTypeExtensions(Program.class)[0];
-        String typeDir = EditorFileManager.getTypeSubdirectory(Program.class);
+        String typeExt = EditorFileManager.getTypeExtensions(Script.class)[0];
+        String typeDir = EditorFileManager.getTypeSubdirectory(Script.class);
         File projectPath = EditorFileManager.getPath(typeDir);
         File autoPath = new File(projectPath, AUTO_GENERATED_DIR);
         File programFile = new File(autoPath, id + "." + typeExt);
 
-        Program program = new Program(new AssetDescriptor(programFile.toURI()));
+        Script program = new Script(new AssetDescriptor(programFile.toURI()));
         program.update(code);
 
         AssetManager.getInstance().serialize(AssetManager.getInstance().getHandle(program));
@@ -88,8 +88,8 @@ public class ProgramGenerator {
     }
 
     public static void main(String[] args) throws Exception {
-        InputStream in = ProgramGenerator.class
-                .getResourceAsStream("/" + TEMPLATE_DIR + "/" + "board_link" + TEMPLATE_EXT);
+        InputStream in = ScriptGenerator.class
+                .getResourceAsStream("/" + TEMPLATE_DIR + "/" + "map_link" + TEMPLATE_EXT);
         System.out.println(IOUtils.toString(in, StandardCharsets.UTF_8));
     }
 

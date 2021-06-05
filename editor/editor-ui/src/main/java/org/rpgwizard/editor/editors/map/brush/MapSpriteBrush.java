@@ -13,12 +13,14 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
-import org.apache.commons.lang3.tuple.MutablePair;
-import org.apache.commons.lang3.tuple.Pair;
+import org.rpgwizard.common.assets.Event;
 import org.rpgwizard.common.assets.Location;
 import org.rpgwizard.common.assets.map.Map;
 import org.rpgwizard.common.assets.map.MapSprite;
+import org.rpgwizard.common.assets.map.SelectablePair;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.editors.MapEditor;
 import org.rpgwizard.editor.editors.map.AbstractMapView;
@@ -27,18 +29,19 @@ import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 import org.rpgwizard.editor.ui.actions.RemoveSpriteAction;
 
 /**
- *
+ * REFACTOR: Clean me up
+ * 
  * @author Joshua Michael Daly
  */
 public class MapSpriteBrush extends AbstractBrush {
 
-    private Pair<String, MapSprite> pair;
+    private SelectablePair<String, MapSprite> pair;
 
     /**
      *
      */
     public MapSpriteBrush() {
-        pair = new MutablePair<>();
+        pair = new SelectablePair<>(null, null);
     }
 
     /**
@@ -119,7 +122,8 @@ public class MapSpriteBrush extends AbstractBrush {
             mapSprite.getStartLocation().setX(x);
             mapSprite.getStartLocation().setY(y);
             mapSprite.getStartLocation().setLayer(currentLayer);
-            pair = new MutablePair<>(spriteId, mapSprite);
+            mapSprite.setEvents(new ArrayList<>(List.of(new Event())));
+            pair = new SelectablePair<>(spriteId, mapSprite);
 
             map.addSprite(currentLayer, UUID.randomUUID().toString(), mapSprite);
 
@@ -164,7 +168,7 @@ public class MapSpriteBrush extends AbstractBrush {
             BufferedImage defaultImage = MapLayerView.getPlaceHolderSprite();
             pair = mapEditor.getMapView().getCurrentSelectedLayer().getLayer().findSpriteAt(point.x, point.y,
                     defaultImage.getWidth(), defaultImage.getHeight());
-            selectSprite(pair.getValue(), mapEditor);
+            selectSprite(pair, mapEditor);
         }
     }
 
@@ -209,25 +213,13 @@ public class MapSpriteBrush extends AbstractBrush {
         return new Point(x, y);
     }
 
-    /**
-     *
-     *
-     * @param sprite
-     */
-    private void selectSprite(MapSprite sprite, MapEditor editor) {
-        if (sprite != null) {
-
-            if (editor.getSelectedObject() == sprite) {
-                return;
-            }
-
-            sprite.setSelectedState(true);
-
+    private void selectSprite(SelectablePair pair, MapEditor editor) {
+        if (pair != null) {
+            pair.setSelectedState(true);
             if (editor.getSelectedObject() != null) {
                 editor.getSelectedObject().setSelectedState(false);
             }
-
-            editor.setSelectedObject(sprite);
+            editor.setSelectedObject(pair);
         } else if (editor.getSelectedObject() != null) {
             editor.getSelectedObject().setSelectedState(false);
             editor.setSelectedObject(null);

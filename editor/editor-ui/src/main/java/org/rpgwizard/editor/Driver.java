@@ -119,10 +119,10 @@ public class Driver {
     public static void loadLastProject() {
         String lastProject = UserPreferencesProperties.getProperty(UserPreference.LAST_OPEN_PROJECT);
         File file = new File(lastProject);
-        if (lastProject.equals("The Wizard's Tower")) {
+        if (lastProject.equals("demo")) {
             // Load default from "projects" directory.
-            file = new File(FileTools.getProjectsDirectory() + File.separator + "The Wizard's Tower" + File.separator
-                    + "The Wizard's Tower" + CoreProperties.getDefaultExtension(Game.class));
+            file = new File(FileTools.getProjectsDirectory() + File.separator + "demo" + File.separator + "demo"
+                    + CoreProperties.getDefaultExtension(Game.class));
         }
         if (file.exists()) {
             MainWindow mainWindow = MainWindow.getInstance();

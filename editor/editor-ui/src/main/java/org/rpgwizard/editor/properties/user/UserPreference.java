@@ -18,7 +18,7 @@ public enum UserPreference {
 
     //@formatter:off
     USER_PREFERENCE_THEME("editor.user.preference.theme", Theme.DARK.toString()), 
-    LAST_OPEN_PROJECT("editor.user.preference.project", "The Wizard's Tower"), 
+    LAST_OPEN_PROJECT("editor.user.preference.project", "Sample"), 
     EAST_PANEL_ACTIVE("editor.user.preference.east.panel.active", "true"), 
     SOUTH_PANEL_ACTIVE("editor.user.preference.south.panel.active", "true");
     //@formatter:on

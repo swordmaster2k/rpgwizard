@@ -7,6 +7,7 @@
  */
 package org.rpgwizard.editor.ui;
 
+import org.rpgwizard.common.Selectable;
 import org.rpgwizard.common.assets.Collider;
 import org.rpgwizard.common.assets.animation.Animation;
 import org.rpgwizard.common.assets.map.Map;
@@ -15,7 +16,7 @@ import org.rpgwizard.common.assets.Trigger;
 import org.rpgwizard.common.assets.tileset.Tile;
 import org.rpgwizard.common.assets.map.MapImage;
 import org.rpgwizard.common.assets.map.MapSprite;
-import org.rpgwizard.common.assets.map.PolygonPair;
+import org.rpgwizard.common.assets.map.SelectablePair;
 import org.rpgwizard.common.assets.sprite.Sprite;
 import org.rpgwizard.editor.editors.animation.AnimationModelPanel;
 import org.rpgwizard.editor.editors.map.panels.MapImagePanel;
@@ -41,13 +42,17 @@ public final class ModelPanelFactory {
     public static AbstractModelPanel getModelPanel(Object model) {
         if (model instanceof Map) {
             return new MapPanel((Map) model);
-            // REFACTOR: FIX ME
-            // } else if (model instanceof MapVector) {
-            // return new MapVectorPanel((MapVector) model);
-        } else if (model instanceof MapSprite) {
-            return new MapSpritePanel((MapSprite) model);
-        } else if (model instanceof MapImage) {
-            return new MapImagePanel((MapImage) model);
+        } else if (model instanceof SelectablePair) {
+            Selectable selectable = (Selectable) ((SelectablePair) model).getRight();
+            if (selectable instanceof MapSprite) {
+                return new MapSpritePanel((SelectablePair<String, MapSprite>) model);
+            } else if (selectable instanceof MapImage) {
+                return new MapImagePanel((SelectablePair<String, MapImage>) model);
+            } else if (selectable instanceof Collider) {
+                return new ColliderPanel((SelectablePair<String, Collider>) model);
+            } else if (selectable instanceof Trigger) {
+                return new TriggerPanel((SelectablePair<String, Trigger>) model);
+            }
         } else if (model instanceof Animation) {
             return new AnimationModelPanel((Animation) model);
         } else if (model instanceof Sprite) {
@@ -56,12 +61,6 @@ public final class ModelPanelFactory {
             return new TileModelPanel((Tile) model);
         } else if (model instanceof Image) {
             return new ImageModelPanel((Image) model);
-        } else if (model instanceof PolygonPair) {
-            if (((PolygonPair) model).getRight() instanceof Collider) {
-                return new ColliderPanel((PolygonPair<String, Collider>) model);
-            } else if (((PolygonPair) model).getRight() instanceof Trigger) {
-                return new TriggerPanel((PolygonPair<String, Trigger>) model);
-            }
         }
 
         return null;

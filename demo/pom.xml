@@ -39,9 +39,7 @@
                               <resource>
                                   <directory>${basedir}</directory>
                                   <includes>
-                                      <include>Action/</include>
-                                      <include>Tactical/</include>
-                                      <include>The Wizard's Tower/</include>
+                                      <include>Sample/</include>
                                   </includes>
                               </resource>
                           </resources>
@@ -59,9 +57,7 @@
                                 <resource>
                                     <directory>${basedir}</directory>
                                     <includes>
-                                      <include>Action/</include>
-                                      <include>Tactical/</include>
-                                      <include>The Wizard's Tower/</include>
+                                      <include>Sample/</include>
                                     </includes>
                                 </resource>
                             </resources>

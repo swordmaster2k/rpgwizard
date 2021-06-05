@@ -16,7 +16,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.rpgwizard.common.assets.Event;
 import org.rpgwizard.common.assets.Trigger;
-import org.rpgwizard.common.assets.map.PolygonPair;
+import org.rpgwizard.common.assets.map.SelectablePair;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.editors.MapEditor;
 import org.rpgwizard.editor.editors.map.MapLayerView;
@@ -108,7 +108,7 @@ public class TriggerBrush extends AbstractPolygonBrush {
                 finish();
             } else {
                 // We want to select a vector.
-                PolygonPair pair = mapEditor.getMapView().getCurrentSelectedLayer().getLayer().findTriggerAt(point.x,
+                SelectablePair pair = mapEditor.getMapView().getCurrentSelectedLayer().getLayer().findTriggerAt(point.x,
                         point.y);
                 selectPolygon(pair, mapEditor);
             }

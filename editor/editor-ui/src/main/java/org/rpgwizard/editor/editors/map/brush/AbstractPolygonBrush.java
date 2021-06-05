@@ -16,7 +16,7 @@ import java.awt.Shape;
 import lombok.Getter;
 import lombok.Setter;
 import org.rpgwizard.common.assets.AbstractPolygon;
-import org.rpgwizard.common.assets.map.PolygonPair;
+import org.rpgwizard.common.assets.map.SelectablePair;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.editors.MapEditor;
 import org.rpgwizard.editor.editors.map.AbstractMapView;
@@ -107,7 +107,7 @@ public abstract class AbstractPolygonBrush extends AbstractBrush {
         return true;
     }
 
-    protected void selectPolygon(PolygonPair pair, MapEditor editor) {
+    protected void selectPolygon(SelectablePair pair, MapEditor editor) {
         if (pair != null) {
             pair.setSelectedState(true);
             if (editor.getSelectedObject() != null) {

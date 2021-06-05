@@ -14,7 +14,7 @@ import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import org.rpgwizard.common.assets.Collider;
 import org.rpgwizard.common.assets.map.MapLayer;
-import org.rpgwizard.common.assets.map.PolygonPair;
+import org.rpgwizard.common.assets.map.SelectablePair;
 import org.rpgwizard.editor.editors.map.MapLayerView;
 
 /**
@@ -29,7 +29,7 @@ public final class ColliderPanel extends MapModelPanel {
 
     private int lastSpinnerLayer; // Used to ensure that the selection is valid.
 
-    public ColliderPanel(PolygonPair<String, Collider> pair) {
+    public ColliderPanel(SelectablePair<String, Collider> pair) {
         ///
         /// super
         ///
@@ -68,12 +68,12 @@ public final class ColliderPanel extends MapModelPanel {
     }
 
     private String getId() {
-        PolygonPair<String, Collider> pair = (PolygonPair<String, Collider>) model;
+        SelectablePair<String, Collider> pair = (SelectablePair<String, Collider>) model;
         return pair.getLeft();
     }
 
     private Collider getCollider() {
-        PolygonPair<String, Collider> pair = (PolygonPair<String, Collider>) model;
+        SelectablePair<String, Collider> pair = (SelectablePair<String, Collider>) model;
         return pair.getRight();
     }
 

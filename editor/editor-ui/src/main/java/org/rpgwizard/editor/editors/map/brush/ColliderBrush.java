@@ -13,7 +13,7 @@ import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
 import org.rpgwizard.common.assets.Collider;
-import org.rpgwizard.common.assets.map.PolygonPair;
+import org.rpgwizard.common.assets.map.SelectablePair;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.editors.MapEditor;
 import org.rpgwizard.editor.editors.map.MapLayerView;
@@ -101,8 +101,8 @@ public class ColliderBrush extends AbstractPolygonBrush {
                 finish();
             } else {
                 // We want to select a polygon.
-                PolygonPair pair = mapEditor.getMapView().getCurrentSelectedLayer().getLayer().findColliderAt(point.x,
-                        point.y);
+                SelectablePair pair = mapEditor.getMapView().getCurrentSelectedLayer().getLayer()
+                        .findColliderAt(point.x, point.y);
                 selectPolygon(pair, mapEditor);
             }
         }

@@ -16,8 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import lombok.Data;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 import org.rpgwizard.common.assets.Collider;
 import org.rpgwizard.common.assets.Trigger;
 import org.rpgwizard.common.assets.tileset.Tile;
@@ -221,7 +219,7 @@ public class MapLayer {
         return x < loadedTiles.length && y < loadedTiles[0].length;
     }
 
-    public PolygonPair<String, Collider> findColliderAt(int x, int y) {
+    public SelectablePair<String, Collider> findColliderAt(int x, int y) {
         Rectangle2D mouse = new Rectangle2D.Double(x - 5, y - 5, 10, 10);
 
         for (java.util.Map.Entry<String, Collider> entry : colliders.entrySet()) {
@@ -243,7 +241,7 @@ public class MapLayer {
 
                 // See if the mouse intersects the line of the polygon.
                 if (line2D.intersects(mouse)) {
-                    return new PolygonPair(entry.getKey(), entry.getValue());
+                    return new SelectablePair(entry.getKey(), entry.getValue());
                 }
             }
 
@@ -252,8 +250,8 @@ public class MapLayer {
         return null;
     }
 
-    public PolygonPair<String, Collider> removeColliderAt(int x, int y) {
-        PolygonPair<String, Collider> pair = findColliderAt(x, y);
+    public SelectablePair<String, Collider> removeColliderAt(int x, int y) {
+        SelectablePair<String, Collider> pair = findColliderAt(x, y);
         if (pair == null) {
             return null;
         } else {
@@ -263,15 +261,15 @@ public class MapLayer {
         }
     }
 
-    public PolygonPair<String, Collider> removeCollider(String id) {
+    public SelectablePair<String, Collider> removeCollider(String id) {
         Collider removed = colliders.remove(id);
         if (removed == null) {
             return null;
         }
-        return new PolygonPair(id, removed);
+        return new SelectablePair(id, removed);
     }
 
-    public PolygonPair<String, Trigger> findTriggerAt(int x, int y) {
+    public SelectablePair<String, Trigger> findTriggerAt(int x, int y) {
         Rectangle2D mouse = new Rectangle2D.Double(x - 5, y - 5, 10, 10);
 
         for (java.util.Map.Entry<String, Trigger> entry : triggers.entrySet()) {
@@ -293,7 +291,7 @@ public class MapLayer {
 
                 // See if the mouse intersects the line of the polygon.
                 if (line2D.intersects(mouse)) {
-                    return new PolygonPair(entry.getKey(), entry.getValue());
+                    return new SelectablePair(entry.getKey(), entry.getValue());
                 }
             }
 
@@ -302,8 +300,8 @@ public class MapLayer {
         return null;
     }
 
-    public PolygonPair<String, Trigger> removeTriggerAt(int x, int y) {
-        PolygonPair<String, Trigger> pair = findTriggerAt(x, y);
+    public SelectablePair<String, Trigger> removeTriggerAt(int x, int y) {
+        SelectablePair<String, Trigger> pair = findTriggerAt(x, y);
         if (pair == null) {
             return null;
         } else {
@@ -313,15 +311,15 @@ public class MapLayer {
         }
     }
 
-    public PolygonPair<String, Collider> removeTrigger(String id) {
+    public SelectablePair<String, Collider> removeTrigger(String id) {
         Trigger removed = triggers.remove(id);
         if (removed == null) {
             return null;
         }
-        return new PolygonPair(id, removed);
+        return new SelectablePair(id, removed);
     }
 
-    public Pair<String, MapSprite> findSpriteAt(int x, int y, int width, int height) {
+    public SelectablePair<String, MapSprite> findSpriteAt(int x, int y, int width, int height) {
         for (String spriteId : sprites.keySet()) {
             MapSprite sprite = sprites.get(spriteId);
 
@@ -337,15 +335,15 @@ public class MapLayer {
             int x2 = x1 + width;
             int y2 = y1 + height;
             if (x1 < x && x < x2 && y1 < y && y < y2) {
-                return new ImmutablePair<>(spriteId, sprite);
+                return new SelectablePair<>(spriteId, sprite);
             }
         }
 
         return null;
     }
 
-    public Pair<String, MapSprite> removeSpriteAt(int x, int y, int width, int height) {
-        Pair<String, MapSprite> pair = findSpriteAt(x, y, width, height);
+    public SelectablePair<String, MapSprite> removeSpriteAt(int x, int y, int width, int height) {
+        SelectablePair<String, MapSprite> pair = findSpriteAt(x, y, width, height);
         if (pair == null) {
             return null;
         } else {
@@ -355,7 +353,7 @@ public class MapLayer {
         }
     }
 
-    public Pair<String, MapImage> findImageAt(int x, int y, int width, int height) {
+    public SelectablePair<String, MapImage> findImageAt(int x, int y, int width, int height) {
         for (String imageId : images.keySet()) {
             MapImage mapImage = images.get(imageId);
 
@@ -371,15 +369,15 @@ public class MapLayer {
             int x2 = x1 + width;
             int y2 = y1 + height;
             if (x1 < x && x < x2 && y1 < y && y < y2) {
-                return new ImmutablePair<>(imageId, mapImage);
+                return new SelectablePair<>(imageId, mapImage);
             }
         }
 
         return null;
     }
 
-    public Pair<String, MapImage> removeImageAt(int x, int y, int width, int height) {
-        Pair<String, MapImage> pair = findImageAt(x, y, width, height);
+    public SelectablePair removeImageAt(int x, int y, int width, int height) {
+        SelectablePair<String, MapImage> pair = findImageAt(x, y, width, height);
         if (pair == null) {
             return null;
         } else {

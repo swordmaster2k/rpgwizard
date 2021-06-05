@@ -14,10 +14,9 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.image.BufferedImage;
 import java.util.UUID;
-import org.apache.commons.lang3.tuple.MutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 import org.rpgwizard.common.assets.map.Map;
 import org.rpgwizard.common.assets.map.MapImage;
+import org.rpgwizard.common.assets.map.SelectablePair;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.editors.MapEditor;
 import org.rpgwizard.editor.editors.map.AbstractMapView;
@@ -26,15 +25,16 @@ import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 import org.rpgwizard.editor.ui.actions.RemoveMapImageAction;
 
 /**
- *
+ * REFACTOR: Clean me up
+ * 
  * @author Joshua Michael Daly
  */
 public class MapImageBrush extends AbstractBrush {
 
-    private Pair<String, MapImage> pair;
+    private SelectablePair<String, MapImage> pair;
 
     public MapImageBrush() {
-        pair = new MutablePair<>();
+        pair = new SelectablePair<>(null, null);
     }
 
     public MapImage getMapImage() {
@@ -81,7 +81,7 @@ public class MapImageBrush extends AbstractBrush {
 
             String newId = UUID.randomUUID().toString();
             MapImage mapImage = new MapImage("", x, y, false, null);
-            pair = new MutablePair<>(newId, mapImage);
+            pair = new SelectablePair<>(newId, mapImage);
 
             map.addLayerImage(currentLayer, UUID.randomUUID().toString(), mapImage);
 
@@ -116,7 +116,7 @@ public class MapImageBrush extends AbstractBrush {
             BufferedImage defaultImage = MapLayerView.getPlaceHolderImage();
             pair = mapEditor.getMapView().getCurrentSelectedLayer().getLayer().findImageAt(point.x, point.y,
                     defaultImage.getWidth(), defaultImage.getHeight());
-            selectImage(pair.getValue(), mapEditor);
+            selectImage(pair, mapEditor);
         }
     }
 
@@ -178,24 +178,13 @@ public class MapImageBrush extends AbstractBrush {
         return new Point(x, y);
     }
 
-    /**
-     *
-     *
-     * @param image
-     */
-    private void selectImage(MapImage image, MapEditor editor) {
-        if (image != null) {
-            if (editor.getSelectedObject() == image) {
-                return;
-            }
-
-            image.setSelectedState(true);
-
+    private void selectImage(SelectablePair pair, MapEditor editor) {
+        if (pair != null) {
+            pair.setSelectedState(true);
             if (editor.getSelectedObject() != null) {
                 editor.getSelectedObject().setSelectedState(false);
             }
-
-            editor.setSelectedObject(image);
+            editor.setSelectedObject(pair);
         } else if (editor.getSelectedObject() != null) {
             editor.getSelectedObject().setSelectedState(false);
             editor.setSelectedObject(null);

@@ -20,7 +20,7 @@ import org.rpgwizard.common.assets.Trigger;
 import org.rpgwizard.common.assets.map.EventType;
 import org.rpgwizard.common.assets.map.KeyType;
 import org.rpgwizard.common.assets.map.MapLayer;
-import org.rpgwizard.common.assets.map.PolygonPair;
+import org.rpgwizard.common.assets.map.SelectablePair;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.editors.map.MapLayerView;
 import org.rpgwizard.editor.editors.map.generation.ScriptDialog;
@@ -36,8 +36,8 @@ public final class TriggerPanel extends MapModelPanel {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TriggerPanel.class);
 
-    private final JSpinner layerSpinner;
     private final JTextField idTextField;
+    private final JSpinner layerSpinner;
     private static final String[] EVENT_TYPES = EventType.toStringArray();
     private final JButton configureEventButton;
     private final JComboBox<String> eventComboBox;
@@ -46,7 +46,7 @@ public final class TriggerPanel extends MapModelPanel {
 
     private int lastSpinnerLayer; // Used to ensure that the selection is valid.
 
-    public TriggerPanel(PolygonPair<String, Trigger> pair) {
+    public TriggerPanel(SelectablePair<String, Trigger> pair) {
         ///
         /// super
         ///
@@ -147,12 +147,12 @@ public final class TriggerPanel extends MapModelPanel {
     }
 
     private String getId() {
-        PolygonPair<String, Trigger> pair = (PolygonPair<String, Trigger>) model;
+        SelectablePair<String, Trigger> pair = (SelectablePair<String, Trigger>) model;
         return pair.getLeft();
     }
 
     private Trigger getTrigger() {
-        PolygonPair<String, Trigger> pair = (PolygonPair<String, Trigger>) model;
+        SelectablePair<String, Trigger> pair = (SelectablePair<String, Trigger>) model;
         return pair.getRight();
     }
 

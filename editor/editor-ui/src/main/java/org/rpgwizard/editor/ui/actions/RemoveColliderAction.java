@@ -9,7 +9,7 @@ package org.rpgwizard.editor.ui.actions;
 
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
-import org.rpgwizard.common.assets.map.PolygonPair;
+import org.rpgwizard.common.assets.map.SelectablePair;
 import org.rpgwizard.editor.editors.MapEditor;
 
 /**
@@ -33,9 +33,9 @@ public class RemoveColliderAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        PolygonPair removed;
-        if (deleteKey && mapEditor.getSelectedObject() instanceof PolygonPair) {
-            PolygonPair selected = (PolygonPair) mapEditor.getSelectedObject();
+        SelectablePair removed;
+        if (deleteKey && mapEditor.getSelectedObject() instanceof SelectablePair) {
+            SelectablePair selected = (SelectablePair) mapEditor.getSelectedObject();
             removed = mapEditor.getMapView().getCurrentSelectedLayer().getLayer().removeCollider(selected.getLeft());
         } else {
             removed = mapEditor.getMapView().getCurrentSelectedLayer().getLayer().removeColliderAt(x, y);

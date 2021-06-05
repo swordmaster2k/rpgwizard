@@ -1,2 +1,0 @@
-weather.close();
-rpgcode.endProgram();

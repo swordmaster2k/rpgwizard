@@ -22,6 +22,7 @@
         <rstaui.version>3.0.2</rstaui.version>
         <autocomplete.version>3.0.2</autocomplete.version>
         <languagesupport.version>3.0.1</languagesupport.version>
+        <netbeans.verson>RELEASE124</netbeans.verson>
     </properties>
 
     <dependencies>
@@ -80,6 +81,21 @@
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-openide-util</artifactId>
+            <version>${netbeans.verson}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-openide-awt</artifactId>
+            <version>${netbeans.verson}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-openide-util-lookup</artifactId>
+            <version>${netbeans.verson}</version>
         </dependency>
     </dependencies>
     

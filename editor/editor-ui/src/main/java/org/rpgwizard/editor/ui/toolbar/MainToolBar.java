@@ -13,6 +13,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import org.apache.commons.lang3.SystemUtils;
+import org.openide.awt.DropDownButtonFactory;
 import org.rpgwizard.editor.properties.EditorProperties;
 import org.rpgwizard.editor.properties.EditorProperty;
 import org.rpgwizard.editor.ui.EditorButton;
@@ -28,6 +29,7 @@ import org.rpgwizard.editor.ui.actions.LightAction;
 import org.rpgwizard.editor.ui.actions.OpenFileAction;
 import org.rpgwizard.editor.ui.actions.PasteAction;
 import org.rpgwizard.editor.ui.actions.PencilAction;
+import org.rpgwizard.editor.ui.actions.ColliderAction;
 import org.rpgwizard.editor.ui.actions.RedoAction;
 import org.rpgwizard.editor.ui.actions.RunAction;
 import org.rpgwizard.editor.ui.actions.SaveAction;
@@ -36,8 +38,8 @@ import org.rpgwizard.editor.ui.actions.SelectionAction;
 import org.rpgwizard.editor.ui.actions.SpriteAction;
 import org.rpgwizard.editor.ui.actions.StartPositionAction;
 import org.rpgwizard.editor.ui.actions.StopAction;
+import org.rpgwizard.editor.ui.actions.TriggerAction;
 import org.rpgwizard.editor.ui.actions.UndoAction;
-import org.rpgwizard.editor.ui.actions.VectorAction;
 import org.rpgwizard.editor.ui.actions.ZoomInAction;
 import org.rpgwizard.editor.ui.actions.ZoomOutAction;
 import org.rpgwizard.editor.ui.resources.Icons;
@@ -71,8 +73,8 @@ public final class MainToolBar extends JToolBar {
     private final JToggleButton bucketButton;
     private final JToggleButton eraserButton;
 
-    private final JToggleButton vectorAreaButton;
-    private final JToggleButton vectorButton;
+    private final JToggleButton polygonAreaButton;
+    private final JToggleButton polygonButton;
     private final JToggleButton spriteButton;
     private final JToggleButton imageButton;
     private final JToggleButton lightButton;
@@ -179,18 +181,22 @@ public final class MainToolBar extends JToolBar {
         eraserButton.setIcon(Icons.getSmallIcon("eraser"));
         eraserButton.setToolTipText(EditorProperties.getProperty(EditorProperty.EDITOR_UI_TOOLTIP_ERASE_REGION));
 
-        vectorAreaButton = new JToggleButton();
-        vectorAreaButton.setFocusable(false);
-        // vectorAreaButton.setAction(new VectorAreaAction()); // REFACTOR: FIX ME
-        vectorAreaButton.setIcon(Icons.getSmallIcon("layer-select"));
-        vectorAreaButton
+        JPopupMenu polygonAreaPopupMenu = new JPopupMenu();
+        polygonAreaPopupMenu.add(new JMenuItem(new ColliderAction(true)));
+        polygonAreaPopupMenu.add(new JMenuItem(new TriggerAction(true)));
+        polygonAreaButton = DropDownButtonFactory.createDropDownToggleButton(Icons.getSmallIcon("layer-select"),
+                polygonAreaPopupMenu);
+        polygonAreaButton.setFocusable(false);
+        polygonAreaButton
                 .setToolTipText(EditorProperties.getProperty(EditorProperty.EDITOR_UI_TOOLTIP_DRAW_VECTOR_AREA));
 
-        vectorButton = new JToggleButton();
-        vectorButton.setFocusable(false);
-        vectorButton.setAction(new VectorAction()); // REFACTOR: FIX ME
-        vectorButton.setIcon(Icons.getSmallIcon("layer-shape-polyline"));
-        vectorButton.setToolTipText(EditorProperties.getProperty(EditorProperty.EDITOR_UI_TOOLTIP_DRAW_VECTOR));
+        JPopupMenu polygonPopupMenu = new JPopupMenu();
+        polygonPopupMenu.add(new JMenuItem(new ColliderAction()));
+        polygonPopupMenu.add(new JMenuItem(new TriggerAction()));
+        polygonButton = DropDownButtonFactory.createDropDownToggleButton(Icons.getSmallIcon("layer-shape-polyline"),
+                polygonPopupMenu);
+        polygonButton.setFocusable(false);
+        polygonButton.setToolTipText(EditorProperties.getProperty(EditorProperty.EDITOR_UI_TOOLTIP_DRAW_VECTOR));
 
         spriteButton = new JToggleButton();
         spriteButton.setFocusable(false);
@@ -266,8 +272,8 @@ public final class MainToolBar extends JToolBar {
         toolButtonGroup.add(selectionButton);
         toolButtonGroup.add(bucketButton);
         toolButtonGroup.add(eraserButton);
-        toolButtonGroup.add(vectorAreaButton);
-        toolButtonGroup.add(vectorButton);
+        toolButtonGroup.add(polygonAreaButton);
+        toolButtonGroup.add(polygonButton);
         toolButtonGroup.add(spriteButton);
         toolButtonGroup.add(imageButton);
         toolButtonGroup.add(lightButton);
@@ -290,8 +296,8 @@ public final class MainToolBar extends JToolBar {
         add(selectionButton);
         add(bucketButton);
         add(eraserButton);
-        add(vectorAreaButton);
-        add(vectorButton);
+        add(polygonAreaButton);
+        add(polygonButton);
         add(spriteButton);
         add(imageButton);
         // add(lightButton);
@@ -422,8 +428,8 @@ public final class MainToolBar extends JToolBar {
         selectionButton.setEnabled(enable);
         bucketButton.setEnabled(enable);
         eraserButton.setEnabled(enable);
-        vectorAreaButton.setEnabled(enable);
-        vectorButton.setEnabled(enable);
+        polygonAreaButton.setEnabled(enable);
+        polygonButton.setEnabled(enable);
         spriteButton.setEnabled(enable);
         imageButton.setEnabled(enable);
         // lightButton.setEnabled(enable);

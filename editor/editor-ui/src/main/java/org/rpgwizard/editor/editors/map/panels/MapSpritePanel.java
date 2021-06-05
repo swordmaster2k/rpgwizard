@@ -20,7 +20,7 @@ import org.rpgwizard.common.assets.map.KeyType;
 import org.rpgwizard.common.assets.map.MapSprite;
 import org.rpgwizard.common.assets.sprite.Sprite;
 import org.rpgwizard.editor.MainWindow;
-import org.rpgwizard.editor.editors.map.generation.ProgramDialog;
+import org.rpgwizard.editor.editors.map.generation.ScriptDialog;
 import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.rpgwizard.editor.utilities.GuiHelper;
 import org.slf4j.Logger;
@@ -105,7 +105,7 @@ public final class MapSpritePanel extends MapModelPanel {
         configureEventButton.addActionListener((ActionEvent e) -> {
             try {
                 String program = mapSprite.getEvent().getScript();
-                ProgramDialog dialog = new ProgramDialog(MainWindow.getInstance(), program);
+                ScriptDialog dialog = new ScriptDialog(MainWindow.getInstance(), program);
                 dialog.display();
 
                 String newProgram = dialog.getNewValue();

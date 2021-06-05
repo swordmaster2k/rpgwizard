@@ -245,7 +245,7 @@ public final class MapView2D extends AbstractMapView {
 
         for (MapLayerView layer : layers) {
             if (layer.isVisible()) {
-                layer.drawVectors(g);
+                layer.drawPolygons(g);
             }
         }
     }

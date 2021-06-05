@@ -7,12 +7,15 @@
  */
 package org.rpgwizard.editor.ui;
 
+import org.rpgwizard.common.assets.Collider;
 import org.rpgwizard.common.assets.animation.Animation;
 import org.rpgwizard.common.assets.map.Map;
 import org.rpgwizard.common.assets.Image;
+import org.rpgwizard.common.assets.Trigger;
 import org.rpgwizard.common.assets.tileset.Tile;
 import org.rpgwizard.common.assets.map.MapImage;
 import org.rpgwizard.common.assets.map.MapSprite;
+import org.rpgwizard.common.assets.map.PolygonPair;
 import org.rpgwizard.common.assets.sprite.Sprite;
 import org.rpgwizard.editor.editors.animation.AnimationModelPanel;
 import org.rpgwizard.editor.editors.map.panels.MapImagePanel;
@@ -20,6 +23,8 @@ import org.rpgwizard.editor.editors.map.panels.MapPanel;
 import org.rpgwizard.editor.editors.map.panels.MapSpritePanel;
 import org.rpgwizard.editor.editors.sprite.SpriteModelPanel;
 import org.rpgwizard.editor.editors.image.ImageModelPanel;
+import org.rpgwizard.editor.editors.map.panels.ColliderPanel;
+import org.rpgwizard.editor.editors.map.panels.TriggerPanel;
 import org.rpgwizard.editor.editors.tileset.TileModelPanel;
 
 /**
@@ -51,6 +56,12 @@ public final class ModelPanelFactory {
             return new TileModelPanel((Tile) model);
         } else if (model instanceof Image) {
             return new ImageModelPanel((Image) model);
+        } else if (model instanceof PolygonPair) {
+            if (((PolygonPair) model).getRight() instanceof Collider) {
+                return new ColliderPanel((PolygonPair<String, Collider>) model);
+            } else if (((PolygonPair) model).getRight() instanceof Trigger) {
+                return new TriggerPanel((PolygonPair<String, Trigger>) model);
+            }
         }
 
         return null;

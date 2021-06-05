@@ -43,9 +43,9 @@ import org.slf4j.LoggerFactory;
  *
  * @author Joshua Michael Daly
  */
-public final class ProgramDialog extends JDialog {
+public final class ScriptDialog extends JDialog {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProgramDialog.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ScriptDialog.class);
 
     private final JComboBox<String> programTypeCombo;
 
@@ -58,7 +58,7 @@ public final class ProgramDialog extends JDialog {
     private final String oldValue;
     private String newValue;
 
-    public ProgramDialog(Window owner, String program) {
+    public ScriptDialog(Window owner, String program) {
         super(owner, "Configure Event", JDialog.ModalityType.APPLICATION_MODAL);
         this.oldValue = program;
         this.newValue = null;
@@ -187,7 +187,7 @@ public final class ProgramDialog extends JDialog {
         AssetManager.getInstance().registerResolver(new FileAssetHandleResolver());
         AssetManager.getInstance().registerSerializer(new TextProgramSerializer());
 
-        ProgramDialog dialog = new ProgramDialog(null, "test.js");
+        ScriptDialog dialog = new ScriptDialog(null, "test.js");
         dialog.display();
         System.out.println(dialog.collect());
     }

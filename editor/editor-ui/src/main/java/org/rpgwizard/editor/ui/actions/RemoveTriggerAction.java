@@ -17,14 +17,14 @@ import org.rpgwizard.editor.editors.MapEditor;
  *
  * @author Joshua Michael Daly
  */
-public class RemoveColliderAction extends AbstractAction {
+public class RemoveTriggerAction extends AbstractAction {
 
     private final MapEditor mapEditor;
     private final int x;
     private final int y;
     private final boolean deleteKey;
 
-    public RemoveColliderAction(MapEditor mapEditor, int x, int y, boolean deleteKey) {
+    public RemoveTriggerAction(MapEditor mapEditor, int x, int y, boolean deleteKey) {
         this.mapEditor = mapEditor;
         this.x = x;
         this.y = y;
@@ -36,9 +36,9 @@ public class RemoveColliderAction extends AbstractAction {
         PolygonPair removed;
         if (deleteKey && mapEditor.getSelectedObject() instanceof PolygonPair) {
             PolygonPair selected = (PolygonPair) mapEditor.getSelectedObject();
-            removed = mapEditor.getMapView().getCurrentSelectedLayer().getLayer().removeCollider(selected.getLeft());
+            removed = mapEditor.getMapView().getCurrentSelectedLayer().getLayer().removeTrigger(selected.getLeft());
         } else {
-            removed = mapEditor.getMapView().getCurrentSelectedLayer().getLayer().removeColliderAt(x, y);
+            removed = mapEditor.getMapView().getCurrentSelectedLayer().getLayer().removeTriggerAt(x, y);
         }
 
         if (removed != null && removed == mapEditor.getSelectedObject()) {

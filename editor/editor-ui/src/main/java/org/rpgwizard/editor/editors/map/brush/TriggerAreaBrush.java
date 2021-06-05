@@ -5,37 +5,36 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+// REFACTOR: FIX ME
 package org.rpgwizard.editor.editors.map.brush;
 
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
-import lombok.Getter;
-import lombok.Setter;
-import org.rpgwizard.common.assets.Collider;
+import org.rpgwizard.common.assets.Event;
+import org.rpgwizard.common.assets.Trigger;
 import org.rpgwizard.common.assets.map.PolygonPair;
-import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.editors.MapEditor;
 import org.rpgwizard.editor.editors.map.MapLayerView;
 import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
-import org.rpgwizard.editor.ui.actions.RemoveColliderAction;
+import org.rpgwizard.editor.ui.actions.RemoveTriggerAction;
 
 /**
- * REFACTOR: FIX ME
+ *
  *
  * @author Joshua Michael Daly
  */
-@Getter
-@Setter
-public class ColliderBrush extends AbstractPolygonBrush {
+public final class TriggerAreaBrush extends AbstractPolygonAreaBrush {
 
-    public ColliderBrush() {
-        polygon = new Collider();
+    public TriggerAreaBrush() {
+        reset();
     }
 
     @Override
     public boolean equals(Brush brush) {
-        return brush instanceof ColliderBrush && ((ColliderBrush) brush).polygon.equals(polygon);
+        return brush instanceof TriggerAreaBrush && ((TriggerAreaBrush) brush).polygon.equals(polygon);
     }
 
     @Override
@@ -48,20 +47,13 @@ public class ColliderBrush extends AbstractPolygonBrush {
             if (!drawing) {
                 drawing = true;
                 polygonId = UUID.randomUUID().toString();
-                polygon = new Collider();
-                affectedContainer.getLayer(currentLayer).getLayer().getColliders().put(polygonId, (Collider) polygon);
+                Trigger trigger = new Trigger();
+                trigger.setEvents(new ArrayList<>(List.of(new Event())));
+                polygon = trigger;
+                affectedContainer.getLayer(currentLayer).getLayer().getTriggers().put(polygonId, (Trigger) polygon);
             }
 
-            if (MainWindow.getInstance().isSnapToGrid()) {
-                MainWindow.getInstance().getCurrentMapEditor().calculateSnapCoordinates(x, y);
-            }
-
-            int[] coordinates = { x, y };
-
-            if (MainWindow.getInstance().isSnapToGrid()) {
-                coordinates = MainWindow.getInstance().getCurrentMapEditor().calculateSnapCoordinates(x, y);
-            }
-
+            int[] coordinates = calculateCoordinates(x, y);
             if (polygon.addPoint(coordinates[0], coordinates[1])) {
                 mapLayerView.getLayer().getMap().fireMapChanged();
             }
@@ -71,13 +63,36 @@ public class ColliderBrush extends AbstractPolygonBrush {
     }
 
     @Override
-    public void finish() {
-        if (polygon.getPointCount() < 2) {
-            affectedContainer.getLayer(currentLayer).getLayer().getColliders().remove(polygonId);
-        }
+    public void reset() {
         polygonId = null;
-        polygon = new Collider();
+        Trigger trigger = new Trigger();
+        trigger.setEvents(new ArrayList<>(List.of(new Event())));
+        polygon = trigger;
         drawing = false;
+    }
+
+    @Override
+    public void finish(int x, int y) {
+        // Top-left
+        org.rpgwizard.common.assets.Point assetPoint = polygon.getPoints().get(0);
+        Point p1 = new Point(assetPoint.getX(), assetPoint.getY());
+
+        // Bottom-right
+        int[] coordinates = calculateCoordinates(x, y);
+        Point p3 = new Point(coordinates[0], coordinates[1]);
+
+        // Top-right
+        Point p2 = new Point(p3.x, p1.y);
+
+        // Bottom-left
+        Point p4 = new Point(p1.x, p3.y);
+
+        // Add the remaining points to the map polygon rectangle
+        polygon.addPoint(p2.x, p2.y);
+        polygon.addPoint(p3.x, p3.y);
+        polygon.addPoint(p4.x, p4.y);
+
+        reset();
     }
 
     @Override
@@ -85,9 +100,9 @@ public class ColliderBrush extends AbstractPolygonBrush {
         if (editor instanceof MapEditor) {
             MapEditor mapEditor = (MapEditor) editor;
             if (drawing) {
-                finish();
+                finish(point.x, point.y);
             }
-            RemoveColliderAction action = new RemoveColliderAction(mapEditor, point.x, point.y, false);
+            RemoveTriggerAction action = new RemoveTriggerAction(mapEditor, point.x, point.y, false);
             action.actionPerformed(null);
         }
     }
@@ -97,11 +112,11 @@ public class ColliderBrush extends AbstractPolygonBrush {
         if (editor instanceof MapEditor) {
             MapEditor mapEditor = (MapEditor) editor;
             if (drawing) {
-                // We are drawing a polygon, so lets finish it.
-                finish();
+                // We are drawing a polygon, so lets reset it.
+                reset();
             } else {
                 // We want to select a polygon.
-                PolygonPair pair = mapEditor.getMapView().getCurrentSelectedLayer().getLayer().findColliderAt(point.x,
+                PolygonPair pair = mapEditor.getMapView().getCurrentSelectedLayer().getLayer().findTriggerAt(point.x,
                         point.y);
                 selectPolygon(pair, mapEditor);
             }

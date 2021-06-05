@@ -12,19 +12,37 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.editors.MapEditor;
-import org.rpgwizard.editor.editors.map.brush.ColliderBrush;
+import org.rpgwizard.editor.editors.map.brush.AbstractPolygonBrush;
+import org.rpgwizard.editor.editors.map.brush.TriggerAreaBrush;
+import org.rpgwizard.editor.editors.map.brush.TriggerBrush;
 
 /**
  *
  * @author Joshua Michael Daly
  */
-public class VectorAction extends AbstractAction {
+public class TriggerAction extends AbstractAction {
+
+    private boolean useArea;
+
+    public TriggerAction() {
+        super("Trigger");
+    }
+
+    public TriggerAction(boolean useArea) {
+        this();
+        this.useArea = useArea;
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         MapEditor.toggleSelectedOnMapEditor();
 
-        ColliderBrush brush = new ColliderBrush();
+        AbstractPolygonBrush brush;
+        if (useArea) {
+            brush = new TriggerAreaBrush();
+        } else {
+            brush = new TriggerBrush();
+        }
         MainWindow.getInstance().setCurrentBrush(brush);
 
         if (MainWindow.getInstance().getMainMenuBar().getViewMenu().getShowVectorsMenuItem().isSelected() == false) {

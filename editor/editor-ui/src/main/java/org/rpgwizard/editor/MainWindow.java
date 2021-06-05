@@ -68,7 +68,7 @@ import org.rpgwizard.editor.editors.map.brush.AbstractBrush;
 //import org.rpgwizard.editor.editors.map.brush.MapVectorBrush;
 import org.rpgwizard.editor.editors.map.brush.ShapeBrush;
 import org.rpgwizard.editor.editors.image.ImageEditor;
-import org.rpgwizard.editor.editors.map.brush.ColliderBrush;
+import org.rpgwizard.editor.editors.map.brush.AbstractPolygonBrush;
 import org.rpgwizard.editor.editors.map.panels.LayerPanel;
 import org.rpgwizard.editor.editors.program.IssuesTablePanel;
 import org.rpgwizard.editor.editors.tileset.NewTilesetDialog;
@@ -630,15 +630,12 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
 
             // So we do not end up drawing the vector on the other
             // map after it has been deactivated.
-            if (currentBrush instanceof ColliderBrush) {
-                ColliderBrush brush = (ColliderBrush) currentBrush;
-                if (brush.isDrawing() && brush.getCollider() != null) {
-                    brush.abort();
+            if (currentBrush instanceof AbstractPolygonBrush) {
+                AbstractPolygonBrush brush = (AbstractPolygonBrush) currentBrush;
+                if (brush.isDrawing() && brush.getPolygon() != null) {
+                    brush.reset();
                 }
-            } /*
-               * else if (currentBrush instanceof MapVectorAreaBrush) { MapVectorAreaBrush brush = (MapVectorAreaBrush)
-               * currentBrush; if (brush.isDrawing() && brush.getMapVector() != null) { brush.abort(); } }
-               */
+            }
         } else if (frame instanceof SpriteEditor) {
             SpriteEditor editor = (SpriteEditor) frame;
 

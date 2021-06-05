@@ -221,7 +221,7 @@ public class MapLayer {
         return x < loadedTiles.length && y < loadedTiles[0].length;
     }
 
-    public Pair<String, Collider> findColliderAt(int x, int y) {
+    public PolygonPair<String, Collider> findColliderAt(int x, int y) {
         Rectangle2D mouse = new Rectangle2D.Double(x - 5, y - 5, 10, 10);
 
         for (java.util.Map.Entry<String, Collider> entry : colliders.entrySet()) {
@@ -243,7 +243,7 @@ public class MapLayer {
 
                 // See if the mouse intersects the line of the polygon.
                 if (line2D.intersects(mouse)) {
-                    return Pair.of(entry.getKey(), entry.getValue());
+                    return new PolygonPair(entry.getKey(), entry.getValue());
                 }
             }
 
@@ -252,8 +252,8 @@ public class MapLayer {
         return null;
     }
 
-    public Pair<String, Collider> removeColliderAt(int x, int y) {
-        Pair<String, Collider> pair = findColliderAt(x, y);
+    public PolygonPair<String, Collider> removeColliderAt(int x, int y) {
+        PolygonPair<String, Collider> pair = findColliderAt(x, y);
         if (pair == null) {
             return null;
         } else {
@@ -263,23 +263,15 @@ public class MapLayer {
         }
     }
 
-    public Pair<String, Collider> removeCollider(Collider collider) {
-        // REFACTOR: optimise me
-        String key = null;
-        for (java.util.Map.Entry<String, Collider> entry : colliders.entrySet()) {
-            if (collider.equals(entry.getValue())) {
-                key = entry.getKey();
-                break;
-            }
+    public PolygonPair<String, Collider> removeCollider(String id) {
+        Collider removed = colliders.remove(id);
+        if (removed == null) {
+            return null;
         }
-
-        if (key != null) {
-            return Pair.of(key, colliders.remove(key));
-        }
-        return null;
+        return new PolygonPair(id, removed);
     }
 
-    public Pair<String, Trigger> findTriggerAt(int x, int y) {
+    public PolygonPair<String, Trigger> findTriggerAt(int x, int y) {
         Rectangle2D mouse = new Rectangle2D.Double(x - 5, y - 5, 10, 10);
 
         for (java.util.Map.Entry<String, Trigger> entry : triggers.entrySet()) {
@@ -301,7 +293,7 @@ public class MapLayer {
 
                 // See if the mouse intersects the line of the polygon.
                 if (line2D.intersects(mouse)) {
-                    return Pair.of(entry.getKey(), entry.getValue());
+                    return new PolygonPair(entry.getKey(), entry.getValue());
                 }
             }
 
@@ -310,8 +302,8 @@ public class MapLayer {
         return null;
     }
 
-    public Pair<String, Trigger> removeTriggerAt(int x, int y) {
-        Pair<String, Trigger> pair = findTriggerAt(x, y);
+    public PolygonPair<String, Trigger> removeTriggerAt(int x, int y) {
+        PolygonPair<String, Trigger> pair = findTriggerAt(x, y);
         if (pair == null) {
             return null;
         } else {
@@ -321,11 +313,12 @@ public class MapLayer {
         }
     }
 
-    public Pair<String, Trigger> removeTrigger(String id, Trigger trigger) {
-        if (triggers.remove(id) != null) {
-            return Pair.of(id, trigger);
+    public PolygonPair<String, Collider> removeTrigger(String id) {
+        Trigger removed = triggers.remove(id);
+        if (removed == null) {
+            return null;
         }
-        return null;
+        return new PolygonPair(id, removed);
     }
 
     public Pair<String, MapSprite> findSpriteAt(int x, int y, int width, int height) {

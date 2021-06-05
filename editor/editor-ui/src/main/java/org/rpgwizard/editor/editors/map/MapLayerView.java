@@ -16,8 +16,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import org.rpgwizard.common.assets.AbstractPolygon;
 import org.rpgwizard.common.assets.Collider;
 import org.rpgwizard.common.assets.map.Map;
 import org.rpgwizard.common.assets.tileset.Tile;
@@ -274,19 +274,14 @@ public class MapLayerView {
         }
     }
 
-    public void drawVectors(Graphics2D g) {
-        Collection<Collider> colliders = layer.getColliders().values();
+    public void drawPolygons(Graphics2D g) {
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, layer.getOpacity()));
-        for (Collider collider : colliders) {
-            if (collider.isSelected()) {
-                g.setStroke(new BasicStroke(3.0f)); // Draw it thicker.
-            }
-            g.setColor(Color.YELLOW);
-            drawVectorLines(g, collider);
-            if (collider.isSelected()) {
-                g.setStroke(new BasicStroke(1.0f)); // Return to normal stroke.
-            }
-        }
+        layer.getColliders().values().forEach(collider -> {
+            drawPolygon(g, collider);
+        });
+        layer.getTriggers().values().forEach(trigger -> {
+            drawPolygon(g, trigger);
+        });
     }
 
     /**
@@ -341,6 +336,17 @@ public class MapLayerView {
         });
     }
 
+    private void drawPolygon(Graphics2D g, AbstractPolygon polygon) {
+        if (polygon.isSelected()) {
+            g.setStroke(new BasicStroke(3.0f)); // Draw it thicker.
+        }
+        g.setColor(polygon instanceof Collider ? Color.YELLOW : Color.GREEN);
+        drawPolygonLines(g, polygon);
+        if (polygon.isSelected()) {
+            g.setStroke(new BasicStroke(1.0f)); // Return to normal stroke.
+        }
+    }
+
     // REFACTOR: FIX ME
     /**
      *
@@ -348,23 +354,20 @@ public class MapLayerView {
      * @param g
      * @param vector
      */
-    private void drawVectorLines(Graphics2D g, Collider collider) {
+    private void drawPolygonLines(Graphics2D g, AbstractPolygon polygon) {
         // Draw lines from points 0 > 1 , 1 > 2, 2 > 3 etc..
-        int count = collider.getPointCount();
+        int count = polygon.getPointCount();
 
         for (int i = 0; i < count - 1; i++) {
-            int[] points = GuiHelper.ensureVisible(layer.getMap(), collider.getPointX(i), collider.getPointY(i),
-                    collider.getPointX(i + 1), collider.getPointY(i + 1));
+            int[] points = GuiHelper.ensureVisible(layer.getMap(), polygon.getPointX(i), polygon.getPointY(i),
+                    polygon.getPointX(i + 1), polygon.getPointY(i + 1));
             g.drawLine(points[0], points[1], points[2], points[3]);
         }
 
-        // REFACTOR: Revisit this
-        // if (collider.isClosed()) {
-        // // Draw the final lines
-        // int[] points = GuiHelper.ensureVisible(layer.getMap(), vector.getPointX(count - 1),
-        // vector.getPointY(count - 1), vector.getPointX(0), vector.getPointY(0));
-        // g.drawLine(points[0], points[1], points[2], points[3]);
-        // }
+        // Draw the final lines
+        int[] points = GuiHelper.ensureVisible(layer.getMap(), polygon.getPointX(count - 1),
+                polygon.getPointY(count - 1), polygon.getPointX(0), polygon.getPointY(0));
+        g.drawLine(points[0], points[1], points[2], points[3]);
     }
 
     private void drawSelection(Graphics2D g, int x, int y, int width, int height) {

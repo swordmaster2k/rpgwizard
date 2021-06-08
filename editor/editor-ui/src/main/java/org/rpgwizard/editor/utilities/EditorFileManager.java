@@ -97,11 +97,11 @@ public class EditorFileManager {
         if (type == Animation.class) {
             return CoreProperties.getProperty("rpgwizard.directory.animations");
         } else if (type == Map.class) {
-            return CoreProperties.getProperty("rpgwizard.directory.map");
+            return CoreProperties.getProperty("rpgwizard.directory.maps");
         } else if (type == Sprite.class) {
             return CoreProperties.getProperty("rpgwizard.directory.sprites");
         } else if (type == Script.class) {
-            return CoreProperties.getProperty("rpgwizard.directory.script");
+            return CoreProperties.getProperty("rpgwizard.directory.scripts");
         } else if (type == Tileset.class) {
             return CoreProperties.getProperty("rpgwizard.directory.tilesets");
         } else {

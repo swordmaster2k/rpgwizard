@@ -58,6 +58,8 @@ public final class Icons {
             return getIcon("animation");
         case "map":
             return getIcon("map");
+        case "sprite":
+            return getIcon("sprite");
         case "js":
             return getIcon("program");
         case "game":

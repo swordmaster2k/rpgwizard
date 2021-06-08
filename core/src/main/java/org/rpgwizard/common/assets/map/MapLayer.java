@@ -60,10 +60,7 @@ public class MapLayer {
 
     public MapLayer(Map map) {
         this();
-
         this.map = map;
-        this.loadedTiles = new Tile[map.getWidth()][map.getHeight()];
-
         clearTiles();
     }
 
@@ -118,6 +115,11 @@ public class MapLayer {
     ////////////////////////////////////////////////////////////////////////////
     // Model Operations
     ////////////////////////////////////////////////////////////////////////////
+
+    public void init(Map parent) {
+        map = parent;
+        loadedTiles = new Tile[map.getWidth()][map.getHeight()];
+    }
 
     /**
      * Clears this layers tiles.

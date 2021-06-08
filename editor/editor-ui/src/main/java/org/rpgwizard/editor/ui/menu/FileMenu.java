@@ -204,7 +204,7 @@ public final class FileMenu extends JMenu implements ActionListener {
         newSpriteMenuItem = new JMenuItem("New Sprite");
         newSpriteMenuItem.setEnabled(false);
         newSpriteMenuItem.addActionListener(this);
-        newSpriteMenuItem.setIcon(Icons.getSmallIcon("new-npc"));
+        newSpriteMenuItem.setIcon(Icons.getSmallIcon("new-sprite"));
     }
 
     private void configureOpenProjectMenuItem() {
@@ -218,10 +218,10 @@ public final class FileMenu extends JMenu implements ActionListener {
     }
 
     private void configureNewProgramMenuItem() {
-        newProgramMenuItem = new JMenuItem("New Program");
+        newProgramMenuItem = new JMenuItem("New Script");
         newProgramMenuItem.setEnabled(false);
         newProgramMenuItem.addActionListener(this);
-        newProgramMenuItem.setIcon(Icons.getSmallIcon("new-program"));
+        newProgramMenuItem.setIcon(Icons.getSmallIcon("new-script"));
     }
 
     private void configureNewTilesetMenuItem() {

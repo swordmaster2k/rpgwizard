@@ -67,7 +67,7 @@ public final class MapPanel extends AbstractModelPanel {
         /// entryProgramComboBox
         ///
         directory = new File(System.getProperty("project.path") + File.separator
-                + CoreProperties.getProperty("rpgwizard.directory.script") + File.separator);
+                + CoreProperties.getProperty("rpgwizard.directory.scripts") + File.separator);
         exts = new String[] { "program", "js" };
         entryProgramComboBox = GuiHelper.getFileListJComboBox(new File[] { directory }, exts, true);
         entryProgramComboBox.setSelectedItem(map.getEntryScript());

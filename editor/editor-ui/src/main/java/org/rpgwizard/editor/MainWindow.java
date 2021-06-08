@@ -857,7 +857,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
                     openTileset(new File(path));
                 }
 
-                map.loadTiles();
+                map.init();
 
                 return map;
             }

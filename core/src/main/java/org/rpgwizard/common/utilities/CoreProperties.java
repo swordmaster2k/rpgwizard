@@ -35,10 +35,10 @@ public class CoreProperties {
             properties.load(in);
 
             directories = new String[] { properties.getProperty("rpgwizard.directory.textures"),
-                    properties.getProperty("rpgwizard.directory.map"),
+                    properties.getProperty("rpgwizard.directory.maps"),
                     properties.getProperty("rpgwizard.directory.sounds"),
                     properties.getProperty("rpgwizard.directory.animations"),
-                    properties.getProperty("rpgwizard.directory.script"),
+                    properties.getProperty("rpgwizard.directory.scripts"),
                     properties.getProperty("rpgwizard.directory.tilesets"),
                     properties.getProperty("rpgwizard.directory.fonts"),
                     properties.getProperty("rpgwizard.directory.sprites") };

@@ -22,7 +22,7 @@ import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.Location;
 import org.rpgwizard.common.assets.events.MapChangedEvent;
 import org.rpgwizard.common.assets.listeners.MapChangeListener;
-import org.rpgwizard.common.assets.tileset.Tile;
+import org.rpgwizard.common.assets.tileset.Tileset;
 import org.rpgwizard.common.utilities.TileSetCache;
 
 /**
@@ -129,19 +129,29 @@ public final class Map extends AbstractAsset implements Selectable {
     // Model Operations
     ////////////////////////////////////////////////////////////////////////////
 
-    public void loadTiles() {
+    public void init() {
+        loadTiles();
+        loadSprites();
+    }
+
+    private void loadTiles() {
         for (MapLayer layer : layers) {
             int count = width * height;
             int x = 0;
             int y = 0;
-            Tile[][] tiles = layer.getLoadedTiles();
+            layer.init(this);
+            List<String> tilePointers = layer.getTiles();
             for (int j = 0; j < count; j++) {
-                Tile tile = tiles[x][y];
+                // In the form "tileset-idx:tile-idx"
+                String[] parts = tilePointers.get(j).split(":");
 
-                if (tile.getTileSet() != null) {
-                    // When first loaded they'll only have the name.
-                    tile.setTileSet(TileSetCache.getTileSet(tile.getTileSet().getName()));
-                    tiles[x][y] = tile.getTileSet().getTile(tile.getIndex());
+                int tilesetIdx = Integer.parseInt(parts[0]);
+                int tileIdx = Integer.parseInt(parts[1]);
+                if (tilesetIdx < 0 || tileIdx < 0) {
+                    layer.getLoadedTiles()[x][y] = null; // Blank tile
+                } else {
+                    Tileset tileset = TileSetCache.getTileSet(getTilesets().get(tilesetIdx));
+                    layer.getLoadedTiles()[x][y] = tileset.getTile(tileIdx);
                 }
 
                 x++;
@@ -152,6 +162,14 @@ public final class Map extends AbstractAsset implements Selectable {
                         break;
                     }
                 }
+            }
+        }
+    }
+
+    private void loadSprites() {
+        for (MapLayer layer : layers) {
+            for (MapSprite sprite : layer.getSprites().values()) {
+                sprite.prepareSprite();
             }
         }
     }

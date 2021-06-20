@@ -29,7 +29,7 @@ import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 import org.rpgwizard.editor.ui.actions.RemoveSpriteAction;
 
 /**
- * REFACTOR: Clean me up
+ * CLEANUP: Clean me up
  * 
  * @author Joshua Michael Daly
  */
@@ -181,7 +181,7 @@ public class MapSpriteBrush extends AbstractBrush {
     public boolean doMouseButton3Dragged(Point point, Point origin, AbstractAssetEditorWindow editor) {
         if (editor instanceof MapEditor) {
             MapEditor mapEditor = (MapEditor) editor;
-            if (mapEditor.getSelectedObject() == pair.getValue()) {
+            if (mapEditor.getSelectedObject() == pair) {
                 Dimension dimension = mapEditor.getMap().getMapPixelDimensions();
                 if (checkDragBounds(point.x, point.y, dimension.width, dimension.height)) {
                     if (MainWindow.getInstance().isSnapToGrid()) {
@@ -189,7 +189,7 @@ public class MapSpriteBrush extends AbstractBrush {
                     }
                     final Location current = pair.getValue().getStartLocation();
                     if (!current.equals(new Location(point.x, point.y, currentLayer))) {
-                        pair.getValue().setStartLocation(new Location(point.x, point.y, currentLayer));
+                        pair.getValue().updateLocation(new Location(point.x, point.y, currentLayer));
                     }
                     mapEditor.getMapView().repaint();
                     return true;

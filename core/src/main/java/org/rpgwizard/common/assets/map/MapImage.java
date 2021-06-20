@@ -13,9 +13,11 @@ import java.io.IOException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.rpgwizard.common.Selectable;
 import org.rpgwizard.common.utilities.CoreUtil;
 
@@ -26,7 +28,9 @@ import org.rpgwizard.common.utilities.CoreUtil;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MapImage implements Selectable {
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true, includeFieldNames = true)
+public class MapImage extends AbstractMapModel implements Selectable {
 
     private String image;
     private int x;
@@ -52,9 +56,32 @@ public class MapImage implements Selectable {
     }
 
     ////////////////////////////////////////////////////////////////////////////
+    // Getters & Setters
+    ////////////////////////////////////////////////////////////////////////////
+    /**
+     * Is this selected in the editor?
+     *
+     * @return selected state
+     */
+    @Override
+    public boolean isSelected() {
+        return selected;
+    }
+
+    /**
+     * Set the selected state of this in the editor
+     *
+     * @param state
+     *            new state
+     */
+    @Override
+    public void setSelectedState(boolean state) {
+        selected = state;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
     // Model Operations
     ////////////////////////////////////////////////////////////////////////////
-
     public final void loadBufferedImage() {
         if (image.isEmpty()) {
             return;
@@ -76,28 +103,13 @@ public class MapImage implements Selectable {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Selection Listeners
+    // Model Operations
     ////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Is this selected in the editor?
-     *
-     * @return selected state
-     */
-    @Override
-    public boolean isSelected() {
-        return selected;
-    }
-
-    /**
-     * Set the selected state of this in the editor
-     *
-     * @param state
-     *            new state
-     */
-    @Override
-    public void setSelectedState(boolean state) {
-        selected = state;
+    public void updateLocation(int x, int y) {
+        this.x = x;
+        this.y = y;
+        fireModelMoved();
     }
 
 }

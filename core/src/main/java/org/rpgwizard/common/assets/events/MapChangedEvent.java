@@ -26,6 +26,7 @@ import org.rpgwizard.common.assets.map.MapSprite;
 @ToString(callSuper = true, includeFieldNames = true)
 public class MapChangedEvent extends EventObject {
 
+    private int layerIndex;
     private MapLayer layer;
     private MapSprite MapSprite;
     private MapImage MapImage;

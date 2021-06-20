@@ -40,8 +40,8 @@ public final class SpriteSheetImagePanel extends AbstractImagePanel implements M
     private static final Logger LOGGER = LoggerFactory.getLogger(SpriteSheetImagePanel.class);
 
     private final SpriteSheet spriteSheet;
-    private String fileName;
-    private Image spriteSheetImage;
+    private String image;
+    private Image bufferedImage;
     private Rectangle cursor;
     private Rectangle selection;
 
@@ -58,7 +58,7 @@ public final class SpriteSheetImagePanel extends AbstractImagePanel implements M
         setAutoscrolls(true);
 
         this.spriteSheet = spriteSheet;
-        this.fileName = spriteSheet.getFileName();
+        this.image = spriteSheet.getImage();
         this.cursor = new Rectangle();
         this.selection = new Rectangle(spriteSheet.getX() / tileWidth, spriteSheet.getY() / tileHeight,
                 spriteSheet.getWidth() / tileWidth, spriteSheet.getHeight() / tileHeight);
@@ -82,12 +82,12 @@ public final class SpriteSheetImagePanel extends AbstractImagePanel implements M
         return dimension;
     }
 
-    public String getFileName() {
-        return fileName;
+    public String getImage() {
+        return image;
     }
 
-    public Image getSpriteSheetImage() {
-        return spriteSheetImage;
+    public Image getBufferedImage() {
+        return bufferedImage;
     }
 
     public Rectangle getSelection() {
@@ -111,8 +111,8 @@ public final class SpriteSheetImagePanel extends AbstractImagePanel implements M
     }
 
     public void init() throws IOException {
-        if (StringUtils.isNotBlank(fileName)) {
-            spriteSheetImage = spriteSheet.loadImage();
+        if (StringUtils.isNotBlank(image)) {
+            bufferedImage = spriteSheet.loadImage();
             updateDimension();
         }
     }
@@ -124,7 +124,7 @@ public final class SpriteSheetImagePanel extends AbstractImagePanel implements M
     }
 
     public void updateDimension() {
-        dimension = new Dimension(spriteSheetImage.getWidth(this), spriteSheetImage.getHeight(this));
+        dimension = new Dimension(bufferedImage.getWidth(this), bufferedImage.getHeight(this));
         revalidate();
         repaint();
     }
@@ -158,12 +158,12 @@ public final class SpriteSheetImagePanel extends AbstractImagePanel implements M
 
         int x, y;
         Image image;
-        if (spriteSheetImage == null) {
+        if (bufferedImage == null) {
             image = Icons.getIcon("image", Icons.Size.LARGE).getImage();
             x = (getWidth() - image.getWidth(this)) / 2;
             y = (getHeight() - image.getHeight(this)) / 2;
         } else {
-            image = spriteSheetImage;
+            image = bufferedImage;
             x = y = 0;
         }
 
@@ -171,7 +171,7 @@ public final class SpriteSheetImagePanel extends AbstractImagePanel implements M
         g.setColor(Color.LIGHT_GRAY);
         g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
 
-        if (spriteSheetImage != null) {
+        if (bufferedImage != null) {
             GuiHelper.drawGrid((Graphics2D) g, tileWidth, tileHeight, new Rectangle(0, 0, getWidth(), getHeight()));
             GuiHelper.drawSelection((Graphics2D) g, tileWidth, tileHeight, selection, 0);
             GuiHelper.drawSelection((Graphics2D) g, tileWidth, tileHeight, cursor, 1);
@@ -187,7 +187,7 @@ public final class SpriteSheetImagePanel extends AbstractImagePanel implements M
 
                 if (imageFile != null) {
                     String remove = EditorFileManager.getGraphicsPath();
-                    fileName = imageFile.getAbsolutePath().replace(remove, "");
+                    image = imageFile.getAbsolutePath().replace(remove, "");
 
                     if (bufferedImages.size() > 0) {
                         bufferedImages.remove();
@@ -209,7 +209,7 @@ public final class SpriteSheetImagePanel extends AbstractImagePanel implements M
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (SwingUtilities.isLeftMouseButton(e) && spriteSheetImage != null) {
+        if (SwingUtilities.isLeftMouseButton(e) && bufferedImage != null) {
             selection = new Rectangle(e.getX() / tileWidth, e.getY() / tileHeight, 1, 1);
             if (!okButton.isEnabled()) {
                 okButton.setEnabled(true);
@@ -219,13 +219,13 @@ public final class SpriteSheetImagePanel extends AbstractImagePanel implements M
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        if (SwingUtilities.isLeftMouseButton(e) && spriteSheetImage != null) {
+        if (SwingUtilities.isLeftMouseButton(e) && bufferedImage != null) {
             JViewport viewPort = (JViewport) SwingUtilities.getAncestorOfClass(JViewport.class, this);
             if (viewPort != null) {
                 scrollRectToVisible(new Rectangle(e.getX(), e.getY(), 1, 1));
             }
 
-            int maxX = spriteSheetImage.getWidth(this);
+            int maxX = bufferedImage.getWidth(this);
             int x = e.getX();
             if (x < 1) {
                 x = tileWidth;
@@ -233,7 +233,7 @@ public final class SpriteSheetImagePanel extends AbstractImagePanel implements M
                 x = maxX;
             }
 
-            int maxY = spriteSheetImage.getHeight(this);
+            int maxY = bufferedImage.getHeight(this);
             int y = e.getY();
             if (y < 1) {
                 y = tileHeight;
@@ -249,7 +249,7 @@ public final class SpriteSheetImagePanel extends AbstractImagePanel implements M
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (SwingUtilities.isLeftMouseButton(e) && spriteSheetImage != null) {
+        if (SwingUtilities.isLeftMouseButton(e) && bufferedImage != null) {
 
         }
     }
@@ -260,7 +260,7 @@ public final class SpriteSheetImagePanel extends AbstractImagePanel implements M
             try {
                 this.file = file;
                 bufferedImages.add(ImageIO.read(file));
-                spriteSheetImage = bufferedImages.getFirst();
+                bufferedImage = bufferedImages.getFirst();
                 fireAddedImage();
             } catch (IOException ex) {
                 LOGGER.error("Failed to add image file=[{}]", file, ex);

@@ -257,17 +257,23 @@ public class MapLayersTableModel extends AbstractTableModel implements MapChange
     }
 
     @Override
+    public void mapSpriteMoved(MapChangedEvent e) {
+    }
+
+    @Override
     public void mapSpriteRemoved(MapChangedEvent e) {
     }
 
     @Override
     public void mapImageAdded(MapChangedEvent e) {
-        fireTableDataChanged();
+    }
+
+    @Override
+    public void mapImageMoved(MapChangedEvent e) {
     }
 
     @Override
     public void mapImageRemoved(MapChangedEvent e) {
-        fireTableDataChanged();
     }
 
 }

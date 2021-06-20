@@ -13,7 +13,7 @@ import org.rpgwizard.common.assets.map.SelectablePair;
 import org.rpgwizard.editor.editors.MapEditor;
 
 /**
- * REFACTOR: FIX ME
+ * CLEANUP: Clean me up
  *
  * @author Joshua Michael Daly
  */

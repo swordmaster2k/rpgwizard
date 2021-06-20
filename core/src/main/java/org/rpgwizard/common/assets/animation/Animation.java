@@ -7,11 +7,13 @@
  */
 package org.rpgwizard.common.assets.animation;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.AssetDescriptor;
@@ -25,6 +27,7 @@ import org.rpgwizard.common.assets.listeners.AnimationChangeListener;
  * @author Joshua Michael Daly
  */
 @Data
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true, includeFieldNames = true)
 public class Animation extends AbstractAsset {
@@ -46,10 +49,12 @@ public class Animation extends AbstractAsset {
         spriteSheet = new SpriteSheet("", 0, 0, 50, 50, 50, 50);
     }
 
+    @JsonIgnore
     public BufferedImage getFrame(int index) {
         return spriteSheet.getFrame(index, spriteSheet.getTileWidth(), spriteSheet.getTileHeight());
     }
 
+    @JsonIgnore
     public int getFrameCount() {
         return spriteSheet.getFrameCount(spriteSheet.getTileWidth(), spriteSheet.getTileHeight());
     }

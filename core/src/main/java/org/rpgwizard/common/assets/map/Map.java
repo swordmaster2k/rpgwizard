@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -132,8 +133,6 @@ public final class Map extends AbstractAsset implements Selectable {
         fireMapChanged();
     }
 
-    // REFACTOR: setTilesets?
-
     /**
      * Gets the maps width and height in pixels.
      * 
@@ -198,6 +197,7 @@ public final class Map extends AbstractAsset implements Selectable {
      */
     public void addLayer() {
         MapLayer layer = new MapLayer(this);
+        layer.init(this);
         layer.setId("Untitled Layer " + layers.size());
 
         for (int i = 0; i < width * height; i++) {
@@ -273,6 +273,8 @@ public final class Map extends AbstractAsset implements Selectable {
 
     public void cloneLayer(int index) {
         MapLayer clone = new MapLayer(layers.get(index), this);
+        clone.setId(clone.getId() + "-" + new Random().nextInt(Integer.MAX_VALUE));
+
         layers.add(index + 1, clone);
 
         fireMapLayerCloned(clone);
@@ -282,7 +284,7 @@ public final class Map extends AbstractAsset implements Selectable {
         MapLayer removedLayer = layers.get(index);
         layers.remove(index);
 
-        fireMapLayerDeleted(removedLayer);
+        fireMapLayerDeleted(index, removedLayer);
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -445,16 +447,18 @@ public final class Map extends AbstractAsset implements Selectable {
     /**
      * Fires the <code>MapChangedEvent</code> informs all the listeners that this map has changed.
      *
+     * @param layerIndex
      * @param layer
      *            deleted layer
      */
-    public void fireMapLayerDeleted(MapLayer layer) {
+    public void fireMapLayerDeleted(int layerIndex, MapLayer layer) {
         MapChangedEvent event = null;
         Iterator iterator = changeListeners.iterator();
 
         while (iterator.hasNext()) {
             if (event == null) {
                 event = new MapChangedEvent(this);
+                event.setLayerIndex(layerIndex);
                 event.setLayer(layer);
             }
 
@@ -478,6 +482,25 @@ public final class Map extends AbstractAsset implements Selectable {
             }
 
             ((MapChangeListener) iterator.next()).mapSpriteAdded(event);
+        }
+    }
+
+    /**
+     * Fires the <code>MapChangedEvent</code> informs all the listeners that this map has changed.
+     *
+     * @param sprite
+     */
+    public void fireMapSpriteMoved(MapSprite sprite) {
+        MapChangedEvent event = null;
+        Iterator iterator = changeListeners.iterator();
+
+        while (iterator.hasNext()) {
+            if (event == null) {
+                event = new MapChangedEvent(this);
+                event.setMapSprite(sprite);
+            }
+
+            ((MapChangeListener) iterator.next()).mapSpriteMoved(event);
         }
     }
 
@@ -516,6 +539,25 @@ public final class Map extends AbstractAsset implements Selectable {
             }
 
             ((MapChangeListener) iterator.next()).mapImageAdded(event);
+        }
+    }
+
+    /**
+     * Fires the <code>MapChangedEvent</code> informs all the listeners that this map has changed.
+     *
+     * @param image
+     */
+    public void fireMapImageMoved(MapImage image) {
+        MapChangedEvent event = null;
+        Iterator iterator = changeListeners.iterator();
+
+        while (iterator.hasNext()) {
+            if (event == null) {
+                event = new MapChangedEvent(this);
+                event.setMapImage(image);
+            }
+
+            ((MapChangeListener) iterator.next()).mapImageMoved(event);
         }
     }
 

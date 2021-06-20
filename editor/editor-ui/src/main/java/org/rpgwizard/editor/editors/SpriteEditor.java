@@ -334,8 +334,6 @@ public final class SpriteEditor extends AbstractAssetEditorWindow implements Spr
         frame.setVisible(true);
     }
 
-    // REFACTOR: Sort out
-
     @Override
     public void internalFrameClosed(InternalFrameEvent e) {
         sprite.removeSpriteChangeListener(this);

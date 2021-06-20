@@ -137,7 +137,7 @@ public final class AnimationEditor extends AbstractAssetEditorWindow
     private void configureTimeline() {
         try {
             SpriteSheet spriteSheet = animation.getSpriteSheet();
-            if (!spriteSheet.getFileName().isEmpty()) {
+            if (!spriteSheet.getImage().isEmpty()) {
                 spriteSheet.loadSelection();
                 SpriteSheetButton spriteSheetButton = new SpriteSheetButton(animation, spriteSheet);
                 spriteSheetButton.loadImage();

@@ -13,8 +13,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.AssetDescriptor;
-import org.rpgwizard.common.assets.game.Debug;
-import org.rpgwizard.common.assets.game.Viewport;
 
 /**
  *

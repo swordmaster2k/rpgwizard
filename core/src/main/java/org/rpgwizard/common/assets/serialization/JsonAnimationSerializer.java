@@ -7,14 +7,15 @@
  */
 package org.rpgwizard.common.assets.serialization;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.rpgwizard.common.assets.animation.Animation;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.AssetException;
 import org.rpgwizard.common.assets.AssetHandle;
-import org.rpgwizard.common.assets.animation.SpriteSheet;
 import org.rpgwizard.common.io.Paths;
 import org.rpgwizard.common.utilities.CoreProperties;
 import org.json.JSONObject;
+import static org.rpgwizard.common.assets.serialization.AbstractJsonSerializer.MAPPER;
 
 /**
  *
@@ -35,50 +36,25 @@ public class JsonAnimationSerializer extends AbstractJsonSerializer {
 
     @Override
     protected void load(AssetHandle handle, JSONObject json) throws AssetException {
-        final Animation animation = new Animation(handle.getDescriptor());
-
-        animation.setVersion(String.valueOf(json.get("version"))); // REFACTOR: Fix this
-
-        animation.setWidth(json.optInt("width"));
-        animation.setHeight(json.optInt("height"));
-        animation.setFramRate(json.getInt("frameRate"));
-
-        JSONObject object = json.getJSONObject("spriteSheet");
-        animation.setSpriteSheet(new SpriteSheet(object.getString("image"), object.getInt("x"), object.getInt("y"),
-                object.getInt("width"), object.getInt("height"), animation.getWidth(), animation.getHeight()));
-
-        animation.setSoundEffect(json.getString("soundEffect"));
-
-        handle.setAsset(animation);
-    }
-
-    @Override
-    public void store(AssetHandle handle, JSONObject json) throws AssetException {
-        super.store(handle, json);
-
-        Animation animation = (Animation) handle.getAsset();
-
-        json.put("width", animation.getWidth());
-        json.put("height", animation.getHeight());
-        json.put("frameRate", animation.getFrameRate());
-
-        final SpriteSheet spriteSheet = animation.getSpriteSheet();
-        final JSONObject object = new JSONObject();
-        object.put("image", serializePath(spriteSheet.getFileName()));
-        object.put("x", spriteSheet.getX());
-        object.put("y", spriteSheet.getY());
-        object.put("width", spriteSheet.getWidth());
-        object.put("height", spriteSheet.getHeight());
-
-        json.put("spriteSheet", object);
-
-        json.put("soundEffect", serializePath(animation.getSoundEffect()));
+        try {
+            final Animation asset = MAPPER.readValue(json.toString(), Animation.class);
+            asset.getSpriteSheet().setTileWidth(asset.getWidth());
+            asset.getSpriteSheet().setTileHeight(asset.getHeight());
+            asset.setDescriptor(handle.getDescriptor());
+            handle.setAsset(asset);
+        } catch (JsonProcessingException ex) {
+            throw new AssetException(ex.getMessage());
+        }
     }
 
     @Override
     protected JSONObject store(AssetHandle handle) throws AssetException {
-        throw new UnsupportedOperationException("Not supported yet."); // To change body of generated methods, choose
-                                                                       // Tools | Templates.
+        try {
+            final Animation asset = (Animation) handle.getAsset();
+            return new JSONObject(MAPPER.writeValueAsString(asset));
+        } catch (JsonProcessingException ex) {
+            throw new AssetException(ex.getMessage());
+        }
     }
 
 }

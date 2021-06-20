@@ -5,7 +5,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-// REFACTOR: FIX ME
 package org.rpgwizard.editor.editors.map.panels;
 
 import java.awt.event.ActionEvent;
@@ -28,11 +27,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * CLEANUP: Clean me up
  *
  * @author Joshua Michael Daly
  */
-public final class TriggerPanel extends MapModelPanel {
+public final class TriggerPanel extends AbstractMapModelPanel {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TriggerPanel.class);
 

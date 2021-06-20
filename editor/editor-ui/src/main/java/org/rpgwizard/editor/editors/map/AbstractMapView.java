@@ -694,36 +694,41 @@ public abstract class AbstractMapView extends JPanel implements MultiLayerContai
 
     @Override
     public void mapLayerAdded(MapChangedEvent e) {
-        // addLayerView(new MapLayerView(e.getLayer())); // REFACTOR: FIX
+        addLayerView(new MapLayerView(e.getLayer()));
         repaint();
     }
 
     @Override
     public void mapLayerMovedUp(MapChangedEvent e) {
-        // swapLayerUp(e.getLayer().getNumber() - 1);
+        swapLayerUp(e.getLayer().getNumber() - 1);
         repaint();
     }
 
     @Override
     public void mapLayerMovedDown(MapChangedEvent e) {
-        // swapLayerDown(e.getLayer().getNumber() + 1); // REFACTOR: FIX
+        swapLayerDown(e.getLayer().getNumber() + 1);
         repaint();
     }
 
     @Override
     public void mapLayerCloned(MapChangedEvent e) {
-        // addLayer(e.getLayer().getNumber(), new MapLayerView(e.getLayer())); // REFACTOR: FIX
+        addLayer(e.getLayer().getNumber(), new MapLayerView(e.getLayer()));
         repaint();
     }
 
     @Override
     public void mapLayerDeleted(MapChangedEvent e) {
-        // removeLayer(e.getLayer().getNumber()); // REFACTOR: FIX
+        removeLayer(e.getLayerIndex());
         repaint();
     }
 
     @Override
     public void mapSpriteAdded(MapChangedEvent e) {
+        repaint();
+    }
+
+    @Override
+    public void mapSpriteMoved(MapChangedEvent e) {
         repaint();
     }
 
@@ -742,9 +747,14 @@ public abstract class AbstractMapView extends JPanel implements MultiLayerContai
         repaint();
     }
 
+    @Override
+    public void mapImageMoved(MapChangedEvent e) {
+        repaint();
+    }
+
     /**
      * Updates the MapView based on the new map provided.
-     * 
+     *
      * @param map
      */
     public void update(Map map) {

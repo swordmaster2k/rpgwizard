@@ -5,7 +5,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-// REFACTOR: FIX ME
 package org.rpgwizard.editor.editors.map.panels;
 
 import java.util.List;
@@ -18,11 +17,11 @@ import org.rpgwizard.common.assets.map.SelectablePair;
 import org.rpgwizard.editor.editors.map.MapLayerView;
 
 /**
- *
+ * CLEANUP: Clean me up
  *
  * @author Joshua Michael Daly
  */
-public final class ColliderPanel extends MapModelPanel {
+public final class ColliderPanel extends AbstractMapModelPanel {
 
     private final JSpinner layerSpinner;
     private final JTextField idTextField;

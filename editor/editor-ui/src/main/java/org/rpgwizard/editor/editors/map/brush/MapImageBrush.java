@@ -25,7 +25,7 @@ import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 import org.rpgwizard.editor.ui.actions.RemoveMapImageAction;
 
 /**
- * REFACTOR: Clean me up
+ * CLEANUP: Clean me up
  * 
  * @author Joshua Michael Daly
  */
@@ -129,7 +129,7 @@ public class MapImageBrush extends AbstractBrush {
     public boolean doMouseButton3Dragged(Point point, Point origin, AbstractAssetEditorWindow editor) {
         if (editor instanceof MapEditor) {
             MapEditor mapEditor = (MapEditor) editor;
-            if (mapEditor.getSelectedObject() == pair.getValue()) {
+            if (mapEditor.getSelectedObject() == pair) {
                 Dimension dimension = mapEditor.getMap().getMapPixelDimensions();
                 Map map = mapEditor.getMap();
                 if (checkDragBounds(point.x, point.y, dimension.width, dimension.height)) {
@@ -140,8 +140,7 @@ public class MapImageBrush extends AbstractBrush {
                         point.y -= (map.getTileHeight() / 2);
                     }
 
-                    pair.getValue().setX(point.x);
-                    pair.getValue().setY(point.y);
+                    pair.getValue().updateLocation(point.x, point.y);
                     mapEditor.getMapView().repaint();
 
                     return true;

@@ -21,7 +21,7 @@ import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 import org.rpgwizard.editor.ui.actions.RemoveColliderAction;
 
 /**
- * REFACTOR: FIX ME
+ * CLEANUP: Clean me up
  *
  * @author Joshua Michael Daly
  */

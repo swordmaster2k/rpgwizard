@@ -23,10 +23,6 @@ import org.json.JSONObject;
 import org.rpgwizard.common.assets.AbstractAssetSerializer;
 import org.rpgwizard.common.assets.AssetException;
 import org.rpgwizard.common.assets.AssetHandle;
-import org.rpgwizard.common.assets.game.Game;
-import org.rpgwizard.common.assets.tileset.Tileset;
-import org.rpgwizard.common.assets.map.Map;
-import org.rpgwizard.common.assets.sprite.Sprite;
 
 /**
  * Abstract base class for implementing asset serializers that load or store their contents using JSON encoding.
@@ -45,14 +41,7 @@ public abstract class AbstractJsonSerializer extends AbstractAssetSerializer {
     public void serialize(AssetHandle handle) throws IOException, AssetException {
         try (final WritableByteChannel channel = handle.write()) {
             // Store the asset contents into a JSON representation
-            JSONObject obj = new JSONObject();
-            if (handle.getAsset() instanceof Game || handle.getAsset() instanceof Tileset
-                    || handle.getAsset() instanceof Sprite || handle.getAsset() instanceof Map) { // REFACTOR: Remove
-                // this
-                obj = store(handle);
-            } else {
-                store(handle, obj);
-            }
+            JSONObject obj = store(handle);
 
             // Encode JSON representation with the specified character set encoding
             final String contents = obj.toString();
@@ -84,10 +73,6 @@ public abstract class AbstractJsonSerializer extends AbstractAssetSerializer {
     protected abstract void load(AssetHandle handle, JSONObject json) throws AssetException;
 
     protected abstract JSONObject store(AssetHandle handle) throws AssetException;
-
-    protected void store(AssetHandle handle, JSONObject json) throws AssetException {
-        json.put("version", FILE_FORMAT_VERSION);
-    }
 
     protected ArrayList<String> getStringArrayList(JSONArray array) {
         ArrayList<String> strings = new ArrayList<>();

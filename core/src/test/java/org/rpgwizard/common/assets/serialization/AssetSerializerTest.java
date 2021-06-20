@@ -107,7 +107,7 @@ public class AssetSerializerTest {
         Assert.assertEquals(90, asset.getHeight());
 
         SpriteSheet spriteSheet = asset.getSpriteSheet();
-        Assert.assertEquals("attack1_north.png", spriteSheet.getFileName());
+        Assert.assertEquals("attack1_north.png", spriteSheet.getImage());
         Assert.assertEquals(0, spriteSheet.getX());
         Assert.assertEquals(0, spriteSheet.getY());
         Assert.assertEquals(55, spriteSheet.getWidth());

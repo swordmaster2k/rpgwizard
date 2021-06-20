@@ -17,12 +17,17 @@ import javax.swing.JViewport;
 import org.rpgwizard.common.Selectable;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.AssetDescriptor;
+import org.rpgwizard.common.assets.Collider;
+import org.rpgwizard.common.assets.Trigger;
 import org.rpgwizard.common.assets.map.Map;
 import org.rpgwizard.common.assets.tileset.Tile;
 import org.rpgwizard.common.assets.tileset.Tileset;
 import org.rpgwizard.common.assets.map.MapLayer;
 import org.rpgwizard.common.assets.events.MapChangedEvent;
 import org.rpgwizard.common.assets.listeners.MapChangeListener;
+import org.rpgwizard.common.assets.map.MapImage;
+import org.rpgwizard.common.assets.map.MapSprite;
+import org.rpgwizard.common.assets.map.SelectablePair;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.editors.map.MapMouseAdapter;
 import org.rpgwizard.editor.editors.map.MapView2D;
@@ -36,6 +41,10 @@ import org.rpgwizard.editor.ui.actions.CopyAction;
 import org.rpgwizard.editor.ui.actions.CutAction;
 import org.rpgwizard.editor.ui.actions.PasteAction;
 import org.rpgwizard.editor.ui.actions.RedoAction;
+import org.rpgwizard.editor.ui.actions.RemoveColliderAction;
+import org.rpgwizard.editor.ui.actions.RemoveMapImageAction;
+import org.rpgwizard.editor.ui.actions.RemoveSpriteAction;
+import org.rpgwizard.editor.ui.actions.RemoveTriggerAction;
 import org.rpgwizard.editor.ui.actions.SelectAllAction;
 import org.rpgwizard.editor.ui.actions.UndoAction;
 import org.rpgwizard.editor.ui.resources.Icons;
@@ -449,6 +458,12 @@ public final class MapEditor extends AbstractAssetEditorWindow
     }
 
     @Override
+    public void mapSpriteMoved(MapChangedEvent e) {
+        undoRedoManager.push(new UndoRedoState(map, UndoRedoType.SPRITE));
+        setNeedSave(true);
+    }
+
+    @Override
     public void mapSpriteRemoved(MapChangedEvent e) {
         undoRedoManager.push(new UndoRedoState(map, UndoRedoType.SPRITE));
         setNeedSave(true);
@@ -456,6 +471,12 @@ public final class MapEditor extends AbstractAssetEditorWindow
 
     @Override
     public void mapImageAdded(MapChangedEvent e) {
+        undoRedoManager.push(new UndoRedoState(map, UndoRedoType.IMAGE));
+        setNeedSave(true);
+    }
+
+    @Override
+    public void mapImageMoved(MapChangedEvent e) {
         undoRedoManager.push(new UndoRedoState(map, UndoRedoType.IMAGE));
         setNeedSave(true);
     }
@@ -476,27 +497,29 @@ public final class MapEditor extends AbstractAssetEditorWindow
 
     @Override
     public void keyReleased(KeyEvent e) {
-        // REFACTOR: FIX ME
-        // if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-        // if (selectedObject == null) {
-        // return;
-        // }
-        // if (selectedObject instanceof MapSprite) {
-        // RemoveSpriteAction action = new RemoveSpriteAction(this, (MapSprite) selectedObject);
-        // action.actionPerformed(null);
-        // } else if (selectedObject instanceof MapImage) {
-        // RemoveMapImageAction action = new RemoveMapImageAction(this, (MapImage) selectedObject);
-        // action.actionPerformed(null);
-        // }
-        //
-        // // REFACTOR: FIX ME
-        // /*else if (selectedObject instanceof MapVector) {
-        // MapVector mapVector = (MapVector) selectedObject;
-        // Point point = mapVector.getPoints().get(0);
-        // RemoveVectorAction action = new RemoveVectorAction(this, point.x, point.y, true);
-        // action.actionPerformed(null);
-        // }*/
-        // }
+        if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+            if (selectedObject == null) {
+                return;
+            }
+            if (selectedObject instanceof SelectablePair) {
+                SelectablePair pair = (SelectablePair) selectedObject;
+                Selectable selectable = (Selectable) pair.getRight();
+                int layerIndex = mapView.getCurrentSelectedLayer().getLayer().getNumber();
+                if (selectable instanceof MapSprite) {
+                    RemoveSpriteAction action = new RemoveSpriteAction(this, layerIndex, pair.getLeft());
+                    action.actionPerformed(null);
+                } else if (selectable instanceof MapImage) {
+                    RemoveMapImageAction action = new RemoveMapImageAction(this, layerIndex, pair.getLeft());
+                    action.actionPerformed(null);
+                } else if (selectable instanceof Collider) {
+                    RemoveColliderAction action = new RemoveColliderAction(this, 0, 0, true);
+                    action.actionPerformed(null);
+                } else if (selectable instanceof Trigger) {
+                    RemoveTriggerAction action = new RemoveTriggerAction(this, 0, 0, true);
+                    action.actionPerformed(null);
+                }
+            }
+        }
     }
 
     @Override

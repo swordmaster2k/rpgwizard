@@ -276,6 +276,7 @@ public class MapLayer {
         if (removed == null) {
             return null;
         }
+        map.fireMapChanged();
         return new SelectablePair(id, removed);
     }
 
@@ -326,6 +327,7 @@ public class MapLayer {
         if (removed == null) {
             return null;
         }
+        map.fireMapChanged();
         return new SelectablePair(id, removed);
     }
 

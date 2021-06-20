@@ -67,6 +67,13 @@ public interface MapChangeListener extends EventListener {
     public void mapSpriteAdded(MapChangedEvent e);
 
     /**
+     * A MapSprite has been moved.
+     * 
+     * @param e
+     */
+    public void mapSpriteMoved(MapChangedEvent e);
+
+    /**
      * A MapSprite has been removed.
      * 
      * @param e
@@ -79,6 +86,13 @@ public interface MapChangeListener extends EventListener {
      * @param e
      */
     public void mapImageAdded(MapChangedEvent e);
+
+    /**
+     * A MapLayerImage has been moved.
+     * 
+     * @param e
+     */
+    public void mapImageMoved(MapChangedEvent e);
 
     /**
      * A MapLayerImage has been removed.

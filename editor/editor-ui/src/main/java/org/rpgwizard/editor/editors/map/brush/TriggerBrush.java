@@ -24,7 +24,7 @@ import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 import org.rpgwizard.editor.ui.actions.RemoveTriggerAction;
 
 /**
- * REFACTOR: FIX ME
+ * CLEANUP: Clean me up
  *
  * @author Joshua Michael Daly
  */

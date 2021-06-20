@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.rpgwizard.common.Selectable;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.AssetException;
@@ -34,7 +36,9 @@ import org.rpgwizard.common.utilities.CoreUtil;
  * @author Joshua Michael Daly
  */
 @Data
-public class MapSprite implements Selectable {
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true, includeFieldNames = true)
+public class MapSprite extends AbstractMapModel implements Selectable {
 
     private String asset;
     private String thread;
@@ -81,8 +85,29 @@ public class MapSprite implements Selectable {
         getEvent().setScript(script);
     }
 
+    /**
+     * Is this selected in the editor?
+     *
+     * @return selected state
+     */
+    @Override
+    public boolean isSelected() {
+        return selected;
+    }
+
+    /**
+     * Set the selected state of this in the editor
+     *
+     * @param state
+     *            new state
+     */
+    @Override
+    public void setSelectedState(boolean state) {
+        selected = state;
+    }
+
     ////////////////////////////////////////////////////////////////////////////
-    // Selection Listeners
+    // Model Operations
     ////////////////////////////////////////////////////////////////////////////
 
     public void prepareSprite() {
@@ -109,7 +134,7 @@ public class MapSprite implements Selectable {
                     Animation animation = (Animation) handle.getAsset();
 
                     if (animation != null) {
-                        if (!animation.getSpriteSheet().getFileName().isEmpty()) {
+                        if (!animation.getSpriteSheet().getImage().isEmpty()) {
                             animation.getSpriteSheet().loadSelection();
                             image = animation.getFrame(0);
                         }
@@ -123,29 +148,9 @@ public class MapSprite implements Selectable {
         southImage = image;
     }
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Selection Listeners
-    ////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * Is this selected in the editor?
-     *
-     * @return selected state
-     */
-    @Override
-    public boolean isSelected() {
-        return selected;
-    }
-
-    /**
-     * Set the selected state of this in the editor
-     *
-     * @param state
-     *            new state
-     */
-    @Override
-    public void setSelectedState(boolean state) {
-        selected = state;
+    public void updateLocation(Location startLocation) {
+        this.startLocation = startLocation;
+        fireModelMoved();
     }
 
 }

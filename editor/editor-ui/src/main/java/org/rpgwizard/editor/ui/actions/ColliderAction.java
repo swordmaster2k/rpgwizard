@@ -5,7 +5,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-// REFACTOR: FIX ME
 package org.rpgwizard.editor.ui.actions;
 
 import java.awt.event.ActionEvent;
@@ -17,7 +16,8 @@ import org.rpgwizard.editor.editors.map.brush.ColliderAreaBrush;
 import org.rpgwizard.editor.editors.map.brush.ColliderBrush;
 
 /**
- *
+ * CLEANUP: Clean me up
+ * 
  * @author Joshua Michael Daly
  */
 public class ColliderAction extends AbstractAction {

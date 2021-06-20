@@ -68,8 +68,8 @@ public final class SpriteSheetDialog extends JDialog {
         spriteSheetImagePanel.addImageListener(new ImagePanelChangeListener() {
             @Override
             public void addedImage() {
-                int width = spriteSheetImagePanel.getSpriteSheetImage().getWidth(null);
-                int height = spriteSheetImagePanel.getSpriteSheetImage().getHeight(null);
+                int width = spriteSheetImagePanel.getBufferedImage().getWidth(null);
+                int height = spriteSheetImagePanel.getBufferedImage().getHeight(null);
                 tileWidthSpinner.setModel(new SpinnerNumberModel(16, 16, width, 1));
                 tileHeightSpinner.setModel(new SpinnerNumberModel(16, 16, height, 1));
                 spriteSheetImagePanel.setTileWidth(16);
@@ -136,11 +136,11 @@ public final class SpriteSheetDialog extends JDialog {
 
         int tileWidth, tileHeight, width, height;
         tileWidth = tileHeight = width = height = 16;
-        if (spriteSheetImagePanel.getSpriteSheetImage() != null) {
+        if (spriteSheetImagePanel.getBufferedImage() != null) {
             tileWidth = spriteSheetImagePanel.getTileWidth();
             tileHeight = spriteSheetImagePanel.getTileHeight();
-            width = spriteSheetImagePanel.getSpriteSheetImage().getWidth(null);
-            height = spriteSheetImagePanel.getSpriteSheetImage().getHeight(null);
+            width = spriteSheetImagePanel.getBufferedImage().getWidth(null);
+            height = spriteSheetImagePanel.getBufferedImage().getHeight(null);
         }
         tileWidthSpinner.setModel(new SpinnerNumberModel(tileWidth, 16, width, 1));
         tileWidthSpinner.setValue(tileWidth);
@@ -159,7 +159,7 @@ public final class SpriteSheetDialog extends JDialog {
     }
 
     private SpriteSheet collect() {
-        final String fileName = spriteSheetImagePanel.getFileName();
+        final String fileName = spriteSheetImagePanel.getImage();
         final Rectangle selection = spriteSheetImagePanel.getSelection();
         final int tileWidth = (Integer) tileWidthSpinner.getValue();
         final int tileHeight = (Integer) tileHeightSpinner.getValue();

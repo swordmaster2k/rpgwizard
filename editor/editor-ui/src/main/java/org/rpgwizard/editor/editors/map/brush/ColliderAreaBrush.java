@@ -5,7 +5,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-// REFACTOR: FIX ME
 package org.rpgwizard.editor.editors.map.brush;
 
 import java.awt.Point;
@@ -19,7 +18,7 @@ import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 import org.rpgwizard.editor.ui.actions.RemoveColliderAction;
 
 /**
- *
+ * CLEANUP: Clean me up
  *
  * @author Joshua Michael Daly
  */

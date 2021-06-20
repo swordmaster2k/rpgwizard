@@ -7,32 +7,45 @@
  */
 package org.rpgwizard.common.assets.animation;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.rpgwizard.common.utilities.CoreProperties;
 
 /**
  *
  * @author Joshua Michael Daly
  */
+@Data
+@NoArgsConstructor
+@EqualsAndHashCode
+@ToString(callSuper = true, includeFieldNames = true)
 public class SpriteSheet {
 
-    private final String fileName;
-    private final int x;
-    private final int y;
-    private final int width;
-    private final int height;
+    private String image;
+    private int x;
+    private int y;
+    private int width;
+    private int height;
 
     // Non-IO.
-    private BufferedImage image;
+    @JsonIgnore
+    private BufferedImage bufferedImage;
+    @JsonIgnore
     private BufferedImage selection;
-    private final int tileWidth;
-    private final int tileHeight;
+    @JsonIgnore
+    private int tileWidth;
+    @JsonIgnore
+    private int tileHeight;
 
     public SpriteSheet(String image, int x, int y, int width, int height, int tileWidth, int tileHeight) {
-        this.fileName = image;
+        this.image = image;
         this.x = x;
         this.y = y;
         this.width = width;
@@ -41,52 +54,16 @@ public class SpriteSheet {
         this.tileHeight = tileHeight;
     }
 
-    public String getFileName() {
-        return fileName;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public BufferedImage getImage() {
-        return image;
-    }
-
-    public BufferedImage getSelection() {
-        return selection;
-    }
-
-    public int getTileWidth() {
-        return tileWidth;
-    }
-
-    public int getTileHeight() {
-        return tileHeight;
-    }
-
     public BufferedImage loadImage() throws IOException {
         File file = new File(System.getProperty("project.path") + File.separator
-                + CoreProperties.getProperty("rpgwizard.directory.textures") + File.separator + fileName);
-        image = ImageIO.read(file);
-        return image;
+                + CoreProperties.getProperty("rpgwizard.directory.textures") + File.separator + image);
+        bufferedImage = ImageIO.read(file);
+        return bufferedImage;
     }
 
     public BufferedImage loadSelection() throws IOException {
         File file = new File(System.getProperty("project.path") + File.separator
-                + CoreProperties.getProperty("rpgwizard.directory.textures") + File.separator + fileName);
+                + CoreProperties.getProperty("rpgwizard.directory.textures") + File.separator + image);
         BufferedImage temp = ImageIO.read(file);
 
         // Ensure it does not go out of bounds, and throw a raster exception

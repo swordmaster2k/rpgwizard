@@ -15,9 +15,11 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import org.apache.commons.lang3.ArrayUtils;
+import org.rpgwizard.common.assets.events.MapModelEvent;
 import org.rpgwizard.common.assets.map.MapImage;
 import org.rpgwizard.common.assets.map.MapLayer;
 import org.rpgwizard.common.assets.map.SelectablePair;
+import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.editors.map.MapLayerView;
 import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.rpgwizard.editor.utilities.GuiHelper;
@@ -26,7 +28,7 @@ import org.rpgwizard.editor.utilities.GuiHelper;
  *
  * @author Joshua Michael Daly
  */
-public final class MapImagePanel extends MapModelPanel {
+public final class MapImagePanel extends AbstractMapModelPanel {
 
     private final JTextField idTextField;
     private final JComboBox fileComboBox;
@@ -117,16 +119,16 @@ public final class MapImagePanel extends MapModelPanel {
         insert(getJLabel("layer"), layerSpinner);
     }
 
-    // REFACTOR: FIX ME
-    // @Override
-    // public void modelMoved(MapModelEvent e) {
-    // if (e.getSource() == model) {
-    // MapImage sprite = (MapImage) e.getSource();
-    // xSpinner.setValue(sprite.getX());
-    // ySpinner.setValue(sprite.getY());
-    // MainWindow.getInstance().markWindowForSaving();
-    // }
-    // }
+    @Override
+    public void modelMoved(MapModelEvent e) {
+        if (e.getSource() == getImage()) {
+            MapImage image = (MapImage) e.getSource();
+            xSpinner.setValue(image.getX());
+            ySpinner.setValue(image.getY());
+            MainWindow.getInstance().markWindowForSaving();
+        }
+    }
+
     private String getId() {
         SelectablePair<String, MapImage> pair = (SelectablePair<String, MapImage>) model;
         return pair.getLeft();

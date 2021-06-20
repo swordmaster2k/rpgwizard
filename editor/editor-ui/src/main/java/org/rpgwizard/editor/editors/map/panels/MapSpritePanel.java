@@ -18,6 +18,7 @@ import javax.swing.event.ChangeEvent;
 import org.apache.commons.lang3.ArrayUtils;
 import org.rpgwizard.common.assets.map.EventType;
 import org.rpgwizard.common.assets.Script;
+import org.rpgwizard.common.assets.events.MapModelEvent;
 import org.rpgwizard.common.assets.map.KeyType;
 import org.rpgwizard.common.assets.map.MapLayer;
 import org.rpgwizard.common.assets.map.MapSprite;
@@ -36,7 +37,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Joshua Michael Daly
  */
-public final class MapSpritePanel extends MapModelPanel {
+public final class MapSpritePanel extends AbstractMapModelPanel {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MapSpritePanel.class);
 
@@ -46,7 +47,7 @@ public final class MapSpritePanel extends MapModelPanel {
     private final JSpinner xSpinner;
     private final JSpinner ySpinner;
     private final JSpinner layerSpinner;
-    private int lastSpinnerLayer; // Used to ensure that the selection is valid. // REFACTOR: FIX
+    private int lastSpinnerLayer; // Used to ensure that the selection is valid.
     private final JComboBox eventComboBox;
     private static final String[] EVENT_TYPES = EventType.toStringArray();
     private final JButton configureEventButton;
@@ -135,7 +136,6 @@ public final class MapSpritePanel extends MapModelPanel {
         ///
         /// layerSpinner
         ///
-        // REFACTOR: FIX ME
         layerSpinner = getJSpinner(getLayer());
         layerSpinner.addChangeListener((ChangeEvent e) -> {
             if (getLayer() == (int) layerSpinner.getValue()) {
@@ -199,16 +199,15 @@ public final class MapSpritePanel extends MapModelPanel {
         insert(getJLabel("thread"), threadComboBox);
     }
 
-    // REFACTOR: FIX ME
-    // @Override
-    // public void modelMoved(MapModelEvent e) {
-    // if (e.getSource() == model) {
-    // MapSprite sprite = (MapSprite) e.getSource();
-    // xSpinner.setValue(sprite.getX());
-    // ySpinner.setValue(sprite.getY());
-    // MainWindow.getInstance().markWindowForSaving();
-    // }
-    // }
+    @Override
+    public void modelMoved(MapModelEvent e) {
+        if (e.getSource() == getSprite()) {
+            MapSprite sprite = (MapSprite) e.getSource();
+            xSpinner.setValue(sprite.getStartLocation().getX());
+            ySpinner.setValue(sprite.getStartLocation().getY());
+            MainWindow.getInstance().markWindowForSaving();
+        }
+    }
 
     private String getId() {
         SelectablePair<String, MapSprite> pair = (SelectablePair<String, MapSprite>) model;

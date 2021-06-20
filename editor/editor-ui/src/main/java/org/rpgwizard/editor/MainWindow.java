@@ -62,9 +62,6 @@ import org.rpgwizard.editor.editors.GameEditor;
 import org.rpgwizard.editor.editors.SpriteEditor;
 import org.rpgwizard.editor.editors.map.NewMapDialog;
 import org.rpgwizard.editor.editors.map.brush.AbstractBrush;
-// REFACTOR: FIX ME
-//import org.rpgwizard.editor.editors.map.brush.MapVectorAreaBrush;
-//import org.rpgwizard.editor.editors.map.brush.MapVectorBrush;
 import org.rpgwizard.editor.editors.map.brush.ShapeBrush;
 import org.rpgwizard.editor.editors.image.ImageEditor;
 import org.rpgwizard.editor.editors.map.brush.AbstractPolygonBrush;

@@ -16,7 +16,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.SwingConstants;
-import org.rpgwizard.editor.editors.map.generation.ProgramType;
+import org.rpgwizard.editor.editors.map.generation.ScriptType;
 import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.rpgwizard.editor.utilities.GuiHelper;
 import org.slf4j.Logger;
@@ -36,21 +36,21 @@ public final class MapLinkPanel extends AbstractScriptPanel {
     private JSpinner layerSpinner;
 
     public MapLinkPanel() {
-        super(ProgramType.MAP_LINK);
+        super(ScriptType.MAP_LINK);
         init("", 10, 20, 1);
     }
 
     public MapLinkPanel(Map<String, Object> parameters) {
-        super(ProgramType.MAP_LINK);
-        String boardName = String.valueOf(parameters.get("boardName"));
+        super(ScriptType.MAP_LINK);
+        String mapName = String.valueOf(parameters.get("mapName"));
         double x = Double.valueOf(String.valueOf(parameters.get("tileX")));
         double y = Double.valueOf(String.valueOf(parameters.get("tileY")));
         int layer = Integer.valueOf(String.valueOf(parameters.get("layer")));
-        init(boardName, x, y, layer);
+        init(mapName, x, y, layer);
     }
 
-    private void init(String board, double x, double y, int layer) {
-        LOGGER.info("Setting up panel, board=[{}], x=[{}], y=[{}], layer=[{}]", board, x, y, layer);
+    private void init(String map, double x, double y, int layer) {
+        LOGGER.info("Setting up panel, map=[{}], x=[{}], y=[{}], layer=[{}]", map, x, y, layer);
 
         GridLayout gridLayout = new GridLayout(0, 2);
         gridLayout.setVgap(5);
@@ -58,12 +58,12 @@ public final class MapLinkPanel extends AbstractScriptPanel {
 
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        add(new JLabel("Board", SwingConstants.LEFT));
+        add(new JLabel("Map", SwingConstants.LEFT));
 
         String[] exts = EditorFileManager.getTypeExtensions(org.rpgwizard.common.assets.map.Map.class);
         mapCombo = GuiHelper.getFileListJComboBox(
                 new File[] { EditorFileManager.getFullPath(org.rpgwizard.common.assets.map.Map.class) }, exts, true);
-        mapCombo.setSelectedItem(board);
+        mapCombo.setSelectedItem(map);
         add(mapCombo);
 
         add(new JLabel("X", SwingConstants.LEFT));
@@ -82,7 +82,7 @@ public final class MapLinkPanel extends AbstractScriptPanel {
     @Override
     public Map<String, Object> collect() {
         Map<String, Object> values = new HashMap<>();
-        values.put("boardName", String.valueOf(mapCombo.getSelectedItem()));
+        values.put("mapName", String.valueOf(mapCombo.getSelectedItem()));
         values.put("tileX", Double.valueOf(tileXSpinner.getValue().toString()));
         values.put("tileY", Double.valueOf(tileYSpinner.getValue().toString()));
         values.put("layer", Integer.valueOf(layerSpinner.getValue().toString()));

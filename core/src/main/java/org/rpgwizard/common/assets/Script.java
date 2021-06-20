@@ -9,20 +9,20 @@ package org.rpgwizard.common.assets;
 
 public class Script extends AbstractAsset {
 
-    private final StringBuffer programBuffer;
+    private final StringBuffer stringBuffer;
 
     public Script(AssetDescriptor assetDescriptor) {
         super(assetDescriptor);
-        programBuffer = new StringBuffer();
+        stringBuffer = new StringBuffer();
     }
 
-    public StringBuffer getProgramBuffer() {
-        return programBuffer;
+    public StringBuffer getStringBuffer() {
+        return stringBuffer;
     }
 
     public void update(String code) {
-        programBuffer.delete(0, programBuffer.length());
-        programBuffer.insert(0, code);
+        stringBuffer.delete(0, stringBuffer.length());
+        stringBuffer.insert(0, code);
     }
 
 }

@@ -45,9 +45,10 @@ public class MapImage implements Selectable {
      * @param mapImage
      */
     public MapImage(MapImage mapImage) {
-        this.image = mapImage.image;
-        this.x = mapImage.x;
-        this.y = mapImage.y;
+        image = mapImage.image;
+        x = mapImage.x;
+        y = mapImage.y;
+        bufferedImage = CoreUtil.copy(bufferedImage);
     }
 
     ////////////////////////////////////////////////////////////////////////////

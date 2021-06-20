@@ -47,34 +47,34 @@ public final class ScriptDialog extends JDialog {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ScriptDialog.class);
 
-    private final JComboBox<String> programTypeCombo;
+    private final JComboBox<String> scriptTypeCombo;
 
     private final JButton okButton;
     private final JButton cancelButton;
 
     private final JScrollPane centerPane;
-    private AbstractScriptPanel programPanel;
+    private AbstractScriptPanel scriptPanel;
 
     private final String oldValue;
     private String newValue;
 
-    public ScriptDialog(Window owner, String program) {
+    public ScriptDialog(Window owner, String script) {
         super(owner, "Configure Event", JDialog.ModalityType.APPLICATION_MODAL);
-        this.oldValue = program;
+        this.oldValue = script;
         this.newValue = null;
 
         centerPane = new JScrollPane();
         centerPane.getViewport().setScrollMode(JViewport.SIMPLE_SCROLL_MODE);
         centerPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-        List<String> types = Arrays.asList(ProgramType.values()).stream().map(ProgramType::name)
+        List<String> types = Arrays.asList(ScriptType.values()).stream().map(ScriptType::name)
                 .collect(Collectors.toList());
-        programTypeCombo = new JComboBox<>(types.toArray(new String[0]));
-        Pair<ProgramType, Map<String, Object>> pair = ScriptInterpreter.interpret(oldValue);
+        scriptTypeCombo = new JComboBox<>(types.toArray(new String[0]));
+        Pair<ScriptType, Map<String, Object>> pair = ScriptInterpreter.interpret(oldValue);
         switchPanel(pair.getKey(), pair.getValue());
-        programTypeCombo.addActionListener((e) -> {
-            String selected = (String) programTypeCombo.getSelectedItem();
-            ProgramType type = ProgramType.valueOf(selected);
+        scriptTypeCombo.addActionListener((e) -> {
+            String selected = (String) scriptTypeCombo.getSelectedItem();
+            ScriptType type = ScriptType.valueOf(selected);
             switchPanel(type, new HashMap<>());
         });
 
@@ -100,7 +100,7 @@ public final class ScriptDialog extends JDialog {
         JPanel selectionPanel = new JPanel(gridLayout);
         selectionPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         selectionPanel.add(new JLabel("Event Type", SwingConstants.LEFT));
-        selectionPanel.add(programTypeCombo);
+        selectionPanel.add(scriptTypeCombo);
 
         JPanel buttonPanel = new JPanel(new GridLayout(0, 2));
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -134,21 +134,21 @@ public final class ScriptDialog extends JDialog {
 
     private String collect() {
         try {
-            ProgramType programType = programPanel.getProgramType();
+            ScriptType scriptType = scriptPanel.getScriptType();
 
-            Map<String, Object> values = programPanel.collect();
-            if (programType == ProgramType.CUSTOM) {
-                return (String) values.get("program");
+            Map<String, Object> values = scriptPanel.collect();
+            if (scriptType == ScriptType.CUSTOM) {
+                return (String) values.get("script");
             }
 
             if (oldValue.contains(ScriptGenerator.AUTO_GENERATED_DIR)) {
-                // Replace old auto-generated program
+                // Replace old auto-generated script
                 String id = oldValue.replace(ScriptGenerator.AUTO_GENERATED_DIR + "/", "")
                         .replace(ScriptGenerator.TEMPLATE_EXT, "");
-                return ScriptGenerator.generate(id, values, programType);
+                return ScriptGenerator.generate(id, values, scriptType);
             } else {
-                // Generate a new program.
-                return ScriptGenerator.generate(values, programType);
+                // Generate a new script.
+                return ScriptGenerator.generate(values, scriptType);
             }
         } catch (IOException | AssetException | URISyntaxException ex) {
             LOGGER.error("Failed to collect new value!", ex);
@@ -158,24 +158,24 @@ public final class ScriptDialog extends JDialog {
         }
     }
 
-    private void switchPanel(ProgramType programType, Map<String, Object> parameters) {
-        switch (programType) {
+    private void switchPanel(ScriptType scriptType, Map<String, Object> parameters) {
+        switch (scriptType) {
         case MAP_LINK:
             if (parameters.isEmpty()) {
-                programPanel = new MapLinkPanel();
+                scriptPanel = new MapLinkPanel();
             } else {
-                programPanel = new MapLinkPanel(parameters);
+                scriptPanel = new MapLinkPanel(parameters);
             }
             break;
         default:
             if (parameters.isEmpty()) {
-                programPanel = new CustomPanel();
+                scriptPanel = new CustomPanel();
             } else {
-                programPanel = new CustomPanel(parameters);
+                scriptPanel = new CustomPanel(parameters);
             }
         }
-        programTypeCombo.setSelectedItem(programType.name());
-        centerPane.setViewportView(programPanel);
+        scriptTypeCombo.setSelectedItem(scriptType.name());
+        centerPane.setViewportView(scriptPanel);
         centerPane.getViewport().revalidate();
         pack();
     }

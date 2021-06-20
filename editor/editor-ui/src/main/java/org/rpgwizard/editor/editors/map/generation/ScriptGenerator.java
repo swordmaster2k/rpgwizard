@@ -37,13 +37,13 @@ public class ScriptGenerator {
     public static final String AUTO_GENERATED_DIR = "auto_generated";
     public static final String TEMPLATE_EXT = ".js";
 
-    public static String generate(Map<String, Object> placeHolders, ProgramType type)
+    public static String generate(Map<String, Object> placeHolders, ScriptType type)
             throws IOException, AssetException, URISyntaxException {
         String id = System.currentTimeMillis() + "_" + UUID.randomUUID().toString();
         return generate(id, placeHolders, type);
     }
 
-    public static String generate(String id, Map<String, Object> parameters, ProgramType type)
+    public static String generate(String id, Map<String, Object> parameters, ScriptType type)
             throws IOException, AssetException, URISyntaxException {
         LOGGER.info("Generating program, id=[{}], parameters=[{}], type=[{}]", id, parameters, type);
 

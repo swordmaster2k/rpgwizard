@@ -9,7 +9,7 @@ package org.rpgwizard.editor.editors.map.generation.panel;
 
 import java.util.Map;
 import javax.swing.JPanel;
-import org.rpgwizard.editor.editors.map.generation.ProgramType;
+import org.rpgwizard.editor.editors.map.generation.ScriptType;
 
 /**
  *
@@ -17,13 +17,13 @@ import org.rpgwizard.editor.editors.map.generation.ProgramType;
  */
 public abstract class AbstractScriptPanel extends JPanel {
 
-    protected final ProgramType programType;
+    protected final ScriptType programType;
 
-    public AbstractScriptPanel(ProgramType programType) {
+    public AbstractScriptPanel(ScriptType programType) {
         this.programType = programType;
     }
 
-    public ProgramType getProgramType() {
+    public ScriptType getScriptType() {
         return programType;
     }
 

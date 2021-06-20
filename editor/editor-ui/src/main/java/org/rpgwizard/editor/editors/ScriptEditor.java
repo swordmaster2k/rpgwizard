@@ -107,7 +107,7 @@ public final class ScriptEditor extends AbstractAssetEditorWindow
     }
 
     private void init(Script program, String fileName) {
-        String code = program.getProgramBuffer().toString();
+        String code = program.getStringBuffer().toString();
         textArea = new RSyntaxTextArea(code, 30, 90);
         LanguageSupportFactory.get().register(textArea);
         textArea.setCaretPosition(0);

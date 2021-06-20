@@ -43,7 +43,7 @@ public class ScriptSerializer extends AbstractAssetSerializer {
     @Override
     public void serialize(AssetHandle handle) throws IOException, AssetException {
         final Script program = (Script) handle.getAsset();
-        FileUtils.writeStringToFile(program.getFile(), program.getProgramBuffer().toString());
+        FileUtils.writeStringToFile(program.getFile(), program.getStringBuffer().toString());
     }
 
     @Override

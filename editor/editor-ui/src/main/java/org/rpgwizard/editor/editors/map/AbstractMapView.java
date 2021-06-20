@@ -821,6 +821,7 @@ public abstract class AbstractMapView extends JPanel implements MultiLayerContai
      *            The Toolkit map we want to load tiles for.
      */
     private void loadMapLayerViews(Map map) {
+        layers.clear();
         for (MapLayer layer : map.getLayers()) {
             addLayerView(new MapLayerView(layer));
         }

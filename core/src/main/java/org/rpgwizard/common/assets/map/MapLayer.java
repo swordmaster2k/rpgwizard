@@ -61,21 +61,34 @@ public class MapLayer {
     public MapLayer(Map map) {
         this();
         this.map = map;
-        clearTiles();
     }
 
     /**
      * Copy constructor.
      *
      * @param mapLayer
+     * @param map
      */
-    public MapLayer(MapLayer mapLayer) {
+    public MapLayer(MapLayer mapLayer, Map map) {
         this();
 
         this.id = mapLayer.id;
+        this.map = map;
+        this.visible = mapLayer.visible;
+        this.locked = mapLayer.locked;
+        this.opacity = mapLayer.opacity;
+
         mapLayer.tiles.forEach(s -> {
             tiles.add(s);
         });
+        loadedTiles = new Tile[mapLayer.loadedTiles.length][];
+        for (int i = 0; i < mapLayer.loadedTiles.length; i++) {
+            Tile[] row = mapLayer.loadedTiles[i];
+            int length = row.length;
+            loadedTiles[i] = new Tile[length];
+            System.arraycopy(row, 0, loadedTiles[i], 0, length);
+        }
+
         mapLayer.colliders.entrySet().forEach(e -> {
             colliders.put(e.getKey(), new Collider(e.getValue()));
         });
@@ -88,12 +101,6 @@ public class MapLayer {
         mapLayer.images.entrySet().forEach(e -> {
             images.put(e.getKey(), new MapImage(e.getValue()));
         });
-
-        this.loadedTiles = mapLayer.loadedTiles.clone();
-        this.map = mapLayer.map;
-        this.visible = mapLayer.visible;
-        this.locked = mapLayer.locked;
-        this.opacity = mapLayer.opacity;
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -119,6 +126,7 @@ public class MapLayer {
     public void init(Map parent) {
         map = parent;
         loadedTiles = new Tile[map.getWidth()][map.getHeight()];
+        clearTiles();
     }
 
     /**
@@ -195,7 +203,7 @@ public class MapLayer {
     public boolean pourTileAt(int x, int y, Tile tile) {
         if (x >= 0 && x < loadedTiles.length) {
             if (y >= 0 && y < loadedTiles[x].length) {
-                if (!loadedTiles[x][y].equals(tile)) {
+                if (!tile.equals(loadedTiles[x][y])) {
                     loadedTiles[x][y] = tile;
                     return true;
                 }

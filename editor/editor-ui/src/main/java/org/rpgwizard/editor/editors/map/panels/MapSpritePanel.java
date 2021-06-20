@@ -85,8 +85,8 @@ public final class MapSpritePanel extends MapModelPanel {
         configureEventButton = new JButton("Configure");
         configureEventButton.addActionListener((ActionEvent e) -> {
             try {
-                String program = getSprite().getEvent().getScript();
-                ScriptDialog dialog = new ScriptDialog(MainWindow.getInstance(), program);
+                String script = getSprite().getEvent().getScript();
+                ScriptDialog dialog = new ScriptDialog(MainWindow.getInstance(), script);
                 dialog.display();
 
                 String newProgram = dialog.getNewValue();

@@ -27,6 +27,7 @@ import org.rpgwizard.common.assets.animation.Animation;
 import org.rpgwizard.common.assets.animation.AnimationEnum;
 import org.rpgwizard.common.assets.sprite.Sprite;
 import org.rpgwizard.common.utilities.CoreProperties;
+import org.rpgwizard.common.utilities.CoreUtil;
 
 /**
  *
@@ -56,13 +57,14 @@ public class MapSprite implements Selectable {
      * @param mapSprite
      */
     public MapSprite(MapSprite mapSprite) {
-        this.asset = mapSprite.asset;
-        this.thread = mapSprite.thread;
-        this.startLocation = new Location(mapSprite.startLocation);
+        asset = mapSprite.asset;
+        thread = mapSprite.thread;
+        startLocation = new Location(mapSprite.startLocation);
         events = new ArrayList<>();
         mapSprite.events.forEach(e -> {
             events.add(new Event(e));
         });
+        southImage = CoreUtil.copy(mapSprite.southImage);
     }
 
     ////////////////////////////////////////////////////////////////////////////

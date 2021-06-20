@@ -11,7 +11,7 @@ package org.rpgwizard.editor.editors.map.generation;
  *
  * @author Joshua Michael Daly
  */
-public enum ProgramType {
+public enum ScriptType {
 
     CUSTOM, MAP_LINK;
 

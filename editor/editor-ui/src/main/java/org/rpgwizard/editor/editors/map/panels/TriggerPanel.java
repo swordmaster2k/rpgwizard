@@ -112,7 +112,7 @@ public final class TriggerPanel extends MapModelPanel {
                 event = new Event(EventType.KEYPRESS.getValue(), event.getScript(), key);
                 keyComboBox.setEnabled(true);
             }
-            ((Trigger) model).getEvents().set(0, event);
+            getTrigger().getEvents().set(0, event);
             MainWindow.getInstance().markWindowForSaving();
         });
         ///

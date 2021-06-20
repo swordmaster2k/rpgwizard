@@ -29,7 +29,7 @@ public class ScriptInterpreter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ScriptInterpreter.class);
 
-    private static final String TYPE_REGEX = "PROGRAM_TYPE\\((?<type>.*)\\)";
+    private static final String TYPE_REGEX = "SCRIPT_TYPE\\((?<type>.*)\\)";
     private static final Pattern TYPE_PATTERN = Pattern.compile(TYPE_REGEX);
     private static final String GROUP_NAME = "type";
 
@@ -37,23 +37,23 @@ public class ScriptInterpreter {
     private static final Pattern MAP_LINK_PATTERN = Pattern
             .compile("rpgcode\\.sendToBoard\\((?<boardName>.*),\\s*(?<tileX>.*),\\s*(?<tileY>.*),\\s*(?<layer>.*)\\);");
 
-    public static Pair<ProgramType, Map<String, Object>> interpret(String child) {
+    public static Pair<ScriptType, Map<String, Object>> interpret(String child) {
         Map<String, Object> defaultParameters = new HashMap<>();
-        defaultParameters.put("program", child);
+        defaultParameters.put("script", child);
 
         if (StringUtils.isNotBlank(child)) {
             try {
                 File parent = EditorFileManager.getFullPath(Script.class);
                 File file = new File(parent, child);
 
-                Script program = MainWindow.getInstance().openProgram(file);
-                String code = program.getProgramBuffer().toString();
+                Script script = MainWindow.getInstance().openScript(file);
+                String code = script.getStringBuffer().toString();
                 Matcher matcher = TYPE_PATTERN.matcher(code);
                 if (matcher.find()) {
-                    ProgramType programType = ProgramType.valueOf(matcher.group(GROUP_NAME));
-                    switch (programType) {
+                    ScriptType scriptType = ScriptType.valueOf(matcher.group(GROUP_NAME));
+                    switch (scriptType) {
                     case MAP_LINK:
-                        return new ImmutablePair<>(programType, interpretBoardLink(code));
+                        return new ImmutablePair<>(scriptType, interpretBoardLink(code));
                     }
                 }
             } catch (Exception ex) {
@@ -61,7 +61,7 @@ public class ScriptInterpreter {
             }
         }
 
-        return new ImmutablePair<>(ProgramType.CUSTOM, defaultParameters);
+        return new ImmutablePair<>(ScriptType.CUSTOM, defaultParameters);
     }
 
     private static Map<String, Object> interpretBoardLink(String code) {
@@ -77,7 +77,7 @@ public class ScriptInterpreter {
     }
 
     public static void main(String[] args) {
-        Pair<ProgramType, Map<String, Object>> result = interpret(null);
+        Pair<ScriptType, Map<String, Object>> result = interpret(null);
         System.out.println(result);
     }
 

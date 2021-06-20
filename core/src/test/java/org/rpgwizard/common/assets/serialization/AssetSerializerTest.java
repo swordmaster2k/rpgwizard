@@ -313,7 +313,7 @@ public class AssetSerializerTest {
 
     private void checkScript(Script asset) throws IOException {
         String code = FileUtils.readFileToString(asset.getFile(), "UTF-8");
-        Assert.assertEquals(code, asset.getProgramBuffer().toString());
+        Assert.assertEquals(code, asset.getStringBuffer().toString());
     }
 
 }

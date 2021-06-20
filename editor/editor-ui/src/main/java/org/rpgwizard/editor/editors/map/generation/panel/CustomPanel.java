@@ -17,7 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.rpgwizard.common.assets.Script;
-import org.rpgwizard.editor.editors.map.generation.ProgramType;
+import org.rpgwizard.editor.editors.map.generation.ScriptType;
 import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.rpgwizard.editor.utilities.GuiHelper;
 
@@ -27,39 +27,39 @@ import org.rpgwizard.editor.utilities.GuiHelper;
  */
 public final class CustomPanel extends AbstractScriptPanel {
 
-    private JComboBox programCombo;
+    private JComboBox scriptCombo;
 
     public CustomPanel() {
-        super(ProgramType.CUSTOM);
+        super(ScriptType.CUSTOM);
         init("");
     }
 
     public CustomPanel(Map<String, Object> parameters) {
-        super(ProgramType.CUSTOM);
-        init(parameters.get("program").toString());
+        super(ScriptType.CUSTOM);
+        init(parameters.get("script") != null ? parameters.get("script").toString() : "");
     }
 
-    private void init(String program) {
+    private void init(String script) {
         GridLayout gridLayout = new GridLayout(0, 2);
         gridLayout.setVgap(5);
         setLayout(gridLayout);
 
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        add(new JLabel("Program", SwingConstants.LEFT));
+        add(new JLabel("Script", SwingConstants.LEFT));
 
         String[] exts = EditorFileManager.getTypeExtensions(Script.class);
-        programCombo = GuiHelper.getFileListJComboBox(new File[] { EditorFileManager.getFullPath(Script.class) }, exts,
+        scriptCombo = GuiHelper.getFileListJComboBox(new File[] { EditorFileManager.getFullPath(Script.class) }, exts,
                 true);
-        if (StringUtils.isNotBlank(program)) {
-            programCombo.setSelectedItem(program);
+        if (StringUtils.isNotBlank(script)) {
+            scriptCombo.setSelectedItem(script);
         }
-        add(programCombo);
+        add(scriptCombo);
     }
 
     @Override
     public Map<String, Object> collect() {
         Map<String, Object> values = new HashMap<>();
-        values.put("program", String.valueOf(programCombo.getSelectedItem()));
+        values.put("script", String.valueOf(scriptCombo.getSelectedItem()));
         return values;
     }
 

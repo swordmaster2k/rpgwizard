@@ -7,12 +7,14 @@
  */
 package org.rpgwizard.editor.editors.map.state;
 
+import lombok.Getter;
 import org.rpgwizard.common.assets.map.Map;
 
 /**
  *
  * @author Joshua Michael Daly
  */
+@Getter
 public class UndoRedoState {
 
     private final Map map;
@@ -31,14 +33,6 @@ public class UndoRedoState {
     public UndoRedoState(UndoRedoState state) {
         this.map = new Map(state.getMap());
         this.type = state.type;
-    }
-
-    public Map getMap() {
-        return map;
-    }
-
-    public UndoRedoType getType() {
-        return type;
     }
 
 }

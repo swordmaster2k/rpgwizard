@@ -86,7 +86,26 @@ public final class Map extends AbstractAsset implements Selectable {
      * @param map
      */
     public Map(Map map) {
+        super(map.descriptor);
 
+        name = map.name;
+        width = map.width;
+        height = map.height;
+        music = map.music;
+        entryScript = map.entryScript;
+        startLocation = new Location(map.startLocation);
+        tilesets = new ArrayList<>(map.tilesets);
+        tileWidth = map.tileWidth;
+        tileHeight = map.tileHeight;
+
+        // Need to deep copy these
+        layers = new ArrayList<>(map.layers.size());
+        map.layers.forEach((layer) -> {
+            layers.add(new MapLayer(layer, this));
+        });
+
+        // No need to deep copy
+        changeListeners = map.changeListeners;
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -180,6 +199,11 @@ public final class Map extends AbstractAsset implements Selectable {
     public void addLayer() {
         MapLayer layer = new MapLayer(this);
         layer.setId("Untitled Layer " + layers.size());
+
+        for (int i = 0; i < width * height; i++) {
+            layer.getTiles().add("-1:-1");
+        }
+
         layers.add(layer);
 
         fireMapLayerAdded(layer);
@@ -248,7 +272,7 @@ public final class Map extends AbstractAsset implements Selectable {
     }
 
     public void cloneLayer(int index) {
-        MapLayer clone = new MapLayer(layers.get(index));
+        MapLayer clone = new MapLayer(layers.get(index), this);
         layers.add(index + 1, clone);
 
         fireMapLayerCloned(clone);

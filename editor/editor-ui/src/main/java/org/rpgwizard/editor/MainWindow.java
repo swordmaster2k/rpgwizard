@@ -715,7 +715,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         } else if (fileName.endsWith(CoreProperties.getDefaultExtension(Game.class))) {
             addToolkitEditorWindow(EditorFactory.getEditor(openProject(file)));
         } else if (fileName.endsWith(CoreProperties.getDefaultExtension(Script.class))) {
-            addToolkitEditorWindow(EditorFactory.getEditor(openProgram(file)));
+            addToolkitEditorWindow(EditorFactory.getEditor(openScript(file)));
         } else if (Arrays.asList(EditorFileManager.getImageExtensions())
                 .contains(FilenameUtils.getExtension(fileName))) {
             addToolkitEditorWindow(EditorFactory.getEditor(openImage(file)));
@@ -778,7 +778,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         addToolkitEditorWindow(EditorFactory.getEditor(new Script(null)));
     }
 
-    public Script openProgram(File file) {
+    public Script openScript(File file) {
         LOGGER.info("Opening {} file=[{}].", Script.class.getSimpleName(), file);
 
         try {
@@ -838,6 +838,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         if (dialog.getValue() != null) {
             Map map = new Map(null, dialog.getValue()[0], dialog.getValue()[1], dialog.getValue()[2],
                     dialog.getValue()[3]);
+            map.init();
             addToolkitEditorWindow(EditorFactory.getEditor(map));
         }
     }

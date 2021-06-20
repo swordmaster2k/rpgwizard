@@ -44,7 +44,7 @@ public abstract class AbstractRunAction extends AbstractAction {
         // use.
         File projectOriginal = new File(System.getProperty("project.path"));
         File projectCopy = Files.createTempDir();
-        FileUtils.copyDirectory(projectOriginal, projectCopy);
+        FileUtils.copyDirectory(projectOriginal, new File(projectCopy, "game"));
         return projectCopy;
     }
 

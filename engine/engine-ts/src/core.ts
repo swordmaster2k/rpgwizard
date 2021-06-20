@@ -220,7 +220,7 @@ export class Core {
         // Run game's startup script
         try {
             console.info("Starting to run startup script...");
-            await this._scriptVM.run("../../game/scripts/new-startup.js", this);
+            await this._scriptVM.run("../../game/scripts/startup.js", this);
             console.info("Finished running startup script...");
         } catch (e) {
             console.error(e);

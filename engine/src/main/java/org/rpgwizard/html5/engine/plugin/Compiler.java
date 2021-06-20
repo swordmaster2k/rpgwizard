@@ -8,7 +8,6 @@
 package org.rpgwizard.html5.engine.plugin;
 
 import java.awt.Desktop;
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -42,55 +41,6 @@ public class Compiler {
     private static final String ENGINE_PLUGIN = "html5-engine-jar-with-dependencies.jar";
 
     private static final String PROJECT_ICO_NAME = "game.ico";
-
-    public static void embedEngine(String title, File destination, ProgressMonitor progressMonitor,
-            boolean isCompileMode) throws Exception {
-        String destinationPath = destination.getAbsolutePath();
-
-        // Copy and extract engine zip in destination directory.
-        String engineZipName = "engine-rpgwizard.zip";
-        File engineZip = new File(destinationPath + "/" + engineZipName);
-        FileUtils.copyInputStreamToFile(Compiler.class.getResourceAsStream("/" + engineZipName), engineZip);
-
-        ZipFile zipFile = new ZipFile(destinationPath + "/" + engineZip.getName());
-        zipFile.extractAll(destinationPath);
-
-        if (!isCompileMode) {
-            updateProgress(progressMonitor, 25);
-        }
-
-        // Clean up the zip.
-        FileUtils.deleteQuietly(new File(destinationPath + "/" + engineZip.getName()));
-
-        // Find project game file.
-        Collection<File> files = FileUtils.listFiles(destination, new String[] { "game" }, false);
-        if (files.isEmpty()) {
-            throw new Exception("No game file present in project directory!");
-        }
-
-        // Just take the first available.
-        File gameFile = files.iterator().next();
-        File renamedGameFile = new File(destination.getAbsolutePath() + "/default.game");
-
-        // Rename game file.
-        try {
-            FileUtils.moveFile(gameFile, renamedGameFile);
-        } catch (FileExistsException ex) {
-            // Their project is called "default".
-        }
-
-        if (!isCompileMode) {
-            updateProgress(progressMonitor, 50);
-        }
-
-        // Modify index.html file for this project.
-        File indexFile = new File(destinationPath + "/index.html");
-        Document document = Jsoup.parse(indexFile, null);
-        document.title(title);
-
-        // Write out modified index.html.
-        FileUtils.writeStringToFile(indexFile, document.outerHtml(), "UTF-8");
-    }
 
     public static File compile(String projectName, File projectCopy, File executionPath,
             ProgressMonitor progressMonitor, File projectIcon) throws Exception {
@@ -213,6 +163,56 @@ public class Compiler {
 
             updateProgress(progressMonitor, 100);
         }
+    }
+    
+    public static void embedEngine(String title, File destination, ProgressMonitor progressMonitor,
+            boolean isCompileMode) throws Exception {
+        String destinationPath = destination.getAbsolutePath();
+        File gameDir = new File(destination, "game");
+
+        // Copy and extract engine zip in destination directory.
+        String engineZipName = "engine-rpgwizard.zip";
+        File engineZip = new File(destinationPath + "/" + engineZipName);
+        FileUtils.copyInputStreamToFile(Compiler.class.getResourceAsStream("/" + engineZipName), engineZip);
+
+        ZipFile zipFile = new ZipFile(destinationPath + "/" + engineZip.getName());
+        zipFile.extractAll(destinationPath);
+
+        if (!isCompileMode) {
+            updateProgress(progressMonitor, 25);
+        }
+
+        // Clean up the zip.
+        FileUtils.deleteQuietly(new File(destinationPath + "/" + engineZip.getName()));
+
+        // Find project game file.
+        Collection<File> files = FileUtils.listFiles(gameDir, new String[]{"game"}, false);
+        if (files.isEmpty()) {
+            throw new Exception("No game file present in project directory!");
+        }
+
+        // Just take the first available.
+        File gameFile = files.iterator().next();
+        File renamedGameFile = new File(gameDir.getAbsolutePath() + "/default.game");
+
+        // Rename game file.
+        try {
+            FileUtils.moveFile(gameFile, renamedGameFile);
+        } catch (FileExistsException ex) {
+            // Their project is called "default".
+        }
+
+        if (!isCompileMode) {
+            updateProgress(progressMonitor, 50);
+        }
+
+        // Modify index.html file for this project.
+        File indexFile = new File(destinationPath + "/index.html");
+        Document document = Jsoup.parse(indexFile, null);
+        document.title(title);
+
+        // Write out modified index.html.
+        FileUtils.writeStringToFile(indexFile, document.outerHtml(), "UTF-8");
     }
 
     private static String getErrorFromStream(InputStream in) throws IOException {

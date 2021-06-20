@@ -21,7 +21,7 @@
     <includeBaseDirectory>false</includeBaseDirectory>
     <fileSets>
         <fileSet>
-            <directory>engine-js</directory>
+            <directory>engine-ts</directory>
             <outputDirectory>/</outputDirectory>
             <includes>
                 <include>LICENSE</include>

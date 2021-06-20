@@ -71,6 +71,10 @@ export class Rpg {
         return this._canvases;
     }
 
+    public get keys(): any {
+        return Framework.getKeys();
+    }
+
     // ------------------------------------------------------------------------
     // Asset
     // ------------------------------------------------------------------------
@@ -658,9 +662,10 @@ export class Rpg {
     // Misc
     // ------------------------------------------------------------------------
 
-    public attachControls(id: string) {
+    public attachController(id: string, controller: any) {
         const entity = this._mapController.findEntity(id);
         if (entity) {
+            Framework.createController(controller);
             entity.addComponent("CustomControls");
         }
     }

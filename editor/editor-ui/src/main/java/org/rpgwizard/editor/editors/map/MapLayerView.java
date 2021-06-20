@@ -364,10 +364,12 @@ public class MapLayerView {
             g.drawLine(points[0], points[1], points[2], points[3]);
         }
 
-        // Draw the final lines
-        int[] points = GuiHelper.ensureVisible(layer.getMap(), polygon.getPointX(count - 1),
-                polygon.getPointY(count - 1), polygon.getPointX(0), polygon.getPointY(0));
-        g.drawLine(points[0], points[1], points[2], points[3]);
+        if (!polygon.isSelected()) {
+            // Draw the final lines
+            int[] points = GuiHelper.ensureVisible(layer.getMap(), polygon.getPointX(count - 1),
+                    polygon.getPointY(count - 1), polygon.getPointX(0), polygon.getPointY(0));
+            g.drawLine(points[0], points[1], points[2], points[3]);
+        }
     }
 
     private void drawSelection(Graphics2D g, int x, int y, int width, int height) {

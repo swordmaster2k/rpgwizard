@@ -26,7 +26,9 @@ export namespace Framework {
         // eslint-disable-next-line no-unused-vars
         Invalidate = "Invalidate",
         // eslint-disable-next-line no-unused-vars
-        TweenEnd = "TweenEnd"
+        TweenEnd = "TweenEnd",
+        // eslint-disable-next-line no-unused-vars
+        Moved = "Moved"
     }
 
     export enum EntityType {
@@ -77,6 +79,10 @@ export namespace Framework {
 
     export function getKey(key: string): string {
         return Crafty.keys[key];
+    }
+
+    export function getKeys(): any {
+        return Crafty.keys;
     }
 
     export function getViewport(): any {
@@ -253,6 +259,28 @@ export namespace Framework {
         }
     }
 
+    export function createController(controller: any) {
+        if (!controller) {
+            controller = _createDefaultController();
+        }
+        Crafty.c("CustomControls", {
+            init: function () {
+                this.bind("EnterFrame", function () {
+                    const startX = this.x;
+                    const startY = this.y;
+                    controller.update(this);
+                    if (this.x !== startX || this.y !== startY) {
+                        Framework.trigger(Framework.EventType.Moved, {});
+                    }
+                }).bind("KeyDown", function (e: any) {
+                    controller.keyDown(e.key);
+                }).bind("KeyUp", function (e: any) {
+                    controller.keyUp(e.key);
+                });
+            }
+        });
+    }
+
     // REFACTOR: decouple core?
     export function createUI(core: Core) {
         // Define a UI layer that is completely static and sits above the other layers
@@ -337,7 +365,7 @@ function _defineCollider(type: Framework.EntityType, data: any) {
 
 function _defineTrigger(type: Framework.EntityType, data: any) {
     Crafty.c(type, {
-        Trigger: function(polygon: any, hiton: any, hitoff: any) {
+        Trigger: function (polygon: any, hiton: any, hitoff: any) {
             this.requires("Collision, Raycastable");
             this.collision(polygon);
             this.checkHits(type);
@@ -507,4 +535,91 @@ function _createMapSprite(type: Framework.EntityType, data: any): any {
         );
 
     return entity;
+}
+
+function _createDefaultController() {
+    return {
+        direction: {
+            west: false,
+            east: false,
+            north: false,
+            south: false
+        },
+        speed: 1,
+        diagonalSpeed: 0.8,
+
+        update: function (e: any) {
+            if (this.direction.south && this.direction.west) {
+                if (e.sprite.direction !== "sw") {
+                    e.sprite.changeGraphics("sw");
+                }
+                e.x -= this.diagonalSpeed;
+                e.y += this.diagonalSpeed;
+            } else if (this.direction.south && this.direction.east) {
+                if (e.sprite.direction !== "se") {
+                    e.sprite.changeGraphics("se");
+                }
+                e.x += this.diagonalSpeed;
+                e.y += this.diagonalSpeed;
+            } else if (this.direction.north && this.direction.west) {
+                if (e.sprite.direction !== "nw") {
+                    e.sprite.changeGraphics("nw");
+                }
+                e.x -= this.diagonalSpeed;
+                e.y -= this.diagonalSpeed;
+            } else if (this.direction.north && this.direction.east) {
+                if (e.sprite.direction !== "ne") {
+                    e.sprite.changeGraphics("ne");
+                }
+                e.x += this.diagonalSpeed;
+                e.y -= this.diagonalSpeed;
+            } else if (this.direction.east) {
+                if (e.sprite.direction !== "e") {
+                    e.sprite.changeGraphics("e");
+                }
+                e.x += this.speed;
+            } else if (this.direction.west) {
+                if (e.sprite.direction !== "w") {
+                    e.sprite.changeGraphics("w");
+                }
+                e.x -= this.speed;
+            } else if (this.direction.north) {
+                if (e.sprite.direction !== "n") {
+                    e.sprite.changeGraphics("n");
+                }
+                e.y -= this.speed;
+            } else if (this.direction.south) {
+                if (e.sprite.direction !== "s") {
+                    e.sprite.changeGraphics("s");
+                }
+                e.y += this.speed;
+            }
+        },
+        keyDown: function (key: string) {
+            if (key === Core.getInstance().rpg.keys.RIGHT_ARROW || key === Core.getInstance().rpg.keys.D) {
+                this.direction.east = true;
+                this.direction.west = false;
+            } else if (key === Core.getInstance().rpg.keys.LEFT_ARROW || key === Core.getInstance().rpg.keys.A) {
+                this.direction.west = true;
+                this.direction.east = false;
+            } else if (key === Core.getInstance().rpg.keys.UP_ARROW || key === Core.getInstance().rpg.keys.W) {
+                this.direction.north = true;
+                this.direction.south = false;
+            } else if (key === Core.getInstance().rpg.keys.DOWN_ARROW || key === Core.getInstance().rpg.keys.S) {
+                this.direction.south = true;
+                this.direction.north = false;
+            }
+        },
+        keyUp: function (key: string) {
+            if (key === Core.getInstance().rpg.keys.RIGHT_ARROW || key === Core.getInstance().rpg.keys.D) {
+                this.direction.east = false;
+            } else if (key === Core.getInstance().rpg.keys.LEFT_ARROW || key === Core.getInstance().rpg.keys.A) {
+                this.direction.west = false;
+            } else if (key === Core.getInstance().rpg.keys.UP_ARROW || key === Core.getInstance().rpg.keys.W) {
+                this.direction.north = false;
+            } else if (key === Core.getInstance().rpg.keys.DOWN_ARROW || key === Core.getInstance().rpg.keys.S) {
+                this.direction.south = false;
+            }
+        }
+    };
 }

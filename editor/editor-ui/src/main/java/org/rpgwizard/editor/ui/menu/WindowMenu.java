@@ -13,6 +13,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
+import lombok.Getter;
 import org.rpgwizard.editor.ui.Theme;
 import org.rpgwizard.editor.ui.actions.EastPanelAction;
 import org.rpgwizard.editor.ui.actions.SouthPanelAction;
@@ -26,6 +27,7 @@ import org.rpgwizard.editor.ui.resources.Icons;
  */
 public final class WindowMenu extends JMenu {
 
+    @Getter
     private JMenuItem westPanel;
     private JMenuItem eastPanel;
     private JMenuItem southPanel;
@@ -49,10 +51,6 @@ public final class WindowMenu extends JMenu {
         add(southPanel);
         add(new JSeparator());
         add(themesMenu);
-    }
-
-    public JMenuItem getZoomInMenuItem() {
-        return westPanel;
     }
 
     public void configureWestPanelMenuItem() {

@@ -14,6 +14,8 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
+import lombok.Getter;
+import lombok.Setter;
 import org.rpgwizard.common.assets.tileset.Tile;
 import org.rpgwizard.common.assets.map.MapLayer;
 import org.rpgwizard.editor.editors.MapEditor;
@@ -26,6 +28,8 @@ import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
  *
  * @author Joshua Michael Daly
  */
+@Getter
+@Setter
 public class EraserBrush extends AbstractBrush {
 
     /**
@@ -36,7 +40,7 @@ public class EraserBrush extends AbstractBrush {
     /**
      *
      */
-    protected Tile paintTile;
+    protected Tile tile;
 
     public EraserBrush() {
 
@@ -44,7 +48,7 @@ public class EraserBrush extends AbstractBrush {
 
     public EraserBrush(Area shape) {
         this.shape = shape;
-        paintTile = new Tile();
+        tile = new Tile();
     }
 
     public EraserBrush(AbstractBrush abstractBrush) {
@@ -52,26 +56,8 @@ public class EraserBrush extends AbstractBrush {
 
         if (abstractBrush instanceof ShapeBrush) {
             shape = ((ShapeBrush) abstractBrush).shape;
-            paintTile = ((ShapeBrush) abstractBrush).paintTile;
+            tile = ((ShapeBrush) abstractBrush).tile;
         }
-    }
-
-    /**
-     *
-     *
-     * @return
-     */
-    public Tile getTile() {
-        return paintTile;
-    }
-
-    /**
-     *
-     *
-     * @param tile
-     */
-    public void setTile(Tile tile) {
-        paintTile = tile;
     }
 
     /**
@@ -211,7 +197,7 @@ public class EraserBrush extends AbstractBrush {
         if (selection.contains(origin.x, origin.y)) {
             for (int y2 = selection.y; y2 < selection.height + selection.y; y2++) {
                 for (int x2 = selection.x; x2 < selection.width + selection.x; x2++) {
-                    boolean tileEffected = layer.pourTileAt(x2, y2, paintTile);
+                    boolean tileEffected = layer.pourTileAt(x2, y2, tile);
                     if (!changedEntity && tileEffected) {
                         changedEntity = true;
                     }
@@ -229,7 +215,7 @@ public class EraserBrush extends AbstractBrush {
         for (int i = 0; i <= shapeBounds.height + 1; i++) {
             for (int j = 0; j <= shapeBounds.width + 1; j++) {
                 if (shape.contains(i, j)) {
-                    boolean tileEffected = layer.pourTileAt(j + centerX, i + centerY, paintTile);
+                    boolean tileEffected = layer.pourTileAt(j + centerX, i + centerY, tile);
                     if (!changedEntity && tileEffected) {
                         changedEntity = true;
                     }

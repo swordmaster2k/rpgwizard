@@ -28,6 +28,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 import javax.swing.SwingConstants;
+import lombok.Getter;
 import org.apache.commons.lang3.tuple.Pair;
 import org.rpgwizard.common.assets.AssetException;
 import org.rpgwizard.common.assets.AssetManager;
@@ -55,7 +56,9 @@ public final class ScriptDialog extends JDialog {
     private final JScrollPane centerPane;
     private AbstractScriptPanel scriptPanel;
 
+    @Getter
     private final String oldValue;
+    @Getter
     private String newValue;
 
     public ScriptDialog(Window owner, String script) {
@@ -116,14 +119,6 @@ public final class ScriptDialog extends JDialog {
 
         setResizable(false);
         pack();
-    }
-
-    public String getOldValue() {
-        return oldValue;
-    }
-
-    public String getNewValue() {
-        return newValue;
     }
 
     public void display() {

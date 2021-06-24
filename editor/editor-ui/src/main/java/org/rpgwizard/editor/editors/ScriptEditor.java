@@ -22,6 +22,8 @@ import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import lombok.Getter;
+import lombok.Setter;
 import org.fife.rsta.ac.LanguageSupportFactory;
 import org.fife.rsta.ac.js.JavaScriptLanguageSupport;
 import org.fife.rsta.ac.js.JsErrorParser;
@@ -59,6 +61,8 @@ import org.slf4j.LoggerFactory;
  *
  * @author Joshua Michael Daly
  */
+@Getter
+@Setter
 public final class ScriptEditor extends AbstractAssetEditorWindow
         implements SearchListener, ActionHandler, PropertyChangeListener {
 
@@ -66,13 +70,13 @@ public final class ScriptEditor extends AbstractAssetEditorWindow
 
     private static final String JSHINT_RC_FILE = "config" + File.separator + ".jshintrc";
 
-    private final Script program;
+    private final Script script;
     private RSyntaxTextArea textArea;
 
     public ScriptEditor(Script program) {
         super("Untitled", true, true, true, true, Icons.getIcon("program"));
 
-        this.program = program;
+        this.script = program;
         if (program.getDescriptor() == null) {
             init(program, "Untitled");
         } else {
@@ -82,22 +86,18 @@ public final class ScriptEditor extends AbstractAssetEditorWindow
 
     @Override
     public AbstractAsset getAsset() {
-        return program;
-    }
-
-    public Script getProgram() {
-        return program;
+        return script;
     }
 
     @Override
     public void save() throws Exception {
-        program.update(textArea.getText());
-        save(program);
+        script.update(textArea.getText());
+        save(script);
     }
 
     @Override
     public void saveAs(File file) throws Exception {
-        program.setDescriptor(new AssetDescriptor(file.toURI()));
+        script.setDescriptor(new AssetDescriptor(file.toURI()));
         setTitle(file.getName());
         save();
     }

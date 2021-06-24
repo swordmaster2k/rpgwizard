@@ -138,6 +138,19 @@ public class EditorFileManager {
     public static String[] getTKFileExtensions() {
         return CoreProperties.getProperty("toolkit.supported.extensions").split(",");
     }
+    
+    public static List<String> getTypeDirectories() {
+        return List.of(
+                CoreProperties.getProperty("rpgwizard.directory.textures"),
+                CoreProperties.getProperty("rpgwizard.directory.maps"),
+                CoreProperties.getProperty("rpgwizard.directory.sprites"),
+                CoreProperties.getProperty("rpgwizard.directory.sounds"),
+                CoreProperties.getProperty("rpgwizard.directory.animations"),
+                CoreProperties.getProperty("rpgwizard.directory.scripts"),
+                CoreProperties.getProperty("rpgwizard.directory.tilesets"),
+                CoreProperties.getProperty("rpgwizard.directory.fonts")
+        );
+    }
 
     public static String[] getTypeExtensions(Class<? extends AbstractAsset> type) {
         if (type == Animation.class) {

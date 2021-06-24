@@ -17,6 +17,8 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 import org.rpgwizard.common.assets.AbstractPolygon;
 import org.rpgwizard.common.assets.Collider;
 import org.rpgwizard.common.assets.map.Map;
@@ -33,6 +35,8 @@ import org.rpgwizard.editor.utilities.GuiHelper;
  *
  * @author Joshua Michael Daly
  */
+@Getter
+@Setter
 public class MapLayerView {
 
     /**
@@ -54,22 +58,6 @@ public class MapLayerView {
      * @param layer
      */
     public MapLayerView(MapLayer layer) {
-        this.layer = layer;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public MapLayer getLayer() {
-        return layer;
-    }
-
-    /**
-     *
-     * @param layer
-     */
-    public void setLayer(MapLayer layer) {
         this.layer = layer;
     }
 
@@ -219,24 +207,6 @@ public class MapLayerView {
      */
     public void setLocked(boolean locked) {
         layer.setLocked(locked);
-    }
-
-    /**
-     *
-     *
-     * @return
-     */
-    public MultiLayerContainer getParentContainer() {
-        return parentContainer;
-    }
-
-    /**
-     *
-     *
-     * @param parentContainer
-     */
-    public void setParentContainer(MultiLayerContainer parentContainer) {
-        this.parentContainer = parentContainer;
     }
 
     public static BufferedImage getPlaceHolderImage() {

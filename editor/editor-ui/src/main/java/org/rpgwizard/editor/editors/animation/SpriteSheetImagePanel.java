@@ -21,6 +21,9 @@ import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.rpgwizard.common.assets.animation.SpriteSheet;
 import org.rpgwizard.editor.ui.AbstractImagePanel;
@@ -35,6 +38,8 @@ import org.slf4j.LoggerFactory;
  *
  * @author Joshua Michael Daly
  */
+@Getter
+@Setter
 public final class SpriteSheetImagePanel extends AbstractImagePanel implements MouseMotionListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SpriteSheetImagePanel.class);
@@ -42,6 +47,8 @@ public final class SpriteSheetImagePanel extends AbstractImagePanel implements M
     private final SpriteSheet spriteSheet;
     private String image;
     private Image bufferedImage;
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
     private Rectangle cursor;
     private Rectangle selection;
 
@@ -80,34 +87,6 @@ public final class SpriteSheetImagePanel extends AbstractImagePanel implements M
     @Override
     public Dimension getMinimumSize() {
         return dimension;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public Image getBufferedImage() {
-        return bufferedImage;
-    }
-
-    public Rectangle getSelection() {
-        return selection;
-    }
-
-    public int getTileWidth() {
-        return tileWidth;
-    }
-
-    public void setTileWidth(int tileWidth) {
-        this.tileWidth = tileWidth;
-    }
-
-    public int getTileHeight() {
-        return tileHeight;
-    }
-
-    public void setTileHeight(int tileHeight) {
-        this.tileHeight = tileHeight;
     }
 
     public void init() throws IOException {

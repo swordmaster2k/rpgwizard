@@ -18,6 +18,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
+import lombok.Getter;
 import org.rpgwizard.editor.ui.actions.ZoomInAction;
 import org.rpgwizard.editor.ui.actions.ZoomOutAction;
 import org.rpgwizard.editor.ui.resources.Icons;
@@ -32,6 +33,7 @@ public final class ViewMenu extends JMenu {
     private JMenuItem zoomOutMenuItem;
     private JCheckBoxMenuItem showGridMenuItem;
     private JCheckBoxMenuItem showCoordinatesMenuItem;
+    @Getter
     private JCheckBoxMenuItem showVectorsMenuItem;
     private JCheckBoxMenuItem snapToGridMenuItem;
 
@@ -58,26 +60,6 @@ public final class ViewMenu extends JMenu {
         add(showVectorsMenuItem);
         add(new JSeparator());
         add(snapToGridMenuItem);
-    }
-
-    public JMenuItem getZoomInMenuItem() {
-        return zoomInMenuItem;
-    }
-
-    public JMenuItem getZoomOutMenuItem() {
-        return zoomOutMenuItem;
-    }
-
-    public JCheckBoxMenuItem getShowGridMenuItem() {
-        return showGridMenuItem;
-    }
-
-    public JCheckBoxMenuItem getShowCoordinatesMenuItem() {
-        return showCoordinatesMenuItem;
-    }
-
-    public JCheckBoxMenuItem getShowVectorsMenuItem() {
-        return showVectorsMenuItem;
     }
 
     /**

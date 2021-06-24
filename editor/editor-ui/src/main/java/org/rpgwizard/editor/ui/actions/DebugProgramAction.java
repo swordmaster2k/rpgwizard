@@ -41,7 +41,7 @@ public class DebugProgramAction extends AbstractRunAction {
             }
 
             ScriptEditor programEditor = (ScriptEditor) MainWindow.getInstance().getCurrentFrame();
-            Script program = programEditor.getProgram();
+            Script program = programEditor.getScript();
             if (program == null || program.getDescriptor() == null || programEditor.needsSave()) {
                 JOptionPane.showMessageDialog(MainWindow.getInstance(), "Please save your program first.",
                         "Debug Program", JOptionPane.OK_OPTION);

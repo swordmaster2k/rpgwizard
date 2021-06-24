@@ -48,26 +48,6 @@ public abstract class AbstractImagePanel extends JPanel implements MouseListener
         this.dimension = dimension;
     }
 
-    public Dimension getDimension() {
-        return dimension;
-    }
-
-    public void setDimension(Dimension dimension) {
-        this.dimension = dimension;
-    }
-
-    public LinkedList<BufferedImage> getBufferedImages() {
-        return bufferedImages;
-    }
-
-    public void setBufferedImages(LinkedList<BufferedImage> images) {
-        this.bufferedImages = images;
-    }
-
-    public File getFile() {
-        return file;
-    }
-
     public String getImagePath() {
         return file.getAbsolutePath().replace(EditorFileManager.getGraphicsPath(), "");
     }

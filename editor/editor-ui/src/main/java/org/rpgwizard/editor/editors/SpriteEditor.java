@@ -137,10 +137,6 @@ public final class SpriteEditor extends AbstractAssetEditorWindow implements Spr
         return sprite;
     }
 
-    public Sprite getSprite() {
-        return sprite;
-    }
-
     @Override
     public void save() throws Exception {
         // Update all player variables from stats panel.

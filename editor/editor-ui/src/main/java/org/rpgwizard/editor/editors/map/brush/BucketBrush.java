@@ -12,6 +12,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.util.Stack;
+import lombok.Getter;
+import lombok.Setter;
 import org.rpgwizard.common.assets.tileset.Tile;
 import org.rpgwizard.common.assets.map.MapLayer;
 import org.rpgwizard.editor.editors.MapEditor;
@@ -24,6 +26,8 @@ import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
  *
  * @author Joshua Michael Daly
  */
+@Getter
+@Setter
 public class BucketBrush extends AbstractBrush {
 
     /**
@@ -61,42 +65,6 @@ public class BucketBrush extends AbstractBrush {
     @Override
     public Rectangle getBounds() {
         return new Rectangle(0, 0, 1, 1);
-    }
-
-    /**
-     *
-     *
-     * @return
-     */
-    public Tile getPourTile() {
-        return pourTile;
-    }
-
-    /**
-     *
-     *
-     * @param tile
-     */
-    public void setPourTile(Tile tile) {
-        pourTile = tile;
-    }
-
-    /**
-     *
-     *
-     * @return
-     */
-    public Tile getOldTile() {
-        return oldTile;
-    }
-
-    /**
-     *
-     *
-     * @param tile
-     */
-    public void setOldTile(Tile tile) {
-        oldTile = tile;
     }
 
     /**

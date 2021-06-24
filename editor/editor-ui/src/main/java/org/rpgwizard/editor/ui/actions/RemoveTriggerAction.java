@@ -9,6 +9,7 @@ package org.rpgwizard.editor.ui.actions;
 
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
+import lombok.AllArgsConstructor;
 import org.rpgwizard.common.assets.map.SelectablePair;
 import org.rpgwizard.editor.editors.MapEditor;
 
@@ -17,19 +18,13 @@ import org.rpgwizard.editor.editors.MapEditor;
  *
  * @author Joshua Michael Daly
  */
+@AllArgsConstructor
 public class RemoveTriggerAction extends AbstractAction {
 
     private final MapEditor mapEditor;
     private final int x;
     private final int y;
     private final boolean deleteKey;
-
-    public RemoveTriggerAction(MapEditor mapEditor, int x, int y, boolean deleteKey) {
-        this.mapEditor = mapEditor;
-        this.x = x;
-        this.y = y;
-        this.deleteKey = deleteKey;
-    }
 
     @Override
     public void actionPerformed(ActionEvent e) {

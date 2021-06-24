@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Icon;
 import javax.swing.table.AbstractTableModel;
+import lombok.Getter;
 import org.fife.ui.rsyntaxtextarea.parser.ParserNotice;
 import org.rpgwizard.editor.ui.resources.Icons;
 
@@ -22,14 +23,11 @@ public class IssuesTableModel extends AbstractTableModel {
 
     private static final String[] COLUMNS = { "Type", "Message", "Line" };
 
+    @Getter
     private List<ParserNotice> notices;
 
     public IssuesTableModel() {
         notices = new ArrayList<>();
-    }
-
-    public List<ParserNotice> getNotices() {
-        return notices;
     }
 
     public void setNotices(List<ParserNotice> notices) {

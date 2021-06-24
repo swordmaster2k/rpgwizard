@@ -9,6 +9,7 @@ package org.rpgwizard.editor.editors.map.generation.panel;
 
 import java.util.Map;
 import javax.swing.JPanel;
+import lombok.Getter;
 import org.rpgwizard.editor.editors.map.generation.ScriptType;
 
 /**
@@ -17,14 +18,11 @@ import org.rpgwizard.editor.editors.map.generation.ScriptType;
  */
 public abstract class AbstractScriptPanel extends JPanel {
 
-    protected final ScriptType programType;
+    @Getter
+    protected final ScriptType scriptType;
 
-    public AbstractScriptPanel(ScriptType programType) {
-        this.programType = programType;
-    }
-
-    public ScriptType getScriptType() {
-        return programType;
+    public AbstractScriptPanel(ScriptType scriptType) {
+        this.scriptType = scriptType;
     }
 
     public abstract Map<String, Object> collect();

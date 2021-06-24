@@ -34,6 +34,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.io.FilenameUtils;
 import org.fife.rsta.ui.search.FindDialog;
 import org.fife.rsta.ui.search.ReplaceDialog;
@@ -76,9 +78,8 @@ import org.rpgwizard.editor.ui.EditorFactory;
 import org.rpgwizard.editor.ui.project.ProjectPanel;
 import org.rpgwizard.editor.ui.PropertiesPanel;
 import org.rpgwizard.editor.ui.TileSetTabbedPane;
-import org.rpgwizard.editor.ui.ToolkitDesktopManager;
+import org.rpgwizard.editor.ui.WizardDesktopManager;
 import org.rpgwizard.editor.ui.actions.ActionHandler;
-import org.rpgwizard.editor.ui.listeners.TileSelectionListener;
 import org.rpgwizard.editor.ui.listeners.TileSetSelectionListener;
 import org.rpgwizard.editor.ui.log.LogPanel;
 import org.rpgwizard.editor.ui.menu.MainMenuBar;
@@ -96,6 +97,8 @@ import org.slf4j.LoggerFactory;
  * @author Geoff Wilson
  * @author Joshua Michael Daly
  */
+@Getter
+@Setter
 public final class MainWindow extends JFrame implements InternalFrameListener, SearchListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MainWindow.class);
@@ -106,8 +109,8 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
     private final JDesktopPane desktopPane;
     private final java.util.Map<File, AbstractAssetEditorWindow> editorMap;
 
-    private final MainMenuBar menuBar;
-    private final MainToolBar toolBar;
+    private final MainMenuBar mainMenuBar;
+    private final MainToolBar mainToolBar;
 
     private final JPanel westPanel;
     private final JTabbedPane westUpperTabbedPane;
@@ -170,7 +173,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
                 g.fillRect(0, 0, getWidth(), getHeight());
             }
         };
-        desktopPane.setDesktopManager(new ToolkitDesktopManager());
+        desktopPane.setDesktopManager(new WizardDesktopManager());
         ///
         /// editorMap
         ///
@@ -251,8 +254,8 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         ///
         setIconImage(Icons.getLargeIcon("editor").getImage());
 
-        menuBar = new MainMenuBar(this);
-        toolBar = new MainToolBar();
+        mainMenuBar = new MainMenuBar(this);
+        mainToolBar = new MainToolBar();
 
         currentBrush = new ShapeBrush();
         ((ShapeBrush) currentBrush).makeRectangleBrush(new Rectangle(0, 0, 1, 1));
@@ -283,7 +286,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         parent.add(southPanel, BorderLayout.SOUTH);
 
         setLayout(new BorderLayout());
-        add(toolBar, BorderLayout.NORTH);
+        add(mainToolBar, BorderLayout.NORTH);
         add(parent, BorderLayout.CENTER);
         add(westPanel, BorderLayout.WEST);
         add(eastPanel, BorderLayout.EAST);
@@ -293,115 +296,11 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setSize(new Dimension(1024, 768));
         setLocationByPlatform(true);
-        setJMenuBar(menuBar);
+        setJMenuBar(mainMenuBar);
     }
 
     public static MainWindow getInstance() {
         return INSTANCE;
-    }
-
-    public JDesktopPane getDesktopPane() {
-        return this.desktopPane;
-    }
-
-    public boolean isShowGrid() {
-        return showGrid;
-    }
-
-    public void setShowGrid(boolean isShowGrid) {
-        this.showGrid = isShowGrid;
-    }
-
-    public boolean isShowVectors() {
-        return showVectors;
-    }
-
-    public void setShowVectors(boolean showVectors) {
-        this.showVectors = showVectors;
-    }
-
-    public boolean isShowCoordinates() {
-        return showCoordinates;
-    }
-
-    public void setShowCoordinates(boolean isShowCoordinates) {
-        this.showCoordinates = isShowCoordinates;
-    }
-
-    public boolean isSnapToGrid() {
-        return snapToGrid;
-    }
-
-    public void setSnapToGrid(boolean snapToGrid) {
-        this.snapToGrid = snapToGrid;
-    }
-
-    public AbstractBrush getCurrentBrush() {
-        return this.currentBrush;
-    }
-
-    public void setCurrentBrush(AbstractBrush brush) {
-        this.currentBrush = brush;
-    }
-
-    public Tile getLastSelectedTile() {
-        return this.lastSelectedTile;
-    }
-
-    public void setLastSelectedTile(Tile tile) {
-        lastSelectedTile = tile;
-    }
-
-    public JPanel getWestPanel() {
-        return westPanel;
-    }
-
-    public JTabbedPane getWestUpperTabbedPane() {
-        return westUpperTabbedPane;
-    }
-
-    public JTabbedPane getWestLowerTabbedPane() {
-        return westLowerTabbedPane;
-    }
-
-    public JPanel getEastPanel() {
-        return eastPanel;
-    }
-
-    public JTabbedPane getEastUpperTabbedPane() {
-        return eastUpperTabbedPane;
-    }
-
-    public JTabbedPane getEastLowerTabbedPane() {
-        return eastLowerTabbedPane;
-    }
-
-    public MainMenuBar getMainMenuBar() {
-        return this.menuBar;
-    }
-
-    public MainToolBar getMainToolBar() {
-        return this.toolBar;
-    }
-
-    public LayerPanel getLayerPanel() {
-        return layerPanel;
-    }
-
-    public JPanel getSouthPanel() {
-        return southPanel;
-    }
-
-    public LogPanel getLogPanel() {
-        return logPanel;
-    }
-
-    public IssuesTablePanel getIssuesPanel() {
-        return issuesPanel;
-    }
-
-    public PropertiesPanel getPropertiesPanel() {
-        return this.propertiesPanel;
     }
 
     public JInternalFrame getCurrentFrame() {
@@ -415,40 +314,8 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         return null;
     }
 
-    public Game getActiveProject() {
-        return activeProject;
-    }
-
-    public void setActiveProject(Game project) {
-        this.activeProject = project;
-    }
-
-    public TileSelectionListener getTileSetSelectionListener() {
-        return tileSetSelectionListener;
-    }
-
-    public PluginManager getPluginManager() {
-        return pluginManager;
-    }
-
-    public void setPluginManager(PluginManager pluginManager) {
-        this.pluginManager = pluginManager;
-    }
-
     public Collection<AbstractAssetEditorWindow> getOpenEditors() {
         return editorMap.values();
-    }
-
-    public ProjectPanel getProjectPanel() {
-        return projectPanel;
-    }
-
-    public FindDialog getFindDialog() {
-        return findDialog;
-    }
-
-    public ReplaceDialog getReplaceDialog() {
-        return replaceDialog;
     }
 
     public void updateEditorMap(File previous, File current, AbstractAssetEditorWindow editor) {
@@ -579,10 +446,10 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
             canUndo = handler.canUndo();
             canRedo = handler.canRedo();
         }
-        menuBar.getEditMenu().getUndoMenuItem().setEnabled(canUndo);
-        toolBar.getUndoButton().setEnabled(canUndo);
-        menuBar.getEditMenu().getRedoMenuItem().setEnabled(canRedo);
-        toolBar.getRedoButton().setEnabled(canRedo);
+        mainMenuBar.getEditMenu().getUndoMenuItem().setEnabled(canUndo);
+        mainToolBar.getUndoButton().setEnabled(canUndo);
+        mainMenuBar.getEditMenu().getRedoMenuItem().setEnabled(canRedo);
+        mainToolBar.getRedoButton().setEnabled(canRedo);
 
         if (window instanceof AnimationEditor) {
             AnimationEditor editor = (AnimationEditor) window;
@@ -602,9 +469,9 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         } else if (window instanceof ScriptEditor) {
             ScriptEditor editor = (ScriptEditor) window;
             editor.forceReparsing();
-            if (!toolBar.getStopButton().isEnabled()) {
+            if (!mainToolBar.getStopButton().isEnabled()) {
                 // Engine isn't running at the moment
-                toolBar.getDebugButton().setEnabled(true);
+                mainToolBar.getDebugButton().setEnabled(true);
             }
         } else if (window instanceof ImageEditor) {
             ImageEditor editor = (ImageEditor) window;
@@ -651,7 +518,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
             }
         } else if (frame instanceof ScriptEditor) {
             issuesPanel.clearNotices();
-            toolBar.getDebugButton().setEnabled(false);
+            mainToolBar.getDebugButton().setEnabled(false);
         } else if (frame instanceof ImageEditor) {
             ImageEditor editor = (ImageEditor) frame;
             if (propertiesPanel.getModel() == editor.getImage()) {
@@ -781,7 +648,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         }
     }
 
-    public void createNewProgram() {
+    public void createNewScript() {
         LOGGER.info("Creating new {}.", Script.class.getSimpleName());
         addToolkitEditorWindow(EditorFactory.getEditor(new Script(null)));
     }
@@ -1015,18 +882,18 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
 
         setTitle(EditorProperties.getProperty(EditorProperty.EDITOR_UI_TITLE) + " - " + activeProject.getName());
 
-        menuBar.enableMenus(true);
-        toolBar.toggleButtonStates(true);
+        mainMenuBar.enableMenus(true);
+        mainToolBar.toggleButtonStates(true);
     }
 
     public void enableUndo(boolean enable) {
-        menuBar.getEditMenu().getUndoMenuItem().setEnabled(enable);
-        toolBar.getUndoButton().setEnabled(enable);
+        mainMenuBar.getEditMenu().getUndoMenuItem().setEnabled(enable);
+        mainToolBar.getUndoButton().setEnabled(enable);
     }
 
     public void enableRedo(boolean enable) {
-        menuBar.getEditMenu().getRedoMenuItem().setEnabled(enable);
-        toolBar.getRedoButton().setEnabled(enable);
+        mainMenuBar.getEditMenu().getRedoMenuItem().setEnabled(enable);
+        mainToolBar.getRedoButton().setEnabled(enable);
     }
 
     private void selectToolkitWindow(AbstractAssetEditorWindow window) {

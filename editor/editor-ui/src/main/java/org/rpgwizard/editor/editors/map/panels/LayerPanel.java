@@ -116,7 +116,7 @@ public class LayerPanel extends JPanel implements ChangeListener, ListSelectionL
                 MapLayerView selectedLayer = mapView
                         .getLayer((mapView.getMap().getLayers().size() - layerTable.getSelectedRow()) - 1);
 
-                mapView.setCurrentSeletedLayer(selectedLayer);
+                mapView.setCurrentSelectedLayer(selectedLayer);
 
                 opacitySlider.setValue((int) (selectedLayer.getOpacity() * 100));
             }

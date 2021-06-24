@@ -13,6 +13,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
+import lombok.Getter;
 import org.rpgwizard.editor.ui.actions.CopyAction;
 import org.rpgwizard.editor.ui.actions.CutAction;
 import org.rpgwizard.editor.ui.actions.FindAction;
@@ -29,8 +30,11 @@ import org.rpgwizard.editor.ui.resources.Icons;
  */
 public final class EditMenu extends JMenu {
 
+    @Getter
     private JMenuItem undoMenuItem;
+    @Getter
     private JMenuItem redoMenuItem;
+    
     private JMenuItem cutMenuItem;
     private JMenuItem copyMenuItem;
     private JMenuItem pasteMenuItem;
@@ -63,14 +67,6 @@ public final class EditMenu extends JMenu {
         add(new JSeparator());
         add(findMenuItem);
         add(quickReplaceMenuItem);
-    }
-
-    public JMenuItem getUndoMenuItem() {
-        return undoMenuItem;
-    }
-
-    public JMenuItem getRedoMenuItem() {
-        return redoMenuItem;
     }
 
     /**

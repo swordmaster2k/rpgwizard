@@ -14,6 +14,8 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
+import lombok.Getter;
+import lombok.Setter;
 import org.rpgwizard.common.assets.tileset.Tile;
 import org.rpgwizard.editor.editors.MapEditor;
 import org.rpgwizard.editor.editors.map.AbstractMapView;
@@ -25,6 +27,8 @@ import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
  *
  * @author Joshua Michael Daly
  */
+@Getter
+@Setter
 public class ShapeBrush extends AbstractBrush {
 
     /**
@@ -35,7 +39,7 @@ public class ShapeBrush extends AbstractBrush {
     /**
      *
      */
-    protected Tile paintTile;
+    protected Tile tile;
 
     /**
      *
@@ -51,7 +55,7 @@ public class ShapeBrush extends AbstractBrush {
      */
     public ShapeBrush(Area shape) {
         this.shape = shape;
-        paintTile = new Tile();
+        tile = new Tile();
     }
 
     /**
@@ -64,26 +68,8 @@ public class ShapeBrush extends AbstractBrush {
 
         if (abstractBrush instanceof ShapeBrush) {
             shape = ((ShapeBrush) abstractBrush).shape;
-            paintTile = ((ShapeBrush) abstractBrush).paintTile;
+            tile = ((ShapeBrush) abstractBrush).tile;
         }
-    }
-
-    /**
-     *
-     *
-     * @return
-     */
-    public Tile getTile() {
-        return paintTile;
-    }
-
-    /**
-     *
-     *
-     * @param tile
-     */
-    public void setTile(Tile tile) {
-        paintTile = tile;
     }
 
     /**
@@ -173,7 +159,7 @@ public class ShapeBrush extends AbstractBrush {
                 for (int i = 0; i <= shapeBounds.height + 1; i++) {
                     for (int j = 0; j <= shapeBounds.width + 1; j++) {
                         if (shape.contains(i, j)) {
-                            boolean tileEffected = mapLayer.getLayer().pourTileAt(j + centerX, i + centerY, paintTile);
+                            boolean tileEffected = mapLayer.getLayer().pourTileAt(j + centerX, i + centerY, tile);
                             if (!changedEntity && tileEffected) {
                                 changedEntity = true;
                             }

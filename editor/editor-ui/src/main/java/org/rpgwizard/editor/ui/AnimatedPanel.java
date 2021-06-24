@@ -18,6 +18,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.Timer;
+import lombok.Getter;
+import lombok.Setter;
 import org.rpgwizard.common.assets.Collider;
 import org.rpgwizard.common.assets.Trigger;
 import org.rpgwizard.common.assets.animation.Animation;
@@ -43,7 +45,11 @@ public class AnimatedPanel extends AbstractImagePanel implements AnimationChange
     private BufferedImage frameImage;
     private Timer timer;
 
+    @Getter
+    @Setter
     private Collider collider;
+    @Getter
+    @Setter
     private Trigger trigger;
 
     private final ActionListener animate = new ActionListener() {
@@ -119,22 +125,6 @@ public class AnimatedPanel extends AbstractImagePanel implements AnimationChange
         }
 
         repaint();
-    }
-
-    public Collider getCollider() {
-        return collider;
-    }
-
-    public void setCollider(Collider collider) {
-        this.collider = collider;
-    }
-
-    public Trigger getTrigger() {
-        return trigger;
-    }
-
-    public void setTrigger(Trigger trigger) {
-        this.trigger = trigger;
     }
 
     @Override

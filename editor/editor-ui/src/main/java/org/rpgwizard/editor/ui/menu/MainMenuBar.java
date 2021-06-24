@@ -9,6 +9,7 @@ package org.rpgwizard.editor.ui.menu;
 
 import org.rpgwizard.editor.MainWindow;
 import javax.swing.JMenuBar;
+import lombok.Getter;
 
 /**
  *
@@ -16,9 +17,10 @@ import javax.swing.JMenuBar;
  * @author Geoff Wilson
  * @author Joshua Michael Daly
  */
+@Getter
 public class MainMenuBar extends JMenuBar {
 
-    private final MainWindow parent;
+    private final MainWindow parentWindow;
 
     private final FileMenu fileMenu;
     private final EditMenu editMenu;
@@ -29,7 +31,7 @@ public class MainMenuBar extends JMenuBar {
     private final HelpMenu helpMenu;
 
     public MainMenuBar(MainWindow menuBarParent) {
-        parent = menuBarParent;
+        parentWindow = menuBarParent;
 
         fileMenu = new FileMenu();
         fileMenu.setName("fileMenu");
@@ -48,34 +50,6 @@ public class MainMenuBar extends JMenuBar {
         add(toolsMenu);
         add(windowMenu);
         add(helpMenu);
-    }
-
-    public MainWindow getParentWindow() {
-        return parent;
-    }
-
-    public FileMenu getFileMenu() {
-        return fileMenu;
-    }
-
-    public EditMenu getEditMenu() {
-        return editMenu;
-    }
-
-    public ViewMenu getViewMenu() {
-        return viewMenu;
-    }
-
-    public RunMenu getRunMenu() {
-        return runMenu;
-    }
-
-    public ToolsMenu getToolsMenu() {
-        return toolsMenu;
-    }
-
-    public WindowMenu getWindowMenu() {
-        return windowMenu;
     }
 
     @Override

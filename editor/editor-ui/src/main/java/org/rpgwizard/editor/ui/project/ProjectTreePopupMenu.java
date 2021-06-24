@@ -46,9 +46,7 @@ public final class ProjectTreePopupMenu extends JPopupMenu {
     public ProjectTreePopupMenu() {
         newFolderItem = new JMenuItem("Folder...");
         newFolderItem.addActionListener((ActionEvent ae) -> {
-            if (Files.isDirectory(Paths.get(filePath))) {
-                new NewFolderAction(new File(filePath)).actionPerformed(null);
-            }
+            new NewFolderAction(new File(filePath)).actionPerformed(null);
         });
 
         newMenu = new JMenu("New");
@@ -65,16 +63,7 @@ public final class ProjectTreePopupMenu extends JPopupMenu {
 
         deleteItem = new JMenuItem("Delete");
         deleteItem.addActionListener((ActionEvent ae) -> {
-
-            boolean canDelete = false;
-            if (Files.isRegularFile(Paths.get(filePath))) {
-                List<String> exts = getDeletableExtensions();
-                canDelete = exts.contains(FilenameUtils.getExtension(filePath));
-            } else if (Files.isDirectory(Paths.get(filePath))) {
-                canDelete = true;
-            }
-
-            if (canDelete) {
+            if (canDelete()) {
                 // Confirm user input
                 String title = "Delete " + FilenameUtils.getName(filePath) + "?";
                 String message = "Are sure you want to delete " + FilenameUtils.getName(filePath) + "?";
@@ -101,11 +90,37 @@ public final class ProjectTreePopupMenu extends JPopupMenu {
         if (StringUtils.isBlank(filePath) || !Files.exists(Paths.get(filePath))) {
             return;
         }
-
         this.filePath = filePath;
+
+        if (Files.isDirectory(Paths.get(filePath))) {
+            newMenu.setVisible(true);
+        } else {
+            newMenu.setVisible(false);
+        }
+        if (canDelete()) {
+            deleteItem.setVisible(true);
+        } else {
+            deleteItem.setVisible(false);
+        }
+
         super.show(invoker, x, y);
     }
 
+    private boolean canDelete() {
+        if (Files.isRegularFile(Paths.get(filePath))) {
+            List<String> exts = getDeletableExtensions();
+            return exts.contains(FilenameUtils.getExtension(filePath));
+        } else if (Files.isDirectory(Paths.get(filePath))) {
+            // Primitive checks on directory names
+            if (FilenameUtils.getName(filePath).equalsIgnoreCase(EditorFileManager.getProjectPath().getName())) {
+                return false;
+            }
+            return !EditorFileManager.getTypeDirectories().contains(FilenameUtils.getName(filePath).toLowerCase());
+        }
+        
+        return false;
+    }
+    
     private List<String> getDeletableExtensions() {
         List<String> exts = new ArrayList<>();
         exts.addAll(Arrays.asList(EditorFileManager.getTKFileExtensions()));

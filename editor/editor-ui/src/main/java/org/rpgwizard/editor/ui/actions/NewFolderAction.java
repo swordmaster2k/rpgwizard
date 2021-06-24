@@ -12,30 +12,35 @@ import java.io.File;
 import java.io.IOException;
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
+import lombok.AllArgsConstructor;
 import org.codehaus.plexus.util.StringUtils;
 import org.rpgwizard.editor.MainWindow;
+import org.rpgwizard.editor.utilities.EditorFileManager;
 
 /**
  *
  * @author Joshua Michael Daly
  */
+@AllArgsConstructor
 public class NewFolderAction extends AbstractAction {
 
     private final File folder;
 
-    public NewFolderAction(File folder) {
-        this.folder = folder;
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
-        String input = (String) JOptionPane.showInputDialog(MainWindow.getInstance(), "Please provide a name:",
+        String folderName = (String) JOptionPane.showInputDialog(MainWindow.getInstance(), "Please provide a name:",
                 "New Folder", JOptionPane.PLAIN_MESSAGE);
-        if (StringUtils.isBlank(input)) {
+        if (StringUtils.isBlank(folderName)) {
             return;
         }
 
-        File newFolder = new File(folder, input);
+        if (EditorFileManager.getTypeDirectories().contains(folderName.toLowerCase())) {
+            JOptionPane.showMessageDialog(MainWindow.getInstance(), "That folder name is reserved!", "Reserved Name",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        File newFolder = new File(folder, folderName);
         if (newFolder.exists()) {
             JOptionPane.showMessageDialog(MainWindow.getInstance(), "The folder already exists!", "Already Exists",
                     JOptionPane.ERROR_MESSAGE);

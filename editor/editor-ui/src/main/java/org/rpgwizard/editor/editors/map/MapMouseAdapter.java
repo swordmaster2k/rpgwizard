@@ -12,7 +12,6 @@ import org.rpgwizard.editor.editors.map.brush.ShapeBrush;
 import org.rpgwizard.editor.editors.map.brush.BucketBrush;
 import org.rpgwizard.editor.editors.map.brush.CustomBrush;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.SwingUtilities;
@@ -149,8 +148,6 @@ public class MapMouseAdapter extends MouseAdapter {
      * @param brush
      */
     private void doMouseButton1Pressed(AbstractBrush brush, int x, int y) {
-        Rectangle selection = editor.getSelectionExpaned();
-
         Point point;
         if (brush.isPixelBased()) {
             point = new Point(x, y);

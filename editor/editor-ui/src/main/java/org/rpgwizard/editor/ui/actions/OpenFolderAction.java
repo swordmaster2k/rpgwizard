@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.AbstractAction;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,15 +20,12 @@ import org.slf4j.LoggerFactory;
  *
  * @author Joshua Michael Daly
  */
+@AllArgsConstructor
 public class OpenFolderAction extends AbstractAction {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OpenFolderAction.class);
 
     private final File folder;
-
-    public OpenFolderAction(File folder) {
-        this.folder = folder;
-    }
 
     @Override
     public void actionPerformed(ActionEvent e) {

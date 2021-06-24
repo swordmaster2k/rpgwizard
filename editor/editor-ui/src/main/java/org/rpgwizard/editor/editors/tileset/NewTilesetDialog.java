@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
+import lombok.Getter;
 import org.rpgwizard.editor.MainWindow;
 
 /**
@@ -36,6 +37,7 @@ public class NewTilesetDialog extends JDialog {
     private final JButton okButton;
     private final JButton cancelButton;
 
+    @Getter
     private int[] value = null;
 
     /**
@@ -83,14 +85,6 @@ public class NewTilesetDialog extends JDialog {
 
         setResizable(false);
         pack();
-    }
-
-    /**
-     *
-     * @return
-     */
-    public int[] getValue() {
-        return value;
     }
 
 }

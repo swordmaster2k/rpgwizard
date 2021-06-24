@@ -11,6 +11,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import lombok.Getter;
+import lombok.Setter;
 
 import org.rpgwizard.common.assets.tileset.Tile;
 import org.rpgwizard.editor.editors.MapEditor;
@@ -24,6 +26,8 @@ import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
  *
  * @author Joshua Michael Daly
  */
+@Getter
+@Setter
 public class CustomBrush extends AbstractBrush {
 
     /**
@@ -64,24 +68,6 @@ public class CustomBrush extends AbstractBrush {
     @Override
     public Rectangle getBounds() {
         return bounds;
-    }
-
-    /**
-     *
-     *
-     * @param rectangle
-     */
-    public void setBounds(Rectangle rectangle) {
-        bounds = rectangle;
-    }
-
-    /**
-     *
-     *
-     * @return
-     */
-    public Tile[][] getTiles() {
-        return tiles;
     }
 
     /**

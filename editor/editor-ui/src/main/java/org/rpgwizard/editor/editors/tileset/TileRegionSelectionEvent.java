@@ -8,6 +8,7 @@
 package org.rpgwizard.editor.editors.tileset;
 
 import java.util.EventObject;
+import lombok.Getter;
 import org.rpgwizard.common.assets.tileset.Tile;
 
 /**
@@ -17,6 +18,7 @@ import org.rpgwizard.common.assets.tileset.Tile;
  */
 public class TileRegionSelectionEvent extends EventObject {
 
+    @Getter
     private final Tile[][] tiles;
 
     /**
@@ -27,14 +29,6 @@ public class TileRegionSelectionEvent extends EventObject {
     public TileRegionSelectionEvent(Object source, Tile[][] tiles) {
         super(source);
         this.tiles = tiles;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public Tile[][] getTiles() {
-        return tiles;
     }
 
 }

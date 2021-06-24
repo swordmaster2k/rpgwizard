@@ -22,6 +22,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
+import lombok.Getter;
 
 /**
  *
@@ -31,6 +32,7 @@ public abstract class AbstractModelPanel extends JPanel {
 
     protected static final int COLUMNS = 10;
 
+    @Getter
     protected Object model;
     protected Font font;
 
@@ -47,10 +49,6 @@ public abstract class AbstractModelPanel extends JPanel {
         constraints = new GridBagConstraints();
         row = 0;
         setLayout(layout);
-    }
-
-    public Object getModel() {
-        return model;
     }
 
     public final JLabel getJLabel(String text) {

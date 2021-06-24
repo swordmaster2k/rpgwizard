@@ -20,6 +20,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.ListIterator;
 import javax.swing.JPanel;
+import lombok.Getter;
+import lombok.Setter;
 import org.rpgwizard.common.assets.AssetDescriptor;
 
 import org.rpgwizard.common.assets.listeners.MapChangeListener;
@@ -32,13 +34,15 @@ import org.rpgwizard.editor.ui.resources.Icons;
 import org.rpgwizard.editor.utilities.GuiHelper;
 
 /**
- * This class is an Abstract model for the visual representation of a RPG-Toolkit map file. It deals with initializing
+ * This class is an Abstract model for the visual representation of a RPGWizard map file. It deals with initializing
  * most of the members needed by a concrete class, it also provides some of the core functionality such as layer
  * management. It does NOT perform the actual rendering of the map it only defines abstract methods that a sub class can
  * use, this is due to the fact that the Toolkit supports both flat 2D maps and isometric maps.
  *
  * @author Joshua Michael Daly
  */
+@Getter
+@Setter
 public abstract class AbstractMapView extends JPanel implements MultiLayerContainer, MapChangeListener {
 
     // Constants
@@ -120,61 +124,6 @@ public abstract class AbstractMapView extends JPanel implements MultiLayerContai
         init();
     }
 
-    /**
-     * Gets the default color for the grid.
-     *
-     * @return The color.
-     */
-    public Color getDefaultGridColor() {
-        return DEFAULT_GRID_COLOR;
-    }
-
-    /**
-     * Gets the default background color.
-     *
-     * @return The color.
-     */
-    public Color getDefaultBackgroudColor() {
-        return DEFAULT_BACKGROUND_COLOR;
-    }
-
-    /**
-     * Sets the current MapEditor for this map view.
-     *
-     * @param mapEditor
-     *            The parent MapEditor.
-     */
-    public void setMapEditor(MapEditor mapEditor) {
-        this.mapEditor = mapEditor;
-    }
-
-    /**
-     * Gets the map associated with this view.
-     *
-     * @return The map model.
-     */
-    public Map getMap() {
-        return map;
-    }
-
-    /**
-     * Sets the map associated with this view.
-     *
-     * @param map
-     *            The map model.
-     */
-    public void setMap(Map map) {
-        this.map = map;
-    }
-
-    /**
-     * Gets the grid color.
-     *
-     * @return The color of the grid.
-     */
-    public Color getGridColor() {
-        return gridColor;
-    }
 
     /**
      * Sets the grid color
@@ -185,15 +134,6 @@ public abstract class AbstractMapView extends JPanel implements MultiLayerContai
     public void setGridColor(Color color) {
         gridColor = color;
         repaint();
-    }
-
-    /**
-     * Gets the opacity of the grid.
-     *
-     * @return The opacity, a whole number 100%, 80%, 55% etc.
-     */
-    public int getGridOpacity() {
-        return gridOpacity;
     }
 
     /**
@@ -208,15 +148,6 @@ public abstract class AbstractMapView extends JPanel implements MultiLayerContai
     }
 
     /**
-     * Is the grid anti-aliased?
-     *
-     * @return Is the grid being anti-aliased?
-     */
-    public boolean isAntialiasGrid() {
-        return antialiasGrid;
-    }
-
-    /**
      * Sets the grid to be anti-aliased or not.
      *
      * @param isAntialias
@@ -225,15 +156,6 @@ public abstract class AbstractMapView extends JPanel implements MultiLayerContai
     public void setAntialiasGrid(boolean isAntialias) {
         antialiasGrid = isAntialias;
         repaint();
-    }
-
-    /**
-     * Gets the current zoom.
-     *
-     * @return The zoom factor i.e. 0.5 = 50%, 2.0 = 200% etc.
-     */
-    public double getZoom() {
-        return zoom;
     }
 
     /**
@@ -247,15 +169,6 @@ public abstract class AbstractMapView extends JPanel implements MultiLayerContai
             this.zoom = zoom;
             rescale();
         }
-    }
-
-    /**
-     * Gets the current zoom level.
-     *
-     * @return The current zoom factor.
-     */
-    public int getZoomLevel() {
-        return zoomLevel;
     }
 
     /**
@@ -366,22 +279,6 @@ public abstract class AbstractMapView extends JPanel implements MultiLayerContai
     }
 
     /**
-     *
-     * @return
-     */
-    public MapLayerView getCurrentSelectedLayer() {
-        return currentSelectedLayer;
-    }
-
-    /**
-     *
-     * @param layer
-     */
-    public void setCurrentSeletedLayer(MapLayerView layer) {
-        currentSelectedLayer = layer;
-    }
-
-    /**
      * Converts pixel coordinates to tile coordinates. The returned coordinates are at least 0 and adjusted with respect
      * to the number of tiles per row and the number of rows.
      *
@@ -399,14 +296,6 @@ public abstract class AbstractMapView extends JPanel implements MultiLayerContai
         int tileY = Math.round(y / tileHeight);
 
         return new Point(tileX, tileY);
-    }
-
-    /**
-     *
-     * @return
-     */
-    public MapEditor getMapEditor() {
-        return mapEditor;
     }
 
     /**

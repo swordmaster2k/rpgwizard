@@ -16,6 +16,7 @@ import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import lombok.AllArgsConstructor;
 import org.rpgwizard.editor.properties.user.UserPreference;
 import org.rpgwizard.editor.properties.user.UserPreferencesProperties;
 import org.rpgwizard.editor.ui.Theme;
@@ -26,15 +27,12 @@ import org.slf4j.LoggerFactory;
  *
  * @author Joshua Michael Daly
  */
+@AllArgsConstructor
 public class ThemeAction extends AbstractAction {
 
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(ThemeAction.class);
 
     private final Theme theme;
-
-    public ThemeAction(Theme theme) {
-        this.theme = theme;
-    }
 
     @Override
     public void actionPerformed(ActionEvent e) {

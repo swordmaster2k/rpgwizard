@@ -12,20 +12,22 @@ import java.io.File;
 import java.io.IOException;
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
+import lombok.AllArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.rpgwizard.editor.MainWindow;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Joshua Michael Daly
  */
+@AllArgsConstructor
 public class DeleteFileAction extends AbstractAction {
+    
+    private static final Logger LOGGER = LoggerFactory.getLogger(DeleteFileAction.class);
 
     private final File file;
-
-    public DeleteFileAction(File file) {
-        this.file = file;
-    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -36,6 +38,7 @@ public class DeleteFileAction extends AbstractAction {
                 FileUtils.deleteDirectory(file);
             }
         } catch (IOException ex) {
+            LOGGER.error("Failed to delete, file=[{}]", file, ex);
             JOptionPane.showMessageDialog(MainWindow.getInstance(), "Failed to delete " + file.getAbsolutePath(),
                     "Failed to Delete", JOptionPane.ERROR_MESSAGE);
         }

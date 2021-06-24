@@ -68,42 +68,6 @@ public final class FileMenu extends JMenu implements ActionListener {
         add(exitMenuItem);
     }
 
-    public JMenu getNewMenu() {
-        return newMenu;
-    }
-
-    public JMenuItem getNewProjectMenuItem() {
-        return newProjectMenuItem;
-    }
-
-    public JMenu getOpenMenu() {
-        return openMenu;
-    }
-
-    public JMenuItem getOpenProjectMenuItem() {
-        return openProjectMenuItem;
-    }
-
-    public JMenuItem getOpenFileMenuItem() {
-        return openFileMenuItem;
-    }
-
-    public JMenuItem getSaveMenuItem() {
-        return saveMenuItem;
-    }
-
-    public JMenuItem getSaveAsMenuItem() {
-        return saveAsMenuItem;
-    }
-
-    public JMenuItem getSaveAllMenuItem() {
-        return saveAllMenuItem;
-    }
-
-    public JMenuItem getExitMenuItem() {
-        return exitMenuItem;
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == newProjectMenuItem) {
@@ -115,7 +79,7 @@ public final class FileMenu extends JMenu implements ActionListener {
         } else if (e.getSource() == newSpriteMenuItem) {
             MainWindow.getInstance().createNewSprite();
         } else if (e.getSource() == newProgramMenuItem) {
-            MainWindow.getInstance().createNewProgram();
+            MainWindow.getInstance().createNewScript();
         } else if (e.getSource() == newTilesetMenuItem) {
             MainWindow.getInstance().createNewTileset();
         }

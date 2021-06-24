@@ -16,9 +16,9 @@ import javax.swing.JInternalFrame;
  * @author Geoff Wilson
  * @author Joshua Michael Daly
  */
-public class ToolkitDesktopManager extends DefaultDesktopManager {
+public class WizardDesktopManager extends DefaultDesktopManager {
 
-    public ToolkitDesktopManager() {
+    public WizardDesktopManager() {
         super();
     }
 

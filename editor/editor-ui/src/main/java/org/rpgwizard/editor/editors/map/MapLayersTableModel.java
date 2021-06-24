@@ -8,6 +8,8 @@
 package org.rpgwizard.editor.editors.map;
 
 import javax.swing.table.AbstractTableModel;
+import lombok.Getter;
+import lombok.Setter;
 import org.rpgwizard.common.assets.listeners.MapChangeListener;
 import org.rpgwizard.common.assets.events.MapChangedEvent;
 
@@ -17,6 +19,8 @@ import org.rpgwizard.common.assets.events.MapChangedEvent;
  *
  * @author Joshua Michael Daly
  */
+@Getter
+@Setter
 public class MapLayersTableModel extends AbstractTableModel implements MapChangeListener {
 
     private AbstractMapView mapView;
@@ -37,23 +41,6 @@ public class MapLayersTableModel extends AbstractTableModel implements MapChange
     public MapLayersTableModel(AbstractMapView map) {
         mapView = map;
         mapView.getMap().addMapChangeListener(this);
-    }
-
-    /**
-     *
-     * @return
-     */
-    public AbstractMapView getMapView() {
-        return mapView;
-    }
-
-    /**
-     *
-     * @param map
-     */
-    public void setMapView(AbstractMapView map) {
-        mapView = map;
-        // fireMapDataChanged();
     }
 
     /**

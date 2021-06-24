@@ -11,6 +11,8 @@ import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.swing.JScrollPane;
+import lombok.Getter;
+import lombok.Setter;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.Image;
 import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
@@ -21,6 +23,8 @@ import org.rpgwizard.editor.ui.resources.Icons;
  *
  * @author Joshua Michael Daly
  */
+@Getter
+@Setter
 public class ImageEditor extends AbstractAssetEditorWindow {
 
     private final Image image;
@@ -49,10 +53,6 @@ public class ImageEditor extends AbstractAssetEditorWindow {
 
     @Override
     public AbstractAsset getAsset() {
-        return image;
-    }
-
-    public Image getImage() {
         return image;
     }
 

@@ -7,8 +7,6 @@
  */
 package org.rpgwizard.editor.editors.map.state;
 
-import org.rpgwizard.editor.editors.map.state.*;
-
 /**
  *
  * @author Joshua Michael Daly

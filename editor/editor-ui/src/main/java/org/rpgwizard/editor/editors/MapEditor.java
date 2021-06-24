@@ -14,6 +14,8 @@ import java.awt.event.KeyListener;
 import java.io.File;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
+import lombok.Getter;
+import lombok.Setter;
 import org.rpgwizard.common.Selectable;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.AssetDescriptor;
@@ -57,6 +59,8 @@ import org.slf4j.LoggerFactory;
  * @author Geoff Wilson
  * @author Joshua Michael Daly
  */
+@Getter
+@Setter
 public final class MapEditor extends AbstractAssetEditorWindow
         implements MapChangeListener, KeyListener, ActionHandler {
 
@@ -108,94 +112,6 @@ public final class MapEditor extends AbstractAssetEditorWindow
      *
      * @return
      */
-    public JScrollPane getScrollPane() {
-        return scrollPane;
-    }
-
-    /**
-     *
-     * @param scrollPane
-     */
-    public void setScrollPane(JScrollPane scrollPane) {
-        this.scrollPane = scrollPane;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public MapView2D getMapView() {
-        return mapView;
-    }
-
-    /**
-     *
-     * @param mapView
-     */
-    public void setMapView(MapView2D mapView) {
-        this.mapView = mapView;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public Map getMap() {
-        return map;
-    }
-
-    /**
-     *
-     * @param map
-     */
-    public void setMap(Map map) {
-        this.map = map;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public Point getCursorTileLocation() {
-        return cursorTileLocation;
-    }
-
-    /**
-     *
-     * @param location
-     */
-    public void setCursorTileLocation(Point location) {
-        cursorTileLocation = location;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public Point getCursorLocation() {
-        return cursorLocation;
-    }
-
-    /**
-     *
-     * @param location
-     */
-    public void setCursorLocation(Point location) {
-        cursorLocation = location;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public Rectangle getSelection() {
-        return selection;
-    }
-
-    /**
-     *
-     * @return
-     */
     public Rectangle getSelectionExpaned() {
         if (selection == null) {
             return null;
@@ -209,30 +125,6 @@ public final class MapEditor extends AbstractAssetEditorWindow
         cloned.height++;
 
         return cloned;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public Tile[][] getSelectedTiles() {
-        return selectedTiles;
-    }
-
-    /**
-     *
-     * @param tiles
-     */
-    public void setSelectedTiles(Tile[][] tiles) {
-        selectedTiles = tiles;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public Selectable getSelectedObject() {
-        return selectedObject;
     }
 
     /**

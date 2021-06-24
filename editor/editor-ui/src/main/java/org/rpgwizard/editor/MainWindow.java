@@ -73,13 +73,14 @@ import org.rpgwizard.editor.properties.EditorProperties;
 import org.rpgwizard.editor.properties.EditorProperty;
 import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 import org.rpgwizard.editor.ui.EditorFactory;
-import org.rpgwizard.editor.ui.ProjectPanel;
+import org.rpgwizard.editor.ui.project.ProjectPanel;
 import org.rpgwizard.editor.ui.PropertiesPanel;
 import org.rpgwizard.editor.ui.TileSetTabbedPane;
 import org.rpgwizard.editor.ui.ToolkitDesktopManager;
 import org.rpgwizard.editor.ui.actions.ActionHandler;
 import org.rpgwizard.editor.ui.listeners.TileSelectionListener;
 import org.rpgwizard.editor.ui.listeners.TileSetSelectionListener;
+import org.rpgwizard.editor.ui.log.LogPanel;
 import org.rpgwizard.editor.ui.menu.MainMenuBar;
 import org.rpgwizard.editor.ui.resources.Icons;
 import org.rpgwizard.editor.ui.toolbar.MainToolBar;
@@ -118,6 +119,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
 
     private final JPanel southPanel;
     private final JTabbedPane southTabbedPane;
+    private final LogPanel logPanel;
     private final IssuesTablePanel issuesPanel;
 
     private final ProjectPanel projectPanel;
@@ -225,6 +227,10 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         eastPanel.add(eastLowerTabbedPane);
         eastPanel.setVisible(false);
         ///
+        /// logPanel
+        ///
+        logPanel = new LogPanel(200);
+        ///
         /// issuesPanel
         ///
         issuesPanel = new IssuesTablePanel(200);
@@ -232,6 +238,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         ///
         ///
         southTabbedPane = new JTabbedPane();
+        southTabbedPane.addTab("Log", logPanel);
         southTabbedPane.addTab("Issues", issuesPanel);
         ///
         /// southPanel
@@ -383,6 +390,10 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
 
     public JPanel getSouthPanel() {
         return southPanel;
+    }
+
+    public LogPanel getLogPanel() {
+        return logPanel;
     }
 
     public IssuesTablePanel getIssuesPanel() {

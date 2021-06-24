@@ -7,6 +7,7 @@
  */
 package org.rpgwizard.editor.ui;
 
+import org.rpgwizard.editor.ui.project.ModelPanelFactory;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;

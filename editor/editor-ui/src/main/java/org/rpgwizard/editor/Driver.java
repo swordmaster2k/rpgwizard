@@ -185,6 +185,11 @@ public class Driver {
                             for (Window window : Window.getWindows()) {
                                 SwingUtilities.updateComponentTreeUI(window);
                             }
+                            try {
+                                loadLastProject();
+                            } catch (Exception ex) {
+                                LOGGER.error("Failed to open last project! reason=[{}]", ex.getMessage());
+                            }
                         }
 
                         @Override
@@ -211,12 +216,6 @@ public class Driver {
                             LOGGER.info("Stopping the RPGWizard Editor...");
                         }
                     });
-
-                    try {
-                        loadLastProject();
-                    } catch (Exception ex) {
-                        LOGGER.error("Failed to open last project! reason=[{}]", ex.getMessage());
-                    }
 
                     mainWindow.setVisible(true);
                 } catch (Exception ex) {

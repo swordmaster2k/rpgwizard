@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package org.rpgwizard.editor.ui;
+package org.rpgwizard.editor.ui.project;
 
 import org.rpgwizard.common.Selectable;
 import org.rpgwizard.common.assets.Collider;
@@ -27,6 +27,7 @@ import org.rpgwizard.editor.editors.image.ImageModelPanel;
 import org.rpgwizard.editor.editors.map.panels.ColliderPanel;
 import org.rpgwizard.editor.editors.map.panels.TriggerPanel;
 import org.rpgwizard.editor.editors.tileset.TileModelPanel;
+import org.rpgwizard.editor.ui.AbstractModelPanel;
 
 /**
  *

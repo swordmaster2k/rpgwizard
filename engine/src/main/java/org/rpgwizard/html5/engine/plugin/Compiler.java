@@ -164,7 +164,7 @@ public class Compiler {
             updateProgress(progressMonitor, 100);
         }
     }
-    
+
     public static void embedEngine(String title, File destination, ProgressMonitor progressMonitor,
             boolean isCompileMode) throws Exception {
         String destinationPath = destination.getAbsolutePath();
@@ -186,7 +186,7 @@ public class Compiler {
         FileUtils.deleteQuietly(new File(destinationPath + "/" + engineZip.getName()));
 
         // Find project game file.
-        Collection<File> files = FileUtils.listFiles(gameDir, new String[]{"game"}, false);
+        Collection<File> files = FileUtils.listFiles(gameDir, new String[] { "game" }, false);
         if (files.isEmpty()) {
             throw new Exception("No game file present in project directory!");
         }

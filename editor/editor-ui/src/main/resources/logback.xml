@@ -31,10 +31,14 @@
       <pattern>%d{HH:mm:ss.SSS}  %-4relative [%thread] %-5level %logger{35}.%M:%L - %msg%n</pattern>
     </encoder>
   </appender>
+  
+  <appender name="PANEL" class="org.rpgwizard.editor.ui.log.LogPanelAppender">
+  </appender>
 
   <root level="info" additivity="false">
     <appender-ref ref="STDOUT"/>
     <appender-ref ref="FILE"/>
+    <appender-ref ref="PANEL"/>
   </root>
 
 </configuration>

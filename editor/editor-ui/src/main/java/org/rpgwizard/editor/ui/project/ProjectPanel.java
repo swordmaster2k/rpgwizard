@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package org.rpgwizard.editor.ui;
+package org.rpgwizard.editor.ui.project;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -38,7 +38,6 @@ import java.nio.file.WatchKey;
 import java.nio.file.attribute.BasicFileAttributes;
 import javax.swing.tree.TreeSelectionModel;
 import org.rpgwizard.editor.MainWindow;
-import org.rpgwizard.editor.ui.panel.ProjectTreeCellRenderer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,6 +54,7 @@ public final class ProjectPanel extends JPanel {
 
     private DefaultTreeModel model;
     private final JTree tree;
+    private final ProjectTreePopupMenu popupMenu;
 
     public ProjectPanel() {
         tree = new JTree();
@@ -62,18 +62,29 @@ public final class ProjectPanel extends JPanel {
         tree.setVisible(false);
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
+        popupMenu = new ProjectTreePopupMenu();
+
         MouseListener mouseListener = new MouseAdapter() {
             @Override
-            public void mousePressed(MouseEvent e) {
+            public void mouseReleased(MouseEvent e) {
                 int row = tree.getRowForLocation(e.getX(), e.getY());
                 TreePath treePath = tree.getPathForLocation(e.getX(), e.getY());
-                if (row != -1) {
-                    if (e.getClickCount() == 1) {
+                if (row == -1) {
+                    return;
+                }
 
-                    } else if (e.getClickCount() == 2) {
-                        Object[] nodes = treePath.getPath();
-                        if (nodes.length > 0) {
-                            MainWindow.getInstance().openAssetEditor(new File(nodes[nodes.length - 1].toString()));
+                Object[] nodes = treePath.getPath();
+                if (nodes.length > 0) {
+                    String filePath = nodes[nodes.length - 1].toString();
+                    if (e.isPopupTrigger()) {
+                        popupMenu.show(e.getComponent(), e.getX(), e.getY(), filePath);
+                    } else {
+                        if (row != -1) {
+                            if (e.getClickCount() == 1) {
+
+                            } else if (e.getClickCount() == 2) {
+                                MainWindow.getInstance().openAssetEditor(new File(filePath));
+                            }
                         }
                     }
                 }
@@ -117,7 +128,7 @@ public final class ProjectPanel extends JPanel {
     private void startWatchService(String watchPath) {
         Runnable watchRunnable = () -> {
             try {
-                LOGGER.info("Stopping WatchService watchPath=[{}]", watchPath);
+                LOGGER.info("Starting WatchService watchPath=[{}]", watchPath);
                 watchService = FileSystems.getDefault().newWatchService();
                 registerRecursive(Paths.get(watchPath));
 

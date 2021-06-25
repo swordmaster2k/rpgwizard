@@ -117,10 +117,10 @@ public final class ProjectTreePopupMenu extends JPopupMenu {
             }
             return !EditorFileManager.getTypeDirectories().contains(FilenameUtils.getName(filePath).toLowerCase());
         }
-        
+
         return false;
     }
-    
+
     private List<String> getDeletableExtensions() {
         List<String> exts = new ArrayList<>();
         exts.addAll(Arrays.asList(EditorFileManager.getTKFileExtensions()));

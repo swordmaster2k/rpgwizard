@@ -19,6 +19,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.pf4j.JarPluginManager;
 import org.pf4j.PluginManager;
@@ -158,6 +159,12 @@ public class Driver {
             LOGGER.info("Starting the RPGWizard Editor...");
             redirectUncaughtExceptions();
             logSystemInfo();
+
+            try {
+                FileUtils.deleteQuietly(new File(FileTools.getTempDirectory()));
+            } catch (URISyntaxException ex) {
+                LOGGER.error("Failed to delete temp directory on startup!", ex);
+            }
 
             SplashScreen splashScreen = new SplashScreen();
             splashScreen.display();

@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
  */
 @AllArgsConstructor
 public class DeleteFileAction extends AbstractAction {
-    
+
     private static final Logger LOGGER = LoggerFactory.getLogger(DeleteFileAction.class);
 
     private final File file;

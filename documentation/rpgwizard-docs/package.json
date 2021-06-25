@@ -11,11 +11,11 @@
         "npm-run-all": "4.1.5"
     },
     "scripts": {
-        "build": "npm-run-all -s clean copy-rpgcode copy-defaults generate",
+        "build": "npm-run-all -s clean copy-rpgcode generate",
         "clean": "rm -rf docs/",
-        "copy-rpgcode": "cp ../../engine/engine-js/js/rpgcode/rpgcode.js src/",
+        "copy-rpgcode": "cp ../../engine/engine-ts/js/client-api/rpg-api.js src/",
 		"copy-defaults": "cp ../../demo/Tactical/Programs/defaults/*.js src/",
         "generate": "jsdoc -c jsdoc.json && cp -r src/images docs/images",
-		"site":  "rm -rf ../../../rpgwizard.github.io/assets/docs/v1 && cp -r docs/ ../../../rpgwizard.github.io/assets/docs/v1"
+		"site":  "rm -rf ../../../rpgwizard.github.io/assets/docs/v2 && cp -r docs/ ../../../rpgwizard.github.io/assets/docs/v2"
     }
 }

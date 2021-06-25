@@ -34,7 +34,7 @@ public final class EditMenu extends JMenu {
     private JMenuItem undoMenuItem;
     @Getter
     private JMenuItem redoMenuItem;
-    
+
     private JMenuItem cutMenuItem;
     private JMenuItem copyMenuItem;
     private JMenuItem pasteMenuItem;

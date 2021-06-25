@@ -21,26 +21,24 @@ public class Keyword {
     private final String definedIn;
     private final String desc;
 
-    public Keyword(String prefix, Element dt, Element dd) {
-        Element h4 = dt.getElementsByTag("h4").first();
-        name = prefix + "." + h4.ownText() + h4.getElementsByClass("signature").first().text() + ";";
+    public Keyword(String prefix, Element member) {
+        Element h4 = member.getElementsByTag("h4").first();
+        name = prefix + "." + h4.getElementsByClass("code-name").first().text() + ";";
         type = "function";
-
-        Element details = dd.getElementsByClass("details").first();
-        if (details != null) {
-            details.remove();
+        
+        Element paramType = h4.getElementsByClass("type-signature").first();
+        
+        if (paramType != null && -1 < paramType.ownText().indexOf("{")) {
+            returnType = paramType.ownText().substring(paramType.ownText().indexOf("{"));
+        } else {
+            returnType = "undefined";
         }
-
-        Element returns = dd.getElementsByClass("container-returns").first();
-        Element paramType = null;
-        if (returns != null) {
-            paramType = returns.getElementsByClass("param-type").first();
-        }
-
-        returnType = paramType != null ? paramType.ownText() : "undefined";
-        definedIn = dt.getElementsByTag("a").first().ownText();
-
-        desc = "<![CDATA[" + dd.html().replace("h5", "h3") + "]]>";
+        
+        Element details = member.getElementsByClass("details").first();
+        Element detailsSpan = details.getElementsByTag("span").first();
+        definedIn = detailsSpan.getElementsByTag("a").get(0).ownText() + ":" + detailsSpan.getElementsByTag("a").get(1).ownText();
+        
+        desc = "<![CDATA[" + member.html().replace("h5", "h3") + "]]>";
     }
 
     public String toXml() {

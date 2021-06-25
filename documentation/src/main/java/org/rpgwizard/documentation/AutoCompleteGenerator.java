@@ -10,14 +10,12 @@ package org.rpgwizard.documentation;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 /**
  *
@@ -49,27 +47,18 @@ public class AutoCompleteGenerator {
             Collection<File> files = FileUtils.listFiles(new File(INPUT), new String[]{"html"}, true);
             for (File htmlFile : files) {
                 Document document = Jsoup.parse(htmlFile, null);
-                Element main = document.getElementById("main");
-                Element section = main.getElementsByTag("section").first();
-                Element article = section.getElementsByTag("article").first();
-                for (Element dl : article.getElementsByTag("dl")) {
-                    Elements children = dl.children();
-                    List<Element> list = children.subList(0, children.size());
-
-                    int i = 0;
-                    int size = list.size();
-                    while (i < size - 1) {
-                        Element dt = list.get(i);
-                        Element dd = list.get(i + 1);
-                        try {
-                            keywords += new Keyword(htmlFile.getName().replace(".html", "").toLowerCase(), dt, dd).toXml();
-                        } catch (Exception ex) {
-                            // Ignore it.
-                        }
-                        i += 2;
-                    }
+                Element members = document.getElementsByClass("members").first();
+                if (members == null) {
+                    continue;
                 }
                 
+                for (Element member : members.getElementsByClass("member")) {
+                    try {
+                        keywords += new Keyword("rpg", member).toXml();
+                    } catch (Exception ex) {
+                        Logger.getLogger(AutoCompleteGenerator.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
             }
 
             FileUtils.writeStringToFile(new File(OUTPUT + "rpgcode.xml"), toXml(keywords), "UTF-8");

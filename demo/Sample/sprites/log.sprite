@@ -1,1 +1,80 @@
-{"version":"2.0.0","name":"Log","description":"","animations":{"DEFEND":"","WEST":"Log/walk_west.animation","SPECIAL_MOVE":"","NORTH_IDLE":"","SOUTH_IDLE":"","NORTH":"Log/walk_north.animation","DEFEND_SOUTH":"Log/defend_south.animation","SOUTH":"Log/walk_south.animation","DEFEND_EAST":"Log/defend_east.animation","EAST":"Log/walk_east.animation","DEFEND_WEST":"Log/defend_west.animation","DIE":"","EAST_IDLE":"","NORTH_WEST":"","NORTH_EAST_IDLE":"","NORTH_WEST_IDLE":"","WEST_IDLE":"","SOUTH_WEST_IDLE":"","SOUTH_EAST_IDLE":"","REST":"","NORTH_EAST":"","DEFEND_NORTH":"Log/defend_north.animation","ATTACK":"","SOUTH_EAST":"","SOUTH_WEST":""},"collider":{"enabled":true,"x":-5,"y":0,"points":[{"x":0,"y":0},{"x":10,"y":0},{"x":10,"y":10},{"x":0,"y":10}]},"trigger":{"enabled":true,"x":-6,"y":-9,"points":[{"x":0,"y":0},{"x":12,"y":0},{"x":12,"y":20},{"x":0,"y":20}],"events":[{"type":"overlap","script":"","key":null}]},"data":{}}
+{
+    "version": "2.0.0",
+    "name": "Log",
+    "description": "",
+    "animations": {
+        "DEFEND": "",
+        "WEST": "Log/walk_west.animation",
+        "SPECIAL_MOVE": "",
+        "NORTH_IDLE": "",
+        "SOUTH_IDLE": "",
+        "NORTH": "Log/walk_north.animation",
+        "DEFEND_SOUTH": "Log/defend_south.animation",
+        "SOUTH": "Log/walk_south.animation",
+        "DEFEND_EAST": "Log/defend_east.animation",
+        "EAST": "Log/walk_east.animation",
+        "DEFEND_WEST": "Log/defend_west.animation",
+        "DIE": "",
+        "EAST_IDLE": "",
+        "NORTH_WEST": "",
+        "NORTH_EAST_IDLE": "",
+        "NORTH_WEST_IDLE": "",
+        "WEST_IDLE": "",
+        "SOUTH_WEST_IDLE": "",
+        "SOUTH_EAST_IDLE": "",
+        "REST": "",
+        "NORTH_EAST": "",
+        "DEFEND_NORTH": "Log/defend_north.animation",
+        "ATTACK": "",
+        "SOUTH_EAST": "",
+        "SOUTH_WEST": ""
+    },
+    "collider": {
+        "enabled": true,
+        "x": -5,
+        "y": 0,
+        "points": [{
+                "x": 0,
+                "y": 0
+            }, {
+                "x": 10,
+                "y": 0
+            }, {
+                "x": 10,
+                "y": 10
+            }, {
+                "x": 0,
+                "y": 10
+            }
+        ]
+    },
+    "trigger": {
+        "enabled": true,
+        "x": -6,
+        "y": -9,
+        "points": [{
+                "x": 0,
+                "y": 0
+            }, {
+                "x": 12,
+                "y": 0
+            }, {
+                "x": 12,
+                "y": 20
+            }, {
+                "x": 0,
+                "y": 20
+            }
+        ],
+        "events": [{
+                "type": "overlap",
+                "script": "",
+                "key": null
+            }
+        ]
+    },
+    "data": {
+		"type": "enemy",
+		"health": 3
+	}
+}

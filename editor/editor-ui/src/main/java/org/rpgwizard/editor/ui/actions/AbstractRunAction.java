@@ -7,12 +7,12 @@
  */
 package org.rpgwizard.editor.ui.actions;
 
-import com.google.common.io.Files;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URISyntaxException;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.ProgressMonitor;
@@ -21,6 +21,7 @@ import org.apache.commons.io.FileUtils;
 import org.pf4j.PluginManager;
 import org.rpgwizard.common.assets.game.Game;
 import org.rpgwizard.editor.MainWindow;
+import org.rpgwizard.editor.utilities.FileTools;
 import org.rpgwizard.pluginsystem.Engine;
 
 /**
@@ -39,11 +40,12 @@ public abstract class AbstractRunAction extends AbstractAction {
         instance.getMainToolBar().getSaveAllButton().doClick();
     }
 
-    protected File copyProject() throws IOException {
+    protected File copyProject() throws IOException, URISyntaxException {
         // Make a temporary copy of the user's project for the engine to
         // use.
         File projectOriginal = new File(System.getProperty("project.path"));
-        File projectCopy = Files.createTempDir();
+        File projectCopy = new File(FileTools.getTempDirectory(),
+                projectOriginal.getName() + "-" + System.currentTimeMillis());
         FileUtils.copyDirectory(projectOriginal, new File(projectCopy, "game"));
         return projectCopy;
     }

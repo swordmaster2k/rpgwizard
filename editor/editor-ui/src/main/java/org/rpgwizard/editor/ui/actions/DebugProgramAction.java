@@ -10,6 +10,7 @@ package org.rpgwizard.editor.ui.actions;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Collection;
 import javax.swing.JOptionPane;
 import org.apache.commons.io.FileUtils;
@@ -58,7 +59,7 @@ public class DebugProgramAction extends AbstractRunAction {
             File projectCopy = copyProject();
             overrideStartupProgram(projectCopy, override);
             startEngine(projectCopy);
-        } catch (AssetException | IOException ex) {
+        } catch (URISyntaxException | AssetException | IOException ex) {
             LOGGER.error("Failed to run engine.", ex);
         }
     }

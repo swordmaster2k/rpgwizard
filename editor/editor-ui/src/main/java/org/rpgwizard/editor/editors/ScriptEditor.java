@@ -13,7 +13,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -24,6 +26,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.io.IOUtils;
 import org.fife.rsta.ac.LanguageSupportFactory;
 import org.fife.rsta.ac.js.JavaScriptLanguageSupport;
 import org.fife.rsta.ac.js.JsErrorParser;
@@ -73,14 +76,19 @@ public final class ScriptEditor extends AbstractAssetEditorWindow
     private final Script script;
     private RSyntaxTextArea textArea;
 
-    public ScriptEditor(Script program) {
+    public ScriptEditor(Script script) {
         super("Untitled", true, true, true, true, Icons.getIcon("program"));
 
-        this.script = program;
-        if (program.getDescriptor() == null) {
-            init(program, "Untitled");
+        this.script = script;
+        if (script.getDescriptor() == null) {
+            try (InputStream in = ScriptEditor.class.getResourceAsStream("/script/templates/empty.js")) {
+                script.update(IOUtils.toString(in, StandardCharsets.UTF_8));
+            } catch (IOException ex) {
+                // Ignore it
+            }
+            init(script, "Untitled");
         } else {
-            init(program, new File(program.getDescriptor().getURI()).getName());
+            init(script, new File(script.getDescriptor().getURI()).getName());
         }
     }
 
@@ -106,8 +114,8 @@ public final class ScriptEditor extends AbstractAssetEditorWindow
         textArea.forceReparsing(0);
     }
 
-    private void init(Script program, String fileName) {
-        String code = program.getStringBuffer().toString();
+    private void init(Script script, String fileName) {
+        String code = script.getStringBuffer().toString();
         textArea = new RSyntaxTextArea(code, 30, 90);
         LanguageSupportFactory.get().register(textArea);
         textArea.setCaretPosition(0);
@@ -171,7 +179,7 @@ public final class ScriptEditor extends AbstractAssetEditorWindow
         }
 
         Font font = textArea.getFont();
-        Font newFont = new Font(font.getName(), font.getStyle(), 12);
+        Font newFont = new Font(font.getName(), font.getStyle(), 14);
         textArea.setFont(newFont);
 
         RTextScrollPane scrollPane = new RTextScrollPane(textArea, true);

@@ -29,6 +29,7 @@ export class Sprite implements Asset.Sprite {
     readonly version: string;
 
     // Runtime
+    _id: string;
     _x: number;
     _y: number;
     _layer: number;
@@ -99,6 +100,14 @@ export class Sprite implements Asset.Sprite {
     }
 
     // Getters & Setters
+    get id(): string {
+        return this._id;
+    }
+
+    set id(v: string) {
+        this._id = v;
+    }
+
     get x(): number {
         return this._x;
     }

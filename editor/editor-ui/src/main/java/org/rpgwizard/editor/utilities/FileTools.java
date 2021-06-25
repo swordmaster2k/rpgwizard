@@ -45,6 +45,11 @@ public final class FileTools {
                 + EditorProperties.getProperty(EditorProperty.EDITOR_BUILDS_DIRECOTRY);
     }
 
+    public static String getTempDirectory() throws URISyntaxException {
+        return getExecutionPath(FileTools.class) + File.separator
+                + EditorProperties.getProperty(EditorProperty.EDITOR_TEMP_DIRECOTRY);
+    }
+
     public static String getProjectsDirectory() {
         try {
             return getExecutionPath(FileTools.class) + File.separator

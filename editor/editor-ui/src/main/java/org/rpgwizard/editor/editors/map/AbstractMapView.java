@@ -124,7 +124,6 @@ public abstract class AbstractMapView extends JPanel implements MultiLayerContai
         init();
     }
 
-
     /**
      * Sets the grid color
      *

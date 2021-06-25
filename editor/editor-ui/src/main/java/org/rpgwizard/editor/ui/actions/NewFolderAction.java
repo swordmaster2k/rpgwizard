@@ -39,7 +39,7 @@ public class NewFolderAction extends AbstractAction {
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         File newFolder = new File(folder, folderName);
         if (newFolder.exists()) {
             JOptionPane.showMessageDialog(MainWindow.getInstance(), "The folder already exists!", "Already Exists",

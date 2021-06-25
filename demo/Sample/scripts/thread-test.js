@@ -1,5 +1,8 @@
+import * as action from "./modules/action.js";
+
 export default async function (origin) {
-    // console.log("sleep thread test origin=[%s]", origin.name);
-    await new Promise(resolve => setTimeout(resolve, 5000));
-    // console.log("awoke thread test origin=[%s]", origin.name);
+
+   await action.wander(origin, 80, 2500);
+//   await action.moveSpriteTowardsPoint(origin, {x: 0, y: 0}, 10, 1000);
+
 }

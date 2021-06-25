@@ -243,8 +243,20 @@ export namespace Framework {
         }
     }
 
-    export function raycast() {
-        // TODO
+    export function raycast(origin: any, direction: any, maxDistance: number): any {
+        direction = new Crafty.math.Vector2D(direction.x, direction.y).normalize();
+
+        const results: any = { sprites: [], colliders: [] };
+        const hits = Crafty.raycast(origin, direction, maxDistance, "Raycastable");
+        hits.forEach(hit => {
+            if (hit.obj.collider && hit.obj.collider.enabled) {
+                results.colliders.push(hit.obj.collider);
+            } else if (hit.obj.sprite && hit.obj.sprite.collider.enabled) {
+                results.sprites.push(hit.obj.sprite);
+            }
+        });
+
+        return results;
     }
 
     export function playAudio(id: string, repeatCount: number, volume: number = 1.0) {

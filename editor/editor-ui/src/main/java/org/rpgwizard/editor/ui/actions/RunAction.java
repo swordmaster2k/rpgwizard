@@ -10,6 +10,7 @@ package org.rpgwizard.editor.ui.actions;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +28,7 @@ public class RunAction extends AbstractRunAction {
             toggleButtons();
             File projectCopy = copyProject();
             startEngine(projectCopy);
-        } catch (IOException ex) {
+        } catch (URISyntaxException | IOException ex) {
             LOGGER.error("Failed to run engine.", ex);
         }
     }

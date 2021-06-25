@@ -33,7 +33,7 @@ public class ScriptGenerator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ScriptGenerator.class);
 
-    public static final String TEMPLATE_DIR = "program/templates";
+    public static final String TEMPLATE_DIR = "script/templates";
     public static final String AUTO_GENERATED_DIR = "auto_generated";
     public static final String TEMPLATE_EXT = ".js";
 

@@ -84,7 +84,7 @@ export class MapController {
             */
             for (const spriteId in mapLayer.sprites) {
                 const mapSprite: Runtime.MapSprite = mapLayer.sprites[spriteId];
-                mapSprite.entity = await this.loadSprite(mapSprite);
+                mapSprite.entity = await this.loadSprite(spriteId, mapSprite);
             }
         }
         /*
@@ -122,7 +122,7 @@ export class MapController {
 
     }
 
-    private async loadSprite(mapSprite: Runtime.MapSprite) {
+    private async loadSprite(spriteId: string, mapSprite: Runtime.MapSprite) {
         if (Core.getInstance().debugEnabled) {
             console.debug("Loading sprite=[%s]", JSON.stringify(mapSprite));
         }
@@ -134,6 +134,7 @@ export class MapController {
         //     this._cache.put(sprite.asset, newSprite);
         // }
 
+        sprite.id = spriteId;
         sprite.x = mapSprite.startLocation.x;
         sprite.y = mapSprite.startLocation.y;
         sprite.layer = mapSprite.startLocation.layer;

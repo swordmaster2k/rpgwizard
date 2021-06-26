@@ -72,6 +72,7 @@ import org.rpgwizard.editor.properties.EditorProperties;
 import org.rpgwizard.editor.properties.EditorProperty;
 import org.rpgwizard.editor.ui.AbstractAssetEditorWindow;
 import org.rpgwizard.editor.ui.EditorFactory;
+import org.rpgwizard.editor.ui.GoToFileDialog;
 import org.rpgwizard.editor.ui.project.ProjectPanel;
 import org.rpgwizard.editor.ui.PropertiesPanel;
 import org.rpgwizard.editor.ui.TileSetTabbedPane;
@@ -144,6 +145,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
     // Script Related.
     private final FindDialog findDialog;
     private final ReplaceDialog replaceDialog;
+    private final GoToFileDialog goToFileDialog;
 
     // Listeners.
     private final TileSetSelectionListener tileSetSelectionListener;
@@ -273,6 +275,10 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
         replaceDialog = new ReplaceDialog(this, this);
         SearchContext context = findDialog.getSearchContext();
         replaceDialog.setSearchContext(context);
+        ///
+        /// goToFileDialog
+        goToFileDialog = new GoToFileDialog(this);
+        ///
         ///
         /// statusBar
         ///

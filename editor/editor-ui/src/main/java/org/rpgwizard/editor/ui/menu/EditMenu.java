@@ -17,6 +17,7 @@ import lombok.Getter;
 import org.rpgwizard.editor.ui.actions.CopyAction;
 import org.rpgwizard.editor.ui.actions.CutAction;
 import org.rpgwizard.editor.ui.actions.FindAction;
+import org.rpgwizard.editor.ui.actions.GoToFileAction;
 import org.rpgwizard.editor.ui.actions.PasteAction;
 import org.rpgwizard.editor.ui.actions.RedoAction;
 import org.rpgwizard.editor.ui.actions.ReplaceAction;
@@ -41,6 +42,7 @@ public final class EditMenu extends JMenu {
     private JMenuItem selectAllMenuItem;
     private JMenuItem findMenuItem;
     private JMenuItem quickReplaceMenuItem;
+    private JMenuItem goToFileMenuItem;
 
     public EditMenu() {
         super("Edit");
@@ -55,6 +57,7 @@ public final class EditMenu extends JMenu {
         configureSelectAllMenuItem();
         configureFindMenuItem();
         configureQuickReplaceMenuItem();
+        configureGoToFileMenuItem();
 
         add(undoMenuItem);
         add(redoMenuItem);
@@ -67,6 +70,7 @@ public final class EditMenu extends JMenu {
         add(new JSeparator());
         add(findMenuItem);
         add(quickReplaceMenuItem);
+        add(goToFileMenuItem);
     }
 
     /**
@@ -79,6 +83,7 @@ public final class EditMenu extends JMenu {
         selectAllMenuItem.setEnabled(true);
         findMenuItem.setEnabled(true);
         quickReplaceMenuItem.setEnabled(true);
+        goToFileMenuItem.setEnabled(true);
     }
 
     public void configureUndoMenuItem() {
@@ -166,6 +171,16 @@ public final class EditMenu extends JMenu {
         quickReplaceMenuItem.setMnemonic(KeyEvent.VK_R);
 
         quickReplaceMenuItem.setEnabled(false);
+    }
+
+    public void configureGoToFileMenuItem() {
+        goToFileMenuItem = new JMenuItem("Go To File");
+        goToFileMenuItem.setAction(new GoToFileAction());
+        goToFileMenuItem.setText("Go To File...");
+        goToFileMenuItem
+                .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
+
+        goToFileMenuItem.setEnabled(false);
     }
 
 }

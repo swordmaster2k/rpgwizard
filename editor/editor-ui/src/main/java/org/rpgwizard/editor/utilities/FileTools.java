@@ -11,8 +11,12 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.openide.util.Utilities;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.AssetException;
@@ -163,10 +167,47 @@ public final class FileTools {
         return null;
     }
 
+    public static File promptForFile(String title, File parent, String ext) {
+        String filename = (String) JOptionPane.showInputDialog(MainWindow.getInstance(), "Please provide a name:",
+                title, JOptionPane.PLAIN_MESSAGE);
+        if (filename == null) {
+            return null; // User cancelled
+        }
+
+        try {
+            // Remove any extension the user may have tried to add
+            filename = FilenameUtils.removeExtension(filename);
+
+            if (StringUtils.isBlank(filename)) {
+                throw new IOException("Blank filename");
+            }
+
+            if (StringUtils.isNotBlank(ext)) {
+                filename += "." + ext;
+            }
+            File file = new File(parent, filename);
+
+            file.getCanonicalPath();
+            if (!file.exists()) {
+                return file;
+            } else {
+                LOGGER.error("Already exists file=[{}]", file);
+                JOptionPane.showMessageDialog(MainWindow.getInstance(), "The file already exists!", "Already Exists",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (IOException ex) {
+            LOGGER.error("Invalid filename=[{}]", filename, ex);
+            JOptionPane.showMessageDialog(MainWindow.getInstance(), "Invalid filename!", "Invalid Name",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+
+        return null;
+    }
+
     public static void saveAsset(AbstractAsset asset) throws Exception {
         File original;
-        File backup = EditorFileManager.backupFile(new File(asset.getDescriptor().getURI()));
-        original = new File(asset.getDescriptor().getURI());
+        File backup = EditorFileManager.backupFile(Utilities.toFile(asset.getDescriptor().getUri()));
+        original = Utilities.toFile(asset.getDescriptor().getUri());
         try {
             AssetManager.getInstance().serialize(AssetManager.getInstance().getHandle(asset));
         } catch (IOException | AssetException ex) {

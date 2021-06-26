@@ -48,7 +48,7 @@ public class ImageEditor extends AbstractAssetEditorWindow {
         imagePanel.removeMouseListener(imagePanel);
         imagePanel.setToolTipText(null);
 
-        init(new File(image.getDescriptor().getURI()).getName());
+        init(new File(image.getDescriptor().getUri()).getName());
     }
 
     @Override

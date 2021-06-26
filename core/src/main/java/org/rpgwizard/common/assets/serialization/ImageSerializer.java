@@ -26,7 +26,7 @@ public class ImageSerializer extends AbstractAssetSerializer {
 
     @Override
     public boolean serializable(AssetDescriptor descriptor) {
-        final String ext = Paths.extension(descriptor.getURI());
+        final String ext = Paths.extension(descriptor.getUri());
         return (Arrays.asList(new String[] { ".png", ".gif", ".jpg", ".jpeg", ".bmp" }).contains(ext));
     }
 
@@ -43,7 +43,7 @@ public class ImageSerializer extends AbstractAssetSerializer {
     @Override
     public void deserialize(AssetHandle handle) throws IOException, AssetException {
         final Image image = new Image(handle.getDescriptor());
-        File path = new File(handle.getDescriptor().getURI().getPath());
+        File path = new File(handle.getDescriptor().getUri().getPath());
         image.setBufferedImage(ImageIO.read(path));
 
         handle.setAsset(image);

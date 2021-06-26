@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
+import org.openide.util.Utilities;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.animation.Animation;
 import org.rpgwizard.common.assets.AssetDescriptor;
@@ -51,12 +52,16 @@ public final class AnimationEditor extends AbstractAssetEditorWindow
         animation = theAnimation;
         animation.addAnimationChangeListener(this);
         if (animation.getDescriptor() != null) {
-            setTitle(new File(animation.getDescriptor().getURI()).getName());
+            setTitle(Utilities.toFile(animation.getDescriptor().getUri()).getName());
         }
 
         configureInterface();
         setSize(400, 400);
         setVisible(true);
+    }
+
+    public static void prepareAnimation(Animation animation) {
+
     }
 
     @Override

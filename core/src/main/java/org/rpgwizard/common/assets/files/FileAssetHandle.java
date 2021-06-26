@@ -30,7 +30,7 @@ public class FileAssetHandle extends AssetHandle {
     }
 
     public File getFile() {
-        final Path path = Paths.get(descriptor.getURI());
+        final Path path = Paths.get(descriptor.getUri());
         final File file = path.toFile();
         return file;
     }

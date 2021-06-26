@@ -49,7 +49,7 @@ public class DebugProgramAction extends AbstractRunAction {
                 return;
             }
 
-            String override = EditorFileManager.getRelativePath(new File(program.getDescriptor().getURI()));
+            String override = EditorFileManager.getRelativePath(new File(program.getDescriptor().getUri()));
             override = override.replace("Programs", "").replace("\\", "/");
             if (override.startsWith("/")) {
                 override = override.substring(1);

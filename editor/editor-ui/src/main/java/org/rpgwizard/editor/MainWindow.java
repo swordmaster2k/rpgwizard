@@ -22,7 +22,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import javax.swing.JDesktopPane;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
@@ -62,14 +61,12 @@ import org.rpgwizard.editor.editors.MapEditor;
 import org.rpgwizard.editor.editors.ScriptEditor;
 import org.rpgwizard.editor.editors.GameEditor;
 import org.rpgwizard.editor.editors.SpriteEditor;
-import org.rpgwizard.editor.editors.map.NewMapDialog;
 import org.rpgwizard.editor.editors.map.brush.AbstractBrush;
 import org.rpgwizard.editor.editors.map.brush.ShapeBrush;
 import org.rpgwizard.editor.editors.image.ImageEditor;
 import org.rpgwizard.editor.editors.map.brush.AbstractPolygonBrush;
 import org.rpgwizard.editor.editors.map.panels.LayerPanel;
 import org.rpgwizard.editor.editors.script.IssuesTablePanel;
-import org.rpgwizard.editor.editors.tileset.NewTilesetDialog;
 import org.rpgwizard.editor.editors.tileset.TileSetUtil;
 import org.rpgwizard.editor.properties.EditorProperties;
 import org.rpgwizard.editor.properties.EditorProperty;
@@ -80,6 +77,9 @@ import org.rpgwizard.editor.ui.PropertiesPanel;
 import org.rpgwizard.editor.ui.TileSetTabbedPane;
 import org.rpgwizard.editor.ui.WizardDesktopManager;
 import org.rpgwizard.editor.ui.actions.ActionHandler;
+import org.rpgwizard.editor.ui.actions.asset.NewMapAction;
+import org.rpgwizard.editor.ui.actions.asset.NewSpriteAction;
+import org.rpgwizard.editor.ui.actions.asset.NewTilesetAction;
 import org.rpgwizard.editor.ui.listeners.TileSetSelectionListener;
 import org.rpgwizard.editor.ui.log.LogPanel;
 import org.rpgwizard.editor.ui.menu.MainMenuBar;
@@ -706,14 +706,11 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
     public void createNewMap() {
         LOGGER.info("Creating new {}.", Map.class.getSimpleName());
 
-        NewMapDialog dialog = new NewMapDialog(this);
-        dialog.setLocationRelativeTo(this);
-        dialog.setVisible(true);
+        NewMapAction action = new NewMapAction();
+        action.actionPerformed(null);
+        Map map = (Map) action.getValue("map");
 
-        if (dialog.getValue() != null) {
-            Map map = new Map(null, dialog.getValue()[0], dialog.getValue()[1], dialog.getValue()[2],
-                    dialog.getValue()[3]);
-            map.init();
+        if (map != null) {
             addToolkitEditorWindow(EditorFactory.getEditor(map));
         }
     }
@@ -746,8 +743,9 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
 
     public void createNewSprite() {
         LOGGER.info("Creating new {}.", Sprite.class.getSimpleName());
-        Sprite sprite = new Sprite();
-        sprite.setName("Untitled");
+        NewSpriteAction action = new NewSpriteAction();
+        action.actionPerformed(null);
+        Sprite sprite = (Sprite) action.getValue("sprite");
         addToolkitEditorWindow(EditorFactory.getEditor(sprite));
     }
 
@@ -776,44 +774,10 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
 
     public void createNewTileset() {
         LOGGER.info("Creating new {}.", Tileset.class.getSimpleName());
-
-        NewTilesetDialog dialog = new NewTilesetDialog();
-        dialog.setLocationRelativeTo(this);
-        dialog.setVisible(true);
-
-        if (dialog.getValue() != null) {
-            int tileWidth = dialog.getValue()[0];
-            int tileHeight = dialog.getValue()[1];
-
-            String path = CoreProperties.getProperty("rpgwizard.directory.textures");
-            String description = "Image Files";
-            String[] extensions = EditorFileManager.getImageExtensions();
-            EditorFileManager.setFileChooserSubdirAndFilters(path, description, extensions);
-
-            if (EditorFileManager.getFileChooser().showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-                File file = EditorFileManager.getFileChooser().getSelectedFile();
-
-                try {
-                    File tileSetFile = EditorFileManager.saveByType(Tileset.class);
-
-                    if (tileSetFile == null) {
-                        return; // Cancelled by the user.
-                    }
-
-                    Tileset tileSet = new Tileset(new AssetDescriptor(tileSetFile.toURI()), tileWidth, tileHeight);
-                    tileSet.setDescriptor(new AssetDescriptor(tileSetFile.toURI()));
-
-                    String remove = EditorFileManager.getGraphicsPath();
-                    String imagePath = file.getAbsolutePath().replace(remove, "");
-                    tileSet.setImage(imagePath);
-
-                    AssetManager.getInstance().serialize(AssetManager.getInstance().getHandle(tileSet));
-
-                    openTileset(tileSetFile);
-                } catch (IOException | AssetException ex) {
-                    LOGGER.error("Failed to create new {} file=[{}].", Tileset.class.getSimpleName(), file, ex);
-                }
-            }
+        NewTilesetAction action = new NewTilesetAction();
+        action.actionPerformed(null);
+        if (action.getValue("file") != null) {
+            openTileset((File) action.getValue("file"));
         }
     }
 

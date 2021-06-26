@@ -46,11 +46,11 @@ public abstract class AbstractAsset implements Asset {
             return null;
         }
 
-        return new File(descriptor.getURI());
+        return new File(descriptor.getUri());
     }
 
     public boolean exists() {
-        return descriptor != null && new File(descriptor.getURI()).exists();
+        return descriptor != null && new File(descriptor.getUri()).exists();
     }
 
 }

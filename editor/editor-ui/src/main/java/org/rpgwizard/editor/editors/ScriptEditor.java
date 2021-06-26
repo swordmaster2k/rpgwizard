@@ -41,6 +41,7 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 import org.fife.ui.rtextarea.SearchContext;
 import org.fife.ui.rtextarea.SearchEngine;
 import org.fife.ui.rtextarea.SearchResult;
+import org.openide.util.Utilities;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.Script;
@@ -81,14 +82,18 @@ public final class ScriptEditor extends AbstractAssetEditorWindow
 
         this.script = script;
         if (script.getDescriptor() == null) {
-            try (InputStream in = ScriptEditor.class.getResourceAsStream("/script/templates/empty.js")) {
-                script.update(IOUtils.toString(in, StandardCharsets.UTF_8));
-            } catch (IOException ex) {
-                // Ignore it
-            }
+            prepareNewScript(this.script);
             init(script, "Untitled");
         } else {
-            init(script, new File(script.getDescriptor().getURI()).getName());
+            init(script, Utilities.toFile(script.getDescriptor().getUri()).getName());
+        }
+    }
+
+    public static void prepareNewScript(Script script) {
+        try (InputStream in = ScriptEditor.class.getResourceAsStream("/script/templates/empty.js")) {
+            script.update(IOUtils.toString(in, StandardCharsets.UTF_8));
+        } catch (IOException ex) {
+            LOGGER.error("Failed to apply new template, script=[{}]", script, ex);
         }
     }
 

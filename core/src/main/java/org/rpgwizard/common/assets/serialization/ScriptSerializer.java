@@ -31,7 +31,7 @@ public class ScriptSerializer extends AbstractAssetSerializer {
 
     @Override
     public boolean serializable(AssetDescriptor descriptor) {
-        final String ext = Paths.extension(descriptor.getURI());
+        final String ext = Paths.extension(descriptor.getUri());
         return (ext.endsWith(CoreProperties.getFullExtension("rpgwizard.script.extension.default")));
     }
 
@@ -49,7 +49,7 @@ public class ScriptSerializer extends AbstractAssetSerializer {
     @Override
     public void deserialize(AssetHandle handle) throws IOException, AssetException {
         final Script program = new Script(handle.getDescriptor());
-        File path = new File(handle.getDescriptor().getURI().getPath());
+        File path = new File(handle.getDescriptor().getUri().getPath());
         program.update(FileUtils.readFileToString(path, "UTF-8"));
 
         handle.setAsset(program);

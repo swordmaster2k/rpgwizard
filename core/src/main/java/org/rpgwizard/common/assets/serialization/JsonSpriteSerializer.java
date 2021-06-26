@@ -25,7 +25,7 @@ public class JsonSpriteSerializer extends AbstractJsonSerializer {
 
     @Override
     public boolean serializable(AssetDescriptor descriptor) {
-        final String ext = Paths.extension(descriptor.getURI().getPath());
+        final String ext = Paths.extension(descriptor.getUri().getPath());
         return (ext.contains(CoreProperties.getFullExtension("rpgwizard.sprite.extension.json")));
     }
 

@@ -25,7 +25,7 @@ public class JsonAnimationSerializer extends AbstractJsonSerializer {
 
     @Override
     public boolean serializable(AssetDescriptor descriptor) {
-        final String ext = Paths.extension(descriptor.getURI());
+        final String ext = Paths.extension(descriptor.getUri());
         return (ext.endsWith(CoreProperties.getFullExtension("rpgwizard.animation.extension.json")));
     }
 

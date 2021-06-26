@@ -99,8 +99,12 @@ public final class MapEditor extends AbstractAssetEditorWindow
         if (map.getDescriptor() == null) {
             init(map, "Untitled");
         } else {
-            init(map, new File(map.getDescriptor().getURI()).getName());
+            init(map, new File(map.getDescriptor().getUri()).getName());
         }
+    }
+
+    public static void prepareMap(Map map) {
+
     }
 
     @Override

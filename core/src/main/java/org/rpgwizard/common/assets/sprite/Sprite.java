@@ -16,6 +16,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.rpgwizard.common.assets.AbstractAsset;
+import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.Collider;
 import org.rpgwizard.common.assets.Trigger;
 import org.rpgwizard.common.assets.events.SpriteChangedEvent;
@@ -62,6 +63,10 @@ public class Sprite extends AbstractAsset {
         trigger.setY(-15);
 
         data = new HashMap<>();
+    }
+
+    public Sprite(AssetDescriptor descriptor) {
+        super(descriptor);
     }
 
     public void addAnimation(String key, String value) {

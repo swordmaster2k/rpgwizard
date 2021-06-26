@@ -8,12 +8,16 @@
 package org.rpgwizard.common.assets;
 
 import java.net.URI;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Describes the physical location and MIME type for an asset.
  *
  * @author Chris Hutchinson
  */
+@Getter
+@Setter
 public class AssetDescriptor {
 
     protected String type;
@@ -41,14 +45,6 @@ public class AssetDescriptor {
         }
         this.uri = uri;
         this.type = "application/octet-stream";
-    }
-
-    public String getType() {
-        return this.type;
-    }
-
-    public URI getURI() {
-        return this.uri;
     }
 
     @Override

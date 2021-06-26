@@ -21,7 +21,7 @@ public class ResourceAssetHandleResolver implements AssetHandleResolver {
 
     @Override
     public boolean resolvable(AssetDescriptor descriptor) {
-        return descriptor.getURI().getScheme().equals("res");
+        return descriptor.getUri().getScheme().equals("res");
     }
 
     @Override

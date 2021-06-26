@@ -20,7 +20,7 @@ public class FileAssetHandleResolver implements AssetHandleResolver {
 
     @Override
     public boolean resolvable(AssetDescriptor descriptor) {
-        return descriptor.getURI().getScheme().equals("file");
+        return descriptor.getUri().getScheme().equals("file");
     }
 
     @Override

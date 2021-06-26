@@ -36,7 +36,7 @@ public class ResourceAssetHandle extends AssetHandle {
 
     @Override
     public ReadableByteChannel read() throws IOException {
-        final String part = this.descriptor.getURI().getSchemeSpecificPart();
+        final String part = this.descriptor.getUri().getSchemeSpecificPart();
         final String path = part.substring(1);
         final InputStream in = this.loader.getResourceAsStream(path);
         return Channels.newChannel(in);

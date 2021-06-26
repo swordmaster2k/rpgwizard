@@ -122,14 +122,18 @@ public final class SpriteEditor extends AbstractAssetEditorWindow implements Spr
 
         this.sprite.addSpriteChangeListener(this);
         if (this.sprite.getDescriptor() == null) {
-            setupNewSprite();
+            prepareNewSprite(this.sprite);
         } else {
-            setTitle(new File(sprite.getDescriptor().getURI()).getName());
+            setTitle(new File(sprite.getDescriptor().getUri()).getName());
         }
 
         constructWindow();
         setVisible(true);
         pack();
+    }
+
+    public static void prepareNewSprite(Sprite sprite) {
+
     }
 
     @Override
@@ -156,10 +160,6 @@ public final class SpriteEditor extends AbstractAssetEditorWindow implements Spr
         sprite.setDescriptor(new AssetDescriptor(file.toURI()));
         this.setTitle(file.getName());
         save();
-    }
-
-    private void setupNewSprite() {
-
     }
 
     /**

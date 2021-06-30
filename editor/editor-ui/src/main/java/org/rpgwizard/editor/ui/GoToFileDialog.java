@@ -23,7 +23,9 @@ import java.util.stream.Collectors;
 import javax.swing.AbstractAction;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -43,6 +45,8 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.openide.util.Utilities;
 import org.rpgwizard.editor.MainWindow;
+import org.rpgwizard.editor.ui.resources.Icons;
+import org.rpgwizard.editor.utilities.EditorFileManager;
 
 /**
  *
@@ -76,6 +80,7 @@ public final class GoToFileDialog extends JDialog {
         matchingFilesList = new JList(matchingFilesModel);
         matchingFilesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         matchingFilesList.setVisibleRowCount(15);
+        matchingFilesList.setCellRenderer(new IconListRenderer());
 
         searchField = new JTextField();
         searchField.setColumns(60);
@@ -193,11 +198,6 @@ public final class GoToFileDialog extends JDialog {
                 });
                 matchingFilesList.setSelectedIndex(0);
             }
-
-            @Override
-            protected void done() {
-
-            }
         };
 
         swingWorker.execute();
@@ -214,9 +214,29 @@ public final class GoToFileDialog extends JDialog {
 
         @Override
         public String toString() {
-            return file.getName();
+            return String.format("%s    (%s)", file.getName(), FilenameUtils.separatorsToUnix(EditorFileManager.getRelativePath(file)));
         }
 
+    }
+    
+    private class IconListRenderer extends DefaultListCellRenderer {
+        
+        @Override
+        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+            MatchingFile matchingFile = (MatchingFile) value;
+            
+            // Set the icon if possible.
+            String extension = FilenameUtils.getExtension(matchingFile.file.getName());
+            ImageIcon icon = Icons.getDefaultIcon(extension.toLowerCase());
+            if (icon != null) {
+                label.setIcon(icon);
+            }
+            
+            return label;
+        }
+        
     }
 
     public static void main(String[] args) {

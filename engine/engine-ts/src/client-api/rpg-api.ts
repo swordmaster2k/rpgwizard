@@ -936,12 +936,12 @@ export class Rpg {
      * @memberof Sprite
      * @alias addSprite
      * @param {string} spriteId TODO
-     * @param {number} layer TODO
      * @param {Object} sprite TODO
      */
-    public async addSprite(spriteId: string, layer: number, sprite: MapSprite) {
-        if (layer < this.getMap().layers.length) {
-            const mapLayer: MapLayer = this.getMap().layers[layer];
+    public async addSprite(spriteId: string, sprite: MapSprite) {
+        if (sprite.startLocation.layer < this.getMap().layers.length) {
+            sprite.entity = await this._mapController.loadSprite(spriteId, sprite);
+            const mapLayer: MapLayer = this.getMap().layers[sprite.startLocation.layer];
             mapLayer.sprites[spriteId] = sprite;
         }
     }
@@ -959,6 +959,10 @@ export class Rpg {
     public removeSprite(spriteId: string) {
         const sprite: Sprite = this.getSprite(spriteId);
         if (sprite) {
+            const entity = this._mapController.findEntity(spriteId);
+            if (entity && entity.sprite) {
+                entity.destroy();
+            }
             delete this.getMap().layers[sprite.layer].sprites[spriteId];
         }
     }

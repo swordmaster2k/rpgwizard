@@ -85,21 +85,7 @@ public final class EmbeddedBrowser extends JFrame {
                     public boolean onKeyEvent(CefBrowser browser, CefKeyboardHandler.CefKeyEvent event) {
                         if (event.windows_key_code == KeyEvent.VK_F12) {
                             if (event.type == CefKeyboardHandler.CefKeyEvent.EventType.KEYEVENT_RAWKEYDOWN) {
-                                if (devToolsUI == null) {
-                                    devToolsUI = cefBrowser.getDevTools().getUIComponent();
-                                    if (getWidth() >= 800) {
-                                        devToolsUI.setPreferredSize(new Dimension(getWidth(), 300));
-                                    } else {
-                                        devToolsUI.setPreferredSize(new Dimension(800, 300));
-                                    }
-                                    getContentPane().add(devToolsUI, BorderLayout.SOUTH);
-                                    pack();
-                                    setLocationRelativeTo(null);
-                                } else {
-                                    devToolsUI.setVisible(!devToolsUI.isVisible());
-                                }
-                                validate();
-                                getContentPane().repaint();
+                                showDevTools();
                             }
                             return true;
                         } else if (event.windows_key_code == KeyEvent.VK_F5) {
@@ -198,6 +184,24 @@ public final class EmbeddedBrowser extends JFrame {
         setAlwaysOnTop(true);
         toFront();
         requestFocus();
+    }
+    
+    private void showDevTools() {
+        if (devToolsUI == null) {
+            devToolsUI = cefBrowser.getDevTools().getUIComponent();
+            if (getWidth() >= 800) {
+                devToolsUI.setPreferredSize(new Dimension(getWidth(), 300));
+            } else {
+                devToolsUI.setPreferredSize(new Dimension(800, 300));
+            }
+            getContentPane().add(devToolsUI, BorderLayout.SOUTH);
+            pack();
+            setLocationRelativeTo(null);
+        } else {
+            devToolsUI.setVisible(!devToolsUI.isVisible());
+        }
+        validate();
+        getContentPane().repaint();
     }
 
     public static void main(String[] args) throws Exception {

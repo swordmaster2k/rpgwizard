@@ -122,7 +122,7 @@ export class MapController {
 
     }
 
-    private async loadSprite(spriteId: string, mapSprite: Runtime.MapSprite) {
+    public async loadSprite(spriteId: string, mapSprite: Runtime.MapSprite) {
         if (Core.getInstance().debugEnabled) {
             console.debug("Loading sprite=[%s]", JSON.stringify(mapSprite));
         }

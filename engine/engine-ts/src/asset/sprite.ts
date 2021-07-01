@@ -11,7 +11,7 @@ import * as Factory from "./asset-factory.js";
 import { Animation } from "./animation.js";
 
 import * as Asset from "./dto/assets.js";
-import { Collider, Direction, StandardKeys, Trigger } from "./dto/asset-subtypes.js";
+import { Collider, Direction, Location, StandardKeys, Trigger } from "./dto/asset-subtypes.js";
 import { Core } from "../core.js";
 
 /**
@@ -130,6 +130,10 @@ export class Sprite implements Asset.Sprite {
 
     set layer(v: number) {
         this._layer = v;
+    }
+
+    get location(): Location {
+        return { x: this._x, y: this._y, layer: this._layer };
     }
 
     get direction(): Direction {
@@ -512,7 +516,7 @@ export class Sprite implements Asset.Sprite {
     }
 
     private processTrigger(hit: any, entity: any) {
-
+        // REFACTOR: Implement
     }
 
     private onSameLayer(collision: any) {

@@ -69,6 +69,18 @@ public final class GoToFileDialog extends JDialog {
 
         addWindowListener(new WindowAdapter() {
             @Override
+            public void windowActivated(WindowEvent e) {
+                searchField.selectAll();
+            }
+            
+            @Override
+            public void windowClosing(WindowEvent e) {
+                if (swingWorker != null && !swingWorker.isCancelled()) {
+                    swingWorker.cancel(true);
+                }
+            }
+            
+            @Override
             public void windowClosed(WindowEvent e) {
                 if (swingWorker != null && !swingWorker.isCancelled()) {
                     swingWorker.cancel(true);
@@ -174,16 +186,15 @@ public final class GoToFileDialog extends JDialog {
     }
 
     private void findFiles(File directory, String searchInput) {
-        if (swingWorker != null && !swingWorker.isCancelled()) {
+        if (swingWorker != null && !swingWorker.isDone()) {
             swingWorker.cancel(true);
         }
-        matchingFilesModel.clear();
 
         swingWorker = new SwingWorker<List<MatchingFile>, MatchingFile>() {
             @Override
             protected List<MatchingFile> doInBackground() throws Exception {
                 return Files.walk(Paths.get(Utilities.toURI(directory))).filter(Files::isRegularFile).filter(p -> {
-                    return FilenameUtils.getBaseName(p.toFile().getName()).contains(searchInput);
+                    return FilenameUtils.getBaseName(p.toFile().getName()).toLowerCase().contains(searchInput.toLowerCase());
                 }).map(p -> {
                     MatchingFile file = new MatchingFile(p);
                     publish(file);
@@ -193,6 +204,10 @@ public final class GoToFileDialog extends JDialog {
 
             @Override
             protected void process(List<MatchingFile> chunks) {
+                if (isCancelled()) {
+                    return;
+                }
+                
                 chunks.forEach(p -> {
                     matchingFilesModel.addElement(p);
                 });
@@ -200,6 +215,7 @@ public final class GoToFileDialog extends JDialog {
             }
         };
 
+        matchingFilesModel.clear();
         swingWorker.execute();
     }
 
@@ -214,29 +230,31 @@ public final class GoToFileDialog extends JDialog {
 
         @Override
         public String toString() {
-            return String.format("%s    (%s)", file.getName(), FilenameUtils.separatorsToUnix(EditorFileManager.getRelativePath(file)));
+            return String.format("%s    (%s)", file.getName(),
+                    FilenameUtils.separatorsToUnix(EditorFileManager.getRelativePath(file)));
         }
 
     }
-    
+
     private class IconListRenderer extends DefaultListCellRenderer {
-        
+
         @Override
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+                boolean cellHasFocus) {
             JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
             MatchingFile matchingFile = (MatchingFile) value;
-            
+
             // Set the icon if possible.
             String extension = FilenameUtils.getExtension(matchingFile.file.getName());
             ImageIcon icon = Icons.getDefaultIcon(extension.toLowerCase());
             if (icon != null) {
                 label.setIcon(icon);
             }
-            
+
             return label;
         }
-        
+
     }
 
     public static void main(String[] args) {

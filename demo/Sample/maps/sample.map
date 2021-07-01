@@ -227,7 +227,7 @@
             "sprites": {
                 "5f53ef6f-9742-456b-9c93-9a96c8b81b8e": {
                     "asset": "log.sprite",
-                    "thread": "thread-test.js",
+                    "thread": "examples/wandering-enemy.js",
                     "startLocation": {
                         "x": 120,
                         "y": 152,
@@ -242,7 +242,7 @@
                 },
                 "27a50e7c-dce2-425a-aeba-1bb81be281be": {
                     "asset": "bush.sprite",
-                    "thread": "thread-test.js",
+                    "thread": "examples/wandering-enemy.js",
                     "startLocation": {
                         "x": 232,
                         "y": 120,
@@ -252,7 +252,7 @@
                 },
                 "f20cc9ea-e1ce-4d67-be75-c6fb89326941": {
                     "asset": "bush.sprite",
-                    "thread": "thread-test.js",
+                    "thread": "examples/wandering-enemy.js",
                     "startLocation": {
                         "x": 280,
                         "y": 120,
@@ -262,7 +262,7 @@
                 },
                 "169bf804-f33e-47dd-a5dc-1ba3c7917851": {
                     "asset": "bush.sprite",
-                    "thread": "thread-test.js",
+                    "thread": "examples/wandering-enemy.js",
                     "startLocation": {
                         "x": 232,
                         "y": 168,
@@ -272,7 +272,7 @@
                 },
                 "c7355957-2cc6-4c1d-b3e3-b3bba94e550b": {
                     "asset": "bush.sprite",
-                    "thread": "thread-test.js",
+                    "thread": "examples/wandering-enemy.js",
                     "startLocation": {
                         "x": 280,
                         "y": 168,
@@ -282,7 +282,7 @@
                 },
                 "f28e9510-2411-4aa3-ad74-84b7fe63ba0a": {
                     "asset": "log.sprite",
-                    "thread": "thread-test.js",
+                    "thread": "examples/wandering-enemy.js",
                     "startLocation": {
                         "x": 392,
                         "y": 152,

@@ -23,7 +23,7 @@ public class Keyword {
 
     public Keyword(String prefix, Element member) {
         Element h4 = member.getElementsByTag("h4").first();
-        name = prefix + "." + h4.getElementsByClass("code-name").first().text() + ";";
+        name = prefix + "." + h4.getElementsByClass("code-name").first().text().split("\\)")[0] + ");";
         type = "function";
         
         Element paramType = h4.getElementsByClass("type-signature").first();

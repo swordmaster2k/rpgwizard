@@ -18,10 +18,10 @@
     <name>RPGWizard Editor (UI)</name>
     
     <properties>
-        <rsyntaxtextarea.version>3.0.4</rsyntaxtextarea.version>
-        <rstaui.version>3.0.2</rstaui.version>
-        <autocomplete.version>3.0.2</autocomplete.version>
-        <languagesupport.version>3.0.1</languagesupport.version>
+        <rsyntaxtextarea.version>3.1.3</rsyntaxtextarea.version>
+        <rstaui.version>3.1.2</rstaui.version>
+        <autocomplete.version>3.1.2</autocomplete.version>
+        <languagesupport.version>3.1.2</languagesupport.version>
         <netbeans.verson>RELEASE124</netbeans.verson>
     </properties>
 

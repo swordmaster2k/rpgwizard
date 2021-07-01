@@ -1,3 +1,13 @@
+import * as items from "./items.js";
+
+export async function dropItem(spriteFile, location) {
+   await items.drop(spriteFile, location);
+}
+
+export async function pickupItem(sprite) {
+   await items.pickup(sprite);
+}
+
 export async function slashSword() {
    // Animate the sprite for the given direciton
    _animateAttack("player", rpg.getSpriteDirection("player"));
@@ -5,16 +15,23 @@ export async function slashSword() {
    rpg.playAudio("sword", false);
 
    const hits = _findClosetObjects(rpg.getSpriteLocation("player"), rpg.getSpriteDirection("player"), 50);
-   for (const sprite of hits.sprites) {
-      if (sprite.data.type === "enemy") {
-         _hitEnemy(sprite, rpg.getSpriteDirection("player"));
-      } else if (sprite.data.type === "npc") {
-         _hitNpc(sprite, rpg.getSpriteDirection("player"));
+   for (const spriteId in hits.sprites) {
+      if (hits.sprites.hasOwnProperty(spriteId)) {
+         const sprite = hits.sprites[spriteId];
+         if (sprite.data.type === "enemy") {
+            _hitEnemy(sprite, rpg.getSpriteDirection("player"));
+         } else if (sprite.data.type === "npc") {
+            _hitNpc(sprite, rpg.getSpriteDirection("player"));
+         }
       }
    }
 }
 
 export async function wander(sprite, distance, time) {
+   if (sprite.hit) {
+      return;
+   }
+   
    switch (_randomDirection(sprite, distance)) {
       case "NORTH":
          return rpg.moveSprite(sprite.id, sprite.x, sprite.y - distance, time);
@@ -36,10 +53,6 @@ export async function moveSpriteTowardsPoint(sprite, point, distance, time) {
    return rpg.moveSprite(sprite.id, sprite.x + velocityX, sprite.y + velocityY, time);
 }
 
-export async function dropItem(spriteFile, location) {
-   
-}
-
 function _randomDirection(origin, distance) {
    const directions = ["NORTH", "SOUTH", "EAST", "WEST"];
    let attempts = 0;
@@ -48,10 +61,10 @@ function _randomDirection(origin, distance) {
    while (attempts < directions.length) {
       choice = Math.floor(rpg.getRandom(0, directions.length - 1));
       const objects = _findClosetObjects(origin, directions[choice], distance);
-      if (objects.colliders.length < 1 || objects.colliders[0].distance > distance) {
+      if (Object.keys(objects.colliders).length < 1 || Object.keys(objects.colliders)[0].distance > distance) {
          return directions[choice];
       }
-      if (objects.colliders[0].distance > best.distance) {
+      if (Object.keys(objects.colliders)[0].distance > best.distance) {
          best.direction = directions[choice];
          best.distance = objects.colliders[0].distance;
       }
@@ -110,16 +123,21 @@ async function _hitEnemy(sprite, attackDirection) {
    const attackVelocity = 32;   // Distance to push the entity we hit (if any) in px.
    const attackRangePx = 22;    // Range in pixels of the attack.
    const attackDamage = 1;      // Amount of damage the sword deals.
+
+   rpg.getSprite(sprite.id).hit = true;
    
    const force = _calculatePushForce(attackDirection, attackVelocity);
    rpg.playAudio("hurt-enemy", false);
 
-   await _animateDefend(sprite.id, attackDirection);
    await rpg.moveSprite(sprite.id, sprite.x + force.x, sprite.y + force.y, attackPushTime);
+   await _animateDefend(sprite.id, attackDirection);
+
+   rpg.getSprite(sprite.id).hit = false;
    
    sprite.data.health--;
    if (sprite.data.health < 1) {
       rpg.removeSprite(sprite.id);
+      await dropItem("heart.sprite", sprite.location);
    }
 }
 

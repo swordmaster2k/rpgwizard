@@ -1,5 +1,5 @@
-export default async function (origin) {
+export default async function (e) {
 
-   await rpg.animateSprite(origin.id, "SOUTH");
+   await rpg.animateSprite(e.source.id, "SOUTH");
 
 }

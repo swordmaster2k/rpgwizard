@@ -5,9 +5,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { EventType } from "./asset/dto/asset-subtypes.js";
 import { Game } from "./asset/game.js";
 import { Map } from "./asset/map.js";
 import { Sprite } from "./asset/sprite.js";
+import { ScriptEvent } from "./client-api/script-vm.js";
 import { Core } from "./core.js";
 import { EngineUtil } from "./util/util.js";
 
@@ -460,7 +462,8 @@ function _defineMapSprite(type: Framework.EntityType, data: any) {
                 if (sprite.thread && sprite.renderReady && Core.getInstance().mapEntity.show) {
                     if (!this.threadRunning) {
                         this.threadRunning = true;
-                        await Core.getInstance().scriptVM.run(Core.PATH_SCRIPT + sprite.thread, this.sprite, false);
+                        const scriptEvent: ScriptEvent = new ScriptEvent(EventType.FUNCTION, this.sprite, this.sprite);
+                        await Core.getInstance().scriptVM.run(Core.PATH_SCRIPT + sprite.thread, scriptEvent, false);
                         this.threadRunning = false;
                     }
                 }

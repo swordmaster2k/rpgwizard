@@ -13,11 +13,12 @@ import { Game } from "./asset/game.js";
 
 import { ScreenRenderer } from "./view/screen-renderer.js";
 
-import { ScriptVM } from "./client-api/script-vm.js";
+import { ScriptEvent, ScriptVM } from "./client-api/script-vm.js";
 
 import { MapController } from "./map-controller.js";
 import { Framework } from "./framework.js";
 import { Rpg } from "./client-api/rpg-api.js";
+import { EventType } from "./asset/dto/asset-subtypes.js";
 
 // Allow extending window with RPG API global
 declare global {
@@ -220,7 +221,8 @@ export class Core {
         // Run game's startup script
         try {
             console.info("Starting to run startup script...");
-            await this._scriptVM.run("../../game/scripts/startup.js", this);
+            const scriptEvent: ScriptEvent = new ScriptEvent(EventType.FUNCTION, this, this);
+            await this._scriptVM.run("../../game/scripts/startup.js", scriptEvent);
             console.info("Finished running startup script...");
         } catch (e) {
             console.error(e);

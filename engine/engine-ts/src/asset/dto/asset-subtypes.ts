@@ -42,7 +42,11 @@ export enum EventType {
     // eslint-disable-next-line no-unused-vars
     OVERLAP = "overlap",
     // eslint-disable-next-line no-unused-vars
-    KEYPRESS = "keypress"
+    KEYPRESS = "keypress",
+    // eslint-disable-next-line no-unused-vars
+    THREAD = "thread",
+    // eslint-disable-next-line no-unused-vars
+    FUNCTION = "function"
 }
 
 export interface Viewport {

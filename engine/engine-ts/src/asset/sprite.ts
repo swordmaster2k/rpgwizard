@@ -13,6 +13,7 @@ import { Animation } from "./animation.js";
 import * as Asset from "./dto/assets.js";
 import { Collider, Direction, Event, EventType, Location, StandardKeys, Trigger } from "./dto/asset-subtypes.js";
 import { Core } from "../core.js";
+import { ScriptEvent } from "../client-api/script-vm.js";
 
 /**
  * REFACTOR: Break this up a bit
@@ -509,7 +510,7 @@ export class Sprite implements Asset.Sprite {
             if (entity.sprite) {
                 const sprite: Sprite = entity.sprite;
                 if (this.onSameLayer(hit, sprite) && this.canTrigger(hit, sprite)) {
-                    await this.processTrigger(hit, sprite);
+                    await this.processTrigger(hit.obj.sprite, sprite);
                 }
             }
         }
@@ -519,15 +520,16 @@ export class Sprite implements Asset.Sprite {
         // REFACTOR: Implement
     }
 
-    private async processTrigger(hit: any, sprite: Sprite) {
-        const event: Event = sprite.trigger.events[0];
+    private async processTrigger(source: Sprite, target: Sprite) {
+        const event: Event = target.trigger.events[0];
         if (!event || !event.script) {
             return;
         }
 
         if (event.type === EventType.OVERLAP) {
             try {
-                await Core.getInstance().scriptVM.run("../../../game/scripts/" + event.script, this);
+                const scriptEvent: ScriptEvent = new ScriptEvent(EventType.FUNCTION, source, target);
+                await Core.getInstance().scriptVM.run("../../../game/scripts/" + event.script, scriptEvent);
             } catch (e) {
                 console.error(e);
                 throw new Error("Could not run event script!");

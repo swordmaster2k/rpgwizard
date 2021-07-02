@@ -1,6 +1,7 @@
 import * as action from "./modules/action-bs/action.js";
+import * as torch from "./modules/environment/torch.js";
 
-export default async function (origin) {
+export default async function (e) {
 
    const assets = {
       "audio": {
@@ -15,6 +16,8 @@ export default async function (origin) {
    };
    await rpg.loadAssets(assets);
    await rpg.loadMap("sample.map");
+   
+   await torch.setup();
    await action.setup();
 
 }

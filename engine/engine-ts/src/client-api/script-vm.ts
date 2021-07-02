@@ -6,6 +6,21 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { EventType } from "../asset/dto/asset-subtypes.js";
+import { Core } from "../core.js";
+
+export class ScriptEvent {
+    type: EventType;
+    source: any;
+    target: any;
+
+    constructor(type: EventType, source: any, target: any) {
+        this.type = type;
+        this.source = source;
+        this.target = target;
+    }
+}
+
 export class ScriptVM {
 
     private _cache: object;
@@ -20,7 +35,9 @@ export class ScriptVM {
     }
 
     public async open(file: string): Promise<any> {
-        console.debug("opening game script file=[%s]", file);
+        if (Core.getInstance().debugEnabled) {
+            console.debug("opening game script file=[%s]", file);
+        }
 
         let script: any;
         if (this._cache[file]) {
@@ -30,20 +47,24 @@ export class ScriptVM {
             this._cache[file] = script;
         }
 
-        console.debug("returning game script file=[%s]", file);
+        if (Core.getInstance().debugEnabled) {
+            console.debug("returning game script file=[%s]", file);
+        }
 
         return script;
     }
 
-    public async run(file: string, origin: object, pause: boolean = true) {
-        console.debug("running game script file=[%s], origin=[%s]", file, origin);
+    public async run(file: string, scriptEvent: ScriptEvent, pause: boolean = true) {
+        if (Core.getInstance().debugEnabled) {
+            console.debug("running game script file=[%s], scriptEvent=[%s]", file, scriptEvent);
+        }
 
         try {
             if (pause) {
                 this._inScript = true;
             }
             const script: any = await this.open(file);
-            await script.default(origin);
+            await script.default(scriptEvent);
         } catch (err) {
             console.error("could not run script, err=[%s]", err);
         } finally {
@@ -52,7 +73,9 @@ export class ScriptVM {
             }
         }
 
-        console.debug("finished game script file=[%s], origin=[%s]", file, origin);
+        if (Core.getInstance().debugEnabled) {
+            console.debug("finished game script file=[%s], scriptEvent=[%s]", file, scriptEvent);
+        }
     }
 
 }

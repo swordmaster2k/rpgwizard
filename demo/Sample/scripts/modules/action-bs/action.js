@@ -19,8 +19,10 @@ export async function dropItem(spriteFile, location) {
    await items.drop(spriteFile, location);
 }
 
-export async function pickupItem(sprite) {
-   await items.pickup(sprite);
+export async function pickupItem(source, target) {
+   if (source.id === "player") {
+      await items.pickup(target);
+   }
 }
 
 export async function slashSword() {

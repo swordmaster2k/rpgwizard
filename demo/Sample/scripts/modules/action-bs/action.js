@@ -1,4 +1,19 @@
+import * as ai from "./ai.js";
+import * as combat from "./combat.js";
+import * as controller from "./controller.js";
+import * as hud from "./hud.js";
 import * as items from "./items.js";
+import * as util from "./util.js";
+
+export async function setup() {
+   rpg.attachController("player", controller.build());
+
+   rpg.registerKeyDown("SPACE", async function() {
+      await this.slashSword();
+   }.bind(this), true);
+
+   hud.setup();
+}
 
 export async function dropItem(spriteFile, location) {
    await items.drop(spriteFile, location);
@@ -9,176 +24,22 @@ export async function pickupItem(sprite) {
 }
 
 export async function slashSword() {
-   // Animate the sprite for the given direciton
-   _animateAttack("player", rpg.getSpriteDirection("player"));
-
-   rpg.playAudio("sword", false);
-
-   const hits = _findClosetObjects(rpg.getSpriteLocation("player"), rpg.getSpriteDirection("player"), 50);
-   for (const spriteId in hits.sprites) {
-      if (hits.sprites.hasOwnProperty(spriteId)) {
-         const sprite = hits.sprites[spriteId];
-         if (sprite.data.type === "enemy") {
-            _hitEnemy(sprite, rpg.getSpriteDirection("player"));
-         } else if (sprite.data.type === "npc") {
-            _hitNpc(sprite, rpg.getSpriteDirection("player"));
-         }
-      }
+   const hits = util.findClosetObjects(rpg.getSpriteLocation("player"), rpg.getSpriteDirection("player"), 25);
+   const drop = await combat.slashSword(hits);
+   if (drop) {
+      await items.drop(drop.item, drop.location);
    }
+}
+
+export async function bumpPlayer(sprite) {
+   await combat.bumpPlayer(sprite);
 }
 
 export async function wander(sprite, distance, time) {
-   if (sprite.hit) {
-      return;
-   }
-   
-   switch (_randomDirection(sprite, distance)) {
-      case "NORTH":
-         return rpg.moveSprite(sprite.id, sprite.x, sprite.y - distance, time);
-      case "SOUTH":
-         return rpg.moveSprite(sprite.id, sprite.x, sprite.y + distance, time);
-      case "EAST":
-         return rpg.moveSprite(sprite.id, sprite.x + distance, sprite.y, time);
-      default:
-         return rpg.moveSprite(sprite.id, sprite.x - distance, sprite.y, time);
-   }
+   const direction = util.randomDirection(sprite, distance);
+   await ai.wander(sprite, distance, direction, time);
 }
 
-export async function moveSpriteTowardsPoint(sprite, point, distance, time) {
-   const angle = rpg.getAngleBetweenPoints(point.x, point.y, sprite.x, sprite.y);
-   const direction = sprite.direction;
-   const velocityX = distance * Math.cos(angle);
-   const velocityY = distance * Math.sin(angle);
-
-   return rpg.moveSprite(sprite.id, sprite.x + velocityX, sprite.y + velocityY, time);
-}
-
-function _randomDirection(origin, distance) {
-   const directions = ["NORTH", "SOUTH", "EAST", "WEST"];
-   let attempts = 0;
-   let choice;
-   let best = {direction: "NORTH", distance: 0};
-   while (attempts < directions.length) {
-      choice = Math.floor(rpg.getRandom(0, directions.length - 1));
-      const objects = _findClosetObjects(origin, directions[choice], distance);
-      if (Object.keys(objects.colliders).length < 1 || Object.keys(objects.colliders)[0].distance > distance) {
-         return directions[choice];
-      }
-      if (Object.keys(objects.colliders)[0].distance > best.distance) {
-         best.direction = directions[choice];
-         best.distance = objects.colliders[0].distance;
-      }
-      attempts++;
-   }
-
-   return best.direction;
-}
-
-function _findClosetObjects(origin, direction, distance) {
-   // Figure out the normalised vector (x, y) values to use based on the direction
-   let vector = {};
-   switch (direction) {
-      case "NORTH":
-         vector = { x: 0, y: -1 };
-         break;
-      case "SOUTH":
-         vector = { x: 0, y: 1 };
-         break;
-      case "NORTH_EAST":
-      case "SOUTH_EAST":
-      case "EAST":
-         vector = { x: 1, y: 0 };
-         break;
-      case "NORTH_WEST":
-      case "SOUTH_WEST":
-      case "WEST":
-         vector = { x: -1, y: 0 };
-         break;
-   }
-
-   // Fire a raycast from the character's current location, using
-   // the supplied direction and range in pixels.
-   return rpg.raycast({ _x: origin.x, _y: origin.y }, vector, distance);
-}
-
-function _calculatePushForce(direction, attackVelocity) {
-   switch (direction) {
-      case "NORTH":
-         return {x: 0, y: -attackVelocity};
-      case "SOUTH":
-         return {x: 0, y: attackVelocity};
-      case "NORTH_EAST":
-      case "SOUTH_EAST":
-      case "EAST":
-         return {x: attackVelocity, y: 0};
-      case "NORTH_WEST":
-      case "SOUTH_WEST":
-      case "WEST":
-         return {x: -attackVelocity, y: 0};
-   }
-}
-
-async function _hitEnemy(sprite, attackDirection) {
-   const attackPushTime = 250;  // Amount of time in milliseconds the hit entity (if any) is pushed for.
-   const attackVelocity = 32;   // Distance to push the entity we hit (if any) in px.
-   const attackRangePx = 22;    // Range in pixels of the attack.
-   const attackDamage = 1;      // Amount of damage the sword deals.
-
-   rpg.getSprite(sprite.id).hit = true;
-   
-   const force = _calculatePushForce(attackDirection, attackVelocity);
-   rpg.playAudio("hurt-enemy", false);
-
-   await rpg.moveSprite(sprite.id, sprite.x + force.x, sprite.y + force.y, attackPushTime);
-   await _animateDefend(sprite.id, attackDirection);
-
-   rpg.getSprite(sprite.id).hit = false;
-   
-   sprite.data.health--;
-   if (sprite.data.health < 1) {
-      rpg.removeSprite(sprite.id);
-      await dropItem("heart.sprite", sprite.location);
-   }
-}
-
-async function _hitNpc() {
-   
-}
-
-async function _animateAttack(spriteId, direction) {
-   switch(direction) {
-      case "NORTH":
-         await rpg.animateSprite(spriteId, "ATTACK_NORTH");
-         break;
-      case "SOUTH":
-         await rpg.animateSprite(spriteId, "ATTACK_SOUTH");
-         break;
-      case "NORTH_EAST":
-      case "SOUTH_EAST":
-      case "EAST":
-         await rpg.animateSprite(spriteId, "ATTACK_EAST");
-         break;
-      case "NORTH_WEST":
-      case "SOUTH_WEST":
-      case "WEST":
-         await rpg.animateSprite(spriteId, "ATTACK_WEST");
-   }
-}
-
-async function _animateDefend(spriteId, direction) {
-    switch (direction) {
-      case "NORTH":
-         await rpg.animateSprite(spriteId, "DEFEND_NORTH");
-         break;
-      case "SOUTH":
-         await rpg.animateSprite(spriteId, "DEFEND_SOUTH");
-         break;
-      case "NORTH_EAST":
-      case "SOUTH_EAST":
-      case "EAST":
-         await rpg.animateSprite(spriteId, "DEFEND_EAST");
-         break;
-      default:
-         await rpg.animateSprite(spriteId, "DEFEND_WEST");
-   }
+export async function chase(sprite, targetId) {
+   await ai.chase(sprite, targetId);
 }

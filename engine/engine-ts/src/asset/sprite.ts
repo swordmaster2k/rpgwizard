@@ -11,7 +11,7 @@ import * as Factory from "./asset-factory.js";
 import { Animation } from "./animation.js";
 
 import * as Asset from "./dto/assets.js";
-import { Collider, Direction, Location, StandardKeys, Trigger } from "./dto/asset-subtypes.js";
+import { Collider, Direction, Event, EventType, Location, StandardKeys, Trigger } from "./dto/asset-subtypes.js";
 import { Core } from "../core.js";
 
 /**
@@ -504,35 +504,60 @@ export class Sprite implements Asset.Sprite {
     }
 
     // Trigger functions
-    public hitOnTrigger(hitData: any, entity: any) {
-        console.log("hitOnActivation " + this.name);
+    public async hitOnTrigger(hitData: any, entity: any) {
         for (const hit of hitData) {
-            this.processTrigger(hit, entity);
+            if (entity.sprite) {
+                const sprite: Sprite = entity.sprite;
+                if (this.onSameLayer(hit, sprite) && this.canTrigger(hit, sprite)) {
+                    await this.processTrigger(hit, sprite);
+                }
+            }
         }
     }
 
     public hitOffTrigger(hitData: any, entity: any) {
-        console.log("hitOffActivation " + this.name);
-    }
-
-    private processTrigger(hit: any, entity: any) {
         // REFACTOR: Implement
     }
 
-    private onSameLayer(collision: any) {
-        // REFACTOR: Implement
+    private async processTrigger(hit: any, sprite: Sprite) {
+        const event: Event = sprite.trigger.events[0];
+        if (!event || !event.script) {
+            return;
+        }
+
+        if (event.type === EventType.OVERLAP) {
+            try {
+                await Core.getInstance().scriptVM.run("../../../game/scripts/" + event.script, this);
+            } catch (e) {
+                console.error(e);
+                throw new Error("Could not run event script!");
+            }
+        } else if (event.type === EventType.KEYPRESS) {
+            // REFACTOR: Implement
+        }
     }
 
-    private isEnabled() {
-        // REFACTOR: Implement
+    // REFACTOR: Handle hitting plain triggers
+    private onSameLayer(hit: any, sprite: Sprite): boolean {
+        let hitLayer: number = -1;
+        if (hit.obj.sprite) {
+            hitLayer = hit.obj.sprite.layer;
+        }
+        return hitLayer === sprite.layer;
     }
 
-    private isOtherCollidable(other: any) {
+    private canCollide(hit: any, sprite: Sprite): boolean {
         // REFACTOR: Implement
+        return true;
     }
 
-    private isOtherActivatable(other: any) {
-        // REFACTOR: Implement
+    // REFACTOR: Handle hitting plain triggers
+    private canTrigger(hit: any, sprite: Sprite): boolean {
+        let triggerEnabled: boolean = false;
+        if (hit.obj.sprite) {
+            triggerEnabled = hit.obj.sprite.trigger.enabled;
+        }
+        return triggerEnabled && sprite.trigger.enabled;
     }
 
 }

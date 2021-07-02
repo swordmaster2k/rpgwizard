@@ -236,7 +236,7 @@ export namespace Framework {
     }
 
     export function removeSprite(spriteId: string) {
-        
+        // TODO?
     }
 
     export function trigger(event: string, data?: any) {
@@ -529,8 +529,8 @@ function _createMapSprite(type: Framework.EntityType, data: any): any {
         })
         .Trigger(
             new Crafty.polygon(sprite._triggerPoints),
-            function (hitData: any) {
-                sprite.hitOnTrigger(hitData, entity);
+            async function (hitData: any) {
+                await sprite.hitOnTrigger(hitData, entity);
             },
             function (hitData: any) {
                 sprite.hitOffTrigger(hitData, entity);

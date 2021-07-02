@@ -2,7 +2,7 @@ export async function drop(spriteFile, location) {
    const spriteId = "item-" + Date.now().toString(36) + Math.random().toString(36).substr(2);
    const sprite = {
       "asset": spriteFile,
-      "thread": "",
+      "thread": "examples/threads/idle-sprite.js",
       "startLocation": location,
       "events": [
          {
@@ -17,8 +17,9 @@ export async function drop(spriteFile, location) {
 
 export async function pickup(sprite) {
    rpg.playAudio("item", false);
-
-   console.log(sprite);
-
    rpg.removeSprite(sprite.id);
+
+   if (sprite.name === "heart"){
+      rpg.getSprite("player").data.health++;
+   }
 }

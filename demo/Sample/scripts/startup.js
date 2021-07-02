@@ -5,17 +5,16 @@ export default async function (origin) {
    const assets = {
       "audio": {
          "sword": "sword.wav",
+         "hurt-player": "hurt_character.wav",
          "hurt-enemy": "hurt_enemy.wav",
          "item": "item.wav"
-      }   
+      },
+      "images": [
+         "objects.png"
+      ]
    };
    await rpg.loadAssets(assets);
-
    await rpg.loadMap("sample.map");
-   rpg.attachController("player");
+   await action.setup();
 
-   rpg.registerKeyDown("SPACE", async function() {
-      await action.slashSword();
-   }, true);
-   
 }

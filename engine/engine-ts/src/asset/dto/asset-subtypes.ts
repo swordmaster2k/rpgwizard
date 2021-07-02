@@ -38,6 +38,13 @@ export const StandardKeys: Array<string> = [
     "NORTH_EAST_IDLE", "NORTH_WEST_IDLE", "SOUTH_EAST_IDLE", "SOUTH_WEST_IDLE"
 ];
 
+export enum EventType {
+    // eslint-disable-next-line no-unused-vars
+    OVERLAP = "overlap",
+    // eslint-disable-next-line no-unused-vars
+    KEYPRESS = "keypress"
+}
+
 export interface Viewport {
     width: number;
     height: number;

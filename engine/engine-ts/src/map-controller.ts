@@ -139,6 +139,7 @@ export class MapController {
         sprite.y = mapSprite.startLocation.y;
         sprite.layer = mapSprite.startLocation.layer;
         sprite.thread = mapSprite.thread;
+        sprite.trigger.events = mapSprite.events;
 
         const componentData: any = {
             sprite: sprite

@@ -1,6 +1,9 @@
 import * as action from "./modules/action-bs/action.js";
 import * as torch from "./modules/environment/torch.js";
 
+import * as gui from "./modules/gui/gui.js";
+import * as dialog from "./modules/gui/dialog.js";
+
 export default async function (e) {
 
    const assets = {
@@ -15,9 +18,21 @@ export default async function (e) {
       ]
    };
    await rpg.loadAssets(assets);
-   await rpg.loadMap("sample.map");
+
+   gui.setup();
+
+   let config = {
+      position: "BOTTOM",
+      advancementKey: "E",
+      nextMarkerImage: "next_marker.png",
+      profileImage: "tutor.jpg",
+      typingSound: "typing_loop.wav",
+      text: "Hello, this text will be wrote to the window like a type-writer."
+   };
+   await dialog.show(config);
    
-   await torch.setup();
-   await action.setup();
+//   await rpg.loadMap("sample.map");
+//   await torch.setup();
+//   await action.setup();
 
 }

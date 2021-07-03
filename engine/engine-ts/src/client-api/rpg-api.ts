@@ -89,8 +89,12 @@ export class Rpg {
         return this._canvases;
     }
 
-    public get keys(): any {
+    get keys(): any {
         return Framework.getKeys();
+    }
+
+    get gradient(): string {
+        return this._gradient;
     }
 
     // ------------------------------------------------------------------------

@@ -26,8 +26,13 @@ export async function pickupItem(source, target) {
 }
 
 export async function slashSword() {
+   if (rpg.getGlobal("pause.input")) {
+      return;
+   }
+   
    const hits = util.findClosetObjects(rpg.getSpriteLocation("player"), rpg.getSpriteDirection("player"), 25);
    const drop = await combat.slashSword(hits);
+   
    if (drop) {
       await items.drop(drop.item, drop.location);
    }

@@ -1,8 +1,8 @@
+import * as dialog from "./modules/gui/dialog.js";
+import * as title from "./modules/gui/title.js";
+
 import * as action from "./modules/action-bs/action.js";
 import * as torch from "./modules/environment/torch.js";
-
-import * as gui from "./modules/gui/gui.js";
-import * as dialog from "./modules/gui/dialog.js";
 
 export default async function (e) {
 
@@ -19,7 +19,11 @@ export default async function (e) {
    };
    await rpg.loadAssets(assets);
 
-   gui.setup();
+   const choice = await title.show({
+      "backgroundImage": "Overworld.png",
+      "titleMusic": "music.mp3"
+   });
+   console.log(choice);
 
    let config = {
       position: "BOTTOM",
@@ -27,12 +31,16 @@ export default async function (e) {
       nextMarkerImage: "next_marker.png",
       profileImage: "tutor.jpg",
       typingSound: "typing_loop.wav",
-      text: "Hello, this text will be wrote to the window like a type-writer."
+      text: 
+      `
+      Hello, this text will be wrote to the window like a type-writer.
+      Hello, this text will be wrote to the window like a type-writer.
+      `
    };
    await dialog.show(config);
    
-//   await rpg.loadMap("sample.map");
-//   await torch.setup();
-//   await action.setup();
+   await rpg.loadMap("sample.map");
+   await torch.setup();
+   await action.setup();
 
 }

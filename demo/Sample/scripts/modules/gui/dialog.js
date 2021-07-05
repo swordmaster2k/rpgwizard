@@ -27,16 +27,17 @@ export const state = {};
  * @returns {undefined}
  */
 export async function show(config) {
+   gui.setup();
+   
    await _loadAssets(config);
    _setup(config);
-
    await _animate();
 
    const lines = _sortLines(config.text.trim());
    if (lines.length > 0) {
       _reset(rpg.measureText(lines[0]).height);
-      await _printLines(lines);
       _playTypingSound();
+      await _printLines(lines);
    }
 }
 
@@ -44,15 +45,17 @@ async function _end() {
    rpg.unregisterKeyDown(state.advancementKey);
    rpg.unregisterMouseClick(false);
    state._blink = false;
-   state._clearNextMarker();
-   rpg.clear(state._nextMarkerCanvas);
+   _clearNextMarker();
    state.profileFrame.setVisible(false);
    state.frame.setVisible(false);
 }
 
 async function _loadAssets(config) {
    const assets = {
-      "images": [config.nextMarkerImage, config.profileImage],
+      "images": [
+         config.nextMarkerImage, 
+         config.profileImage
+      ],
       "audio": {
          "dialog.typingSound": config.typingSound
       }
@@ -178,7 +181,7 @@ async function _animate() {
       state.profileFrame.setVisible(true);
       state.frame.setVisible(true);
 
-      const change = 10; // pixels
+      const change = 5; // pixels
       do {
          state.profileFrame.setLocation(state.profileFrame.x, state.profileFrame.y - change);
          state.frame.setLocation(state.frame.x, state.frame.y - change);
@@ -221,19 +224,21 @@ async function _printLines(lines) {
       if (state._currentLines > state.maxLines) {
          state.skipMode = false;
          _stopTypingSound();
-         state._blink = true;
-         await _blinkNextMarker();
 
          // Decide whether or not to use keypress or mouse.
          if (state.advancementKey) {
             rpg.registerKeyDown(state.advancementKey, async function() {
-               await _advance(lines);
+               state._blink = false;
             }, false);
          } else {
             rpg.registerMouseClick(async function() {
-               await _advance(lines);
+               state._blink = false;
             }, false);
          }
+
+         state._blink = true;
+         await _blinkNextMarker();
+         await _advance(lines);
       } else {
          state._cursorX = state._defaultX + state.padding.x;
          state._cursorY += rpg.measureText(line).height + state.padding.line;
@@ -241,8 +246,6 @@ async function _printLines(lines) {
       }
    } else {
       _stopTypingSound();
-      state._blink = true;
-      await _blinkNextMarker();
 
       // Decide whether or not to use keypress or mouse.
       if (state.advancementKey) {
@@ -254,6 +257,9 @@ async function _printLines(lines) {
             _end();
          }, false);
       }
+      
+      state._blink = true;
+      await _blinkNextMarker();
    }
 }
 
@@ -287,14 +293,13 @@ function _drawNextMarker() {
 }
 
 async function _blinkNextMarker() {
-   if (state.nextMarkerImage && state._blink) {
+   while (state.nextMarkerImage && state._blink) {
       if (!state._nextMarkerVisible) {
          _drawNextMarker();
       } else {
          _clearNextMarker();
       }
       await rpg.sleep(state.markerBlinkDelay);
-      await _blinkNextMarker();
    }
 }
 
@@ -323,6 +328,6 @@ async function _advance(lines) {
    _clearNextMarker();
    rpg.unregisterKeyDown(state.advancementKey);
    _reset(rpg.measureText(lines[0]).height);
-   await _printLines(lines);
    _playTypingSound();
+   await _printLines(lines);
 }

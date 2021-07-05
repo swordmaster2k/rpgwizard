@@ -97,6 +97,10 @@ export class Rpg {
         return this._gradient;
     }
 
+    set gradient(gradient: string) {
+        this._gradient = gradient;
+    }
+
     // ------------------------------------------------------------------------
     // Asset
     // ------------------------------------------------------------------------

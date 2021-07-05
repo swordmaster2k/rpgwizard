@@ -153,8 +153,8 @@ export function createFrame(config) {
       };
 
       let setLocation = function(newX, newY) {
-         state.x = newX;
-         state.y = newY;
+         this.x = newX;
+         this.y = newY;
          rpg.setCanvasPosition(id, newX, newY);
          if (_visible) {
             rpg.render(id);
@@ -379,7 +379,7 @@ export function createFrame(config) {
       let _drawMenuSelection = function() {
          prepareSelectionColor();
          let x = state.padding.x - (state.padding.x / 2);
-         let y = state.padding.y + ((state.getFontSize() + state.padding.line) * (_menu.getSelectedIndex())) - getFontSize() - (state.padding.line / 4);
+         let y = state.padding.y + ((getFontSize() + state.padding.line) * (_menu.getSelectedIndex())) - getFontSize() - (state.padding.line / 4);
          let _width = width - state.padding.x;
          let _height = getFontSize() + (state.padding.line);
          rpg.fillRect(id, x, y, _width, _height);

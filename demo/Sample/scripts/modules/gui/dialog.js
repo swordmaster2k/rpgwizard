@@ -1,6 +1,14 @@
-import * as gui from "./gui.js";
-
 export const state = {};
+
+const backgroundCanvas = "dialog.background";
+const profileCanvas = "dialog.profile";
+const textCanvas = "dialog.text";
+const nextCanvas = "dialog.next";
+
+// TODO: Make configurable
+const fontSize = 20;
+const fontFamily = "Lucida Console";
+const textColor = { r: 0, g: 0, b: 0, a: 1 };
 
 /**
  * Shows the default dialog window based the supplied config.
@@ -27,8 +35,6 @@ export const state = {};
  * @returns {undefined}
  */
 export async function show(config) {
-   gui.setup();
-   
    await _loadAssets(config);
    _setup(config);
    await _animate();
@@ -46,15 +52,18 @@ async function _end() {
    rpg.unregisterMouseClick(false);
    state._blink = false;
    _clearNextMarker();
-   state.profileFrame.setVisible(false);
-   state.frame.setVisible(false);
+
+   rpg.clear(backgroundCanvas);
+   rpg.clear(profileCanvas);
+   rpg.clear(textCanvas);
 }
 
 async function _loadAssets(config) {
    const assets = {
       "images": [
-         config.nextMarkerImage, 
-         config.profileImage
+         config.background.image,
+         config.profile.image,
+         config.nextMarkerImage
       ],
       "audio": {
          "dialog.typingSound": config.typingSound
@@ -64,90 +73,101 @@ async function _loadAssets(config) {
 }
 
 function _setup(config) {
-   state._nextMarkerCanvas = "dialog.nextMarkerCanvas";
+   // State variables
+   Object.assign(state, config);
    state._nextMarkerVisible = false;
    state._currentLines = 1;
    state._blink = false;
    state._defaultX = 22;
    state._defaultY = 18;
-   state._position = config.position;
-
    state.characterDelay = 25;
    state.markerBlinkDelay = 500;
-   state.advancementKey = config.advancementKey;
+   state.advancementKey = state.advancementKey;
    state._cursorX = state._defaultX;
    state._cursorY = state._defaultY;
    state.maxLines = 3;
-   state.nextMarkerImage = config.nextMarkerImage;
+   state.nextMarkerImage = state.nextMarkerImage;
    state.typingSound = "dialog.typingSound";
    state.skipMode = false;
+   state.padding = { x: 0, y: 0, line: 10 };
 
-   state.padding = {
-      x: 0,
-      y: 0,
-      line: 10
-   };
-
-   let width = 440;
+   // Background Canvas
+   state.background.width = 440;
    if (rpg.getViewport(false).width < 560) {
-      width = rpg.getViewport(false).width - 120;
+      state.background.width = rpg.getViewport(false).width - 120;
    }
-   let height = 120;
-   let profileWidth = height;
-   let profileHeight = height;
-   let x = Math.round((rpg.getViewport(false).width / 2) - (width / 2) + (profileWidth / 2));
-   let y = 0;
-   switch (config.position ? config.position : "BOTTOM") {
+   state.background.height = 120;
+   state.background.x = Math.round((rpg.getViewport(false).width / 2) - (state.background.width / 2) + (state.background.height / 2));
+   switch (state.position ? state.position : "BOTTOM") {
       case "TOP":
-         y = 0;
+         state.background.y = 0;
          break;
       case "CENTER":
-         y = Math.floor(rpg.getViewport(false).height / 2) - Math.floor(height / 2);
+         state.background.y = Math.floor(rpg.getViewport(false).height / 2) - Math.floor(state.background.height / 2);
          break;
       case "BOTTOM":
       default:
-         y = Math.floor(rpg.getViewport(false).height - height);
+         state.background.y = Math.floor(rpg.getViewport(false).height - state.background.height);
    }
+   _setupCanvas(backgroundCanvas, state.background);
 
-   state.profileFrame = gui.createFrame({
-      id: "Dialog.profileFrameCanvas",
-      width: profileWidth,
-      height: profileHeight,
-      x: x - profileWidth,
-      y: y
-   });
-   state.profileFrame.setImage(config.profileImage);
-   state.profileFrame.setVisible(false);
+   // Profile Canvas
+   state.profile.width = state.background.height;
+   state.profile.height = state.background.height;
+   state.profile.x = state.background.x - state.profile.width;
+   state.profile.y = state.background.y;
+   _setupCanvas(profileCanvas, state.profile);
 
-   state.frame = gui.createFrame({
-      id: "Dialog.frameCanvas",
-      width: width,
-      height: height,
-      x: x,
-      y: y
-   });
-   state.frame.setVisible(false);
-
+   // Next Marker Canvas
    let image = rpg.getImage(state.nextMarkerImage);
    if (image && image.width > 0 && image.height > 0) {
       let widthTemp = image.width;
       let heightTemp = image.height;
-      let xTemp = state.frame.x + (state.frame.width - (widthTemp + widthTemp / 4));
-      let yTemp = state.frame.y + (state.frame.height - (heightTemp + heightTemp / 4));
-      rpg.createCanvas(state._nextMarkerCanvas, widthTemp, heightTemp);
-      rpg.setCanvasPosition(state._nextMarkerCanvas, xTemp, yTemp);
+      let xTemp = state.background.x + (state.background.width - (widthTemp + widthTemp / 4));
+      let yTemp = state.background.y + (state.background.height - (heightTemp + heightTemp / 4));
+      rpg.createCanvas(nextCanvas, widthTemp, heightTemp);
+      rpg.setCanvasPosition(nextCanvas, xTemp, yTemp);
    }
+
+   // Text Canvas
+   rpg.createCanvas(textCanvas, config.background.width, config.background.height);
+   rpg.setCanvasPosition(textCanvas, config.background.x, config.background.y);
+}
+
+function _setupCanvas(canvasId, config) {
+   rpg.createCanvas(canvasId, config.width, config.height);
+   rpg.setCanvasPosition(canvasId, config.x, config.y);
+   
+   const sideProportion = 0.10; // 15% per side
+
+   const leftX = 0;
+   const leftY = 0;
+   const leftWidth = config.width * sideProportion;
+   const leftHeight = config.height;
+   rpg.drawImagePart(canvasId, config.image, config.leftSide.x, config.leftSide.y, config.leftSide.w, config.leftSide.h, leftX, leftY, leftWidth, leftHeight);
+
+   const centerX = leftX + leftWidth;
+   const centerY = leftY;
+   const centerWidth = config.width - (leftWidth * 2);
+   const centerHeight = config.height;
+   rpg.drawImagePart(canvasId, config.image, config.center.x, config.center.y, config.center.w, config.center.h, centerX, centerY, centerWidth, centerHeight);
+
+   const rightX = centerX + centerWidth;
+   const rightY = leftY;
+   const rightWidth = config.width * sideProportion;
+   const rightHeight = config.height;
+   rpg.drawImagePart(canvasId, config.image, config.rightSide.x, config.rightSide.y, config.rightSide.w, config.rightSide.h, rightX, rightY, rightWidth, rightHeight);
 }
 
 function _reset(lineHeight) {
    state._cursorX = state._defaultX + state.padding.x;
    state._cursorY = state._defaultY + state.padding.y + lineHeight;
    state._currentLines = 1;
-   _draw();
+   rpg.clear(textCanvas);
 }
 
 function _sortLines(text) {
-   rpg.setFont(gui.getFontSize(), gui.getFontFamily());
+   rpg.setFont(fontSize, fontFamily);
    let words = text.split(" ");
    let lines = [];
    let line = words[0];
@@ -160,7 +180,7 @@ function _sortLines(text) {
       }
 
       newLine = line.trim() + " " + words[i];
-      if (rpg.measureText(newLine.trim()).width < state.frame.width - 45) {
+      if (rpg.measureText(newLine.trim()).width < state.background.width - 45) {
          line = newLine;
       } else {
          lines.push(line);
@@ -173,29 +193,34 @@ function _sortLines(text) {
 }
 
 async function _animate() {
-   if (state._position === "BOTTOM") {
-      const originalY = state.profileFrame.y;
-      const newY = rpg.getViewport(false).height;
-      state.profileFrame.setLocation(state.profileFrame.x, newY);
-      state.frame.setLocation(state.frame.x, newY);
-      state.profileFrame.setVisible(true);
-      state.frame.setVisible(true);
+   rpg.setCanvasPosition(backgroundCanvas, state.background.x, state.background.y);
+   rpg.setCanvasPosition(profileCanvas, state.profile.x, state.profile.y);
+   
+   if (state.position === "BOTTOM") {
+      const originalY = state.profile.y;
+      state.background.y = state.profile.y = rpg.getViewport(false).height;
 
       const change = 5; // pixels
       do {
-         state.profileFrame.setLocation(state.profileFrame.x, state.profileFrame.y - change);
-         state.frame.setLocation(state.frame.x, state.frame.y - change);
+         state.background.y -= change;
+         rpg.setCanvasPosition(backgroundCanvas, state.background.x, state.background.y);
+         rpg.render(backgroundCanvas);
+
+         state.profile.y -= change;
+         rpg.setCanvasPosition(profileCanvas, state.profile.x, state.profile.y);
+         rpg.render(profileCanvas);
+
          await new Promise(r => requestAnimationFrame(r));
-      } while (originalY < state.profileFrame.y);
-   } else {
-      state.profileFrame.setVisible(true);
-      state.frame.setVisible(true);
+      } while (originalY < state.profile.y);
    }
+
+   rpg.render(backgroundCanvas);
+   rpg.render(profileCanvas);
 }
 
 async function _printLines(lines) {
-   rpg.setFont(gui.getFontSize(), gui.getFontFamily());
-   gui.prepareTextColor();
+   rpg.setFont(fontSize, fontFamily);
+   rpg.setColor(textColor);
 
    if (state.advancementKey) {
       rpg.registerKeyDown(state.advancementKey, async function() {
@@ -265,8 +290,9 @@ async function _printLines(lines) {
 
 async function _printCharacters(characters) {
    let character = characters.shift();
-   rpg.drawText(state.frame.id, state._cursorX, state._cursorY, character);
-   rpg.render(state.frame.id);
+   rpg.drawText(textCanvas, state._cursorX, state._cursorY, character);
+   rpg.render(textCanvas);
+   
    state._cursorX += rpg.measureText(character).width;
 
    if (characters.length) {
@@ -277,17 +303,13 @@ async function _printCharacters(characters) {
    }
 }
 
-function _draw() {
-   state.frame.draw();
-}
-
 function _drawNextMarker() {
    let image = rpg.getImage(state.nextMarkerImage);
    if (image && image.width > 0 && image.height > 0) {
       let width = image.width;
       let height = image.height;
-      rpg.drawImage(state._nextMarkerCanvas, state.nextMarkerImage, 0, 0, width, height, 0);
-      rpg.render(state._nextMarkerCanvas);
+      rpg.drawImage(nextCanvas, state.nextMarkerImage, 0, 0, width, height, 0);
+      rpg.render(nextCanvas);
       state._nextMarkerVisible = true;
    }
 }
@@ -305,7 +327,7 @@ async function _blinkNextMarker() {
 
 function _clearNextMarker() {
    if (state.nextMarkerImage) {
-      rpg.clear(state._nextMarkerCanvas);
+      rpg.clear(nextCanvas);
       state._nextMarkerVisible = false;
    }
 }
@@ -323,7 +345,7 @@ function _stopTypingSound() {
 }
 
 async function _advance(lines) {
-   rpg.setFont(gui.getFontSize(), gui.getFontFamily());
+   rpg.setFont(fontSize, fontFamily);
    state._blink = false;
    _clearNextMarker();
    rpg.unregisterKeyDown(state.advancementKey);

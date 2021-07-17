@@ -752,7 +752,7 @@ export class Rpg {
 
     private _getDrawingContext(canvas: Canvas): CanvasRenderingContext2D {
         const ctx: CanvasRenderingContext2D = canvas.canvasElement.getContext("2d");
-        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingEnabled = false;
         ctx.globalAlpha = this._rgba.a;
         return ctx;
     }

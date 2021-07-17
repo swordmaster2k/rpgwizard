@@ -12,24 +12,39 @@ export default async function (e) {
          "hurt-player": "hurt_character.wav",
          "hurt-enemy": "hurt_enemy.wav",
          "item": "item.wav"
-      },
-      "images": [
-         "objects.png"
-      ]
+      }
    };
    await rpg.loadAssets(assets);
 
-   const choice = await title.show({
-      "backgroundImage": "Overworld.png",
-      "titleMusic": "music.mp3"
-   });
-   console.log(choice);
+   const background = {
+      image: "objects.png",
+      leftSide: { x: 148, y: 228, w: 12, h: 40 },
+      center: { x: 160, y: 228, w: 16, h: 40 },
+      rightSide: { x: 176, y: 228, w: 12, h: 40 }
+   };
+   const profile = {
+      image: "objects.png",
+      leftSide: { x: 148, y: 228, w: 12, h: 40 },
+      center: { x: 160, y: 228, w: 16, h: 40 },
+      rightSide: { x: 176, y: 228, w: 12, h: 40 }
+   };
 
-   let config = {
+   const config = {
       position: "BOTTOM",
       advancementKey: "E",
+      background: {
+         image: "objects.png",
+         leftSide: { x: 148, y: 228, w: 12, h: 40 },
+         center: { x: 160, y: 228, w: 16, h: 40 },
+         rightSide: { x: 176, y: 228, w: 12, h: 40 }
+      },
+      profile: {
+         image: "objects.png",
+         leftSide: { x: 148, y: 228, w: 12, h: 40 },
+         center: { x: 160, y: 228, w: 16, h: 40 },
+         rightSide: { x: 176, y: 228, w: 12, h: 40 }
+      },
       nextMarkerImage: "next_marker.png",
-      profileImage: "tutor.jpg",
       typingSound: "typing_loop.wav",
       text: 
       `
@@ -38,9 +53,17 @@ export default async function (e) {
       `
    };
    await dialog.show(config);
-   
-   await rpg.loadMap("sample.map");
-   await torch.setup();
-   await action.setup();
+
+//   const choice = await title.show({
+//      "backgroundImage": "Overworld.png",
+//      "titleMusic": "music.mp3"
+//   });
+//   console.log(choice);
+//
+
+//   
+//   await rpg.loadMap("sample.map");
+//   await torch.setup();
+//   await action.setup();
 
 }

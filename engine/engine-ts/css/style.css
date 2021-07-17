@@ -3,6 +3,10 @@ body {
     color: white;
 }
 
+canvas {
+    image-rendering: pixelated;
+}
+
 #play {
     background-image: url("../images/animation-play.png");
     position: fixed;
@@ -54,8 +58,4 @@ body {
     top: 0px;
     left: 0px;
     overflow:hidden; 
-}
-
-canvas {
-    image-rendering: pixelated;
 }

@@ -5,11 +5,6 @@ const profileCanvas = "dialog.profile";
 const textCanvas = "dialog.text";
 const nextCanvas = "dialog.next";
 
-// TODO: Make configurable
-const fontSize = 20;
-const fontFamily = "Lucida Console";
-const textColor = { r: 0, g: 0, b: 0, a: 1 };
-
 /**
  * Shows the default dialog window based the supplied config.
  *
@@ -52,7 +47,6 @@ async function _end() {
    rpg.unregisterMouseClick(false);
    state._blink = false;
    _clearNextMarker();
-
    rpg.clear(backgroundCanvas);
    rpg.clear(profileCanvas);
    rpg.clear(textCanvas);
@@ -74,7 +68,8 @@ async function _loadAssets(config) {
 
 function _setup(config) {
    // State variables
-   Object.assign(state, config);
+   Object.assign(state, config); // Copy everything from config
+   
    state._nextMarkerVisible = false;
    state._currentLines = 1;
    state._blink = false;
@@ -82,39 +77,41 @@ function _setup(config) {
    state._defaultY = 18;
    state.characterDelay = 25;
    state.markerBlinkDelay = 500;
-   state.advancementKey = state.advancementKey;
    state._cursorX = state._defaultX;
    state._cursorY = state._defaultY;
    state.maxLines = 3;
-   state.nextMarkerImage = state.nextMarkerImage;
    state.typingSound = "dialog.typingSound";
    state.skipMode = false;
    state.padding = { x: 0, y: 0, line: 10 };
 
+   const windowGap = 10;
+   const viewportWidth = rpg.getViewport(false).width;
+   const viewportHeight = rpg.getViewport(false).height;
+
    // Background Canvas
    state.background.width = 440;
-   if (rpg.getViewport(false).width < 560) {
-      state.background.width = rpg.getViewport(false).width - 120;
+   if (viewportWidth < 560) {
+      state.background.width = viewportWidth - 120;
    }
    state.background.height = 120;
-   state.background.x = Math.round((rpg.getViewport(false).width / 2) - (state.background.width / 2) + (state.background.height / 2));
+   state.background.x = Math.round((viewportWidth / 2) - (state.background.width / 2) + (state.background.height / 2) + (windowGap / 2));
    switch (state.position ? state.position : "BOTTOM") {
       case "TOP":
          state.background.y = 0;
          break;
       case "CENTER":
-         state.background.y = Math.floor(rpg.getViewport(false).height / 2) - Math.floor(state.background.height / 2);
+         state.background.y = Math.floor(viewportHeight / 2) - Math.floor(state.background.height / 2);
          break;
       case "BOTTOM":
       default:
-         state.background.y = Math.floor(rpg.getViewport(false).height - state.background.height);
+         state.background.y = Math.floor(viewportHeight - state.background.height) - windowGap;
    }
    _setupCanvas(backgroundCanvas, state.background);
 
    // Profile Canvas
    state.profile.width = state.background.height;
    state.profile.height = state.background.height;
-   state.profile.x = state.background.x - state.profile.width;
+   state.profile.x = state.background.x - state.profile.width - windowGap;
    state.profile.y = state.background.y;
    _setupCanvas(profileCanvas, state.profile);
 
@@ -167,7 +164,7 @@ function _reset(lineHeight) {
 }
 
 function _sortLines(text) {
-   rpg.setFont(fontSize, fontFamily);
+   rpg.setFont(state.font.size, state.font.family);
    let words = text.split(" ");
    let lines = [];
    let line = words[0];
@@ -219,8 +216,8 @@ async function _animate() {
 }
 
 async function _printLines(lines) {
-   rpg.setFont(fontSize, fontFamily);
-   rpg.setColor(textColor);
+   rpg.setFont(state.font.size, state.font.family);
+   rpg.setColor(state.font.color);
 
    if (state.advancementKey) {
       rpg.registerKeyDown(state.advancementKey, async function() {
@@ -345,7 +342,7 @@ function _stopTypingSound() {
 }
 
 async function _advance(lines) {
-   rpg.setFont(fontSize, fontFamily);
+   rpg.setFont(state.font.size, state.font.family);
    state._blink = false;
    _clearNextMarker();
    rpg.unregisterKeyDown(state.advancementKey);

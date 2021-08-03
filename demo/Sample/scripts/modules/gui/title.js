@@ -1,6 +1,11 @@
-import * as gui from "./gui.js";
-
 export const state = {};
+
+const backgroundCanvas = "title.background";
+const textCanvas = "title.text";
+
+const music = "title.music";
+const startKey = "SPACE";
+const flashingText = `PRESS ${startKey}`;
 
 /**
  *  Shows the default title screen system based the supplied config.
@@ -16,69 +21,73 @@ export const state = {};
  * @returns {undefined}
  */
 export async function show(config) {
-   gui.setup();
-   
    await _loadAssets(config);
    _setup(config);
-   rpg.playAudio("title.music", true, 1.0);
+   rpg.playAudio(music, true, 1.0);
 
    return await state.promise;
 }
 
-function _end(resolve, choice) {
-   rpg.stopAudio("title.music");
-   state.frame.destroy();
-   rpg.clear(state.background.canvasId);
-   rpg.removeCanvas(state.background.canvasId);
-
-   resolve(choice);
+function _end() {
+   rpg.stopAudio(music);
+   rpg.unregisterKeyDown(startKey);
+   rpg.clear(backgroundCanvas);
+   rpg.clear(textCanvas);
+   clearInterval(state.interval);
+   state.resolve();
 }
 
 function _setup(config) {
-   state.context = {
-      MENU: "MENU"
-   };
-   state._temp = {
-      processingInput: false,
-      currentContext: state.context.MENU
-   };
-   state.background = {
-      canvasId: "title.backgroundCanvas",
-      width: rpg.getViewport().width,
-      height: rpg.getViewport().height,
-      x: 0,
-      y: 0
-   };
-   rpg.createCanvas(state.background.canvasId, state.background.width, state.background.height);
-   rpg.setCanvasPosition(state.background.canvasId, state.background.x, state.background.y);
-   rpg.drawImage(state.background.canvasId,config.backgroundImage, 0, 0, state.background.width, state.background.height, 0);
-   rpg.render(state.background.canvasId);
-
-   state.frame = gui.createFrame({
-      id: "title.frameCanvas",
-      width: 150,
-      height: 54,
-      x: (rpg.getViewport().width / 2) - 75,
-      y: (rpg.getViewport().height / 1.5) - 27
-   });
-
-   state.promise = new Promise((resolve, reject) => {
-      state.frame.setMenu({
-         items: [{
-            id: "new-game",
-            text: "New Game",
-            execute: function () {_newGame(resolve);}
-         }]
-      });
-   });
+   // State variables
+   Object.assign(state, config); // Copy everything from config
    
-   state.frame.setVisible(true);
+   state.processingInput = false;
+   state.promise = new Promise((resolve, reject) => {
+      state.resolve = resolve;
+      state.reject = reject;
+   });
 
-   rpg.registerKeyDown("E", _handleInput, false);
-   rpg.registerKeyDown("UP_ARROW", _handleInput, false);
-   rpg.registerKeyDown("DOWN_ARROW", _handleInput, false);
-   rpg.registerKeyDown("W", _handleInput, false);
-   rpg.registerKeyDown("S", _handleInput, false);
+   const viewportWidth = rpg.getViewport(false).width;
+   const viewportHeight = rpg.getViewport(false).height;
+
+   // Background Canvas
+   rpg.createCanvas(backgroundCanvas, viewportWidth, viewportHeight);
+   rpg.setColor(255, 255, 255, 1.0);
+   rpg.fillRect(backgroundCanvas, 0, 0, viewportWidth, viewportHeight);
+   rpg.render(backgroundCanvas);
+
+   // Text Canvas
+   rpg.setFont(state.font.size, state.font.family);
+   
+   const textWidth = rpg.measureText(flashingText).width;
+   const textHeight = rpg.measureText(flashingText).height;
+   const textX = 0;
+   const textY = textHeight;
+
+   const textCanvasWidth = textWidth;
+   const textCanvasHeight = textHeight;
+   
+   rpg.createCanvas(textCanvas, textCanvasWidth, textCanvasHeight);
+   rpg.setColor(state.font.color);
+   rpg.drawText(textCanvas, textX, textY, flashingText);
+   rpg.setCanvasPosition(textCanvas, (viewportWidth / 2) - (textCanvasWidth / 2), (viewportHeight / 2) - (textCanvasHeight / 2));
+   rpg.render(textCanvas);
+
+   // Setup a simple interval to flash the text every 1/2 second
+   state.flash = true;
+   state.interval = setInterval(
+      function() { 
+         state.flash = !state.flash;
+         if (state.flash) {
+            rpg.render(textCanvas);
+         } else {
+            rpg.hide(textCanvas);
+         }
+      }, 500
+   );
+
+   // Setup the start key
+   rpg.registerKeyDown(startKey, _startGame, false);
 }
 
 async function _loadAssets(config, callback) {
@@ -91,51 +100,10 @@ async function _loadAssets(config, callback) {
    await rpg.loadAssets(assets);
 }
 
-function _newGame(resolve) {
-   _end(resolve, "new-game");
-}
-
-//
-// Input Functions
-//
-function _handleInput(e) {
-   if (state._temp.processingInput) {
+function _startGame() {
+   if (state.processingInput) {
       return;
    }
-   state._temp.processingInput = true;
-   switch (e.key) {
-      case 69:
-         _handleAction();
-         break;
-      case 38: // UP_ARROW
-      case 87: // W
-         _handleUpArrow();
-         break;
-      case 40: // DOWN_ARROW
-      case 83: // S
-         _handleDownArrow();
-         break;
-      default:
-         return;
-   }
-}
-
-function _handleAction() {
-   if (state._temp.currentContext === state.context.MENU) {
-      state.frame.getMenu().executeSelectedItem();
-   }
-}
-
-function _handleUpArrow() {
-   if (state._temp.currentContext === state.context.MENU) {
-      state.frame.getMenu().up();
-   }
-   state._temp.processingInput = false;
-}
-
-function _handleDownArrow() {
-   if (state._temp.currentContext === state.context.MENU) {
-      state.frame.getMenu().down();
-   }
-   state._temp.processingInput = false;
+   state.processingInput = true;
+   _end();
 }

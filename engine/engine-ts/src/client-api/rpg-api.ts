@@ -307,6 +307,24 @@ export class Rpg {
     }
 
     /**
+     * Hides the contents of a canvas.
+     *
+     * @example
+     * rpg.hide("my-canvas");
+     *
+     * @memberof Canvas
+     * @alias hide
+     * @param {string} canvasId ID of the canvas to clear.
+     */
+    public hide(canvasId: string) {
+        const canvas: Canvas = this._canvases[canvasId];
+        if (canvas) {
+            canvas.render = false;
+            Framework.trigger(Framework.EventType.Invalidate);
+        }
+    }
+
+    /**
      * Clears the contents of a canvas.
      *
      * @example

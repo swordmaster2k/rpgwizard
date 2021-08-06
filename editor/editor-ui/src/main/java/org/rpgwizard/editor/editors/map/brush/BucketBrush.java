@@ -7,6 +7,7 @@
  */
 package org.rpgwizard.editor.editors.map.brush;
 
+import com.google.common.base.Objects;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -166,7 +167,7 @@ public class BucketBrush extends AbstractBrush {
         boolean changed = false;
         while (!stack.empty()) {
             Point point = stack.pop(); // Remove the next tile from the stack.
-            if (layer.contains(point.x, point.y) && layer.getTileAt(point.x, point.y).equals(oldTile)) {
+            if (layer.contains(point.x, point.y) && Objects.equal(layer.getTileAt(point.x, point.y), oldTile)) {
                 if (!changed) {
                     changed = true;
                 }

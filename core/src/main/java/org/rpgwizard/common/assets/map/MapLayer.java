@@ -134,12 +134,11 @@ public class MapLayer {
      */
     private void clearTiles() {
         int count = map.getWidth() * map.getHeight();
-        Tile blankTile = new Tile();
         int x = 0;
         int y = 0;
 
         for (int i = 0; i < count; i++) {
-            loadedTiles[x][y] = blankTile;
+            loadedTiles[x][y] = null;
 
             x++;
             if (x == map.getWidth()) {

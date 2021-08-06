@@ -77,8 +77,7 @@ public final class SpriteEditor extends AbstractAssetEditorWindow implements Spr
     private static final Logger LOGGER = LoggerFactory.getLogger(SpriteEditor.class);
 
     public static final int DEFAULT_INPUT_COLUMNS = 12;
-    protected static final List<String> STANDARD_PLACE_HOLDERS = Arrays.asList("SOUTH", "NORTH", "EAST", "WEST",
-            "NORTH_WEST", "NORTH_EAST", "SOUTH_WEST", "SOUTH_EAST", "ATTACK", "DEFEND", "SPECIAL_MOVE", "DIE", "REST");
+    protected static final List<String> STANDARD_PLACE_HOLDERS = Arrays.asList("NORTH", "SOUTH", "EAST", "WEST");
     protected static final List<String> STANDING_PLACE_HOLDERS = Arrays.asList("SOUTH_IDLE", "NORTH_IDLE", "EAST_IDLE",
             "WEST_IDLE", "NORTH_WEST_IDLE", "NORTH_EAST_IDLE", "SOUTH_WEST_IDLE", "SOUTH_EAST_IDLE");
     protected static final Dimension PROFILE_DIMENSION = new Dimension(100, 100);
@@ -133,7 +132,9 @@ public final class SpriteEditor extends AbstractAssetEditorWindow implements Spr
     }
 
     public static void prepareNewSprite(Sprite sprite) {
-
+        STANDARD_PLACE_HOLDERS.forEach(key -> {
+            sprite.addAnimation(key, "");
+        });
     }
 
     @Override

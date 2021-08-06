@@ -38,6 +38,7 @@ public class Animation extends AbstractAsset {
     private String soundEffect;
     private SpriteSheet spriteSheet;
 
+    @JsonIgnore
     private final ConcurrentLinkedQueue<AnimationChangeListener> animationChangeListeners = new ConcurrentLinkedQueue<>();
 
     public Animation(AssetDescriptor descriptor) {

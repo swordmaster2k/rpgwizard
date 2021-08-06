@@ -179,13 +179,23 @@ public final class MapEditor extends AbstractAssetEditorWindow
             int x = 0;
             int y = 0;
             for (int j = 0; j < count; j++) {
-                Tileset tileSet = layerTiles[x][y].getTileSet();
-
-                if (tileSet != null) {
-                    if (!map.getTilesets().contains(tileSet.getName())) {
-                        map.getTilesets().add(tileSet.getName());
+                // Default values for a blank tile.
+                int tileSetIndex = -1;
+                int tileIndex = -1;
+                
+                Tile tile = layerTiles[x][y];
+                if (tile != null) {
+                    tileIndex = tile.getIndex();
+                    if (tile.getTileSet() != null) {
+                        Tileset tileset = tile.getTileSet();
+                        if (!map.getTilesets().contains(tileset.getName())) {
+                            map.getTilesets().add(tileset.getName());
+                        }
+                        tileSetIndex = map.getTilesets().indexOf(tileset.getName());
                     }
                 }
+                
+                mapLayer.getTiles().add(j, tileSetIndex + ":" + tileIndex);
 
                 x++;
                 if (x == width) {

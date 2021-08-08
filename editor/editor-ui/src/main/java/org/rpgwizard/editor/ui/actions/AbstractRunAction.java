@@ -74,7 +74,6 @@ public abstract class AbstractRunAction extends AbstractAction {
 
                 @Override
                 public void done() {
-                    Toolkit.getDefaultToolkit().beep();
                     instance.getMainToolBar().getStopButton().setEnabled(true);
                 }
             };

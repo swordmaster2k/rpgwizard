@@ -83,6 +83,7 @@ export interface Trigger {
     enabled: boolean;
     x: number;
     y: number;
+    layer: number;
     points: Point[];
     events: Event[];
 }
@@ -91,6 +92,7 @@ export interface Collider {
     enabled: boolean;
     x: number;
     y: number;
+    layer: number;
     points: Point[];
 }
 

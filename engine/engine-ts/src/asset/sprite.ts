@@ -472,9 +472,17 @@ export class Sprite implements Asset.Sprite {
     }
 
     // Collision functions
-    public hitOnCollider(hitData: any, entity: any) {
+    public async hitOnCollider(hitData: any, entity: any) {
         for (const hit of hitData) {
-            this.processCollider(hit, entity);
+            if (entity.sprite) {
+                const sprite: Sprite = entity.sprite;
+                if (this.onSameLayer(hit, sprite.layer) && this.canCollide(hit, sprite.collider.enabled)) {
+                    await this.processCollider(hit, entity);
+                }
+            } else {
+                // TODO: Handle hitting regular colliders on different layers
+                await this.processCollider(hit, entity);
+            }
         }
     }
 
@@ -483,7 +491,7 @@ export class Sprite implements Asset.Sprite {
     }
 
     // REFACTOR: revisit this
-    private processCollider(hit: any, entity: any) {
+    private async processCollider(hit: any, entity: any) {
         console.log(this.name);
 
         if (hit.obj.collider) {
@@ -509,7 +517,7 @@ export class Sprite implements Asset.Sprite {
         for (const hit of hitData) {
             if (entity.sprite) {
                 const sprite: Sprite = entity.sprite;
-                if (this.onSameLayer(hit, sprite) && this.canTrigger(hit, sprite)) {
+                if (this.onSameLayer(hit, sprite.layer) && this.canTrigger(hit, sprite.trigger.enabled)) {
                     await this.processTrigger(hit.obj.sprite, sprite);
                 }
             }
@@ -535,31 +543,55 @@ export class Sprite implements Asset.Sprite {
                 throw new Error("Could not run event script!");
             }
         } else if (event.type === EventType.KEYPRESS) {
-            // REFACTOR: Implement
+            return new Promise<void>((resolve: any, reject: any) => {
+                const oldHandler: any = Core.getInstance().keyDownHandlers[Framework.getKey(event.key)];
+                async function callback() {
+                    try {
+                        const scriptEvent: ScriptEvent = new ScriptEvent(EventType.FUNCTION, source, target);
+                        await Core.getInstance().scriptVM.run("../../../game/scripts/" + event.script, scriptEvent);
+                        resolve();
+                    } catch (e) {
+                        console.error(e);
+                        reject(new Error("Could not run event script!"));
+                    } finally {
+                        Core.getInstance().keyDownHandlers[Framework.getKey(event.key)] = oldHandler;
+                    }
+                }
+                Core.getInstance().keyDownHandlers[Framework.getKey(event.key)] = callback;
+            });
         }
     }
 
-    // REFACTOR: Handle hitting plain triggers
-    private onSameLayer(hit: any, sprite: Sprite): boolean {
+    private onSameLayer(hit: any, otherLayer: number): boolean {
         let hitLayer: number = -1;
         if (hit.obj.sprite) {
             hitLayer = hit.obj.sprite.layer;
+        } else if (hit.obj.collider) {
+            hitLayer = hit.obj.collider.layer;
+        } else if (hit.obj.trigger) {
+            hitLayer = hit.obj.trigger.layer;
         }
-        return hitLayer === sprite.layer;
+        return hitLayer === otherLayer;
     }
 
-    private canCollide(hit: any, sprite: Sprite): boolean {
-        // REFACTOR: Implement
-        return true;
+    private canCollide(hit: any, otherEnabled: boolean): boolean {
+        let colliderEnabled: boolean = false;
+        if (hit.obj.sprite) {
+            colliderEnabled = hit.obj.sprite.collider.enabled;
+        } else if (hit.obj.collider) {
+            colliderEnabled = hit.obj.collider.enabled;
+        }
+        return colliderEnabled && otherEnabled;
     }
 
-    // REFACTOR: Handle hitting plain triggers
-    private canTrigger(hit: any, sprite: Sprite): boolean {
+    private canTrigger(hit: any, otherEnabled: boolean): boolean {
         let triggerEnabled: boolean = false;
         if (hit.obj.sprite) {
             triggerEnabled = hit.obj.sprite.trigger.enabled;
+        } else if (hit.obj.trigger) {
+            triggerEnabled = hit.obj.trigger.enabled;
         }
-        return triggerEnabled && sprite.trigger.enabled;
+        return triggerEnabled && otherEnabled;
     }
 
 }

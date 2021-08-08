@@ -545,8 +545,8 @@ function _createMapSprite(type: Framework.EntityType, data: any): any {
     const entity = Crafty.e(type)
         .Collider(
             new Crafty.polygon(sprite._collisionPoints),
-            function (hitData: any) {
-                sprite.hitOnCollider(hitData, entity);
+            async function (hitData: any) {
+                await sprite.hitOnCollider(hitData, entity);
             },
             function (hitData: any) {
                 sprite.hitOffCollider(hitData, entity);

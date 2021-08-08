@@ -84,6 +84,8 @@ async function _hitEnemy(sprite, attackDirection) {
 }
 
 async function _hitObject(sprite, attackDirection) {
+   rpg.setSpriteAnimation(sprite.id, "HIT");
+   await rpg.animateSprite(sprite.id, "HIT");
    rpg.removeSprite(sprite.id);
 }
 

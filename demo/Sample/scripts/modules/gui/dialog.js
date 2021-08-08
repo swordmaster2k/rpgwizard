@@ -48,7 +48,9 @@ async function _end() {
    state._blink = false;
    _clearNextMarker();
    rpg.clear(backgroundCanvas);
-   rpg.clear(profileCanvas);
+   if (state.showProfile) {
+      rpg.clear(profileCanvas);
+   }
    rpg.clear(textCanvas);
 }
 
@@ -91,10 +93,15 @@ function _setup(config) {
    // Background Canvas
    state.background.width = 440;
    if (viewportWidth < 560) {
-      state.background.width = viewportWidth - 120;
+      state.background.width = viewportWidth - 160;
    }
    state.background.height = 120;
-   state.background.x = Math.round((viewportWidth / 2) - (state.background.width / 2) + (state.background.height / 2) + (windowGap / 2));
+
+   state.background.x = (viewportWidth / 2) - (state.background.width / 2) + (windowGap / 2);
+   if (state.showProfile) {
+      state.background.x += (state.background.height / 2);
+   }
+   
    switch (state.position ? state.position : "BOTTOM") {
       case "TOP":
          state.background.y = 0;
@@ -109,11 +116,13 @@ function _setup(config) {
    _setupCanvas(backgroundCanvas, state.background);
 
    // Profile Canvas
-   state.profile.width = state.background.height;
-   state.profile.height = state.background.height;
-   state.profile.x = state.background.x - state.profile.width - windowGap;
-   state.profile.y = state.background.y;
-   _setupCanvas(profileCanvas, state.profile);
+   if (state.showProfile) {
+      state.profile.width = state.background.height;
+      state.profile.height = state.background.height;
+      state.profile.x = state.background.x - state.profile.width - windowGap;
+      state.profile.y = state.background.y;
+      _setupCanvas(profileCanvas, state.profile);
+   }
 
    // Next Marker Canvas
    let image = rpg.getImage(state.nextMarkerImage);
@@ -191,10 +200,12 @@ function _sortLines(text) {
 
 async function _animate() {
    rpg.setCanvasPosition(backgroundCanvas, state.background.x, state.background.y);
-   rpg.setCanvasPosition(profileCanvas, state.profile.x, state.profile.y);
-   
+   if (state.showProfile) {
+      rpg.setCanvasPosition(profileCanvas, state.profile.x, state.profile.y);
+   }
+
    if (state.position === "BOTTOM") {
-      const originalY = state.profile.y;
+      const originalY = state.background.y;
       state.background.y = state.profile.y = rpg.getViewport(false).height;
 
       const change = 5; // pixels
@@ -203,16 +214,20 @@ async function _animate() {
          rpg.setCanvasPosition(backgroundCanvas, state.background.x, state.background.y);
          rpg.render(backgroundCanvas);
 
-         state.profile.y -= change;
-         rpg.setCanvasPosition(profileCanvas, state.profile.x, state.profile.y);
-         rpg.render(profileCanvas);
+         if (state.showProfile) {
+            state.profile.y -= change;
+            rpg.setCanvasPosition(profileCanvas, state.profile.x, state.profile.y);
+            rpg.render(profileCanvas);
+         }
 
          await new Promise(r => requestAnimationFrame(r));
-      } while (originalY < state.profile.y);
+      } while (originalY < state.background.y);
    }
 
    rpg.render(backgroundCanvas);
-   rpg.render(profileCanvas);
+   if (state.showProfile) {
+      rpg.render(profileCanvas);
+   }
 }
 
 async function _printLines(lines) {

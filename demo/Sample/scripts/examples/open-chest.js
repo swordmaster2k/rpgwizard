@@ -12,11 +12,16 @@ export default async function (e) {
    const rewardSpriteId = await action.openChest(chest);
 
    const config = rpg.getGlobal("dialog.config");
-   config.text = `You got 1 coin.`;
+   config.text = 
+   `
+   You have obtained a sword. Use it by pressing SPACE.
+   `;
    config.showProfile = false;
    await dialog.show(config);
 
    rpg.removeSprite(rewardSpriteId);
+
+   rpg.setGlobal("player.hasSword", true);
 
    rpg.setGlobal("pause.input", false);
 }

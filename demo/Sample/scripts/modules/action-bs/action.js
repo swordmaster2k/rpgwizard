@@ -7,13 +7,37 @@ import * as items from "./items.js";
 import * as util from "./util.js";
 
 export async function setup() {
+   rpg.setGlobal("player.hasSword", false);
+   
    rpg.attachController("player", controller.build());
 
    rpg.registerKeyDown("SPACE", async function() {
+      if (!rpg.getGlobal("player.hasSword")) {
+         return;
+      }
+      
       await this.slashSword();
    }.bind(this), true);
 
    hud.setup();
+}
+
+export async function spawnPlayer(x, y, layer) {
+   if (rpg.getSprite("player")) {
+      return;
+   }
+   
+   const tileSize = 16;
+   x *= tileSize;
+   y *= tileSize;
+   const sprite = {
+      "asset": "hero.sprite",
+      "thread": null,
+      "startLocation": {x: x, y: y, layer: layer},
+      "events": null
+   };
+   await rpg.addSprite("player", sprite);
+   rpg.attachController("player", controller.build());
 }
 
 export async function dropItem(spriteFile, location) {

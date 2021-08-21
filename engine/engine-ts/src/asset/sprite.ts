@@ -518,7 +518,14 @@ export class Sprite implements Asset.Sprite {
             if (entity.sprite) {
                 const sprite: Sprite = entity.sprite;
                 if (this.onSameLayer(hit, sprite.layer) && this.canTrigger(hit, sprite.trigger.enabled)) {
-                    await this.processTrigger(hit.obj.sprite, sprite);
+                    // TODO: Fix this!
+                    if (hit.obj.wizTrigger) {
+                        await this.processTrigger(sprite, hit.obj.wizTrigger);
+                    } else {
+                        await this.processTrigger(hit.obj.sprite, sprite);
+                    }
+                    const source: any = hit.obj.sprite ? hit.obj.sprite : hit.obj.wizTrigger;
+                    await this.processTrigger(source, sprite);
                 }
             }
         }
@@ -528,8 +535,8 @@ export class Sprite implements Asset.Sprite {
         // REFACTOR: Implement
     }
 
-    private async processTrigger(source: Sprite, target: Sprite) {
-        const event: Event = target.trigger.events[0];
+    private async processTrigger(source: any, target: any) {
+        const event: Event = target.trigger ? target.trigger.events[0] : target.events[0]; // TODO: Fix this!
         if (!event || !event.script) {
             return;
         }
@@ -568,8 +575,8 @@ export class Sprite implements Asset.Sprite {
             hitLayer = hit.obj.sprite.layer;
         } else if (hit.obj.collider) {
             hitLayer = hit.obj.collider.layer;
-        } else if (hit.obj.trigger) {
-            hitLayer = hit.obj.trigger.layer;
+        } else if (hit.obj.wizTrigger) {
+            hitLayer = hit.obj.wizTrigger.layer;
         }
         return hitLayer === otherLayer;
     }
@@ -588,8 +595,8 @@ export class Sprite implements Asset.Sprite {
         let triggerEnabled: boolean = false;
         if (hit.obj.sprite) {
             triggerEnabled = hit.obj.sprite.trigger.enabled;
-        } else if (hit.obj.trigger) {
-            triggerEnabled = hit.obj.trigger.enabled;
+        } else if (hit.obj.wizTrigger) {
+            triggerEnabled = hit.obj.wizTrigger.enabled;
         }
         return triggerEnabled && otherEnabled;
     }

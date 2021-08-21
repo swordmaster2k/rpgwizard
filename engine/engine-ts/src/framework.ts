@@ -208,9 +208,9 @@ export namespace Framework {
         if (assets.audio) {
             // Remove any duplicates and already loaded audio
             const audio = {};
-            for (const property in assets.audio) {
-                if (!Crafty.assets[Crafty.__paths.audio + property]) {
-                    audio[property] = assets.audio[property];
+            for (const key in assets.audio) {
+                if (!Crafty.assets[Crafty.__paths.audio + assets.audio[key]]) {
+                    audio[key] = assets.audio[key];
                 }
             }
             assets.audio = audio;
@@ -505,7 +505,7 @@ function _createTrigger(type: Framework.EntityType, data: any): any {
         y: data.y,
         w: data.w,
         h: data.h,
-        trigger: data.trigger
+        wizTrigger: data.trigger // Different name due to a clash with Crafty
     };
     Crafty.e(`${type}, Collision, Raycastable`)
         .attr(attr)

@@ -1,5 +1,5 @@
 export async function openChest(chest) {
-   chest.open = true;
+   chest.data.open = true;
    rpg.setSpriteAnimation(chest.id, "OPEN");
    return await _spawnReward("coin-chest.sprite", chest.location);
 }

@@ -78,6 +78,7 @@
         ]
     },
     "data": {
-        "health": 5
+        "health": 5,
+		"coins": 10
     }
 }

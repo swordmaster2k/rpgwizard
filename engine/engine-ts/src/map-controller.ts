@@ -64,13 +64,13 @@ export class MapController {
              * Setup colliders
              */
             for (const id in mapLayer.colliders) {
-                this.createCollider(mapLayer.colliders[id], layer);
+                this.createCollider(id, mapLayer.colliders[id], layer);
             }
             /*
              * Setup triggers
              */
             for (const id in mapLayer.triggers) {
-                this.createTrigger(mapLayer.triggers[id], layer);
+                this.createTrigger(id, mapLayer.triggers[id], layer);
             }
             /*
              * Setup images
@@ -195,7 +195,8 @@ export class MapController {
         return Framework.createEntity(Framework.EntityType.Map, {});
     }
 
-    private createCollider(collider: Collider, layer: number) {
+    private createCollider(colliderId: string, collider: Collider, layer: number) {
+        collider.id = colliderId;
         collider.layer = layer;
 
         const points: Array<number> = this.pointsToArray(collider.points);
@@ -219,7 +220,8 @@ export class MapController {
         Framework.createEntity(Framework.EntityType.Collider, data);
     }
 
-    private createTrigger(trigger: Trigger, layer: number) {
+    private createTrigger(triggerId: string, trigger: Trigger, layer: number) {
+        trigger.id = triggerId;
         trigger.layer = layer;
 
         const points: Array<number> = this.pointsToArray(trigger.points);

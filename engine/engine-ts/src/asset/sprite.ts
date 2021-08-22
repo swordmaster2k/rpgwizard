@@ -524,15 +524,16 @@ export class Sprite implements Asset.Sprite {
                     } else {
                         await this.processTrigger(hit.obj.sprite, sprite);
                     }
-                    const source: any = hit.obj.sprite ? hit.obj.sprite : hit.obj.wizTrigger;
-                    await this.processTrigger(source, sprite);
                 }
             }
         }
     }
 
-    public hitOffTrigger(hitData: any, entity: any) {
-        // REFACTOR: Implement
+    public async hitOffTrigger(hitData: any, entity: any) {
+        if (Core.getInstance().eventKeydownHandler) {
+            Core.getInstance().keyDownHandlers[Framework.getKey(Core.getInstance().eventKeydownHandler.key)] = Core.getInstance().eventKeydownHandler.handler;
+            Core.getInstance().eventKeydownHandler = null;
+        }
     }
 
     private async processTrigger(source: any, target: any) {
@@ -551,7 +552,7 @@ export class Sprite implements Asset.Sprite {
             }
         } else if (event.type === EventType.KEYPRESS) {
             return new Promise<void>((resolve: any, reject: any) => {
-                const oldHandler: any = Core.getInstance().keyDownHandlers[Framework.getKey(event.key)];
+                Core.getInstance().eventKeydownHandler = { key: event.key, handler: Core.getInstance().keyDownHandlers[Framework.getKey(event.key)] };
                 async function callback() {
                     try {
                         const scriptEvent: ScriptEvent = new ScriptEvent(EventType.FUNCTION, source, target);
@@ -560,8 +561,6 @@ export class Sprite implements Asset.Sprite {
                     } catch (e) {
                         console.error(e);
                         reject(new Error("Could not run event script!"));
-                    } finally {
-                        Core.getInstance().keyDownHandlers[Framework.getKey(event.key)] = oldHandler;
                     }
                 }
                 Core.getInstance().keyDownHandlers[Framework.getKey(event.key)] = callback;

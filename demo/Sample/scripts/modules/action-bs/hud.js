@@ -1,22 +1,44 @@
+const hudCanvasId = "hudCanvas";
+const redrawInterval = 50;
+
 export function setup() {
-   const heartCanvasId = "heartCanvas";
-   rpg.createCanvas(heartCanvasId, rpg.getViewport().width, rpg.getViewport().height);
+   rpg.createCanvas(hudCanvasId, rpg.getViewport().width, rpg.getViewport().height);
 
    setInterval(function() {
       const player = rpg.getSprite("player");
       if (!player) {
          return;
       }
-      
-      const hearts = player.data.health;
-      if (hearts < 1) {
-         rpg.restart();
+      if (rpg.getGlobal("pause.input")) {
+         return;
       }
 
-      rpg.clear(heartCanvasId);
-      for (let i = 0; i < hearts; i++) {
-         rpg.drawImagePart(heartCanvasId, "objects.png", 64, 0, 16, 16, 8 + (16 * i), 8, 16, 16, 0);
-      }
-      rpg.render(heartCanvasId);
-   }, 50);
+      rpg.clear(hudCanvasId);
+      
+      _drawHearts(player);
+      _drawCoins(player);
+      
+      rpg.render(hudCanvasId);
+      
+   }, redrawInterval);
+}
+
+function _drawHearts(player) {
+   const hearts = player.data.health;
+   if (hearts < 1) {
+      rpg.restart(); // TODO: Move this elsewhere
+   }
+   
+   for (let i = 0; i < hearts; i++) {
+      rpg.drawImagePart(hudCanvasId, "objects.png", 64, 0, 16, 16, 8 + (16 * i), 8, 16, 16, 0);
+   }
+}
+
+function _drawCoins(player) {
+   const coins = player.data.coins;
+   rpg.drawImagePart(hudCanvasId, "objects.png", 0, 64, 16, 16, 8, 32, 16, 16, 0);
+   
+   const text = coins < 10 ? "00" + coins : "0" + coins;
+   rpg.setFont(12, "Lucida Console");
+   rpg.drawText(hudCanvasId, 28, 44, text);
 }

@@ -14,6 +14,8 @@ import javax.swing.JComboBox;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import org.apache.commons.lang3.ArrayUtils;
 import org.rpgwizard.common.assets.events.MapModelEvent;
 import org.rpgwizard.common.assets.map.MapImage;
@@ -30,7 +32,7 @@ import org.rpgwizard.editor.utilities.GuiHelper;
  */
 public final class MapImagePanel extends AbstractMapModelPanel {
 
-    private final JTextField idTextField;
+    private final JTextField idField;
     private final JComboBox fileComboBox;
     private final JSpinner xSpinner;
     private final JSpinner ySpinner;
@@ -46,8 +48,26 @@ public final class MapImagePanel extends AbstractMapModelPanel {
         ///
         /// idTextField
         ///
-        idTextField = getJTextField(getId());
-        idTextField.setEditable(false);
+        idField = getJTextField(getId());
+        idField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateId();
+                MainWindow.getInstance().markWindowForSaving();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateId();
+                MainWindow.getInstance().markWindowForSaving();
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateId();
+                MainWindow.getInstance().markWindowForSaving();
+            }
+        });
         ///
         /// fileComboBox
         ///
@@ -92,13 +112,13 @@ public final class MapImagePanel extends AbstractMapModelPanel {
         ///
         /// layerSpinner
         ///
-        layerSpinner = getJSpinner(getLayer());
+        layerSpinner = getJSpinner(getLayerIdx());
         layerSpinner.addChangeListener((ChangeEvent e) -> {
-            if (getLayer() == (int) layerSpinner.getValue()) {
+            if (getLayerIdx() == (int) layerSpinner.getValue()) {
                 return;
             }
 
-            MapLayerView lastLayerView = getMapEditor().getMapView().getLayer(getLayer());
+            MapLayerView lastLayerView = getMapEditor().getMapView().getLayer(getLayerIdx());
             MapLayerView newLayerView = getMapEditor().getMapView().getLayer((int) layerSpinner.getValue());
             if (lastLayerView != null && newLayerView != null) {
                 lastLayerView.getLayer().getImages().remove(getId());
@@ -112,7 +132,7 @@ public final class MapImagePanel extends AbstractMapModelPanel {
         ///
         /// this
         ///
-        insert(getJLabel("id"), idTextField);
+        insert(getJLabel("id"), idField);
         insert(getJLabel("image"), fileComboBox);
         insert(getJLabel("x"), xSpinner);
         insert(getJLabel("y"), ySpinner);
@@ -133,13 +153,39 @@ public final class MapImagePanel extends AbstractMapModelPanel {
         SelectablePair<String, MapImage> pair = (SelectablePair<String, MapImage>) model;
         return pair.getLeft();
     }
+    
+    private void updateId() {
+        String newId = idField.getText().trim();
+        if (newId.isBlank()) {
+            return;
+        }
+
+        MapImage image = getImage();
+        MapLayer layer = getLayer();
+        layer.getImages().remove(getId());
+        layer.getImages().put(newId, image);
+        model = new SelectablePair<>(newId, image);
+        MainWindow.getInstance().markWindowForSaving();
+    }
 
     private MapImage getImage() {
         SelectablePair<String, MapImage> pair = (SelectablePair<String, MapImage>) model;
         return pair.getRight();
     }
+    
+    private MapLayer getLayer() {
+        List<MapLayer> layers = getMapEditor().getMap().getLayers();
+        for (int i = 0; i < layers.size(); i++) {
+            MapLayer layer = layers.get(i);
+            if (layer.getImages().containsKey(getId())) {
+                return layer;
+            }
+        }
 
-    private int getLayer() {
+        return null;
+    }
+
+    private int getLayerIdx() {
         List<MapLayer> layers = getMapEditor().getMap().getLayers();
         for (int i = 0; i < layers.size(); i++) {
             MapLayer layer = layers.get(i);

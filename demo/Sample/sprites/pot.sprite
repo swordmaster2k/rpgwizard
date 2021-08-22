@@ -39,7 +39,8 @@
         "events": []
     },
     "data": {
-        "type": "object"
+        "type": "object",
+		"itemDrop": "coin.sprite"
     },
     "animations": {
         "HIT": "pot\\smash.animation",

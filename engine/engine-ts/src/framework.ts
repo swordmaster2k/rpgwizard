@@ -535,8 +535,8 @@ function _createMapSprite(type: Framework.EntityType, data: any): any {
             async function (hitData: any) {
                 await sprite.hitOnTrigger(hitData, entity);
             },
-            function (hitData: any) {
-                sprite.hitOffTrigger(hitData, entity);
+            async function (hitData: any) {
+                await sprite.hitOffTrigger(hitData, entity);
             }
         );
 

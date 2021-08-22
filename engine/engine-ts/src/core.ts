@@ -58,6 +58,7 @@ export class Core {
     private _keyboardHandler: any;
     private _keyDownHandlers: any;
     private _keyUpHandlers: any;
+    private _eventKeydownHandler: any;
 
     // Mouse handlers
     private _mouseHandler: any;
@@ -88,6 +89,9 @@ export class Core {
         };
         this._keyDownHandlers = {};
         this._keyUpHandlers = {};
+
+        // Stores the previous keydown handler for a event key
+        this._eventKeydownHandler = null;
 
         // Used to store state when runProgram is called.
         this._mouseHandler = {
@@ -157,6 +161,14 @@ export class Core {
 
     get keyUpHandlers(): any {
         return this._keyUpHandlers;
+    }
+
+    get eventKeydownHandler(): any {
+        return this._eventKeydownHandler;
+    }
+
+    set eventKeydownHandler(handler: any) {
+        this._eventKeydownHandler = handler;
     }
 
     get mouseHandler(): any {

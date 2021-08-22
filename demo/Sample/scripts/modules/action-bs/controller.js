@@ -6,7 +6,7 @@ export function build() {
          north: false,
          south: false
       },
-      speed: 1,
+      speed: 1.5,
       diagonalSpeed: 0.8,
       update: function(e) {
          if (rpg.getGlobal("pause.input")) {

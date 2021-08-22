@@ -19,7 +19,9 @@ export async function pickup(sprite) {
    rpg.playAudio("item", false);
    rpg.removeSprite(sprite.id);
 
-   if (sprite.name === "heart"){
+   if (sprite.name === "heart") {
       rpg.getSprite("player").data.health++;
+   } else if (sprite.name === "coin") { 
+      rpg.getSprite("player").data.coins++;
    }
 }

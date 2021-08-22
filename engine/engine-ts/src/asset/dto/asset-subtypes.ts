@@ -80,6 +80,7 @@ export interface Event {
 }
 
 export interface Trigger {
+    id: string;
     enabled: boolean;
     x: number;
     y: number;
@@ -89,6 +90,7 @@ export interface Trigger {
 }
 
 export interface Collider {
+    id: string;
     enabled: boolean;
     x: number;
     y: number;

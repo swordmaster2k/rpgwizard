@@ -1,5 +1,7 @@
 # RPGWizard [![Travis Build Status](https://api.travis-ci.org/swordmaster2k/rpgwizard.svg?branch=develop)](https://travis-ci.org/swordmaster2k/rpgwizard) [![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
 
+# NOTICE: This game engine is no longer in development, please look elsewhere
+
 ====================================
 
 ### About RPGWizard

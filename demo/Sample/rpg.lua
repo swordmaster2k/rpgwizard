@@ -1,8 +1,11 @@
 local rpg = { _version = "0.0.1" }
-local json = require("json")
 
+-- Requires
+local anim8 = require("scripts/libraries/anim8")
+local json = require("scripts/libraries/json")
+
+-- State
 local cache = {}
-
 local current_map = nil
 
 --- ###############################################################################################
@@ -40,19 +43,29 @@ end
 function rpg.load_animation(name)
     local asset_name = "animations/" .. name
 
+    local animation = nil
+
     -- Check the cache
+    -- Slightly different here as we don't want to store Runtime data but
+    -- we do want to load the original asset from the cache for speed
     if cache[asset_name] ~= nil then
-        return cache[asset_name]
+        animation = cache[asset_name]
+    else
+        animation = load_json(asset_name)
+        cache[asset_name] = animation
     end
 
-    local animation = load_json(asset_name)
-    rpg.load_texture(animation.spriteSheet.image)
+    local image = rpg.load_texture(animation.spriteSheet.image)
 
-    -- Store in cache
-    cache[asset_name] = animation
+    -- Runtime data, setup anim8
+    local g = anim8.newGrid(animation.width, animation.height, image:getWidth(), image:getHeight())
+    local row = animation.spriteSheet.y / animation.height + 1
+    local col_start = animation.spriteSheet.x / animation.width + 1
+    local col_end = animation.spriteSheet.width / animation.width
+    local range = tostring(col_start) .. '-' .. tostring(col_end)
+    animation.animator = anim8.newAnimation(g(range, row), 1 / animation.frameRate)
 
     return animation
-
 end
 
 function rpg.load_sprite(name)
@@ -70,14 +83,15 @@ function rpg.load_sprite(name)
         cache[asset_name] = sprite
     end
 
+    -- Runtime data, setup anim8
+    sprite.anim8 = {}
     for k, v in pairs(sprite.animations) do
         if v ~= nil and v ~= '' then
-            rpg.load_animation(v)
+            sprite.anim8[k] = rpg.load_animation(v)
         end
     end
 
     return sprite
-
 end
 
 function rpg.load_tileset(name)
@@ -94,12 +108,11 @@ function rpg.load_tileset(name)
     -- Runtime data
     local tile_width = tileset.tileWidth
     local tile_height = tileset.tileHeight
-    local image_width = tileset_image.getWidth(tileset_image)
-    local image_height = tileset_image.getHeight(tileset_image)
+    local image_width = tileset_image:getWidth()
+    local image_height = tileset_image:getHeight()
 
     tileset.rows = math.floor(image_height / tile_height)
     tileset.columns = math.floor(image_width / tile_width)
-    tileset.count = tileset.rows * tileset.columns
     tileset.quads = {}
 
     -- Store the tiles in a 1D linear array
@@ -146,10 +159,15 @@ function rpg.load_map(name)
 
             -- Runtime data
             local sprite = rpg.load_sprite(instance.asset)
-            instance.active_animation = sprite.animations["SOUTH"]
             instance.x = instance.startLocation.x
             instance.y = instance.startLocation.y
             instance.layer = instance.startLocation.layer
+
+            -- Assign active animation
+            instance.active_animation = {}
+            instance.active_animation = sprite.anim8["SOUTH"] -- TODO: Default to "idle"
+
+            instance.asset = sprite
 
         end
     end
@@ -175,17 +193,11 @@ local function drawSprite(sprite)
     end
 
     -- TODO: Optimize, many function calls
-    local animation = rpg.load_animation(sprite.active_animation)
-    local spriteSheet = animation.spriteSheet
+    local animation = sprite.active_animation
     local image = rpg.load_texture(animation.spriteSheet.image)
-    local image_width = image.getWidth(image)
-    local image_height = image.getHeight(image)
-    local quad = love.graphics.newQuad(spriteSheet.x, spriteSheet.y, animation.width, animation.height, image_width,
-        image_height)
     local x = sprite.x - math.floor(animation.width / 2)
     local y = sprite.y - math.floor(animation.height / 2)
-
-    love.graphics.draw(image, quad, x, y)
+    animation.animator:draw(image, x, y)
 end
 
 local function drawTile(tile, row, column)
@@ -220,34 +232,13 @@ local function drawTiles(layer)
     end
 end
 
-function rpg.drawMap()
-    if current_map == nil then
-        return
-    end
-
-    for i, layer in pairs(current_map.layers) do
-
-        drawTiles(layer)
-
-        for j, sprite in pairs(layer.sprites) do
-            drawSprite(sprite)
-        end
-
-        for j, image in pairs(layer.images) do
-            drawImage(image)
-        end
-
-    end
-
-end
-
 --- ###############################################################################################
 ---
 --- Client API
 ---
 --- ###############################################################################################
 
-function rpg.getSprite(id)
+function rpg.get_sprite(id)
     if current_map == nil then
         error("invalid state: no map is loaded")
     end
@@ -261,6 +252,53 @@ function rpg.getSprite(id)
     end
 
     return nil
+
+end
+
+--- ###############################################################################################
+---
+--- Runtime
+---
+--- ###############################################################################################
+
+function rpg.load()
+    -- TODO
+end
+
+function rpg.update(dt)
+    if current_map == nil then
+        return
+    end
+
+    -- TODO: Optimize
+    for i, layer in pairs(current_map.layers) do
+        for j, sprite in pairs(layer.sprites) do
+            if sprite.active_animation ~= nil then
+                sprite.active_animation.animator:update(dt)
+            end
+        end
+    end
+end
+
+function rpg.draw()
+    if current_map == nil then
+        return
+    end
+
+    -- TODO: Optimize
+    for i, layer in pairs(current_map.layers) do
+
+        drawTiles(layer)
+
+        for j, sprite in pairs(layer.sprites) do
+            drawSprite(sprite)
+        end
+
+        for j, image in pairs(layer.images) do
+            drawImage(image)
+        end
+
+    end
 
 end
 

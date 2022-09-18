@@ -18,10 +18,22 @@ export async function drop(spriteFile, location) {
 export async function pickup(sprite) {
    rpg.playAudio("item", false);
    rpg.removeSprite(sprite.id);
+   _applyItem(sprite);
+}
 
+export async function purchase(sprite, cost) {
+   rpg.setGlobal("player.coins", rpg.getGlobal("player.coins") - cost);
+   rpg.playAudio("item", false);
+   rpg.removeSprite(sprite.id);
+   _applyItem(sprite);
+}
+
+function _applyItem(sprite) {
    if (sprite.name === "heart") {
-      rpg.getSprite("player").data.health++;
+      rpg.setGlobal("player.health", rpg.getGlobal("player.health") + 1);
    } else if (sprite.name === "coin") { 
-      rpg.getSprite("player").data.coins++;
+      rpg.setGlobal("player.coins", rpg.getGlobal("player.coins") + 1);
+   } else if (sprite.name === "book") {
+      rpg.setGlobal("player.hasBook", true);
    }
 }

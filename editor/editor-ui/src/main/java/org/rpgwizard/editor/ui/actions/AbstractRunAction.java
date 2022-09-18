@@ -8,7 +8,6 @@
 package org.rpgwizard.editor.ui.actions;
 
 import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -85,8 +84,22 @@ public abstract class AbstractRunAction extends AbstractAction {
             ProgressMonitor progressMonitor) throws InterruptedException, InvocationTargetException, Exception {
         // Get the project icon if available.
         File projectIcon = null; // REFACTOR: Move to game.ico way
-        engine.run(project.getName(), dimensions.width, dimensions.height, isFullScreen, projectCopy, progressMonitor,
-                projectIcon);
+        // engine.run(project.getName(), dimensions.width, dimensions.height, isFullScreen, projectCopy,
+        // progressMonitor,
+        // projectIcon);
+
+        String command = "love.exe " + '"' + projectCopy.getAbsolutePath() + File.separator + "game" + '"';
+        System.out.println(command);
+        Runtime runtime = Runtime.getRuntime();
+        Process process = runtime.exec(command);
+
+    }
+
+    public static void main(String[] args) throws Exception {
+        String command = "lovec.exe D:/Desktop/lua-game";
+
+        Runtime runtime = Runtime.getRuntime();
+        Process process = runtime.exec(command);
     }
 
 }

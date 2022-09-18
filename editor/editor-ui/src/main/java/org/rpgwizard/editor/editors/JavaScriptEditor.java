@@ -67,17 +67,17 @@ import org.slf4j.LoggerFactory;
  */
 @Getter
 @Setter
-public final class ScriptEditor extends AbstractAssetEditorWindow
+public final class JavaScriptEditor extends AbstractAssetEditorWindow
         implements SearchListener, ActionHandler, PropertyChangeListener {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ScriptEditor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JavaScriptEditor.class);
 
     private static final String JSHINT_RC_FILE = "config" + File.separator + ".jshintrc";
 
     private final Script script;
     private RSyntaxTextArea textArea;
 
-    public ScriptEditor(Script script) {
+    public JavaScriptEditor(Script script) {
         super("Untitled", true, true, true, true, Icons.getIcon("program"));
 
         this.script = script;
@@ -90,7 +90,7 @@ public final class ScriptEditor extends AbstractAssetEditorWindow
     }
 
     public static void prepareNewScript(Script script) {
-        try (InputStream in = ScriptEditor.class.getResourceAsStream("/script/templates/empty.js")) {
+        try (InputStream in = JavaScriptEditor.class.getResourceAsStream("/script/templates/empty.js")) {
             script.update(IOUtils.toString(in, StandardCharsets.UTF_8));
         } catch (IOException ex) {
             LOGGER.error("Failed to apply new template, script=[{}]", script, ex);
@@ -157,7 +157,7 @@ public final class ScriptEditor extends AbstractAssetEditorWindow
         try {
             // Attempt to configure JSHint for error parsing
             File jsHintRCFile = new File(
-                    FileTools.getExecutionPath(ScriptEditor.class) + File.separator + JSHINT_RC_FILE);
+                    FileTools.getExecutionPath(JavaScriptEditor.class) + File.separator + JSHINT_RC_FILE);
             if (jsHintRCFile.exists()) {
                 languageSupport.setErrorParser(JsErrorParser.JSHINT);
                 languageSupport.setDefaultJsHintRCFile(jsHintRCFile);
@@ -291,7 +291,7 @@ public final class ScriptEditor extends AbstractAssetEditorWindow
     }
 
     public static void main(String[] args) {
-        ScriptEditor editor = new ScriptEditor(new Script(null));
+        JavaScriptEditor editor = new JavaScriptEditor(new Script(null));
         editor.setVisible(true);
 
         JFrame frame = new JFrame("Test InternalJFrame");

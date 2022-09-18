@@ -6,16 +6,16 @@ import * as torch from "./modules/environment/torch.js";
 
 export default async function (e) {
 
-//   // Load common assets
-//   const assets = {
-//      "audio": {
-//         "sword": "sword.wav",
-//         "hurt-player": "hurt_character.wav",
-//         "hurt-enemy": "hurt_enemy.wav",
-//         "item": "item.wav"
-//      }
-//   };
-//   await rpg.loadAssets(assets);
+   // Load common assets
+   const assets = {
+      "audio": {
+         "sword": "sword.wav",
+         "hurt-player": "hurt_character.wav",
+         "hurt-enemy": "hurt_enemy.wav",
+         "item": "item.wav"
+      }
+   };
+   await rpg.loadAssets(assets);
 //
 //   // Show the title
 //   await title.show({
@@ -63,6 +63,7 @@ export default async function (e) {
 
    // Load start map
    await rpg.loadMap("start.map");
+   await action.spawnPlayer(12, 7.5, 1);
 //   await torch.setup();
    await action.setup();
 

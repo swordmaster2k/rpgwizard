@@ -24,7 +24,7 @@ export function setup() {
 }
 
 function _drawHearts(player) {
-   const hearts = player.data.health;
+   const hearts = rpg.getGlobal("player.health");
    if (hearts < 1) {
       rpg.restart(); // TODO: Move this elsewhere
    }
@@ -35,7 +35,7 @@ function _drawHearts(player) {
 }
 
 function _drawCoins(player) {
-   const coins = player.data.coins;
+   const coins = rpg.getGlobal("player.coins");
    rpg.drawImagePart(hudCanvasId, "objects.png", 0, 64, 16, 16, 8, 32, 16, 16, 0);
    
    const text = coins < 10 ? "00" + coins : "0" + coins;

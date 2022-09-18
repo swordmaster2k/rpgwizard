@@ -72,14 +72,14 @@ public final class GoToFileDialog extends JDialog {
             public void windowActivated(WindowEvent e) {
                 searchField.selectAll();
             }
-            
+
             @Override
             public void windowClosing(WindowEvent e) {
                 if (swingWorker != null && !swingWorker.isCancelled()) {
                     swingWorker.cancel(true);
                 }
             }
-            
+
             @Override
             public void windowClosed(WindowEvent e) {
                 if (swingWorker != null && !swingWorker.isCancelled()) {
@@ -194,7 +194,8 @@ public final class GoToFileDialog extends JDialog {
             @Override
             protected List<MatchingFile> doInBackground() throws Exception {
                 return Files.walk(Paths.get(Utilities.toURI(directory))).filter(Files::isRegularFile).filter(p -> {
-                    return FilenameUtils.getBaseName(p.toFile().getName()).toLowerCase().contains(searchInput.toLowerCase());
+                    return FilenameUtils.getBaseName(p.toFile().getName()).toLowerCase()
+                            .contains(searchInput.toLowerCase());
                 }).map(p -> {
                     MatchingFile file = new MatchingFile(p);
                     publish(file);
@@ -207,7 +208,7 @@ public final class GoToFileDialog extends JDialog {
                 if (isCancelled()) {
                     return;
                 }
-                
+
                 chunks.forEach(p -> {
                     matchingFilesModel.addElement(p);
                 });

@@ -43,11 +43,11 @@
 		"itemDrop": "coin.sprite"
     },
     "animations": {
-        "HIT": "pot\\smash.animation",
-        "NORTH": "pot\\normal.animation",
-        "WEST": "pot\\normal.animation",
-        "SOUTH": "pot\\normal.animation",
-        "EAST": "pot\\normal.animation"
+        "HIT": "pot/smash.animation",
+        "NORTH": "pot/normal.animation",
+        "WEST": "pot/normal.animation",
+        "SOUTH": "pot/normal.animation",
+        "EAST": "pot/normal.animation"
     },
     "name": "Untitled",
     "description": null,

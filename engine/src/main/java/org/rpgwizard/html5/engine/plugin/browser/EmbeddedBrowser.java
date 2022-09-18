@@ -185,7 +185,7 @@ public final class EmbeddedBrowser extends JFrame {
         toFront();
         requestFocus();
     }
-    
+
     private void showDevTools() {
         if (devToolsUI == null) {
             devToolsUI = cefBrowser.getDevTools().getUIComponent();

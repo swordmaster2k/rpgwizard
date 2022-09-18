@@ -182,7 +182,7 @@ public final class MapEditor extends AbstractAssetEditorWindow
                 // Default values for a blank tile.
                 int tileSetIndex = -1;
                 int tileIndex = -1;
-                
+
                 Tile tile = layerTiles[x][y];
                 if (tile != null) {
                     tileIndex = tile.getIndex();
@@ -194,7 +194,7 @@ public final class MapEditor extends AbstractAssetEditorWindow
                         tileSetIndex = map.getTilesets().indexOf(tileset.getName());
                     }
                 }
-                
+
                 mapLayer.getTiles().add(j, tileSetIndex + ":" + tileIndex);
 
                 x++;

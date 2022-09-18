@@ -153,7 +153,7 @@ public final class MapImagePanel extends AbstractMapModelPanel {
         SelectablePair<String, MapImage> pair = (SelectablePair<String, MapImage>) model;
         return pair.getLeft();
     }
-    
+
     private void updateId() {
         String newId = idField.getText().trim();
         if (newId.isBlank()) {
@@ -172,7 +172,7 @@ public final class MapImagePanel extends AbstractMapModelPanel {
         SelectablePair<String, MapImage> pair = (SelectablePair<String, MapImage>) model;
         return pair.getRight();
     }
-    
+
     private MapLayer getLayer() {
         List<MapLayer> layers = getMapEditor().getMap().getLayers();
         for (int i = 0; i < layers.size(); i++) {

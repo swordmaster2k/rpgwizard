@@ -1,6 +1,8 @@
+import * as action from "../modules/action-bs/action.js";
 import * as dialog from "../modules/gui/dialog.js";
 
 export default async function (e) {
+
    const itemId = e.target.id.replace("trigger", "item");
    const sprite = rpg.getSprite(itemId);
    if (!sprite) {
@@ -8,14 +10,19 @@ export default async function (e) {
    }
 
    const player = rpg.getSprite("player");
-   const coins = player.data.coins;
-   if (coins < 1) {
+   if (rpg.getGlobal("player.coins") < 1) {
       await showShopMessage(`You have no coins.`);
-   } else if (itemId === "heart-item" && coins < 50) {
-      await showShopMessage(`This item requires 5 coins.`);
-   } else if (itemId === "book-item" && coins < 50) {
-      await showShopMessage(`This item requires 10 coins.`);
+      return;
    }
+
+   const cost = 5;
+   if (rpg.getGlobal("player.coins") < cost) {
+      await showShopMessage(`This item requires ${cost} coins.`);
+      return;
+   }
+
+   action.purchaseItem(sprite, cost);
+   await showShopMessage(`You purchased a ${sprite.name} for ${cost} coins.`);
 
 }
 

@@ -169,7 +169,7 @@ public final class TriggerPanel extends AbstractMapModelPanel {
         SelectablePair<String, Trigger> pair = (SelectablePair<String, Trigger>) model;
         return pair.getLeft();
     }
-    
+
     private void updateId() {
         String newId = idField.getText().trim();
         if (newId.isBlank()) {
@@ -188,7 +188,7 @@ public final class TriggerPanel extends AbstractMapModelPanel {
         SelectablePair<String, Trigger> pair = (SelectablePair<String, Trigger>) model;
         return pair.getRight();
     }
-    
+
     private MapLayer getLayer() {
         List<MapLayer> layers = getMapEditor().getMap().getLayers();
         for (int i = 0; i < layers.size(); i++) {

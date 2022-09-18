@@ -8,6 +8,9 @@ import * as util from "./util.js";
 
 export async function setup() {
    rpg.setGlobal("player.hasSword", false);
+   rpg.setGlobal("player.hasBook", false);
+   rpg.setGlobal("player.health", 5);
+   rpg.setGlobal("player.coins", 0);
    
    rpg.attachController("player", controller.build());
 
@@ -37,6 +40,11 @@ export async function spawnPlayer(x, y, layer) {
       "events": null
    };
    await rpg.addSprite("player", sprite);
+
+   const player = rpg.getSprite("player");
+   player.data.health = rpg.getGlobal("player.health");
+   player.data.coins = rpg.getGlobal("player.coins");
+   
    rpg.attachController("player", controller.build());
 }
 
@@ -52,6 +60,10 @@ export async function pickupItem(source, target) {
    if (source.id === "player") {
       await items.pickup(target);
    }
+}
+
+export async function purchaseItem(sprite, cost) {
+   await items.purchase(sprite, cost);
 }
 
 export async function slashSword() {

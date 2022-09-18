@@ -233,13 +233,13 @@ public final class MapSpritePanel extends AbstractMapModelPanel {
         SelectablePair<String, MapSprite> pair = (SelectablePair<String, MapSprite>) model;
         return pair.getLeft();
     }
-    
+
     private void updateId() {
-       String newId = idField.getText().trim();
+        String newId = idField.getText().trim();
         if (newId.isBlank()) {
             return;
         }
-        
+
         MapSprite sprite = getSprite();
         MapLayer layer = getLayer();
         layer.getSprites().remove(getId());
@@ -264,7 +264,7 @@ public final class MapSpritePanel extends AbstractMapModelPanel {
 
         return null;
     }
-    
+
     private int getLayerIdx() {
         List<MapLayer> layers = getMapEditor().getMap().getLayers();
         for (int i = 0; i < layers.size(); i++) {

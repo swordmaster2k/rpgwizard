@@ -96,7 +96,7 @@ public final class ColliderPanel extends AbstractMapModelPanel {
         SelectablePair<String, Collider> pair = (SelectablePair<String, Collider>) model;
         return pair.getRight();
     }
-    
+
     private void updateId() {
         String newId = idField.getText().trim();
         if (newId.isBlank()) {
@@ -122,7 +122,7 @@ public final class ColliderPanel extends AbstractMapModelPanel {
 
         return null;
     }
-    
+
     private int getLayerIdx() {
         List<MapLayer> layers = getMapEditor().getMap().getLayers();
         for (int i = 0; i < layers.size(); i++) {

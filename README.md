@@ -1,6 +1,28 @@
 # RPGWizard [![Travis Build Status](https://api.travis-ci.org/swordmaster2k/rpgwizard.svg?branch=develop)](https://travis-ci.org/swordmaster2k/rpgwizard) [![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
 
-# NOTICE: This game engine is no longer in development, please look elsewhere
+# NOTICE: State of this Project
+
+## Community
+
+See [GitHub Discussions](https://github.com/swordmaster2k/rpgwizard/discussions) if you want to reach out.
+
+## Future 2.x.x
+
+The 2.x.x rewrite has resumed, it is a substantial amount of work and there is no release date yet.
+
+* The engine is being completely rewritten in [Lua](https://www.lua.org/) and will be built upon the [LÖVE Framework](https://love2d.org/)
+  * The JavaScript engine built upon the now abandoned CraftyJS Framework will be removed.
+  * Naturally, this means the scripting language for games will change to Lua.
+  * Moving to LÖVE off-loads a substantial amount of boilerplate work allowing me to focus more on the core RPG engine.
+* The editor is being updated to work with the new file formats.
+  *  These designed from the ground up and are not based on the old RPGToolkit formats.
+* The editor will eventually be rewritten in [Eclipse Theia](https://theia-ide.org/) after the initial release of 2.x.x.
+* RPGWizard 1.x.x projects won't be compatible due to the massive changes being made.
+
+
+## Legacy 1.x.x
+
+The 1.x.x series has ceased all development and remains for historical purposes only, no Issues or Features will be released.
 
 ====================================
 

@@ -11,6 +11,9 @@ local cache = {}
 local current_map = nil
 local world = nil
 
+-- screen
+local canvas = nil
+
 --- ###############################################################################################
 --- Asset Loading
 --- ###############################################################################################
@@ -270,6 +273,10 @@ end
 --- Client API
 --- ###############################################################################################
 
+function rpg.get_scale()
+    return love.graphics.getWidth() / canvas:getWidth()
+end
+
 function rpg.get_sprite(id)
     if current_map == nil then
         error("invalid state: no map is loaded")
@@ -292,6 +299,10 @@ end
 --- ###############################################################################################
 
 function rpg.load()
+    love.graphics.setDefaultFilter("nearest", "nearest")
+
+    canvas = love.graphics.newCanvas(512, 288)
+
     world = wf.newWorld(0, 0, false)
 end
 
@@ -317,6 +328,8 @@ function rpg.draw()
         return
     end
 
+    love.graphics.setCanvas(canvas)
+
     -- TODO: Optimize
     for i, layer in pairs(current_map.layers) do
 
@@ -334,6 +347,11 @@ function rpg.draw()
 
     -- TODO: debug only
     world:draw()
+
+    love.graphics.setCanvas()
+
+    local scale = rpg.get_scale()
+    love.graphics.draw(canvas, 0, 0, 0, scale, scale)
 
 end
 

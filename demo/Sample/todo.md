@@ -13,6 +13,5 @@
 
 ## Rendering
 
-1. Scrolling
-2. Scaling
-3. UI Layers
+1. Camera
+2. UI Layers

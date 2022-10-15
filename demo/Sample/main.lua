@@ -7,7 +7,11 @@ function love.load()
    if arg[#arg] == "vsc_debug" then require("lldebugger").start() end
 
    rpg.load()
+
+   -- map
    rpg.load_map("sample.map")
+
+   -- player
    player = rpg.get_sprite("player")
    player.collider:setMass(1)
 end

@@ -1,12 +1,15 @@
 local rpg = { _version = "0.0.1" }
 
--- Requires
+-- libraries
 local anim8 = require("scripts/libraries/anim8")
 local json = require("scripts/libraries/json")
+local wf = require("scripts/libraries/windfield")
+local vector = require("scripts/libraries/hump/vector")
 
--- State
+-- state
 local cache = {}
 local current_map = nil
+local world = nil
 
 --- ###############################################################################################
 --- Asset Loading
@@ -131,6 +134,40 @@ function rpg.load_tileset(name)
     return tileset
 end
 
+function rpg.init_layer_collider(id, instance)
+    -- TODO: move this to compile time
+    local points = {}
+    for i, point in pairs(instance.points) do
+        table.insert(points, point.x)
+        table.insert(points, point.y)
+    end
+
+    -- Runtime data, setup collider
+    instance.collider = world:newPolygonCollider(points)
+    instance.collider:setType("static")
+end
+
+function rpg.init_layer_sprite(id, instance)
+    -- Runtime data
+    local sprite = rpg.load_sprite(instance.asset)
+    instance.asset = sprite
+    instance.layer = instance.startLocation.layer
+
+    -- Assign active animation
+    instance.active_animation = {}
+    instance.active_animation = sprite.anim8["SOUTH"] -- TODO: Default to "idle"
+
+    -- Runtime data, setup collider
+    -- TODO: switch to circular collider in sprite format
+    instance.collider = world:newCircleCollider(instance.startLocation.x, instance.startLocation.y, 10)
+    instance.collider:setFixedRotation(true)
+    instance.collider:setLinearDamping(2)
+    instance.collider:setMass(math.huge)
+
+    -- Runtime data, setup trigger
+    -- TODO: switch to circular trigger in sprite format
+end
+
 function rpg.load_map(name)
     local asset_name = "maps/" .. name
 
@@ -155,21 +192,20 @@ function rpg.load_map(name)
 
     -- Iterate layers
     for i, layer in pairs(map.layers) do
-        for j, instance in pairs(layer.sprites) do
 
-            -- Runtime data
-            local sprite = rpg.load_sprite(instance.asset)
-            instance.x = instance.startLocation.x
-            instance.y = instance.startLocation.y
-            instance.layer = instance.startLocation.layer
-
-            -- Assign active animation
-            instance.active_animation = {}
-            instance.active_animation = sprite.anim8["SOUTH"] -- TODO: Default to "idle"
-
-            instance.asset = sprite
-
+        -- Iterate colliders
+        for id, instance in pairs(layer.colliders) do
+            rpg.init_layer_collider(id, instance)
         end
+
+        -- Iterate triggers
+        -- TODO
+
+        -- Iterate sprites
+        for id, instance in pairs(layer.sprites) do
+            rpg.init_layer_sprite(id, instance)
+        end
+
     end
 
     current_map = map
@@ -178,9 +214,7 @@ function rpg.load_map(name)
 end
 
 --- ###############################################################################################
----
 --- Asset Drawing
----
 --- ###############################################################################################
 
 local function drawImage(image)
@@ -195,8 +229,8 @@ local function drawSprite(sprite)
     -- TODO: Optimize, many function calls
     local animation = sprite.active_animation
     local image = rpg.load_texture(animation.spriteSheet.image)
-    local x = sprite.x - math.floor(animation.width / 2)
-    local y = sprite.y - math.floor(animation.height / 2)
+    local x = sprite.collider:getX() - math.floor(animation.width / 2)
+    local y = sprite.collider:getY() - math.floor(animation.height / 2)
     animation.animator:draw(image, x, y)
 end
 
@@ -233,9 +267,7 @@ local function drawTiles(layer)
 end
 
 --- ###############################################################################################
----
 --- Client API
----
 --- ###############################################################################################
 
 function rpg.get_sprite(id)
@@ -256,19 +288,19 @@ function rpg.get_sprite(id)
 end
 
 --- ###############################################################################################
----
 --- Runtime
----
 --- ###############################################################################################
 
 function rpg.load()
-    -- TODO
+    world = wf.newWorld(0, 0, false)
 end
 
 function rpg.update(dt)
     if current_map == nil then
         return
     end
+
+    world:update(dt)
 
     -- TODO: Optimize
     for i, layer in pairs(current_map.layers) do
@@ -297,6 +329,41 @@ function rpg.draw()
         for j, image in pairs(layer.images) do
             drawImage(image)
         end
+
+    end
+
+    -- TODO: debug only
+    world:draw()
+
+end
+
+--- ###############################################################################################
+--- Movement
+--- ###############################################################################################
+
+function rpg.move_player(player, player_speed)
+
+    if player ~= nil then
+
+        local delta = vector(0, 0)
+
+        if love.keyboard.isDown("left") then
+            delta.x = -1
+            player.active_animation = player.asset.anim8["WEST"]
+        elseif love.keyboard.isDown("right") then
+            delta.x = 1
+            player.active_animation = player.asset.anim8["EAST"]
+        end
+        if love.keyboard.isDown("up") then
+            delta.y = -1
+            player.active_animation = player.asset.anim8["NORTH"]
+        elseif love.keyboard.isDown("down") then
+            delta.y = 1
+            player.active_animation = player.asset.anim8["SOUTH"]
+        end
+
+        delta:normalizeInplace()
+        player.collider:setLinearVelocity(delta.x * player_speed, delta.y * player_speed)
 
     end
 

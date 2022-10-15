@@ -21,7 +21,7 @@ import org.rpgwizard.common.utilities.CoreProperties;
  *
  * @author Joshua Michael Daly
  */
-public class JsonTilesetSerializer extends AbstractJsonSerializer {
+public class JsonTileSetSerializer extends AbstractJsonSerializer {
 
     @Override
     public boolean serializable(AssetDescriptor descriptor) {

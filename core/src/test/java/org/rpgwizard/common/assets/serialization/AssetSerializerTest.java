@@ -53,7 +53,7 @@ public class AssetSerializerTest {
         assetManager.registerSerializer(new JsonGameSerializer());
         assetManager.registerSerializer(new JsonSpriteSerializer());
         assetManager.registerSerializer(new ScriptSerializer());
-        assetManager.registerSerializer(new JsonTilesetSerializer());
+        assetManager.registerSerializer(new JsonTileSetSerializer());
         assetManager.registerSerializer(new ImageSerializer());
     }
 
@@ -194,7 +194,7 @@ public class AssetSerializerTest {
     public void testTileSetSerializer() throws Exception {
         String path = AssetSerializerTestHelper.getPath(
                 "TileSets/Default.tileset");
-        JsonTilesetSerializer serializer = new JsonTilesetSerializer();
+        JsonTileSetSerializer serializer = new JsonTileSetSerializer();
 
         // Deserialize original.
         Tileset asset = AssetSerializerTestHelper.deserializeFile(path, serializer);

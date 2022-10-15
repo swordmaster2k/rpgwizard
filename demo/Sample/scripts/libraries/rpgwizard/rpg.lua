@@ -65,9 +65,9 @@ function rpg.load_animation(name)
 
     -- Runtime data, setup anim8
     local g = anim8.newGrid(animation.width, animation.height, image:getWidth(), image:getHeight())
-    local row = animation.spriteSheet.y / animation.height + 1
-    local col_start = animation.spriteSheet.x / animation.width + 1
-    local col_end = animation.spriteSheet.width / animation.width
+    local row = (animation.spriteSheet.y / animation.height) + 1
+    local col_start = (animation.spriteSheet.x / animation.width) + 1
+    local col_end = col_start + (animation.spriteSheet.width / animation.width) - 1
     local range = tostring(col_start) .. '-' .. tostring(col_end)
     animation.animator = anim8.newAnimation(g(range, row), 1 / animation.frameRate)
 

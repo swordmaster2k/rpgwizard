@@ -1,1 +1,14 @@
-{"frameRate":2,"soundEffect":"","width":16,"spriteSheet":{"image":"objects.png","x":32,"width":16,"y":0,"height":16},"version":null,"height":16}
+{
+    "frameRate":2,
+    "soundEffect":"",
+    "width":16,
+    "spriteSheet":{
+        "image":"objects.png",
+        "x":32,
+        "width":16,
+        "y":0,
+        "height":16
+    },
+    "version":null,
+    "height":16
+}

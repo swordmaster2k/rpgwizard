@@ -24,12 +24,23 @@ function love.load()
          contact:setEnabled(false)
       end
    end)
+   player.trigger:setCollisionClass("Trigger")
+   player.trigger:setMass(0)
+   player.trigger:setPreSolve(function(collider_1, collider_2, contact)
+      local object_1 = collider_1:getObject()
+      local object_2 = collider_2:getObject()
+
+      if object_1.layer ~= object_2.layer then
+         contact:setEnabled(false)
+      end
+   end)
 end
 
 function love.update(dt)
 
-   rpg.move_player(player, player_speed)
+
    rpg.update(dt)
+   rpg.move_player(player, player_speed)
 
 end
 

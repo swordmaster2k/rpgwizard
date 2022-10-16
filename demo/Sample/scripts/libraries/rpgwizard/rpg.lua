@@ -147,6 +147,7 @@ function rpg.init_layer_collider(id, instance)
 
     -- Runtime data, setup collider
     instance.collider = world:newPolygonCollider(points)
+    instance.collider:setCollisionClass("Solid")
     instance.collider:setObject(instance)
     instance.collider:setType("static")
 end
@@ -171,6 +172,12 @@ function rpg.init_layer_sprite(id, instance)
 
     -- Runtime data, setup trigger
     -- TODO: switch to circular trigger in sprite format
+    instance.trigger = world:newCircleCollider(instance.startLocation.x, instance.startLocation.y, 12)
+    instance.trigger:setCollisionClass("Trigger")
+    instance.trigger:setFixedRotation(true)
+    instance.trigger:setObject(instance)
+    instance.trigger:setLinearDamping(2)
+    instance.trigger:setMass(math.huge)
 end
 
 function rpg.load_map(name)
@@ -307,16 +314,16 @@ function rpg.load()
     canvas = love.graphics.newCanvas(512, 288)
 
     world = wf.newWorld(0, 0, false)
-    world:addCollisionClass("Sprite", { ignores = { "Sprite" } })
+    world:addCollisionClass("Solid")
     world:addCollisionClass("Player")
+    world:addCollisionClass("Sprite")
+    world:addCollisionClass("Trigger", { ignores = { "Solid", "Player", "Sprite" } })
 end
 
 function rpg.update(dt)
     if current_map == nil then
         return
     end
-
-
 
     world:update(dt)
 
@@ -389,7 +396,7 @@ function rpg.move_player(player, player_speed)
 
         delta:normalizeInplace()
         player.collider:setLinearVelocity(delta.x * player_speed, delta.y * player_speed)
-
+        player.trigger:setPosition(player.collider:getPosition())
     end
 
 end

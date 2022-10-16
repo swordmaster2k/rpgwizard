@@ -147,6 +147,7 @@ function rpg.init_layer_collider(id, instance)
 
     -- Runtime data, setup collider
     instance.collider = world:newPolygonCollider(points)
+    instance.collider:setObject(instance)
     instance.collider:setType("static")
 end
 
@@ -154,7 +155,6 @@ function rpg.init_layer_sprite(id, instance)
     -- Runtime data
     local sprite = rpg.load_sprite(instance.asset)
     instance.asset = sprite
-    instance.layer = instance.startLocation.layer
 
     -- Assign active animation
     instance.active_animation = {}
@@ -163,7 +163,9 @@ function rpg.init_layer_sprite(id, instance)
     -- Runtime data, setup collider
     -- TODO: switch to circular collider in sprite format
     instance.collider = world:newCircleCollider(instance.startLocation.x, instance.startLocation.y, 10)
+    instance.collider:setCollisionClass("Sprite")
     instance.collider:setFixedRotation(true)
+    instance.collider:setObject(instance)
     instance.collider:setLinearDamping(2)
     instance.collider:setMass(math.huge)
 
@@ -199,6 +201,7 @@ function rpg.load_map(name)
         -- Iterate colliders
         for id, instance in pairs(layer.colliders) do
             rpg.init_layer_collider(id, instance)
+            instance.layer = i
         end
 
         -- Iterate triggers
@@ -207,6 +210,7 @@ function rpg.load_map(name)
         -- Iterate sprites
         for id, instance in pairs(layer.sprites) do
             rpg.init_layer_sprite(id, instance)
+            instance.layer = i
         end
 
     end
@@ -300,16 +304,19 @@ end
 
 function rpg.load()
     love.graphics.setDefaultFilter("nearest", "nearest")
-
     canvas = love.graphics.newCanvas(512, 288)
 
     world = wf.newWorld(0, 0, false)
+    world:addCollisionClass("Sprite", { ignores = { "Sprite" } })
+    world:addCollisionClass("Player")
 end
 
 function rpg.update(dt)
     if current_map == nil then
         return
     end
+
+
 
     world:update(dt)
 

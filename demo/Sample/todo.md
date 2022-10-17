@@ -9,7 +9,9 @@
 ## Events
 
 1. Triggers
-   1. Use circular triggers for sprites in editor
+   1. Run scripts on overlap
+   2. Run scripts on keypress
+   3. Use circular triggers for sprites in editor
 
 ## Rendering
 

@@ -163,7 +163,7 @@ function rpg.init_layer_sprite(id, instance)
 
     -- Runtime data, setup collider
     -- TODO: switch to circular collider in sprite format
-    instance.collider = world:newCircleCollider(instance.startLocation.x, instance.startLocation.y, 10)
+    instance.collider = world:newCircleCollider(instance.startLocation.x, instance.startLocation.y, 8)
     instance.collider:setCollisionClass("Sprite")
     instance.collider:setFixedRotation(true)
     instance.collider:setObject(instance)

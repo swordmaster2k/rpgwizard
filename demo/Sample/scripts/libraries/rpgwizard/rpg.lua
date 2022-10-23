@@ -8,11 +8,22 @@ local vector = require("scripts/libraries/hump/vector")
 
 -- state
 local cache = {}
-local current_map = nil
 local world = nil
+local current_map = nil
 
 -- screen
 local canvas = nil
+
+-- player
+local player = nil
+local player_speed = 75
+
+-- events
+local script = nil
+local keypress_event = {
+    key = nil,
+    script = nil
+}
 
 --- ###############################################################################################
 --- Asset Loading
@@ -309,7 +320,13 @@ end
 --- Runtime
 --- ###############################################################################################
 
-function rpg.load()
+function rpg.load(config)
+    if config ~= nil then
+        if config.debug then
+            require("lldebugger").start()
+        end
+    end
+
     love.graphics.setDefaultFilter("nearest", "nearest")
     canvas = love.graphics.newCanvas(512, 288)
 
@@ -318,23 +335,82 @@ function rpg.load()
     world:addCollisionClass("Player")
     world:addCollisionClass("Sprite")
     world:addCollisionClass("Trigger", { ignores = { "Solid", "Player", "Sprite" } })
+
+    if config ~= nil then
+
+        if config.map ~= nil then
+            rpg.load_map(config.map)
+            if config.player ~= nil then
+                rpg.load_player(config.player)
+            end
+        end
+
+    end
+
 end
 
 function rpg.update(dt)
+
+    world:update(dt)
+
+    if script ~= nil then
+        if script.update(dt) then
+            script = nil
+        else
+            return
+        end
+    end
+
     if current_map == nil then
         return
     end
 
-    world:update(dt)
-
-    -- TODO: Optimize
     for i, layer in pairs(current_map.layers) do
         for j, sprite in pairs(layer.sprites) do
+
+            -- Threads
+            -- TODO
+
+            -- Animations
             if sprite.active_animation ~= nil then
                 sprite.active_animation.animator:update(dt)
             end
+
         end
     end
+
+    if player ~= nil then
+        rpg.move_player(player, player_speed)
+
+        if player.trigger:enter("Trigger") then
+            local collision_data = player.trigger:getEnterCollisionData("Trigger")
+            local object = collision_data.collider:getObject()
+            for _, event in pairs(object.events) do
+
+                if event.type == "overlap" then
+                    script = require("scripts/" .. event.script:gsub(".lua", ""))
+                else
+                    keypress_event.key = event.key
+                    keypress_event.script = event.script
+                end
+
+            end
+        elseif player.trigger:exit("Trigger") then
+            local collision_data = player.trigger:getEnterCollisionData("Trigger")
+            local object = collision_data.collider:getObject()
+            for _, event in pairs(object.events) do
+
+                -- Remove registered key event
+                if (keypress_event.key ~= nil and keypress_event.key == event.key) and
+                    (keypress_event.script ~= nil and keypress_event.script == event.script) then
+                    keypress_event.key = nil
+                    keypress_event.script = nil
+                end
+
+            end
+        end
+    end
+
 end
 
 function rpg.draw()
@@ -369,11 +445,50 @@ function rpg.draw()
 
 end
 
+function rpg.keyreleased(key)
+    if script ~= nil then
+        return
+    end
+
+    if key == keypress_event.key then
+        script = require("scripts/" .. keypress_event.script:gsub(".lua", ""))
+    end
+end
+
 --- ###############################################################################################
---- Movement
+--- Player
 --- ###############################################################################################
 
-function rpg.move_player(player, player_speed)
+function rpg.load_player(sprite_id)
+    player = rpg.get_sprite(sprite_id)
+    if player == nil then
+        error("invalid state: cannot find player with sprite_id " .. sprite_id)
+    end
+
+    player.collider:setCollisionClass("Player")
+    player.collider:setMass(1)
+    player.collider:setPreSolve(function(collider_1, collider_2, contact)
+        local object_1 = collider_1:getObject()
+        local object_2 = collider_2:getObject()
+
+        if object_1.layer ~= object_2.layer then
+            contact:setEnabled(false)
+        end
+    end)
+
+    player.trigger:setCollisionClass("Trigger")
+    player.trigger:setMass(0)
+    player.trigger:setPreSolve(function(collider_1, collider_2, contact)
+        local object_1 = collider_1:getObject()
+        local object_2 = collider_2:getObject()
+
+        if object_1.layer ~= object_2.layer then
+            contact:setEnabled(false)
+        end
+    end)
+end
+
+function rpg.move_player()
 
     if player ~= nil then
 

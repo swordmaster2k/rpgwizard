@@ -1447,9 +1447,9 @@
                     "asset":"log.sprite",
                     "events":[
                         {
-                            "type":"overlap",
+                            "type":"keypress",
                             "script":"examples/bump-player.lua",
-                            "key":""
+                            "key":"space"
                         }
                     ]
                 },

@@ -10,25 +10,9 @@ function player.load(sprite_id, sprite)
 
     sprite.collider:setCollisionClass("Player")
     sprite.collider:setMass(1)
-    sprite.collider:setPreSolve(function(collider_1, collider_2, contact)
-        local object_1 = collider_1:getObject()
-        local object_2 = collider_2:getObject()
-
-        if object_1.layer ~= object_2.layer then
-            contact:setEnabled(false)
-        end
-    end)
 
     sprite.trigger:setCollisionClass("Trigger")
     sprite.trigger:setMass(0)
-    sprite.trigger:setPreSolve(function(collider_1, collider_2, contact)
-        local object_1 = collider_1:getObject()
-        local object_2 = collider_2:getObject()
-
-        if object_1.layer ~= object_2.layer then
-            contact:setEnabled(false)
-        end
-    end)
 
     return sprite
 end
@@ -61,7 +45,7 @@ local function move(active_player)
 
 end
 
-function player.update(dt, active_player, state)
+function player.update(dt, active_player, vm)
     move(active_player)
 
     if active_player.trigger:enter("Trigger") then
@@ -69,11 +53,13 @@ function player.update(dt, active_player, state)
         local object = collision_data.collider:getObject()
         for _, event in pairs(object.events) do
 
+            vm.source = object
+
             if event.type == "overlap" then
-                state.script = require("scripts/" .. event.script:gsub(".lua", ""))
+                vm.script = require("scripts/" .. event.script:gsub(".lua", ""))
             else
-                state.keypress_event.key = event.key
-                state.keypress_event.script = event.script
+                vm.keypress_event.key = event.key
+                vm.keypress_event.script = event.script
             end
 
         end
@@ -83,15 +69,15 @@ function player.update(dt, active_player, state)
         for _, event in pairs(object.events) do
 
             -- Remove registered key event
-            if (state.keypress_event.key ~= nil and state.keypress_event.key == event.key) and
-                (state.keypress_event.script ~= nil and state.keypress_event.script == event.script) then
-                state.keypress_event.key = nil
-                state.keypress_event.script = nil
+            if (vm.keypress_event.key ~= nil and vm.keypress_event.key == event.key) and
+                (vm.keypress_event.script ~= nil and vm.keypress_event.script == event.script) then
+                vm.keypress_event.key = nil
+                vm.keypress_event.script = nil
             end
         end
     end
 
-    return state
+    return vm
 end
 
 return player

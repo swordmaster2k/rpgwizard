@@ -36,7 +36,15 @@ local function init_layer_sprite(id, cache, world, instance)
     instance.collider:setFixedRotation(true)
     instance.collider:setObject(instance)
     instance.collider:setLinearDamping(2)
-    instance.collider:setMass(math.huge)
+    instance.collider:setMass(2147483648)
+    instance.collider:setPreSolve(function(collider_1, collider_2, contact)
+        local object_1 = collider_1:getObject()
+        local object_2 = collider_2:getObject()
+
+        if object_1.layer ~= object_2.layer then
+            contact:setEnabled(false)
+        end
+    end)
 
     -- Runtime data, setup trigger
     -- TODO: switch to circular trigger in sprite format
@@ -45,7 +53,15 @@ local function init_layer_sprite(id, cache, world, instance)
     instance.trigger:setFixedRotation(true)
     instance.trigger:setObject(instance)
     instance.trigger:setLinearDamping(2)
-    instance.trigger:setMass(math.huge)
+    instance.trigger:setMass(2147483648)
+    instance.trigger:setPreSolve(function(collider_1, collider_2, contact)
+        local object_1 = collider_1:getObject()
+        local object_2 = collider_2:getObject()
+
+        if object_1.layer ~= object_2.layer then
+            contact:setEnabled(false)
+        end
+    end)
 end
 
 function map.load(cache, world, name)
@@ -98,7 +114,11 @@ function map.update(dt, current_map)
         for j, map_sprite in pairs(layer.sprites) do
 
             -- Threads
-            -- TODO
+            if map_sprite.thread ~= nil and map_sprite.thread ~= "" then
+                local thread = require("scripts/" .. map_sprite.thread:gsub(".lua", ""))
+                thread.sprite = map_sprite
+                thread.update(dt)
+            end
 
             -- Animations
             if map_sprite.active_animation ~= nil then

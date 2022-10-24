@@ -1443,7 +1443,7 @@
                         "y":152,
                         "layer":1
                     },
-                    "thread":"examples/threads/chasing-enemy.js",
+                    "thread":"examples/threads/chasing-enemy.lua",
                     "asset":"log.sprite",
                     "events":[
                         {
@@ -1507,7 +1507,7 @@
                         "y":152,
                         "layer":1
                     },
-                    "thread":"examples/threads/wandering-enemy.js",
+                    "thread":"examples/threads/wandering-enemy.lua",
                     "asset":"log.sprite",
                     "events":[
                         {

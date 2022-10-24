@@ -21,36 +21,12 @@ local active_player = nil
 -- events
 local vm = {
     script = nil,
+    source = nil,
     keypress_event = {
         key = nil,
         script = nil
     }
 }
-
---- ###############################################################################################
---- Client API
---- ###############################################################################################
-
-function rpg.get_scale()
-    return love.graphics.getWidth() / canvas:getWidth()
-end
-
-function rpg.get_sprite(id)
-    if current_map == nil then
-        error("invalid state: no map is loaded")
-    end
-
-    -- TODO: Optimize
-    for i, layer in pairs(current_map.layers) do
-        local map_sprite = layer.sprites[id]
-        if map_sprite ~= nil then
-            return map_sprite
-        end
-    end
-
-    return nil
-
-end
 
 --- ###############################################################################################
 --- Runtime
@@ -93,6 +69,7 @@ function rpg.update(dt)
     if vm.script ~= nil then
         if vm.script.update(dt) then
             vm.script = nil
+            vm.source = nil
         end
     elseif current_map ~= nil then
         map.update(dt, current_map)
@@ -118,5 +95,39 @@ function rpg.keyreleased(key)
         vm.script = require("scripts/" .. vm.keypress_event.script:gsub(".lua", ""))
     end
 end
+
+--- ###############################################################################################
+--- Client API
+--- ###############################################################################################
+
+function rpg.get_scale()
+    return love.graphics.getWidth() / canvas:getWidth()
+end
+
+function rpg.get_sprite(id)
+    if current_map == nil then
+        error("invalid state: no map is loaded")
+    end
+
+    -- TODO: Optimize
+    for i, layer in pairs(current_map.layers) do
+        local map_sprite = layer.sprites[id]
+        if map_sprite ~= nil then
+            return map_sprite
+        end
+    end
+
+    return nil
+
+end
+
+function rpg.move_sprite(sprite, velocity_x, velocity_y)
+    sprite.collider:setLinearVelocity(velocity_x, velocity_y)
+    sprite.trigger:setPosition(sprite.collider:getPosition())
+end
+
+--- ###############################################################################################
+--- end
+--- ###############################################################################################
 
 return rpg

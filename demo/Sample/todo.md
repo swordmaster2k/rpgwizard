@@ -13,6 +13,11 @@
    2. ~~Run scripts on keypress~~
    3. Use circular triggers for sprites in editor
 
+## Threads
+
+1. Basic threading
+   1. Move sprite around randomly
+
 ## Rendering
 
 1. Camera

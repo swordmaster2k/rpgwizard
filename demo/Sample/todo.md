@@ -16,7 +16,7 @@
 ## Threads
 
 1. Basic threading
-   1. Move sprite around randomly
+   1. ~~Move sprite around randomly~~
 
 ## Rendering
 

@@ -24,6 +24,7 @@ local function init_layer_sprite(id, cache, world, instance)
     -- Runtime data
     local sprite_asset = sprite.load(cache, instance.asset)
     instance.asset = sprite_asset
+    instance.data = {}
 
     -- Assign active animation
     instance.active_animation = {}
@@ -62,6 +63,16 @@ local function init_layer_sprite(id, cache, world, instance)
             contact:setEnabled(false)
         end
     end)
+
+    -- Setup thread
+    if instance.thread ~= nil and instance.thread ~= "" then
+        local thread = require("scripts/" .. instance.thread:gsub(".lua", ""))
+        thread.sprite = instance
+        if thread.load ~= nil then
+            thread.load()
+        end
+    end
+
 end
 
 function map.load(cache, world, name)

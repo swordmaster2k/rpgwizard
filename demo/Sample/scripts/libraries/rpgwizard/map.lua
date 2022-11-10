@@ -140,9 +140,7 @@ function map.update(dt, current_map)
     end
 end
 
-function map.draw(cache, world, current_map, canvas, scale)
-    love.graphics.setCanvas(canvas)
-
+function map.draw(cache, world, current_map)
     -- TODO: Optimize
     for i, layer in pairs(current_map.layers) do
 
@@ -160,10 +158,6 @@ function map.draw(cache, world, current_map, canvas, scale)
 
     -- TODO: debug only
     world:draw()
-
-    love.graphics.setCanvas()
-
-    love.graphics.draw(canvas, 0, 0, 0, scale, scale)
 end
 
 return map

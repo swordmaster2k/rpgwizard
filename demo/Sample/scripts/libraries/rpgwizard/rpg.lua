@@ -6,6 +6,7 @@ local player = require("scripts/libraries/rpgwizard/player")
 
 -- libraries
 local wf = require("scripts/libraries/windfield")
+local camera = require("scripts/libraries/hump/camera")
 
 -- state
 local cache = {}
@@ -13,7 +14,7 @@ local world = nil
 local current_map = nil
 
 -- screen
-local canvas = nil
+local cam = nil
 
 -- player
 local active_player = nil
@@ -40,7 +41,9 @@ function rpg.load(config)
     end
 
     love.graphics.setDefaultFilter("nearest", "nearest")
-    canvas = love.graphics.newCanvas(512, 288)
+
+    cam = camera(0, 0, rpg.get_scale())
+    cam.smoother = camera.smooth.damped(8)
 
     world = wf.newWorld(0, 0, false)
     world:addCollisionClass("Solid")
@@ -75,15 +78,18 @@ function rpg.update(dt)
         map.update(dt, current_map)
         if active_player ~= nil then
             vm = player.update(dt, active_player, vm)
+            rpg.update_camera()
         end
     end
 
 end
 
 function rpg.draw()
+    cam:attach()
     if current_map ~= nil then
-        map.draw(cache, world, current_map, canvas, rpg.get_scale())
+        map.draw(cache, world, current_map)
     end
+    cam:detach()
 end
 
 function rpg.keyreleased(key)
@@ -97,11 +103,60 @@ function rpg.keyreleased(key)
 end
 
 --- ###############################################################################################
+--- Camera
+--- ###############################################################################################
+
+function rpg.update_camera()
+
+    local cam_x, cam_y = active_player.collider:getPosition()
+
+    -- This section prevents the camera from viewing outside the background
+    -- First, get width/height of the game window, divided by the game scale
+    local w = love.graphics.getWidth()
+    local h = love.graphics.getHeight()
+    local sw = w / rpg.get_scale()
+    local sh = h / rpg.get_scale()
+
+    -- Get width/height of background
+    local map_w = current_map.width * current_map.tileWidth
+    local map_h = current_map.height * current_map.tileHeight
+
+    -- Left border
+    if cam_x < sw / 2 then
+        cam_x = sw / 2
+    end
+
+    -- -- Right border
+    if cam_y < sh / 2 then
+        cam_y = sh / 2
+    end
+
+    -- -- Right border
+    if cam_x > (map_w - sw / 2) then
+        cam_x = (map_w - sw / 2)
+    end
+
+    -- -- Bottom border
+    if cam_y > (map_h - sh / 2) then
+        cam_y = (map_h - sh / 2)
+    end
+
+    cam:lockPosition(cam_x, cam_y)
+
+    -- cam.x and cam.y keep track of where the camera is located
+    -- the lookAt value may be moved if a screenshake is happening, so these
+    -- values know where the camera should be, regardless of lookAt
+    cam.x, cam.y = cam:position()
+
+end
+
+--- ###############################################################################################
 --- Client API
 --- ###############################################################################################
 
+-- TODO: replace with love2d scale
 function rpg.get_scale()
-    return love.graphics.getWidth() / canvas:getWidth()
+    return love.graphics.getWidth() / 512
 end
 
 function rpg.get_sprite(id)

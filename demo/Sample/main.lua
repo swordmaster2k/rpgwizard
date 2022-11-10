@@ -2,7 +2,7 @@ local rpg = require("scripts/libraries/rpgwizard/rpg")
 
 function love.load()
 
-   rpg.load({ debug = true, map = "sample.map", player = "player" })
+   rpg.load({ debug = true, map = "big.map", player = "player" })
 
 end
 

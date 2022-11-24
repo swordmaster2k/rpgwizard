@@ -33,6 +33,7 @@ local function init_layer_sprite(id, cache, world, instance)
     -- Runtime data, setup collider
     -- TODO: switch to circular collider in sprite format
     instance.collider = world:newCircleCollider(instance.startLocation.x, instance.startLocation.y, 8)
+    instance.collider:setType("static")
     instance.collider:setCollisionClass("Sprite")
     instance.collider:setFixedRotation(true)
     instance.collider:setObject(instance)
@@ -50,6 +51,7 @@ local function init_layer_sprite(id, cache, world, instance)
     -- Runtime data, setup trigger
     -- TODO: switch to circular trigger in sprite format
     instance.trigger = world:newCircleCollider(instance.startLocation.x, instance.startLocation.y, 12)
+    instance.collider:setType("static")
     instance.trigger:setCollisionClass("Trigger")
     instance.trigger:setFixedRotation(true)
     instance.trigger:setObject(instance)

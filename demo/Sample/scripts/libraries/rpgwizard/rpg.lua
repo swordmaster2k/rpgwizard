@@ -36,7 +36,10 @@ local vm = {
 function rpg.load(config)
     if config ~= nil then
         if config.debug then
-            require("lldebugger").start()
+            local has_lldebugger, lldebugger = pcall(require, "lldebugger")
+            if has_lldebugger then
+                lldebugger.start()
+            end
         end
     end
 
@@ -49,7 +52,8 @@ function rpg.load(config)
     world:addCollisionClass("Solid")
     world:addCollisionClass("Player")
     world:addCollisionClass("Sprite")
-    world:addCollisionClass("Trigger", { ignores = { "Solid", "Player", "Sprite" } })
+    world:addCollisionClass("PlayerTrigger", { ignores = { "Solid", "Player", "Sprite" } })
+    world:addCollisionClass("Trigger", { ignores = { "Trigger", "Solid", "Player", "Sprite" } })
 
     if config ~= nil then
 

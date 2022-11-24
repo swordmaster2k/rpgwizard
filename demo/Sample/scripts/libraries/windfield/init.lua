@@ -89,6 +89,8 @@ function World:draw(alpha)
             local collision_class = user_data.collision_class
             if collision_class == "Trigger" then
                 love.graphics.setColor(0, 222, 0, alpha)
+            elseif collision_class == "PlayerTrigger" then
+                love.graphics.setColor(222, 0, 0, alpha)
             else
                 love.graphics.setColor(222, 222, 222, alpha)
             end

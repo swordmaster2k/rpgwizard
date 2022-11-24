@@ -15,11 +15,13 @@ function thread.load()
     thread.sprite.data.max_time_wandering = thread.sprite.data.time_wandering_range[1]
     thread.sprite.data.time_wandering = 0
 
+    thread.sprite.collider:setType("dynamic")
     thread.sprite.collider:setPostSolve(function(collider_1, collider_2)
         if collider_2.collision_class == "Solid" then
             thread.sprite.data.time_wandering = thread.sprite.data.max_time_wandering
         end
     end)
+    thread.sprite.trigger:setType("dynamic")
 end
 
 function thread.should_switch_direction()

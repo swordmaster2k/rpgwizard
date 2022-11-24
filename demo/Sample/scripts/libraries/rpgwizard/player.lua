@@ -9,9 +9,11 @@ function player.load(sprite_id, sprite)
     end
 
     sprite.collider:setCollisionClass("Player")
+    sprite.collider:setType("dynamic")
     sprite.collider:setMass(1)
 
-    sprite.trigger:setCollisionClass("Trigger")
+    sprite.trigger:setCollisionClass("PlayerTrigger")
+    sprite.collider:setType("dynamic")
     sprite.trigger:setMass(0)
 
     return sprite

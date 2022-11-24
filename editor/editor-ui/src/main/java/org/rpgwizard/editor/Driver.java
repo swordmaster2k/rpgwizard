@@ -106,12 +106,12 @@ public class Driver {
         Theme theme = Theme
                 .valueOf(UserPreferencesProperties.getProperty(UserPreference.USER_PREFERENCE_THEME).toUpperCase());
         switch (theme) {
-        case LIGHT:
-            FlatLightLaf.install();
-            break;
-        case DARK:
-        default:
-            FlatDarkLaf.install();
+            case LIGHT:
+                FlatLightLaf.install();
+                break;
+            case DARK:
+            default:
+                FlatDarkLaf.install();
         }
     }
 
@@ -176,10 +176,11 @@ public class Driver {
                     PluginManager pluginManager = registerPlugins();
                     loadUserTheme();
 
+                    // TODO: Remove jcef references
                     // Add the correct lib based on the platform.
-                    if (SystemUtils.IS_OS_WINDOWS) {
-                        addLibraryPath("lib/jcef-win");
-                    }
+                    // if (SystemUtils.IS_OS_WINDOWS) {
+                    // addLibraryPath("lib/jcef-win");
+                    // }
 
                     MainWindow mainWindow = MainWindow.getInstance();
                     mainWindow.setPluginManager(pluginManager);

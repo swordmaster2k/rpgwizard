@@ -5,6 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "java",
+            "name": "Launch Driver",
+            "request": "launch",
+            "mainClass": "org.rpgwizard.editor.Driver",
+            "projectName": "editor-ui"
+        },
+        {
             "type": "lua-local",
             "request": "launch",
             "name": "Debug LOVE",
@@ -12,9 +19,9 @@
                 "command": "love"
             },
             "args": [
-                ".",
+                "./demo/Sample",
                 "vsc_debug"
-            ],
+            ]
         }
     ]
 }

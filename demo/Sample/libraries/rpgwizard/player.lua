@@ -1,7 +1,7 @@
 local player = { speed = 75 }
 
 -- libraries
-local vector = require("scripts/libraries/hump/vector")
+local vector = require("libraries/hump/vector")
 
 function player.load(sprite_id, sprite)
     if sprite == nil then

@@ -1,7 +1,7 @@
 local asset = {}
 
 -- libraries
-local json = require("scripts/libraries/json")
+local json = require("libraries/json")
 
 function asset.load_json(cache, name)
     local contents, size = love.filesystem.read(name)

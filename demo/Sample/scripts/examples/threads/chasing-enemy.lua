@@ -1,10 +1,10 @@
 local thread = { sprite = nil }
 
 -- rpg
-local rpg = require("scripts/libraries/rpgwizard/rpg")
+local rpg = require("libraries/rpgwizard/rpg")
 
 -- libraries
-local vector = require("scripts/libraries/hump/vector")
+local vector = require("libraries/hump/vector")
 
 function thread.update(dt)
 

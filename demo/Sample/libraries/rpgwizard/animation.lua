@@ -1,10 +1,10 @@
 local animation = {}
 
 -- modules
-local asset = require("scripts/libraries/rpgwizard/asset")
+local asset = require("libraries/rpgwizard/asset")
 
 -- libraries
-local anim8 = require("scripts/libraries/anim8")
+local anim8 = require("libraries/anim8")
 
 function animation.load(cache, name)
     local asset_name = "animations/" .. name

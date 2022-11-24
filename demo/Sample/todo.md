@@ -20,6 +20,15 @@
 
 ## Rendering
 
-1. Camera
+1. ~~Camera~~
 2. ~~Scaling~~
 3. UI Layers
+
+---
+
+# Backlog
+
+## Physics
+
+1. Collisions
+   1. Prevent Player & Sprites from pushing each other

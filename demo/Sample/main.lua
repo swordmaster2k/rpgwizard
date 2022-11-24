@@ -1,8 +1,13 @@
-local rpg = require("scripts/libraries/rpgwizard/rpg")
+local rpg = require("libraries/rpgwizard/rpg")
 
 function love.load()
 
-   rpg.load({ debug = true, map = "big.map", player = "player" })
+   rpg.load({
+      debug = true,
+      scale = 2,
+      map = "big.map",
+      player = "player"
+   })
 
 end
 

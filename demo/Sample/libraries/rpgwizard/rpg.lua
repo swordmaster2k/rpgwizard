@@ -1,12 +1,12 @@
 local rpg = { _version = "0.0.1" }
 
 -- modules
-local map = require("scripts/libraries/rpgwizard/map")
-local player = require("scripts/libraries/rpgwizard/player")
+local map = require("libraries/rpgwizard/map")
+local player = require("libraries/rpgwizard/player")
 
 -- libraries
-local wf = require("scripts/libraries/windfield")
-local camera = require("scripts/libraries/hump/camera")
+local wf = require("libraries/windfield")
+local camera = require("libraries/hump/camera")
 
 -- state
 local cache = {}
@@ -15,6 +15,7 @@ local current_map = nil
 
 -- screen
 local cam = nil
+local scale = 1
 
 -- player
 local active_player = nil
@@ -41,6 +42,10 @@ function rpg.load(config)
                 lldebugger.start()
             end
         end
+
+        if config.scale ~= nil then
+            scale = config.scale
+        end
     end
 
     love.graphics.setDefaultFilter("nearest", "nearest")
@@ -55,10 +60,13 @@ function rpg.load(config)
     world:addCollisionClass("PlayerTrigger", { ignores = { "Solid", "Player", "Sprite" } })
     world:addCollisionClass("Trigger", { ignores = { "Trigger", "Solid", "Player", "Sprite" } })
 
+    -- Load initial map
     if config ~= nil then
 
         if config.map ~= nil then
             current_map = map.load(cache, world, config.map)
+
+            -- Load initial player
             if config.player ~= nil then
                 local player_sprite = rpg.get_sprite(config.player)
                 active_player = player.load(config.player, player_sprite)
@@ -158,9 +166,8 @@ end
 --- Client API
 --- ###############################################################################################
 
--- TODO: replace with love2d scale
 function rpg.get_scale()
-    return love.graphics.getWidth() / 512
+    return scale
 end
 
 function rpg.get_sprite(id)

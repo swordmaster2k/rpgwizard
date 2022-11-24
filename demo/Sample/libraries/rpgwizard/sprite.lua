@@ -1,8 +1,8 @@
 local sprite = {}
 
 -- modules
-local asset = require("scripts/libraries/rpgwizard/asset")
-local animation = require("scripts/libraries/rpgwizard/animation")
+local asset = require("libraries/rpgwizard/asset")
+local animation = require("libraries/rpgwizard/animation")
 
 function sprite.load(cache, name)
     local asset_name = "sprites/" .. name

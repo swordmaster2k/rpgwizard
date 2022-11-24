@@ -1,7 +1,7 @@
 local tileset = {}
 
 -- modules
-local asset = require("scripts/libraries/rpgwizard/asset")
+local asset = require("libraries/rpgwizard/asset")
 
 function tileset.load(cache, name)
     local asset_name = "tilesets/" .. name

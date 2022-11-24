@@ -1,9 +1,9 @@
 local map = {}
 
 -- modules
-local asset = require("scripts/libraries/rpgwizard/asset")
-local sprite = require("scripts/libraries/rpgwizard/sprite")
-local tileset = require("scripts/libraries/rpgwizard/tileset")
+local asset = require("libraries/rpgwizard/asset")
+local sprite = require("libraries/rpgwizard/sprite")
+local tileset = require("libraries/rpgwizard/tileset")
 
 local function init_layer_collider(id, cache, world, instance)
     -- TODO: move this to compile time

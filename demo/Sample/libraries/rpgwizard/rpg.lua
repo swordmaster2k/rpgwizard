@@ -3,10 +3,14 @@ local rpg = { _version = "0.0.1" }
 -- modules
 local map = require("libraries/rpgwizard/map")
 local player = require("libraries/rpgwizard/player")
+local sprite = require("libraries/rpgwizard/sprite")
 
 -- libraries
 local wf = require("libraries/windfield")
 local camera = require("libraries/hump/camera")
+
+-- startup
+local game_config = nil
 
 -- state
 local cache = {}
@@ -34,7 +38,28 @@ local vm = {
 --- Runtime
 --- ###############################################################################################
 
+local function setup_world()
+    if world ~= nil then
+        world:destroy()
+        world = nil
+    end
+
+    world = wf.newWorld(0, 0, false)
+    world:addCollisionClass("Solid")
+    world:addCollisionClass("Player")
+    world:addCollisionClass("Sprite")
+    world:addCollisionClass("PlayerTrigger", { ignores = { "Solid", "Player", "Sprite" } })
+    world:addCollisionClass("Trigger", { ignores = { "Trigger", "Solid", "Player", "Sprite" } })
+end
+
+local function setup_player(player_id)
+    local player_sprite = rpg.get_sprite(player_id)
+    active_player = player.load(player_id, player_sprite)
+end
+
 function rpg.load(config)
+    game_config = config
+
     if config ~= nil then
         if config.debug then
             local has_lldebugger, lldebugger = pcall(require, "lldebugger")
@@ -53,12 +78,7 @@ function rpg.load(config)
     cam = camera(0, 0, rpg.get_scale())
     cam.smoother = camera.smooth.damped(8)
 
-    world = wf.newWorld(0, 0, false)
-    world:addCollisionClass("Solid")
-    world:addCollisionClass("Player")
-    world:addCollisionClass("Sprite")
-    world:addCollisionClass("PlayerTrigger", { ignores = { "Solid", "Player", "Sprite" } })
-    world:addCollisionClass("Trigger", { ignores = { "Trigger", "Solid", "Player", "Sprite" } })
+    setup_world()
 
     -- Load initial map
     if config ~= nil then
@@ -68,8 +88,7 @@ function rpg.load(config)
 
             -- Load initial player
             if config.player ~= nil then
-                local player_sprite = rpg.get_sprite(config.player)
-                active_player = player.load(config.player, player_sprite)
+                setup_player(config.player)
             end
         end
 
@@ -78,7 +97,6 @@ function rpg.load(config)
 end
 
 function rpg.update(dt)
-
     world:update(dt)
 
     if vm.script ~= nil then
@@ -153,7 +171,7 @@ function rpg.update_camera()
         cam_y = (map_h - sh / 2)
     end
 
-    cam:lockPosition(cam_x, cam_y)
+    cam:lookAt(cam_x, cam_y)
 
     -- cam.x and cam.y keep track of where the camera is located
     -- the lookAt value may be moved if a screenshake is happening, so these
@@ -187,9 +205,20 @@ function rpg.get_sprite(id)
 
 end
 
-function rpg.move_sprite(sprite, velocity_x, velocity_y)
-    sprite.collider:setLinearVelocity(velocity_x, velocity_y)
-    sprite.trigger:setPosition(sprite.collider:getPosition())
+function rpg.move_sprite(m_sprite, velocity_x, velocity_y)
+    m_sprite.collider:setLinearVelocity(velocity_x, velocity_y)
+    m_sprite.trigger:setPosition(m_sprite.collider:getPosition())
+end
+
+function rpg.switch_map(new_map, x, y, layer)
+    setup_world()
+
+    current_map = map.load(cache, world, new_map)
+
+    if game_config.player ~= nil then
+        setup_player(game_config.player)
+        sprite.set_location(active_player, x * current_map.tileWidth, y * current_map.tileHeight, layer)
+    end
 end
 
 --- ###############################################################################################

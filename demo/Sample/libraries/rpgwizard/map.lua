@@ -51,7 +51,7 @@ local function init_layer_sprite(id, cache, world, instance)
     -- Runtime data, setup trigger
     -- TODO: switch to circular trigger in sprite format
     instance.trigger = world:newCircleCollider(instance.startLocation.x, instance.startLocation.y, 12)
-    instance.collider:setType("static")
+    instance.trigger:setType("dynamic")
     instance.trigger:setCollisionClass("Trigger")
     instance.trigger:setFixedRotation(true)
     instance.trigger:setObject(instance)
@@ -85,12 +85,10 @@ function map.load(cache, world, name)
     -- Check the cache
     -- Slightly different here as we don't want to store Runtime data but
     -- we do want to load the original asset from the cache for speed
-    if cache[asset_name] ~= nil then
-        map_asset = cache[asset_name]
-    else
-        map_asset = asset.load_json(cache, asset_name)
-        cache[asset_name] = map_asset
+    if cache[asset_name] == nil then
+        cache[asset_name] = asset.load_json(cache, asset_name)
     end
+    map_asset = asset.deep_copy(cache[asset_name])
 
     -- Load tilesets
     for i, tileset_name in pairs(map_asset.tilesets) do

@@ -5,7 +5,7 @@ function love.load()
    rpg.load({
       debug = true,
       scale = 2,
-      map = "big.map",
+      map = "start.map",
       player = "player"
    })
 

@@ -13,7 +13,6 @@ local camera = require("libraries/hump/camera")
 local game_config = nil
 
 -- state
-local cache = {}
 local world = nil
 local current_map = nil
 
@@ -84,7 +83,7 @@ function rpg.load(config)
     if config ~= nil then
 
         if config.map ~= nil then
-            current_map = map.load(cache, world, config.map)
+            current_map = map.load(world, config.map)
 
             -- Load initial player
             if config.player ~= nil then
@@ -117,7 +116,7 @@ end
 function rpg.draw()
     cam:attach()
     if current_map ~= nil then
-        map.draw(cache, world, current_map)
+        map.draw(world, current_map)
     end
     cam:detach()
 end
@@ -213,7 +212,7 @@ end
 function rpg.switch_map(new_map, x, y, layer)
     setup_world()
 
-    current_map = map.load(cache, world, new_map)
+    current_map = map.load(world, new_map)
 
     if game_config.player ~= nil then
         setup_player(game_config.player)

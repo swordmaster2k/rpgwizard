@@ -1,18 +1,19 @@
-local tileset = {}
+local tileset = {
+    cache = {}
+}
 
 -- modules
 local asset = require("libraries/rpgwizard/asset")
 
-function tileset.load(cache, name)
+function tileset.load(name)
     local asset_name = "tilesets/" .. name
 
-    -- Check the cache
-    if cache[asset_name] ~= nil then
-        return cache[asset_name]
+    if tileset.cache[name] then
+        return tileset.cache[name]
     end
 
-    local tileset_asset = asset.load_json(cache, asset_name)
-    local tileset_image = asset.load_texture(cache, tileset_asset.image)
+    local tileset_asset = asset.load_json(asset_name)
+    local tileset_image = asset.load_texture(tileset_asset.image)
 
     -- Runtime data
     local tile_width = tileset_asset.tileWidth
@@ -34,8 +35,8 @@ function tileset.load(cache, name)
         end
     end
 
-    -- Store in cache
-    cache[asset_name] = tileset_asset
+    -- Extra cache, commonly used
+    tileset.cache[name] = tileset_asset
 
     return tileset_asset
 end
@@ -44,7 +45,7 @@ function tileset.update(dt)
 
 end
 
-local function drawTile(cache, current_map, tile, row, column)
+local function drawTile(current_map, tile, row, column)
     -- TODO: Optimize, slow string split
     local tileset_index, tile_index = string.match(tile, "(%-?%d+):(%-?%d+)")
     tileset_index = tonumber(tileset_index)
@@ -53,8 +54,8 @@ local function drawTile(cache, current_map, tile, row, column)
 
     if tileset_index > -1 and tile_index > -1 then
         local tileset_name = current_map.tilesets[tileset_index + 1]
-        local tileset_asset = tileset.load(cache, tileset_name)
-        local tileset_image = asset.load_texture(cache, tileset_asset.image)
+        local tileset_asset = tileset.load(tileset_name)
+        local tileset_image = asset.load_texture(tileset_asset.image)
         local quad = tileset_asset.quads[tile_index + 1]
 
         if quad ~= nil then
@@ -65,13 +66,13 @@ local function drawTile(cache, current_map, tile, row, column)
     end
 end
 
-function tileset.draw(cache, current_map, layer)
+function tileset.draw(current_map, layer)
     -- Draw the tiles
     for column = 0, current_map.height - 1, 1 do
         for row = 0, current_map.width - 1, 1 do
             local current_tile = column * current_map.width + row + 1
             local tile = layer.tiles[current_tile]
-            drawTile(cache, current_map, tile, row, column)
+            drawTile(current_map, tile, row, column)
         end
     end
 end

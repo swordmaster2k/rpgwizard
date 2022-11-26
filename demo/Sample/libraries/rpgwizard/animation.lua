@@ -6,22 +6,12 @@ local asset = require("libraries/rpgwizard/asset")
 -- libraries
 local anim8 = require("libraries/anim8")
 
-function animation.load(cache, name)
+function animation.load(name)
     local asset_name = "animations/" .. name
 
-    local animation_asset = nil
+    local animation_asset = asset.load_json(asset_name)
 
-    -- Check the cache
-    -- Slightly different here as we don't want to store Runtime data but
-    -- we do want to load the original asset from the cache for speed
-    if cache[asset_name] ~= nil then
-        animation_asset = cache[asset_name]
-    else
-        animation_asset = asset.load_json(cache, asset_name)
-        cache[asset_name] = animation_asset
-    end
-
-    local image = asset.load_texture(cache, animation_asset.spriteSheet.image)
+    local image = asset.load_texture(animation_asset.spriteSheet.image)
 
     -- Runtime data, setup anim8
     local g = anim8.newGrid(animation_asset.width, animation_asset.height, image:getWidth(), image:getHeight())

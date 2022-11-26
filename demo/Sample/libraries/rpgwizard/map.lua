@@ -5,7 +5,7 @@ local asset = require("libraries/rpgwizard/asset")
 local sprite = require("libraries/rpgwizard/sprite")
 local tileset = require("libraries/rpgwizard/tileset")
 
-local function init_layer_collider(id, cache, world, instance)
+local function init_layer_collider(id, world, instance)
     -- TODO: move this to compile time
     local points = {}
     for i, point in pairs(instance.points) do
@@ -20,9 +20,9 @@ local function init_layer_collider(id, cache, world, instance)
     instance.collider:setType("static")
 end
 
-local function init_layer_sprite(id, cache, world, instance)
+local function init_layer_sprite(id, world, instance)
     -- Runtime data
-    local sprite_asset = sprite.load(cache, instance.asset)
+    local sprite_asset = sprite.load(instance.asset)
     instance.asset = sprite_asset
     instance.data = {}
 
@@ -77,22 +77,14 @@ local function init_layer_sprite(id, cache, world, instance)
 
 end
 
-function map.load(cache, world, name)
+function map.load(world, name)
     local asset_name = "maps/" .. name
 
-    local map_asset = nil
-
-    -- Check the cache
-    -- Slightly different here as we don't want to store Runtime data but
-    -- we do want to load the original asset from the cache for speed
-    if cache[asset_name] == nil then
-        cache[asset_name] = asset.load_json(cache, asset_name)
-    end
-    map_asset = asset.deep_copy(cache[asset_name])
+    local map_asset = asset.load_json(asset_name)
 
     -- Load tilesets
     for i, tileset_name in pairs(map_asset.tilesets) do
-        tileset.load(cache, tileset_name)
+        tileset.load(tileset_name)
     end
 
     -- TODO: Load music
@@ -102,7 +94,7 @@ function map.load(cache, world, name)
 
         -- Iterate colliders
         for id, instance in pairs(layer.colliders) do
-            init_layer_collider(id, cache, world, instance)
+            init_layer_collider(id, world, instance)
             instance.layer = i
         end
 
@@ -111,7 +103,7 @@ function map.load(cache, world, name)
 
         -- Iterate sprites
         for id, instance in pairs(layer.sprites) do
-            init_layer_sprite(id, cache, world, instance)
+            init_layer_sprite(id, world, instance)
             instance.layer = i
         end
 
@@ -140,14 +132,14 @@ function map.update(dt, current_map)
     end
 end
 
-function map.draw(cache, world, current_map)
+function map.draw(world, current_map)
     -- TODO: Optimize
     for i, layer in pairs(current_map.layers) do
 
-        tileset.draw(cache, current_map, layer)
+        tileset.draw(current_map, layer)
 
         for j, map_sprite in pairs(layer.sprites) do
-            sprite.draw(cache, map_sprite)
+            sprite.draw(map_sprite)
         end
 
         for j, image in pairs(layer.images) do

@@ -187,6 +187,7 @@ function rpg.get_scale()
     return scale
 end
 
+-- Sprite
 function rpg.get_sprite(id)
     if current_map == nil then
         error("invalid state: no map is loaded")
@@ -204,11 +205,37 @@ function rpg.get_sprite(id)
 
 end
 
+function rpg.add_sprite(id, file)
+end
+
+function rpg.remove_sprite(id)
+    local layer_idx = -1
+
+    for i, layer in pairs(current_map.layers) do
+        for sprite_id, instance in pairs(layer.sprites) do
+            if id == sprite_id then
+                sprite.destroy(instance)
+                layer_idx = i
+                break
+            end
+        end
+
+        if layer_idx ~= -1 then
+            break
+        end
+    end
+
+    if layer_idx ~= -1 then
+        current_map.layers[layer_idx].sprites[id] = nil
+    end
+end
+
 function rpg.move_sprite(m_sprite, velocity_x, velocity_y)
     m_sprite.collider:setLinearVelocity(velocity_x, velocity_y)
     m_sprite.trigger:setPosition(m_sprite.collider:getPosition())
 end
 
+-- Map
 function rpg.switch_map(new_map, x, y, layer)
     setup_world()
 

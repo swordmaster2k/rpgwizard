@@ -1,4 +1,6 @@
-local rpg = require("libraries/rpgwizard/rpg")
+require("libraries/lovedebug")
+
+_G.rpg = require("libraries/rpgwizard/rpg")
 
 function love.load()
 

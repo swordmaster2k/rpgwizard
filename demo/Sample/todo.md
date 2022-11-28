@@ -1,5 +1,10 @@
 # Implement
 
+## Client API
+
+1. add_sprite
+2. remove_sprite
+
 ## Physics
 
 1. Collisions
@@ -15,7 +20,7 @@
 
 ## Threads
 
-1. Basic threading
+1. ~~Basic threading~~
    1. ~~Move sprite around randomly~~
 
 ## Rendering

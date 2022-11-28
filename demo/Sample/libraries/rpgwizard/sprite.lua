@@ -42,4 +42,9 @@ function sprite.set_location(sprite_asset, x, y, layer)
     sprite_asset.layer = layer
 end
 
+function sprite.destroy(sprite_asset)
+    sprite_asset.collider:destroy()
+    sprite_asset.trigger:destroy()
+end
+
 return sprite

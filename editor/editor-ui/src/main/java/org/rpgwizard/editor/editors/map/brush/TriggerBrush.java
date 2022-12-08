@@ -9,8 +9,6 @@ package org.rpgwizard.editor.editors.map.brush;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
@@ -52,7 +50,7 @@ public class TriggerBrush extends AbstractPolygonBrush {
                 drawing = true;
                 polygonId = UUID.randomUUID().toString();
                 Trigger trigger = new Trigger();
-                trigger.setEvents(new ArrayList<>(List.of(new Event())));
+                trigger.setEvent(new Event());
                 polygon = trigger;
                 affectedContainer.getLayer(currentLayer).getLayer().getTriggers().put(polygonId, (Trigger) polygon);
             }
@@ -82,7 +80,7 @@ public class TriggerBrush extends AbstractPolygonBrush {
         }
         polygonId = null;
         Trigger trigger = new Trigger();
-        trigger.setEvents(new ArrayList<>(List.of(new Event())));
+        trigger.setEvent(new Event());
         polygon = trigger;
         drawing = false;
     }

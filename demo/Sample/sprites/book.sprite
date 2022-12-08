@@ -1,1 +1,63 @@
-{"collider":{"x":-5,"y":-5,"enabled":true,"points":[{"x":0,"y":0},{"x":8,"y":0},{"x":8,"y":8},{"x":0,"y":8}]},"data":{},"animations":{"NORTH":"book/normal.animation","WEST":"book/normal.animation","SOUTH":"book/normal.animation","EAST":"book/normal.animation"},"name":"book","description":null,"trigger":{"x":-5,"y":-5,"enabled":true,"events":[],"points":[{"x":0,"y":0},{"x":8,"y":0},{"x":8,"y":8},{"x":0,"y":8}]},"version":null}
+{
+   "collider":{
+      "x":-5,
+      "y":-5,
+      "enabled":true,
+      "points":[
+         {
+            "x":0,
+            "y":0
+         },
+         {
+            "x":8,
+            "y":0
+         },
+         {
+            "x":8,
+            "y":8
+         },
+         {
+            "x":0,
+            "y":8
+         }
+      ]
+   },
+   "data":{
+      
+   },
+   "animations":{
+      "NORTH":"book/normal.animation",
+      "WEST":"book/normal.animation",
+      "SOUTH":"book/normal.animation",
+      "EAST":"book/normal.animation"
+   },
+   "name":"book",
+   "description":null,
+   "trigger":{
+      "x":-5,
+      "y":-5,
+      "enabled":true,
+      "event":{
+         
+      },
+      "points":[
+         {
+            "x":0,
+            "y":0
+         },
+         {
+            "x":8,
+            "y":0
+         },
+         {
+            "x":8,
+            "y":8
+         },
+         {
+            "x":0,
+            "y":8
+         }
+      ]
+   },
+   "version":null
+}

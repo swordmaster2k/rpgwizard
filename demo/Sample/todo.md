@@ -1,9 +1,20 @@
 # Implement
 
+## File Format
+
+1. Update name of fields
+2. Remove legacy design decisions
+3. Colliders default to circle, introduce type flag
+
+## Editor
+
+1. Update file formats
+2. Remove legacy JS engine code
+
 ## Client API
 
-1. add_sprite
-2. remove_sprite
+1. ~~add_sprite~~
+2. ~~remove_sprite~~
 
 ## Physics
 

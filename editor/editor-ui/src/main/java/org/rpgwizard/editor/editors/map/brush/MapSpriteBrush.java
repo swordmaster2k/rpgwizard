@@ -13,8 +13,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 import org.rpgwizard.common.assets.Event;
 import org.rpgwizard.common.assets.Location;
@@ -122,7 +120,7 @@ public class MapSpriteBrush extends AbstractBrush {
             mapSprite.getStartLocation().setX(x);
             mapSprite.getStartLocation().setY(y);
             mapSprite.getStartLocation().setLayer(currentLayer);
-            mapSprite.setEvents(new ArrayList<>(List.of(new Event())));
+            mapSprite.setEvent(new Event());
             pair = new SelectablePair<>(spriteId, mapSprite);
 
             map.addSprite(currentLayer, UUID.randomUUID().toString(), mapSprite);

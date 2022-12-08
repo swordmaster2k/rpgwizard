@@ -30,12 +30,11 @@
     "enabled": true,
     "x": -20,
     "y": -5,
-    "events": [{
-            "script": "my-event.js",
-            "type": "keypress",
-            "key": "E"
-        }
-    ],
+    "event": {
+      "script": "my-event.js",
+      "type": "keypress",
+      "key": "E"
+    },
     "points": [{
             "x": 0,
             "y": 0

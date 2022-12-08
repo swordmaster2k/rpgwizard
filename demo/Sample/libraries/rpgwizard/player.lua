@@ -55,8 +55,8 @@ local function enter_trigger(active_player, vm)
         return vm
     end
 
-    for _, event in pairs(object.events) do
-
+    if object.event ~= nil then
+        local event = object.event
         vm.source = object
 
         if event.type == "overlap" then
@@ -65,7 +65,6 @@ local function enter_trigger(active_player, vm)
             vm.keypress_event.key = event.key
             vm.keypress_event.script = event.script
         end
-
     end
 
     return vm
@@ -79,7 +78,8 @@ local function exit_trigger(active_player, vm)
         return vm
     end
 
-    for _, event in pairs(object.events) do
+    if object.event ~= nil then
+        local event = object.event
 
         -- Remove registered key event
         if (vm.keypress_event.key ~= nil and vm.keypress_event.key == event.key) and

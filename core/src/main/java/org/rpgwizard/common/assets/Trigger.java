@@ -8,7 +8,6 @@
 package org.rpgwizard.common.assets;
 
 import java.util.ArrayList;
-import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -20,12 +19,12 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class Trigger extends AbstractPolygon {
 
-    private List<Event> events;
+    private Event event;
 
     public Trigger() {
         enabled = true;
         points = new ArrayList<>();
-        events = new ArrayList<>();
+        event = new Event();
     }
 
     /**
@@ -38,7 +37,7 @@ public class Trigger extends AbstractPolygon {
         this.x = trigger.x;
         this.y = trigger.y;
         this.points = trigger.points;
-        this.events = trigger.events;
+        this.event = new Event(trigger.event);
     }
 
 }

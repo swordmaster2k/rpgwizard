@@ -13,12 +13,10 @@ function script.update(dt)
         },
         thread = nil,
         asset = "chest.sprite",
-        events = {
-            {
-                type = "keypress",
-                script = "examples/open-chest.lua",
-                key = "e"
-            }
+        event = {
+            type = "keypress",
+            script = "examples/open-chest.lua",
+            key = "e"
         }
     }
 

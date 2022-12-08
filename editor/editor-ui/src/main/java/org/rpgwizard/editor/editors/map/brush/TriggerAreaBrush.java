@@ -9,8 +9,6 @@ package org.rpgwizard.editor.editors.map.brush;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 import org.rpgwizard.common.assets.Event;
 import org.rpgwizard.common.assets.Trigger;
@@ -47,7 +45,7 @@ public final class TriggerAreaBrush extends AbstractPolygonAreaBrush {
                 drawing = true;
                 polygonId = UUID.randomUUID().toString();
                 Trigger trigger = new Trigger();
-                trigger.setEvents(new ArrayList<>(List.of(new Event())));
+                trigger.setEvent(new Event());
                 polygon = trigger;
                 affectedContainer.getLayer(currentLayer).getLayer().getTriggers().put(polygonId, (Trigger) polygon);
             }
@@ -65,7 +63,7 @@ public final class TriggerAreaBrush extends AbstractPolygonAreaBrush {
     public void reset() {
         polygonId = null;
         Trigger trigger = new Trigger();
-        trigger.setEvents(new ArrayList<>(List.of(new Event())));
+        trigger.setEvent(new Event());
         polygon = trigger;
         drawing = false;
     }

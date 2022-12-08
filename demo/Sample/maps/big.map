@@ -12797,13 +12797,11 @@
                },
                "thread":null,
                "asset":"pot.sprite",
-               "events":[
-                  {
-                     "type":"overlap",
-                     "script":"examples/map-linker.lua",
-                     "key":null
-                  }
-               ]
+               "event":{
+                  "type":"overlap",
+                  "script":"examples/map-linker.lua",
+                  "key":null
+               }
             },
             "0120e25f-367d-4968-a820-6c75908bb939":{
                "startLocation":{
@@ -12813,13 +12811,11 @@
                },
                "thread":null,
                "asset":"pot.sprite",
-               "events":[
-                  {
-                     "type":"",
-                     "script":"",
-                     "key":null
-                  }
-               ]
+               "event":{
+                  "type":"",
+                  "script":"",
+                  "key":null
+               }
             },
             "0403b7bd-ca31-45ca-b068-5e3b0f898fcb":{
                "startLocation":{
@@ -12829,13 +12825,11 @@
                },
                "thread":"examples/threads/wandering-enemy.lua",
                "asset":"pot.sprite",
-               "events":[
-                  {
-                     "type":null,
-                     "script":null,
-                     "key":null
-                  }
-               ]
+               "event":{
+                  "type":null,
+                  "script":null,
+                  "key":null
+               }
             },
             "player":{
                "startLocation":{
@@ -12845,13 +12839,11 @@
                },
                "thread":null,
                "asset":"hero.sprite",
-               "events":[
-                  {
-                     "type":null,
-                     "script":null,
-                     "key":null
-                  }
-               ]
+               "event":{
+                  "type":null,
+                  "script":null,
+                  "key":null
+               }
             }
          }
       }

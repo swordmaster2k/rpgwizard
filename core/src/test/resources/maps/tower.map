@@ -46,11 +46,10 @@
             },
             "triggers": {
                 "trigger-1": {
-                    "events": [{
-                            "script": "GameOver.js",
-                            "type": "overlap"
-                        }
-                    ],
+                    "event": {
+                        "script": "GameOver.js",
+                        "type": "overlap"
+                    },
                     "points": [{
                             "x": 160,
                             "y": 128
@@ -76,11 +75,10 @@
                         "y": 80,
                         "layer": 0
                     },
-                    "events": [{
-                            "script": "turn-off.js",
-                            "type": "keypress"
-                        }
-                    ]
+                    "event": {
+                        "script": "turn-off.js",
+                        "type": "keypress"
+                    }
                 }
             },
             "images": {

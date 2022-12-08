@@ -101,17 +101,17 @@ public final class TriggerPanel extends AbstractMapModelPanel {
         ///
         keyComboBox = new JComboBox<>(KEY_TYPES);
 
-        if (EventType.KEYPRESS.getValue().equals(getTrigger().getEvents().get(0).getType())) {
-            Event event = getTrigger().getEvents().get(0);
+        if (EventType.KEYPRESS.getValue().equals(getTrigger().getEvent().getType())) {
+            Event event = getTrigger().getEvent();
             keyComboBox.setSelectedItem(event.getKey());
             keyComboBox.setEnabled(true);
         } else {
             keyComboBox.setEnabled(false);
         }
         keyComboBox.addActionListener((ActionEvent e) -> {
-            Event event = getTrigger().getEvents().get(0);
+            Event event = getTrigger().getEvent();
             event.setKey(keyComboBox.getSelectedItem().toString());
-            getTrigger().getEvents().set(0, event);
+            getTrigger().setEvent(event);
             MainWindow.getInstance().markWindowForSaving();
         });
         ///
@@ -119,9 +119,9 @@ public final class TriggerPanel extends AbstractMapModelPanel {
         ///
         eventComboBox = new JComboBox<>(EVENT_TYPES);
         eventComboBox.setEnabled(true);
-        eventComboBox.setSelectedItem(getTrigger().getEvents().get(0).getType());
+        eventComboBox.setSelectedItem(getTrigger().getEvent().getType());
         eventComboBox.addActionListener((ActionEvent e) -> {
-            Event event = getTrigger().getEvents().get(0);
+            Event event = getTrigger().getEvent();
             String eventType = eventComboBox.getSelectedItem().toString();
             if (eventType.equals(EventType.OVERLAP.toString())) {
                 event = new Event(EventType.OVERLAP.getValue(), event.getScript(), null);
@@ -131,7 +131,7 @@ public final class TriggerPanel extends AbstractMapModelPanel {
                 event = new Event(EventType.KEYPRESS.getValue(), event.getScript(), key);
                 keyComboBox.setEnabled(true);
             }
-            getTrigger().getEvents().set(0, event);
+            getTrigger().setEvent(event);
             MainWindow.getInstance().markWindowForSaving();
         });
         ///
@@ -140,7 +140,7 @@ public final class TriggerPanel extends AbstractMapModelPanel {
         configureEventButton = new JButton("Configure");
         configureEventButton.addActionListener((ActionEvent e) -> {
             try {
-                Event event = getTrigger().getEvents().get(0);
+                Event event = getTrigger().getEvent();
                 String script = event.getScript();
                 ScriptDialog dialog = new ScriptDialog(MainWindow.getInstance(), script);
                 dialog.display();
@@ -148,7 +148,7 @@ public final class TriggerPanel extends AbstractMapModelPanel {
                 String newScript = dialog.getNewValue();
                 if (newScript != null) {
                     event.setScript(newScript);
-                    getTrigger().getEvents().set(0, event);
+                    getTrigger().setEvent(event);
                     MainWindow.getInstance().markWindowForSaving();
                 }
             } catch (Exception ex) {

@@ -1,55 +1,65 @@
 {
-    "collider": {
-        "x": -8,
-        "y": -8,
-        "enabled": true,
-        "points": [{
-                "x": 0,
-                "y": 0
-            }, {
-                "x": 16,
-                "y": 0
-            }, {
-                "x": 16,
-                "y": 16
-            }, {
-                "x": 0,
-                "y": 16
-            }
-        ]
-    },
-    "trigger": {
-        "enabled": true,
-        "x": -8,
-        "y": -8,
-        "points": [{
-                "x": 0,
-                "y": 0
-            }, {
-                "x": 16,
-                "y": 0
-            }, {
-                "x": 16,
-                "y": 16
-            }, {
-                "x": 0,
-                "y": 16
-            }
-        ],
-        "events": []
-    },
-    "data": {
-        "type": "object",
-		"itemDrop": "coin.sprite"
-    },
-    "animations": {
-        "HIT": "pot/smash.animation",
-        "NORTH": "pot/normal.animation",
-        "WEST": "pot/normal.animation",
-        "SOUTH": "pot/normal.animation",
-        "EAST": "pot/normal.animation"
-    },
-    "name": "Untitled",
-    "description": null,
-    "version": "2.0.0"
+   "collider":{
+      "x":-8,
+      "y":-8,
+      "enabled":true,
+      "points":[
+         {
+            "x":0,
+            "y":0
+         },
+         {
+            "x":16,
+            "y":0
+         },
+         {
+            "x":16,
+            "y":16
+         },
+         {
+            "x":0,
+            "y":16
+         }
+      ]
+   },
+   "trigger":{
+      "enabled":true,
+      "x":-8,
+      "y":-8,
+      "points":[
+         {
+            "x":0,
+            "y":0
+         },
+         {
+            "x":16,
+            "y":0
+         },
+         {
+            "x":16,
+            "y":16
+         },
+         {
+            "x":0,
+            "y":16
+         }
+      ],
+      "event":{
+         
+      }
+   },
+   "data":{
+      "type":"object",
+      "itemDrop":"coin.sprite"
+   },
+   "animations":{
+      "HIT":"pot/smash.animation",
+      "NORTH":"pot/normal.animation",
+      "WEST":"pot/normal.animation",
+      "SOUTH":"pot/normal.animation",
+      "EAST":"pot/normal.animation"
+   },
+   "name":"Untitled",
+   "description":null,
+   "version":"2.0.0"
 }

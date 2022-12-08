@@ -20,7 +20,6 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.SystemUtils;
 import org.pf4j.JarPluginManager;
 import org.pf4j.PluginManager;
 import org.rpgwizard.common.assets.AssetManager;

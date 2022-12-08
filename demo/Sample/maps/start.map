@@ -93609,13 +93609,11 @@
                "x":0,
                "y":0,
                "enabled":true,
-               "events":[
-                  {
-                     "type":"overlap",
-                     "script":"examples/map-linker.js",
-                     "key":null
-                  }
-               ],
+               "event":{
+                  "type":"overlap",
+                  "script":"examples/map-linker.js",
+                  "key":null
+               },
                "points":[
                   {
                      "x":240,
@@ -93645,13 +93643,11 @@
                },
                "thread":null,
                "asset":"pot.sprite",
-               "events":[
-                  {
-                     "type":null,
-                     "script":null,
-                     "key":null
-                  }
-               ]
+               "event":{
+                  "type":null,
+                  "script":null,
+                  "key":null
+               }
             },
             "ece5ab75-235c-46e5-bed1-6ae97b0da346":{
                "startLocation":{
@@ -93661,13 +93657,11 @@
                },
                "thread":null,
                "asset":"pot.sprite",
-               "events":[
-                  {
-                     "type":"overlap",
-                     "script":"examples/map-linker.lua",
-                     "key":null
-                  }
-               ]
+               "event":{
+                  "type":"overlap",
+                  "script":"examples/map-linker.lua",
+                  "key":null
+               }
             },
             "chest":{
                "startLocation":{
@@ -93677,13 +93671,11 @@
                },
                "thread":null,
                "asset":"chest.sprite",
-               "events":[
-                  {
-                     "type":"keypress",
-                     "script":"examples/open-chest.lua",
-                     "key":"e"
-                  }
-               ]
+               "event":{
+                  "type":"keypress",
+                  "script":"examples/open-chest.lua",
+                  "key":"e"
+               }
             },
             "33f1b258-b14b-47f7-9186-5db44295c6ac":{
                "startLocation":{
@@ -93693,13 +93685,11 @@
                },
                "thread":null,
                "asset":"pot.sprite",
-               "events":[
-                  {
-                     "type":null,
-                     "script":null,
-                     "key":null
-                  }
-               ]
+               "event":{
+                  "type":null,
+                  "script":null,
+                  "key":null
+               }
             },
             "player":{
                "startLocation":{
@@ -93709,13 +93699,11 @@
                },
                "thread":null,
                "asset":"hero.sprite",
-               "events":[
-                  {
-                     "type":null,
-                     "script":null,
-                     "key":null
-                  }
-               ]
+               "event":{
+                  "type":null,
+                  "script":null,
+                  "key":null
+               }
             }
          }
       },

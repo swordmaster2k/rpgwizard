@@ -1,1 +1,9 @@
-{"version":"2.0.0","tileWidth":16,"tileHeight":16,"image":"Overworld.png","tileData":{}}
+{
+   "version":"2.0.0",
+   "tileWidth":16,
+   "tileHeight":16,
+   "image":"Overworld.png",
+   "tileData":{
+      
+   }
+}

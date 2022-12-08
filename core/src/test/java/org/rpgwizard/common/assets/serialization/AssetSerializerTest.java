@@ -74,12 +74,12 @@ public class AssetSerializerTest {
 
     private void checkProject(Game asset) {
         Assert.assertEquals("The Wizard's Tower", asset.getName());
-        
+
         Assert.assertNotNull(asset.getViewport());
         Assert.assertEquals(1600, asset.getViewport().getWidth());
         Assert.assertEquals(900, asset.getViewport().getHeight());
         Assert.assertTrue(asset.getViewport().isFullScreen());
-        
+
         Assert.assertNotNull(asset.getDebug());
         Assert.assertTrue(asset.getDebug().isShowColliders());
         Assert.assertTrue(asset.getDebug().isShowTriggers());
@@ -130,7 +130,7 @@ public class AssetSerializerTest {
         asset = AssetSerializerTestHelper.deserializeFile(path, serializer);
         checkMap(asset);
     }
-    
+
     private void checkMap(Map map) {
         Assert.assertEquals("Tower", map.getName());
         Assert.assertEquals(12, map.getWidth());
@@ -141,12 +141,12 @@ public class AssetSerializerTest {
         Assert.assertEquals(List.of("tower.tileset"), map.getTilesets());
         Assert.assertEquals("some-script.js", map.getEntryScript());
         Assert.assertEquals(new Location(191, 558, 0), map.getStartLocation());
-        
+
         Assert.assertEquals(1, map.getLayers().size());
         MapLayer layer = map.getLayers().get(0);
         Assert.assertEquals("Floor", layer.getId());
         Assert.assertEquals(List.of("-1:-1", "0:1", "0:2"), layer.getTiles());
-        
+
         Assert.assertEquals(2, layer.getColliders().size());
         Collider collider1 = layer.getColliders().get("collider-1");
         // @formatter:off
@@ -164,10 +164,10 @@ public class AssetSerializerTest {
                 new Point(224, 128)
         ), collider2.getPoints());
         // @formatter:on
-        
+
         Assert.assertEquals(1, layer.getTriggers().size());
         Trigger trigger1 = layer.getTriggers().get("trigger-1");
-        Assert.assertEquals(List.of(new Event("overlap", "GameOver.js", null)), trigger1.getEvents());
+        Assert.assertEquals(new Event("overlap", "GameOver.js", null), trigger1.getEvent());
         // @formatter:off
         Assert.assertEquals(List.of(
                 new Point(160, 128),
@@ -176,17 +176,18 @@ public class AssetSerializerTest {
                 new Point(224, 128)
         ), trigger1.getPoints());
         // @formatter:on
-        
+
         Assert.assertEquals(1, layer.getSprites().size());
         MapSprite sprite1 = layer.getSprites().get("sprite-1");
         Assert.assertEquals("Torch.npc", sprite1.getAsset());
         Assert.assertEquals("Idle.js", sprite1.getThread());
         Assert.assertEquals(new Location(112, 80, 0), sprite1.getStartLocation());
-        Assert.assertEquals(List.of(new Event("keypress", "turn-off.js", null)), sprite1.getEvents());
-        
+        Assert.assertEquals(new Event("keypress", "turn-off.js", null), sprite1.getEvent());
+
         Assert.assertEquals(1, layer.getImages().size());
-        Assert.assertEquals(java.util.Map.of("image-1", new MapImage("rooms/above.png", 120, 12, false, null)), layer.getImages());
-        
+        Assert.assertEquals(java.util.Map.of("image-1", new MapImage("rooms/above.png", 120, 12, false, null)),
+                layer.getImages());
+
         Assert.assertEquals("2.0.0", map.getVersion());
     }
 
@@ -211,7 +212,7 @@ public class AssetSerializerTest {
         Assert.assertEquals(24, asset.getTileWidth());
         Assert.assertEquals(24, asset.getTileHeight());
         Assert.assertEquals("tiles/oryx_16bit_scifi_world_trans.png", asset.getImage());
-        
+
         java.util.Map<String, java.util.Map<String, String>> tileData = new HashMap<>();
         tileData.put("44", java.util.Map.of("defence", "1", "custom", "", "type", "plain"));
         tileData.put("36", java.util.Map.of("defence", "4", "custom", "", "type", "mountain"));
@@ -237,7 +238,7 @@ public class AssetSerializerTest {
     private void checkSpite(Sprite asset) {
         Assert.assertEquals("hero", asset.getName());
         Assert.assertEquals("The hero of time", asset.getDescription());
-        
+
         // @formatter:off
         java.util.Map<String, String> animations = java.util.Map.of(
                 "north", "north.animation",
@@ -247,7 +248,7 @@ public class AssetSerializerTest {
         );
         // @formatter:on
         Assert.assertEquals(animations, asset.getAnimations());
-        
+
         Collider collider = new Collider();
         collider.setEnabled(true);
         collider.setX(-15);
@@ -261,12 +262,12 @@ public class AssetSerializerTest {
         ));
         // @formatter:on
         Assert.assertEquals(collider, asset.getCollider());
-        
+
         Trigger trigger = new Trigger();
         trigger.setEnabled(true);
         trigger.setX(-20);
         trigger.setY(-5);
-        trigger.setEvents(List.of(new org.rpgwizard.common.assets.Event("keypress", "my-event.js", "E")));
+        trigger.setEvent(new org.rpgwizard.common.assets.Event("keypress", "my-event.js", "E"));
         // @formatter:off
         trigger.setPoints(List.of(
                 new Point(0, 0),
@@ -276,7 +277,7 @@ public class AssetSerializerTest {
         ));
         // @formatter:on
         Assert.assertEquals(trigger, asset.getTrigger());
-        
+
         // @formatter:off
         java.util.Map<String, String> data = java.util.Map.of(
                 "key-1", "value-1",
@@ -284,7 +285,7 @@ public class AssetSerializerTest {
         );
         // @formatter:on
         Assert.assertEquals(data, asset.getData());
-        
+
         Assert.assertEquals("2.0.0", asset.getVersion());
     }
 
@@ -298,7 +299,7 @@ public class AssetSerializerTest {
         Script asset = AssetSerializerTestHelper.deserializeFile(path, serializer);
         checkScript(asset);
     }
-    
+
     @Test
     public void testImageSerializier() throws Exception {
         String path = AssetSerializerTestHelper.getPath("textures/Idle_north.png");

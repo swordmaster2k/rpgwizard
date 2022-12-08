@@ -163,7 +163,7 @@ public abstract class AbstractSpriteModelPanel extends AbstractModelPanel {
             trigger.setX(sprite.getCollider().getX());
             trigger.setY(sprite.getCollider().getY());
             trigger.setEnabled(sprite.getCollider().isEnabled());
-            trigger.setEvents(sprite.getTrigger().getEvents());
+            trigger.setEvent(sprite.getTrigger().getEvent());
 
             sprite.setTrigger(trigger);
             sprite.fireSpriteChanged();
@@ -189,7 +189,7 @@ public abstract class AbstractSpriteModelPanel extends AbstractModelPanel {
             trigger.setX(sprite.getCollider().getX());
             trigger.setY(sprite.getCollider().getY());
             trigger.setEnabled(sprite.getCollider().isEnabled());
-            trigger.setEvents(sprite.getTrigger().getEvents());
+            trigger.setEvent(sprite.getTrigger().getEvent());
 
             sprite.setTrigger(trigger);
             sprite.fireSpriteChanged();

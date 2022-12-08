@@ -11,8 +11,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import lombok.Data;
@@ -43,7 +41,7 @@ public class MapSprite extends AbstractMapModel implements Selectable {
     private String asset;
     private String thread;
     private Location startLocation;
-    private List<Event> events;
+    private Event event;
 
     @JsonIgnore
     private boolean selected; // TODO: This is editor specific, move it!
@@ -52,7 +50,7 @@ public class MapSprite extends AbstractMapModel implements Selectable {
 
     public MapSprite() {
         startLocation = new Location();
-        events = new ArrayList<>();
+        event = new Event();
     }
 
     /**
@@ -64,21 +62,13 @@ public class MapSprite extends AbstractMapModel implements Selectable {
         asset = mapSprite.asset;
         thread = mapSprite.thread;
         startLocation = new Location(mapSprite.startLocation);
-        events = new ArrayList<>();
-        mapSprite.events.forEach(e -> {
-            events.add(new Event(e));
-        });
+        event = new Event(mapSprite.event);
         southImage = CoreUtil.copy(mapSprite.southImage);
     }
 
     ////////////////////////////////////////////////////////////////////////////
     // Getters & Setters
     ////////////////////////////////////////////////////////////////////////////
-
-    @JsonIgnore
-    public Event getEvent() {
-        return events.get(0);
-    }
 
     @JsonIgnore
     public void setScript(String script) {

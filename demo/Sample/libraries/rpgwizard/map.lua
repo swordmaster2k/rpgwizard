@@ -20,7 +20,7 @@ local function init_layer_collider(id, world, instance)
     instance.collider:setType("static")
 end
 
-local function init_layer_sprite(id, world, instance)
+function map.init_layer_sprite(id, world, instance)
     -- Runtime data
     local sprite_asset = sprite.load(instance.asset)
     instance.asset = sprite_asset
@@ -103,7 +103,7 @@ function map.load(world, name)
 
         -- Iterate sprites
         for id, instance in pairs(layer.sprites) do
-            init_layer_sprite(id, world, instance)
+            map.init_layer_sprite(id, world, instance)
             instance.layer = i
         end
 

@@ -99,10 +99,14 @@ function rpg.update(dt)
     world:update(dt)
 
     if vm.script ~= nil then
-        if vm.script.update(dt) then
-            vm.script = nil
-            vm.source = nil
+        if pcall(vm.script.update, dt) then
+            -- Do nothing
+        else
+            print("error running script")
         end
+
+        vm.script = nil
+        vm.source = nil
     elseif current_map ~= nil then
         map.update(dt, current_map)
         if active_player ~= nil then
@@ -205,7 +209,13 @@ function rpg.get_sprite(id)
 
 end
 
-function rpg.add_sprite(id, file)
+function rpg.add_sprite(id, map_sprite)
+    local layer_idx = map_sprite.startLocation.layer
+
+    map.init_layer_sprite(id, world, map_sprite)
+    map_sprite.layer = layer_idx
+
+    current_map.layers[layer_idx].sprites[id] = map_sprite
 end
 
 function rpg.remove_sprite(id)

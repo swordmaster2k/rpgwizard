@@ -26,10 +26,10 @@
       
    },
    "animations":{
-      "NORTH":"chest/normal.animation",
-      "WEST":"chest/normal.animation",
-      "SOUTH":"chest/normal.animation",
-      "EAST":"chest/normal.animation",
+      "north":"chest/normal.animation",
+      "west":"chest/normal.animation",
+      "south":"chest/normal.animation",
+      "east":"chest/normal.animation",
       "OPEN":"chest/open.animation"
    },
    "name":"Chest",

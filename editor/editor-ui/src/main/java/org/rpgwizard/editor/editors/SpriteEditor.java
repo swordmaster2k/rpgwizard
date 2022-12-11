@@ -77,9 +77,9 @@ public final class SpriteEditor extends AbstractAssetEditorWindow implements Spr
     private static final Logger LOGGER = LoggerFactory.getLogger(SpriteEditor.class);
 
     public static final int DEFAULT_INPUT_COLUMNS = 12;
-    protected static final List<String> STANDARD_PLACE_HOLDERS = Arrays.asList("NORTH", "SOUTH", "EAST", "WEST");
-    protected static final List<String> STANDING_PLACE_HOLDERS = Arrays.asList("SOUTH_IDLE", "NORTH_IDLE", "EAST_IDLE",
-            "WEST_IDLE", "NORTH_WEST_IDLE", "NORTH_EAST_IDLE", "SOUTH_WEST_IDLE", "SOUTH_EAST_IDLE");
+    protected static final List<String> STANDARD_PLACE_HOLDERS = Arrays.asList("north", "south", "east", "west");
+    protected static final List<String> STANDING_PLACE_HOLDERS = Arrays.asList("south-idle", "north-idle", "east-idle",
+            "west-idle", "north-west-idle", "north-east-idle", "south-west-idle", "south-east-idle");
     protected static final Dimension PROFILE_DIMENSION = new Dimension(100, 100);
 
     private final Sprite sprite;

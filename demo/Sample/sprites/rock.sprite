@@ -26,10 +26,10 @@
       
    },
    "animations":{
-      "NORTH":"rock/normal.animation",
-      "WEST":"rock/normal.animation",
-      "SOUTH":"rock/normal.animation",
-      "EAST":"rock/normal.animation"
+      "north":"rock/normal.animation",
+      "west":"rock/normal.animation",
+      "south":"rock/normal.animation",
+      "east":"rock/normal.animation"
    },
    "name":"rock",
    "description":null,

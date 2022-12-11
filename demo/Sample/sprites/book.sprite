@@ -26,10 +26,10 @@
       
    },
    "animations":{
-      "NORTH":"book/normal.animation",
-      "WEST":"book/normal.animation",
-      "SOUTH":"book/normal.animation",
-      "EAST":"book/normal.animation"
+      "north":"book/normal.animation",
+      "west":"book/normal.animation",
+      "south":"book/normal.animation",
+      "east":"book/normal.animation"
    },
    "name":"book",
    "description":null,

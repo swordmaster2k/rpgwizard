@@ -28,7 +28,7 @@ function map.init_layer_sprite(id, world, instance)
 
     -- Assign active animation
     instance.active_animation = {}
-    instance.active_animation = sprite_asset.anim8["SOUTH"] -- TODO: Default to "idle"
+    instance.active_animation = sprite_asset.anim8["south"] -- TODO: Default to "idle"
 
     -- Runtime data, setup collider
     -- TODO: switch to circular collider in sprite format

@@ -26,10 +26,10 @@
       
    },
    "animations":{
-      "NORTH":"coin-chest/normal.animation",
-      "WEST":"coin-chest/normal.animation",
-      "SOUTH":"coin-chest/normal.animation",
-      "EAST":"coin-chest/normal.animation"
+      "north":"coin-chest/normal.animation",
+      "west":"coin-chest/normal.animation",
+      "south":"coin-chest/normal.animation",
+      "east":"coin-chest/normal.animation"
    },
    "name":"Coin from a chest",
    "description":null,

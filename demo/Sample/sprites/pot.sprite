@@ -54,10 +54,10 @@
    },
    "animations":{
       "HIT":"pot/smash.animation",
-      "NORTH":"pot/normal.animation",
-      "WEST":"pot/normal.animation",
-      "SOUTH":"pot/normal.animation",
-      "EAST":"pot/normal.animation"
+      "north":"pot/normal.animation",
+      "west":"pot/normal.animation",
+      "south":"pot/normal.animation",
+      "east":"pot/normal.animation"
    },
    "name":"Untitled",
    "description":null,

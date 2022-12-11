@@ -27,17 +27,17 @@ local function move(active_player)
 
         if love.keyboard.isDown("left") then
             delta.x = -1
-            active_player.active_animation = active_player.asset.anim8["WEST"]
+            active_player.active_animation = active_player.asset.anim8["west"]
         elseif love.keyboard.isDown("right") then
             delta.x = 1
-            active_player.active_animation = active_player.asset.anim8["EAST"]
+            active_player.active_animation = active_player.asset.anim8["east"]
         end
         if love.keyboard.isDown("up") then
             delta.y = -1
-            active_player.active_animation = active_player.asset.anim8["NORTH"]
+            active_player.active_animation = active_player.asset.anim8["north"]
         elseif love.keyboard.isDown("down") then
             delta.y = 1
-            active_player.active_animation = active_player.asset.anim8["SOUTH"]
+            active_player.active_animation = active_player.asset.anim8["south"]
         end
 
         delta:normalizeInplace()

@@ -26,10 +26,10 @@
       
    },
    "animations":{
-      "NORTH":"coin/normal.animation",
-      "WEST":"coin/normal.animation",
-      "SOUTH":"coin/normal.animation",
-      "EAST":"coin/normal.animation"
+      "north":"coin/normal.animation",
+      "west":"coin/normal.animation",
+      "south":"coin/normal.animation",
+      "east":"coin/normal.animation"
    },
    "name":"coin",
    "description":null,

@@ -28,7 +28,7 @@ import org.rpgwizard.common.assets.tileset.Tile;
 public class MapLayer {
 
     private String id;
-    private List<String> tiles;
+    private List<MapTile> tiles;
     private java.util.Map<String, Collider> colliders;
     private java.util.Map<String, Trigger> triggers;
     private java.util.Map<String, MapSprite> sprites;

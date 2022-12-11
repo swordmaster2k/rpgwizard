@@ -1,4 +1,3 @@
-
 {
     "name": "Tower",
     "width": 12,
@@ -15,7 +14,11 @@
     },
     "layers": [{
             "id": "Floor",
-            "tiles": ["-1:-1", "0:1", "0:2"],
+            "tiles": [
+                {"tilesetIndex": -1, "tileIndex": -1},
+                {"tilesetIndex": 0, "tileIndex": 1},
+                {"tilesetIndex": 0, "tileIndex": 2}
+            ],
             "colliders": {
                 "collider-1": {
                     "points": [{

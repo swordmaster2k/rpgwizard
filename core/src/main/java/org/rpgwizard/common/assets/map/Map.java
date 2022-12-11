@@ -158,13 +158,12 @@ public final class Map extends AbstractAsset implements Selectable {
             int x = 0;
             int y = 0;
             layer.init(this);
-            List<String> tilePointers = layer.getTiles();
+            List<MapTile> mapTiles = layer.getTiles();
             for (int j = 0; j < count; j++) {
-                // In the form "tileset-idx:tile-idx"
-                String[] parts = tilePointers.get(j).split(":");
+                MapTile mapTile = mapTiles.get(j);
 
-                int tilesetIdx = Integer.parseInt(parts[0]);
-                int tileIdx = Integer.parseInt(parts[1]);
+                int tilesetIdx = mapTile.getTilesetIndex();
+                int tileIdx = mapTile.getTileIndex();
                 if (tilesetIdx < 0 || tileIdx < 0) {
                     layer.getLoadedTiles()[x][y] = null; // Blank tile
                 } else {
@@ -201,7 +200,7 @@ public final class Map extends AbstractAsset implements Selectable {
         layer.setId("Untitled Layer " + layers.size());
 
         for (int i = 0; i < width * height; i++) {
-            layer.getTiles().add("-1:-1");
+            layer.getTiles().add(new MapTile(-1, -1));
         }
 
         layers.add(layer);

@@ -15,6 +15,10 @@ buildNumber.properties
 # UI logs
 *.log
 
+
+# JetBrains
+.idea/
+
 # Netbeans
 build/
 nbbuild/

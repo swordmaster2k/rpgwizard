@@ -46,11 +46,8 @@ function tileset.update(dt)
 end
 
 local function drawTile(current_map, tile, row, column)
-    -- TODO: Optimize, slow string split
-    local tileset_index, tile_index = string.match(tile, "(%-?%d+):(%-?%d+)")
-    tileset_index = tonumber(tileset_index)
-    tile_index = tonumber(tile_index)
-    --- TODO: end Optimize
+    local tileset_index = tile.tilesetIndex
+    local tile_index = tile.tileIndex
 
     if tileset_index > -1 and tile_index > -1 then
         local tileset_name = current_map.tilesets[tileset_index + 1]

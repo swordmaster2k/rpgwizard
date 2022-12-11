@@ -31,6 +31,7 @@ import org.rpgwizard.common.assets.map.Map;
 import org.rpgwizard.common.assets.map.MapImage;
 import org.rpgwizard.common.assets.map.MapLayer;
 import org.rpgwizard.common.assets.map.MapSprite;
+import org.rpgwizard.common.assets.map.MapTile;
 import org.rpgwizard.common.assets.sprite.Sprite;
 
 /**
@@ -145,7 +146,7 @@ public class AssetSerializerTest {
         Assert.assertEquals(1, map.getLayers().size());
         MapLayer layer = map.getLayers().get(0);
         Assert.assertEquals("Floor", layer.getId());
-        Assert.assertEquals(List.of("-1:-1", "0:1", "0:2"), layer.getTiles());
+        Assert.assertEquals(List.of(new MapTile(-1, -1), new MapTile(0, 1), new MapTile(0, 2)), layer.getTiles());
 
         Assert.assertEquals(2, layer.getColliders().size());
         Collider collider1 = layer.getColliders().get("collider-1");

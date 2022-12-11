@@ -29,6 +29,7 @@ import org.rpgwizard.common.assets.events.MapChangedEvent;
 import org.rpgwizard.common.assets.listeners.MapChangeListener;
 import org.rpgwizard.common.assets.map.MapImage;
 import org.rpgwizard.common.assets.map.MapSprite;
+import org.rpgwizard.common.assets.map.MapTile;
 import org.rpgwizard.common.assets.map.SelectablePair;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.editors.map.MapMouseAdapter;
@@ -195,7 +196,7 @@ public final class MapEditor extends AbstractAssetEditorWindow
                     }
                 }
 
-                mapLayer.getTiles().add(j, tileSetIndex + ":" + tileIndex);
+                mapLayer.getTiles().add(j, new MapTile(tileSetIndex, tileIndex));
 
                 x++;
                 if (x == width) {

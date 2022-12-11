@@ -42,7 +42,7 @@ public class RemoveAnimationActionListener implements ActionListener {
             String key = (String) animationsTable.getValueAt(rowIndex, 0);
 
             try {
-                AnimationEnum.valueOf(key);
+                AnimationEnum.fromValue(key);
             } catch (IllegalArgumentException ex) {
                 // Not a default can be removed.
                 sprite.removeAnimation(key);

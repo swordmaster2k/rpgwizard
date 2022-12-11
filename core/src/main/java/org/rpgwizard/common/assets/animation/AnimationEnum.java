@@ -7,10 +7,37 @@
  */
 package org.rpgwizard.common.assets.animation;
 
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  *
  * @author Joshua Michael Daly
  */
 public enum AnimationEnum {
-    NORTH, SOUTH, EAST, WEST, NORTH_WEST, NORTH_EAST, SOUTH_WEST, SOUTH_EAST, ATTACK, DEFEND, SPECIAL_MOVE, DIE, REST, SOUTH_IDLE, NORTH_IDLE, EAST_IDLE, WEST_IDLE, NORTH_WEST_IDLE, NORTH_EAST_IDLE, SOUTH_WEST_IDLE, SOUTH_EAST_IDLE;
+    NORTH("north"), SOUTH("south"), EAST("east"), WEST("west"), IDLE("idle");
+
+    private final String value;
+
+    private static final Map<String, AnimationEnum> lookup = new HashMap<>();
+
+    static {
+        for (AnimationEnum e : EnumSet.allOf(AnimationEnum.class)) {
+            lookup.put(e.getValue(), e);
+        }
+    }
+
+    AnimationEnum(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public static AnimationEnum fromValue(String value) {
+        return lookup.get(value);
+    }
+
 }

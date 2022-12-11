@@ -105,12 +105,12 @@ public class Driver {
         Theme theme = Theme
                 .valueOf(UserPreferencesProperties.getProperty(UserPreference.USER_PREFERENCE_THEME).toUpperCase());
         switch (theme) {
-            case LIGHT:
-                FlatLightLaf.install();
-                break;
-            case DARK:
-            default:
-                FlatDarkLaf.install();
+        case LIGHT:
+            FlatLightLaf.install();
+            break;
+        case DARK:
+        default:
+            FlatDarkLaf.install();
         }
     }
 

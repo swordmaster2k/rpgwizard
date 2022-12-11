@@ -53,7 +53,7 @@
       "itemDrop":"coin.sprite"
    },
    "animations":{
-      "HIT":"pot/smash.animation",
+      "smash":"pot/smash.animation",
       "north":"pot/normal.animation",
       "west":"pot/normal.animation",
       "south":"pot/normal.animation",

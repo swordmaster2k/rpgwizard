@@ -48,7 +48,7 @@ public class AnimationListSelectionListener implements ListSelectionListener {
                 spriteEditor.getBrowseButton().setEnabled(true);
 
                 try {
-                    AnimationEnum.valueOf((String) animationsTable.getValueAt(rowIndex, 0));
+                    AnimationEnum.fromValue((String) animationsTable.getValueAt(rowIndex, 0));
                     spriteEditor.getRemoveButton().setEnabled(false); // Cannot
                                                                       // remove
                                                                       // default

@@ -115,7 +115,7 @@ public class MapSprite extends AbstractMapModel implements Selectable {
 
                 Sprite sprite = (Sprite) handle.getAsset();
 
-                String southAnimation = sprite.getAnimations().get(AnimationEnum.SOUTH.toString());
+                String southAnimation = sprite.getAnimations().get(AnimationEnum.SOUTH.getValue());
                 if (!southAnimation.isEmpty()) {
                     file = new File(System.getProperty("project.path") + File.separator
                             + CoreProperties.getProperty("rpgwizard.directory.animations"), southAnimation);

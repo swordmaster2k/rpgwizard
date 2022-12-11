@@ -30,7 +30,7 @@
       "west":"chest/normal.animation",
       "south":"chest/normal.animation",
       "east":"chest/normal.animation",
-      "OPEN":"chest/open.animation"
+      "open":"chest/open.animation"
    },
    "name":"Chest",
    "description":null,

@@ -15,7 +15,7 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import lombok.Getter;
 import lombok.Setter;
-import org.rpgwizard.common.assets.AbstractPolygon;
+import org.rpgwizard.common.assets.AbstractShape;
 import org.rpgwizard.common.assets.map.SelectablePair;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.editors.MapEditor;
@@ -31,7 +31,7 @@ import org.rpgwizard.editor.utilities.GuiHelper;
 public abstract class AbstractPolygonBrush extends AbstractBrush {
 
     protected String polygonId;
-    protected AbstractPolygon polygon;
+    protected AbstractShape polygon;
 
     protected boolean drawing;
     protected Color previewColor = Color.WHITE;

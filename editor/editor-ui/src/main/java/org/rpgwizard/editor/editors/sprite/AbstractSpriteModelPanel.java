@@ -11,11 +11,13 @@ import java.awt.Polygon;
 import java.awt.event.ItemEvent;
 import java.util.List;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import org.rpgwizard.common.assets.Collider;
 import org.rpgwizard.common.assets.Point;
+import org.rpgwizard.common.assets.ShapeEnum;
 import org.rpgwizard.common.assets.Trigger;
 import org.rpgwizard.common.assets.sprite.Sprite;
 import org.rpgwizard.editor.MainWindow;
@@ -27,13 +29,18 @@ import org.rpgwizard.editor.ui.AbstractModelPanel;
  */
 public abstract class AbstractSpriteModelPanel extends AbstractModelPanel {
 
+    private static final String[] SHAPE_TYPES = ShapeEnum.toStringArray();
+    private final JComboBox<String> shapeComboBox;
+
     private final JCheckBox colliderDisableCheckBox;
+    private final JSpinner colliderRadiusSpinner;
     private final JSpinner colliderWidthSpinner;
     private final JSpinner colliderHeightSpinner;
     private final JSpinner colliderOffsetXSpinner;
     private final JSpinner colliderOffsetYSpinner;
 
     private final JCheckBox triggerDisableCheckBox;
+    private final JSpinner triggerRadiusSpinner;
     private final JSpinner triggerWidthSpinner;
     private final JSpinner triggerHeightSpinner;
     private final JSpinner triggerOffsetXSpinner;
@@ -55,6 +62,16 @@ public abstract class AbstractSpriteModelPanel extends AbstractModelPanel {
         ///
         Polygon colliderPolygon = pointsToPolygon(sprite.getCollider().getPoints());
         Polygon triggerPolygon = pointsToPolygon(sprite.getTrigger().getPoints());
+        ///
+        /// colliderRadiusSpinner
+        ///
+        colliderRadiusSpinner = getJSpinner(sprite.getCollider().getRadius());
+        colliderRadiusSpinner.addChangeListener((ChangeEvent e) -> {
+            int r = (Integer) colliderRadiusSpinner.getValue();
+            sprite.getCollider().setRadius(r);
+            sprite.fireSpriteChanged();
+            MainWindow.getInstance().markWindowForSaving();
+        });
         ///
         /// colliderWidthSpinner
         ///
@@ -141,6 +158,16 @@ public abstract class AbstractSpriteModelPanel extends AbstractModelPanel {
             colliderOffsetXSpinner.setEnabled(!disabled);
             colliderOffsetYSpinner.setEnabled(!disabled);
             sprite.getCollider().setEnabled(disabled);
+            sprite.fireSpriteChanged();
+            MainWindow.getInstance().markWindowForSaving();
+        });
+        ///
+        /// triggerRadiusSpinner
+        ///
+        triggerRadiusSpinner = getJSpinner(sprite.getTrigger().getRadius());
+        triggerRadiusSpinner.addChangeListener((ChangeEvent e) -> {
+            int r = (Integer) triggerRadiusSpinner.getValue();
+            sprite.getTrigger().setRadius(r);
             sprite.fireSpriteChanged();
             MainWindow.getInstance().markWindowForSaving();
         });
@@ -235,14 +262,33 @@ public abstract class AbstractSpriteModelPanel extends AbstractModelPanel {
             MainWindow.getInstance().markWindowForSaving();
         });
         ///
+        /// shapeComboBox
+        ///
+        shapeComboBox = new JComboBox<>(SHAPE_TYPES);
+        shapeComboBox.setSelectedItem(sprite.getShape().getValue());
+        changeShape(sprite.getShape());
+
+        shapeComboBox.addActionListener(e -> {
+            ShapeEnum newShape = ShapeEnum.valueOf(shapeComboBox.getSelectedItem().toString().toUpperCase());
+            changeShape(newShape);
+            sprite.setShape(newShape);
+            sprite.fireSpriteChanged();
+            MainWindow.getInstance().markWindowForSaving();
+        });
+        ///
         /// this
         ///
+        insert(getJLabel("Shape"), shapeComboBox);
+
         insert(getJLabel("Disable Trigger"), colliderDisableCheckBox);
+        insert(getJLabel("Trigger Radius"), triggerRadiusSpinner);
         insert(getJLabel("Trigger Width"), colliderWidthSpinner);
         insert(getJLabel("Trigger Height"), colliderHeightSpinner);
         insert(getJLabel("Trigger Offset X"), colliderOffsetXSpinner);
         insert(getJLabel("Trigger Offset Y"), colliderOffsetYSpinner);
+
         insert(getJLabel("Disable Collider"), triggerDisableCheckBox);
+        insert(getJLabel("Collider Radius"), colliderRadiusSpinner);
         insert(getJLabel("Collider Width"), triggerWidthSpinner);
         insert(getJLabel("Collider Height"), triggerHeightSpinner);
         insert(getJLabel("Collider Offset X"), triggerOffsetXSpinner);
@@ -255,6 +301,17 @@ public abstract class AbstractSpriteModelPanel extends AbstractModelPanel {
             polygon.addPoint(p.getX(), p.getY());
         });
         return polygon;
+    }
+
+    private void changeShape(ShapeEnum shape) {
+        triggerWidthSpinner.setEnabled(ShapeEnum.POLYGON.equals(shape));
+        triggerHeightSpinner.setEnabled(ShapeEnum.POLYGON.equals(shape));
+
+        colliderWidthSpinner.setEnabled(ShapeEnum.POLYGON.equals(shape));
+        colliderHeightSpinner.setEnabled(ShapeEnum.POLYGON.equals(shape));
+
+        triggerRadiusSpinner.setEnabled(ShapeEnum.CIRCLE.equals(shape));
+        colliderRadiusSpinner.setEnabled(ShapeEnum.CIRCLE.equals(shape));
     }
 
 }

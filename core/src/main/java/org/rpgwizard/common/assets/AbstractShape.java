@@ -17,12 +17,13 @@ import org.rpgwizard.common.Selectable;
  * @author Joshua Michael Daly
  */
 @Data
-public abstract class AbstractPolygon implements Selectable {
+public abstract class AbstractShape implements Selectable {
 
     protected boolean enabled;
     protected int x;
     protected int y;
     protected List<Point> points;
+    protected int radius;
 
     @JsonIgnore
     protected boolean selected;

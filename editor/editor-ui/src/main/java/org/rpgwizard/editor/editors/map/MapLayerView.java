@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
-import org.rpgwizard.common.assets.AbstractPolygon;
+import org.rpgwizard.common.assets.AbstractShape;
 import org.rpgwizard.common.assets.Collider;
 import org.rpgwizard.common.assets.map.Map;
 import org.rpgwizard.common.assets.tileset.Tile;
@@ -306,7 +306,7 @@ public class MapLayerView {
         });
     }
 
-    private void drawPolygon(Graphics2D g, AbstractPolygon polygon) {
+    private void drawPolygon(Graphics2D g, AbstractShape polygon) {
         if (polygon.isSelected()) {
             g.setStroke(new BasicStroke(3.0f)); // Draw it thicker.
         }
@@ -324,7 +324,7 @@ public class MapLayerView {
      * @param g
      * @param vector
      */
-    private void drawPolygonLines(Graphics2D g, AbstractPolygon polygon) {
+    private void drawPolygonLines(Graphics2D g, AbstractShape polygon) {
         // Draw lines from points 0 > 1 , 1 > 2, 2 > 3 etc..
         int count = polygon.getPointCount();
 

@@ -22,6 +22,7 @@ import org.rpgwizard.common.assets.Image;
 import org.rpgwizard.common.assets.Location;
 import org.rpgwizard.common.assets.Point;
 import org.rpgwizard.common.assets.Script;
+import org.rpgwizard.common.assets.ShapeEnum;
 import org.rpgwizard.common.assets.Trigger;
 import org.rpgwizard.common.assets.game.Game;
 import org.rpgwizard.common.assets.animation.SpriteSheet;
@@ -250,10 +251,13 @@ public class AssetSerializerTest {
         // @formatter:on
         Assert.assertEquals(animations, asset.getAnimations());
 
+        Assert.assertEquals(ShapeEnum.POLYGON, asset.getShape());
+
         Collider collider = new Collider();
         collider.setEnabled(true);
         collider.setX(-15);
         collider.setY(0);
+        collider.setRadius(10);
         // @formatter:off
         collider.setPoints(List.of(
                 new Point(0, 0),
@@ -269,6 +273,7 @@ public class AssetSerializerTest {
         trigger.setX(-20);
         trigger.setY(-5);
         trigger.setEvent(new org.rpgwizard.common.assets.Event("keypress", "my-event.js", "E"));
+        trigger.setRadius(12);
         // @formatter:off
         trigger.setPoints(List.of(
                 new Point(0, 0),

@@ -18,6 +18,7 @@ import lombok.ToString;
 import org.rpgwizard.common.assets.AbstractAsset;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.Collider;
+import org.rpgwizard.common.assets.ShapeEnum;
 import org.rpgwizard.common.assets.Trigger;
 import org.rpgwizard.common.assets.events.SpriteChangedEvent;
 import org.rpgwizard.common.assets.listeners.SpriteChangeListener;
@@ -34,6 +35,7 @@ public class Sprite extends AbstractAsset {
     private String name;
     private String description;
     private Map<String, String> animations;
+    private ShapeEnum shape;
     private Collider collider;
     private Trigger trigger;
     private Map<String, String> data;
@@ -44,23 +46,27 @@ public class Sprite extends AbstractAsset {
     public Sprite() {
         animations = new HashMap<>();
 
+        shape = ShapeEnum.CIRCLE;
+
         collider = new Collider();
+        collider.setRadius(8);
         collider.addPoint(0, 0);
         collider.addPoint(0, 20);
         collider.addPoint(20, 20);
         collider.addPoint(20, 0);
         collider.addPoint(0, 0);
-        collider.setX(-10);
-        collider.setY(-10);
+        collider.setX(0);
+        collider.setY(0);
 
         trigger = new Trigger();
+        trigger.setRadius(10);
         trigger.addPoint(0, 0);
         trigger.addPoint(0, 30);
         trigger.addPoint(30, 30);
         trigger.addPoint(30, 0);
         trigger.addPoint(0, 0);
-        trigger.setX(-15);
-        trigger.setY(-15);
+        trigger.setX(0);
+        trigger.setY(0);
 
         data = new HashMap<>();
     }

@@ -17,7 +17,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Trigger extends AbstractPolygon {
+public class Trigger extends AbstractShape {
 
     private Event event;
 

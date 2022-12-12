@@ -21,6 +21,7 @@ import javax.swing.Timer;
 import lombok.Getter;
 import lombok.Setter;
 import org.rpgwizard.common.assets.Collider;
+import org.rpgwizard.common.assets.ShapeEnum;
 import org.rpgwizard.common.assets.Trigger;
 import org.rpgwizard.common.assets.animation.Animation;
 import org.rpgwizard.common.assets.events.AnimationChangedEvent;
@@ -45,6 +46,9 @@ public class AnimatedPanel extends AbstractImagePanel implements AnimationChange
     private BufferedImage frameImage;
     private Timer timer;
 
+    @Getter
+    @Setter
+    private ShapeEnum shape;
     @Getter
     @Setter
     private Collider collider;
@@ -184,12 +188,21 @@ public class AnimatedPanel extends AbstractImagePanel implements AnimationChange
             y = getHeight() / 2;
             if (collider != null) {
                 g.setColor(Color.RED);
-                drawCollider(collider, g, x, y, (int) collider.getX(), (int) collider.getY());
+                if (ShapeEnum.POLYGON.equals(shape)) {
+                    drawCollider(collider, g, x, y, (int) collider.getX(), (int) collider.getY());
+                } else {
+                    drawCollider(collider, g, x, y, (int) collider.getX(), (int) collider.getY(), collider.getRadius());
+                }
+
             }
 
             if (trigger != null) {
                 g.setColor(Color.YELLOW);
-                drawTrigger(trigger, g, x, y, (int) trigger.getX(), (int) trigger.getY());
+                if (ShapeEnum.POLYGON.equals(shape)) {
+                    drawTrigger(trigger, g, x, y, (int) trigger.getX(), (int) trigger.getY());
+                } else {
+                    drawTrigger(trigger, g, x, y, (int) trigger.getX(), (int) trigger.getY(), trigger.getRadius());
+                }
             }
         }
 
@@ -278,6 +291,10 @@ public class AnimatedPanel extends AbstractImagePanel implements AnimationChange
                 x + collider.getPointX(0) + xOffset, y + collider.getPointY(0) + yOffset);
     }
 
+    private void drawCollider(Collider collider, Graphics g, int x, int y, int xOffset, int yOffset, int radius) {
+        g.drawOval((x - radius) + xOffset, (y - radius) + yOffset, 2 * radius, 2 * radius);
+    }
+
     private void drawTrigger(Trigger trigger, Graphics g, int x, int y, int xOffset, int yOffset) {
         int count = trigger.getPointCount();
         for (int i = 0; i < count - 1; i++) {
@@ -287,6 +304,10 @@ public class AnimatedPanel extends AbstractImagePanel implements AnimationChange
         // Draw the final lines
         g.drawLine(x + trigger.getPointX(count - 1) + xOffset, y + trigger.getPointY(count - 1) + yOffset,
                 x + trigger.getPointX(0) + xOffset, y + trigger.getPointY(0) + yOffset);
+    }
+
+    private void drawTrigger(Trigger trigger, Graphics g, int x, int y, int xOffset, int yOffset, int radius) {
+        g.drawOval((x - radius) + xOffset, (y - radius) + yOffset, 2 * radius, 2 * radius);
     }
 
 }

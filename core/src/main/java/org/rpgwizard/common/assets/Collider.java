@@ -17,7 +17,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Collider extends AbstractPolygon {
+public class Collider extends AbstractShape {
 
     public Collider() {
         enabled = true;

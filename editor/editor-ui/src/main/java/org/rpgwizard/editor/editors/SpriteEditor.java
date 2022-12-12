@@ -363,6 +363,7 @@ public final class SpriteEditor extends AbstractAssetEditorWindow implements Spr
         }
 
         if (selectedAnim != null) {
+            animatedPanel.setShape(sprite.getShape());
             animatedPanel.setCollider(sprite.getCollider());
             animatedPanel.setTrigger(sprite.getTrigger());
         }

@@ -31,8 +31,18 @@ function map.init_layer_sprite(id, world, instance)
     instance.active_animation = sprite_asset.anim8["south"] -- TODO: Default to "idle"
 
     -- Runtime data, setup collider
-    -- TODO: switch to circular collider in sprite format
-    instance.collider = world:newCircleCollider(instance.startLocation.x, instance.startLocation.y, 8)
+    if sprite_asset.shape == "CIRCLE" then
+        local radius = sprite_asset.collider.radius
+        instance.collider = world:newCircleCollider(instance.startLocation.x, instance.startLocation.y, radius)
+    else
+        -- TODO: Put this into compile stage
+        local w = sprite_asset.collider.points[3].x
+        local h = sprite_asset.collider.points[3].y
+        local x = instance.startLocation.x + sprite_asset.collider.x
+        local y = instance.startLocation.y + sprite_asset.collider.y
+        instance.collider = world:newRectangleCollider(x, y, w, h)
+    end
+
     instance.collider:setType("static")
     instance.collider:setCollisionClass("Sprite")
     instance.collider:setFixedRotation(true)
@@ -48,9 +58,20 @@ function map.init_layer_sprite(id, world, instance)
         end
     end)
 
+
     -- Runtime data, setup trigger
-    -- TODO: switch to circular trigger in sprite format
-    instance.trigger = world:newCircleCollider(instance.startLocation.x, instance.startLocation.y, 12)
+    if sprite_asset.shape == "CIRCLE" then
+        local radius = sprite_asset.trigger.radius
+        instance.trigger = world:newCircleCollider(instance.startLocation.x, instance.startLocation.y, radius)
+    else
+        -- TODO: Put this into compile stage
+        local w = sprite_asset.trigger.points[3].x
+        local h = sprite_asset.trigger.points[3].y
+        local x = instance.startLocation.x + sprite_asset.trigger.x
+        local y = instance.startLocation.y + sprite_asset.trigger.y
+        instance.trigger = world:newRectangleCollider(x, y, w, h)
+    end
+
     instance.trigger:setType("dynamic")
     instance.trigger:setCollisionClass("Trigger")
     instance.trigger:setFixedRotation(true)

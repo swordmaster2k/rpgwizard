@@ -7,7 +7,7 @@
     "east": "east.animation",
     "west": "west.animation"
   },
-  "shape": "POLYGON",
+  "shape": "RECTANGLE",
   "collider": {
     "enabled": true,
     "x": -15,

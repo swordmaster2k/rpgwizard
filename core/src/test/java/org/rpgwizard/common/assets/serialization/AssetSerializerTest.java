@@ -82,9 +82,7 @@ public class AssetSerializerTest {
         Assert.assertEquals(900, asset.getViewport().getHeight());
         Assert.assertTrue(asset.getViewport().isFullScreen());
 
-        Assert.assertNotNull(asset.getDebug());
-        Assert.assertTrue(asset.getDebug().isShowColliders());
-        Assert.assertTrue(asset.getDebug().isShowTriggers());
+        Assert.assertTrue(asset.isDebug());
     }
 
     @Test
@@ -141,7 +139,7 @@ public class AssetSerializerTest {
         Assert.assertEquals(32, map.getTileHeight());
         Assert.assertEquals("Tower.ogg", map.getMusic());
         Assert.assertEquals(List.of("tower.tileset"), map.getTilesets());
-        Assert.assertEquals("some-script.js", map.getEntryScript());
+        Assert.assertEquals("some-script.lua", map.getEntryScript());
         Assert.assertEquals(new Location(191, 558, 0), map.getStartLocation());
 
         Assert.assertEquals(1, map.getLayers().size());
@@ -251,7 +249,7 @@ public class AssetSerializerTest {
         // @formatter:on
         Assert.assertEquals(animations, asset.getAnimations());
 
-        Assert.assertEquals(ShapeEnum.POLYGON, asset.getShape());
+        Assert.assertEquals(ShapeEnum.RECTANGLE, asset.getShape());
 
         Collider collider = new Collider();
         collider.setEnabled(true);

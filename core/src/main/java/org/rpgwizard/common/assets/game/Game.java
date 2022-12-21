@@ -26,13 +26,13 @@ public class Game extends AbstractAsset {
 
     private String name;
     private Viewport viewport;
-    private Debug debug;
+    private boolean debug;
 
     public Game(AssetDescriptor descriptor) {
         super(descriptor);
 
         viewport = new Viewport();
-        debug = new Debug();
+        debug = false;
     }
 
     public Game(AssetDescriptor descriptor, String name) {
@@ -43,7 +43,7 @@ public class Game extends AbstractAsset {
     @Override
     public void reset() {
         viewport = new Viewport();
-        debug = new Debug();
+        debug = false;
     }
 
 }

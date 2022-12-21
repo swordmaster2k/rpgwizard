@@ -2,13 +2,14 @@
 
 ## File Format
 
-1. Update name of fields
-2. Remove legacy design decisions
-3. Colliders default to circle, introduce type flag
+1.  ~~Update name of fields ~~
+2.  ~~Remove legacy design decisions ~~
+3.  ~~Colliders default to circle, introduce type flag ~~
+4.  Remove Game File Format, replaced by conf.lua
 
 ## Editor
 
-1. Update file formats
+1.  ~~Update file formats ~~
 2. Remove legacy JS engine code
 
 ## Client API

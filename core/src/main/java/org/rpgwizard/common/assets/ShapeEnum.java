@@ -13,7 +13,7 @@ public enum ShapeEnum {
 
     // @formatter:off
     CIRCLE("Circle"),
-    POLYGON("Polygon");
+    RECTANGLE("Rectangle");
     // @formatter:on
 
     private final String value;

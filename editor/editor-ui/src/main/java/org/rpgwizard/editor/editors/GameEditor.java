@@ -61,7 +61,7 @@ public final class GameEditor extends AbstractAssetEditorWindow implements Inter
     private ImagePanel icon;
 
     // STARTUP SETTINGS
-    private JCheckBox showColliders;
+    private JCheckBox debugCheckBox;
 
     // GRAPHICS SETTINGS
     private JCheckBox fullScreen;
@@ -195,10 +195,10 @@ public final class GameEditor extends AbstractAssetEditorWindow implements Inter
                 .addGroup(projectInfoLayout.createParallelGroup().addComponent(iconLabel).addComponent(icon, 48, 48,
                         48)));
 
-        showColliders = new JCheckBox("Show Colliders");
-        showColliders.setSelected(game.getDebug().isShowColliders());
-        showColliders.addActionListener((ActionEvent e) -> {
-            game.getDebug().setShowColliders(showColliders.isSelected());
+        debugCheckBox = new JCheckBox("Enable Debug");
+        debugCheckBox.setSelected(game.isDebug());
+        debugCheckBox.addActionListener((ActionEvent e) -> {
+            game.setDebug(debugCheckBox.isSelected());
             setNeedSave(true);
         });
 
@@ -208,9 +208,9 @@ public final class GameEditor extends AbstractAssetEditorWindow implements Inter
 
         GroupLayout conditionsLayout = GuiHelper.createGroupLayout(startupSettingsPanel);
 
-        conditionsLayout.setHorizontalGroup(conditionsLayout.createParallelGroup().addComponent(showColliders));
+        conditionsLayout.setHorizontalGroup(conditionsLayout.createParallelGroup().addComponent(debugCheckBox));
 
-        conditionsLayout.setVerticalGroup(conditionsLayout.createSequentialGroup().addComponent(showColliders));
+        conditionsLayout.setVerticalGroup(conditionsLayout.createSequentialGroup().addComponent(debugCheckBox));
 
         // Configure PROJECT SETTINGS PANEL layout
         layout.setHorizontalGroup(layout.createParallelGroup().addComponent(gameInfoPanel, 515, 515, 515)

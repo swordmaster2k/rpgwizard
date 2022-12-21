@@ -188,7 +188,7 @@ public class AnimatedPanel extends AbstractImagePanel implements AnimationChange
             y = getHeight() / 2;
             if (collider != null) {
                 g.setColor(Color.RED);
-                if (ShapeEnum.POLYGON.equals(shape)) {
+                if (ShapeEnum.RECTANGLE.equals(shape)) {
                     drawCollider(collider, g, x, y, (int) collider.getX(), (int) collider.getY());
                 } else {
                     drawCollider(collider, g, x, y, (int) collider.getX(), (int) collider.getY(), collider.getRadius());
@@ -198,7 +198,7 @@ public class AnimatedPanel extends AbstractImagePanel implements AnimationChange
 
             if (trigger != null) {
                 g.setColor(Color.YELLOW);
-                if (ShapeEnum.POLYGON.equals(shape)) {
+                if (ShapeEnum.RECTANGLE.equals(shape)) {
                     drawTrigger(trigger, g, x, y, (int) trigger.getX(), (int) trigger.getY());
                 } else {
                     drawTrigger(trigger, g, x, y, (int) trigger.getX(), (int) trigger.getY(), trigger.getRadius());

@@ -6,7 +6,7 @@
     "tileHeight": 32,
     "music": "Tower.ogg",
     "tilesets": ["tower.tileset"],
-    "entryScript": "some-script.js",
+    "entryScript": "some-script.lua",
     "startLocation": {
         "x": 191,
         "y": 558,

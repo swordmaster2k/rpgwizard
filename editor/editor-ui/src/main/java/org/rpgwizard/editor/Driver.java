@@ -16,12 +16,9 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
-import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import org.apache.commons.io.FileUtils;
-import org.pf4j.JarPluginManager;
-import org.pf4j.PluginManager;
 import org.rpgwizard.common.assets.AssetManager;
 import org.rpgwizard.common.assets.game.Game;
 import org.rpgwizard.common.assets.files.FileAssetHandleResolver;
@@ -33,14 +30,11 @@ import org.rpgwizard.common.assets.serialization.JsonSpriteSerializer;
 import org.rpgwizard.common.assets.serialization.JsonTileSetSerializer;
 import org.rpgwizard.common.assets.serialization.ScriptSerializer;
 import org.rpgwizard.common.utilities.CoreProperties;
-import org.rpgwizard.editor.properties.EditorProperties;
-import org.rpgwizard.editor.properties.EditorProperty;
 import org.rpgwizard.editor.properties.user.UserPreference;
 import org.rpgwizard.editor.properties.user.UserPreferencesProperties;
 import org.rpgwizard.editor.ui.Theme;
 import org.rpgwizard.editor.utilities.FileTools;
 import org.rpgwizard.editor.utilities.ProjectUpgrader;
-import org.rpgwizard.pluginsystem.Engine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -87,18 +81,6 @@ public class Driver {
         assetManager.registerSerializer(new ScriptSerializer());
         assetManager.registerSerializer(new JsonTileSetSerializer());
         assetManager.registerSerializer(new ImageSerializer());
-    }
-
-    public static PluginManager registerPlugins() throws URISyntaxException {
-        String path = FileTools.getExecutionPath(Driver.class);
-        path += File.separator + EditorProperties.getProperty(EditorProperty.EDITOR_PLUGINS_DIRECOTRY) + File.separator;
-        System.setProperty("pf4j.pluginsDir", path);
-        LOGGER.info(System.getProperty("pf4j.pluginsDir"));
-
-        PluginManager pluginManager = new JarPluginManager();
-        pluginManager.loadPlugins();
-        pluginManager.startPlugins();
-        return pluginManager;
     }
 
     public static void loadUserTheme() {
@@ -172,7 +154,6 @@ public class Driver {
                 try {
                     registerResolvers();
                     registerSerializers();
-                    PluginManager pluginManager = registerPlugins();
                     loadUserTheme();
 
                     // TODO: Remove jcef references
@@ -182,7 +163,6 @@ public class Driver {
                     // }
 
                     MainWindow mainWindow = MainWindow.getInstance();
-                    mainWindow.setPluginManager(pluginManager);
                     mainWindow.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
                     mainWindow.addWindowListener(new WindowAdapter() {
                         @Override
@@ -208,14 +188,7 @@ public class Driver {
                             mainWindow.dispose();
 
                             // Quietly stop any engines.
-                            List<Engine> engines = pluginManager.getExtensions(Engine.class);
-                            engines.forEach((engine) -> {
-                                try {
-                                    engine.stop();
-                                } catch (Exception ex) {
-                                    LOGGER.warn("Failed to stop engine! reason=[{}]", ex.getMessage());
-                                }
-                            });
+                            // REFACTOR: reimplement
 
                             // Write out user preferences.
                             saveLastProject();

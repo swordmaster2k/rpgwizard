@@ -68,12 +68,8 @@ public abstract class AbstractRunAction extends AbstractAction {
         worker.execute();
     }
 
-    private void runEngine(
-            Game project,
-            Dimension dimensions,
-            boolean isFullScreen, File projectCopy,
-            ProgressMonitor progressMonitor
-    ) throws InterruptedException, InvocationTargetException, Exception {
+    private void runEngine(Game project, Dimension dimensions, boolean isFullScreen, File projectCopy,
+            ProgressMonitor progressMonitor) throws InterruptedException, InvocationTargetException, Exception {
         File projectIcon = null; // REFACTOR: Move to game.ico way
 
         String command = "love.exe " + '"' + projectCopy.getAbsolutePath() + File.separator + "game" + '"';

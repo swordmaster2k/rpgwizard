@@ -7,15 +7,12 @@
  */
 package org.rpgwizard.editor.ui.actions;
 
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.ProgressMonitor;
 import javax.swing.SwingWorker;
-import org.pf4j.PluginManager;
+
 import org.rpgwizard.editor.MainWindow;
-import org.rpgwizard.pluginsystem.Engine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +25,6 @@ public class StopAction extends AbstractAction {
     private static final Logger LOGGER = LoggerFactory.getLogger(StopAction.class);
 
     private ProgressMonitor progressMonitor;
-    private SwingWorker worker;
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -36,28 +32,24 @@ public class StopAction extends AbstractAction {
             MainWindow instance = MainWindow.getInstance();
             instance.getMainToolBar().getStopButton().setEnabled(false);
 
-            PluginManager pluginManager = MainWindow.getInstance().getPluginManager();
-            List<Engine> engines = pluginManager.getExtensions(Engine.class);
+            progressMonitor = new ProgressMonitor(MainWindow.getInstance(), "Stopping Engine...", "", 0, 100);
+            progressMonitor.setProgress(0);
 
-            // Just use the first available engine for now.
-            if (engines.size() > 0) {
-                progressMonitor = new ProgressMonitor(MainWindow.getInstance(), "Stopping Engine...", "", 0, 100);
-                progressMonitor.setProgress(0);
-                worker = new SwingWorker<Integer, Integer>() {
-                    @Override
-                    protected Integer doInBackground() throws Exception {
-                        engines.get(0).stop(progressMonitor);
-                        return null;
-                    }
+            SwingWorker<Integer, Integer> worker = new SwingWorker<>() {
+                @Override
+                protected Integer doInBackground() throws Exception {
+                    // REFACTOR: Stop engine
+                    return null;
+                }
 
-                    @Override
-                    public void done() {
-                        instance.getMainToolBar().getRunButton().setEnabled(true);
-                        instance.getMainToolBar().getDebugButton().setEnabled(true);
-                    }
-                };
-                worker.execute();
-            }
+                @Override
+                public void done() {
+                    instance.getMainToolBar().getRunButton().setEnabled(true);
+                    instance.getMainToolBar().getDebugButton().setEnabled(true);
+                }
+            };
+
+            worker.execute();
         } catch (Exception ex) {
             LOGGER.error("Failed to stop engine.", ex);
         }

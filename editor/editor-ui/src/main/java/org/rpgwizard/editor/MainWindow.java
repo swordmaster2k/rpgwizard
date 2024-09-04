@@ -41,7 +41,6 @@ import org.fife.rsta.ui.search.ReplaceDialog;
 import org.fife.rsta.ui.search.SearchEvent;
 import org.fife.rsta.ui.search.SearchListener;
 import org.fife.ui.rtextarea.SearchContext;
-import org.pf4j.PluginManager;
 import org.rpgwizard.common.assets.animation.Animation;
 import org.rpgwizard.common.assets.AssetDescriptor;
 import org.rpgwizard.common.assets.AssetException;
@@ -149,8 +148,6 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
 
     // Listeners.
     private final TileSetSelectionListener tileSetSelectionListener;
-
-    private PluginManager pluginManager;
 
     // Simple flag that can be set to cancel closing of application.
     private boolean cancelClose;

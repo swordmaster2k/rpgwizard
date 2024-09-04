@@ -12,7 +12,6 @@
       <version>1.7.0</version>
     </parent>
 
-    <groupId>org.rpgwizard</groupId>
     <artifactId>editor</artifactId>
     <packaging>pom</packaging>
     <inceptionYear>2017</inceptionYear>
@@ -40,7 +39,6 @@
     </repositories>
 
     <modules>
-        <module>pluginsystem</module>
         <module>editor-ui</module>
     </modules>
 
@@ -55,8 +53,6 @@
 
         <slf4j.version>1.7.22</slf4j.version>
         <logback.version>1.1.8</logback.version>
-
-        <pf4j.version>3.2.0</pf4j.version>
 
         <assertj.version>3.5.0</assertj.version>
     </properties>
@@ -95,13 +91,6 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>${commons-io.version}</version>
-        </dependency>
-
-        <!-- Plugin System -->
-        <dependency>
-            <groupId>org.pf4j</groupId>
-            <artifactId>pf4j</artifactId>
-            <version>${pf4j.version}</version>
         </dependency>
 
         <!-- Automated Swing Testing -->

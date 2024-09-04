@@ -13,10 +13,6 @@
     <packaging>pom</packaging>
     <name>RPGWizard Engine</name>
 
-    <properties>
-        <commons-io.verison>2.4</commons-io.verison>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -26,7 +22,7 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>${commons-io.verison}</version>
+            <version>${commons-io.version}</version>
         </dependency>
     </dependencies>
 

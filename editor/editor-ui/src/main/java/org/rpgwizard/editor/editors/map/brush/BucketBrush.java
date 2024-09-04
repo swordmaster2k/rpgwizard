@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2015, rpgwizard.org, some files forked from rpgtoolkit.net <info@rpgwizard.org>
+/*
+ * Copyright © 2015, rpgwizard.org, some files forked from rpgtoolkit.net <info@rpgwizard.org>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -7,12 +7,13 @@
  */
 package org.rpgwizard.editor.editors.map.brush;
 
-import com.google.common.base.Objects;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.util.Objects;
 import java.util.Stack;
+
 import lombok.Getter;
 import lombok.Setter;
 import org.rpgwizard.common.assets.tileset.Tile;
@@ -167,7 +168,7 @@ public class BucketBrush extends AbstractBrush {
         boolean changed = false;
         while (!stack.empty()) {
             Point point = stack.pop(); // Remove the next tile from the stack.
-            if (layer.contains(point.x, point.y) && Objects.equal(layer.getTileAt(point.x, point.y), oldTile)) {
+            if (layer.contains(point.x, point.y) && Objects.equals(layer.getTileAt(point.x, point.y), oldTile)) {
                 if (!changed) {
                     changed = true;
                 }

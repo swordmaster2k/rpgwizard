@@ -9,17 +9,10 @@
         <version>1.7.0</version>
     </parent>
 
-    <groupId>org.rpgwizard</groupId>
     <artifactId>demo</artifactId>
     <packaging>pom</packaging>
 
     <name>RPGWizard Demo</name>
-
-    <properties>
-    </properties>
-
-    <dependencies>
-    </dependencies>
 
     <build>
         <plugins>

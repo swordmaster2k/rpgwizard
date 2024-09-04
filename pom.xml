@@ -19,6 +19,11 @@
             <name>Joshua Michael Daly</name>
             <timezone>Europe/Dublin</timezone>
         </developer>
+        <developer>
+            <id>chutchinson</id>
+            <name>Chris Hutchinson</name>
+            <timezone>America/Detroit</timezone>
+        </developer>
     </developers>
 
     <repositories>
@@ -55,29 +60,35 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
+        <project.resources.sourceEncoding>UTF-8</project.resources.sourceEncoding>
         <java.version>11</java.version>
         <maven.compiler.version>3.8.1</maven.compiler.version>
         <maven.jar.version>2.6</maven.jar.version>
         <junit.version>4.12</junit.version>
-        <json.version>20141113</json.version>
-        <jsoup.version>1.10.2</jsoup.version>
-        <commons-io.version>2.4</commons-io.version>
+        <json.version>20240303</json.version>
+        <jsoup.version>1.18.1</jsoup.version>
+        <commons-io.version>2.16.1</commons-io.version>
         <commons-lang.version>3.5</commons-lang.version>
-        <license.plugin.version>2.11</license.plugin.version>
+        <license.plugin.version>4.5</license.plugin.version>
         <slf4j.version>1.7.22</slf4j.version>
-        <logback.version>1.1.8</logback.version>
+        <logback.version>1.5.7</logback.version>
         <assertj.version>3.5.0</assertj.version>
         <maven.formatter.version>2.11.0</maven.formatter.version>
         <maven.resources.version>3.0.2</maven.resources.version>
         <maven.clean.version>3.0.0</maven.clean.version>
         <maven.install.version>2.5.1</maven.install.version>
-        <flatlaf.version>0.42</flatlaf.version>
+        <flatlaf.version>3.5.1</flatlaf.version>
         <substance.version>8.0.00</substance.version>
         <trident.version>1.5.00</trident.version>
         <jcef.version>67.0</jcef.version>
-        <lombok.version>1.18.24</lombok.version>
-        <jackson.version>2.11.1</jackson.version>
+        <lombok.version>1.18.34</lombok.version>
+        <jackson.version>2.17.2</jackson.version>
+        <rsyntaxtextarea.version>3.5.1</rsyntaxtextarea.version>
+        <rstaui.version>3.3.1</rstaui.version>
+        <autocomplete.version>3.3.1</autocomplete.version>
+        <languagesupport.version>3.3.0</languagesupport.version>
+        <netbeans.verson>RELEASE124</netbeans.verson>
+        <guava.version>33.3.0-jre</guava.version>
     </properties>
 
     <dependencies>
@@ -103,6 +114,11 @@
             <version>${license.plugin.version}</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
 
         <!-- Logging -->
         <dependency>
@@ -125,14 +141,6 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>${commons-lang.version}</version>
-        </dependency>
-
-        <!-- Automated Swing Testing -->
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-swing-junit</artifactId>
-            <version>${assertj.version}</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -217,61 +225,6 @@
                         </fileset>
                     </filesets>
                 </configuration>
-            </plugin>
-            
-            <!-- Install unmanaged dependencies  -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-install-plugin</artifactId>
-                <version>${maven.install.version}</version>
-                <inherited>false</inherited>
-                <executions>
-                    <execution>
-                        <id>install-jcef</id>
-                        <goals>
-                            <goal>install-file</goal>
-                        </goals>
-                        <phase>validate</phase>
-                        <configuration>
-                            <groupId>org.cef</groupId>
-                            <artifactId>jcef-win64</artifactId>
-                            <version>${jcef.version}</version>
-                            <packaging>jar</packaging>
-                            <file>${basedir}/unmanaged_dependencies/jcef-win64.jar</file>
-                            <generatePom>true</generatePom>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>install-substance</id>
-                        <goals>
-                            <goal>install-file</goal>
-                        </goals>
-                        <phase>validate</phase>
-                        <configuration>
-                            <groupId>org.pushingpixels.substance</groupId>
-                            <artifactId>substance</artifactId>
-                            <version>${substance.version}</version>
-                            <packaging>jar</packaging>
-                            <file>${basedir}/unmanaged_dependencies/substance-${substance.version}.jar</file>
-                            <generatePom>true</generatePom>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>install-trident</id>
-                        <goals>
-                            <goal>install-file</goal>
-                        </goals>
-                        <phase>validate</phase>
-                        <configuration>
-                            <groupId>org.pushingpixels.substance</groupId>
-                            <artifactId>trident</artifactId>
-                            <version>${trident.version}</version>
-                            <packaging>jar</packaging>
-                            <file>${basedir}/unmanaged_dependencies/trident-${trident.version}.jar</file>
-                            <generatePom>true</generatePom>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

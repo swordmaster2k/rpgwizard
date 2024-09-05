@@ -61,10 +61,10 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.resources.sourceEncoding>UTF-8</project.resources.sourceEncoding>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
         <maven.compiler.version>3.8.1</maven.compiler.version>
         <maven.jar.version>2.6</maven.jar.version>
-        <junit.version>4.12</junit.version>
+        <junit.version>5.11.0</junit.version>
         <json.version>20240303</json.version>
         <jsoup.version>1.18.1</jsoup.version>
         <commons-io.version>2.16.1</commons-io.version>
@@ -72,7 +72,7 @@
         <license.plugin.version>4.5</license.plugin.version>
         <slf4j.version>1.7.22</slf4j.version>
         <logback.version>1.5.7</logback.version>
-        <assertj.version>3.5.0</assertj.version>
+        <assertj.version>3.17.1</assertj.version>
         <maven.formatter.version>2.11.0</maven.formatter.version>
         <maven.resources.version>3.0.2</maven.resources.version>
         <maven.clean.version>3.0.0</maven.clean.version>
@@ -93,8 +93,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>

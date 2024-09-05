@@ -70,7 +70,6 @@
         <commons-io.version>2.16.1</commons-io.version>
         <commons-lang.version>3.5</commons-lang.version>
         <license.plugin.version>4.5</license.plugin.version>
-        <slf4j.version>1.7.22</slf4j.version>
         <logback.version>1.5.7</logback.version>
         <assertj.version>3.17.1</assertj.version>
         <maven.formatter.version>2.11.0</maven.formatter.version>
@@ -121,11 +120,6 @@
         </dependency>
 
         <!-- Logging -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>

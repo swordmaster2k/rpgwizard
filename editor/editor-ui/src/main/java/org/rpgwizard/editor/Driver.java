@@ -13,7 +13,6 @@ import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import javax.swing.JFrame;
@@ -88,11 +87,11 @@ public class Driver {
                 .valueOf(UserPreferencesProperties.getProperty(UserPreference.USER_PREFERENCE_THEME).toUpperCase());
         switch (theme) {
         case LIGHT:
-            FlatLightLaf.install();
+            FlatLightLaf.setup();
             break;
         case DARK:
         default:
-            FlatDarkLaf.install();
+            FlatDarkLaf.setup();
         }
     }
 
@@ -126,15 +125,6 @@ public class Driver {
         }
     }
 
-    public static void addLibraryPath(String pathToAdd) throws Exception {
-        String path = FileTools.getExecutionPath(Driver.class);
-        path += File.separator + pathToAdd;
-        System.setProperty("java.library.path", path);
-        Field fieldSysPath = ClassLoader.class.getDeclaredField("sys_paths");
-        fieldSysPath.setAccessible(true);
-        fieldSysPath.set(null, null);
-    }
-
     public static void main(String[] args) throws InterruptedException, InvocationTargetException {
         SwingUtilities.invokeAndWait(() -> {
             LOGGER.info("Starting the RPGWizard Editor...");
@@ -156,7 +146,7 @@ public class Driver {
                     registerSerializers();
                     loadUserTheme();
 
-                    // TODO: Remove jcef references
+                    // REFACTOR: Remove jcef references
                     // Add the correct lib based on the platform.
                     // if (SystemUtils.IS_OS_WINDOWS) {
                     // addLibraryPath("lib/jcef-win");

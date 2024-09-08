@@ -7,7 +7,7 @@ local rpg = require("libraries/rpgwizard/rpg")
 
 function script.update(dt)
 
-    rpg.switch_map("outside.map", 6.0, 8.0, 1)
+    rpg.switch_map("outside.map", 6.5, 8.5, 1)
 
     return true
 end

@@ -113,6 +113,8 @@ function map.init_layer_sprite(id, world, instance)
 end
 
 function map.load(world, name)
+    rpg.log("map.load", string.format("name=[%s]", name))
+
     local asset_name = "maps/" .. name
 
     local map_asset = asset.load_json(asset_name)

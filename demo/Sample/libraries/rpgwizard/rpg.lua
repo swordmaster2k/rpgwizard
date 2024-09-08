@@ -38,6 +38,8 @@ local vm = {
 --- ###############################################################################################
 
 local function setup_world()
+    rpg.log("setup_world", "setting up world")
+
     if world ~= nil then
         world:destroy()
         world = nil
@@ -52,6 +54,8 @@ local function setup_world()
 end
 
 local function setup_player(player_id)
+    rpg.log("setup_player", string.format("player_id=[%s]", player_id))
+
     local player_sprite = rpg.get_sprite(player_id)
     active_player = player.load(player_id, player_sprite)
 end
@@ -187,12 +191,19 @@ end
 --- Client API
 --- ###############################################################################################
 
+function rpg.log(function_name, message)
+    local time = os.date("*t")
+    print(string.format("%02d:%02d:%02d - %s - %s", time.hour, time.min, time.sec, function_name, message))
+end
+
 function rpg.get_scale()
     return scale
 end
 
 -- Sprite
 function rpg.get_sprite(id)
+    rpg.log("get_sprite", string.format("id=[%s]", id))
+
     if current_map == nil then
         error("invalid state: no map is loaded")
     end
@@ -201,9 +212,12 @@ function rpg.get_sprite(id)
     for i, layer in pairs(current_map.layers) do
         local map_sprite = layer.sprites[id]
         if map_sprite ~= nil then
+            rpg.log("get_sprite", string.format("sprite found, id=[%s]", id))
             return map_sprite
         end
     end
+
+    rpg.log("get_sprite", string.format("sprite not found, id=[%s]", id))
 
     return nil
 
@@ -247,14 +261,18 @@ end
 
 -- Map
 function rpg.switch_map(new_map, x, y, layer)
+    rpg.log("switch_map", string.format("start swtiching map, new_map=[%s], x=[%s], y=[%s], layer=[%s]", new_map, x, y, layer))
+
     setup_world()
 
     current_map = map.load(world, new_map)
 
-    if game_config.player ~= nil then
+    if game_config ~= nil and game_config.player ~= nil then
         setup_player(game_config.player)
         sprite.set_location(active_player, x * current_map.tileWidth, y * current_map.tileHeight, layer)
     end
+
+    rpg.log("switch_map", string.format("finished switching map, new_map=[%s], x=[%s], y=[%s], layer=[%s]", new_map, x, y, layer))
 end
 
 --- ###############################################################################################

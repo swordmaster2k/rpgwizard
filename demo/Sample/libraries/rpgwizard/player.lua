@@ -4,6 +4,8 @@ local player = { speed = 75 }
 local vector = require("libraries/hump/vector")
 
 function player.load(sprite_id, sprite)
+    rpg.log("player.load", string.format("sprite_id=[%s]", sprite_id))
+
     if sprite == nil then
         error("invalid state: cannot find player with sprite_id " .. sprite_id)
     end

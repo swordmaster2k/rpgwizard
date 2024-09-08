@@ -176,8 +176,9 @@ public abstract class GuiHelper {
      * @param recursive
      * @return
      */
-    public static JComboBox getFileListJComboBox(File[] rootDirectories, String[] extensions, boolean recursive) {
-        JComboBox comboBox = new JComboBox();
+    public static JComboBox<String> getFileListJComboBox(File[] rootDirectories, String[] extensions,
+            boolean recursive) {
+        JComboBox<String> comboBox = new JComboBox<>();
 
         comboBox.addPopupMenuListener(new PopupListFilesListener(rootDirectories, extensions, recursive, comboBox));
 

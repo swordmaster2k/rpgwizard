@@ -30,7 +30,7 @@ public final class MapLinkPanel extends AbstractScriptPanel {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MapLinkPanel.class);
 
-    private JComboBox mapCombo;
+    private JComboBox<String> mapCombo;
     private JSpinner tileXSpinner;
     private JSpinner tileYSpinner;
     private JSpinner layerSpinner;
@@ -43,9 +43,9 @@ public final class MapLinkPanel extends AbstractScriptPanel {
     public MapLinkPanel(Map<String, Object> parameters) {
         super(ScriptType.MAP_LINK);
         String mapName = String.valueOf(parameters.get("mapName"));
-        double x = Double.valueOf(String.valueOf(parameters.get("tileX")));
-        double y = Double.valueOf(String.valueOf(parameters.get("tileY")));
-        int layer = Integer.valueOf(String.valueOf(parameters.get("layer")));
+        double x = Double.parseDouble(String.valueOf(parameters.get("tileX")));
+        double y = Double.parseDouble(String.valueOf(parameters.get("tileY")));
+        int layer = Integer.parseInt(String.valueOf(parameters.get("layer")));
         init(mapName, x, y, layer);
     }
 
@@ -67,11 +67,11 @@ public final class MapLinkPanel extends AbstractScriptPanel {
         add(mapCombo);
 
         add(new JLabel("X", SwingConstants.LEFT));
-        tileXSpinner = GuiHelper.getJSpinner(Double.valueOf(x));
+        tileXSpinner = GuiHelper.getJSpinner(x);
         add(tileXSpinner);
 
         add(new JLabel("Y", SwingConstants.LEFT));
-        tileYSpinner = GuiHelper.getJSpinner(Double.valueOf(y));
+        tileYSpinner = GuiHelper.getJSpinner(y);
         add(tileYSpinner);
 
         add(new JLabel("Layer", SwingConstants.LEFT));

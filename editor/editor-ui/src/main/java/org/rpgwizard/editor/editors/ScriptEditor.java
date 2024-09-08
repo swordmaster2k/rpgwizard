@@ -120,7 +120,7 @@ public final class ScriptEditor extends AbstractAssetEditorWindow
         textArea.setMarkOccurrences(true);
         textArea.setCodeFoldingEnabled(true);
         textArea.setTabsEmulated(true);
-        textArea.setTabSize(3);
+        textArea.setTabSize(4);
         textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_LUA);
         textArea.addPropertyChangeListener(RSyntaxTextArea.PARSER_NOTICES_PROPERTY, this);
         textArea.getDocument().addDocumentListener(new DocumentListener() {

@@ -20,6 +20,21 @@ local function init_layer_collider(id, world, instance)
     instance.collider:setType("static")
 end
 
+local function init_layer_trigger(id, world, instance)
+    -- TODO: move this to compile time
+    local points = {}
+    for i, point in pairs(instance.points) do
+        table.insert(points, point.x)
+        table.insert(points, point.y)
+    end
+
+    -- Runtime data, setup trigger
+    instance.collider = world:newPolygonCollider(points)
+    instance.collider:setCollisionClass("Trigger")
+    instance.collider:setObject(instance)
+    instance.collider:setType("static")
+end
+
 function map.init_layer_sprite(id, world, instance)
     -- Runtime data
     local sprite_asset = sprite.load(instance.asset)
@@ -57,7 +72,6 @@ function map.init_layer_sprite(id, world, instance)
             contact:setEnabled(false)
         end
     end)
-
 
     -- Runtime data, setup trigger
     if sprite_asset.shape == "CIRCLE" then
@@ -120,7 +134,10 @@ function map.load(world, name)
         end
 
         -- Iterate triggers
-        -- TODO
+        for id, instance in pairs(layer.triggers) do
+            init_layer_trigger(id, world, instance)
+            instance.layer = i
+        end
 
         -- Iterate sprites
         for id, instance in pairs(layer.sprites) do

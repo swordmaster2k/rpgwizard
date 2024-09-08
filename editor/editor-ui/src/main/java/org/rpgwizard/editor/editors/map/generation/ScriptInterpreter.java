@@ -35,7 +35,7 @@ public class ScriptInterpreter {
 
     // Script Patterns
     private static final Pattern MAP_LINK_PATTERN = Pattern
-            .compile("rpgcode\\.sendToBoard\\((?<boardName>.*),\\s*(?<tileX>.*),\\s*(?<tileY>.*),\\s*(?<layer>.*)\\);");
+            .compile("rpg\\.switch_map\\((?<mapName>.*),\\s*(?<tileX>.*),\\s*(?<tileY>.*),\\s*(?<layer>.*)\\)");
 
     public static Pair<ScriptType, Map<String, Object>> interpret(String child) {
         Map<String, Object> defaultParameters = new HashMap<>();
@@ -53,7 +53,7 @@ public class ScriptInterpreter {
                     ScriptType scriptType = ScriptType.valueOf(matcher.group(GROUP_NAME));
                     switch (scriptType) {
                     case MAP_LINK:
-                        return new ImmutablePair<>(scriptType, interpretBoardLink(code));
+                        return new ImmutablePair<>(scriptType, interpretMapLink(code));
                     }
                 }
             } catch (Exception ex) {
@@ -64,11 +64,11 @@ public class ScriptInterpreter {
         return new ImmutablePair<>(ScriptType.CUSTOM, defaultParameters);
     }
 
-    private static Map<String, Object> interpretBoardLink(String code) {
+    private static Map<String, Object> interpretMapLink(String code) {
         Map<String, Object> parameters = new HashMap<>();
         Matcher matcher = MAP_LINK_PATTERN.matcher(code);
         if (matcher.find()) {
-            parameters.put("boardName", matcher.group("boardName").replaceAll("^\"|\"$", ""));
+            parameters.put("mapName", matcher.group("mapName").replaceAll("^\"|\"$", ""));
             parameters.put("tileX", matcher.group("tileX"));
             parameters.put("tileY", matcher.group("tileY"));
             parameters.put("layer", matcher.group("layer"));

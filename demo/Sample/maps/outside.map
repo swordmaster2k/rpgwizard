@@ -290607,7 +290607,7 @@
                     "enabled": true,
                     "event": {
                         "type": "overlap",
-                        "script": "examples/map-linker.js",
+                        "script": "examples/map-linker.lua",
                         "key": null
                     },
                     "points": [

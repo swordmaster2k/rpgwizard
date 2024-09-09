@@ -15,7 +15,7 @@ function player.load(sprite_id, sprite)
     sprite.collider:setMass(1)
 
     sprite.trigger:setCollisionClass("PlayerTrigger")
-    sprite.collider:setType("dynamic")
+    sprite.trigger:setType("dynamic")
     sprite.trigger:setMass(0)
 
     return sprite
@@ -62,7 +62,8 @@ local function enter_trigger(active_player, vm)
         vm.source = object
 
         if event.type == "overlap" then
-            vm.script = require("scripts/" .. event.script:gsub(".lua", ""))
+            vm.script_name = "scripts/" .. event.script:gsub(".lua", "")
+            vm.script = require(vm.script_name)
         else
             vm.keypress_event.key = event.key
             vm.keypress_event.script = event.script

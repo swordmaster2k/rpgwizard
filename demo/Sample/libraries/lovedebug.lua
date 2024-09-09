@@ -66,7 +66,7 @@ _DebugSettings = {
     MultipleErrors = false,
     OverlayColor = { 0, 0, 0 },
 
-    DrawOnTop = true,
+    DrawOnTop = false,
 
     LiveAuto = false,
     LiveFile = 'main.lua',

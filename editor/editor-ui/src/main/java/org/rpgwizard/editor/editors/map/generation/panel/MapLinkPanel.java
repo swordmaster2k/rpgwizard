@@ -37,7 +37,7 @@ public final class MapLinkPanel extends AbstractScriptPanel {
 
     public MapLinkPanel() {
         super(ScriptType.MAP_LINK);
-        init("", 10, 20, 1);
+        init("", 10, 20, 2);
     }
 
     public MapLinkPanel(Map<String, Object> parameters) {
@@ -45,7 +45,7 @@ public final class MapLinkPanel extends AbstractScriptPanel {
         String mapName = String.valueOf(parameters.get("mapName"));
         double x = Double.parseDouble(String.valueOf(parameters.get("tileX")));
         double y = Double.parseDouble(String.valueOf(parameters.get("tileY")));
-        int layer = Integer.parseInt(String.valueOf(parameters.get("layer")));
+        int layer = Integer.parseInt(String.valueOf(parameters.get("layer"))) + 1; // +1 for lua
         init(mapName, x, y, layer);
     }
 

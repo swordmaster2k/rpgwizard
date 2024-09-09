@@ -50,9 +50,6 @@ public final class ScriptDialog extends JDialog {
 
     private final JComboBox<String> scriptTypeCombo;
 
-    private final JButton okButton;
-    private final JButton cancelButton;
-
     private final JScrollPane centerPane;
     private AbstractScriptPanel scriptPanel;
 
@@ -70,8 +67,7 @@ public final class ScriptDialog extends JDialog {
         centerPane.getViewport().setScrollMode(JViewport.SIMPLE_SCROLL_MODE);
         centerPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-        List<String> types = Arrays.asList(ScriptType.values()).stream().map(ScriptType::name)
-                .collect(Collectors.toList());
+        List<String> types = Arrays.stream(ScriptType.values()).map(ScriptType::name).toList();
         scriptTypeCombo = new JComboBox<>(types.toArray(new String[0]));
         Pair<ScriptType, Map<String, Object>> pair = ScriptInterpreter.interpret(oldValue);
         switchPanel(pair.getKey(), pair.getValue());
@@ -81,7 +77,7 @@ public final class ScriptDialog extends JDialog {
             switchPanel(type, new HashMap<>());
         });
 
-        okButton = new JButton("OK");
+        JButton okButton = new JButton("OK");
         okButton.addActionListener((e) -> {
             int result = JOptionPane.showConfirmDialog(this,
                     "Are you sure? This will replace any previously auto-generated events.", "Generate event?",
@@ -92,7 +88,7 @@ public final class ScriptDialog extends JDialog {
             }
         });
 
-        cancelButton = new JButton("Cancel");
+        JButton cancelButton = new JButton("Cancel");
         cancelButton.addActionListener((e) -> {
             dispose();
         });
@@ -105,7 +101,7 @@ public final class ScriptDialog extends JDialog {
         selectionPanel.add(new JLabel("Event Type", SwingConstants.LEFT));
         selectionPanel.add(scriptTypeCombo);
 
-        JPanel buttonPanel = new JPanel(new GridLayout(0, 2));
+        JPanel buttonPanel = new JPanel(new GridLayout(0, 2, 10, 0));
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         buttonPanel.add(okButton);
         buttonPanel.add(cancelButton);
@@ -177,7 +173,7 @@ public final class ScriptDialog extends JDialog {
 
     public static void main(String[] args) throws Exception {
         System.setProperty("project.path",
-                "D:\\Documents\\Software Development\\rpgwizard\\editor\\editor-ui\\target\\classes\\projects\\The Wizard's Tower");
+                "D:\\Documents\\Software-Development\\rpgwizard\\demo\\Sample");
 
         AssetManager.getInstance().registerResolver(new FileAssetHandleResolver());
         AssetManager.getInstance().registerSerializer(new ScriptSerializer());

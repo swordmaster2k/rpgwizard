@@ -26,6 +26,7 @@ local active_player = nil
 -- events
 local vm = {
     script = nil,
+    script_name = nil,
     source = nil,
     keypress_event = {
         key = nil,
@@ -103,10 +104,11 @@ function rpg.update(dt)
     world:update(dt)
 
     if vm.script ~= nil then
-        if pcall(vm.script.update, dt) then
+        local ok, result_or_error = pcall(vm.script.update, dt)
+        if ok then
             -- Do nothing
         else
-            print("error running script")
+            rpg.error("rpg.update", string.format("error running script=[%s], error=[%s]", vm.script_name, result_or_error))
         end
 
         vm.script = nil
@@ -135,7 +137,8 @@ function rpg.keyreleased(key)
     end
 
     if key == vm.keypress_event.key then
-        vm.script = require("scripts/" .. vm.keypress_event.script:gsub(".lua", ""))
+        vm.script_name = "scripts/" .. vm.keypress_event.script:gsub(".lua", "")
+        vm.script = require(vm.script_name)
     end
 end
 
@@ -193,7 +196,12 @@ end
 
 function rpg.log(function_name, message)
     local time = os.date("*t")
-    print(string.format("%02d:%02d:%02d - %s - %s", time.hour, time.min, time.sec, function_name, message))
+    print(string.format("%02d:%02d:%02d - INFO  - %s - %s", time.hour, time.min, time.sec, function_name, message))
+end
+
+function rpg.error(function_name, message)
+    local time = os.date("*t")
+    print(string.format("%02d:%02d:%02d - ERROR - %s - %s", time.hour, time.min, time.sec, function_name, message))
 end
 
 function rpg.get_scale()
@@ -269,7 +277,9 @@ function rpg.switch_map(new_map, x, y, layer)
 
     if game_config ~= nil and game_config.player ~= nil then
         setup_player(game_config.player)
-        sprite.set_location(active_player, x * current_map.tileWidth, y * current_map.tileHeight, layer)
+        if active_player ~= nil then
+            sprite.set_location(game_config.player, active_player, x * current_map.tileWidth, y * current_map.tileHeight, layer)
+        end
     end
 
     rpg.log("switch_map", string.format("finished switching map, new_map=[%s], x=[%s], y=[%s], layer=[%s]", new_map, x, y, layer))

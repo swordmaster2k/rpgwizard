@@ -5,6 +5,8 @@ local asset = require("libraries/rpgwizard/asset")
 local animation = require("libraries/rpgwizard/animation")
 
 function sprite.load(name)
+    rpg.log("sprite.load", string.format("name=[%s]", name))
+
     local asset_name = "sprites/" .. name
 
     local sprite_asset = asset.load_json(asset_name)
@@ -45,7 +47,8 @@ function sprite.draw(sprite_asset)
     active_animation.animator:draw(image, x, y)
 end
 
-function sprite.set_location(sprite_asset, x, y, layer)
+function sprite.set_location(id, sprite_asset, x, y, layer)
+    rpg.log("set_location", string.format("id=[%s], x=[%s], y=[%s], layer=[%s]", id, x, y, layer))
     sprite_asset.collider:setPosition(x, y)
     sprite_asset.layer = layer
 end

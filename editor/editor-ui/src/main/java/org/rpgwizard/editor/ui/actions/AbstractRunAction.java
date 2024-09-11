@@ -8,17 +8,21 @@
 package org.rpgwizard.editor.ui.actions;
 
 import java.awt.Dimension;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import javax.swing.AbstractAction;
 import javax.swing.ProgressMonitor;
 import javax.swing.SwingWorker;
+
+import jodd.io.StreamGobbler;
 import org.apache.commons.io.FileUtils;
 import org.rpgwizard.common.assets.game.Game;
 import org.rpgwizard.editor.MainWindow;
 import org.rpgwizard.editor.utilities.FileTools;
+import org.rpgwizard.engine.Engine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -26,7 +30,11 @@ import org.rpgwizard.editor.utilities.FileTools;
  */
 public abstract class AbstractRunAction extends AbstractAction {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractRunAction.class);
+
     private ProgressMonitor progressMonitor;
+
+    private static StreamGobbler streamGobbler;
 
     protected void toggleButtons() {
         MainWindow instance = MainWindow.getInstance();
@@ -72,17 +80,10 @@ public abstract class AbstractRunAction extends AbstractAction {
             ProgressMonitor progressMonitor) throws InterruptedException, InvocationTargetException, Exception {
         File projectIcon = null; // REFACTOR: Move to game.ico way
 
-        String command = "love.exe " + '"' + projectCopy.getAbsolutePath() + File.separator + "game" + '"';
-        System.out.println(command);
-        Runtime runtime = Runtime.getRuntime();
-        Process process = runtime.exec(command);
-    }
+        Engine engine = new Engine();
+        engine.start(new File(projectCopy.getAbsolutePath() + File.separator + "game" + '"'));
 
-    public static void main(String[] args) throws Exception {
-        String command = "lovec.exe D:/Desktop/lua-game";
-
-        Runtime runtime = Runtime.getRuntime();
-        Process process = runtime.exec(command);
+        MainWindow.getInstance().setActiveEngine(engine);
     }
 
 }

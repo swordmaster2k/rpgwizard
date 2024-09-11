@@ -87,6 +87,7 @@ import org.rpgwizard.editor.ui.resources.Icons;
 import org.rpgwizard.editor.ui.toolbar.MainToolBar;
 import org.rpgwizard.editor.utilities.EditorFileManager;
 import org.rpgwizard.editor.utilities.FileTools;
+import org.rpgwizard.engine.Engine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -132,6 +133,7 @@ public final class MainWindow extends JFrame implements InternalFrameListener, S
 
     // Game Related.
     private Game activeProject;
+    private Engine activeEngine;
 
     // Map Related.
     private boolean showGrid;

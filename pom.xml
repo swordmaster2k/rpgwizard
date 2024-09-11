@@ -52,10 +52,10 @@
     <modules>
         <module>core</module>
         <module>editor</module>
-        <module>engine</module>
         <module>demo</module>
         <module>distribution</module>
         <module>documentation</module>
+        <module>engine</module>
     </modules>
 
     <properties>
@@ -88,6 +88,7 @@
         <languagesupport.version>3.3.0</languagesupport.version>
         <netbeans.verson>RELEASE124</netbeans.verson>
         <guava.version>33.3.0-jre</guava.version>
+        <jodd-util.version>6.3.0</jodd-util.version>
     </properties>
 
     <dependencies>
@@ -135,6 +136,12 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>${commons-lang.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jodd</groupId>
+            <artifactId>jodd-util</artifactId>
+            <version>${jodd-util.version}</version>
         </dependency>
     </dependencies>
 

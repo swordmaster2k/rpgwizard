@@ -1,3 +1,5 @@
+io.stdout:setvbuf("no")
+
 require("libraries/lovedebug")
 
 _G.rpg = require("libraries/rpgwizard/rpg")

@@ -24,21 +24,24 @@ public class StopAction extends AbstractAction {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StopAction.class);
 
-    private ProgressMonitor progressMonitor;
-
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
             MainWindow instance = MainWindow.getInstance();
             instance.getMainToolBar().getStopButton().setEnabled(false);
 
-            progressMonitor = new ProgressMonitor(MainWindow.getInstance(), "Stopping Engine...", "", 0, 100);
+            ProgressMonitor progressMonitor = new ProgressMonitor(MainWindow.getInstance(), "Stopping Engine...", "", 0,
+                    100);
             progressMonitor.setProgress(0);
 
             SwingWorker<Integer, Integer> worker = new SwingWorker<>() {
                 @Override
                 protected Integer doInBackground() throws Exception {
-                    // REFACTOR: Stop engine
+                    if (MainWindow.getInstance().getActiveEngine() != null) {
+                        MainWindow.getInstance().getActiveEngine().stop();
+                        MainWindow.getInstance().setActiveEngine(null);
+                    }
+
                     return null;
                 }
 

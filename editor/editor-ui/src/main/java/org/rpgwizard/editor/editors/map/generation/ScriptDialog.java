@@ -172,8 +172,7 @@ public final class ScriptDialog extends JDialog {
     }
 
     public static void main(String[] args) throws Exception {
-        System.setProperty("project.path",
-                "D:\\Documents\\Software-Development\\rpgwizard\\demo\\Sample");
+        System.setProperty("project.path", "D:\\Documents\\Software-Development\\rpgwizard\\demo\\Sample");
 
         AssetManager.getInstance().registerResolver(new FileAssetHandleResolver());
         AssetManager.getInstance().registerSerializer(new ScriptSerializer());

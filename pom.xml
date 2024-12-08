@@ -61,7 +61,7 @@
         <maven.jar.version>2.6</maven.jar.version>
         <junit.version>4.12</junit.version>
         <json.version>20141113</json.version>
-        <jsoup.version>1.10.2</jsoup.version>
+        <jsoup.version>1.15.3</jsoup.version>
         <commons-io.version>2.4</commons-io.version>
         <commons-lang.version>3.5</commons-lang.version>
         <license.plugin.version>2.11</license.plugin.version>

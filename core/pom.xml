@@ -37,7 +37,7 @@
 
         <junit.version>4.12</junit.version>
         <json.version>20141113</json.version>
-        <commons-io.version>2.4</commons-io.version>
+        <commons-io.version>2.7</commons-io.version>
 
         <license.plugin.version>2.11</license.plugin.version>
 

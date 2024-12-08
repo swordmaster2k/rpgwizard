@@ -66,7 +66,7 @@
         <commons-lang.version>3.5</commons-lang.version>
         <license.plugin.version>2.11</license.plugin.version>
         <slf4j.version>1.7.22</slf4j.version>
-        <logback.version>1.1.8</logback.version>
+        <logback.version>1.2.0</logback.version>
         <pf4j.version>3.2.0</pf4j.version>
         <assertj.version>3.5.0</assertj.version>
         <maven.formatter.version>2.11.0</maven.formatter.version>
